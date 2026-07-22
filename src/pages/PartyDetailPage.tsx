@@ -16,12 +16,8 @@ export default function PartyDetailPage() {
     db.getParty(id).then(setParty);
     db.listLinksForParty(id).then(async (ls) => {
       setLinks(ls);
-      const map: Record<string, CaseRecord> = {};
-      for (const l of ls) {
-        const c = await db.getCase(l.caseId);
-        if (c) map[l.caseId] = c;
-      }
-      setCases(map);
+      const cs = await db.getCases(ls.map((l) => l.caseId));
+      setCases(Object.fromEntries(cs.map((c) => [c.id, c])));
     });
   }, [id]);
 
@@ -83,9 +79,12 @@ export default function PartyDetailPage() {
           ))}
         </dl>
         {empty.length > 0 && (
-          <div className="muted small" style={{ marginTop: 12 }}>
-            Not yet filled in: {empty.map((f) => f.label).join(' · ')}
-          </div>
+          <details className="muted small" style={{ marginTop: 12 }}>
+            <summary style={{ cursor: 'pointer' }}>
+              Not yet filled in: {empty.length} field{empty.length === 1 ? '' : 's'}
+            </summary>
+            <div style={{ marginTop: 6 }}>{empty.map((f) => f.label).join(' · ')}</div>
+          </details>
         )}
       </div>
     </div>

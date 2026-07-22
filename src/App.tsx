@@ -29,6 +29,7 @@ export default function App() {
           <Route path="/cases" element={<CaseListPage />} />
           <Route path="/cases/new" element={<NewCasePage />} />
           <Route path="/cases/:id" element={<CaseDetailPage />} />
+          <Route path="/cases/:id/parties" element={<CaseDetailPage />} />
           <Route path="/parties" element={<PartiesPage />} />
           <Route path="/parties/new" element={<PartyFormPage mode="new" />} />
           <Route path="/parties/:id" element={<PartyDetailPage />} />

@@ -104,6 +104,12 @@ export class SupabaseAdapter implements DataAdapter {
     return res.data ? caseFromRow(res.data as CaseRow) : null;
   }
 
+  async getCases(ids: string[]): Promise<CaseRecord[]> {
+    if (ids.length === 0) return [];
+    const res = await this.sb.from('cases').select('*').in('id', ids);
+    return SupabaseAdapter.unwrap(res as never as { data: CaseRow[] | null; error: { message: string } | null }).map(caseFromRow);
+  }
+
   async createCase(data: Omit<CaseRecord, 'id' | 'fileNumber' | 'createdAt' | 'updatedAt'>): Promise<CaseRecord> {
     // file_number is assigned by the DB default (next_file_number()).
     const res = await this.sb.from('cases').insert(caseToRow(data)).select().single();
@@ -128,6 +134,12 @@ export class SupabaseAdapter implements DataAdapter {
     return res.data ? partyFromRow(res.data as PartyRow) : null;
   }
 
+  async getParties(ids: string[]): Promise<PartyRecord[]> {
+    if (ids.length === 0) return [];
+    const res = await this.sb.from('parties').select('*').in('id', ids);
+    return SupabaseAdapter.unwrap(res as never as { data: PartyRow[] | null; error: { message: string } | null }).map(partyFromRow);
+  }
+
   async createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord> {
     const res = await this.sb.from('parties')
       .insert({ party_type: data.partyType, kind: data.kind, display_name: data.displayName, fields: data.fields })
@@ -136,7 +148,7 @@ export class SupabaseAdapter implements DataAdapter {
     return partyFromRow(res.data as PartyRow);
   }
 
-  async updateParty(id: string, patch: Partial<PartyRecord>): Promise<PartyRecord> {
+  async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
     const row: Record<string, unknown> = {};
     if (patch.displayName !== undefined) row.display_name = patch.displayName;
     if (patch.fields !== undefined) row.fields = patch.fields;

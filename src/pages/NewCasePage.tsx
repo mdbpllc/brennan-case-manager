@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { PracticeArea, PiFlag, RepresentationType } from '../domain/types';
 import { CASE_TYPES, PI_FLAGS, statusesFor } from '../domain/caseTypes';
+import { localISODate } from '../domain/dates';
 import { db } from '../data';
 
 export default function NewCasePage() {
@@ -14,7 +15,7 @@ export default function NewCasePage() {
   const [commercialPolicy, setCommercialPolicy] = useState(false);
   const [flags, setFlags] = useState<PiFlag[]>([]);
   const [dateOfIncident, setDateOfIncident] = useState('');
-  const [dateOpened, setDateOpened] = useState(() => new Date().toISOString().slice(0, 10));
+  const [dateOpened, setDateOpened] = useState(() => localISODate());
   const [sol, setSol] = useState('');
   const [courtName, setCourtName] = useState('');
   const [causeNumber, setCauseNumber] = useState('');

@@ -86,7 +86,7 @@ function RepeatingInput({
           </div>
         ))}
         <button type="button" className="btn small secondary" onClick={() => onChange([...rows, {}])}>
-          + Add {def.label.toLowerCase().replace(/s$/, '')}
+          + Add {def.itemLabel ?? def.label.toLowerCase().replace(/s$/, '')}
         </button>
       </div>
     </div>

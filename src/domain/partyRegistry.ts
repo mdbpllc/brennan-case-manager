@@ -19,6 +19,7 @@ export interface FieldDef {
   type: FieldType;
   options?: string[]; // for select
   subFields?: FieldDef[]; // for repeating groups
+  itemLabel?: string; // for repeating: noun for the "+ Add …" button when the label doesn't singularize cleanly
   linkTypes?: string[]; // for partyLink: which party types are valid targets
   hint?: string;
   sensitive?: boolean; // SSN-class fields: masked in lists
@@ -49,14 +50,14 @@ const PERSON_NAME: FieldDef[] = [
 const CREDENTIALS_DOSSIER: FieldDef[] = [
   { key: 'licenseIssued', label: 'License issuance date', type: 'date' },
   {
-    key: 'boardCerts', label: 'Board certifications', type: 'repeating',
+    key: 'boardCerts', label: 'Board certifications', type: 'repeating', itemLabel: 'board certification',
     subFields: [
       { key: 'specialty', label: 'Specialty', type: 'text' },
       { key: 'date', label: 'Date', type: 'date' },
     ],
   },
   {
-    key: 'education', label: 'Education history', type: 'repeating',
+    key: 'education', label: 'Education history', type: 'repeating', itemLabel: 'program',
     subFields: [
       { key: 'program', label: 'Program name', type: 'text' },
       { key: 'location', label: 'Location', type: 'text' },
@@ -67,13 +68,13 @@ const CREDENTIALS_DOSSIER: FieldDef[] = [
   },
   { key: 'privileges', label: 'Hospital privileges', type: 'textarea' },
   {
-    key: 'honors', label: 'Awards / honors / publications', type: 'repeating',
+    key: 'honors', label: 'Awards / honors / publications', type: 'repeating', itemLabel: 'item',
     subFields: [{ key: 'item', label: 'Item', type: 'text' }],
   },
   { key: 'malpractice', label: 'Malpractice information', type: 'textarea' },
   { key: 'criminalHistory', label: 'Criminal history', type: 'textarea' },
   {
-    key: 'discipline', label: 'Disciplinary actions (TX + out-of-state)', type: 'repeating',
+    key: 'discipline', label: 'Disciplinary actions (TX + out-of-state)', type: 'repeating', itemLabel: 'disciplinary action',
     subFields: [
       { key: 'jurisdiction', label: 'Board / jurisdiction', type: 'text' },
       { key: 'date', label: 'Date', type: 'date' },
@@ -99,7 +100,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'healthInsurer', label: 'Health insurer on file', type: 'text', hint: 'Ties into Type 2 medical bills' },
       { key: 'medicareMedicaid', label: 'Medicare/Medicaid beneficiary', type: 'select', options: ['Unknown', 'No', 'Medicare', 'Medicaid', 'Both'], hint: 'Captured at EVERY PI intake — drives lien module & Safe Harbor authorization' },
       {
-        key: 'priorMVCs', label: 'Prior motor vehicle collisions', type: 'repeating',
+        key: 'priorMVCs', label: 'Prior motor vehicle collisions', type: 'repeating', itemLabel: 'prior collision',
         subFields: [
           { key: 'date', label: 'Date', type: 'date' },
           { key: 'detail', label: 'What the client recalls', type: 'text' },
@@ -113,25 +114,25 @@ export const PARTY_TYPES: PartyTypeDef[] = [
         ],
       },
       {
-        key: 'priorInjuries', label: 'Prior injuries', type: 'repeating',
+        key: 'priorInjuries', label: 'Prior injuries', type: 'repeating', itemLabel: 'prior injury',
         subFields: [
           { key: 'date', label: 'Date', type: 'date' },
           { key: 'detail', label: 'Details', type: 'text' },
         ],
       },
       {
-        key: 'priorProviders', label: 'Prior medical providers seen', type: 'repeating',
+        key: 'priorProviders', label: 'Prior medical providers seen', type: 'repeating', itemLabel: 'provider',
         subFields: [{ key: 'provider', label: 'Provider', type: 'text' }],
       },
       {
-        key: 'drivingHistory', label: 'Driving history / prior tickets', type: 'repeating',
+        key: 'drivingHistory', label: 'Driving history / prior tickets', type: 'repeating', itemLabel: 'ticket / entry',
         subFields: [
           { key: 'date', label: 'Approx. date', type: 'text' },
           { key: 'location', label: 'Location', type: 'text' },
         ],
       },
       {
-        key: 'priorCriminal', label: 'Prior criminal history (structured — eligibility engine)', type: 'repeating',
+        key: 'priorCriminal', label: 'Prior criminal history (structured — eligibility engine)', type: 'repeating', itemLabel: 'prior charge',
         subFields: [
           { key: 'disposition', label: 'Disposition', type: 'select', options: ['Conviction', 'Deferred adjudication', 'Dismissal', 'Acquittal', 'Unknown'] },
           { key: 'offense', label: 'Offense + cite (if known)', type: 'text' },
@@ -167,7 +168,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'natureOfBusiness', label: 'Type / nature of business', type: 'text' },
       ...CONTACT,
       {
-        key: 'contacts', label: 'Points of contact', type: 'repeating',
+        key: 'contacts', label: 'Points of contact', type: 'repeating', itemLabel: 'contact',
         subFields: [
           { key: 'name', label: 'Name', type: 'text' },
           { key: 'info', label: 'Contact info', type: 'text' },

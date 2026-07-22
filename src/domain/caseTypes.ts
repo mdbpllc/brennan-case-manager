@@ -103,10 +103,20 @@ export const STATUSES: Record<string, string[]> = {
   ],
 };
 
+/** Criminal case types that follow the record-clearing/relief ladder rather than the trial ladder. */
+const RELIEF_CASE_TYPES = new Set(['Expunction', 'Order for non-disclosure', 'Motion for judicial clemency']);
+
 export function statusesFor(practiceArea: PracticeArea, caseType: string): string[] {
+  // NOTE: Probate companion currently inherits the PI litigation ladder, which
+  // doesn't fit it — flagged in docs/spec-feedback.md for a settled ladder.
   if (practiceArea === 'Personal Injury') return STATUSES._piDefault;
   if (practiceArea === 'General Civil Litigation') return STATUSES._civilDefault;
-  if (['Expunction', 'Order for non-disclosure', 'Motion for judicial clemency'].includes(caseType))
-    return STATUSES._reliefDefault;
+  if (RELIEF_CASE_TYPES.has(caseType)) return STATUSES._reliefDefault;
   return STATUSES._criminalDefault;
+}
+
+/** Terminal status. Single source of truth so list filters don't string-match ad hoc. */
+export const CLOSED_STATUS = 'Closed';
+export function isClosedStatus(status: string): boolean {
+  return status === CLOSED_STATUS;
 }

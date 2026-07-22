@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side } from '../domain/types';
-import { statusesFor } from '../domain/caseTypes';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, RepresentationType } from '../domain/types';
+import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
 
@@ -15,7 +15,10 @@ const SIDES: Side[] = ['Ours', 'Opposing', 'Neutral'];
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [rec, setRec] = useState<CaseRecord | null>(null);
-  const [tab, setTab] = useState<'overview' | 'parties'>('overview');
+  const nav = useNavigate();
+  // Tab lives in the URL so it survives navigation (e.g. returning from
+  // "+ New party") and can be bookmarked.
+  const tab: 'overview' | 'parties' = useLocation().pathname.endsWith('/parties') ? 'parties' : 'overview';
 
   useEffect(() => {
     if (id) db.getCase(id).then(setRec);
@@ -40,8 +43,8 @@ export default function CaseDetailPage() {
       </div>
 
       <div className="tabs">
-        <button className={tab === 'overview' ? 'active' : ''} onClick={() => setTab('overview')}>Overview</button>
-        <button className={tab === 'parties' ? 'active' : ''} onClick={() => setTab('parties')}>Parties</button>
+        <button className={tab === 'overview' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}`)}>Overview</button>
+        <button className={tab === 'parties' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/parties`)}>Parties</button>
       </div>
 
       {tab === 'overview' ? <OverviewTab rec={rec} onChange={setRec} /> : <PartiesTab caseId={rec.id} />}
@@ -58,12 +61,25 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
 
   useEffect(() => setDraft(rec), [rec]);
 
+  const isPI = rec.practiceArea === 'Personal Injury';
+  const isMVC = isPI && rec.caseType === 'Motor vehicle collision';
+  const isCriminal = rec.practiceArea === 'Criminal';
+
+  const toggleFlag = (f: PiFlag) =>
+    setDraft((d) => ({
+      ...d,
+      piFlags: d.piFlags.includes(f) ? d.piFlags.filter((x) => x !== f) : [...d.piFlags, f],
+    }));
+
   const save = async () => {
     const updated = await db.updateCase(rec.id, {
       caption: draft.caption, status: draft.status, dateOfIncident: draft.dateOfIncident,
       dateOpened: draft.dateOpened, statuteOfLimitations: draft.statuteOfLimitations,
       dateClosed: draft.dateClosed, courtName: draft.courtName, causeNumber: draft.causeNumber,
       notes: draft.notes, legacyRef: draft.legacyRef,
+      piFlags: draft.piFlags,
+      commercialPolicyInvolved: isMVC ? draft.commercialPolicyInvolved ?? false : draft.commercialPolicyInvolved,
+      representationType: draft.representationType,
     });
     onChange(updated);
     setEditing(false);
@@ -134,11 +150,54 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <span className="lab">Cause number</span>
           <input type="text" value={draft.causeNumber ?? ''} onChange={(e) => setDraft({ ...draft, causeNumber: e.target.value })} />
         </label>
+        {isCriminal && (
+          <label className="fld">
+            <span className="lab">Representation type</span>
+            <select
+              value={draft.representationType ?? ''}
+              onChange={(e) => setDraft({ ...draft, representationType: (e.target.value || undefined) as RepresentationType | undefined })}
+            >
+              <option value="">—</option>
+              <option>Court-appointed</option>
+              <option>Private hire</option>
+            </select>
+          </label>
+        )}
         <label className="fld full">
           <span className="lab">Notes</span>
           <textarea value={draft.notes ?? ''} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
         </label>
       </div>
+
+      {isPI && (
+        <div style={{ marginTop: 14 }}>
+          <span className="lab" style={{ fontWeight: 600, fontSize: 13, color: 'var(--navy)' }}>
+            Overlay flags (stackable — each opens its playbook)
+          </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 18px', marginTop: 8 }}>
+            {PI_FLAGS.map((f) => (
+              <label className="check" key={f}>
+                <input type="checkbox" checked={draft.piFlags.includes(f)} onChange={() => toggleFlag(f)} />
+                {f}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isMVC && (
+        <div style={{ marginTop: 14 }}>
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={Boolean(draft.commercialPolicyInvolved)}
+              onChange={(e) => setDraft({ ...draft, commercialPolicyInvolved: e.target.checked })}
+            />
+            Commercial policy involved
+          </label>
+        </div>
+      )}
+
       <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
         <button className="btn" onClick={save}>Save</button>
         <button className="btn secondary" onClick={() => { setDraft(rec); setEditing(false); }}>Cancel</button>
@@ -161,12 +220,8 @@ function PartiesTab({ caseId }: { caseId: string }) {
   const refresh = useCallback(async () => {
     const ls = await db.listLinksForCase(caseId);
     setLinks(ls);
-    const map: Record<string, PartyRecord> = {};
-    for (const l of ls) {
-      const p = await db.getParty(l.partyId);
-      if (p) map[l.partyId] = p;
-    }
-    setParties(map);
+    const ps = await db.getParties(ls.map((l) => l.partyId));
+    setParties(Object.fromEntries(ps.map((p) => [p.id, p])));
     setAllParties(await db.listParties());
   }, [caseId]);
 

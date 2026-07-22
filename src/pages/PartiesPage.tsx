@@ -46,7 +46,9 @@ export default function PartiesPage() {
           <tbody>
             {filtered.map((p) => (
               <tr key={p.id} className="rowlink" onClick={() => nav(`/parties/${p.id}`)}>
-                <td><strong>{p.displayName}</strong></td>
+                <td>
+                  <Link to={`/parties/${p.id}`} onClick={(e) => e.stopPropagation()}><strong>{p.displayName}</strong></Link>
+                </td>
                 <td>{PARTY_TYPE_MAP[p.partyType]?.label ?? p.partyType}</td>
                 <td className="muted">{p.kind}</td>
               </tr>

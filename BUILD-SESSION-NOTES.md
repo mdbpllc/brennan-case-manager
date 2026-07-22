@@ -117,9 +117,11 @@ Things that looked off or confusing during the click-through:
   new-case form showed 2026-07-22 on the evening of 2026-07-21, and the value
   went into the saved record. Cause: `new Date().toISOString().slice(0, 10)`
   in `NewCasePage.tsx` uses UTC, and Texas evenings are already past UTC
-  midnight. The same UTC pattern is used for the file-number year in
-  `localAdapter.ts`/`seed.ts` (only misbehaves around New Year's Eve). Needs a
-  local-date helper.
+  midnight. Needs a local-date helper. (Correction on review: the file-number
+  year in `localAdapter.ts`/`seed.ts` uses `getFullYear()`, which is local —
+  no bug there. The server-side `next_file_number()` in `db/schema.sql` does
+  use server time, so the January counter reset follows the database's
+  timezone — a New-Year's-Eve nuance to settle when Supabase mode goes live.)
 - **Label bugs on repeating-group add buttons** (naive singularization in
   `fieldWidgets.tsx` strips a trailing "s"): "+ Add prior **injurie**",
   "+ Add prior medical providers **seen**", and the unwieldy "+ Add prior
@@ -195,8 +197,9 @@ Ordered by how much they matter, most important first.
    patching another property would see it vanish only in Supabase mode
    (the local adapter applies any patch). Worth aligning the two.
 10. Housekeeping: no tests and no CI at all yet (expected at this stage —
-    `npm run lint` and `tsc -b` via the build are the only checks); README
-    still describes the generic Vite template rather than this app.
+    `npm run lint` and `tsc -b` via the build are the only checks).
+    (Correction on review: the README is already app-specific and good — an
+    earlier draft of these notes wrongly called it template boilerplate.)
 
 No broken imports and no TODO/FIXME markers anywhere — the codebase is small,
 consistent, and compiles clean.

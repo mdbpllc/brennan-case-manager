@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { CaseRecord, PracticeArea } from '../domain/types';
-import { CASE_TYPES } from '../domain/caseTypes';
+import { CASE_TYPES, isClosedStatus } from '../domain/caseTypes';
 import { db } from '../data';
 
 const AREA_BADGE: Record<PracticeArea, string> = {
@@ -25,7 +25,7 @@ export default function CaseListPage() {
   const filtered = cases.filter((c) => {
     if (area && c.practiceArea !== area) return false;
     if (type && c.caseType !== type) return false;
-    if (!showClosed && c.status === 'Closed') return false;
+    if (!showClosed && isClosedStatus(c.status)) return false;
     if (q) {
       const hay = `${c.fileNumber} ${c.caption ?? ''} ${c.caseType} ${c.legacyRef ?? ''}`.toLowerCase();
       if (!hay.includes(q.toLowerCase())) return false;
@@ -74,7 +74,10 @@ export default function CaseListPage() {
           <tbody>
             {filtered.map((c) => (
               <tr key={c.id} className="rowlink" onClick={() => nav(`/cases/${c.id}`)}>
-                <td><strong>{c.fileNumber}</strong></td>
+                <td>
+                  {/* Real link (not just the row handler) so middle-click and keyboard nav work */}
+                  <Link to={`/cases/${c.id}`} onClick={(e) => e.stopPropagation()}><strong>{c.fileNumber}</strong></Link>
+                </td>
                 <td>{c.caption || <span className="muted">(no caption)</span>}</td>
                 <td><span className={`badge ${AREA_BADGE[c.practiceArea]}`}>{c.practiceArea}</span></td>
                 <td>{c.caseType}{c.representationType ? <span className="muted small"> · {c.representationType}</span> : null}</td>

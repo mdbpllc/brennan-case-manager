@@ -59,6 +59,11 @@ When you're ready to move off demo mode onto the live shared database:
    Supabase's **Settings → API** page (Project URL and anon public key).
 4. Restart `npm run dev`. The sidebar will read "Connected: central database."
 
+**Known gap:** the schema's row-level-security policies only admit signed-in
+(`authenticated`) users, and the app has no sign-in screen yet — so Supabase mode
+will connect but every query will be refused until an auth flow is added. Tracked
+in `docs/spec-feedback.md`.
+
 Do **not** put real client data in until we've done the security pass (auth sign-in,
 policies, and the professional security review from the project instructions §15).
 
@@ -75,5 +80,8 @@ policies, and the professional security review from the project instructions §1
   directory/detail/form.
 - `db/schema.sql` — Postgres schema incl. server-side gapless `YY-NNNN` file-number
   generation and RLS placeholders.
+- `docs/specs/` — read-only snapshots of the canonical specs from the design space
+  (see `CLAUDE.md` for the rules); `docs/specs/session-log.md` is the running
+  session-to-session log.
 - Next slices per the build sequence: remaining tabs (Medical, Insurance, Liens, …),
   the deadline engine, playbook surfacing, transcript layer, then Graph integrations.

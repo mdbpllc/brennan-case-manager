@@ -46,7 +46,7 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
     const rec = await db.createParty({ partyType: typeKey, kind: def.kind, displayName, fields });
     if (caseId) {
       await db.createLink({ caseId, partyId: rec.id, role, side: side || undefined });
-      nav(`/cases/${caseId}`);
+      nav(`/cases/${caseId}/parties`);
     } else {
       nav(`/parties/${rec.id}`);
     }

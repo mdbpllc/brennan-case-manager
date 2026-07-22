@@ -4,7 +4,12 @@ import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
+/** Bump when a record shape changes incompatibly — stale demo stores reseed
+ *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
+const STORE_VERSION = 1;
+
 interface Store {
+  version: number;
   cases: CaseRecord[];
   parties: PartyRecord[];
   links: CasePartyLink[];
@@ -15,12 +20,14 @@ function load(): Store {
   const raw = localStorage.getItem(KEY);
   if (raw) {
     try {
-      return JSON.parse(raw) as Store;
+      const parsed = JSON.parse(raw) as Store;
+      if (parsed.version === STORE_VERSION) return parsed;
+      // version mismatch (or pre-versioning store) — fall through to reseed
     } catch {
       // fall through to seed
     }
   }
-  const seeded = seedData();
+  const seeded: Store = { version: STORE_VERSION, ...seedData() };
   localStorage.setItem(KEY, JSON.stringify(seeded));
   return seeded;
 }
@@ -54,6 +61,11 @@ export class LocalAdapter implements DataAdapter {
     return load().cases.find((c) => c.id === id) ?? null;
   }
 
+  async getCases(ids: string[]): Promise<CaseRecord[]> {
+    const wanted = new Set(ids);
+    return load().cases.filter((c) => wanted.has(c.id));
+  }
+
   async createCase(data: Omit<CaseRecord, 'id' | 'fileNumber' | 'createdAt' | 'updatedAt'>): Promise<CaseRecord> {
     const store = load();
     const rec: CaseRecord = {
@@ -85,6 +97,11 @@ export class LocalAdapter implements DataAdapter {
     return load().parties.find((p) => p.id === id) ?? null;
   }
 
+  async getParties(ids: string[]): Promise<PartyRecord[]> {
+    const wanted = new Set(ids);
+    return load().parties.filter((p) => wanted.has(p.id));
+  }
+
   async createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord> {
     const store = load();
     const rec: PartyRecord = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
@@ -93,7 +110,7 @@ export class LocalAdapter implements DataAdapter {
     return rec;
   }
 
-  async updateParty(id: string, patch: Partial<PartyRecord>): Promise<PartyRecord> {
+  async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
     const store = load();
     const idx = store.parties.findIndex((p) => p.id === id);
     if (idx === -1) throw new Error('Party not found');
