@@ -1,10 +1,6 @@
-# Project Conventions (merge into CLAUDE.md)
+# CLAUDE.md
 
-<!-- This block carries the design-space discipline that lives in the Claude
-Project docs, not in the code. Merge it into the CLAUDE.md that /init
-generates from the repo tree. If anything here conflicts with what /init
-inferred from the code, THIS BLOCK WINS on conventions; the generated
-half wins on file paths, scripts, and structure. -->
+Guidance for Claude Code when working in this repository.
 
 ## What this is
 
@@ -19,6 +15,36 @@ The user (Michael) is an attorney, not a developer. Claude does the heavy
 lifting; Michael directs, reviews, and decides. Readability for Michael is
 secondary to build speed and quality — but decisions still route through him.
 
+## Commands
+
+```bash
+npm install        # install dependencies
+npm run dev        # Vite dev server (localStorage demo mode unless .env is set)
+npm run build      # type-check (tsc -b) + production build
+npm run lint       # oxlint
+npm run preview    # serve the production build locally
+```
+
+There is no test runner configured yet.
+
+## Structure and architecture
+
+- `src/domain/` — entity types (`types.ts`), case-type definitions
+  (`caseTypes.ts`), party role registry (`partyRegistry.ts`).
+- `src/data/` — the data-adapter layer. `adapter.ts` defines the
+  `DataAdapter` interface; `localAdapter.ts` (browser localStorage, seeded
+  from `seed.ts` — fictional demo data) and `supabaseAdapter.ts` implement
+  it. `index.ts` picks the backend: if `VITE_SUPABASE_URL` and
+  `VITE_SUPABASE_ANON_KEY` are set (copy `.env.example` to `.env`), it uses
+  Supabase; otherwise localStorage. **The UI only ever talks to the
+  `DataAdapter` interface** — new features must work in both modes.
+- `src/pages/` — route-level pages (case list/detail, new case, parties);
+  `src/components/` — shared widgets. Routing via react-router-dom in
+  `src/App.tsx`.
+- `db/schema.sql` — the Postgres/Supabase schema. Keep it in sync with the
+  domain types and both adapters when the data model changes.
+- `docs/specs/` — spec snapshots from the design space (see below).
+
 ## Spec canonicity — do not edit specs here
 
 Design and specification are done in the Claude.ai Project space, not in
@@ -29,13 +55,21 @@ coding sessions. The spec documents committed under `docs/specs/` are
   decisions, build sequence)
 - `medical-billing-analysis-module-synthesis.md` — billing module spec
   (Phase 1a is the current build target)
+- `medical-billing-analysis-module-prompt.md` — the design-exploration
+  prompt that produced the synthesis doc (reference input, not a build spec)
 - `pi-case-playbooks.md`, `criminal-offense-playbooks.md` — playbook engines
 - `transcript-workflows.md`, `plea-hearing-eligibility-reminder.md`,
   `citizens-mrf-dry-run.md` — subsystem specs and reference findings
+- `session-log.md` — dated session-to-session log. **The one exception to
+  read-only:** coding sessions should skim the latest entries at session
+  start and append a short dated entry at the top after substantive work,
+  per the instructions inside that file. Append entries; don't rewrite
+  history.
 
-**Read them; never rewrite them in a coding session.** If the build reveals
-a spec problem, note it in a `docs/spec-feedback.md` file for Michael to
-take back to the design space. Refreshed snapshots come from there.
+**Read them; never rewrite them in a coding session** (except the
+session-log append rule above). If the build reveals a spec problem, note
+it in a `docs/spec-feedback.md` file for Michael to take back to the design
+space. Refreshed snapshots come from there.
 
 ## Legal Rule Registry discipline (BINDING, system-wide)
 
@@ -98,9 +132,10 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
 - Preserve the data-adapter architecture: everything must keep working in
   zero-setup localStorage demo mode as well as against Supabase.
 
-<!-- DECISIONS FOR MICHAEL (resolve, then delete this comment):
-1. Repo hosting: local-only vs. private GitHub. (Private GitHub recommended
-   for code + specs; enables backup and GitHub integration.)
-2. Confirm docs/specs/ snapshot list above matches what you actually commit.
-3. Confirm the Citizens MRF's local path once chosen, and record it in the
-   generated half of CLAUDE.md. -->
+## Repo hosting and open decisions
+
+- Hosting: **private GitHub** (decided 2026-07-21). The repo is pushed to a
+  private GitHub repository as backup; keep it private — specs and code
+  only, never client data.
+- Open decision for Michael: the Citizens MRF's local path once chosen —
+  record it here when decided.

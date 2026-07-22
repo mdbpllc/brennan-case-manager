@@ -10,6 +10,12 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-21 (CLAUDE.md merged in repo; hosting decided)
+
+**What happened (Claude Code session):** Committed the nine spec snapshots under `docs/specs/` plus the conventions block. Generated CLAUDE.md from the real repo tree (commands, adapter architecture) and merged the conventions block into it; block's spec list corrected — it was missing `medical-billing-analysis-module-prompt.md` and this session log. Session log documented in CLAUDE.md as the one append-allowed exception to the read-only-specs rule. The transport file `claude-md-conventions-block.md` was deleted after the merge (content lives in CLAUDE.md; original preserved in git history). Michael decided hosting: **private GitHub** — repo created and pushed.
+
+**Next:** Michael's v0.1 feedback; billing module Phase 1a. Open decision: local path for the Citizens MRF fixture (record in CLAUDE.md when chosen).
+
 ## 2026-07-21 (build moves to Claude Code; conventions block drafted)
 
 **What happened:** Assessed whether the build should move to Claude Code — yes: design/spec work stays in this Project space (canonical), coding happens in Claude Code against the repo on Michael's machine. Rather than drafting a full CLAUDE.md blind, drafted only the **project-conventions block** (spec canonicity, Legal Rule Registry discipline incl. the unverified-2025-legislation rule, data hygiene for privileged data, build sequence with Phase 1a as current target and 1b gated, working style). Structural half comes from Claude Code's `/init` reading the real tree; conventions block wins on conflicts of discipline, generated half wins on paths/commands.
