@@ -8,10 +8,11 @@ export default function PartiesPage() {
   const [parties, setParties] = useState<PartyRecord[]>([]);
   const [type, setType] = useState('');
   const [q, setQ] = useState('');
+  const [loadError, setLoadError] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
-    db.listParties().then(setParties);
+    db.listParties().then(setParties).catch(() => setLoadError(true));
   }, []);
 
   const filtered = parties.filter((p) => {
@@ -29,6 +30,13 @@ export default function PartiesPage() {
         </div>
         <Link className="btn" to="/parties/new">+ New party</Link>
       </div>
+
+      {loadError && (
+        <div className="notice">
+          Couldn't load parties from the database. If the sidebar says "Connected: central database",
+          the connection or sign-in may not be set up yet — see README.
+        </div>
+      )}
 
       <div className="filters">
         <input type="text" placeholder="Search name…" value={q} onChange={(e) => setQ(e.target.value)} />

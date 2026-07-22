@@ -68,6 +68,14 @@ export type CaseRole =
 
 export type Side = 'Ours' | 'Opposing' | 'Neutral';
 
+/** Single source for role/side pickers — 'Client' first as the most common choice. */
+export const CASE_ROLES: CaseRole[] = [
+  'Client', 'Plaintiff', 'Defendant', 'Witness', 'Opposing counsel', 'Co-counsel',
+  'Adjuster on claim', 'Treating provider', 'Expert — ours', 'Expert — opposing',
+  'Judge assigned', 'Court of record', 'Other',
+];
+export const SIDES: Side[] = ['Ours', 'Opposing', 'Neutral'];
+
 export interface CasePartyLink {
   id: string;
   caseId: string;

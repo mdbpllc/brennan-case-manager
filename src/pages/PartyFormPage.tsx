@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import type { CaseRole, Side } from '../domain/types';
+import { CASE_ROLES, SIDES } from '../domain/types';
 import { PARTY_TYPES, PARTY_TYPE_MAP, computeDisplayName } from '../domain/partyRegistry';
 import { FieldInput } from '../components/fieldWidgets';
 import { db } from '../data';
@@ -19,6 +20,7 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
   const [side, setSide] = useState<Side | ''>('');
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(mode === 'new');
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (mode === 'edit' && id) {
@@ -26,9 +28,11 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
         if (p) {
           setTypeKey(p.partyType);
           setFields(p.fields);
+        } else {
+          setNotFound(true);
         }
         setLoaded(true);
-      });
+      }).catch(() => setNotFound(true));
     }
   }, [mode, id]);
 
@@ -52,6 +56,9 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
     }
   };
 
+  if (notFound) {
+    return <div className="notice">Party not found or unavailable — nothing to edit. <Link to="/parties">Back to parties</Link></div>;
+  }
   if (!loaded) return <div className="muted">Loading…</div>;
 
   return (
@@ -85,17 +92,14 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
                 <label className="fld">
                   <span className="lab">Role on this case</span>
                   <select value={role} onChange={(e) => setRole(e.target.value as CaseRole)}>
-                    {(['Client','Plaintiff','Defendant','Witness','Opposing counsel','Co-counsel','Adjuster on claim','Treating provider','Expert — ours','Expert — opposing','Judge assigned','Court of record','Other'] as CaseRole[])
-                      .map((r) => <option key={r} value={r}>{r}</option>)}
+                    {CASE_ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </label>
                 <label className="fld">
                   <span className="lab">Side</span>
                   <select value={side} onChange={(e) => setSide(e.target.value as Side | '')}>
                     <option value="">—</option>
-                    <option>Ours</option>
-                    <option>Opposing</option>
-                    <option>Neutral</option>
+                    {SIDES.map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </label>
               </>

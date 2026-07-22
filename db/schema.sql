@@ -11,9 +11,13 @@ create table if not exists file_counters (
   counter integer not null default 0
 );
 
+-- SECURITY DEFINER so case inserts can bump the counter even though
+-- file_counters itself has RLS on and no policies (API access denied).
 create or replace function next_file_number()
 returns text
 language plpgsql
+security definer
+set search_path = public
 as $$
 declare
   v_yy text := to_char(now(), 'YY');
@@ -108,6 +112,9 @@ create trigger parties_touch before update on parties
 alter table cases enable row level security;
 alter table parties enable row level security;
 alter table case_parties enable row level security;
+-- file_counters: RLS on with NO policies — never touched via the API,
+-- only through next_file_number() (security definer).
+alter table file_counters enable row level security;
 
 create policy "authenticated full access cases" on cases
   for all to authenticated using (true) with check (true);

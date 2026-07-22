@@ -10,17 +10,28 @@ export default function PartyDetailPage() {
   const [party, setParty] = useState<PartyRecord | null>(null);
   const [links, setLinks] = useState<CasePartyLink[]>([]);
   const [cases, setCases] = useState<Record<string, CaseRecord>>({});
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
 
   useEffect(() => {
     if (!id) return;
-    db.getParty(id).then(setParty);
-    db.listLinksForParty(id).then(async (ls) => {
-      setLinks(ls);
-      const cs = await db.getCases(ls.map((l) => l.caseId));
-      setCases(Object.fromEntries(cs.map((c) => [c.id, c])));
-    });
+    db.getParty(id)
+      .then((p) => { setParty(p); setLoadState(p ? 'ready' : 'notfound'); })
+      .catch(() => setLoadState('error'));
+    db.listLinksForParty(id)
+      .then(async (ls) => {
+        setLinks(ls);
+        const cs = await db.getCases(ls.map((l) => l.caseId));
+        setCases(Object.fromEntries(cs.map((c) => [c.id, c])));
+      })
+      .catch(() => setLoadState('error'));
   }, [id]);
 
+  if (loadState === 'notfound') {
+    return <div className="notice">Party not found — it may have been removed. <Link to="/parties">Back to parties</Link></div>;
+  }
+  if (loadState === 'error') {
+    return <div className="notice">Couldn't load this party. Check the database connection and refresh.</div>;
+  }
   if (!party) return <div className="muted">Loading…</div>;
   const def = PARTY_TYPE_MAP[party.partyType];
 

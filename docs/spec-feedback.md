@@ -16,11 +16,17 @@ to `docs/specs/`.
 2. **Supabase auth approach (blocks central-database mode).** The schema's RLS
    policies admit only `authenticated` users; the app connects with the anon
    key and has no sign-in. Until this is decided, Supabase mode connects but
-   every query is refused. Options to weigh in the design space: a single
+   every query is refused (the app now shows a visible error notice instead
+   of loading forever). Options to weigh in the design space: a single
    shared Supabase Auth login for the solo phase (smallest change, works with
    current policies), vs. designing the eventual per-staff-member model now.
-   Related nuance: server-side `next_file_number()` uses the database clock,
-   so the January counter reset follows the DB timezone, not Texas time.
+   Related nuances: (a) server-side `next_file_number()` uses the database
+   clock, so the January counter reset follows the DB timezone, not Texas
+   time; (b) 2026-07-21 code pass hardened `db/schema.sql` — RLS is now
+   enabled on `file_counters` (no policies) and `next_file_number()` runs as
+   SECURITY DEFINER; no live database exists yet, so no migration was needed,
+   but the schema should be re-reviewed in the design space before first
+   deployment.
 
 3. **Mistake-case handling: archive/void vs. delete.** Nothing can be deleted
    in the app (probably right for a legal system), but a fat-fingered case

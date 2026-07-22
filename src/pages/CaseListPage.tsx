@@ -16,10 +16,11 @@ export default function CaseListPage() {
   const [type, setType] = useState<string>('');
   const [q, setQ] = useState('');
   const [showClosed, setShowClosed] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
-    db.listCases().then(setCases);
+    db.listCases().then(setCases).catch(() => setLoadError(true));
   }, []);
 
   const filtered = cases.filter((c) => {
@@ -42,6 +43,13 @@ export default function CaseListPage() {
         </div>
         <Link className="btn" to="/cases/new">+ New case</Link>
       </div>
+
+      {loadError && (
+        <div className="notice">
+          Couldn't load cases from the database. If the sidebar says "Connected: central database",
+          the connection or sign-in may not be set up yet — see README.
+        </div>
+      )}
 
       <div className="filters">
         <input type="text" placeholder="Search file #, caption…" value={q} onChange={(e) => setQ(e.target.value)} />

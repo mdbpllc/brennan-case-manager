@@ -1,29 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, RepresentationType } from '../domain/types';
+import { CASE_ROLES, SIDES } from '../domain/types';
 import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
 
-const ROLES: CaseRole[] = [
-  'Client', 'Plaintiff', 'Defendant', 'Witness', 'Opposing counsel', 'Co-counsel',
-  'Adjuster on claim', 'Treating provider', 'Expert — ours', 'Expert — opposing',
-  'Judge assigned', 'Court of record', 'Other',
-];
-const SIDES: Side[] = ['Ours', 'Opposing', 'Neutral'];
-
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [rec, setRec] = useState<CaseRecord | null>(null);
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
   const nav = useNavigate();
   // Tab lives in the URL so it survives navigation (e.g. returning from
   // "+ New party") and can be bookmarked.
   const tab: 'overview' | 'parties' = useLocation().pathname.endsWith('/parties') ? 'parties' : 'overview';
 
   useEffect(() => {
-    if (id) db.getCase(id).then(setRec);
+    if (!id) return;
+    db.getCase(id)
+      .then((c) => { setRec(c); setLoadState(c ? 'ready' : 'notfound'); })
+      .catch(() => setLoadState('error'));
   }, [id]);
 
+  if (loadState === 'notfound') {
+    return <div className="notice">Case not found — it may have been removed. <Link to="/cases">Back to cases</Link></div>;
+  }
+  if (loadState === 'error') {
+    return <div className="notice">Couldn't load this case. Check the database connection and refresh.</div>;
+  }
   if (!rec) return <div className="muted">Loading…</div>;
 
   return (
@@ -264,7 +268,7 @@ function PartiesTab({ caseId }: { caseId: string }) {
               ))}
             </select>
             <select value={selRole} onChange={(e) => setSelRole(e.target.value as CaseRole)}>
-              {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+              {CASE_ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
             <select value={selSide} onChange={(e) => setSelSide(e.target.value as Side | '')}>
               <option value="">Side —</option>

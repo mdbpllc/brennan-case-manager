@@ -132,9 +132,12 @@ Things that looked off or confusing during the click-through:
   you just added. The tab choice isn't in the URL, so it can't be restored on
   navigation; making tabs URL-driven (e.g. `/cases/:id/parties`) fixes this
   and makes tabs bookmarkable.
-- **Pressing Enter in a form field doesn't submit the new-party form** in
-  practice (it did nothing in testing); clicking the button works. Minor, but
-  keyboard-first users will notice.
+- ~~Pressing Enter in a form field doesn't submit the new-party form~~ —
+  withdrawn on retest: could not be reproduced reliably, and the code does
+  nothing to suppress the browser's native Enter-submits-form behavior (the
+  form has a real submit button, no key handlers). Almost certainly an
+  artifact of the automated test harness, not the app. Worth a 5-second
+  manual check next time Michael has the app open.
 - **List rows aren't real links** — cases and parties lists navigate via a
   row click handler, so middle-click/ctrl-click to open in a new tab doesn't
   work and keyboard navigation can't reach rows. The party name inside a
