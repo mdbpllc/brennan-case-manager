@@ -10,11 +10,13 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
-## 2026-07-21 (CLAUDE.md merged in repo; hosting decided)
+## 2026-07-21 (build environment stood up)
 
-**What happened (Claude Code session):** Committed the nine spec snapshots under `docs/specs/` plus the conventions block. Generated CLAUDE.md from the real repo tree (commands, adapter architecture) and merged the conventions block into it; block's spec list corrected — it was missing `medical-billing-analysis-module-prompt.md` and this session log. Session log documented in CLAUDE.md as the one append-allowed exception to the read-only-specs rule. The transport file `claude-md-conventions-block.md` was deleted after the merge (content lives in CLAUDE.md; original preserved in git history). Michael decided hosting: **private GitHub** — repo created and pushed.
+**What happened (Claude Code session):** Build environment stood up. Repo initialized under git with `.env` protection in `.gitignore` and moved to its permanent home. Spec docs committed under `docs/specs/`. CLAUDE.md created by merging the conventions block into the repo-generated structural half — block wins on rules; spec list corrected (it was missing `medical-billing-analysis-module-prompt.md` and this session log, now documented as the one append-allowed exception to the read-only-specs rule); transport file deleted after the merge (original preserved in git history). Pushed to private GitHub at `mdbpllc/brennan-case-manager`.
 
-**Next:** Michael's v0.1 feedback; billing module Phase 1a. Open decision: local path for the Citizens MRF fixture (record in CLAUDE.md when chosen).
+**Open item:** record the Citizens MRF local path in CLAUDE.md once chosen.
+
+**Next:** Michael's v0.1 feedback, then billing module Phase 1a.
 
 ## 2026-07-21 (build moves to Claude Code; conventions block drafted)
 
