@@ -1,0 +1,166 @@
+// Demo seed data so the slice is clickable out of the box.
+// Entirely fictional. Wiped whenever you clear the browser's site data.
+import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+
+const t = new Date().toISOString();
+const yy = String(new Date().getFullYear()).slice(-2);
+
+export function seedData(): {
+  cases: CaseRecord[];
+  parties: PartyRecord[];
+  links: CasePartyLink[];
+  fileCounters: Record<string, number>;
+} {
+  const parties: PartyRecord[] = [
+    {
+      id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
+      fields: {
+        firstName: 'Maria', lastName: 'Garcia', phone: '(254) 555-0143', email: 'mgarcia@example.com',
+        address: '1207 Oakhill Dr, Killeen, TX 76541', dob: '1988-04-12',
+        preferredContact: 'Text', language: 'Spanish', healthInsurer: 'BlueCross BlueShield of Texas',
+        medicareMedicaid: 'No',
+        priorMVCs: [{ date: '2019-06-01', detail: 'Minor rear-end, no treatment' }],
+        priorProviders: [{ provider: 'Metroplex Health — family doctor' }],
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-client-boyd', partyType: 'client', kind: 'individual', displayName: 'Terrence Boyd',
+      fields: {
+        firstName: 'Terrence', lastName: 'Boyd', phone: '(254) 555-0188',
+        address: '44 Cedar Loop, Belton, TX 76513', dob: '1996-11-02', medicareMedicaid: 'Unknown',
+        priorCriminal: [{ disposition: 'Dismissal', offense: 'Theft (Class B)', date: '2017-03-10', familyViolence: 'No' }],
+        priorRecordVerified: false,
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-ins-statewide', partyType: 'insuranceCompany', kind: 'organization', displayName: 'Statewide Mutual Insurance',
+      fields: {
+        name: 'Statewide Mutual Insurance', phone: '(800) 555-0100', claimsEmail: 'claims@statewidemutual.example',
+        lines: 'Both', registeredAgent: 'CT Corporation System, 1999 Bryan St, Dallas, TX 75201',
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-adj-pruitt', partyType: 'adjuster', kind: 'individual', displayName: 'Dana Pruitt',
+      fields: {
+        firstName: 'Dana', lastName: 'Pruitt', phone: '(800) 555-0177 x214',
+        email: 'dpruitt@statewidemutual.example', employer: 'p-ins-statewide',
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-firm-hdm', partyType: 'lawFirm', kind: 'organization', displayName: 'Hargrove, Dietz & Malone LLP',
+      fields: { name: 'Hargrove, Dietz & Malone LLP', phone: '(512) 555-0122', email: 'service@hdmlaw.example' },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-atty-dietz', partyType: 'attorney', kind: 'individual', displayName: 'Carol Dietz',
+      fields: {
+        firstName: 'Carol', lastName: 'Dietz', barNumber: '24098765', roleType: 'Lead counsel',
+        firm: 'p-firm-hdm', email: 'cdietz@hdmlaw.example', phone: '(512) 555-0122',
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-prov-procare', partyType: 'providerBusiness', kind: 'organization', displayName: 'ProCare Injury Specialists',
+      fields: {
+        name: 'ProCare Injury Specialists', phone: '(254) 555-0160', recordsEmail: 'records@procare.example',
+        taxId: '74-2223334',
+        locations: [
+          { label: 'Killeen', address: '2200 S WS Young Dr, Killeen, TX', phone: '(254) 555-0160' },
+          { label: 'Temple', address: '810 W Adams Ave, Temple, TX', phone: '(254) 555-0161' },
+        ],
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-doc-nguyen', partyType: 'medicalProfessional', kind: 'individual', displayName: 'Alan Nguyen',
+      fields: {
+        firstName: 'Alan', lastName: 'Nguyen', specialty: 'Chiropractor', licenseNpi: '1780012345',
+        facilities: 'p-prov-procare', phone: '(254) 555-0160',
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-court-146', partyType: 'court', kind: 'organization', displayName: '146th District Court',
+      fields: {
+        name: '146th District Court', level: 'District', county: 'Bell',
+        address: 'Bell County Justice Center, 1201 Huey Rd, Belton, TX 76513',
+        filingProfiles: [
+          { clerk: 'District clerk', docket: 'District civil', requirements: 'Citation-issuance request form required' },
+          { clerk: 'District clerk', docket: 'District criminal', requirements: '' },
+        ],
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-judge-marsh', partyType: 'judge', kind: 'individual', displayName: 'Evelyn Marsh',
+      fields: {
+        firstName: 'Evelyn', lastName: 'Marsh', title: 'District judge', court: 'p-court-146',
+        preferences: 'Wants proposed orders in Word format; strict on discovery-dispute certificates of conference.',
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-rep-lozano', partyType: 'courtReporter', kind: 'individual', displayName: 'Angie Lozano',
+      fields: { firstName: 'Angie', lastName: 'Lozano', phone: '(254) 555-0130', preferred: true },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-wit-caldwell', partyType: 'person', kind: 'individual', displayName: 'Ray Caldwell',
+      fields: {
+        firstName: 'Ray', lastName: 'Caldwell', phone: '(254) 555-0199',
+        whoTheyAre: 'Eyewitness — was two cars behind the collision on SH 195.',
+      },
+      createdAt: t, updatedAt: t,
+    },
+  ];
+
+  const cases: CaseRecord[] = [
+    {
+      id: 'c-garcia-mvc', fileNumber: `${yy}-0001`, practiceArea: 'Personal Injury',
+      caseType: 'Motor vehicle collision', caption: 'Garcia v. Allied Freight Lines, Inc.',
+      status: 'Treatment in progress', commercialPolicyInvolved: true,
+      piFlags: ['Trucking/commercial vehicle'],
+      dateOfIncident: '2026-03-14', dateOpened: '2026-03-16', statuteOfLimitations: '2028-03-14',
+      notes: 'Preservation letters out to Allied re: ELD/telematics and dash-cam within 24 hrs of signing.',
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'c-boyd-dwi', fileNumber: `${yy}-0002`, practiceArea: 'Criminal', caseType: 'Misdemeanor',
+      caption: 'State v. Boyd', status: 'Plea negotiations', representationType: 'Private hire', piFlags: [],
+      dateOfIncident: '2026-01-25', dateOpened: '2026-02-02',
+      courtName: 'Bell County Court at Law No. 2', causeNumber: '26-CR-01452',
+      notes: 'DWI 49.04 (first). No collision, no passenger. Interlock condition worth negotiating — 2-yr vs 5-yr nondisclosure clock.',
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'c-servpro-lien', fileNumber: `${yy}-0003`, practiceArea: 'General Civil Litigation',
+      caseType: "Servpro mechanic's lien", caption: 'In re 7 Winding Creek Ct (water mitigation)',
+      status: 'Demand sent', piFlags: [], dateOpened: '2026-05-04',
+      notes: 'Last service date 2026-04-20 — filing deadline calculated off that date. Packet complete.',
+      createdAt: t, updatedAt: t,
+    },
+  ];
+
+  const links: CasePartyLink[] = [
+    { id: 'l1', caseId: 'c-garcia-mvc', partyId: 'p-client-garcia', role: 'Client', side: 'Ours', createdAt: t },
+    { id: 'l2', caseId: 'c-garcia-mvc', partyId: 'p-ins-statewide', role: 'Other', side: 'Opposing', note: 'Liability carrier for Allied', createdAt: t },
+    { id: 'l3', caseId: 'c-garcia-mvc', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
+    { id: 'l4', caseId: 'c-garcia-mvc', partyId: 'p-atty-dietz', role: 'Opposing counsel', side: 'Opposing', createdAt: t },
+    { id: 'l5', caseId: 'c-garcia-mvc', partyId: 'p-prov-procare', role: 'Treating provider', side: 'Neutral', createdAt: t },
+    { id: 'l6', caseId: 'c-garcia-mvc', partyId: 'p-doc-nguyen', role: 'Treating provider', side: 'Neutral', createdAt: t },
+    { id: 'l7', caseId: 'c-garcia-mvc', partyId: 'p-wit-caldwell', role: 'Witness', side: 'Neutral', createdAt: t },
+    { id: 'l8', caseId: 'c-garcia-mvc', partyId: 'p-court-146', role: 'Court of record', createdAt: t },
+    { id: 'l9', caseId: 'c-garcia-mvc', partyId: 'p-judge-marsh', role: 'Judge assigned', createdAt: t },
+    { id: 'l10', caseId: 'c-garcia-mvc', partyId: 'p-rep-lozano', role: 'Other', note: 'Preferred reporter for depositions', createdAt: t },
+    { id: 'l11', caseId: 'c-boyd-dwi', partyId: 'p-client-boyd', role: 'Client', side: 'Ours', createdAt: t },
+    // Cross-case payoff demo: same adjuster on a second file
+    { id: 'l12', caseId: 'c-servpro-lien', partyId: 'p-ins-statewide', role: 'Other', side: 'Opposing', note: 'Homeowner’s carrier', createdAt: t },
+    { id: 'l13', caseId: 'c-servpro-lien', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
+  ];
+
+  return { cases, parties, links, fileCounters: { [yy]: 3 } };
+}
