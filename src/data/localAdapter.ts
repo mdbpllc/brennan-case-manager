@@ -1,12 +1,16 @@
 import type { DataAdapter } from './adapter';
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type {
+  MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
+  ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
+} from '../domain/billing';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 1;
+const STORE_VERSION = 2; // v2: billing module (bills, analysis, registry, fee schedules)
 
 interface Store {
   version: number;
@@ -14,6 +18,17 @@ interface Store {
   parties: PartyRecord[];
   links: CasePartyLink[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
+  bills: MedicalBill[];
+  lineItems: BillLineItem[];
+  codeMappings: CodeMapping[];
+  eobs: EOBRecord[];
+  runs: AnalysisRun[];
+  resultLines: AnalysisResultLine[];
+  reviewLog: ReviewLogEntry[];
+  legalRules: LegalRule[];
+  feeSchedules: FeeSchedule[];
+  feeRates: FeeScheduleRate[];
+  documents: GeneratedDocument[];
 }
 
 function load(): Store {
@@ -27,7 +42,11 @@ function load(): Store {
       // fall through to seed
     }
   }
-  const seeded: Store = { version: STORE_VERSION, ...seedData() };
+  const seeded: Store = {
+    version: STORE_VERSION,
+    runs: [], resultLines: [], reviewLog: [], documents: [],
+    ...seedData(),
+  };
   localStorage.setItem(KEY, JSON.stringify(seeded));
   return seeded;
 }
@@ -139,5 +158,201 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     store.links = store.links.filter((l) => l.id !== id);
     save(store);
+  }
+
+  // ---- Billing module (Phase 1a) ----
+
+  async listBillsForCase(caseId: string): Promise<MedicalBill[]> {
+    return load().bills.filter((b) => b.caseId === caseId)
+      .sort((a, b) => (a.serviceStart ?? '').localeCompare(b.serviceStart ?? ''));
+  }
+
+  async getBill(id: string): Promise<MedicalBill | null> {
+    return load().bills.find((b) => b.id === id) ?? null;
+  }
+
+  async createBill(data: Omit<MedicalBill, 'id' | 'createdAt' | 'updatedAt'>): Promise<MedicalBill> {
+    const store = load();
+    const rec: MedicalBill = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.bills.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateBill(id: string, patch: Partial<MedicalBill>): Promise<MedicalBill> {
+    const store = load();
+    const idx = store.bills.findIndex((b) => b.id === id);
+    if (idx === -1) throw new Error('Bill not found');
+    store.bills[idx] = { ...store.bills[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.bills[idx];
+  }
+
+  async deleteBill(id: string): Promise<void> {
+    const store = load();
+    const runIds = new Set(store.runs.filter((r) => r.billId === id).map((r) => r.id));
+    store.bills = store.bills.filter((b) => b.id !== id);
+    store.lineItems = store.lineItems.filter((l) => l.billId !== id);
+    store.eobs = store.eobs.filter((e) => e.billId !== id);
+    store.runs = store.runs.filter((r) => r.billId !== id);
+    store.resultLines = store.resultLines.filter((rl) => !runIds.has(rl.runId));
+    save(store);
+  }
+
+  async listLineItems(billId: string): Promise<BillLineItem[]> {
+    return load().lineItems.filter((l) => l.billId === billId)
+      .sort((a, b) => (a.serviceDate ?? '').localeCompare(b.serviceDate ?? ''));
+  }
+
+  async createLineItem(data: Omit<BillLineItem, 'id'>): Promise<BillLineItem> {
+    const store = load();
+    const rec: BillLineItem = { ...data, id: uid() };
+    store.lineItems.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateLineItem(id: string, patch: Partial<BillLineItem>): Promise<BillLineItem> {
+    const store = load();
+    const idx = store.lineItems.findIndex((l) => l.id === id);
+    if (idx === -1) throw new Error('Line item not found');
+    store.lineItems[idx] = { ...store.lineItems[idx], ...patch, id };
+    save(store);
+    return store.lineItems[idx];
+  }
+
+  async deleteLineItem(id: string): Promise<void> {
+    const store = load();
+    store.lineItems = store.lineItems.filter((l) => l.id !== id);
+    save(store);
+  }
+
+  async listCodeMappings(): Promise<CodeMapping[]> {
+    return load().codeMappings;
+  }
+
+  async createCodeMapping(data: Omit<CodeMapping, 'id'>): Promise<CodeMapping> {
+    const store = load();
+    const rec: CodeMapping = { ...data, id: uid() };
+    store.codeMappings.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async getEobForBill(billId: string): Promise<EOBRecord | null> {
+    return load().eobs.find((e) => e.billId === billId) ?? null;
+  }
+
+  async saveEob(billId: string, data: Omit<EOBRecord, 'id' | 'billId' | 'updatedAt'>): Promise<EOBRecord> {
+    const store = load();
+    const idx = store.eobs.findIndex((e) => e.billId === billId);
+    if (idx === -1) {
+      const rec: EOBRecord = { ...data, id: uid(), billId, updatedAt: now() };
+      store.eobs.push(rec);
+      save(store);
+      return rec;
+    }
+    store.eobs[idx] = { ...store.eobs[idx], ...data, billId, updatedAt: now() };
+    save(store);
+    return store.eobs[idx];
+  }
+
+  async listRunsForCase(caseId: string): Promise<AnalysisRun[]> {
+    return load().runs.filter((r) => r.caseId === caseId)
+      .sort((a, b) => b.runDate.localeCompare(a.runDate));
+  }
+
+  async listRunsForBill(billId: string): Promise<AnalysisRun[]> {
+    return load().runs.filter((r) => r.billId === billId)
+      .sort((a, b) => b.runDate.localeCompare(a.runDate));
+  }
+
+  async createRun(run: AnalysisRun, resultLines: AnalysisResultLine[]): Promise<AnalysisRun> {
+    const store = load();
+    store.runs.push(run);
+    store.resultLines.push(...resultLines);
+    save(store);
+    return run;
+  }
+
+  async confirmRun(id: string, reviewer: string): Promise<AnalysisRun> {
+    const store = load();
+    const idx = store.runs.findIndex((r) => r.id === id);
+    if (idx === -1) throw new Error('Analysis run not found');
+    store.runs[idx] = { ...store.runs[idx], status: 'confirmed', reviewer, reviewedDate: now() };
+    save(store);
+    return store.runs[idx];
+  }
+
+  async listResultLines(runId: string): Promise<AnalysisResultLine[]> {
+    return load().resultLines.filter((rl) => rl.runId === runId);
+  }
+
+  async appendReviewLog(entry: Omit<ReviewLogEntry, 'id' | 'timestamp'>): Promise<ReviewLogEntry> {
+    const store = load();
+    const rec: ReviewLogEntry = { ...entry, id: uid(), timestamp: now() };
+    store.reviewLog.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listReviewLog(entityType: string, entityId: string): Promise<ReviewLogEntry[]> {
+    return load().reviewLog.filter((e) => e.entityType === entityType && e.entityId === entityId)
+      .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  }
+
+  async listLegalRules(): Promise<LegalRule[]> {
+    return load().legalRules.sort((a, b) => a.ruleKey.localeCompare(b.ruleKey));
+  }
+
+  async updateLegalRule(id: string, patch: Partial<Omit<LegalRule, 'id' | 'version' | 'createdAt' | 'updatedAt'>>): Promise<LegalRule> {
+    const store = load();
+    const idx = store.legalRules.findIndex((r) => r.id === id);
+    if (idx === -1) throw new Error('Legal rule not found');
+    const prev = store.legalRules[idx];
+    store.legalRules[idx] = { ...prev, ...patch, id, version: prev.version + 1, updatedAt: now() };
+    save(store);
+    return store.legalRules[idx];
+  }
+
+  async listFeeSchedules(): Promise<FeeSchedule[]> {
+    return load().feeSchedules.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async listRates(scheduleIds: string[]): Promise<FeeScheduleRate[]> {
+    const wanted = new Set(scheduleIds);
+    return load().feeRates.filter((r) => wanted.has(r.scheduleId));
+  }
+
+  async createFeeSchedule(
+    data: Omit<FeeSchedule, 'id' | 'createdAt'>,
+    rates: Omit<FeeScheduleRate, 'id' | 'scheduleId'>[],
+  ): Promise<FeeSchedule> {
+    const store = load();
+    const schedule: FeeSchedule = { ...data, id: uid(), createdAt: now() };
+    store.feeSchedules.push(schedule);
+    for (const r of rates) store.feeRates.push({ ...r, id: uid(), scheduleId: schedule.id });
+    save(store);
+    return schedule;
+  }
+
+  async deleteFeeSchedule(id: string): Promise<void> {
+    const store = load();
+    store.feeSchedules = store.feeSchedules.filter((s) => s.id !== id);
+    store.feeRates = store.feeRates.filter((r) => r.scheduleId !== id);
+    save(store);
+  }
+
+  async listDocumentsForCase(caseId: string): Promise<GeneratedDocument[]> {
+    return load().documents.filter((d) => d.caseId === caseId)
+      .sort((a, b) => b.generatedAt.localeCompare(a.generatedAt));
+  }
+
+  async createDocument(data: Omit<GeneratedDocument, 'id' | 'generatedAt'>): Promise<GeneratedDocument> {
+    const store = load();
+    const rec: GeneratedDocument = { ...data, id: uid(), generatedAt: now() };
+    store.documents.push(rec);
+    save(store);
+    return rec;
   }
 }

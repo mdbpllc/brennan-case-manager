@@ -1,6 +1,7 @@
 // Demo seed data so the slice is clickable out of the box.
 // Entirely fictional. Wiped whenever you clear the browser's site data.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import { billingSeedData } from './billingSeed';
 
 const t = new Date().toISOString();
 const yy = String(new Date().getFullYear()).slice(-2);
@@ -10,7 +11,7 @@ export function seedData(): {
   parties: PartyRecord[];
   links: CasePartyLink[];
   fileCounters: Record<string, number>;
-} {
+} & ReturnType<typeof billingSeedData> {
   const parties: PartyRecord[] = [
     {
       id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
@@ -72,6 +73,15 @@ export function seedData(): {
           { label: 'Killeen', address: '2200 S WS Young Dr, Killeen, TX', phone: '(254) 555-0160' },
           { label: 'Temple', address: '810 W Adams Ave, Temple, TX', phone: '(254) 555-0161' },
         ],
+      },
+      createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'p-hosp-ctrmc', partyType: 'providerBusiness', kind: 'organization', displayName: 'Central Texas Regional Medical Center',
+      fields: {
+        name: 'Central Texas Regional Medical Center', phone: '(254) 555-0500',
+        recordsEmail: 'him@ctrmc.example', taxId: '74-5556667',
+        locations: [{ label: 'Main campus', address: '3100 S 31st St, Temple, TX', phone: '(254) 555-0500' }],
       },
       createdAt: t, updatedAt: t,
     },
@@ -151,6 +161,7 @@ export function seedData(): {
     { id: 'l3', caseId: 'c-garcia-mvc', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
     { id: 'l4', caseId: 'c-garcia-mvc', partyId: 'p-atty-dietz', role: 'Opposing counsel', side: 'Opposing', createdAt: t },
     { id: 'l5', caseId: 'c-garcia-mvc', partyId: 'p-prov-procare', role: 'Treating provider', side: 'Neutral', createdAt: t },
+    { id: 'l5b', caseId: 'c-garcia-mvc', partyId: 'p-hosp-ctrmc', role: 'Treating provider', side: 'Neutral', note: 'ER — day of collision', createdAt: t },
     { id: 'l6', caseId: 'c-garcia-mvc', partyId: 'p-doc-nguyen', role: 'Treating provider', side: 'Neutral', createdAt: t },
     { id: 'l7', caseId: 'c-garcia-mvc', partyId: 'p-wit-caldwell', role: 'Witness', side: 'Neutral', createdAt: t },
     { id: 'l8', caseId: 'c-garcia-mvc', partyId: 'p-court-146', role: 'Court of record', createdAt: t },
@@ -162,5 +173,5 @@ export function seedData(): {
     { id: 'l13', caseId: 'c-servpro-lien', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
   ];
 
-  return { cases, parties, links, fileCounters: { [yy]: 3 } };
+  return { cases, parties, links, fileCounters: { [yy]: 3 }, ...billingSeedData() };
 }

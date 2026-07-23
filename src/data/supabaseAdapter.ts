@@ -1,6 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { DataAdapter } from './adapter';
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type {
+  MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
+  ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
+} from '../domain/billing';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -78,6 +82,33 @@ function linkFromRow(r: LinkRow): CasePartyLink {
     role: r.role as CasePartyLink['role'], side: (r.side ?? undefined) as CasePartyLink['side'],
     note: r.note ?? undefined, createdAt: r.created_at,
   };
+}
+
+// ---- Generic row mapping for the billing tables ----
+// Billing entities use camelCase keys that map 1:1 to snake_case columns; JSON
+// payloads (totals, assumptions, registry stamps, cites) pass through untouched.
+
+function snakeKey(k: string): string {
+  return k.replace(/[A-Z]/g, (m) => '_' + m.toLowerCase());
+}
+
+function camelKey(k: string): string {
+  return k.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+}
+
+function toRow(obj: object): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue;
+    out[snakeKey(k)] = v;
+  }
+  return out;
+}
+
+function fromRow<T>(row: Record<string, unknown>): T {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(row)) out[camelKey(k)] = v === null ? undefined : v;
+  return out as T;
 }
 
 export class SupabaseAdapter implements DataAdapter {
@@ -178,5 +209,173 @@ export class SupabaseAdapter implements DataAdapter {
   async deleteLink(id: string): Promise<void> {
     const res = await this.sb.from('case_parties').delete().eq('id', id);
     if (res.error) throw new Error(res.error.message);
+  }
+
+  // ---- Billing module (Phase 1a) ----
+  // Generic helpers: billing columns are 1:1 snake_case of the camelCase keys.
+
+  private async rows<T>(table: string, build: (q: ReturnType<SupabaseClient['from']>) => PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<T[]> {
+    const res = await build(this.sb.from(table));
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<T>(r));
+  }
+
+  private async insertRow<T>(table: string, data: object): Promise<T> {
+    const res = await this.sb.from(table).insert(toRow(data)).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<T>(res.data as Record<string, unknown>);
+  }
+
+  private async updateRow<T>(table: string, id: string, patch: object): Promise<T> {
+    const res = await this.sb.from(table).update(toRow(patch)).eq('id', id).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<T>(res.data as Record<string, unknown>);
+  }
+
+  private async deleteRows(table: string, column: string, value: string): Promise<void> {
+    const res = await this.sb.from(table).delete().eq(column, value);
+    if (res.error) throw new Error(res.error.message);
+  }
+
+  async listBillsForCase(caseId: string): Promise<MedicalBill[]> {
+    return this.rows<MedicalBill>('medical_bills', (q) => q.select('*').eq('case_id', caseId).order('service_start'));
+  }
+
+  async getBill(id: string): Promise<MedicalBill | null> {
+    const res = await this.sb.from('medical_bills').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<MedicalBill>(res.data as Record<string, unknown>) : null;
+  }
+
+  async createBill(data: Omit<MedicalBill, 'id' | 'createdAt' | 'updatedAt'>): Promise<MedicalBill> {
+    return this.insertRow<MedicalBill>('medical_bills', data);
+  }
+
+  async updateBill(id: string, patch: Partial<MedicalBill>): Promise<MedicalBill> {
+    return this.updateRow<MedicalBill>('medical_bills', id, patch);
+  }
+
+  async deleteBill(id: string): Promise<void> {
+    // Line items, EOBs, runs, and result lines cascade via FK in the schema.
+    await this.deleteRows('medical_bills', 'id', id);
+  }
+
+  async listLineItems(billId: string): Promise<BillLineItem[]> {
+    return this.rows<BillLineItem>('bill_line_items', (q) => q.select('*').eq('bill_id', billId).order('service_date'));
+  }
+
+  async createLineItem(data: Omit<BillLineItem, 'id'>): Promise<BillLineItem> {
+    return this.insertRow<BillLineItem>('bill_line_items', data);
+  }
+
+  async updateLineItem(id: string, patch: Partial<BillLineItem>): Promise<BillLineItem> {
+    return this.updateRow<BillLineItem>('bill_line_items', id, patch);
+  }
+
+  async deleteLineItem(id: string): Promise<void> {
+    await this.deleteRows('bill_line_items', 'id', id);
+  }
+
+  async listCodeMappings(): Promise<CodeMapping[]> {
+    return this.rows<CodeMapping>('code_mappings', (q) => q.select('*'));
+  }
+
+  async createCodeMapping(data: Omit<CodeMapping, 'id'>): Promise<CodeMapping> {
+    return this.insertRow<CodeMapping>('code_mappings', data);
+  }
+
+  async getEobForBill(billId: string): Promise<EOBRecord | null> {
+    const res = await this.sb.from('eob_records').select('*').eq('bill_id', billId).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<EOBRecord>(res.data as Record<string, unknown>) : null;
+  }
+
+  async saveEob(billId: string, data: Omit<EOBRecord, 'id' | 'billId' | 'updatedAt'>): Promise<EOBRecord> {
+    const existing = await this.getEobForBill(billId);
+    if (existing) return this.updateRow<EOBRecord>('eob_records', existing.id, data);
+    return this.insertRow<EOBRecord>('eob_records', { ...data, billId });
+  }
+
+  async listRunsForCase(caseId: string): Promise<AnalysisRun[]> {
+    return this.rows<AnalysisRun>('analysis_runs', (q) => q.select('*').eq('case_id', caseId).order('run_date', { ascending: false }));
+  }
+
+  async listRunsForBill(billId: string): Promise<AnalysisRun[]> {
+    return this.rows<AnalysisRun>('analysis_runs', (q) => q.select('*').eq('bill_id', billId).order('run_date', { ascending: false }));
+  }
+
+  async createRun(run: AnalysisRun, resultLines: AnalysisResultLine[]): Promise<AnalysisRun> {
+    const created = await this.insertRow<AnalysisRun>('analysis_runs', run);
+    if (resultLines.length > 0) {
+      const res = await this.sb.from('analysis_result_lines').insert(resultLines.map((rl) => toRow(rl)));
+      if (res.error) throw new Error(res.error.message);
+    }
+    return created;
+  }
+
+  async confirmRun(id: string, reviewer: string): Promise<AnalysisRun> {
+    return this.updateRow<AnalysisRun>('analysis_runs', id, {
+      status: 'confirmed', reviewer, reviewedDate: new Date().toISOString(),
+    });
+  }
+
+  async listResultLines(runId: string): Promise<AnalysisResultLine[]> {
+    return this.rows<AnalysisResultLine>('analysis_result_lines', (q) => q.select('*').eq('run_id', runId));
+  }
+
+  async appendReviewLog(entry: Omit<ReviewLogEntry, 'id' | 'timestamp'>): Promise<ReviewLogEntry> {
+    return this.insertRow<ReviewLogEntry>('review_log', entry);
+  }
+
+  async listReviewLog(entityType: string, entityId: string): Promise<ReviewLogEntry[]> {
+    return this.rows<ReviewLogEntry>('review_log', (q) =>
+      q.select('*').eq('entity_type', entityType).eq('entity_id', entityId).order('timestamp', { ascending: false }));
+  }
+
+  async listLegalRules(): Promise<LegalRule[]> {
+    return this.rows<LegalRule>('legal_rules', (q) => q.select('*').order('rule_key'));
+  }
+
+  async updateLegalRule(id: string, patch: Partial<Omit<LegalRule, 'id' | 'version' | 'createdAt' | 'updatedAt'>>): Promise<LegalRule> {
+    // Version bump is read-then-write; single-user phase, so no race in practice.
+    const res = await this.sb.from('legal_rules').select('version').eq('id', id).single();
+    if (res.error) throw new Error(res.error.message);
+    const version = (res.data as { version: number }).version + 1;
+    return this.updateRow<LegalRule>('legal_rules', id, { ...patch, version });
+  }
+
+  async listFeeSchedules(): Promise<FeeSchedule[]> {
+    return this.rows<FeeSchedule>('fee_schedules', (q) => q.select('*').order('name'));
+  }
+
+  async listRates(scheduleIds: string[]): Promise<FeeScheduleRate[]> {
+    if (scheduleIds.length === 0) return [];
+    return this.rows<FeeScheduleRate>('fee_schedule_rates', (q) => q.select('*').in('schedule_id', scheduleIds));
+  }
+
+  async createFeeSchedule(
+    data: Omit<FeeSchedule, 'id' | 'createdAt'>,
+    rates: Omit<FeeScheduleRate, 'id' | 'scheduleId'>[],
+  ): Promise<FeeSchedule> {
+    const schedule = await this.insertRow<FeeSchedule>('fee_schedules', data);
+    if (rates.length > 0) {
+      const res = await this.sb.from('fee_schedule_rates')
+        .insert(rates.map((r) => toRow({ ...r, scheduleId: schedule.id })));
+      if (res.error) throw new Error(res.error.message);
+    }
+    return schedule;
+  }
+
+  async deleteFeeSchedule(id: string): Promise<void> {
+    await this.deleteRows('fee_schedules', 'id', id); // rates cascade via FK
+  }
+
+  async listDocumentsForCase(caseId: string): Promise<GeneratedDocument[]> {
+    return this.rows<GeneratedDocument>('generated_documents', (q) =>
+      q.select('*').eq('case_id', caseId).order('generated_at', { ascending: false }));
+  }
+
+  async createDocument(data: Omit<GeneratedDocument, 'id' | 'generatedAt'>): Promise<GeneratedDocument> {
+    return this.insertRow<GeneratedDocument>('generated_documents', data);
   }
 }
