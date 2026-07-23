@@ -64,6 +64,11 @@ coding sessions. The spec documents committed under `docs/specs/` are
   criminal matter intake, hearing auto-detect, docket cross-referencing
   (queued after billing 1a and the Outlook calendar push; the sample OAA
   documents it was derived from are real case data and stay OUT of the repo)
+- `outlook-calendar-sync.md` — Outlook calendar integration; Phase 1
+  one-way push (software → Outlook via Graph) is committed and queued
+  after billing 1a; Phase 2 two-way sync is backlogged
+- `outlook-email-intake.md` — EXPLORATORY only, no build commitment;
+  HIPAA compliance is a first-class constraint when it activates
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
