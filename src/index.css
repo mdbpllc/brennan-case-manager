@@ -166,3 +166,47 @@ textarea { min-height: 64px; resize: vertical; }
   background: #f3edda; border: 1px solid #e2d3a8; color: #6b551f;
   border-radius: 6px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px;
 }
+
+/* ===== Billing module ===== */
+table.list td.num, table.list th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.badge.claim-professional { background: #e7f0e9; color: var(--ok); }
+.badge.claim-facility { background: #f6e2e2; color: #a03030; }
+.badge.claim-unknown { background: #eef0f2; color: var(--muted); }
+
+.badge.conf-confirmed { background: #e7f0e9; color: var(--ok); }
+.badge.conf-high { background: #e7f0e9; color: var(--ok); }
+.badge.conf-medium { background: #f3edda; color: #7a5f1e; }
+.badge.conf-low { background: #f6e9e2; color: var(--warn); }
+.badge.conf-none { background: #eef0f2; color: var(--muted); }
+
+.badge.run-provisional { background: #f3edda; color: #7a5f1e; }
+.badge.run-confirmed { background: #e7f0e9; color: var(--ok); }
+
+.badge.tier-confirmed { background: #e7f0e9; color: var(--ok); }
+.badge.tier-scenario { background: #f3edda; color: #7a5f1e; }
+.badge.tier-unanalyzed { background: #eef0f2; color: var(--muted); }
+
+.badge.audit-flag { background: #f6e2e2; color: #a03030; }
+
+.badge.rule-unverified { background: #f6e2e2; color: #a03030; }
+.badge.rule-verified { background: #e7f0e9; color: var(--ok); }
+.badge.rule-watch { background: #f3edda; color: #7a5f1e; }
+
+.badge.src-public { background: #e7f0e9; color: var(--ok); }
+.badge.src-demo { background: #f3edda; color: #7a5f1e; }
+.badge.src-discovery, .badge.src-licensed, .badge.src-hospital_mrf { background: #ece9f4; color: #5b4a8a; }
+
+.report-frame {
+  border: 1px solid var(--line); border-radius: 6px; padding: 16px 20px;
+  background: #fcfcfd; margin-top: 10px; max-height: 520px; overflow-y: auto;
+}
+.report-view { font-size: 13.5px; }
+.report-view h2 { font-size: 17px; color: var(--navy); margin: 4px 0 8px; }
+.report-view h3 { font-size: 14px; color: var(--navy); margin: 14px 0 6px; }
+.report-view p { margin: 6px 0; }
+.report-callout {
+  margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--warn);
+  background: #f6e9e2; border-radius: 0 6px 6px 0;
+}
+.report-callout p { margin: 2px 0; }

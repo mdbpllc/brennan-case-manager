@@ -5,6 +5,7 @@ import { CASE_ROLES, SIDES } from '../domain/types';
 import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
+import MedicalTab from './MedicalTab';
 
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -13,7 +14,9 @@ export default function CaseDetailPage() {
   const nav = useNavigate();
   // Tab lives in the URL so it survives navigation (e.g. returning from
   // "+ New party") and can be bookmarked.
-  const tab: 'overview' | 'parties' = useLocation().pathname.endsWith('/parties') ? 'parties' : 'overview';
+  const path = useLocation().pathname;
+  const tab: 'overview' | 'parties' | 'medical' =
+    path.endsWith('/parties') ? 'parties' : path.endsWith('/medical') ? 'medical' : 'overview';
 
   useEffect(() => {
     if (!id) return;
@@ -49,9 +52,12 @@ export default function CaseDetailPage() {
       <div className="tabs">
         <button className={tab === 'overview' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}`)}>Overview</button>
         <button className={tab === 'parties' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/parties`)}>Parties</button>
+        <button className={tab === 'medical' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/medical`)}>Medical</button>
       </div>
 
-      {tab === 'overview' ? <OverviewTab rec={rec} onChange={setRec} /> : <PartiesTab caseId={rec.id} />}
+      {tab === 'overview' && <OverviewTab rec={rec} onChange={setRec} />}
+      {tab === 'parties' && <PartiesTab caseId={rec.id} />}
+      {tab === 'medical' && <MedicalTab caseRec={rec} />}
     </div>
   );
 }
