@@ -154,6 +154,23 @@ export interface AnalysisResultLine {
   notes?: string;
 }
 
+/** Aggregated billing-pattern analytics per provider-business party (synthesis
+ *  Part 4), attached to the existing party record. A computed projection over
+ *  CONFIRMED runs only — recomputed on run confirmation, never hand-edited.
+ *  Stores ratios and flags, never client identities (guardrail 7). */
+export interface ProviderBillingProfile {
+  id: string;
+  providerPartyId: string;
+  /** Aggregate confirmed billed ÷ confirmed benchmark across the latest confirmed run per bill, cross-case. */
+  avgBilledToMedicareRatio?: number;
+  /** Auto-feeds from settlement billed-vs-final outcomes once the settlement module lands. */
+  historicalReductionPct?: number;
+  /** Distinct coding-audit checks that have flagged on this provider's bills. */
+  commonFlags: string[];
+  lastAnalysisDate?: string;
+  updatedAt: string;
+}
+
 export interface ReviewLogEntry {
   id: string;
   entityType: string;

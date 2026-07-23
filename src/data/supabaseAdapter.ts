@@ -4,6 +4,7 @@ import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
+  ProviderBillingProfile,
 } from '../domain/billing';
 
 /**
@@ -282,6 +283,33 @@ export class SupabaseAdapter implements DataAdapter {
 
   async createCodeMapping(data: Omit<CodeMapping, 'id'>): Promise<CodeMapping> {
     return this.insertRow<CodeMapping>('code_mappings', data);
+  }
+
+  async listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]> {
+    return this.rows<MedicalBill>('medical_bills', (q) => q.select('*').eq('provider_party_id', providerPartyId));
+  }
+
+  async getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null> {
+    const res = await this.sb.from('provider_billing_profiles').select('*').eq('provider_party_id', providerPartyId).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<ProviderBillingProfile>(res.data as Record<string, unknown>) : null;
+  }
+
+  async upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile> {
+    // Full replace: explicit nulls (not omitted keys) so a recompute clears
+    // fields that no longer have a value — the profile is a computed projection.
+    const row = {
+      provider_party_id: data.providerPartyId,
+      avg_billed_to_medicare_ratio: data.avgBilledToMedicareRatio ?? null,
+      historical_reduction_pct: data.historicalReductionPct ?? null,
+      common_flags: data.commonFlags,
+      last_analysis_date: data.lastAnalysisDate ?? null,
+      updated_at: new Date().toISOString(),
+    };
+    const res = await this.sb.from('provider_billing_profiles')
+      .upsert(row, { onConflict: 'provider_party_id' }).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<ProviderBillingProfile>(res.data as Record<string, unknown>);
   }
 
   async getEobForBill(billId: string): Promise<EOBRecord | null> {

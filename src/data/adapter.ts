@@ -2,6 +2,7 @@ import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
+  ProviderBillingProfile,
 } from '../domain/billing';
 
 /**
@@ -47,6 +48,12 @@ export interface DataAdapter {
   /** Chargemaster memory — protective-order mappings are excluded from cross-case use by callers. */
   listCodeMappings(): Promise<CodeMapping[]>;
   createCodeMapping(data: Omit<CodeMapping, 'id'>): Promise<CodeMapping>;
+
+  /** All bills attached to a provider-business party, across cases — feeds the billing profile. */
+  listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]>;
+  getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null>;
+  /** Full replace keyed on providerPartyId — the profile is a computed projection, never hand-edited. */
+  upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile>;
 
   getEobForBill(billId: string): Promise<EOBRecord | null>;
   saveEob(billId: string, data: Omit<EOBRecord, 'id' | 'billId' | 'updatedAt'>): Promise<EOBRecord>;

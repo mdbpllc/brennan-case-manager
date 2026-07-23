@@ -3,6 +3,7 @@ import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
+  ProviderBillingProfile,
 } from '../domain/billing';
 import { seedData } from './seed';
 
@@ -10,7 +11,7 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 2; // v2: billing module (bills, analysis, registry, fee schedules)
+const STORE_VERSION = 3; // v3: provider billing profiles
 
 interface Store {
   version: number;
@@ -29,6 +30,7 @@ interface Store {
   feeSchedules: FeeSchedule[];
   feeRates: FeeScheduleRate[];
   documents: GeneratedDocument[];
+  providerProfiles: ProviderBillingProfile[];
 }
 
 function load(): Store {
@@ -44,7 +46,7 @@ function load(): Store {
   }
   const seeded: Store = {
     version: STORE_VERSION,
-    runs: [], resultLines: [], reviewLog: [], documents: [],
+    runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
     ...seedData(),
   };
   localStorage.setItem(KEY, JSON.stringify(seeded));
@@ -235,6 +237,28 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     const rec: CodeMapping = { ...data, id: uid() };
     store.codeMappings.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]> {
+    return load().bills.filter((b) => b.providerPartyId === providerPartyId);
+  }
+
+  async getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null> {
+    return load().providerProfiles.find((p) => p.providerPartyId === providerPartyId) ?? null;
+  }
+
+  async upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile> {
+    const store = load();
+    const idx = store.providerProfiles.findIndex((p) => p.providerPartyId === data.providerPartyId);
+    const rec: ProviderBillingProfile = {
+      ...data,
+      id: idx === -1 ? uid() : store.providerProfiles[idx].id,
+      updatedAt: now(),
+    };
+    if (idx === -1) store.providerProfiles.push(rec);
+    else store.providerProfiles[idx] = rec;
     save(store);
     return rec;
   }

@@ -213,6 +213,22 @@ create table if not exists eob_records (
   updated_at timestamptz not null default now()
 );
 
+-- ProviderBillingProfile: aggregated billing-pattern analytics attached to the
+-- provider-business party record (synthesis Part 4). A computed projection over
+-- CONFIRMED runs — recomputed on run confirmation, never hand-edited. Stores
+-- ratios and flags only, never client identities (guardrail 7).
+-- historical_reduction_pct auto-feeds from settlement billed-vs-final outcomes
+-- once the settlement module lands.
+create table if not exists provider_billing_profiles (
+  id uuid primary key default gen_random_uuid(),
+  provider_party_id uuid not null unique references parties (id) on delete cascade,
+  avg_billed_to_medicare_ratio numeric(8,2),
+  historical_reduction_pct numeric(5,2),
+  common_flags jsonb not null default '[]',
+  last_analysis_date timestamptz,
+  updated_at timestamptz not null default now()
+);
+
 -- Analysis runs: schedules used, assumptions, totals, provisional/confirmed,
 -- disclaimer version, registry-version stamps. Only CONFIRMED runs may feed
 -- settlement/lien math (decision-queue item 7).
@@ -345,7 +361,10 @@ alter table legal_rules enable row level security;
 alter table fee_schedules enable row level security;
 alter table fee_schedule_rates enable row level security;
 alter table generated_documents enable row level security;
+alter table provider_billing_profiles enable row level security;
 
+create policy "authenticated full access provider_billing_profiles" on provider_billing_profiles
+  for all to authenticated using (true) with check (true);
 create policy "authenticated full access medical_bills" on medical_bills
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access bill_line_items" on bill_line_items
