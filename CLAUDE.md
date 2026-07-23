@@ -60,6 +60,10 @@ coding sessions. The spec documents committed under `docs/specs/` are
 - `pi-case-playbooks.md`, `criminal-offense-playbooks.md` — playbook engines
 - `transcript-workflows.md`, `plea-hearing-eligibility-reminder.md`,
   `citizens-mrf-dry-run.md` — subsystem specs and reference findings
+- `criminal-appointment-intake-and-docket-enhancements.md` — OAA-based
+  criminal matter intake, hearing auto-detect, docket cross-referencing
+  (queued after billing 1a and the Outlook calendar push; the sample OAA
+  documents it was derived from are real case data and stay OUT of the repo)
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
