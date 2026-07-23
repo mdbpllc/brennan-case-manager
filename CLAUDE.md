@@ -69,6 +69,10 @@ coding sessions. The spec documents committed under `docs/specs/` are
   after billing 1a; Phase 2 two-way sync is backlogged
 - `outlook-email-intake.md` — EXPLORATORY only, no build commitment;
   HIPAA compliance is a first-class constraint when it activates
+- `form-engine.md` — Forms & Document Automation Engine (fully specified
+  2026-07-23; §9 variant library is Michael-approved VERBATIM — never
+  rewrite it; no mental-health variant exists BY DESIGN, do not add one;
+  build position follows billing 1a and the Outlook push)
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
