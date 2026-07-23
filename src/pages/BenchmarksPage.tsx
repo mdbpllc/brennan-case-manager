@@ -145,8 +145,10 @@ export default function BenchmarksPage() {
       </div>
 
       <div className="notice">
-        Analyses pin to the schedule data loaded at run time and cite it per line. When schedules change,
-        re-run the analysis — staleness handling deepens in Phase 2 (effective-date discipline).
+        Analyses pin to the schedule data loaded at run time and cite it per line. When schedules or
+        registry entries change, existing runs are flagged <span className="badge run-stale">stale</span> on
+        the Medical tab and bill workspace — re-run from there. Full date-of-service pinning (the schedule
+        in force on the DOS) arrives with effective-dated schedules in Phase 2.
       </div>
     </div>
   );

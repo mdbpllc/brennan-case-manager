@@ -5,9 +5,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { CaseRecord, PartyRecord } from '../domain/types';
-import type { AnalysisRun, BillType, GeneratedDocument, MedicalBill } from '../domain/billing';
+import type { AnalysisRun, BillType, FeeSchedule, GeneratedDocument, LegalRule, MedicalBill } from '../domain/billing';
 import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount } from '../domain/billing';
 import { computeAnalysis } from '../analysis/benchmark';
+import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
 import MarkdownLite from '../components/MarkdownLite';
 
@@ -21,20 +22,26 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const [runs, setRuns] = useState<AnalysisRun[]>([]);
   const [docs, setDocs] = useState<GeneratedDocument[]>([]);
   const [providers, setProviders] = useState<PartyRecord[]>([]);
+  const [schedules, setSchedules] = useState<FeeSchedule[]>([]);
+  const [rules, setRules] = useState<LegalRule[]>([]);
   const [adding, setAdding] = useState(false);
   const [busy, setBusy] = useState(false);
   const [openDoc, setOpenDoc] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    const [bs, rs, ds, links] = await Promise.all([
+    const [bs, rs, ds, links, scheds, lrs] = await Promise.all([
       db.listBillsForCase(caseRec.id),
       db.listRunsForCase(caseRec.id),
       db.listDocumentsForCase(caseRec.id),
       db.listLinksForCase(caseRec.id),
+      db.listFeeSchedules(),
+      db.listLegalRules(),
     ]);
     setBills(bs);
     setRuns(rs);
     setDocs(ds);
+    setSchedules(scheds);
+    setRules(lrs);
     const parties = await db.getParties(links.map((l) => l.partyId));
     setProviders(parties.filter((p) => p.partyType === 'providerBusiness'));
   }, [caseRec.id]);
@@ -53,6 +60,13 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
     return map;
   }, [runs]);
 
+  /** run id → staleness reasons (empty = current inputs). */
+  const staleness = useMemo(() => {
+    const m = new Map<string, string[]>();
+    for (const r of runs) m.set(r.id, runStalenessReasons(r, schedules, rules));
+    return m;
+  }, [runs, schedules, rules]);
+
   const rollup = useMemo(() => {
     const billed = bills.reduce((s, b) => s + b.billedAmount, 0);
     const outstanding = bills.reduce((s, b) => s + outstandingAmount(b), 0);
@@ -65,8 +79,9 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
       billed, outstanding,
       confirmedRunCount: confirmedRuns.length,
       confirmedRatio: confBench > 0 ? confBilled / confBench : undefined,
+      staleConfirmedCount: confirmedRuns.filter((r) => (staleness.get(r.id) ?? []).length > 0).length,
     };
-  }, [bills, runs]);
+  }, [bills, runs, staleness]);
 
   const analyzeAll = async () => {
     setBusy(true);
@@ -133,6 +148,9 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
                     {run ? (
                       <>
                         <span className={`badge run-${run.status}`}>{run.status}</span>{' '}
+                        {(staleness.get(run.id) ?? []).length > 0 && (
+                          <span className="badge run-stale" title={staleness.get(run.id)!.join(' ')}>stale</span>
+                        )}{' '}
                         {run.totals.confirmedRatio !== undefined && <span className="small">{run.totals.confirmedRatio.toFixed(2)}× benchmark</span>}
                       </>
                     ) : <span className="muted small">none yet</span>}
@@ -159,6 +177,15 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
               : <span className="muted">No confirmed analysis runs yet — provisional runs never feed this number.</span>}
           </dd>
         </dl>
+        {rollup.staleConfirmedCount > 0 && (
+          <div className="notice" style={{ marginTop: 10 }}>
+            {rollup.staleConfirmedCount === rollup.confirmedRunCount
+              ? (rollup.confirmedRunCount === 1 ? 'The confirmed run feeding this ratio is' : 'All confirmed runs feeding this ratio are')
+              : `${rollup.staleConfirmedCount} of the ${rollup.confirmedRunCount} confirmed runs feeding this ratio ${rollup.staleConfirmedCount === 1 ? 'is' : 'are'}`}{' '}
+            stale — schedules or registry entries have changed since the analysis ran. Re-run from the bill
+            workspace and confirm the fresh run.
+          </div>
+        )}
       </div>
 
       {docs.length > 0 && (

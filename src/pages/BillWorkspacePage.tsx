@@ -10,7 +10,7 @@ import { Link, useParams } from 'react-router-dom';
 import type { CaseRecord } from '../domain/types';
 import type {
   AnalysisResultLine, AnalysisRun, BillLineItem, CodeMapping, EOBRecord,
-  GeneratedDocument, MedicalBill,
+  FeeSchedule, GeneratedDocument, LegalRule, MedicalBill,
 } from '../domain/billing';
 import {
   ATTORNEY_USER, DISCLAIMER_TEXT, confidenceBand, CONFIDENCE_FLOOR, reconcileType2,
@@ -20,6 +20,8 @@ import { runCodingAudit } from '../analysis/codingAudit';
 import { detectClaimType } from '../analysis/claimType';
 import { computeAnalysis } from '../analysis/benchmark';
 import { renderReasonableValueReport } from '../analysis/report';
+import { runStalenessReasons } from '../analysis/staleness';
+import { recomputeProviderProfile } from '../analysis/providerProfile';
 import { db } from '../data';
 import MarkdownLite from '../components/MarkdownLite';
 
@@ -62,6 +64,8 @@ export default function BillWorkspacePage() {
   const [mappings, setMappings] = useState<CodeMapping[]>([]);
   const [eob, setEob] = useState<EOBRecord | null>(null);
   const [runs, setRuns] = useState<AnalysisRun[]>([]);
+  const [schedules, setSchedules] = useState<FeeSchedule[]>([]);
+  const [rules, setRules] = useState<LegalRule[]>([]);
   const [providerName, setProviderName] = useState<string | undefined>();
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
 
@@ -70,10 +74,12 @@ export default function BillWorkspacePage() {
     try {
       const [c, b] = await Promise.all([db.getCase(caseId), db.getBill(billId)]);
       if (!c || !b) { setLoadState('notfound'); return; }
-      const [ls, ms, e, rs] = await Promise.all([
+      const [ls, ms, e, rs, scheds, lrs] = await Promise.all([
         db.listLineItems(b.id), db.listCodeMappings(), db.getEobForBill(b.id), db.listRunsForBill(b.id),
+        db.listFeeSchedules(), db.listLegalRules(),
       ]);
       setCaseRec(c); setBill(b); setLines(ls); setMappings(ms); setEob(e); setRuns(rs);
+      setSchedules(scheds); setRules(lrs);
       if (b.providerPartyId) {
         const p = await db.getParty(b.providerPartyId);
         setProviderName(p?.displayName);
@@ -112,7 +118,7 @@ export default function BillWorkspacePage() {
       {bill.billType === 2 && <EobCard bill={bill} eob={eob} onSaved={refresh} onBillChange={setBill} />}
       <LineItemsCard bill={bill} lines={lines} mappings={mappings} onChanged={refresh} />
       <AuditCard lines={lines} />
-      <AnalysisCard bill={bill} caseRec={caseRec} lines={lines} runs={runs} providerName={providerName} onChanged={refresh} />
+      <AnalysisCard bill={bill} caseRec={caseRec} lines={lines} runs={runs} schedules={schedules} rules={rules} providerName={providerName} onChanged={refresh} />
 
       <div className="notice">{DISCLAIMER_TEXT}</div>
     </div>
@@ -630,14 +636,23 @@ function AuditCard({ lines }: { lines: BillLineItem[] }) {
 
 /* ================= ANALYSIS ================= */
 
-function AnalysisCard({ bill, caseRec, lines, runs, providerName, onChanged }: {
+function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerName, onChanged }: {
   bill: MedicalBill; caseRec: CaseRecord; lines: BillLineItem[]; runs: AnalysisRun[];
-  providerName?: string; onChanged: () => void;
+  schedules: FeeSchedule[]; rules: LegalRule[]; providerName?: string; onChanged: () => void;
 }) {
   const [openRun, setOpenRun] = useState<string | null>(null);
   const [resultLines, setResultLines] = useState<Record<string, AnalysisResultLine[]>>({});
   const [busy, setBusy] = useState(false);
   const [generatedDoc, setGeneratedDoc] = useState<GeneratedDocument | null>(null);
+
+  /** run id → why its inputs changed since it ran (empty = current). */
+  const staleness = useMemo(() => {
+    const m = new Map<string, string[]>();
+    for (const run of runs) m.set(run.id, runStalenessReasons(run, schedules, rules));
+    return m;
+  }, [runs, schedules, rules]);
+  const latestRun = runs[0]; // newest first
+  const latestStaleReasons = latestRun ? staleness.get(latestRun.id) ?? [] : [];
 
   const loadResults = async (runId: string) => {
     if (!resultLines[runId]) {
@@ -672,6 +687,8 @@ function AnalysisCard({ bill, caseRec, lines, runs, providerName, onChanged }: {
       entityType: 'analysis_run', entityId: run.id, action: 'confirmed', user: ATTORNEY_USER,
       oldValue: 'provisional', newValue: 'confirmed — eligible to feed settlement/lien math',
     });
+    // Confirmed runs (and only confirmed runs) feed the provider's billing profile.
+    if (bill.providerPartyId) await recomputeProviderProfile(db, bill.providerPartyId);
     onChanged();
   };
 
@@ -719,7 +736,10 @@ function AnalysisCard({ bill, caseRec, lines, runs, providerName, onChanged }: {
             <tr key={run.id}>
               <td className="muted small">{new Date(run.runDate).toLocaleString()}</td>
               <td>
-                <span className={`badge run-${run.status}`}>{run.status}</span>
+                <span className={`badge run-${run.status}`}>{run.status}</span>{' '}
+                {(staleness.get(run.id) ?? []).length > 0 && (
+                  <span className="badge run-stale" title={staleness.get(run.id)!.join(' ')}>stale</span>
+                )}
                 {run.status === 'confirmed' && run.reviewer && <div className="small muted">{run.reviewer}</div>}
               </td>
               <td className="num">{run.totals.confirmedRatio !== undefined ? `${run.totals.confirmedRatio.toFixed(2)}×` : '—'}</td>
@@ -735,6 +755,14 @@ function AnalysisCard({ bill, caseRec, lines, runs, providerName, onChanged }: {
           {runs.length === 0 && <tr><td colSpan={6} className="muted">No analysis runs yet.</td></tr>}
         </tbody>
       </table>
+
+      {latestStaleReasons.length > 0 && (
+        <div className="notice" style={{ marginTop: 10 }}>
+          <strong>Latest analysis is stale.</strong> {latestStaleReasons.join(' ')}{' '}
+          Its figures reflect the inputs in force when it ran — re-run with current schedules to refresh.{' '}
+          <button className="btn small" disabled={busy || lines.length === 0} onClick={runAnalysis}>Re-run analysis</button>
+        </div>
+      )}
 
       {openRun && resultLines[openRun] && (
         <RunDetail run={runs.find((r) => r.id === openRun)!} resultLines={resultLines[openRun]} lines={lines} />

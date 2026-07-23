@@ -182,6 +182,7 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
 
 .badge.run-provisional { background: #f3edda; color: #7a5f1e; }
 .badge.run-confirmed { background: #e7f0e9; color: var(--ok); }
+.badge.run-stale { background: #f6e2e2; color: #a03030; }
 
 .badge.tier-confirmed { background: #e7f0e9; color: var(--ok); }
 .badge.tier-scenario { background: #f3edda; color: #7a5f1e; }

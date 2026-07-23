@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { PartyRecord, CasePartyLink, CaseRecord } from '../domain/types';
+import type { ProviderBillingProfile } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { FieldDisplay } from '../components/fieldWidgets';
 import { db } from '../data';
@@ -10,12 +11,17 @@ export default function PartyDetailPage() {
   const [party, setParty] = useState<PartyRecord | null>(null);
   const [links, setLinks] = useState<CasePartyLink[]>([]);
   const [cases, setCases] = useState<Record<string, CaseRecord>>({});
+  const [profile, setProfile] = useState<ProviderBillingProfile | null>(null);
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
 
   useEffect(() => {
     if (!id) return;
     db.getParty(id)
-      .then((p) => { setParty(p); setLoadState(p ? 'ready' : 'notfound'); })
+      .then(async (p) => {
+        setParty(p);
+        if (p?.partyType === 'providerBusiness') setProfile(await db.getProviderProfile(p.id));
+        setLoadState(p ? 'ready' : 'notfound');
+      })
       .catch(() => setLoadState('error'));
     db.listLinksForParty(id)
       .then(async (ls) => {
@@ -77,6 +83,38 @@ export default function PartyDetailPage() {
           </tbody>
         </table>
       </div>
+
+      {party.partyType === 'providerBusiness' && (
+        <div className="card">
+          <h3>Billing profile</h3>
+          <p className="small muted" style={{ margin: '0 0 8px' }}>
+            Aggregated from this provider's bills across cases — confirmed analysis runs only.
+            Ratios and flags, no client identities. Estimates, not adjudication.
+          </p>
+          <dl className="kv">
+            <dt>Avg billed-to-benchmark ratio</dt>
+            <dd>
+              {profile?.avgBilledToMedicareRatio !== undefined
+                ? <strong>{profile.avgBilledToMedicareRatio.toFixed(2)}×</strong>
+                : <span className="muted">No confirmed analysis runs yet.</span>}
+            </dd>
+            <dt>Historical reduction %</dt>
+            <dd>
+              {profile?.historicalReductionPct !== undefined
+                ? `${profile.historicalReductionPct.toFixed(1)}%`
+                : <span className="muted">Auto-feeds from settlement billed-vs-final outcomes once the settlement module lands.</span>}
+            </dd>
+            <dt>Common coding-audit flags</dt>
+            <dd>
+              {profile && profile.commonFlags.length > 0
+                ? profile.commonFlags.map((f) => <span key={f} className="badge audit-flag" style={{ marginRight: 4 }}>{f}</span>)
+                : <span className="muted">None recorded.</span>}
+            </dd>
+            <dt>Last confirmed analysis</dt>
+            <dd>{profile?.lastAnalysisDate ? new Date(profile.lastAnalysisDate).toLocaleString() : <span className="muted">—</span>}</dd>
+          </dl>
+        </div>
+      )}
 
       <div className="card">
         <h3>Details</h3>
