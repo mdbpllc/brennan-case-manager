@@ -384,6 +384,7 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
   const [editDraft, setEditDraft] = useState<LineDraft>(EMPTY_DRAFT);
   const [manualCptId, setManualCptId] = useState<string | null>(null);
   const [manualCpt, setManualCpt] = useState('');
+  const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
   const suggestion = useMemo(
     () => (draft.rawDescription.trim().length >= 4 ? suggestCpt(draft.rawDescription, bill.providerPartyId, mappings) : null),
@@ -535,7 +536,7 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
               <td className="num">{money(line.unitCharge)}</td>
               <td className="num">{money(line.extendedCharge)}</td>
               <td>{badge(line)}</td>
-              <td style={{ whiteSpace: 'nowrap' }}>
+              <td style={{ whiteSpace: 'nowrap', position: 'relative' }}>
                 {line.mappingStatus === 'suggested' && line.cpt && (
                   <>
                     <button className="btn small" onClick={() => confirmLine(line, line.cpt!, 'chargemaster_memory')}>Confirm</button>{' '}
@@ -557,8 +558,16 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
                     {line.mappingStatus !== 'confirmed' && (
                       <button className="btn small secondary" onClick={() => { setManualCptId(line.id); setManualCpt(''); }}>Set CPT</button>
                     )}{' '}
-                    <button className="btn small secondary" onClick={() => startEdit(line)}>Edit</button>{' '}
-                    <button className="btn small danger" onClick={() => deleteLine(line)}>Delete</button>
+                    <button
+                      className="btn small secondary" aria-label="More actions" title="Edit or delete this line"
+                      onClick={() => setMenuOpenId(menuOpenId === line.id ? null : line.id)}
+                    >⋯</button>
+                    {menuOpenId === line.id && (
+                      <div className="row-menu">
+                        <button onClick={() => { setMenuOpenId(null); startEdit(line); }}>Edit line</button>
+                        <button className="danger" onClick={() => { setMenuOpenId(null); deleteLine(line); }}>Delete line</button>
+                      </div>
+                    )}
                   </>
                 )}
               </td>
@@ -726,8 +735,14 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
         </button>
       </div>
       <p className="small muted" style={{ margin: '0 0 10px' }}>
-        Ratios lead: billed ÷ benchmark-schedule amount, confirmed-mapped lines only. Provisional runs are
-        visibly provisional and feed nothing downstream; confirming a run is the attorney sign-off.
+        Each run compares what the provider billed against what the loaded fee schedule (e.g. Medicare)
+        would pay for the same services. A <strong>confirmed ratio</strong> of 3.35× means the provider
+        billed 3.35 times the benchmark — it counts only lines whose CPT code the attorney has confirmed,
+        and it is the number reports lead with. The <strong>scenario ratio</strong> is a preview that also
+        counts unconfirmed suggested codes; it never feeds anything. The lines column shows how many lines
+        were ✓ counted / ? preview-only / – not analyzed (no code, or no rate in the schedule). Every run
+        starts <strong>provisional</strong>; pressing "Confirm run" is the attorney's sign-off, and only
+        confirmed runs may feed settlement or lien math.
       </p>
       <table className="list">
         <thead><tr><th>Run</th><th>Status</th><th className="num">Confirmed ratio</th><th className="num">Scenario ratio</th><th>Lines (✓/?/–)</th><th></th></tr></thead>

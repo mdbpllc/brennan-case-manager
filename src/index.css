@@ -180,6 +180,19 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
 .badge.conf-low { background: #f6e9e2; color: var(--warn); }
 .badge.conf-none { background: #eef0f2; color: var(--muted); }
 
+.row-menu {
+  position: absolute; right: 4px; top: 100%;
+  background: #fff; border: 1px solid #d5dae1; border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); z-index: 20;
+  display: flex; flex-direction: column; min-width: 110px;
+}
+.row-menu button {
+  background: none; border: none; text-align: left;
+  padding: 7px 12px; font-size: 13px; cursor: pointer; color: var(--navy);
+}
+.row-menu button:hover { background: #f2f4f7; }
+.row-menu button.danger { color: #a03030; }
+
 .badge.run-provisional { background: #f3edda; color: #7a5f1e; }
 .badge.run-confirmed { background: #e7f0e9; color: var(--ok); }
 .badge.run-stale { background: #f6e2e2; color: #a03030; }
