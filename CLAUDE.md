@@ -152,3 +152,7 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
   only, never client data.
 - Open decision for Michael: the Citizens MRF's local path once chosen —
   record it here when decided.
+- Local data directory (public benchmark data, kept out of the repo like the
+  MRF fixture): `..\data\` — currently `..\data\pfs\` holds the 2026 Medicare
+  PFS extract for TX Rest of State (locality 0441299) plus a provenance
+  README (source files, method, license note). Import via the Benchmarks page.
