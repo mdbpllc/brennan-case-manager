@@ -43,6 +43,29 @@ to `docs/specs/`.
 5. **Citizens MRF local path** — still undecided (CLAUDE.md open decision).
    Needed before Phase 2 billing work; record it in CLAUDE.md once chosen.
 
+6. **EOB acquisition workflow (new wanted-later item, Michael, 2026-07-23
+   Phase 1a walkthrough).** The EOB record is load-bearing (Type 2
+   reconciliation now; Ch. 146 lien-cap and the Phase 2 balance-billing audit
+   later), but in practice getting EOBs from clients is slow and unreliable.
+   Michael wants a design-space session later on the most streamlined
+   acquisition path. Raw material to weigh when it comes up:
+   - HIPAA authorization → request the claims/EOB history directly from the
+     health insurer (mirrors the provider records-request flow; the client
+     signs once at intake — pairs with the standard coverage inventory
+     already captured at every PI intake).
+   - Per-insurer client one-pagers ("how to download your EOBs from the
+     UnitedHealthcare portal") generated from the insurer party record.
+   - Client intake form / portal upload (banked feature: fillable intake
+     link) — a phone-photo upload path for EOBs as they arrive in the mail.
+   - Subrogation/lien correspondence often contains the insurer's own claims
+     ledger — same numbers, already flowing in; could feed the EOB record.
+   - Medicare beneficiaries: BCRC conditional-payment summaries already
+     tracked in the liens module carry paid amounts (synthesis §2.2 join).
+   - Interacts with: outlook-email-intake.md (EXPLORATORY — HIPAA
+     first-class), the paralegal-workflow flip at multi-user, and Phase 1b
+     AI ingestion (an EOB is a parseable document once the GPU arm exists).
+   Not sequenced into any build phase — capture only, per Michael.
+
 ## Resolved
 
 - ~~Spec-list drift~~ — the conventions block's `docs/specs/` list was missing
