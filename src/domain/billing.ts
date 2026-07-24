@@ -185,7 +185,7 @@ export interface ReviewLogEntry {
   id: string;
   entityType: string;
   entityId: string;
-  action: 'suggested' | 'confirmed' | 'edited' | 'rejected' | 'created' | 'generated';
+  action: 'suggested' | 'confirmed' | 'edited' | 'rejected' | 'created' | 'generated' | 'cancelled';
   user: string;
   timestamp: string;
   oldValue?: string;

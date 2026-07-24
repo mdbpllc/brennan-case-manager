@@ -387,3 +387,38 @@ create policy "authenticated full access fee_schedule_rates" on fee_schedule_rat
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access generated_documents" on generated_documents
   for all to authenticated using (true) with check (true);
+
+-- ============================================================
+-- Calendar events — Outlook push Phase 1 (outlook-calendar-sync.md).
+-- start_local / end_local are naive local datetimes stored as text
+-- ("YYYY-MM-DDTHH:mm", or "YYYY-MM-DD" for all-day) — deliberately
+-- timezone-free (v0.1 UTC date-opened bug lesson); the Graph layer
+-- attaches the browser timezone at push time.
+-- ============================================================
+
+create table if not exists calendar_events (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  title text not null,
+  event_type text not null default 'other'
+    check (event_type in ('hearing','deadline','appointment','reminder','other')),
+  start_local text not null,
+  end_local text,
+  all_day boolean not null default false,
+  location text,
+  notes text,
+  status text not null default 'scheduled' check (status in ('scheduled','cancelled')),
+  outlook_event_id text,
+  sync_status text not null default 'pending' check (sync_status in ('pending','synced','error')),
+  sync_error text,
+  last_sync_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists calendar_events_case_idx on calendar_events (case_id);
+create index if not exists calendar_events_sync_idx on calendar_events (sync_status) where sync_status <> 'synced';
+
+alter table calendar_events enable row level security;
+create policy "authenticated full access calendar_events" on calendar_events
+  for all to authenticated using (true) with check (true);

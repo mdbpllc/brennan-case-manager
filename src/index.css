@@ -244,3 +244,14 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
 .combo-item.active { background: #f2f4f7; }
 .combo-sub { color: var(--muted); }
 .combo-empty { padding: 7px 10px; font-size: 12.5px; color: var(--muted); }
+
+/* Calendar tab — Outlook sync + event-type badges */
+.badge.sync-synced { background: #e7f0e9; color: var(--ok); }
+.badge.sync-pending { background: #f3edda; color: #7a5f1e; }
+.badge.sync-error { background: #f6e2e2; color: #a03030; }
+.badge.sync-off { background: #eef0f2; color: var(--muted); }
+.badge.evt-hearing { background: #ece9f4; color: #5b4a8a; }
+.badge.evt-deadline { background: #f6e2e2; color: #a03030; }
+.badge.evt-appointment { background: #e7f0e9; color: var(--ok); }
+.badge.evt-reminder { background: #f3edda; color: #7a5f1e; }
+.badge.evt-other { background: #eef0f2; color: var(--muted); }

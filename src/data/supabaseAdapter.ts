@@ -6,6 +6,7 @@ import type {
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
   ProviderBillingProfile,
 } from '../domain/billing';
+import type { CalendarEvent } from '../domain/calendar';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -405,5 +406,23 @@ export class SupabaseAdapter implements DataAdapter {
 
   async createDocument(data: Omit<GeneratedDocument, 'id' | 'generatedAt'>): Promise<GeneratedDocument> {
     return this.insertRow<GeneratedDocument>('generated_documents', data);
+  }
+
+  async listEventsForCase(caseId: string): Promise<CalendarEvent[]> {
+    return this.rows<CalendarEvent>('calendar_events', (q) =>
+      q.select('*').eq('case_id', caseId).order('start_local'));
+  }
+
+  async listEventsPendingSync(): Promise<CalendarEvent[]> {
+    return this.rows<CalendarEvent>('calendar_events', (q) =>
+      q.select('*').neq('sync_status', 'synced'));
+  }
+
+  async createEvent(data: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>): Promise<CalendarEvent> {
+    return this.insertRow<CalendarEvent>('calendar_events', data);
+  }
+
+  async updateEvent(id: string, patch: Partial<CalendarEvent>): Promise<CalendarEvent> {
+    return this.updateRow<CalendarEvent>('calendar_events', id, { ...patch, updatedAt: new Date().toISOString() });
   }
 }

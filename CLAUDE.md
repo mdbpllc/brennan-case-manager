@@ -129,18 +129,20 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
 ## Build sequence and current state
 
 1. Data model — complete (master spec §§7–11).
-2. Slice v0.1 (Case overview + Parties) — built, awaiting Michael's feedback.
-   Incorporate his feedback before or alongside the next slice.
-3. **Current target: billing module Phase 1a** — minimal Medical tab + bill
-   ledger, manual/assisted line-item entry, deterministic chargemaster fuzzy
-   matching, Medicare PFS benchmarks with ratio-led reporting (billed-to-
-   Medicare ratios lead), EOB patient-responsibility field, internal report
-   generator, ReviewLog/AnalysisRun entities, and the Legal Rule Registry as
-   shared infrastructure. Only CONFIRMED AnalysisRuns may feed settlement/
-   lien math. Phase 1b (local-AI PDF ingestion) is gated on the GPU arm —
-   do not start it.
-4. Then remaining tabs, with feedback each step. Integrations (OneDrive/
-   Outlook via Microsoft Graph) come last.
+2. Slice v0.1 (Case overview + Parties) — built; Michael's feedback
+   implemented 2026-07-23 (masked phone inputs, filterable combobox pickers).
+3. Billing module Phase 1a — BUILT, gap-closed, and walkthrough-APPROVED by
+   Michael (2026-07-23). Only CONFIRMED AnalysisRuns may feed settlement/
+   lien math — enforced via settlementEligibleRuns() in src/domain/billing.ts.
+   Phase 1b (local-AI PDF ingestion) is gated on the GPU arm — do not start it.
+4. Outlook calendar push Phase 1 — BUILT 2026-07-24 (Calendar tab on case
+   detail, CalendarEvent entity in both adapters, Graph push layer in
+   src/outlook/ activated by VITE_MSAL_* env vars; setup steps in
+   docs/outlook-setup.md; Michael's Entra app registration pending). Phase 2
+   two-way sync is backlogged — do not start it.
+5. Next per the queue: OAA-based criminal appointment intake
+   (criminal-appointment-intake-and-docket-enhancements.md), then remaining
+   tabs with feedback each step.
 
 ## Working style
 

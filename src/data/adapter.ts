@@ -1,4 +1,5 @@
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type { CalendarEvent } from '../domain/calendar';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -84,4 +85,11 @@ export interface DataAdapter {
 
   listDocumentsForCase(caseId: string): Promise<GeneratedDocument[]>;
   createDocument(data: Omit<GeneratedDocument, 'id' | 'generatedAt'>): Promise<GeneratedDocument>;
+
+  // ---- Calendar (Outlook push Phase 1) ----
+  listEventsForCase(caseId: string): Promise<CalendarEvent[]>;
+  /** The retry queue: everything not yet reflected in Outlook (pending or error), across cases. */
+  listEventsPendingSync(): Promise<CalendarEvent[]>;
+  createEvent(data: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>): Promise<CalendarEvent>;
+  updateEvent(id: string, patch: Partial<CalendarEvent>): Promise<CalendarEvent>;
 }

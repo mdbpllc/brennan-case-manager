@@ -36,6 +36,7 @@ export default function App() {
           <Route path="/cases/:id" element={<CaseDetailPage />} />
           <Route path="/cases/:id/parties" element={<CaseDetailPage />} />
           <Route path="/cases/:id/medical" element={<CaseDetailPage />} />
+          <Route path="/cases/:id/calendar" element={<CaseDetailPage />} />
           <Route path="/cases/:caseId/bills/:billId" element={<BillWorkspacePage />} />
           <Route path="/benchmarks" element={<BenchmarksPage />} />
           <Route path="/rules" element={<LegalRulesPage />} />

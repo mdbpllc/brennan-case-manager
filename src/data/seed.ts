@@ -1,6 +1,7 @@
 // Demo seed data so the slice is clickable out of the box.
 // Entirely fictional. Wiped whenever you clear the browser's site data.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type { CalendarEvent } from '../domain/calendar';
 import { billingSeedData } from './billingSeed';
 
 const t = new Date().toISOString();
@@ -11,6 +12,7 @@ export function seedData(): {
   parties: PartyRecord[];
   links: CasePartyLink[];
   fileCounters: Record<string, number>;
+  events: CalendarEvent[];
 } & ReturnType<typeof billingSeedData> {
   const parties: PartyRecord[] = [
     {
@@ -173,5 +175,23 @@ export function seedData(): {
     { id: 'l13', caseId: 'c-servpro-lien', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
   ];
 
-  return { cases, parties, links, fileCounters: { [yy]: 3 }, ...billingSeedData() };
+  // Demo calendar events (Garcia case) — 'pending' until Outlook is connected.
+  const events: CalendarEvent[] = [
+    {
+      id: 'ce-garcia-hearing', caseId: 'c-garcia-mvc',
+      title: 'Status conference — Garcia v. Allied Freight',
+      eventType: 'hearing', startLocal: '2026-08-18T09:00', endLocal: '2026-08-18T09:30',
+      allDay: false, location: '146th District Court, Bell County',
+      notes: 'Scheduling order expected. (Demo data.)',
+      status: 'scheduled', syncStatus: 'pending', createdAt: t, updatedAt: t,
+    },
+    {
+      id: 'ce-garcia-deadline', caseId: 'c-garcia-mvc',
+      title: 'Discovery responses due — Allied Freight RFP set 1',
+      eventType: 'deadline', startLocal: '2026-08-04', allDay: true,
+      status: 'scheduled', syncStatus: 'pending', createdAt: t, updatedAt: t,
+    },
+  ];
+
+  return { cases, parties, links, fileCounters: { [yy]: 3 }, events, ...billingSeedData() };
 }

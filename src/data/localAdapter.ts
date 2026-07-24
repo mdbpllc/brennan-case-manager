@@ -5,13 +5,15 @@ import type {
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
   ProviderBillingProfile,
 } from '../domain/billing';
+import type { CalendarEvent } from '../domain/calendar';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 3; // v3: provider billing profiles
+const STORE_VERSION = 5; // v5: calendar events (5, not 4: a mid-edit HMR reload
+// during the build session could seed a v4 store without the events array)
 
 interface Store {
   version: number;
@@ -31,6 +33,7 @@ interface Store {
   feeRates: FeeScheduleRate[];
   documents: GeneratedDocument[];
   providerProfiles: ProviderBillingProfile[];
+  events: CalendarEvent[];
 }
 
 function load(): Store {
@@ -378,5 +381,31 @@ export class LocalAdapter implements DataAdapter {
     store.documents.push(rec);
     save(store);
     return rec;
+  }
+
+  async listEventsForCase(caseId: string): Promise<CalendarEvent[]> {
+    return load().events.filter((e) => e.caseId === caseId)
+      .sort((a, b) => a.startLocal.localeCompare(b.startLocal));
+  }
+
+  async listEventsPendingSync(): Promise<CalendarEvent[]> {
+    return load().events.filter((e) => e.syncStatus !== 'synced');
+  }
+
+  async createEvent(data: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>): Promise<CalendarEvent> {
+    const store = load();
+    const rec: CalendarEvent = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.events.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateEvent(id: string, patch: Partial<CalendarEvent>): Promise<CalendarEvent> {
+    const store = load();
+    const idx = store.events.findIndex((e) => e.id === id);
+    if (idx === -1) throw new Error('Event not found');
+    store.events[idx] = { ...store.events[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.events[idx];
   }
 }
