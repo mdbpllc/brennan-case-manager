@@ -102,19 +102,6 @@ to `docs/specs/`.
    attorney sign-off); a revised disclaimer bumps the version string, and
    every run/report already records which version it carried.
 
-9. **Data-hygiene check on feature-intake-2026-07-24.md (Code session,
-   2026-07-24).** The intake doc was filed verbatim as the handoff directed,
-   but two spots read as live-matter data in a repo whose rule is "no real
-   client data, ever" (and which backs up to private GitHub): (a) item D's
-   "real example" carries actual lien amounts from a live file (Cigna
-   subrogation — Rawlings $5,264.71 → successor Machinify $2,837.29);
-   (b) item A's spoken-tag example names "the Curry matter", which may be a
-   real client surname. No PHI and no client is named outright, and Michael
-   staged the content knowingly, so it was filed as-is — but the filing
-   commit is being HELD LOCAL (not pushed to GitHub) until Michael decides:
-   push as-is, or genericize the two examples in the design space first
-   (refreshed snapshot, then push).
-
 ### 2026-07-23 — Ch. 146 mischaracterized in specs (correction needed)
 
 **Where:** case-management-project-instructions.md (liens section: "Ch. 146 EOB balance-billing check: the patient-responsibility amount on the EOB is the maximum permissible lien") and any downstream references.
@@ -126,6 +113,13 @@ to `docs/specs/`.
 **Status:** All corrections pending Michael's review; nothing changed in canonical spec yet. (Code-side note, same date: the seeded `ch146-eob-cap` registry proposition in `src/data/billingSeed.ts` carries the wrong framing too — deliberately left untouched pending the proposition-amendment workflow ruling in item 7(b) above.)
 
 ## Resolved
+
+- ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
+  filing the 2026-07-24 intake handoff flagged two spots as possible
+  live-matter data (item D's Cigna/Rawlings/Machinify lien amounts; item A's
+  "the Curry matter" example) and held the commit local. Michael resolved
+  same day: the amounts carry no other identifiers, no HIPAA conflict —
+  pushed as-is.
 
 - ~~Spec-list drift~~ — the conventions block's `docs/specs/` list was missing
   `medical-billing-analysis-module-prompt.md` and `session-log.md`; corrected
