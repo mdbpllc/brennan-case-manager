@@ -84,6 +84,13 @@ coding sessions. The spec documents committed under `docs/specs/` are
   2026-07-23; §9 variant library is Michael-approved VERBATIM — never
   rewrite it; no mental-health variant exists BY DESIGN, do not add one;
   build position follows billing 1a and the Outlook push)
+- `feature-intake-2026-07-24.md` — feature-intake capture from the
+  2026-07-24 design dictation session (INTAKE, not spec-final; NOTHING in
+  it is built; every item needs a design pass before build). Item A
+  (recorder → local transcription → sort & route) is Michael's designated
+  next build target — blocked on him providing the NVIDIA transcription
+  model docs/API, and its design pass must extend transcript-workflows.md
+  (same local-first pipeline), not re-derive it
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
@@ -145,9 +152,12 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
    src/outlook/ activated by VITE_MSAL_* env vars; setup steps in
    docs/outlook-setup.md; Michael's Entra app registration pending). Phase 2
    two-way sync is backlogged — do not start it.
-5. Next per the queue: OAA-based criminal appointment intake
-   (criminal-appointment-intake-and-docket-enhancements.md), then remaining
-   tabs with feedback each step.
+5. Next per Michael (2026-07-24 feature intake): recorder → local
+   transcription → sort & route (feature-intake-2026-07-24.md, item A) —
+   needs its design pass plus the NVIDIA model docs/API from Michael
+   before build starts. OAA-based criminal appointment intake
+   (criminal-appointment-intake-and-docket-enhancements.md) follows, then
+   remaining tabs with feedback each step.
 
 ## Working style
 
