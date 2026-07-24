@@ -76,6 +76,22 @@ to `docs/specs/`.
    supersedes/corrected link) rolling up to the bill-level figures the
    Ch. 146 cap and settlement math consume.
 
+7. **Registry proposition needs enrichment: negotiated-rate discovery
+   (Michael, 2026-07-23 walkthrough).** The seeded North Cypress / K&L Auto
+   Crushers entry ("Negotiated-rate and reimbursement-rate discovery is
+   available against providers, including LOP providers, on reasonableness
+   of charges") is true as stated but oversimplified — there are real
+   limitations on the exact discovery available and the extent to which
+   certain things are discoverable, and Michael wants more law fed into
+   this area. Design-space work: (a) decide whether this becomes one
+   enriched entry or splits into sub-rules (baseline discoverability +
+   separate entries for its limits), each with its own cite and
+   verification status; (b) generally, settle the workflow for enriching /
+   amending registry propositions, since coding sessions deliberately
+   cannot edit proposition text in-app (only notes and status) and
+   propositions changing silently would orphan past runs' version stamps.
+   Interim: Michael can carry the qualification in the rule's Notes field.
+
 ## Resolved
 
 - ~~Spec-list drift~~ — the conventions block's `docs/specs/` list was missing
