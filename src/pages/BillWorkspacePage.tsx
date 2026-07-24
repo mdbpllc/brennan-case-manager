@@ -505,7 +505,7 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
       <h3>Line items</h3>
       <table className="list">
         <thead>
-          <tr><th>Date</th><th>Description</th><th>Rev</th><th className="num">Qty</th><th className="num">Unit</th><th className="num">Extended</th><th>CPT mapping</th><th></th></tr>
+          <tr><th>Date</th><th>Description</th><th>Rev</th><th className="num">Qty</th><th className="num">Unit</th><th className="num" title="The line's total as printed on the bill (billing systems call this the extended charge)">Line total</th><th>CPT mapping</th><th></th></tr>
         </thead>
         <tbody>
           {lines.map((line) => editingId === line.id ? (
@@ -578,7 +578,7 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
       </table>
 
       <div className="small" style={{ marginTop: 8 }}>
-        Line total: <strong>{money(lineTotal)}</strong>
+        Sum of line items: <strong>{money(lineTotal)}</strong>
         {offFromBill && <span className="muted"> — differs from bill total {money(bill.billedAmount)} (fine while entry is in progress)</span>}
       </div>
 
@@ -600,8 +600,8 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
           <label className="fld"><span className="lab">Unit ($)</span>
             <input type="text" inputMode="decimal" value={draft.unitCharge} style={{ width: 90 }} onChange={(e) => setDraft({ ...draft, unitCharge: e.target.value })} />
           </label>
-          <label className="fld"><span className="lab">Extended ($)</span>
-            <input type="text" inputMode="decimal" placeholder="qty × unit" value={draft.extendedCharge} style={{ width: 100 }} onChange={(e) => setDraft({ ...draft, extendedCharge: e.target.value })} />
+          <label className="fld" title="Leave blank to auto-calculate qty × unit. Enter it only when the bill's printed line total differs — always record what the bill says."><span className="lab">Line total ($)</span>
+            <input type="text" inputMode="decimal" placeholder="auto: qty × unit" value={draft.extendedCharge} style={{ width: 110 }} onChange={(e) => setDraft({ ...draft, extendedCharge: e.target.value })} />
           </label>
           <button className="btn small" onClick={addLine} disabled={!draft.rawDescription.trim()}>Add</button>
         </div>
