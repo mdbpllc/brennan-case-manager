@@ -2,8 +2,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { FieldDef } from '../domain/partyRegistry';
+import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import type { PartyRecord } from '../domain/types';
 import { db } from '../data';
+import { Combobox } from './Combobox';
+import { PhoneInput } from './phone';
+import { formatPhone } from '../domain/phone';
 
 /* ================= INPUT ================= */
 
@@ -43,6 +47,8 @@ export function FieldInput({
             <option key={o} value={o}>{o}</option>
           ))}
         </select>
+      ) : def.type === 'phone' ? (
+        <PhoneInput value={(value as string) ?? ''} onChange={onChange} />
       ) : (
         <input
           type={def.type === 'date' ? 'date' : 'text'}
@@ -109,12 +115,15 @@ function PartyLinkInput({
   return (
     <label className="fld">
       <span className="lab">{def.label}</span>
-      <select value={(value as string) ?? ''} onChange={(e) => onChange(e.target.value)}>
-        <option value="">—</option>
-        {options.map((p) => (
-          <option key={p.id} value={p.id}>{p.displayName}</option>
-        ))}
-      </select>
+      <Combobox
+        options={options.map((p) => ({
+          value: p.id,
+          label: p.displayName,
+          sublabel: PARTY_TYPE_MAP[p.partyType]?.label ?? p.partyType,
+        }))}
+        value={(value as string) ?? ''}
+        onChange={onChange}
+      />
       {def.hint && <span className="hint">{def.hint}</span>}
       {options.length === 0 && <span className="hint">No {def.linkTypes?.join('/')} records yet — create one first.</span>}
     </label>
@@ -147,6 +156,7 @@ export function FieldDisplay({ def, value }: { def: FieldDef; value: unknown }) 
       </div>
     );
   }
+  if (def.type === 'phone') return <span>{formatPhone(String(value))}</span>;
   if (def.sensitive) return <span>•••–••–{String(value).slice(-4)}</span>;
   return <span style={{ whiteSpace: 'pre-wrap' }}>{String(value)}</span>;
 }

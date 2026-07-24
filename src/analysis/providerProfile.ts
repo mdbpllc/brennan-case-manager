@@ -5,6 +5,7 @@
 // flags, never client identities (guardrail 7).
 
 import type { DataAdapter } from '../data/adapter';
+import { settlementEligibleRuns } from '../domain/billing';
 import { runCodingAudit } from './codingAudit';
 
 /** Rebuild a provider's billing profile from its bills' latest confirmed runs.
@@ -18,7 +19,7 @@ export async function recomputeProviderProfile(db: DataAdapter, providerPartyId:
 
   for (const bill of bills) {
     const runs = await db.listRunsForBill(bill.id); // newest first
-    const latestConfirmed = runs.find((r) => r.status === 'confirmed');
+    const [latestConfirmed] = settlementEligibleRuns(runs);
     if (latestConfirmed) {
       confirmedBilled += latestConfirmed.totals.confirmedBilled;
       confirmedBenchmark += latestConfirmed.totals.confirmedBenchmark;

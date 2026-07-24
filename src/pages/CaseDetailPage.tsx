@@ -5,6 +5,7 @@ import { CASE_ROLES, SIDES } from '../domain/types';
 import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
+import { Combobox } from '../components/Combobox';
 import MedicalTab from './MedicalTab';
 
 export default function CaseDetailPage() {
@@ -265,14 +266,16 @@ function PartiesTab({ caseId }: { caseId: string }) {
 
         {adding && (
           <div className="filters" style={{ marginTop: 8, padding: 10, background: '#f7f8fa', borderRadius: 6 }}>
-            <select value={selParty} onChange={(e) => setSelParty(e.target.value)}>
-              <option value="">Choose a party…</option>
-              {allParties.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.displayName} ({PARTY_TYPE_MAP[p.partyType]?.label ?? p.partyType})
-                </option>
-              ))}
-            </select>
+            <Combobox
+              options={allParties.map((p) => ({
+                value: p.id,
+                label: p.displayName,
+                sublabel: PARTY_TYPE_MAP[p.partyType]?.label ?? p.partyType,
+              }))}
+              value={selParty}
+              onChange={setSelParty}
+              placeholder="Choose a party…"
+            />
             <select value={selRole} onChange={(e) => setSelRole(e.target.value as CaseRole)}>
               {CASE_ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>

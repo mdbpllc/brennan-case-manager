@@ -139,6 +139,16 @@ export interface AnalysisRun {
   registryStamps: RegistryStamp[];
 }
 
+/** DATA-LAYER GATE (synthesis Part 5 guardrail): only CONFIRMED runs may feed
+ *  settlement/lien math, cross-case aggregates, or any downstream dollar
+ *  figure — including the future settlement and lien tabs. Consumers filter
+ *  through this function instead of reading run.status inline, so the rule
+ *  has one enforcement point. Preserves input order (newest-first stays
+ *  newest-first). */
+export function settlementEligibleRuns(runs: AnalysisRun[]): AnalysisRun[] {
+  return runs.filter((r) => r.status === 'confirmed');
+}
+
 export interface AnalysisResultLine {
   id: string;
   runId: string;

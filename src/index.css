@@ -224,3 +224,23 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
   background: #f6e9e2; border-radius: 0 6px 6px 0;
 }
 .report-callout p { margin: 2px 0; }
+
+/* Combobox — the standard type-to-filter picker for long lists (v0.1 feedback) */
+.combo { position: relative; min-width: 200px; flex: 1; }
+.combo input { width: 100%; padding-right: 24px; }
+.combo-clear {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 15px; line-height: 1; padding: 2px 4px;
+}
+.combo-clear:hover { color: var(--navy); }
+.combo-list {
+  position: absolute; top: calc(100% + 2px); left: 0; right: 0; z-index: 30;
+  background: #fff; border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(20, 30, 50, 0.12);
+  max-height: 240px; overflow-y: auto;
+}
+.combo-item { padding: 7px 10px; font-size: 13px; cursor: pointer; }
+.combo-item.active { background: #f2f4f7; }
+.combo-sub { color: var(--muted); }
+.combo-empty { padding: 7px 10px; font-size: 12.5px; color: var(--muted); }

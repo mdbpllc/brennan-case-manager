@@ -10,6 +10,7 @@ export type FieldType =
   | 'date'
   | 'select'
   | 'checkbox'
+  | 'phone' // masked input; stored as bare digits (+ 'x' extension) — see components/phone.tsx
   | 'repeating'
   | 'partyLink'; // reference to another party record
 
@@ -35,8 +36,8 @@ export interface PartyTypeDef {
 }
 
 const CONTACT: FieldDef[] = [
-  { key: 'phone', label: 'Phone', type: 'text' },
-  { key: 'fax', label: 'Fax', type: 'text' },
+  { key: 'phone', label: 'Phone', type: 'phone' },
+  { key: 'fax', label: 'Fax', type: 'phone' },
   { key: 'email', label: 'Email', type: 'text' },
   { key: 'address', label: 'Mailing address', type: 'textarea' },
 ];
@@ -183,8 +184,8 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     key: 'insuranceCompany', label: 'Insurance company', kind: 'organization', nameFields: ['name'],
     fields: [
       { key: 'name', label: 'Company name', type: 'text' },
-      { key: 'phone', label: 'Phone', type: 'text' },
-      { key: 'fax', label: 'Fax', type: 'text' },
+      { key: 'phone', label: 'Phone', type: 'phone' },
+      { key: 'fax', label: 'Fax', type: 'phone' },
       { key: 'claimsEmail', label: 'Claims email', type: 'text' },
       { key: 'lines', label: 'Lines written', type: 'select', options: ['Personal', 'Commercial', 'Both'] },
       { key: 'registeredAgent', label: 'Registered agent (name & address)', type: 'textarea' },
@@ -212,8 +213,8 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     key: 'providerBusiness', label: 'Provider business', kind: 'organization', nameFields: ['name'],
     fields: [
       { key: 'name', label: 'Business name', type: 'text' },
-      { key: 'phone', label: 'Main phone', type: 'text' },
-      { key: 'fax', label: 'Fax', type: 'text' },
+      { key: 'phone', label: 'Main phone', type: 'phone' },
+      { key: 'fax', label: 'Fax', type: 'phone' },
       { key: 'recordsEmail', label: 'Billing / records-request email', type: 'text' },
       { key: 'taxId', label: 'Billing / tax ID number', type: 'text', hint: 'Appears on affidavits/payments' },
       { key: 'registeredAgent', label: 'Registered agent', type: 'textarea' },
@@ -222,7 +223,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
         subFields: [
           { key: 'label', label: 'Short label', type: 'text', hint: 'e.g. "south side"' },
           { key: 'address', label: 'Physical address', type: 'text' },
-          { key: 'phone', label: 'Location phone', type: 'text' },
+          { key: 'phone', label: 'Location phone', type: 'phone' },
           { key: 'recordsContact', label: 'Records-request contact (if per-location)', type: 'text' },
         ],
       },
@@ -265,7 +266,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'rank', label: 'Rank / title', type: 'text' },
       { key: 'badge', label: 'Badge or unit number', type: 'text' },
       { key: 'agency', label: 'Agency', type: 'partyLink', linkTypes: ['lawEnforcementAgency'] },
-      { key: 'phone', label: 'Phone (if available)', type: 'text' },
+      { key: 'phone', label: 'Phone (if available)', type: 'phone' },
       { key: 'email', label: 'Email (if available)', type: 'text' },
     ],
   },
@@ -274,7 +275,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     fields: [
       { key: 'name', label: 'Agency name', type: 'text', hint: 'Police dept, sheriff’s office, DPS' },
       { key: 'address', label: 'Address', type: 'textarea' },
-      { key: 'phone', label: 'Phone', type: 'text' },
+      { key: 'phone', label: 'Phone', type: 'phone' },
       { key: 'parentEntity', label: 'Parent government entity (optional)', type: 'partyLink', linkTypes: ['governmentEntity'] },
     ],
   },
@@ -322,7 +323,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     fields: [
       ...PERSON_NAME,
       { key: 'agency', label: 'Reporting agency', type: 'partyLink', linkTypes: ['business'] },
-      { key: 'phone', label: 'Phone', type: 'text' },
+      { key: 'phone', label: 'Phone', type: 'phone' },
       { key: 'email', label: 'Email', type: 'text' },
       { key: 'certNumber', label: 'Certification number', type: 'text' },
       { key: 'preferred', label: 'Default / preferred reporter', type: 'checkbox', hint: 'Your go-to surfaces first' },

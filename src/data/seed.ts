@@ -16,7 +16,7 @@ export function seedData(): {
     {
       id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
       fields: {
-        firstName: 'Maria', lastName: 'Garcia', phone: '(254) 555-0143', email: 'mgarcia@example.com',
+        firstName: 'Maria', lastName: 'Garcia', phone: '2545550143', email: 'mgarcia@example.com',
         address: '1207 Oakhill Dr, Killeen, TX 76541', dob: '1988-04-12',
         preferredContact: 'Text', language: 'Spanish', healthInsurer: 'BlueCross BlueShield of Texas',
         medicareMedicaid: 'No',
@@ -28,7 +28,7 @@ export function seedData(): {
     {
       id: 'p-client-boyd', partyType: 'client', kind: 'individual', displayName: 'Terrence Boyd',
       fields: {
-        firstName: 'Terrence', lastName: 'Boyd', phone: '(254) 555-0188',
+        firstName: 'Terrence', lastName: 'Boyd', phone: '2545550188',
         address: '44 Cedar Loop, Belton, TX 76513', dob: '1996-11-02', medicareMedicaid: 'Unknown',
         priorCriminal: [{ disposition: 'Dismissal', offense: 'Theft (Class B)', date: '2017-03-10', familyViolence: 'No' }],
         priorRecordVerified: false,
@@ -38,7 +38,7 @@ export function seedData(): {
     {
       id: 'p-ins-statewide', partyType: 'insuranceCompany', kind: 'organization', displayName: 'Statewide Mutual Insurance',
       fields: {
-        name: 'Statewide Mutual Insurance', phone: '(800) 555-0100', claimsEmail: 'claims@statewidemutual.example',
+        name: 'Statewide Mutual Insurance', phone: '8005550100', claimsEmail: 'claims@statewidemutual.example',
         lines: 'Both', registeredAgent: 'CT Corporation System, 1999 Bryan St, Dallas, TX 75201',
       },
       createdAt: t, updatedAt: t,
@@ -46,32 +46,32 @@ export function seedData(): {
     {
       id: 'p-adj-pruitt', partyType: 'adjuster', kind: 'individual', displayName: 'Dana Pruitt',
       fields: {
-        firstName: 'Dana', lastName: 'Pruitt', phone: '(800) 555-0177 x214',
+        firstName: 'Dana', lastName: 'Pruitt', phone: '8005550177x214',
         email: 'dpruitt@statewidemutual.example', employer: 'p-ins-statewide',
       },
       createdAt: t, updatedAt: t,
     },
     {
       id: 'p-firm-hdm', partyType: 'lawFirm', kind: 'organization', displayName: 'Hargrove, Dietz & Malone LLP',
-      fields: { name: 'Hargrove, Dietz & Malone LLP', phone: '(512) 555-0122', email: 'service@hdmlaw.example' },
+      fields: { name: 'Hargrove, Dietz & Malone LLP', phone: '5125550122', email: 'service@hdmlaw.example' },
       createdAt: t, updatedAt: t,
     },
     {
       id: 'p-atty-dietz', partyType: 'attorney', kind: 'individual', displayName: 'Carol Dietz',
       fields: {
         firstName: 'Carol', lastName: 'Dietz', barNumber: '24098765', roleType: 'Lead counsel',
-        firm: 'p-firm-hdm', email: 'cdietz@hdmlaw.example', phone: '(512) 555-0122',
+        firm: 'p-firm-hdm', email: 'cdietz@hdmlaw.example', phone: '5125550122',
       },
       createdAt: t, updatedAt: t,
     },
     {
       id: 'p-prov-procare', partyType: 'providerBusiness', kind: 'organization', displayName: 'ProCare Injury Specialists',
       fields: {
-        name: 'ProCare Injury Specialists', phone: '(254) 555-0160', recordsEmail: 'records@procare.example',
+        name: 'ProCare Injury Specialists', phone: '2545550160', recordsEmail: 'records@procare.example',
         taxId: '74-2223334',
         locations: [
-          { label: 'Killeen', address: '2200 S WS Young Dr, Killeen, TX', phone: '(254) 555-0160' },
-          { label: 'Temple', address: '810 W Adams Ave, Temple, TX', phone: '(254) 555-0161' },
+          { label: 'Killeen', address: '2200 S WS Young Dr, Killeen, TX', phone: '2545550160' },
+          { label: 'Temple', address: '810 W Adams Ave, Temple, TX', phone: '2545550161' },
         ],
       },
       createdAt: t, updatedAt: t,
@@ -79,9 +79,9 @@ export function seedData(): {
     {
       id: 'p-hosp-ctrmc', partyType: 'providerBusiness', kind: 'organization', displayName: 'Central Texas Regional Medical Center',
       fields: {
-        name: 'Central Texas Regional Medical Center', phone: '(254) 555-0500',
+        name: 'Central Texas Regional Medical Center', phone: '2545550500',
         recordsEmail: 'him@ctrmc.example', taxId: '74-5556667',
-        locations: [{ label: 'Main campus', address: '3100 S 31st St, Temple, TX', phone: '(254) 555-0500' }],
+        locations: [{ label: 'Main campus', address: '3100 S 31st St, Temple, TX', phone: '2545550500' }],
       },
       createdAt: t, updatedAt: t,
     },
@@ -89,7 +89,7 @@ export function seedData(): {
       id: 'p-doc-nguyen', partyType: 'medicalProfessional', kind: 'individual', displayName: 'Alan Nguyen',
       fields: {
         firstName: 'Alan', lastName: 'Nguyen', specialty: 'Chiropractor', licenseNpi: '1780012345',
-        facilities: 'p-prov-procare', phone: '(254) 555-0160',
+        facilities: 'p-prov-procare', phone: '2545550160',
       },
       createdAt: t, updatedAt: t,
     },
@@ -115,13 +115,13 @@ export function seedData(): {
     },
     {
       id: 'p-rep-lozano', partyType: 'courtReporter', kind: 'individual', displayName: 'Angie Lozano',
-      fields: { firstName: 'Angie', lastName: 'Lozano', phone: '(254) 555-0130', preferred: true },
+      fields: { firstName: 'Angie', lastName: 'Lozano', phone: '2545550130', preferred: true },
       createdAt: t, updatedAt: t,
     },
     {
       id: 'p-wit-caldwell', partyType: 'person', kind: 'individual', displayName: 'Ray Caldwell',
       fields: {
-        firstName: 'Ray', lastName: 'Caldwell', phone: '(254) 555-0199',
+        firstName: 'Ray', lastName: 'Caldwell', phone: '2545550199',
         whoTheyAre: 'Eyewitness — was two cars behind the collision on SH 195.',
       },
       createdAt: t, updatedAt: t,

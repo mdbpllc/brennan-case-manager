@@ -6,11 +6,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { CaseRecord, PartyRecord } from '../domain/types';
 import type { AnalysisRun, BillType, FeeSchedule, GeneratedDocument, LegalRule, MedicalBill } from '../domain/billing';
-import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount } from '../domain/billing';
+import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount, settlementEligibleRuns } from '../domain/billing';
 import { computeAnalysis } from '../analysis/benchmark';
 import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
 import MarkdownLite from '../components/MarkdownLite';
+import { Combobox } from '../components/Combobox';
 
 function money(n: number | undefined): string {
   if (n === undefined) return '—';
@@ -70,8 +71,9 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const rollup = useMemo(() => {
     const billed = bills.reduce((s, b) => s + b.billedAmount, 0);
     const outstanding = bills.reduce((s, b) => s + outstandingAmount(b), 0);
+    const eligible = settlementEligibleRuns(runs); // newest first, confirmed only
     const confirmedRuns = bills
-      .map((b) => runs.find((r) => r.billId === b.id && r.status === 'confirmed'))
+      .map((b) => eligible.find((r) => r.billId === b.id))
       .filter((r): r is AnalysisRun => Boolean(r));
     const confBilled = confirmedRuns.reduce((s, r) => s + r.totals.confirmedBilled, 0);
     const confBench = confirmedRuns.reduce((s, r) => s + r.totals.confirmedBenchmark, 0);
@@ -262,10 +264,12 @@ function NewBillForm({ caseId, providers, onDone }: { caseId: string; providers:
         <input type="text" value={label} placeholder="e.g. ProCare — chiropractic care" onChange={(e) => setLabel(e.target.value)} />
       </label>
       <label className="fld"><span className="lab">Provider</span>
-        <select value={providerId} onChange={(e) => setProviderId(e.target.value)}>
-          <option value="">— (link provider party later)</option>
-          {providers.map((p) => <option key={p.id} value={p.id}>{p.displayName}</option>)}
-        </select>
+        <Combobox
+          options={providers.map((p) => ({ value: p.id, label: p.displayName }))}
+          value={providerId}
+          onChange={setProviderId}
+          placeholder="— (link provider party later)"
+        />
       </label>
       <label className="fld"><span className="lab">Type</span>
         <select value={billType} onChange={(e) => setBillType(Number(e.target.value) as BillType)}>
