@@ -102,6 +102,16 @@ to `docs/specs/`.
    attorney sign-off); a revised disclaimer bumps the version string, and
    every run/report already records which version it carried.
 
+### 2026-07-23 — Ch. 146 mischaracterized in specs (correction needed)
+
+**Where:** case-management-project-instructions.md (liens section: "Ch. 146 EOB balance-billing check: the patient-responsibility amount on the EOB is the maximum permissible lien") and any downstream references.
+
+**Problem:** (a) The statute is Civil Practice & Remedies Code Ch. 146, not Insurance Code Ch. 146. (b) It is a timely-billing statute: §146.002 sets billing deadlines (11-month default), §146.003 bars recovery from the patient of plan-covered/not-otherwise-owed amounts only when the provider blew the deadline. It is not an EOB-based lien ceiling. EOB-as-ceiling concepts belong to the surprise-billing framework (Ins. Code Ch. 1467 / SB 1264) — unverified, see registry Entry 8.
+
+**Also fold in:** (a) H.B. 4145 (eff. 9/1/2025) added §146.002(c-1): billing the PI claimant's attorney within the 11-month window satisfies the patient-billing deadline. (b) External draft asserts Prop. Code §55.004(d)(5) excludes §146.003-barred charges from hospital liens — if confirmed against Ch. 55 text, wire into the lien-clearance gate. (c) External draft asserts §55.004(b) has a third cap prong (trier-of-fact-specified amount less pro-rata fees) missing from the spec's two-prong formula — confirm against statute. (d) Spec's "naming plaintiff as liable party is a fatal defect" conflicts with external draft's substantial-compliance reading of §55.005 — Michael to resolve; affects pre-disbursement gate.
+
+**Status:** All corrections pending Michael's review; nothing changed in canonical spec yet. (Code-side note, same date: the seeded `ch146-eob-cap` registry proposition in `src/data/billingSeed.ts` carries the wrong framing too — deliberately left untouched pending the proposition-amendment workflow ruling in item 7(b) above.)
+
 ## Resolved
 
 - ~~Spec-list drift~~ — the conventions block's `docs/specs/` list was missing

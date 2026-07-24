@@ -69,7 +69,7 @@ coding sessions. The spec documents committed under `docs/specs/` are
   after billing 1a; Phase 2 two-way sync is backlogged
 - `outlook-email-intake.md` — EXPLORATORY only, no build commitment;
   HIPAA compliance is a first-class constraint when it activates
-- `legal-rule-registry-draft-entries.md` — design-space draft registry
+- `legal-rule-registry-draft-entries-medical-billing.md` — design-space draft registry
   entries on medical damages, billing, liens, and compelled exams (all
   UNVERIFIED; per-proposition source flags; Michael's sign-off checklist at
   the end). Supersedes-in-detail the nine short seeded propositions, but
