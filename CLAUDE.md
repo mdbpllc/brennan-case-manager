@@ -69,6 +69,12 @@ coding sessions. The spec documents committed under `docs/specs/` are
   after billing 1a; Phase 2 two-way sync is backlogged
 - `outlook-email-intake.md` — EXPLORATORY only, no build commitment;
   HIPAA compliance is a first-class constraint when it activates
+- `legal-rule-registry-draft-entries.md` — design-space draft registry
+  entries on medical damages, billing, liens, and compelled exams (all
+  UNVERIFIED; per-proposition source flags; Michael's sign-off checklist at
+  the end). Supersedes-in-detail the nine short seeded propositions, but
+  seeded proposition text is NOT to be rewritten from this doc until Michael
+  settles the proposition-amendment workflow (spec-feedback item 7)
 - `form-engine.md` — Forms & Document Automation Engine (fully specified
   2026-07-23; §9 variant library is Michael-approved VERBATIM — never
   rewrite it; no mental-health variant exists BY DESIGN, do not add one;
