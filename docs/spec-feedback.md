@@ -65,6 +65,16 @@ to `docs/specs/`.
      first-class), the paralegal-workflow flip at multi-user, and Phase 1b
      AI ingestion (an EOB is a parseable document once the GPU arm exists).
    Not sequenced into any build phase — capture only, per Michael.
+   **Multi-EOB requirement (added same walkthrough):** one bill routinely has
+   several EOBs — per-claim adjudication across a course of treatment,
+   primary + secondary coverage (COB), corrected/reprocessed EOBs, interim
+   hospital billing. Phase 1a's single light EOB record per bill handles this
+   as attorney-entered totals with a plural source pin ("EOBs dated 5/2,
+   5/30, 6/14 — sum of patient-responsibility boxes"); the Phase 2
+   reconciliation-audit design should model EOBs as multiple records per
+   bill (per claim, with payer role primary/secondary and a
+   supersedes/corrected link) rolling up to the bill-level figures the
+   Ch. 146 cap and settlement math consume.
 
 ## Resolved
 
