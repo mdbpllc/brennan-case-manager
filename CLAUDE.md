@@ -69,7 +69,7 @@ coding sessions. The spec documents committed under `docs/specs/` are
   after billing 1a; Phase 2 two-way sync is backlogged
 - `outlook-email-intake.md` — EXPLORATORY only, no build commitment;
   HIPAA compliance is a first-class constraint when it activates
-- `legal-rule-registry-courtlistener-integration.md` — CourtListener/FLP
+- `registry-courtlistener-integration-design.md` — CourtListener/FLP
   citation-graph integration design (2026-07-24): alert/API/MCP layers for
   citation-currency flags and cite validation. NOT built; sequencing awaits
   Michael (its §6). Governing principle: automation flags, only Michael
