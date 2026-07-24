@@ -92,6 +92,16 @@ to `docs/specs/`.
    propositions changing silently would orphan past runs' version stamps.
    Interim: Michael can carry the qualification in the rule's Notes field.
 
+8. **Disclaimer authority research (Michael, 2026-07-23 walkthrough).** The
+   estimates-not-adjudication disclaimer wording is approved as v1
+   (`DISCLAIMER_VERSION = v1-2026-07-23`), but Michael wants a later pass to
+   find on-point legal authority informing the language — what the
+   disclaimer should say (and avoid saying) given how benchmark analyses
+   could surface in discovery, §18.001 practice, or a reasonableness fight.
+   Any authority found goes through the registry (entered unverified,
+   attorney sign-off); a revised disclaimer bumps the version string, and
+   every run/report already records which version it carried.
+
 ## Resolved
 
 - ~~Spec-list drift~~ — the conventions block's `docs/specs/` list was missing

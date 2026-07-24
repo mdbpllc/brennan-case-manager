@@ -260,7 +260,10 @@ export interface GeneratedDocument {
 /** Single-user phase: every review-log/confirmation attribution is the attorney. */
 export const ATTORNEY_USER = 'Michael Brennan (attorney)';
 
-export const DISCLAIMER_VERSION = 'v1-draft-2026-07-22';
+/** v1 wording approved by Michael 2026-07-23 (Phase 1a walkthrough). Open task
+ *  (spec-feedback item 8): research on-point legal authority to inform the
+ *  language; a future authority-grounded revision bumps this version. */
+export const DISCLAIMER_VERSION = 'v1-2026-07-23';
 
 /** Shown on every analysis screen and stamped on every generated report (guardrail 1). */
 export const DISCLAIMER_TEXT =
