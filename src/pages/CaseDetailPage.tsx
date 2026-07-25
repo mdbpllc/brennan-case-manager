@@ -122,7 +122,8 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
         <dl className="kv">
           <dt>File number</dt><dd><strong>{rec.fileNumber}</strong></dd>
           <dt>Status</dt><dd><span className="badge status">{rec.status}</span></dd>
-          <dt>Caption</dt><dd>{rec.caption || <span className="empty">—</span>}</dd>
+          {/* "Style" is the Texas term of art — the field stays `caption` in the data model. */}
+          <dt>Style</dt><dd>{rec.caption || <span className="empty">—</span>}</dd>
           <dt>Date of incident</dt><dd>{rec.dateOfIncident || <span className="empty">—</span>}</dd>
           <dt>Date opened</dt><dd>{rec.dateOpened}</dd>
           <dt>Statute of limitations</dt><dd>{rec.statuteOfLimitations || <span className="empty">—</span>}</dd>
@@ -148,7 +149,7 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
       <h3>Edit overview</h3>
       <div className="form-grid">
         <label className="fld full">
-          <span className="lab">Caption</span>
+          <span className="lab">Style</span>
           <input type="text" value={draft.caption ?? ''} onChange={(e) => setDraft({ ...draft, caption: e.target.value })} />
         </label>
         <label className="fld">

@@ -105,6 +105,10 @@ export interface RegistryStamp {
   ruleKey: string;
   version: number;
   status: LegalRuleStatus;
+  /** Whether this bill's analysis actually touches the proposition (off claim
+   *  type, bill type, emergency-care signals). Absent on pre-2026-07-25 runs;
+   *  reports split implicated from general-background entries on it. */
+  implicated?: boolean;
 }
 
 export interface AnalysisRunTotals {
@@ -121,6 +125,10 @@ export interface AnalysisRunTotals {
   matchedLineCount: number;
   scenarioLineCount: number;
   unanalyzedLineCount: number;
+  /** Billed dollars sitting outside every ratio (no CPT or no rate) — disclosed
+   *  next to the headline so the denominator's exclusions are visible. Absent
+   *  on pre-2026-07-25 runs. */
+  unanalyzedBilled?: number;
 }
 
 export interface AnalysisRun {

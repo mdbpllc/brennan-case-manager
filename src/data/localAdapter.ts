@@ -61,15 +61,32 @@ interface Store {
   billRefs: BillStatuteRef[];
 }
 
+/** Attorney work that must survive a version-bump reseed (go-live gate 8,
+ *  third clause — the v7→v9 bump silently wiped a real PFS import and the
+ *  confirmed runs on two bills). Imported (non-demo) fee schedules, their
+ *  rates, and confirmed analysis runs with their result lines carry forward. */
+function carryForward(old: Partial<Store>) {
+  const feeSchedules = (old.feeSchedules ?? []).filter((s) => s.sourceType !== 'demo');
+  const scheduleIds = new Set(feeSchedules.map((s) => s.id));
+  const feeRates = (old.feeRates ?? []).filter((r) => scheduleIds.has(r.scheduleId));
+  const runs = (old.runs ?? []).filter((r) => r.status === 'confirmed');
+  const runIds = new Set(runs.map((r) => r.id));
+  const resultLines = (old.resultLines ?? []).filter((rl) => runIds.has(rl.runId));
+  return { feeSchedules, feeRates, runs, resultLines };
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
+  let old: Partial<Store> | null = null;
   if (raw) {
     try {
       const parsed = JSON.parse(raw) as Store;
       if (parsed.version === STORE_VERSION) return parsed;
-      // version mismatch (or pre-versioning store) — fall through to reseed
+      // version mismatch (or pre-versioning store) — reseed, but never
+      // silently: back up the whole old store and carry attorney work forward.
+      old = parsed;
     } catch {
-      // fall through to seed
+      // unparseable — fall through to seed; nothing recoverable to carry
     }
   }
   const seeded: Store = {
@@ -80,6 +97,31 @@ function load(): Store {
     trackedBills: [], billRefs: [],
     ...seedData(),
   };
+  if (old && raw) {
+    const backupKey = `${KEY}-backup-v${old.version ?? 0}`;
+    localStorage.setItem(backupKey, raw);
+    const carried = carryForward(old);
+    if (carried.feeSchedules.length > 0) {
+      // A real schedule exists — do not re-seed the demo schedule under it
+      // (2026-07-25 walkthrough: demo's common PI codes shadowed real data).
+      const demoIds = new Set(seeded.feeSchedules.filter((s) => s.sourceType === 'demo').map((s) => s.id));
+      seeded.feeSchedules = seeded.feeSchedules.filter((s) => !demoIds.has(s.id));
+      seeded.feeRates = seeded.feeRates.filter((r) => !demoIds.has(r.scheduleId));
+    }
+    seeded.feeSchedules.push(...carried.feeSchedules);
+    seeded.feeRates.push(...carried.feeRates);
+    seeded.runs.push(...carried.runs);
+    seeded.resultLines.push(...carried.resultLines);
+    const summary =
+      `Store reseeded v${old.version ?? '<pre-versioning>'}→v${STORE_VERSION}. Carried forward: ` +
+      `${carried.feeSchedules.length} imported fee schedule(s) (${carried.feeRates.length} rates), ` +
+      `${carried.runs.length} confirmed analysis run(s). Full pre-reseed backup at localStorage key "${backupKey}".`;
+    seeded.reviewLog.push({
+      id: uid(), entityType: 'demo_store', entityId: KEY, action: 'created',
+      user: 'system (store reseed)', timestamp: now(), reason: summary,
+    });
+    console.warn(summary);
+  }
   localStorage.setItem(KEY, JSON.stringify(seeded));
   return seeded;
 }

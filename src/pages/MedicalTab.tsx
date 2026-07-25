@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import type { CaseRecord, PartyRecord } from '../domain/types';
 import type { AnalysisRun, BillType, FeeSchedule, GeneratedDocument, LegalRule, MedicalBill } from '../domain/billing';
 import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount, settlementEligibleRuns } from '../domain/billing';
-import { computeAnalysis } from '../analysis/benchmark';
+import { computeAnalysis, runScheduleSelection } from '../analysis/benchmark';
 import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
 import MarkdownLite from '../components/MarkdownLite';
@@ -152,6 +152,9 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
                         <span className={`badge run-${run.status}`}>{run.status}</span>{' '}
                         {(staleness.get(run.id) ?? []).length > 0 && (
                           <span className="badge run-stale" title={staleness.get(run.id)!.join(' ')}>stale</span>
+                        )}{' '}
+                        {runScheduleSelection(run)?.demoUsed && (
+                          <span className="badge src-demo" title="Computed against the seeded demo schedule (fictional rates) — placeholder only.">DEMO schedule</span>
                         )}{' '}
                         {run.totals.confirmedRatio !== undefined && <span className="small">{run.totals.confirmedRatio.toFixed(2)}× benchmark</span>}
                       </>

@@ -18,7 +18,7 @@ import {
 import { rankByTrigram } from '../analysis/trigram';
 import { runCodingAudit } from '../analysis/codingAudit';
 import { detectClaimType } from '../analysis/claimType';
-import { computeAnalysis } from '../analysis/benchmark';
+import { computeAnalysis, runScheduleSelection } from '../analysis/benchmark';
 import { renderReasonableValueReport } from '../analysis/report';
 import { runStalenessReasons } from '../analysis/staleness';
 import { recomputeProviderProfile } from '../analysis/providerProfile';
@@ -653,6 +653,8 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
   const [resultLines, setResultLines] = useState<Record<string, AnalysisResultLine[]>>({});
   const [busy, setBusy] = useState(false);
   const [generatedDoc, setGeneratedDoc] = useState<GeneratedDocument | null>(null);
+  /** 'auto' = engine prefers imported/public schedules over demo; otherwise a schedule id. */
+  const [scheduleChoice, setScheduleChoice] = useState('auto');
 
   /** run id → why its inputs changed since it ran (empty = current). */
   const staleness = useMemo(() => {
@@ -676,13 +678,16 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
     try {
       const [schedules, rules] = await Promise.all([db.listFeeSchedules(), db.listLegalRules()]);
       const rates = await db.listRates(schedules.map((s) => s.id));
+      const selectedScheduleId = scheduleChoice === 'auto' ? undefined : scheduleChoice;
       const { run, resultLines: rls } = computeAnalysis({
         bill, lines, schedules, rates, registryRules: rules, makeId: () => crypto.randomUUID(),
+        selectedScheduleId,
       });
+      const sel = runScheduleSelection(run);
       await db.createRun(run, rls);
       await db.appendReviewLog({
         entityType: 'analysis_run', entityId: run.id, action: 'created', user: ATTORNEY_USER,
-        newValue: `provisional run — confirmed ratio ${run.totals.confirmedRatio?.toFixed(2) ?? 'n/a'}`,
+        newValue: `provisional run — confirmed ratio ${run.totals.confirmedRatio?.toFixed(2) ?? 'n/a'} against ${sel?.usedScheduleNames.join(' + ') || 'no schedule'} (${sel?.mode === 'attorney' ? 'attorney-selected' : 'auto-selected'})`,
       });
       onChanged();
     } finally {
@@ -708,7 +713,7 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
       const findings = runCodingAudit(lines);
       const { title, content } = renderReasonableValueReport({
         bill, providerName, caseLabel: `${caseRec.fileNumber} — ${caseRec.caption || caseRec.caseType}`,
-        lines, run, resultLines: rls, auditFindings: findings, registryRules: rules,
+        lines, run, resultLines: rls, auditFindings: findings, registryRules: rules, schedules,
       });
       const doc = await db.createDocument({
         caseId: caseRec.id, runId: run.id, docType: 'reasonable-value-report',
@@ -728,18 +733,31 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
 
   return (
     <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8, flexWrap: 'wrap' }}>
         <h3>Benchmark analysis</h3>
-        <button className="btn small" disabled={busy || lines.length === 0} onClick={runAnalysis}>
-          {busy ? 'Working…' : 'Run analysis'}
-        </button>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <label className="small muted" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            Schedule:
+            <select value={scheduleChoice} onChange={(e) => setScheduleChoice(e.target.value)}>
+              <option value="auto">Auto — prefer imported over demo</option>
+              {schedules.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}{s.sourceType === 'demo' ? ' (DEMO — fictional rates)' : ''}</option>
+              ))}
+            </select>
+          </label>
+          <button className="btn small" disabled={busy || lines.length === 0} onClick={runAnalysis}>
+            {busy ? 'Working…' : 'Run analysis'}
+          </button>
+        </div>
       </div>
       <p className="small muted" style={{ margin: '0 0 10px' }}>
-        Each run compares what the provider billed against what the loaded fee schedule (e.g. Medicare)
+        Each run compares what the provider billed against what the chosen fee schedule (e.g. Medicare)
         would pay for the same services. A <strong>confirmed ratio</strong> of 3.35× means the provider
         billed 3.35 times the benchmark — it counts only lines whose CPT code the attorney has confirmed,
         and it is the number reports lead with. The <strong>scenario ratio</strong> is a preview that also
-        counts unconfirmed suggested codes; it never feeds anything. The lines column shows how many lines
+        counts unconfirmed suggested codes; it never feeds anything — and because unconfirmed lines can
+        price at higher or lower multiples than the confirmed ones, it can land either above or below the
+        confirmed ratio. The lines column shows how many lines
         were ✓ counted / ? preview-only / – not analyzed (no code, or no rate in the schedule). Every run
         starts <strong>provisional</strong>; pressing "Confirm run" is the attorney's sign-off, and only
         confirmed runs may feed settlement or lien math.
@@ -749,11 +767,22 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
         <tbody>
           {runs.map((run) => (
             <tr key={run.id}>
-              <td className="muted small">{new Date(run.runDate).toLocaleString()}</td>
+              <td className="muted small">
+                {new Date(run.runDate).toLocaleString()}
+                {(() => {
+                  const sel = runScheduleSelection(run);
+                  return sel && sel.usedScheduleNames.length > 0
+                    ? <div className="small">vs {sel.usedScheduleNames.join(' + ')}</div>
+                    : null;
+                })()}
+              </td>
               <td>
                 <span className={`badge run-${run.status}`}>{run.status}</span>{' '}
                 {(staleness.get(run.id) ?? []).length > 0 && (
                   <span className="badge run-stale" title={staleness.get(run.id)!.join(' ')}>stale</span>
+                )}
+                {runScheduleSelection(run)?.demoUsed && (
+                  <span className="badge src-demo" title="Computed against the seeded demo schedule (fictional rates) — placeholder only.">DEMO schedule</span>
                 )}
                 {run.status === 'confirmed' && run.reviewer && <div className="small muted">{run.reviewer}</div>}
               </td>
@@ -770,6 +799,14 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
           {runs.length === 0 && <tr><td colSpan={6} className="muted">No analysis runs yet.</td></tr>}
         </tbody>
       </table>
+
+      {latestRun && runScheduleSelection(latestRun)?.demoUsed && (
+        <div className="notice" style={{ marginTop: 10 }}>
+          <strong>Placeholder benchmark — demo schedule.</strong> The latest run priced lines against the
+          seeded DEMO schedule (fictional rates, not Medicare data). No ratio from it is usable — import a
+          real schedule on the Benchmarks page, or pick one in the Schedule selector, and re-run.
+        </div>
+      )}
 
       {latestStaleReasons.length > 0 && (
         <div className="notice" style={{ marginTop: 10 }}>
