@@ -16,6 +16,17 @@ import type {
   ProviderBillingProfile,
 } from '../domain/billing';
 
+/** Shared runtime guard for updateParty: both adapters throw on a patch key
+ *  outside the mutable set instead of one applying it and the other silently
+ *  dropping it (2026-07-21 audit item 9 — divergent adapter behaviour defeats
+ *  the point of the seam). */
+export function assertPartyPatchKeys(patch: Record<string, unknown>): void {
+  const extra = Object.keys(patch).filter((k) => k !== 'displayName' && k !== 'fields');
+  if (extra.length > 0) {
+    throw new Error(`updateParty: unsupported patch key(s) ${extra.join(', ')} — only displayName and fields are mutable (party type/kind are frozen at creation)`);
+  }
+}
+
 /**
  * Data-access interface. Two implementations:
  *  - LocalAdapter: browser localStorage, seeded demo data — zero setup, default.

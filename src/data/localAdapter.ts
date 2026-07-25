@@ -1,4 +1,4 @@
-import type { DataAdapter } from './adapter';
+import { assertPartyPatchKeys, type DataAdapter } from './adapter';
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
@@ -205,6 +205,7 @@ export class LocalAdapter implements DataAdapter {
   }
 
   async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
+    assertPartyPatchKeys(patch);
     const store = load();
     const idx = store.parties.findIndex((p) => p.id === id);
     if (idx === -1) throw new Error('Party not found');

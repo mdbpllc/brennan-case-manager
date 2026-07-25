@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { DataAdapter } from './adapter';
+import { assertPartyPatchKeys, type DataAdapter } from './adapter';
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
@@ -203,6 +203,7 @@ export class SupabaseAdapter implements DataAdapter {
   }
 
   async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
+    assertPartyPatchKeys(patch);
     const row: Record<string, unknown> = {};
     if (patch.displayName !== undefined) row.display_name = patch.displayName;
     if (patch.fields !== undefined) row.fields = patch.fields;

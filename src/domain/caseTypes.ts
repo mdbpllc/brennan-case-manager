@@ -1,33 +1,46 @@
 // Practice Areas -> Case Types (SETTLED — project instructions §7)
 import type { PracticeArea, PiFlag } from './types';
 
-export const CASE_TYPES: Record<PracticeArea, string[]> = {
+export type LadderKey = '_piDefault' | '_civilDefault' | '_criminalDefault' | '_reliefDefault';
+
+/** Each case type declares its status ladder here — assignment by declaration,
+ *  not by name-matching, so a missing mapping fails loudly in statusesFor()
+ *  instead of silently falling through to a wrong-but-plausible ladder
+ *  (2026-07-21 audit item 4). */
+export const CASE_TYPE_DEFS: Record<PracticeArea, { name: string; ladder: LadderKey }[]> = {
   'Personal Injury': [
-    'Motor vehicle collision',
-    'Premises',
-    'Assault',
-    'Non-subscriber workplace',
-    'TTCA — Motor Vehicle',
-    'TTCA — Premises',
-    'Dangerous animal',
-    'Probate companion',
+    { name: 'Motor vehicle collision', ladder: '_piDefault' },
+    { name: 'Premises', ladder: '_piDefault' },
+    { name: 'Assault', ladder: '_piDefault' },
+    { name: 'Non-subscriber workplace', ladder: '_piDefault' },
+    { name: 'TTCA — Motor Vehicle', ladder: '_piDefault' },
+    { name: 'TTCA — Premises', ladder: '_piDefault' },
+    { name: 'Dangerous animal', ladder: '_piDefault' },
+    // Inherits the PI litigation ladder, which doesn't fit its arc — a settled
+    // probate ladder is a pending design pass (docs/spec-feedback.md item 1).
+    { name: 'Probate companion', ladder: '_piDefault' },
   ],
   'General Civil Litigation': [
-    'Debt',
-    'DTPA',
-    "Mechanic's lien",
-    "Servpro mechanic's lien",
-    'Bailment',
-    'Breach of contract',
+    { name: 'Debt', ladder: '_civilDefault' },
+    { name: 'DTPA', ladder: '_civilDefault' },
+    { name: "Mechanic's lien", ladder: '_civilDefault' },
+    { name: "Servpro mechanic's lien", ladder: '_civilDefault' },
+    { name: 'Bailment', ladder: '_civilDefault' },
+    { name: 'Breach of contract', ladder: '_civilDefault' },
   ],
   Criminal: [
-    'Misdemeanor',
-    'Felony',
-    'Expunction',
-    'Order for non-disclosure',
-    'Motion for judicial clemency',
+    { name: 'Misdemeanor', ladder: '_criminalDefault' },
+    { name: 'Felony', ladder: '_criminalDefault' },
+    { name: 'Expunction', ladder: '_reliefDefault' },
+    { name: 'Order for non-disclosure', ladder: '_reliefDefault' },
+    { name: 'Motion for judicial clemency', ladder: '_reliefDefault' },
   ],
 };
+
+/** Names only — the shape most pickers want. */
+export const CASE_TYPES: Record<PracticeArea, string[]> = Object.fromEntries(
+  (Object.keys(CASE_TYPE_DEFS) as PracticeArea[]).map((pa) => [pa, CASE_TYPE_DEFS[pa].map((d) => d.name)]),
+) as Record<PracticeArea, string[]>;
 
 export const PI_FLAGS: PiFlag[] = [
   'UM/UIM (first-party)',
@@ -103,16 +116,15 @@ export const STATUSES: Record<string, string[]> = {
   ],
 };
 
-/** Criminal case types that follow the record-clearing/relief ladder rather than the trial ladder. */
-const RELIEF_CASE_TYPES = new Set(['Expunction', 'Order for non-disclosure', 'Motion for judicial clemency']);
-
 export function statusesFor(practiceArea: PracticeArea, caseType: string): string[] {
-  // NOTE: Probate companion currently inherits the PI litigation ladder, which
-  // doesn't fit it — flagged in docs/spec-feedback.md for a settled ladder.
-  if (practiceArea === 'Personal Injury') return STATUSES._piDefault;
-  if (practiceArea === 'General Civil Litigation') return STATUSES._civilDefault;
-  if (RELIEF_CASE_TYPES.has(caseType)) return STATUSES._reliefDefault;
-  return STATUSES._criminalDefault;
+  const def = CASE_TYPE_DEFS[practiceArea]?.find((d) => d.name === caseType);
+  if (!def) {
+    throw new Error(
+      `No status ladder declared for case type "${caseType}" under ${practiceArea} — ` +
+      `add it to CASE_TYPE_DEFS in src/domain/caseTypes.ts (a renamed or removed type must not silently get another ladder).`,
+    );
+  }
+  return STATUSES[def.ladder];
 }
 
 /** Terminal status. Single source of truth so list filters don't string-match ad hoc. */

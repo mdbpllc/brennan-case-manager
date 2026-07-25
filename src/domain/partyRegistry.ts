@@ -108,7 +108,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
         ],
       },
       {
-        key: 'priorFalls', label: 'Prior falls', type: 'repeating',
+        key: 'priorFalls', label: 'Prior falls', type: 'repeating', itemLabel: 'prior fall',
         subFields: [
           { key: 'date', label: 'Date', type: 'date' },
           { key: 'detail', label: 'Details', type: 'text' },
@@ -219,7 +219,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'taxId', label: 'Billing / tax ID number', type: 'text', hint: 'Appears on affidavits/payments' },
       { key: 'registeredAgent', label: 'Registered agent', type: 'textarea' },
       {
-        key: 'locations', label: 'Locations', type: 'repeating',
+        key: 'locations', label: 'Locations', type: 'repeating', itemLabel: 'location',
         subFields: [
           { key: 'label', label: 'Short label', type: 'text', hint: 'e.g. "south side"' },
           { key: 'address', label: 'Physical address', type: 'text' },
@@ -237,7 +237,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       ...CONTACT,
       { key: 'employer', label: 'Firm / employer', type: 'partyLink', linkTypes: ['business', 'lawFirm', 'providerBusiness'] },
       {
-        key: 'priorChallenges', label: 'Prior challenges / exclusions', type: 'repeating',
+        key: 'priorChallenges', label: 'Prior challenges / exclusions', type: 'repeating', itemLabel: 'challenge / exclusion',
         subFields: [
           { key: 'court', label: 'Court', type: 'text' },
           { key: 'caseName', label: 'Case', type: 'text' },
@@ -299,7 +299,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'clerkInfo', label: 'Clerk’s office contact & filing details', type: 'textarea' },
       { key: 'localRules', label: 'Standing orders / local rules (link or note)', type: 'textarea' },
       {
-        key: 'filingProfiles', label: 'Filing profiles', type: 'repeating',
+        key: 'filingProfiles', label: 'Filing profiles', type: 'repeating', itemLabel: 'filing profile',
         subFields: [
           { key: 'clerk', label: 'Clerk', type: 'select', options: ['District clerk', 'County clerk'] },
           { key: 'docket', label: 'Docket type', type: 'select', options: ['District civil', 'District criminal', 'County civil', 'County criminal'] },

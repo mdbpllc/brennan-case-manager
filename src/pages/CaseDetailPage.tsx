@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, RepresentationType } from '../domain/types';
+import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType } from '../domain/types';
 import type { Charge } from '../domain/oaa';
 import { CASE_ROLES, SIDES } from '../domain/types';
-import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
+import { CASE_TYPES, PI_FLAGS, statusesFor } from '../domain/caseTypes';
+import { ATTORNEY_USER } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
 import { Combobox } from '../components/Combobox';
@@ -81,16 +82,36 @@ export default function CaseDetailPage() {
 
 /* ================= OVERVIEW ================= */
 
+/** statusesFor throws on an undeclared type (by design — fail loudly, audit
+ *  item 4); the UI surfaces that as a warning instead of a blank page. */
+function statusesOrNull(practiceArea: PracticeArea, caseType: string): string[] | null {
+  try { return statusesFor(practiceArea, caseType); } catch { return null; }
+}
+
+/** The classification fields that drive playbooks and deadlines — edits to
+ *  these are review-logged and flagged for playbook re-evaluation. */
+function classificationOf(c: CaseRecord) {
+  return {
+    practiceArea: c.practiceArea, caseType: c.caseType, piFlags: [...c.piFlags].sort(),
+    commercialPolicyInvolved: c.commercialPolicyInvolved ?? false,
+    representationType: c.representationType,
+  };
+}
+
 function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRecord) => void }) {
-  const statuses = statusesFor(rec.practiceArea, rec.caseType);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(rec);
+  const [reclassNotice, setReclassNotice] = useState<string | null>(null);
 
   useEffect(() => setDraft(rec), [rec]);
 
-  const isPI = rec.practiceArea === 'Personal Injury';
-  const isMVC = isPI && rec.caseType === 'Motor vehicle collision';
-  const isCriminal = rec.practiceArea === 'Criminal';
+  // Conditional sections follow the DRAFT while editing, so switching
+  // classification immediately shows the right flag controls.
+  const isPI = draft.practiceArea === 'Personal Injury';
+  const isMVC = isPI && draft.caseType === 'Motor vehicle collision';
+  const isCriminal = draft.practiceArea === 'Criminal';
+  const statuses = statusesOrNull(draft.practiceArea, draft.caseType);
+  const typeUnpicked = !CASE_TYPES[draft.practiceArea].includes(draft.caseType);
 
   const toggleFlag = (f: PiFlag) =>
     setDraft((d) => ({
@@ -98,16 +119,34 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
       piFlags: d.piFlags.includes(f) ? d.piFlags.filter((x) => x !== f) : [...d.piFlags, f],
     }));
 
+  const setArea = (pa: PracticeArea) =>
+    // Case type must be re-picked from the new area's list — no silent carry-over.
+    setDraft((d) => ({ ...d, practiceArea: pa, caseType: pa === rec.practiceArea ? rec.caseType : '' }));
+
   const save = async () => {
     const updated = await db.updateCase(rec.id, {
       caption: draft.caption, status: draft.status, dateOfIncident: draft.dateOfIncident,
       dateOpened: draft.dateOpened, statuteOfLimitations: draft.statuteOfLimitations,
       dateClosed: draft.dateClosed, courtName: draft.courtName, causeNumber: draft.causeNumber,
       notes: draft.notes, legacyRef: draft.legacyRef,
-      piFlags: draft.piFlags,
-      commercialPolicyInvolved: isMVC ? draft.commercialPolicyInvolved ?? false : draft.commercialPolicyInvolved,
-      representationType: draft.representationType,
+      practiceArea: draft.practiceArea, caseType: draft.caseType,
+      piFlags: isPI ? draft.piFlags : [],
+      commercialPolicyInvolved: isMVC ? draft.commercialPolicyInvolved ?? false : undefined,
+      representationType: isCriminal ? draft.representationType : undefined,
     });
+    const before = classificationOf(rec);
+    const after = classificationOf(updated);
+    if (JSON.stringify(before) !== JSON.stringify(after)) {
+      await db.appendReviewLog({
+        entityType: 'case_record', entityId: rec.id, action: 'edited', user: ATTORNEY_USER,
+        reason: 'Case classification changed (attorney)',
+        oldValue: JSON.stringify(before), newValue: JSON.stringify(after),
+      });
+      setReclassNotice(
+        'Classification or flags changed. Playbooks and deadline clocks key off these fields — ' +
+        're-evaluate which playbooks apply (automatic re-evaluation arrives with the playbook engine).',
+      );
+    }
     onChange(updated);
     setEditing(false);
   };
@@ -119,6 +158,13 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <h3>Case overview</h3>
           <button className="btn small secondary" onClick={() => setEditing(true)}>Edit</button>
         </div>
+        {reclassNotice && <div className="notice" style={{ marginBottom: 10 }}>{reclassNotice}</div>}
+        {statusesOrNull(rec.practiceArea, rec.caseType) === null && (
+          <div className="notice" style={{ marginBottom: 10 }}>
+            <strong>Unknown case type.</strong> "{rec.caseType}" has no declared status ladder — it may have
+            been renamed. Edit the case and pick a current case type; the status list is unavailable until then.
+          </div>
+        )}
         <dl className="kv">
           <dt>File number</dt><dd><strong>{rec.fileNumber}</strong></dd>
           <dt>Status</dt><dd><span className="badge status">{rec.status}</span></dd>
@@ -153,10 +199,23 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <input type="text" value={draft.caption ?? ''} onChange={(e) => setDraft({ ...draft, caption: e.target.value })} />
         </label>
         <label className="fld">
+          <span className="lab">Practice area</span>
+          <select value={draft.practiceArea} onChange={(e) => setArea(e.target.value as PracticeArea)}>
+            {(Object.keys(CASE_TYPES) as PracticeArea[]).map((pa) => <option key={pa} value={pa}>{pa}</option>)}
+          </select>
+        </label>
+        <label className="fld">
+          <span className="lab">Case type</span>
+          <select value={typeUnpicked ? '' : draft.caseType} onChange={(e) => setDraft({ ...draft, caseType: e.target.value })}>
+            {typeUnpicked && <option value="">— pick a case type —</option>}
+            {CASE_TYPES[draft.practiceArea].map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </label>
+        <label className="fld">
           <span className="lab">Status</span>
-          <select value={draft.status} onChange={(e) => setDraft({ ...draft, status: e.target.value })}>
-            {statuses.map((s) => <option key={s} value={s}>{s}</option>)}
-            {!statuses.includes(draft.status) && <option value={draft.status}>{draft.status}</option>}
+          <select value={draft.status} onChange={(e) => setDraft({ ...draft, status: e.target.value })} disabled={!statuses}>
+            {(statuses ?? []).map((s) => <option key={s} value={s}>{s}</option>)}
+            {(!statuses || !statuses.includes(draft.status)) && <option value={draft.status}>{draft.status}</option>}
           </select>
         </label>
         <label className="fld">
@@ -231,12 +290,24 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
         </div>
       )}
 
+      {classificationChanged(rec, draft) && (
+        <div className="notice" style={{ marginTop: 14 }}>
+          Classification or flags are changing. Playbooks open off case type + overlay flags, and deadline
+          clocks come from the playbooks — saving will log the change and the case should be re-evaluated
+          against the playbook list.
+        </div>
+      )}
+
       <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
-        <button className="btn" onClick={save}>Save</button>
+        <button className="btn" onClick={save} disabled={typeUnpicked} title={typeUnpicked ? 'Pick a case type for the new practice area first' : undefined}>Save</button>
         <button className="btn secondary" onClick={() => { setDraft(rec); setEditing(false); }}>Cancel</button>
       </div>
     </div>
   );
+}
+
+function classificationChanged(a: CaseRecord, b: CaseRecord): boolean {
+  return JSON.stringify(classificationOf(a)) !== JSON.stringify(classificationOf(b));
 }
 
 /* ================= CHARGES (criminal) ================= */
