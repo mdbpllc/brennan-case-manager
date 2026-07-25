@@ -11,6 +11,26 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (§10 decisions made; pilot fixtures wired; Office notes built — Code session)
+
+**What happened (same Claude Code session as the T1/T2 build entry below):** Michael walked the design doc's §10 decision list one-by-one, then handed over the Phase 0 recordings.
+
+**Decisions (Michael, 2026-07-25):**
+- **O1 — D1 CONFIRMED:** confirm-only in v1; auto-file revisited only when the routing-decision log shows real precision. (The one pending veto is now closed.)
+- **O2 — P1 OS: Windows + WSL2** (familiar Windows PC on top, pipeline in the Linux layer; affects T3 setup docs only).
+- **O3 — Not-case-related recordings → personal store.** Built this sitting: Office notes nav page (searchable, kept-never-discarded), `officeNote` flag on transcripts, record page works caseless at /notes/:id. The inbox's "Not case-related" now files there.
+- **O4 — Phone→PC channel: stay manual** until the Tascam/P1 arrive and real phone volume exists.
+
+**Pilot fixtures (design's T2 requirement, closed):** Michael provided `phase0-test-recordings.zip` — 13 recordings, both transcript JSONs (Parakeet int8/CPU floor), ground-truth scripts, scorecard, findings. All fictional (verified). Audio + docs archived at `..\data\pilot-recordings\` (provenance README; outside repo per convention); transcripts committed as fixtures under `src/routing/__tests__/pilot/` with the fictional universe rebuilt from the scripts. **All 13 recordings behave as the design predicts — 43 tests green** — including "the Jester for Stot on the Hernandez matter" routing to Hernandez at high confidence and script 2's eaten-opening take still landing on Ramirez via the fuzzy claim number. Engine addition: optional known-identifiers list (claim numbers live outside the case record). One build stumble caught and fixed: the first fixture commit (`f46d7b4`) type-errored under tsc; fixed in `9a54237` (JSON imports via resolveJsonModule), exit codes checked explicitly since.
+
+**Spec-feedback item added (cosmetic):** the design doc's §4 example cell cites rec_10's "twenty twenty five CI zero four nine six two" as matching 2025-CI-08841 — actually distance 4, outside the doc's own ≤2 threshold; mechanism validated by the other recordings. Design space to fix the cell on next revision.
+
+**Verification caveat:** the Office-notes click-through couldn't be re-verified in-browser late in the session (the in-app browser stops accepting synthetic clicks while its pane is hidden); page rendering verified, build/lint/tests green, and the wiring pattern is identical to the click-verified confirm flow. Michael: two-second check — mark the "note for later" inbox item Not case-related and see it appear under Office notes.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything in the probate and T1/T2 entries below, plus spec-feedback's new 2026-07-25 item and this entry.
+
 ## 2026-07-24 (late — probate practice area routed to design space — Code session)
 
 **What happened (Claude Code session):** Michael assembled his Texas probate practice materials — a probate-assistant system prompt (v1.0) plus its knowledge corpus (~1.8 MB: James Publishing *Texas Probate Forms & Procedures* chapters, Dorsaneo *Texas Litigation Guide* Unit IX, and active-matter documents for a standalone decedent's-estate matter). Purpose clarified: these are inputs for **building probate into the case management software as a practice area**; the matter itself is worked in the design space, not here. No code written.

@@ -186,3 +186,8 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
   MRF fixture): `..\data\` — currently `..\data\pfs\` holds the 2026 Medicare
   PFS extract for TX Rest of State (locality 0441299) plus a provenance
   README (source files, method, license note). Import via the Benchmarks page.
+  `..\data\pilot-recordings\` holds the Phase 0 pilot audio + findings docs
+  (all fictional content); the transcript JSONs are also committed at
+  src/routing/__tests__/pilot/ as routing-engine fixtures. When the P1
+  arrives, re-run the audio on full-precision NeMo and diff against those
+  JSONs to measure the gain.

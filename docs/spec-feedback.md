@@ -154,6 +154,14 @@ to `docs/specs/`.
 
 **Status:** All corrections pending Michael's review; nothing changed in canonical spec yet. (Code-side note, same date: the seeded `ch146-eob-cap` registry proposition in `src/data/billingSeed.ts` carries the wrong framing too — deliberately left untouched pending the proposition-amendment workflow ruling in item 7(b) above.)
 
+### 2026-07-25 — Design doc §4 example cell overstates a pilot result (cosmetic)
+
+**Where:** transcript-sort-and-route-design.md §4, signal table, cause/claim-number row: `"twenty twenty five CI zero four nine six two" → 2025-CI-08841`.
+
+**Problem:** That spoken string normalizes to 2025-CI-04962, which is edit distance 4 from 2025-CI-08841 — outside the design's own ≤2 threshold, and rec_10 (unscripted, ground truth unknown) shouldn't be cited as a successful match. The MECHANISM is validated by the other pilot data (script 1's cause number came through perfectly; the claim number "Harty three eight eight one two K seven nine" matches 43-8812-K79 at distance 1), and the committed pilot-fixture tests encode rec_10 as correctly matching nothing. Design space should fix the cell on the next spec revision — no behavior change requested.
+
+**Status:** Cosmetic; build follows the ≤2 threshold as written.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
