@@ -1,6 +1,10 @@
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type { CalendarEvent } from '../domain/calendar';
 import type {
+  Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
+  GlossaryTerm, TagTemplate,
+} from '../domain/transcripts';
+import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
   ProviderBillingProfile,
@@ -92,4 +96,38 @@ export interface DataAdapter {
   listEventsPendingSync(): Promise<CalendarEvent[]>;
   createEvent(data: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>): Promise<CalendarEvent>;
   updateEvent(id: string, patch: Partial<CalendarEvent>): Promise<CalendarEvent>;
+
+  // ---- Transcript sort & route (T1, transcript-sort-and-route-design.md) ----
+  listTranscriptsForCase(caseId: string): Promise<Transcript[]>;
+  getTranscript(id: string): Promise<Transcript | null>;
+  createTranscript(data: Omit<Transcript, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transcript>;
+  /** The verified flag is attorney-only in the UI — nothing programmatic sets it. */
+  updateTranscript(id: string, patch: Partial<Transcript>): Promise<Transcript>;
+
+  listParticipants(transcriptId: string): Promise<TranscriptParticipant[]>;
+  /** Full replace of a transcript's speaker→party mapping. */
+  saveParticipants(
+    transcriptId: string,
+    participants: Omit<TranscriptParticipant, 'id' | 'transcriptId'>[],
+  ): Promise<TranscriptParticipant[]>;
+
+  /** The staging inbox — attorney-only until the multi-user phase. */
+  listStagingItems(): Promise<StagingItem[]>;
+  getStagingItem(id: string): Promise<StagingItem | null>;
+  createStagingItem(data: Omit<StagingItem, 'id' | 'createdAt'>): Promise<StagingItem>;
+  updateStagingItem(id: string, patch: Partial<StagingItem>): Promise<StagingItem>;
+
+  /** The tuning log: suggested vs. chosen on every routing decision (design §5). */
+  appendRoutingDecision(data: Omit<RoutingDecision, 'id' | 'decidedAt'>): Promise<RoutingDecision>;
+  listRoutingDecisions(): Promise<RoutingDecision[]>;
+
+  /** Spoken-tag templates are rows, not code — Michael extends them in the UI. */
+  listTagTemplates(): Promise<TagTemplate[]>;
+  createTagTemplate(data: Omit<TagTemplate, 'id'>): Promise<TagTemplate>;
+  deleteTagTemplate(id: string): Promise<void>;
+
+  /** Firm/case glossary terms feeding the vocabulary boost lists (design D3). */
+  listGlossaryTerms(): Promise<GlossaryTerm[]>;
+  createGlossaryTerm(data: Omit<GlossaryTerm, 'id'>): Promise<GlossaryTerm>;
+  deleteGlossaryTerm(id: string): Promise<void>;
 }

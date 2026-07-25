@@ -422,3 +422,135 @@ create index if not exists calendar_events_sync_idx on calendar_events (sync_sta
 alter table calendar_events enable row level security;
 create policy "authenticated full access calendar_events" on calendar_events
   for all to authenticated using (true) with check (true);
+
+-- ============================================================
+-- Transcript sort & route — feature-intake item A
+-- (docs/specs/transcript-sort-and-route-design.md §7, extending the
+-- Transcript object in transcript-workflows.md §2).
+-- recorded_at is a naive local datetime stored as text, same posture as
+-- calendar_events (timezone-free by design). verified is attorney-only:
+-- nothing programmatic ever sets it (registry rule 2 discipline).
+-- ============================================================
+
+create table if not exists transcripts (
+  id uuid primary key default gen_random_uuid(),
+  case_ids uuid[] not null default '{}',  -- one or more matters; empty while in staging
+  audio_ref text,
+  audio_hash text,                        -- SHA-256; identity is hash+timestamp+duration
+  duration_seconds numeric,
+  recorded_at text,
+  source text not null default 'manual' check (source in ('recorder','phone','manual')),
+  engine text not null,
+  text text not null,
+  words jsonb,                            -- word+timestamp array from the pipeline
+  status text not null default 'unprocessed'
+    check (status in ('unprocessed','auto-summarized','attorney-reviewed')),
+  verified boolean not null default false,
+  context_type text not null check (context_type in (
+    'client_meeting','client_call','intake_call','adjuster_call',
+    'opposing_counsel_call','witness_interview','deposition','hearing',
+    'mediation_dictation','voicemail','dictation')),
+  consent_status text not null default 'unknown'
+    check (consent_status in ('announced','written','one-party','unknown')),
+  out_of_state_participant text not null default 'unknown'
+    check (out_of_state_participant in ('yes','no','unknown')),
+  privilege_tier text not null default 'work-product'
+    check (privilege_tier in ('privileged','work-product','non-privileged')),
+  phi_flag boolean not null default false,
+  discoverable_flag boolean not null default false,
+  summary text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists transcripts_case_ids_idx on transcripts using gin (case_ids);
+-- Full-text search over transcript text (design §6; scoping happens in queries).
+create index if not exists transcripts_text_fts_idx on transcripts
+  using gin (to_tsvector('english', text));
+
+create table if not exists transcript_participants (
+  id uuid primary key default gen_random_uuid(),
+  transcript_id uuid not null references transcripts (id) on delete cascade,
+  speaker_label text not null,
+  party_id uuid references parties (id) on delete set null,
+  display_name text,                      -- non-party speakers ("Michael")
+  mapping_confidence numeric
+);
+
+create index if not exists transcript_participants_tr_idx on transcript_participants (transcript_id);
+create index if not exists transcript_participants_party_idx on transcript_participants (party_id);
+
+create table if not exists staging_items (
+  id uuid primary key default gen_random_uuid(),
+  audio_hash text not null,
+  audio_ref text,
+  source text not null default 'manual' check (source in ('recorder','phone','manual')),
+  duration_seconds numeric,
+  recorded_at text,
+  transcript_id uuid not null references transcripts (id) on delete cascade,
+  suggestions jsonb not null default '[]', -- ranked case+type+confidence+signals
+  advisories text[] not null default '{}',
+  status text not null default 'pending'
+    check (status in ('pending','confirmed','dismissed','held')),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists staging_items_status_idx on staging_items (status) where status = 'pending';
+
+-- The tuning log: suggested vs. chosen on every routing decision (design §5).
+-- This is the evidence base for ever enabling auto-file (D1).
+create table if not exists routing_decisions (
+  id uuid primary key default gen_random_uuid(),
+  staging_item_id uuid not null references staging_items (id) on delete cascade,
+  suggested_case_id uuid,
+  suggested_context_type text,
+  suggested_confidence text,
+  chosen_case_ids uuid[] not null default '{}',
+  chosen_context_type text,
+  action text not null
+    check (action in ('confirmed','reassigned','split','not-case-related','held')),
+  was_suggestion_accepted boolean not null,
+  decided_at timestamptz not null default now()
+);
+
+create index if not exists routing_decisions_item_idx on routing_decisions (staging_item_id);
+
+-- Firm/case glossary terms feed the vocabulary boost lists (design D3).
+create table if not exists glossary_terms (
+  id uuid primary key default gen_random_uuid(),
+  term text not null,
+  scope text not null default 'firm' check (scope in ('firm','case')),
+  case_id uuid references cases (id) on delete cascade,
+  weight numeric not null default 1
+);
+
+-- Spoken-tag templates are rows, not code (design §3).
+create table if not exists tag_templates (
+  id uuid primary key default gen_random_uuid(),
+  pattern text not null,
+  context_type text not null,
+  applies_discoverable boolean not null default false
+);
+
+-- RLS: same single-user authenticated-only posture as the rest of the schema.
+-- The staging inbox is attorney-only (spec 8.5); per-role policies arrive
+-- with the multi-user phase.
+alter table transcripts enable row level security;
+alter table transcript_participants enable row level security;
+alter table staging_items enable row level security;
+alter table routing_decisions enable row level security;
+alter table glossary_terms enable row level security;
+alter table tag_templates enable row level security;
+
+create policy "authenticated full access transcripts" on transcripts
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access transcript_participants" on transcript_participants
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access staging_items" on staging_items
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access routing_decisions" on routing_decisions
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access glossary_terms" on glossary_terms
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access tag_templates" on tag_templates
+  for all to authenticated using (true) with check (true);

@@ -6,14 +6,18 @@ import type {
   ProviderBillingProfile,
 } from '../domain/billing';
 import type { CalendarEvent } from '../domain/calendar';
+import type {
+  Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
+  GlossaryTerm, TagTemplate,
+} from '../domain/transcripts';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 5; // v5: calendar events (5, not 4: a mid-edit HMR reload
-// during the build session could seed a v4 store without the events array)
+const STORE_VERSION = 6; // v6: transcript sort & route tables (transcripts,
+// staging inbox, routing decisions, glossary, tag templates)
 
 interface Store {
   version: number;
@@ -34,6 +38,12 @@ interface Store {
   documents: GeneratedDocument[];
   providerProfiles: ProviderBillingProfile[];
   events: CalendarEvent[];
+  transcripts: Transcript[];
+  transcriptParticipants: TranscriptParticipant[];
+  stagingItems: StagingItem[];
+  routingDecisions: RoutingDecision[];
+  glossaryTerms: GlossaryTerm[];
+  tagTemplates: TagTemplate[];
 }
 
 function load(): Store {
@@ -407,5 +417,123 @@ export class LocalAdapter implements DataAdapter {
     store.events[idx] = { ...store.events[idx], ...patch, id, updatedAt: now() };
     save(store);
     return store.events[idx];
+  }
+
+  // ---- Transcript sort & route (T1) ----
+
+  async listTranscriptsForCase(caseId: string): Promise<Transcript[]> {
+    return load().transcripts.filter((tr) => tr.caseIds.includes(caseId))
+      .sort((a, b) => (b.recordedAt ?? '').localeCompare(a.recordedAt ?? ''));
+  }
+
+  async getTranscript(id: string): Promise<Transcript | null> {
+    return load().transcripts.find((tr) => tr.id === id) ?? null;
+  }
+
+  async createTranscript(data: Omit<Transcript, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transcript> {
+    const store = load();
+    const rec: Transcript = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.transcripts.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateTranscript(id: string, patch: Partial<Transcript>): Promise<Transcript> {
+    const store = load();
+    const idx = store.transcripts.findIndex((tr) => tr.id === id);
+    if (idx === -1) throw new Error('Transcript not found');
+    store.transcripts[idx] = { ...store.transcripts[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.transcripts[idx];
+  }
+
+  async listParticipants(transcriptId: string): Promise<TranscriptParticipant[]> {
+    return load().transcriptParticipants.filter((p) => p.transcriptId === transcriptId)
+      .sort((a, b) => a.speakerLabel.localeCompare(b.speakerLabel));
+  }
+
+  async saveParticipants(
+    transcriptId: string,
+    participants: Omit<TranscriptParticipant, 'id' | 'transcriptId'>[],
+  ): Promise<TranscriptParticipant[]> {
+    const store = load();
+    store.transcriptParticipants = store.transcriptParticipants.filter((p) => p.transcriptId !== transcriptId);
+    const recs = participants.map((p) => ({ ...p, id: uid(), transcriptId }));
+    store.transcriptParticipants.push(...recs);
+    save(store);
+    return recs;
+  }
+
+  async listStagingItems(): Promise<StagingItem[]> {
+    return load().stagingItems.sort((a, b) => (b.recordedAt ?? '').localeCompare(a.recordedAt ?? ''));
+  }
+
+  async getStagingItem(id: string): Promise<StagingItem | null> {
+    return load().stagingItems.find((s) => s.id === id) ?? null;
+  }
+
+  async createStagingItem(data: Omit<StagingItem, 'id' | 'createdAt'>): Promise<StagingItem> {
+    const store = load();
+    const rec: StagingItem = { ...data, id: uid(), createdAt: now() };
+    store.stagingItems.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateStagingItem(id: string, patch: Partial<StagingItem>): Promise<StagingItem> {
+    const store = load();
+    const idx = store.stagingItems.findIndex((s) => s.id === id);
+    if (idx === -1) throw new Error('Staging item not found');
+    store.stagingItems[idx] = { ...store.stagingItems[idx], ...patch, id };
+    save(store);
+    return store.stagingItems[idx];
+  }
+
+  async appendRoutingDecision(data: Omit<RoutingDecision, 'id' | 'decidedAt'>): Promise<RoutingDecision> {
+    const store = load();
+    const rec: RoutingDecision = { ...data, id: uid(), decidedAt: now() };
+    store.routingDecisions.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listRoutingDecisions(): Promise<RoutingDecision[]> {
+    return load().routingDecisions.sort((a, b) => b.decidedAt.localeCompare(a.decidedAt));
+  }
+
+  async listTagTemplates(): Promise<TagTemplate[]> {
+    return load().tagTemplates;
+  }
+
+  async createTagTemplate(data: Omit<TagTemplate, 'id'>): Promise<TagTemplate> {
+    const store = load();
+    const rec: TagTemplate = { ...data, id: uid() };
+    store.tagTemplates.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async deleteTagTemplate(id: string): Promise<void> {
+    const store = load();
+    store.tagTemplates = store.tagTemplates.filter((tpl) => tpl.id !== id);
+    save(store);
+  }
+
+  async listGlossaryTerms(): Promise<GlossaryTerm[]> {
+    return load().glossaryTerms.sort((a, b) => a.term.localeCompare(b.term));
+  }
+
+  async createGlossaryTerm(data: Omit<GlossaryTerm, 'id'>): Promise<GlossaryTerm> {
+    const store = load();
+    const rec: GlossaryTerm = { ...data, id: uid() };
+    store.glossaryTerms.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async deleteGlossaryTerm(id: string): Promise<void> {
+    const store = load();
+    store.glossaryTerms = store.glossaryTerms.filter((g) => g.id !== id);
+    save(store);
   }
 }

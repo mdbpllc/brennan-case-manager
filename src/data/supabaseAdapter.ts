@@ -7,6 +7,10 @@ import type {
   ProviderBillingProfile,
 } from '../domain/billing';
 import type { CalendarEvent } from '../domain/calendar';
+import type {
+  Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
+  GlossaryTerm, TagTemplate,
+} from '../domain/transcripts';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -424,5 +428,97 @@ export class SupabaseAdapter implements DataAdapter {
 
   async updateEvent(id: string, patch: Partial<CalendarEvent>): Promise<CalendarEvent> {
     return this.updateRow<CalendarEvent>('calendar_events', id, { ...patch, updatedAt: new Date().toISOString() });
+  }
+
+  // ---- Transcript sort & route (T1) ----
+  // Same 1:1 camelCase↔snake_case mapping as billing; JSON payloads
+  // (words, suggestions) and arrays (case_ids, advisories) pass through.
+
+  async listTranscriptsForCase(caseId: string): Promise<Transcript[]> {
+    return this.rows<Transcript>('transcripts', (q) =>
+      q.select('*').contains('case_ids', [caseId]).order('recorded_at', { ascending: false }));
+  }
+
+  async getTranscript(id: string): Promise<Transcript | null> {
+    const res = await this.sb.from('transcripts').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<Transcript>(res.data as Record<string, unknown>) : null;
+  }
+
+  async createTranscript(data: Omit<Transcript, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transcript> {
+    return this.insertRow<Transcript>('transcripts', data);
+  }
+
+  async updateTranscript(id: string, patch: Partial<Transcript>): Promise<Transcript> {
+    return this.updateRow<Transcript>('transcripts', id, { ...patch, updatedAt: new Date().toISOString() });
+  }
+
+  async listParticipants(transcriptId: string): Promise<TranscriptParticipant[]> {
+    return this.rows<TranscriptParticipant>('transcript_participants', (q) =>
+      q.select('*').eq('transcript_id', transcriptId).order('speaker_label'));
+  }
+
+  async saveParticipants(
+    transcriptId: string,
+    participants: Omit<TranscriptParticipant, 'id' | 'transcriptId'>[],
+  ): Promise<TranscriptParticipant[]> {
+    await this.deleteRows('transcript_participants', 'transcript_id', transcriptId);
+    if (participants.length === 0) return [];
+    const res = await this.sb.from('transcript_participants')
+      .insert(participants.map((p) => toRow({ ...p, transcriptId }))).select();
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<TranscriptParticipant>(r));
+  }
+
+  async listStagingItems(): Promise<StagingItem[]> {
+    return this.rows<StagingItem>('staging_items', (q) =>
+      q.select('*').order('recorded_at', { ascending: false }));
+  }
+
+  async getStagingItem(id: string): Promise<StagingItem | null> {
+    const res = await this.sb.from('staging_items').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<StagingItem>(res.data as Record<string, unknown>) : null;
+  }
+
+  async createStagingItem(data: Omit<StagingItem, 'id' | 'createdAt'>): Promise<StagingItem> {
+    return this.insertRow<StagingItem>('staging_items', data);
+  }
+
+  async updateStagingItem(id: string, patch: Partial<StagingItem>): Promise<StagingItem> {
+    return this.updateRow<StagingItem>('staging_items', id, patch);
+  }
+
+  async appendRoutingDecision(data: Omit<RoutingDecision, 'id' | 'decidedAt'>): Promise<RoutingDecision> {
+    return this.insertRow<RoutingDecision>('routing_decisions', data);
+  }
+
+  async listRoutingDecisions(): Promise<RoutingDecision[]> {
+    return this.rows<RoutingDecision>('routing_decisions', (q) =>
+      q.select('*').order('decided_at', { ascending: false }));
+  }
+
+  async listTagTemplates(): Promise<TagTemplate[]> {
+    return this.rows<TagTemplate>('tag_templates', (q) => q.select('*'));
+  }
+
+  async createTagTemplate(data: Omit<TagTemplate, 'id'>): Promise<TagTemplate> {
+    return this.insertRow<TagTemplate>('tag_templates', data);
+  }
+
+  async deleteTagTemplate(id: string): Promise<void> {
+    await this.deleteRows('tag_templates', 'id', id);
+  }
+
+  async listGlossaryTerms(): Promise<GlossaryTerm[]> {
+    return this.rows<GlossaryTerm>('glossary_terms', (q) => q.select('*').order('term'));
+  }
+
+  async createGlossaryTerm(data: Omit<GlossaryTerm, 'id'>): Promise<GlossaryTerm> {
+    return this.insertRow<GlossaryTerm>('glossary_terms', data);
+  }
+
+  async deleteGlossaryTerm(id: string): Promise<void> {
+    await this.deleteRows('glossary_terms', 'id', id);
   }
 }
