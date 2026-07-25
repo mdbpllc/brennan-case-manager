@@ -198,6 +198,14 @@ to `docs/specs/`.
 
 **Status:** No decision needed — next time the design space touches this doc, export a full refreshed snapshot to replace the repo copy.
 
+### 2026-07-25 — Go_Live_Gates.md routed into the repo WITHOUT gates 1–5 (export needed)
+
+**Where:** new `docs/specs/Go_Live_Gates.md`, created per the 2026-07-25 medical-walkthrough handoff (Item 0).
+
+**Finding:** the handoff routed the design-space-only Go-Live Gates document into the repo and supplied gates 6–8 verbatim — but the verbatim text of **gates 1–5 exists only in the project-knowledge copy** and has never reached a Code session (confirmed: no copy anywhere on disk). The repo file carries gates 6–8 plus an explicit placeholder for 1–5, and stages the gate-3 in-place amendment ("See gate 6 — policies cannot be meaningfully tested until a sign-in flow exists") to be applied when the text arrives. Nothing was reconstructed from memory.
+
+**Status:** Next design session should export gates 1–5 verbatim (with the gate-3 amendment applied) so the repo copy becomes complete and canonical under the GitHub sync.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

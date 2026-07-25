@@ -8,9 +8,49 @@ Purpose: a dated, running record of what happened session to session in this pro
 - Keep entries short — a few lines each. This is a pointer/recap layer, not a duplicate of the full spec. Detailed specs live in their own docs (`case-management-project-instructions.md`, `pi-case-playbooks.md`, `criminal-offense-playbooks.md`, etc.) — link to those rather than repeating their content here.
 - Do not let this file grow unbounded — if it gets long, consider archiving older entries to a dated sub-file and keeping only the most recent months here.
 - Each entry ends with two round-trip state lines so the Code handoff status is always visible at the top of the log: **"Staged for Code:"** (what this session prepared for a coding session) and **"Awaiting/Returned from Code, unreviewed:"** (what a coding session produced that the design space hasn't reviewed yet). Write "none" rather than omitting them. When a design session reviews returned material, the next entry clears it.
-- **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) rewrite `BUILD-STATE.md` in full (the one-doc "what is built now" snapshot design sessions read first; template + hard rules in CLAUDE.md), (3) **push to origin** — unpushed commits are invisible outside this machine; if the push is blocked, say so explicitly in the session report so Michael can run it — and (4) remind Michael in one line to re-upload BUILD-STATE.md to project knowledge, replacing the old copy.
+- **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) rewrite `BUILD-STATE.md` in full (the one-doc "what is built now" snapshot design sessions read first; template + hard rules in CLAUDE.md), (3) **push to origin and VERIFY the push landed** (confirm the remote ref moved — never report "pushed" from an unchecked command); if the push is blocked, say so explicitly in the session report so Michael can run it — and (4) remind Michael in one line: **"Pushed at `<sha>` — click Sync now on the repo in the Claude project"** (wording corrected 2026-07-25; the old "re-upload BUILD-STATE.md" instruction was never the mechanism).
 
 ---
+
+## 2026-07-25 (medical-walkthrough handoff APPLIED: schedule-selection defect + gates routed — Code session)
+
+**What happened:** Applied the full 2026-07-25 design handoff (`HANDOFF-2026-07-25-medical-walkthrough.md`), Items 0–8. Repo had moved two metadata-only commits past the handoff's expected `9dc280f` — reconciled, no conflicts.
+
+- **Item 3 (HIGH) fixed in `src/analysis/benchmark.ts`:** root cause confirmed — rate lookup was first-schedule-wins over ALL loaded rates, and demo seeds first. Now: attorney can pick the schedule per run (new selector on the Benchmark analysis card); auto mode excludes demo rates entirely whenever any non-demo schedule has rates. Every run stamps a `scheduleSelection` block (mode, used schedule ids + names, `demoUsed`) in its assumptions. Stale-marking untouched (regression target 2).
+- **Gate-8 visibility:** report headline now names the benchmark schedule; a boxed PLACEHOLDER banner appears in the report, the bill workspace, and as a badge on Medical-tab/workspace run rows whenever a ratio priced against a `demo`-source schedule.
+- **Item 4:** store reseed no longer silently destroys work — on version bump the whole old store is backed up to a versioned localStorage key, and imported (non-demo) schedules + rates + confirmed runs + their result lines carry forward; demo schedule is NOT re-seeded when a real schedule was carried. A review-log entry records the migration. (No version bump this session — Michael's current v9 store is untouched.)
+- **Item 5:** report now discloses "N lines / $X in billed charges excluded" bolded, directly under the headline ratio.
+- **Item 6:** registry stamps carry an `implicated` flag (driven off claimType, billType, emergency-care signals: 045x revenue codes, 9928x E/M codes, EMERG descriptions); the report splits "Implicated by this analysis" from "General background". The always-on "No unverified rule drives any computed legal outcome" line is unchanged. ProCare/Central Texas pair encoded as regression tests.
+- **Items 7, 8:** "Caption" → "Style" on the case Overview card (display + edit; data model field unchanged); scenario-vs-confirmed inversion explained in the workspace explainer and the report's scenario line.
+- **Items 0–1:** `docs/specs/Go_Live_Gates.md` created with gates 6–8 verbatim + the gate-3 amendment staged — **gates 1–5 exist only in project knowledge and never reached Code; placeholder + spec-feedback entry filed for a design-side export.**
+- **Item 2:** CLAUDE.md end-of-session routine now requires verifying the push landed and stating the SHA; reminder wording corrected to "Pushed at `<sha>` — click Sync now on the repo in the Claude project" (here and in this file's header rule).
+- **Tests:** new `src/analysis/__tests__/benchmark.test.ts` (6 tests: shadowing fix, attorney selection, demoUsed flag, unanalyzed dollars, ProCare/CTRMC registry pair). Full suite 183 passing; build + oxlint clean. CLAUDE.md's stale "no test runner" line corrected (vitest was added with the routing/OAA slices).
+
+**Staged for Code:** none — Items 0–8 all applied this session.
+
+**Awaiting/Returned from Code, unreviewed:** this build (Items 0–8 above; design should eyeball the implicated-rule mapping in `benchmark.ts` and the Go_Live_Gates placeholder); the gates 1–5 export request in spec-feedback; the Outlook push slice (still unreviewed design-side, carried).
+
+## 2026-07-25 (design-side Medical-tab walkthrough — Garcia case, demo mode)
+
+**What happened:** First full attorney walkthrough of the billing module against the **real** TX Rest-of-State PFS data. Michael re-imported the schedule (7,740 codes, Novitas 04412 / locality 99) after discovering the 07-23 import had been wiped by the v7→v9 demo-store reseed. Spot-check validated: 99203 = $114.05, matching the CMS look-up for locality 0441299.
+
+**ProCare bill (Type 1, professional chiropractic).** Ran the full loop: line-item review → coding confirmation → Set CPT on the unmapped traction line (`97012`) → re-run → confirm run → generate report. Final confirmed ratio **3.98×** ($1,280.00 billed vs $321.56 benchmark across 5 confirmed lines), 5/0/0. Report math verified line by line design-side. Per-line inflation is non-uniform and legally more useful than the headline: office visit 3.07×, therapeutic exercise 3.35×, manipulation 7.09×, traction 10.34× — the E/M is billed near market and the modalities carry the multiple.
+
+**Central Texas Regional bill (Type 2, facility/UB-04, ER visit).** Confirmed **21.77×**, scenario 18.83×. The **facility hard caveat fired as designed**, boxed under the headline. Number is not a finding — both lines would price under OPPS/APC, not the PFS, so the professional-schedule comparison is doubly inapt. Phase 2 MRF remains the fix. Type 2 reconciliation clean ($4,120 − $1,150 − $2,120 = $850).
+
+**Defects found (staged for Code):** (1) HIGH — engine selected the seeded DEMO schedule over the real import on every coded line, fabricating a 3.23× headline; the error biased *toward* flattering the bill. (2) Store reseed silently destroyed the imported schedule and confirmed AnalysisRuns. (3) Uncoded lines drop out of the ratio with no dollar disclosure. (4) Reports stamp all nine registry entries regardless of relevance — ProCare/Central Texas are the before/after test pair. (5) "Caption" → "Style" on Overview. (6) Explainer note on scenario-vs-confirmed ratio inversion.
+
+**Design-side correction logged:** an earlier draft of go-live gate 8 asked Code to build AnalysisRun schedule provenance. Provenance already exists per line in the report cites. Gate 8 was narrowed to schedule *selection*, headline visibility, and reseed survival.
+
+**Go-Live Gates:** `Go_Live_Gates.md` identified as design-space-only and never folded into the repo; routed to `docs/specs/Go_Live_Gates.md`. New gates 6 (authentication — hard prerequisite to gate 3), 7 (document storage + EOB source-document pin), 8 (fee-schedule selection/visibility) appended.
+
+**Convention:** end-of-session routine now requires verifying the push landed and reporting the SHA; the sync reminder wording corrected from "re-upload BUILD-STATE.md" to "click Sync now on the repo in the Claude project."
+
+**Next:** registry entries 1–10 sign-off remains Michael's homework and is the last thing between these reports and something leanable. Supabase auth decision is on the critical path. Outlook push slice still unreviewed design-side.
+
+**Staged for Code:** Items 0–8 of `HANDOFF-2026-07-25-medical-walkthrough.md` (applied by the Code session logged above).
+
+**Awaiting/Returned from Code, unreviewed:** the Outlook push slice (referenced in the 07-23/07-24 logs, never seen design-side).
 
 ## 2026-07-25 (sync-channel diagnosis: project knowledge is a stale, over-broad GitHub sync — same Code session)
 

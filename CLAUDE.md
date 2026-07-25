@@ -25,7 +25,9 @@ npm run lint       # oxlint
 npm run preview    # serve the production build locally
 ```
 
-There is no test runner configured yet.
+`npm test` runs the vitest suite (cite parser, routing engine, OAA parsing,
+benchmark analysis). Run it plus `npm run build` and `npm run lint` before
+ending a session.
 
 ## Structure and architecture
 
@@ -135,9 +137,11 @@ coding sessions. The spec documents committed under `docs/specs/` are
   read this + the session log; they cannot see the local repo). **The
   second exception to read-only: REWRITE IT IN FULL (never append) at
   the end of every session that changes the app**, commit as
-  `chore: refresh BUILD-STATE`, then tell Michael in one line to
-  re-upload it to project knowledge (REPLACING the old copy, not
-  duplicating it). Hard rules: 120-line cap (cut detail, never add
+  `chore: refresh BUILD-STATE`. It reaches the design side through the
+  repo's GitHub sync — after the verified push, the one-line reminder to
+  Michael is: **"Pushed at `<sha>` — click Sync now on the repo in the
+  Claude project"** (2026-07-25 correction: telling him to re-upload the
+  file manually was never the mechanism). Hard rules: 120-line cap (cut detail, never add
   sections); describe what EXISTS, not what's planned; every claim
   verifiable from the working tree at its stated commit; generate
   mechanically where possible (routes from the router, tables from
@@ -222,10 +226,16 @@ standing gates that survive any status change:
 - Small, reviewable increments; commit early and often with plain-language
   messages Michael can follow. **End every substantive session by
   rewriting `docs/specs/BUILD-STATE.md` in full, appending the
-  session-log entry, pushing to origin, and reminding Michael in one
-  line to re-upload BUILD-STATE.md to project knowledge** — the push
-  plus that manual re-upload are the only channels that reach the
-  design side; if the push is blocked, tell Michael in the report.
+  session-log entry, pushing to origin, and VERIFYING the push landed**
+  — confirm the remote ref actually moved (e.g. `git push` then check
+  `git status`/`git ls-remote` shows origin at the new SHA); never
+  report "pushed" from an unchecked command. A blocked push once left
+  the design side ~32 commits behind (2026-07-25 root-cause). Then the
+  one-line reminder to Michael is: **"Pushed at `<sha>` — click Sync
+  now on the repo in the Claude project"** — stating the SHA lets him
+  check it against BUILD-STATE's stated commit. The push + his Sync
+  click are the only channels that reach the design side; if the push
+  is blocked, tell Michael in the report.
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in
