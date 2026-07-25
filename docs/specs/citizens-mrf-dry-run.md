@@ -64,3 +64,13 @@ What this proves:
 ## Verdict
 
 **MRF source: CONFIRMED, now on real data.** The hospital that triggered the module publishes current, attested, BCBS-specific negotiated dollar rates for exactly the codes in the exercise. The attested-median tier isn't populated yet (grade the file, cite the tier); the anomalies found (above-gross ED rates, code reuse, stale CDN copies) are all handleable and now specced. Phase 2 can build against this file as its reference fixture.
+
+## Postscript (2026-07-25): Real-world resolution of the source account
+
+*(Routed 2026-07-25 from the Citizens-negotiation design session.)*
+
+The account that produced this dry run's source bill (V00505135029) was settled 2026-07-25 for **$5,000 full-and-final** (billed: $8,975.00). Points of record for module design:
+
+- Citizens quoted an expected BCBS reimbursement of **$4,392.55 = 48.94% of billed** — consistent with the ~49% inpatient percent-of-billed methodology, applied to an outpatient ER encounter. Payers/providers do misapply methodology class in correspondence; the module should always independently classify the encounter (inpatient vs. outpatient) before selecting methodology.
+- Under this facility's own published outpatient PPO rates, the encounter's priced lines alone (70450 + 83880 + 2×84484 + 99285) total ≈ **$4,508** — above the quoted figure, driven by the above-gross 99285 rate ($3,800 vs. $1,410 gross). Validation: "lower than billed" does not mean "lower than the payer methodology yields." An honest MRF-based analysis can be adverse to the client's negotiating position; the report generator should surface this to the attorney BEFORE anything is sent out, not after.
+- ED E/M level was confirmed by exact gross-charge match against the chargemaster (ED $1,410 ⇒ 99285). This chargemaster-reverse-lookup technique (match billed line amounts to gross-charge column to recover CPT when the bill omits codes) is worth noting as a supported mapping strategy in Phase 1a/2.

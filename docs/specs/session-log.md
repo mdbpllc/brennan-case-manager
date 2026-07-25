@@ -11,6 +11,32 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (Design session, Fable 5: Citizens negotiation resolved; two Phase 2 spec additions staged)
+
+**Real-world event (closed):** The Citizens Medical Center account (V00505135029, DOS 02/03–02/04/26, $8,975.00 billed, BCBS Commercial PPO) — the account that originally sparked the billing module — was settled by Michael this session. Sequence:
+
+1. An earlier Claude-generated analysis (`BCBS_Reimbursement_Analysis.pdf`, pre-module) had been emailed to Citizens. It priced the **facility** bill against a **professional** fee schedule (BCBS 2026 Other Codes Fee Schedule), producing an indefensibly low headline of 4.1%–5.0% of billed ($367.83–$449.29). Wrong-schedule error; would not have survived contact with Citizens' own published MRF rates.
+2. Citizens' billing manager responded that BCBS reimbursement would be ≈ **$4,392.55**. Design-side reverse-engineering: $4,392.55 = **48.94% of $8,975** — almost certainly the ~49% **inpatient percent-of-billed** methodology applied to what is an **outpatient** ER visit. Under the correct outpatient contract fee schedule (per `docs/specs/citizens-mrf-dry-run.md`), just CT head 70450 ($487.55) + BNP 83880 ($135.05) + 2× troponin 84484 ($42.90 ea) + Level-5 ED 99285 ($3,800, above-gross) ≈ **$4,508**, with CT thorax and 4 other lines still unpriced — i.e., honest outpatient pricing likely EXCEEDS $4,392.55. ED level confirmed as 99285 (bill's $1,410 ED gross exactly matches the 99285 chargemaster line; L3 $624 / L4 $983).
+3. **Decision (Michael):** Do not contest the figure. Offered Citizens **$5,000 full-and-final** on the account — above their own BCBS number (easy yes), covers the collections firm's interest, client saves ~$4,000 vs. billed. Offer drafted and sent by Michael this session. Advice on record: obtain written full-and-final satisfaction so neither hospital nor collections firm can pursue a balance.
+
+**Lessons driving spec changes:** The wrong-schedule error (professional vs. facility, inpatient vs. outpatient methodology, plan-level rate variance $103–$488 for the same CT across BCBS-family plans) is exactly the failure class Phase 2 must prevent. Two spec additions staged (routed on arrival — see the Code entry above this one).
+
+**Model logistics (design-side, FYI only):** Claude Opus 5 released 2026-07-24 (near-Fable at half price). New standing convention in design-space memory: Fable sessions proactively flag Opus-5-suitable work to conserve Fable tokens; work completed on Opus 5 stands without Fable re-review. No repo impact.
+
+**Staged for Code:**
+- Two Phase 2 additions to the billing synthesis spec (insurance-card capture; missing-dataset/no-silent-guess guardrail) → fold into `docs/specs/medical-billing-analysis-module-synthesis.md`.
+- Citizens negotiation outcome note → append to `docs/specs/citizens-mrf-dry-run.md` as a real-world validation postscript.
+
+**Awaiting / Returned from Code, unreviewed:**
+- "Outlook push slice" — exists per Code report, still not seen design-side.
+- BUILD-SESSION-NOTES.md — review still pending design-side.
+- Repo last known ~6 commits ahead of design-side view (through bf89eca per last report); design-side statements about build status remain provisional until next log sync.
+
+**Still open (carried):**
+- Michael's FLP account + MCP connector setup (promo ends 8/6).
+- Registry entries 1–10 sign-off (priorities: Entry 1(c-3) qualified-LOP; Entry 4 fatal-defect conflict). Registry item #6 (attested v3.0.0 file with empty median columns vs. upgraded MRF requirements) bears directly on the compliance-leverage argument — reserve for a Fable session.
+- Record Citizens MRF fixture local path in `CLAUDE.md`.
+
 ## 2026-07-25 (statute browse UX: cascading picker + title keyword search — Michael feedback, same Code session)
 
 **What happened:** Michael's first hands-on feedback on the Statutes page: the free-text cite box demands formatting he shouldn't have to know. He asked for (a) a dropdown flow — code first, then chapters populate — and (b) keyword search over the titles of the code's parts. Built both this sitting:
