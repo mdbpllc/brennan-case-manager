@@ -11,6 +11,22 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (statute-tracking design filed; cite parser T1 BUILT + live-verified — Code session)
+
+**What happened (same Claude Code session):** Michael dropped the new design-space handoff — the Statute Text & Legislative Tracking design pass plus its two companions (the 35-case cite-parser test table and the watch-targets seed; the third attachment was the transcript design again, byte-identical to the committed copy → already fully applied, nothing done). All three filed verbatim (`02da677`): `statute-text-and-bill-tracking-design.md`, `cite-parser-test-cases.md`, `watch-targets-seed.md`.
+
+**T1 (cite parser/resolver) built** per the design's own sequencing (zero dependencies, immediate value):
+
+- **Live-site verification first (the design asked for it):** all V1–V3 flags resolved against statutes.capitol.texas.gov — 28 code abbreviations confirmed by fetching real chapters; `CR.55A.htm` confirmed; ES/BC confirmed; CV (Vernon's) failed the guessed pattern → classified-but-unlinked. **Major discovery:** the .gov site is now a client-side app — user deep links still work (client-routed, anchors honored), but server-side fetch (A2/T2) must use `tcss.legis.texas.gov/resources/…`, where the original static files live. Spec-feedback entry filed with the details.
+- **`src/cites/`** — `codes.ts` (live-verified registry, user + machine URL builders), `parser.ts` (statutory forms incl. bill-drafting order, CCP articles, constitution, chapter-level, ranges; classifies-never-links rules/federal/bill-numbers; bare articles return candidates, never a silent guess), `actChain.ts` (source-credit grammar incl. "Amended by:" chains and the pre-bill-number era). **The design table's 35 cases pass verbatim**, plus registry-cite forms (name-first chapters, no-space §, bills-with-year) and act-credit strings harvested from the real statute-text file. 120 tests green repo-wide.
+- **Registry wiring (T1's deliverable):** statutory cites on the Legal rules screen are now deep links into the official site (5 of the seeded rules' cites link; case cites/federal/rules stay plain text). Verified live, no console errors.
+
+**Gates/next per the design §10:** T2 (statute cache + viewer + hash tripwire) buildable next; **T3 (LegiScan poller) is gated on Michael registering the API key (§9-O1)** — the watch-targets seed is ready for it, and its doc records §9-O4 as answered (all sweep groups in). O2 (working-set code list) and O3 (worklist surfacing) still open for Michael.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this entry, the new specs, and the spec-feedback SPA-discovery item.
+
 ## 2026-07-25 (second real order: OCR-layer Uvalde OAA now extracts END-TO-END — Code session)
 
 **What happened (same session, continued):** Michael clarified the Medina scan was the PRIOR attorney's order (so the §1c hard stop would have been doing its job there — the office-appointment question in spec-feedback stays open but is less urgent), and provided a real **Uvalde** order WITH an OCR text layer that "didn't do anything" when he dropped it. Diagnosis: his app was on pre-tuning code for the template match, and beyond that the parser couldn't read this layout — single-space label rows ("Name SHANE …"), a wrapped offense row (degree/court/cause/complaint tails on a continuation line), "☐" checkbox glyphs, dotted dates ("07.08.2026"), a free-text "DOCKET SETTING" line, and the designee row on page 2.

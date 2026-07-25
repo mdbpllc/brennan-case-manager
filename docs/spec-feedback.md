@@ -178,6 +178,18 @@ to `docs/specs/`.
 
 **Status:** 1, 3-parser, and structural detection are implemented; 2 and the cause-pending reminder pattern need Michael's ruling / a design pass.
 
+### 2026-07-25 — Statute-tracking design §2 source facts: the .gov site is now a client-side app
+
+**Where:** statute-text-and-bill-tracking-design.md §2 ("Chapter files at `https://statutes.capitol.texas.gov/docs/{CD}/{fmt}/{CD}.{ch}.{ext}` … static between effective dates") and A2's fetch design.
+
+**Finding (T1 build, live-verified 2026-07-25):** statutes.capitol.texas.gov has been rebuilt as an Angular SPA. Every `/docs/...` URL serves the same app shell; the content loads client-side from a backend at `tcss.legis.texas.gov`. Consequences, all verified live:
+- **User-facing deep links still work exactly as designed** — the app client-routes `/docs/FA/htm/FA.153.htm#153.002`, honors the anchor, and even preselects the section in its navigation. A1's URLs stay as specced.
+- **A2's server-side fetch must target the backing file host instead:** `https://tcss.legis.texas.gov/resources/{CD}/htm/{CD}.{ch}.htm` serves the ORIGINAL static chapter files (same naming, same `name="153.002"` anchors, Constitution as `CN.{art}.htm` with `{art}.{sec}` anchors). The edge function should fetch there; robots/UA courtesy per design §2 still applies. There are also JSON APIs (`tcss.legis.texas.gov/api/GetStatuteArray/...`) if structured data ever beats HTML parsing.
+- **V1–V3 all resolved:** 28 two-letter code abbreviations live-verified (fixture in `src/cites/codes.ts`); CCP letter-suffix chapters confirmed as `CR.55A.htm`; Estates=ES and Business & Commerce=BC confirmed. Vernon's Civil Statutes (CV) did NOT resolve on the guessed pattern — left classified-but-unlinked pending a real URL pattern.
+- Site banner says statutes are current through the 89th 2nd Called Session (2025) — two specials have already happened, relevant to §5's cadence assumptions.
+
+**Status:** T1 built against the corrected facts; design doc §2 should be updated at next revision. No decision needed unless the design space prefers the JSON API over static-file fetching for A2.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

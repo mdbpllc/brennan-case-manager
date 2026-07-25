@@ -10,6 +10,29 @@ import { useCallback, useEffect, useState } from 'react';
 import type { LegalRule } from '../domain/billing';
 import { ATTORNEY_USER } from '../domain/billing';
 import { db } from '../data';
+import { parseCite } from '../cites/parser';
+
+/** Statutory cites become deep links into the official statutes site
+ *  (cite parser T1 — statute-text-and-bill-tracking-design.md A1). Case
+ *  cites, rules, and federal cites render as plain text: the parser
+ *  classifies them but only live-verified TX code cites get a URL. */
+function CiteList({ cites }: { cites: string[] }) {
+  return (
+    <>
+      {cites.map((c, i) => {
+        const parsed = parseCite(c);
+        return (
+          <span key={i}>
+            {i > 0 && '; '}
+            {parsed.url
+              ? <a href={parsed.url} target="_blank" rel="noreferrer" title="Open at statutes.capitol.texas.gov">{c}</a>
+              : c}
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 export default function LegalRulesPage() {
   const [rules, setRules] = useState<LegalRule[]>([]);
@@ -102,7 +125,7 @@ export default function LegalRulesPage() {
                     r.notes && <div className="small muted" style={{ marginTop: 4 }}>{r.notes}</div>
                   )}
                 </td>
-                <td className="small muted" style={{ maxWidth: 220 }}>{r.cites.join('; ')}</td>
+                <td className="small muted" style={{ maxWidth: 220 }}><CiteList cites={r.cites} /></td>
                 <td><span className="badge status">{r.scope}</span></td>
                 <td><span className={`badge rule-${r.status}`}>{r.status}</span></td>
                 <td className="small muted">
