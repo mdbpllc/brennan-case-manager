@@ -2,10 +2,9 @@
 // texts written to mimic the pilot recordings' noise patterns (garbled slot
 // entities inside intact templates, digit-word identifiers, dropped openings).
 //
-// NOTE for a future session: the design pass calls for the 13 REAL pilot
-// transcripts as fixtures. Those recordings live in the Claude.ai project
-// space, not this repo — when Michael routes them over (fictional content,
-// scored against known scripts), add them beside these synthetic ones.
+// The 13 REAL pilot recordings are wired in beside these at ./pilot/
+// (added 2026-07-25 when Michael handed over the bundle); these synthetic
+// cases stay because they exercise edge cases the pilot set doesn't.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../../domain/types';
 import type { TagTemplate } from '../../domain/transcripts';
 import { SEED_TAG_TEMPLATES } from '../templates';

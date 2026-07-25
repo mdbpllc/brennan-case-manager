@@ -10,11 +10,21 @@ import { matchIdentifiers, matchPhones } from './normalizer';
 import { matchTagTemplate } from './templates';
 import { STOPWORDS, tokenize, tokensMatch } from './text';
 
+/** An identifier the router should recognize beyond case cause numbers —
+ *  carrier claim numbers, docket numbers, etc. — mapped to its case. */
+export interface KnownIdentifier {
+  value: string;
+  caseId: string;
+  label?: string;
+}
+
 export interface RoutingContext {
   cases: CaseRecord[];
   parties: PartyRecord[];
   links: CasePartyLink[];
   templates: TagTemplate[];
+  /** Extra known identifiers (claim numbers live outside the case record). */
+  identifiers?: KnownIdentifier[];
 }
 
 export interface RoutingInput {
@@ -186,15 +196,20 @@ export function inferRouting(input: RoutingInput, ctx: RoutingContext): RoutingS
   }
 
   // --- Strong: cause/claim numbers via normalizer + edit distance ---
-  const knownIds = ctx.cases.filter((c) => c.causeNumber).map((c) => c.causeNumber as string);
-  for (const m of matchIdentifiers(input.text, knownIds)) {
-    const rec = ctx.cases.find((c) => c.causeNumber === m.known);
-    if (!rec) continue;
+  const knownIds: KnownIdentifier[] = [
+    ...ctx.cases.filter((c) => c.causeNumber).map((c) => ({
+      value: c.causeNumber as string, caseId: c.id, label: `cause no. ${c.causeNumber}`,
+    })),
+    ...(ctx.identifiers ?? []),
+  ];
+  for (const m of matchIdentifiers(input.text, knownIds.map((k) => k.value))) {
+    const k = knownIds.find((x) => x.value === m.known);
+    if (!k) continue;
     add({
       kind: 'identifier_match', weight: 'strong', matchedText: m.spoken,
-      resolvedTo: `cause no. ${m.known}`, caseId: rec.id,
+      resolvedTo: k.label ?? k.value, caseId: k.caseId,
     });
-    if (tag && !tagResolvedCaseId && tag.slots.cause) tagResolvedCaseId = rec.id;
+    if (tag && !tagResolvedCaseId && tag.slots.cause) tagResolvedCaseId = k.caseId;
   }
 
   // --- Medium: carrier + adjuster co-occurrence on the same case ---
