@@ -12,6 +12,41 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (second handoff APPLIED: sync-scope recorded + audit triage built — Code session)
+
+**What happened:** Applied `HANDOFF-2026-07-25b-sync-scope-and-audit-triage.md`. Repo was exactly at the expected `7ff8860`, clean. Per the handoff's own instruction, verified before building — **much of Part 2 already existed** in the tree; the audit predates four days of building. Already done, not re-implemented: Item F entirely (case/party list rows have real links on the name cell with middle-click/keyboard reach; the "Not yet filled in" footer is already behind a `<details>` disclosure; "Show closed" already runs through `isClosedStatus()`; the case Parties tab and party detail page already use bulk `getParties`/`getCases`); Item D's mechanism + the three named offenders (`itemLabel` exists on priorInjuries → "prior injury", priorProviders → "provider", priorCriminal → "prior charge"); Item B's flag-editing half (PI overlay flags, commercial-policy, representation type were already editable on the Overview edit form); Item A entirely (built at `3b2b19e` as Item 4 of the first handoff: version-bump reseed migrates imported schedules + confirmed runs + result lines forward, backs up the whole old store to a versioned localStorage key, and records a review-log entry naming what carried and where the backup lives).
+
+**Built this session:**
+- **Item B (the missing half):** practice area + case type now editable on the Overview edit form (case type must be re-picked when the practice area changes — Save disabled until then); conditional flag sections follow the draft; classification/flag changes write a `case_record` review-log entry (old/new JSON) and surface a "playbooks may need re-evaluation" notice — the notice half of the handoff's fallback, since the playbook engine itself is not built. Verified live: flag added mid-case → badge, review-log entry, notice.
+- **Item C:** ladders now declared per case type in `CASE_TYPE_DEFS` (`src/domain/caseTypes.ts`); `statusesFor()` throws on an undeclared type instead of falling through to the criminal ladder; the case Overview surfaces an "Unknown case type" warning for stored records with undeclared types instead of crashing. Probate companion still declares the PI ladder with the spec-feedback note. 3 new tests.
+- **Item D (remainder):** explicit `itemLabel` added to the four repeating fields still relying on naive singularization (priorFalls, locations, priorChallenges — the one that actually broke ("+ Add prior challenges / exclusion") — and filingProfiles).
+- **Item E:** shared `assertPartyPatchKeys` guard in `adapter.ts`; BOTH adapters now throw on a patch key outside displayName/fields instead of local applying it and Supabase silently dropping it. (The interface type was already narrowed to the two keys; this closes the runtime half.)
+- **Part 1:** sync-scope ruling recorded in CLAUDE.md verbatim, appended to the design-side visibility conventions.
+
+**Answer to the design-side question:** **yes, case-detail tabs are URL-driven** — `/cases/:id/{parties|medical|calendar|transcripts}` are real routes (`App.tsx`), the tab is derived from the path, and the code comments the "+ New party" return trip as the reason. The audit's return-to-Overview complaint is fixed; do not rebuild.
+
+**Health:** 186 vitest tests green (3 new), build + oxlint clean; classification editing exercised live in the browser.
+
+**Deferred per the handoff:** bulk-fetch work (already done anyway); Item A's remaining nuance for design: attorney-created **code mappings** (chargemaster memory) and **generated documents** do NOT carry across a reseed — the handoff scoped migration to schedules + confirmed runs, so this is flagged as a question, not built.
+
+**Staged for Code:** none — Part 2 fully dispatched.
+
+**Awaiting/Returned from Code, unreviewed:** this build (Items B/C/D/E + sync-scope amendment); the time-tracker fee-basis profiles DRAFT design doc; the Outlook push slice. (`BUILD-SESSION-NOTES.md` cleared per the triage — not carried forward.)
+
+## 2026-07-25 (design session: BUILD-SESSION-NOTES triage + sync-scope ruling)
+
+**BUILD-SESSION-NOTES.md reviewed** — first review since it was written 2026-07-21, after carrying "still unreviewed" on the state line of roughly seven consecutive entries. Triaged: five items closed as already done or withdrawn; six carried forward (Part 2 of the handoff). **Cleared from the Awaiting/Returned line — do not carry forward again.**
+
+**Elevated:** audit item 2 (case classification frozen at creation) is now the top still-open item from that document. Rationale: the PI playbook engine opens off case type + overlay flags and the deadline engine takes its clocks from the playbooks, so a flag that can't be set mid-case means the playbook never opens and its deadlines never calendar — a silent failure.
+
+**Reframed:** audit item 8 (localStorage version/migration) and the reseed-wipe defect from the first 07-25 handoff are the same item at two stages. The version number shipped; the migration path didn't, which is why the v7→v9 bump destroyed the imported PFS schedule and the confirmed AnalysisRuns. The ask is finishing item 8.
+
+**Sync-scope ruling (settled):** the specs-only trim proposed by the prior Code session is rejected as too deep. Sync carries `src/`, `db/schema.sql`, `docs/`, `CLAUDE.md`, `README.md`; excludes `package-lock.json`, `node_modules/`, `dist/`, and large test-fixture data files. Rationale: BUILD-STATE.md is a self-certified summary, and source visibility is what makes it auditable — three logged incidents (07-23, 07-24, 07-25 gate 8) all trace to design-side asking for work that already existed. Recorded in CLAUDE.md.
+
+**Staged for Code:** Part 2 items A–F; the CLAUDE.md sync-scope amendment. (Applied by the Code session logged above.)
+
+**Awaiting/Returned from Code, unreviewed:** the time-tracker fee-basis profiles DRAFT design doc (authored Code-side, design space has not reviewed it); the Outlook push slice.
+
 ## 2026-07-25 (medical-walkthrough handoff APPLIED: schedule-selection defect + gates routed — Code session)
 
 **What happened:** Applied the full 2026-07-25 design handoff (`HANDOFF-2026-07-25-medical-walkthrough.md`), Items 0–8. Repo had moved two metadata-only commits past the handoff's expected `9dc280f` — reconciled, no conflicts.
