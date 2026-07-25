@@ -15,14 +15,15 @@ import type {
   StatuteChapter, StatuteChapterMeta, StatuteSection,
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
+import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 8; // v8: statute cache (chapters, sections,
-// verification snapshots, watch flags)
+const STORE_VERSION = 9; // v9: bill tracking (watch targets incl. seeded
+// manual sweeps, tracked bills, bill statute refs)
 
 interface Store {
   version: number;
@@ -55,6 +56,9 @@ interface Store {
   statuteSections: StatuteSection[];
   verificationSnapshots: RegistryVerificationSnapshot[];
   watchFlags: WatchFlag[];
+  watchTargets: WatchTarget[];
+  trackedBills: TrackedBill[];
+  billRefs: BillStatuteRef[];
 }
 
 function load(): Store {
@@ -73,6 +77,7 @@ function load(): Store {
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
     oaaIntakes: [],
     statuteChapters: [], statuteSections: [], verificationSnapshots: [], watchFlags: [],
+    trackedBills: [], billRefs: [],
     ...seedData(),
   };
   localStorage.setItem(KEY, JSON.stringify(seeded));
@@ -678,5 +683,69 @@ export class LocalAdapter implements DataAdapter {
     store.watchFlags[idx] = { ...store.watchFlags[idx], clearedAt: now(), clearedBy };
     save(store);
     return store.watchFlags[idx];
+  }
+
+  // ---- Bill tracking (T3) ----
+
+  async listWatchTargets(): Promise<WatchTarget[]> {
+    return load().watchTargets.sort((a, b) =>
+      a.kind.localeCompare(b.kind) || (a.note ?? '').localeCompare(b.note ?? '') || a.citeOrQuery.localeCompare(b.citeOrQuery));
+  }
+
+  async createWatchTarget(data: Omit<WatchTarget, 'id'>): Promise<WatchTarget> {
+    const store = load();
+    const rec: WatchTarget = { ...data, id: uid() };
+    store.watchTargets.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateWatchTarget(id: string, patch: Partial<Pick<WatchTarget, 'active' | 'note'>>): Promise<WatchTarget> {
+    const store = load();
+    const idx = store.watchTargets.findIndex((t) => t.id === id);
+    if (idx === -1) throw new Error('Watch target not found');
+    store.watchTargets[idx] = { ...store.watchTargets[idx], ...patch, id };
+    save(store);
+    return store.watchTargets[idx];
+  }
+
+  async deleteWatchTarget(id: string): Promise<void> {
+    const store = load();
+    store.watchTargets = store.watchTargets.filter((t) => t.id !== id);
+    save(store);
+  }
+
+  async listTrackedBills(): Promise<TrackedBill[]> {
+    return load().trackedBills.sort((a, b) => a.billNumber.localeCompare(b.billNumber, undefined, { numeric: true }));
+  }
+
+  async upsertTrackedBill(data: Omit<TrackedBill, 'id'>): Promise<TrackedBill> {
+    const store = load();
+    const existing = store.trackedBills.find((b) => b.legiscanBillId === data.legiscanBillId);
+    const rec: TrackedBill = { ...data, id: existing?.id ?? uid() };
+    store.trackedBills = store.trackedBills.filter((b) => b.id !== rec.id);
+    store.trackedBills.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]> {
+    return load().billRefs.filter((r) => r.trackedBillId === trackedBillId);
+  }
+
+  async listAllBillRefs(): Promise<BillStatuteRef[]> {
+    return load().billRefs;
+  }
+
+  async saveBillRefs(
+    trackedBillId: string,
+    refs: Omit<BillStatuteRef, 'id' | 'trackedBillId'>[],
+  ): Promise<BillStatuteRef[]> {
+    const store = load();
+    store.billRefs = store.billRefs.filter((r) => r.trackedBillId !== trackedBillId);
+    const recs = refs.map((r) => ({ ...r, id: uid(), trackedBillId }));
+    store.billRefs.push(...recs);
+    save(store);
+    return recs;
   }
 }

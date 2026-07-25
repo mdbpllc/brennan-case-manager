@@ -11,6 +11,7 @@ import BenchmarksPage from './pages/BenchmarksPage';
 import LegalRulesPage from './pages/LegalRulesPage';
 import StatutesPage from './pages/StatutesPage';
 import StatuteViewerPage from './pages/StatuteViewerPage';
+import BillTrackingPage from './pages/BillTrackingPage';
 import InboxPage from './pages/InboxPage';
 import OfficeNotesPage from './pages/OfficeNotesPage';
 import TranscriptDetailPage from './pages/TranscriptDetailPage';
@@ -32,6 +33,7 @@ export default function App() {
           <NavLink to="/benchmarks" className={({ isActive }) => (isActive ? 'active' : '')}>Benchmarks</NavLink>
           <NavLink to="/rules" className={({ isActive }) => (isActive ? 'active' : '')}>Legal rules</NavLink>
           <NavLink to="/statutes" className={({ isActive }) => (isActive ? 'active' : '')}>Statutes</NavLink>
+          <NavLink to="/bills" className={({ isActive }) => (isActive ? 'active' : '')}>Bill tracking</NavLink>
         </nav>
         <div className="mode">
           {usingSupabase ? 'Connected: central database' : 'Demo mode: data stays in this browser'}
@@ -57,6 +59,7 @@ export default function App() {
           <Route path="/rules" element={<LegalRulesPage />} />
           <Route path="/statutes" element={<StatutesPage />} />
           <Route path="/statutes/:code/:chapter" element={<StatuteViewerPage />} />
+          <Route path="/bills" element={<BillTrackingPage />} />
           <Route path="/parties" element={<PartiesPage />} />
           <Route path="/parties/new" element={<PartyFormPage mode="new" />} />
           <Route path="/parties/:id" element={<PartyDetailPage />} />

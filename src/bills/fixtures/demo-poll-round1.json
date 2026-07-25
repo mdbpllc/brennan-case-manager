@@ -1,0 +1,45 @@
+{
+  "_provenance": "FICTIONAL demo data — invented bills for a hypothetical 90th Legislature (2027). Bill numbers in the 99xx range do not exist. Used to exercise the T3 matcher/lifecycle in demo mode without the LegiScan API.",
+  "polledAt": "2027-03-02T09:00:00Z",
+  "bills": [
+    {
+      "billId": 9990001,
+      "sessionId": 9902172,
+      "session": "90th Legislature Regular Session (fictional demo)",
+      "number": "HB 9901",
+      "title": "Relating to affidavits concerning the cost and necessity of services in civil actions.",
+      "statusCode": 1,
+      "statusDate": "2027-02-14",
+      "effectiveDate": null,
+      "changeHash": "demo-9901-r1",
+      "url": "https://example.invalid/demo/HB9901",
+      "text": "A BILL TO BE ENTITLED AN ACT relating to affidavits concerning the cost and necessity of services in civil actions. SECTION 1. Section 18.001(b), Civil Practice and Remedies Code, is amended to read as follows: (b) [fictional amendatory text for demo purposes]. SECTION 2. This Act applies only to an action commenced on or after the effective date. SECTION 3. This Act takes effect September 1, 2027."
+    },
+    {
+      "billId": 9990002,
+      "sessionId": 9902172,
+      "session": "90th Legislature Regular Session (fictional demo)",
+      "number": "SB 9902",
+      "title": "Relating to hospital and emergency medical services liens.",
+      "statusCode": 1,
+      "statusDate": "2027-02-20",
+      "effectiveDate": null,
+      "changeHash": "demo-9902-r1",
+      "url": "https://example.invalid/demo/SB9902",
+      "text": "A BILL TO BE ENTITLED AN ACT relating to hospital and emergency medical services liens. SECTION 1. Chapter 55, Property Code, is amended by adding Section 55.0021 to read as follows: [fictional amendatory text for demo purposes]. SECTION 2. Sections 55.002 and 55.004, Property Code, are amended to read as follows: [fictional amendatory text]. SECTION 3. This Act takes effect January 1, 2028."
+    },
+    {
+      "billId": 9990003,
+      "sessionId": 9902172,
+      "session": "90th Legislature Regular Session (fictional demo)",
+      "number": "HB 9903",
+      "title": "Relating to driver education course requirements.",
+      "statusCode": 1,
+      "statusDate": "2027-02-25",
+      "effectiveDate": null,
+      "changeHash": "demo-9903-r1",
+      "url": "https://example.invalid/demo/HB9903",
+      "text": "A BILL TO BE ENTITLED AN ACT relating to driver education course requirements. SECTION 1. Section 1001.056, Education Code, is amended to read as follows: [fictional amendatory text — touches no registry cite; control bill]. SECTION 2. This Act takes effect September 1, 2027."
+    }
+  ]
+}

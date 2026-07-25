@@ -103,12 +103,15 @@ coding sessions. The spec documents committed under `docs/specs/` are
   tracking via the LegiScan API only, never crawling legiscan.com).
   §9 decisions all made 2026-07-25: O1 key registered (Supabase secret
   LEGISCAN_API_KEY); O2 working set = core nine + TX, LG, TN; O3 dashboard
-  card (build it in T4). T1 (cite parser) built 2026-07-25 in src/cites/;
-  T2 (statute cache + viewer + A4 tripwire) built 2026-07-25 in
-  src/statutes/ + Statutes pages (fixtures are real public-domain chapters;
-  live mode needs one edge-function deploy — docs/statute-cache-setup.md).
-  T3 (LegiScan poller) and T4 (worklist + dashboard card) are next, in
-  that order. Companions:
+  card (landed on the Cases landing page). ALL FOUR SLICES BUILT
+  2026-07-25: T1 cite parser (src/cites/), T2 statute cache + viewer + A4
+  tripwire (src/statutes/, Statutes pages), T3 bill tracking (src/bills/,
+  Bill tracking page, fictional demo poll fixtures), T4 unified worklist
+  + Cases-page card (src/statutes/worklist.ts, WorklistCard). Remaining:
+  deploy + schedule the two edge functions (statute-fetch,
+  legiscan-poller) per docs/statute-cache-setup.md — the poller is
+  unexercised against the live API until then. Flags are advisory
+  everywhere; verification stays attorney-only. Companions:
   `cite-parser-test-cases.md` (T1's 35-case fixture table, verbatim) and
   `watch-targets-seed.md` (T3's watch-target seed rows; §9-O4 answered —
   all sweep groups in). Build-time discovery: the .gov site is now an SPA —

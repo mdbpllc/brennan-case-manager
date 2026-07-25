@@ -11,6 +11,24 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (bill tracking T3 + unified worklist T4 BUILT — statute-tracking design COMPLETE in-app — Code session)
+
+**What happened (same session, continued):** Michael said keep going, so Module B and the worklist landed. Every in-app slice of the statute-tracking design is now built (T1–T4); only the two edge-function deploys remain (Michael + CLI, docs/statute-cache-setup.md).
+
+- **T3 engines (`src/bills/`):** bill-text statute-reference matcher (drafting-order conventions incl. enumerations, CCP articles, chapter and subchapter forms — resolver-gated, classify-don't-guess) and the B3 lifecycle (active bill → `pending-bill` flags on touched rules; passage → clears pending with "hardened" attribution + raises `enacted-change-pending` with effective date; veto/sine-die → auto-clears, attributed and logged). All pure functions; flags advisory throughout (§8).
+- **T3 data:** watch_targets / tracked_bills / bill_statute_refs in schema + both adapters; store v9 (reseeds — PFS CSV needs re-import). Manual sweep targets SEEDED verbatim from watch-targets-seed.md (all 20 phrases, 4 groups). **Registry-derived targets regenerate from registry cites automatically** (`syncDerivedWatchTargets`, drafting-order phrases) so the poller reads rows and needs zero cite logic.
+- **T3 UI:** Bill tracking nav page — tracked-bills table (status, effective date, touched refs, flagged rules), watch-target management (derived display + manual add/toggle/remove), "Import poll results" JSON action, matcher re-run over stored raw payloads, LegiScan CC BY 4.0 attribution footer (B4). Demo mode ships two FICTIONAL poll rounds (99xx bill numbers, provenance headers in the fixtures).
+- **T3 poller (`supabase/functions/legiscan-poller/`):** fetch-and-store only (masterlist change-hash diff + target sweeps ≥50 relevance + getBill/getBillText) — the app's tested matcher/lifecycle does all flag logic, so it re-runs over history without re-spending queries. Uses Michael's `LEGISCAN_API_KEY` secret. **NOT yet deployed or exercised against the live API** — first deploy should be invoked once manually and its JSON log read (doc says so).
+- **T4 (`src/statutes/worklist.ts` + `WorklistCard`):** unified worklist — A4 text-changed items due immediately; B3 enacted items join ON their effective date (before that: "upcoming"; unknown date: surfaced as upcoming, never silently due); pending-bill flags are context counts, never worklist items. Full card on Legal Rules; **compact card on the Cases landing page = O3's "dashboard card"** (the app has no dashboard page yet — the landing page is the de facto dashboard; revisit if a real dashboard ever exists). Renders nothing when there's nothing to act on.
+- **Verified live in demo mode:** derived targets (5) + manual seeds (20) on first visit; round 1 → HB 9901 flags cprc-18-001, SB 9902 flags hospital-lien-ch55, control bill matches ED but flags nothing; Cases card "2 pending bills watched"; round 2 → HB 9901 passes (pending cleared-as-hardened, enacted flag effective 2027-09-01), SB 9902 dies (auto-cleared, logged); worklist + Cases card show the upcoming enacted change. No console errors. **162 tests green (21 new).** One real bug caught live: React dev-mode double-effect duplicated derived targets → sync is now single-flight + self-healing. Same honesty note as T2: JS-dispatched clicks on real elements (hidden-pane limitation).
+- **CLAUDE.md build-state updated.**
+
+**Next:** deploy statute-fetch + legiscan-poller and schedule the poller (monthly interim cadence per §5); enter effective dates on real passage events; the OAA remaining tabs / next queue item per Michael.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this build.
+
 ## 2026-07-25 (statute cache + viewer + hash tripwire: T2 BUILT — Code session)
 
 **What happened (same session, continued):** Michael said go on T2, so Module A is now complete end-to-end (design §3, A2–A4):

@@ -5,6 +5,7 @@ import type { CalendarEvent } from '../domain/calendar';
 import type { Charge } from '../domain/oaa';
 import { billingSeedData } from './billingSeed';
 import { transcriptSeedData } from './transcriptSeed';
+import { billsSeedData } from './billsSeed';
 
 const t = new Date().toISOString();
 const yy = String(new Date().getFullYear()).slice(-2);
@@ -16,7 +17,7 @@ export function seedData(): {
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
   charges: Charge[];
-} & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> {
+} & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> & ReturnType<typeof billsSeedData> {
   const parties: PartyRecord[] = [
     {
       id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
@@ -212,5 +213,6 @@ export function seedData(): {
     cases, parties, links, fileCounters: { [yy]: 3 }, events, charges,
     ...billingSeedData(),
     ...transcriptSeedData({ cases, parties, links }),
+    ...billsSeedData(),
   };
 }

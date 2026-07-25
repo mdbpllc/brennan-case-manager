@@ -68,9 +68,12 @@ export interface WatchFlag {
   id: string;
   ruleId: string;
   kind: WatchFlagKind;
-  /** What raised it: a sectionRef (A4) or bill ref (T3). */
+  /** What raised it: a sectionRef (A4) or bill number (T3). */
   sourceRef: string;
   detail?: string;
+  /** enacted-change-pending only: when the change takes effect — the flag
+   *  joins the re-verification worklist on that date (B3). */
+  effectiveDate?: string;
   raisedAt: string;
   clearedAt?: string;
   clearedBy?: string;
@@ -96,6 +99,14 @@ export function snapshotRefForCite(parsed: ParsedCite): { ref: string; code: str
     return { ref: sectionRef(parsed.code, parsed.section), code: parsed.code, chapter: parsed.chapter, section: parsed.section };
   }
   return { ref: chapterRef(parsed.code, parsed.chapter), code: parsed.code, chapter: parsed.chapter };
+}
+
+export function flagKindLabel(kind: WatchFlagKind): string {
+  switch (kind) {
+    case 'text-changed-since-verified': return 'Text changed since verification';
+    case 'pending-bill': return 'Pending bill';
+    case 'enacted-change-pending': return 'Enacted change pending';
+  }
 }
 
 /** Copyable cite text for the viewer's per-section button. */

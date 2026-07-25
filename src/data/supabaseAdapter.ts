@@ -16,6 +16,7 @@ import type {
   StatuteChapter, StatuteChapterMeta, StatuteSection,
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
+import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -647,5 +648,54 @@ export class SupabaseAdapter implements DataAdapter {
     return this.updateRow<WatchFlag>('watch_flags', id, {
       clearedAt: new Date().toISOString(), clearedBy,
     });
+  }
+
+  // ---- Bill tracking (T3) ----
+
+  async listWatchTargets(): Promise<WatchTarget[]> {
+    return this.rows<WatchTarget>('watch_targets', (q) => q.select('*').order('kind').order('note').order('cite_or_query'));
+  }
+
+  async createWatchTarget(data: Omit<WatchTarget, 'id'>): Promise<WatchTarget> {
+    return this.insertRow<WatchTarget>('watch_targets', data);
+  }
+
+  async updateWatchTarget(id: string, patch: Partial<Pick<WatchTarget, 'active' | 'note'>>): Promise<WatchTarget> {
+    return this.updateRow<WatchTarget>('watch_targets', id, patch);
+  }
+
+  async deleteWatchTarget(id: string): Promise<void> {
+    await this.deleteRows('watch_targets', 'id', id);
+  }
+
+  async listTrackedBills(): Promise<TrackedBill[]> {
+    return this.rows<TrackedBill>('tracked_bills', (q) => q.select('*').order('bill_number'));
+  }
+
+  async upsertTrackedBill(data: Omit<TrackedBill, 'id'>): Promise<TrackedBill> {
+    const res = await this.sb.from('tracked_bills')
+      .upsert(toRow(data), { onConflict: 'legiscan_bill_id' }).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<TrackedBill>(res.data as Record<string, unknown>);
+  }
+
+  async listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]> {
+    return this.rows<BillStatuteRef>('bill_statute_refs', (q) => q.select('*').eq('tracked_bill_id', trackedBillId));
+  }
+
+  async listAllBillRefs(): Promise<BillStatuteRef[]> {
+    return this.rows<BillStatuteRef>('bill_statute_refs', (q) => q.select('*'));
+  }
+
+  async saveBillRefs(
+    trackedBillId: string,
+    refs: Omit<BillStatuteRef, 'id' | 'trackedBillId'>[],
+  ): Promise<BillStatuteRef[]> {
+    await this.deleteRows('bill_statute_refs', 'tracked_bill_id', trackedBillId);
+    if (!refs.length) return [];
+    const res = await this.sb.from('bill_statute_refs')
+      .insert(refs.map((r) => toRow({ ...r, trackedBillId }))).select();
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<BillStatuteRef>(r));
   }
 }

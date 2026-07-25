@@ -9,6 +9,7 @@ import type {
   StatuteChapter, StatuteChapterMeta, StatuteSection,
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
+import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -174,4 +175,22 @@ export interface DataAdapter {
   listWatchFlags(activeOnly?: boolean): Promise<WatchFlag[]>;
   createWatchFlag(data: Omit<WatchFlag, 'id' | 'raisedAt'>): Promise<WatchFlag>;
   clearWatchFlag(id: string, clearedBy: string): Promise<WatchFlag>;
+
+  // ---- Bill tracking (T3, statute-text-and-bill-tracking-design.md §6) ----
+  listWatchTargets(): Promise<WatchTarget[]>;
+  createWatchTarget(data: Omit<WatchTarget, 'id'>): Promise<WatchTarget>;
+  updateWatchTarget(id: string, patch: Partial<Pick<WatchTarget, 'active' | 'note'>>): Promise<WatchTarget>;
+  deleteWatchTarget(id: string): Promise<void>;
+
+  listTrackedBills(): Promise<TrackedBill[]>;
+  /** Upsert keyed on legiscanBillId — polls re-deliver the same bill. */
+  upsertTrackedBill(data: Omit<TrackedBill, 'id'>): Promise<TrackedBill>;
+
+  listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]>;
+  listAllBillRefs(): Promise<BillStatuteRef[]>;
+  /** Full replace per bill — the matcher's output is recomputed wholesale. */
+  saveBillRefs(
+    trackedBillId: string,
+    refs: Omit<BillStatuteRef, 'id' | 'trackedBillId'>[],
+  ): Promise<BillStatuteRef[]>;
 }

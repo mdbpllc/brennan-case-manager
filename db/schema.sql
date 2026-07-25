@@ -660,10 +660,14 @@ create table if not exists watch_flags (
   kind text not null check (kind in ('text-changed-since-verified', 'pending-bill', 'enacted-change-pending')),
   source_ref text not null,      -- sectionRef (A4) or bill ref (T3)
   detail text,
+  effective_date date,           -- enacted-change-pending: worklist join date (B3)
   raised_at timestamptz not null default now(),
   cleared_at timestamptz,
   cleared_by text
 );
+
+-- Idempotent upgrade for databases created from the pre-T3 schema.
+alter table watch_flags add column if not exists effective_date date;
 
 create index if not exists watch_flags_rule_idx on watch_flags (rule_id);
 create index if not exists watch_flags_active_idx on watch_flags (rule_id) where cleared_at is null;
@@ -680,4 +684,58 @@ create policy "authenticated full access statute_sections" on statute_sections
 create policy "authenticated full access registry_verification_snapshots" on registry_verification_snapshots
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access watch_flags" on watch_flags
+  for all to authenticated using (true) with check (true);
+
+-- ---- Bill tracking (T3, statute-text-and-bill-tracking-design.md §6) ----
+-- Source: LegiScan API only (CC BY 4.0, attribution in tracking views;
+-- never crawl legiscan.com). All rows are advisory inputs to watch flags.
+
+create table if not exists watch_targets (
+  id uuid primary key default gen_random_uuid(),
+  kind text not null check (kind in ('registry-derived', 'manual')),
+  cite_or_query text not null,   -- cite for derived; quoted search phrase for manual
+  note text,
+  active boolean not null default true
+);
+
+create table if not exists tracked_bills (
+  id uuid primary key default gen_random_uuid(),
+  legiscan_bill_id bigint not null unique,
+  session_id bigint not null,
+  session_name text,
+  bill_number text not null,     -- 'HB 9901'
+  title text not null,
+  status text not null check (status in ('introduced', 'engrossed', 'enrolled', 'passed', 'vetoed', 'dead')),
+  status_date date,
+  effective_date date,           -- drives when B3 flags join the worklist
+  change_hash text not null,     -- LegiScan change_hash: cheap poll diffing
+  last_polled timestamptz not null,
+  url text,
+  raw_json text not null         -- full payload kept so the matcher can re-run
+);
+
+create index if not exists tracked_bills_status_idx on tracked_bills (status);
+
+create table if not exists bill_statute_refs (
+  id uuid primary key default gen_random_uuid(),
+  tracked_bill_id uuid not null references tracked_bills (id) on delete cascade,
+  code text not null,
+  chapter text not null,
+  section text,                  -- null = chapter-level reference
+  match_confidence text not null check (match_confidence in ('exact', 'chapter')),
+  matched_text_excerpt text not null
+);
+
+create index if not exists bill_statute_refs_bill_idx on bill_statute_refs (tracked_bill_id);
+create index if not exists bill_statute_refs_lookup_idx on bill_statute_refs (code, chapter);
+
+alter table watch_targets enable row level security;
+alter table tracked_bills enable row level security;
+alter table bill_statute_refs enable row level security;
+
+create policy "authenticated full access watch_targets" on watch_targets
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access tracked_bills" on tracked_bills
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access bill_statute_refs" on bill_statute_refs
   for all to authenticated using (true) with check (true);

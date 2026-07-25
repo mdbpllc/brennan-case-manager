@@ -11,9 +11,11 @@ import { Link } from 'react-router-dom';
 import type { LegalRule } from '../domain/billing';
 import { ATTORNEY_USER } from '../domain/billing';
 import type { WatchFlag } from '../domain/statutes';
+import { flagKindLabel } from '../domain/statutes';
 import { db } from '../data';
 import { parseCite } from '../cites/parser';
 import { clearTextChangedFlags, snapshotRuleCites } from '../statutes/tripwire';
+import WorklistCard from '../components/WorklistCard';
 
 /** Statutory cites deep-link into the in-app statute viewer (T2, design A3);
  *  the viewer carries the open-at-source link. Case cites, rules, and
@@ -48,6 +50,8 @@ export default function LegalRulesPage() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [snapshotNote, setSnapshotNote] = useState<string | null>(null);
+  // Remounts the worklist card after verify/flag actions so it re-queries.
+  const [worklistNonce, setWorklistNonce] = useState(0);
 
   const refresh = useCallback(async () => {
     try {
@@ -91,6 +95,7 @@ export default function LegalRulesPage() {
     if (snap.skipped.length) parts.push(`not pinned (${snap.skipped.map((s) => s.ref).join(', ')} — chapter unavailable)`);
     if (clearedCount) parts.push(`${clearedCount} change flag${clearedCount === 1 ? '' : 's'} cleared`);
     setSnapshotNote(parts.length ? `${rule.ruleKey}: ${parts.join(' · ')}` : null);
+    setWorklistNonce((n) => n + 1);
     refresh();
   };
 
@@ -130,6 +135,8 @@ export default function LegalRulesPage() {
 
       {snapshotNote && <div className="notice">{snapshotNote}</div>}
 
+      <WorklistCard key={worklistNonce} />
+
       <div className="card">
         <table className="list">
           <thead><tr><th>Rule</th><th>Cites</th><th>Scope</th><th>Status</th><th>Verified</th><th></th></tr></thead>
@@ -142,8 +149,9 @@ export default function LegalRulesPage() {
                   {r.watchFlags && <div className="small" style={{ color: 'var(--warn)' }}>⚠ {r.watchFlags}</div>}
                   {(flagsByRule.get(r.id) ?? []).map((f) => (
                     <div key={f.id} className="small" style={{ color: 'var(--warn)' }}>
-                      ⚠ {f.kind === 'text-changed-since-verified' ? 'Text changed since verification' : f.kind}:{' '}
-                      {f.sourceRef} ({f.raisedAt.slice(0, 10)}) — re-verify to clear.
+                      ⚠ {flagKindLabel(f.kind)}: {f.sourceRef} ({f.raisedAt.slice(0, 10)})
+                      {f.kind === 'text-changed-since-verified' && ' — re-verify to clear.'}
+                      {f.detail && f.kind !== 'text-changed-since-verified' && ` — ${f.detail}`}
                     </div>
                   ))}
                   {openId === r.id ? (

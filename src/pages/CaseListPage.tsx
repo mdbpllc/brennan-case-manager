@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { CaseRecord, PracticeArea } from '../domain/types';
 import { CASE_TYPES, isClosedStatus } from '../domain/caseTypes';
 import { db } from '../data';
+import WorklistCard from '../components/WorklistCard';
 
 const AREA_BADGE: Record<PracticeArea, string> = {
   'Personal Injury': 'pi',
@@ -36,6 +37,10 @@ export default function CaseListPage() {
 
   return (
     <div>
+      {/* O3 (Michael, 2026-07-25): the re-verification worklist surfaces on
+          the landing page, not just the registry screen. Renders nothing
+          when there's nothing to act on. */}
+      <WorklistCard compact />
       <div className="page-head">
         <div>
           <h2>Cases</h2>
