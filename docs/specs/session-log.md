@@ -11,6 +11,20 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (crash recovery; statute-tracking §9 decisions made — Code session)
+
+**What happened:** The Claude Desktop app crashed at the end of the cite-parser session below (~00:25) and Michael reinstalled it (00:29) — the app's chat list was wiped but all transcripts, code, and pushes survived (last push 00:17, nothing lost). The crashed session's final exchange was recovered from its transcript: Michael had answered the three §9 questions with "Q1: how do I register the API key; Q2/Q3: in sequence after." Resolved this session:
+
+- **O1 — LegiScan API key:** registration steps given to Michael (legiscan.com account → API page → free public-tier key, 32 chars, straight to password manager; goes in `.env` when T3 lands, never the repo). **Key itself still pending Michael** — T3 stays gated.
+- **O2 — Working-set code list DECIDED (Michael, 2026-07-25):** the design's core nine (FA, PE, CR, CP, GV, HS, IN, PR, ES) **plus TX (Tax), LG (Local Government), and TN (Transportation** — Michael's own addition**)**. Occupations excluded. All twelve are already live-verified entries in `src/cites/codes.ts`.
+- **O3 — Worklist surfacing DECIDED (Michael, 2026-07-25):** re-verification worklist gets a **dashboard card** in addition to the registry screen — visible each post-session Sept. 1 without going looking.
+
+**Next:** T2 (statute cache + viewer + hash tripwire) is now fully unblocked — build against the twelve-code working set and remember the SPA discovery (fetch from `tcss.legis.texas.gov/resources/…`). T3 waits on the key.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this entry's three §9 decisions.
+
 ## 2026-07-25 (statute-tracking design filed; cite parser T1 BUILT + live-verified — Code session)
 
 **What happened (same Claude Code session):** Michael dropped the new design-space handoff — the Statute Text & Legislative Tracking design pass plus its two companions (the 35-case cite-parser test table and the watch-targets seed; the third attachment was the transcript design again, byte-identical to the committed copy → already fully applied, nothing done). All three filed verbatim (`02da677`): `statute-text-and-bill-tracking-design.md`, `cite-parser-test-cases.md`, `watch-targets-seed.md`.
