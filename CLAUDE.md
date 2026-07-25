@@ -88,9 +88,14 @@ coding sessions. The spec documents committed under `docs/specs/` are
   2026-07-24 design dictation session (INTAKE, not spec-final; NOTHING in
   it is built; every item needs a design pass before build). Item A
   (recorder → local transcription → sort & route) is Michael's designated
-  next build target — blocked on him providing the NVIDIA transcription
-  model docs/API, and its design pass must extend transcript-workflows.md
-  (same local-first pipeline), not re-derive it
+  next build target — its design pass landed 2026-07-25 as
+  transcript-sort-and-route-design.md
+- `transcript-sort-and-route-design.md` — feature-intake item A design pass
+  (2026-07-25): hands-off ingestion + the sort/route staging inbox, extending
+  transcript-workflows.md Phase 1. DESIGN-COMPLETE pending Michael's review
+  of its §10 decision list (D1 auto-file posture, O2–O4). T1 (data model +
+  inbox UI) and T2 (routing engine) are the hardware-free build slices; T3
+  (Python/NeMo pipeline service) is gated on the P1 GPU machine
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
@@ -152,12 +157,14 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
    src/outlook/ activated by VITE_MSAL_* env vars; setup steps in
    docs/outlook-setup.md; Michael's Entra app registration pending). Phase 2
    two-way sync is backlogged — do not start it.
-5. Next per Michael (2026-07-24 feature intake): recorder → local
-   transcription → sort & route (feature-intake-2026-07-24.md, item A) —
-   needs its design pass plus the NVIDIA model docs/API from Michael
-   before build starts. OAA-based criminal appointment intake
-   (criminal-appointment-intake-and-docket-enhancements.md) follows, then
-   remaining tabs with feedback each step.
+5. Transcript sort & route (feature-intake item A, design pass in
+   transcript-sort-and-route-design.md): T1 (data model, staging inbox,
+   Transcripts tab) + T2 (routing engine + the repo's first test runner,
+   vitest) BUILT 2026-07-25. T3 (Python/NeMo pipeline service) is gated on
+   the P1 GPU hardware — do not start it; T4 wiring follows T3. Auto-file
+   stays OFF (design D1) until Michael rules otherwise. OAA-based criminal
+   appointment intake (criminal-appointment-intake-and-docket-enhancements.md)
+   follows, then remaining tabs with feedback each step.
 
 ## Working style
 
