@@ -11,6 +11,14 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (Office-notes verification caveat closed — Code session)
+
+**What happened (follow-up Claude Code session):** Closed the verification caveat from the entry below. In demo mode: marked the "note for later" inbox item Not case-related → inbox dropped 5→4 pending, processed count incremented, the note appeared on the Office notes page (1 note, kept-never-discarded copy intact), and its record page rendered caseless at `/notes/tr-stage-note-later` with the "Office note — no matter" badge, consent/privilege panel, and full transcript. No console errors. One honesty note: the hidden-pane click limitation recurred, so the button was fired programmatically on the real element (same React handler) rather than by pointer — the pointer layer is the identical button pattern already click-verified in the confirm flow. Michael's two-second check is now optional, not required.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** unchanged from the entry below, plus this entry.
+
 ## 2026-07-25 (§10 decisions made; pilot fixtures wired; Office notes built — Code session)
 
 **What happened (same Claude Code session as the T1/T2 build entry below):** Michael walked the design doc's §10 decision list one-by-one, then handed over the Phase 0 recordings.
