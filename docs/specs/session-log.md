@@ -12,6 +12,14 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (sync-channel diagnosis: project knowledge is a stale, over-broad GitHub sync — same Code session)
+
+**What happened:** Design ran three definitive checks after the four-file surgery: no BUILD-STATE.md content indexed (verbatim-heading queries missed), CLAUDE.md still pre-`5087899`, newest visible session-log entry 07-22 — while RAW SOURCE FILES (`src/data/supabaseAdapter.ts`, `src/domain/partyRegistry.ts`, `package-lock.json`) surface in its searches. Code-side reading: all commits through `82d88b1` are confirmed on origin, so the gap is between GitHub and project knowledge — the evidence fits a wholesale repo sync that (a) snapshotted days ago and hasn't refreshed, and (b) includes junk (`package-lock.json` is pure token cost). **For Michael, in the claude.ai project's knowledge settings:** check what the GitHub source includes and when it last synced; trim it to `docs/specs/*` + `CLAUDE.md` + `README.md` (drop `src/`, lockfiles); force a re-sync, or fall back to manually uploading the four files. Interim unblock: BUILD-STATE.md was pasted verbatim into the Code chat for Michael to relay. Push discipline was never the problem this round — the repo side of the bridge works; the knowledge-side refresh is the broken half.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** unchanged (the four re-upload files).
+
 ## 2026-07-25 (design-side follow-up: status claims stripped from master spec + README — Code session)
 
 **What happened:** Design side reviewed the BUILD-STATE bridge and found the two remaining places build status could drift: the master spec (`case-management-project-instructions.md` — §5's "v0.1 BUILT AND DELIVERED / Remaining" blocks, §6's "Built so far", the open-action-items entry) and `README.md` (v0.1 title/framing, stale "next slices" list). Same surgery applied to both, **at design's explicit direction** (the one authorized exception to the never-edit-specs-Code-side rule; design-side claims like FULLY SPECIFIED / decisions resolved were left untouched — the master spec still owns what is DESIGNED). A PRECEDENCE note now sits at the top of the master spec: master spec = authoritative for designed; BUILD-STATE.md = authoritative for built. Note the flow reversal this creates: the repo copy of the master spec now LEADS the project-knowledge original until Michael re-uploads — do not "refresh" it from project knowledge in the meantime or the surgery gets undone.
