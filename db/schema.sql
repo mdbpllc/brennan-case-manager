@@ -610,3 +610,74 @@ create policy "authenticated full access charges" on charges
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access oaa_intakes" on oaa_intakes
   for all to authenticated using (true) with check (true);
+
+-- ---- Statute cache (T2, statute-text-and-bill-tracking-design.md §6) ----
+-- Current-codification chapter text from statutes.capitol.texas.gov (public
+-- domain). Cache-on-demand; refreshed by the biennial refresh job. Sections
+-- carry content hashes feeding the A4 re-verification tripwire.
+
+create table if not exists statute_chapters (
+  id uuid primary key default gen_random_uuid(),
+  code text not null,          -- two-letter site code: CP, PR, HS, ...
+  chapter text not null,       -- as in the file name: '41', '55A'
+  title text,
+  source_url text not null,
+  html text not null,          -- raw file as served, so parses can re-run
+  fetched_at timestamptz not null,
+  unique (code, chapter)
+);
+
+create table if not exists statute_sections (
+  id uuid primary key default gen_random_uuid(),
+  chapter_id uuid not null references statute_chapters (id) on delete cascade,
+  code text not null,
+  chapter text not null,
+  section_number text not null,  -- '41.0105', '55A.053'
+  heading text,
+  text text not null,
+  content_hash text not null     -- tripwire change signal
+);
+
+create index if not exists statute_sections_chapter_idx on statute_sections (chapter_id);
+create index if not exists statute_sections_lookup_idx on statute_sections (code, section_number);
+
+-- A4: pins the section text a verification actually saw. Advisory layer —
+-- verified status itself stays attorney-only on legal_rules.
+create table if not exists registry_verification_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  rule_id uuid not null references legal_rules (id) on delete cascade,
+  section_ref text not null,     -- 'CP 41.0105' or 'PR ch. 55'
+  content_hash text not null,
+  verified_at timestamptz not null
+);
+
+create index if not exists reg_ver_snapshots_rule_idx on registry_verification_snapshots (rule_id);
+
+-- Advisory watch flags on registry entries. Never touch verified status.
+create table if not exists watch_flags (
+  id uuid primary key default gen_random_uuid(),
+  rule_id uuid not null references legal_rules (id) on delete cascade,
+  kind text not null check (kind in ('text-changed-since-verified', 'pending-bill', 'enacted-change-pending')),
+  source_ref text not null,      -- sectionRef (A4) or bill ref (T3)
+  detail text,
+  raised_at timestamptz not null default now(),
+  cleared_at timestamptz,
+  cleared_by text
+);
+
+create index if not exists watch_flags_rule_idx on watch_flags (rule_id);
+create index if not exists watch_flags_active_idx on watch_flags (rule_id) where cleared_at is null;
+
+alter table statute_chapters enable row level security;
+alter table statute_sections enable row level security;
+alter table registry_verification_snapshots enable row level security;
+alter table watch_flags enable row level security;
+
+create policy "authenticated full access statute_chapters" on statute_chapters
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access statute_sections" on statute_sections
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access registry_verification_snapshots" on registry_verification_snapshots
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access watch_flags" on watch_flags
+  for all to authenticated using (true) with check (true);

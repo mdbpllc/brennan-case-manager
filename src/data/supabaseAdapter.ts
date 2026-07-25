@@ -12,6 +12,10 @@ import type {
   GlossaryTerm, TagTemplate,
 } from '../domain/transcripts';
 import type { Charge, OaaIntakeRecord } from '../domain/oaa';
+import type {
+  StatuteChapter, StatuteChapterMeta, StatuteSection,
+  RegistryVerificationSnapshot, WatchFlag,
+} from '../domain/statutes';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -569,5 +573,79 @@ export class SupabaseAdapter implements DataAdapter {
     const res = await this.sb.from('oaa_intakes').select('*').eq('case_id', caseId).maybeSingle();
     if (res.error) throw new Error(res.error.message);
     return res.data ? fromRow<OaaIntakeRecord>(res.data as Record<string, unknown>) : null;
+  }
+
+  // ---- Statute cache (T2) ----
+
+  async listStatuteChapters(): Promise<StatuteChapterMeta[]> {
+    return this.rows<StatuteChapterMeta>('statute_chapters', (q) =>
+      q.select('id, code, chapter, title, source_url, fetched_at').order('code').order('chapter'));
+  }
+
+  async getStatuteChapter(code: string, chapter: string): Promise<StatuteChapter | null> {
+    const res = await this.sb.from('statute_chapters').select('*').eq('code', code).eq('chapter', chapter).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<StatuteChapter>(res.data as Record<string, unknown>) : null;
+  }
+
+  async saveStatuteChapter(
+    data: Omit<StatuteChapter, 'id'>,
+    sections: Omit<StatuteSection, 'id' | 'chapterId' | 'code' | 'chapter'>[],
+  ): Promise<StatuteChapter> {
+    const res = await this.sb.from('statute_chapters')
+      .upsert(toRow(data), { onConflict: 'code,chapter' }).select().single();
+    if (res.error) throw new Error(res.error.message);
+    const chapterRec = fromRow<StatuteChapter>(res.data as Record<string, unknown>);
+    await this.deleteRows('statute_sections', 'chapter_id', chapterRec.id);
+    if (sections.length) {
+      const ins = await this.sb.from('statute_sections').insert(sections.map((s) =>
+        toRow({ ...s, chapterId: chapterRec.id, code: data.code, chapter: data.chapter })));
+      if (ins.error) throw new Error(ins.error.message);
+    }
+    return chapterRec;
+  }
+
+  async listSectionsForChapter(code: string, chapter: string): Promise<StatuteSection[]> {
+    return this.rows<StatuteSection>('statute_sections', (q) =>
+      q.select('*').eq('code', code).eq('chapter', chapter).order('section_number'));
+  }
+
+  async listSnapshotsForRule(ruleId: string): Promise<RegistryVerificationSnapshot[]> {
+    return this.rows<RegistryVerificationSnapshot>('registry_verification_snapshots', (q) =>
+      q.select('*').eq('rule_id', ruleId));
+  }
+
+  async listAllSnapshots(): Promise<RegistryVerificationSnapshot[]> {
+    return this.rows<RegistryVerificationSnapshot>('registry_verification_snapshots', (q) => q.select('*'));
+  }
+
+  async saveSnapshotsForRule(
+    ruleId: string,
+    snaps: Omit<RegistryVerificationSnapshot, 'id' | 'ruleId'>[],
+  ): Promise<RegistryVerificationSnapshot[]> {
+    await this.deleteRows('registry_verification_snapshots', 'rule_id', ruleId);
+    if (!snaps.length) return [];
+    const res = await this.sb.from('registry_verification_snapshots')
+      .insert(snaps.map((s) => toRow({ ...s, ruleId }))).select();
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<RegistryVerificationSnapshot>(r));
+  }
+
+  async listWatchFlags(activeOnly?: boolean): Promise<WatchFlag[]> {
+    return this.rows<WatchFlag>('watch_flags', (q) => {
+      let query = q.select('*');
+      if (activeOnly) query = query.is('cleared_at', null);
+      return query.order('raised_at', { ascending: false });
+    });
+  }
+
+  async createWatchFlag(data: Omit<WatchFlag, 'id' | 'raisedAt'>): Promise<WatchFlag> {
+    return this.insertRow<WatchFlag>('watch_flags', data);
+  }
+
+  async clearWatchFlag(id: string, clearedBy: string): Promise<WatchFlag> {
+    return this.updateRow<WatchFlag>('watch_flags', id, {
+      clearedAt: new Date().toISOString(), clearedBy,
+    });
   }
 }

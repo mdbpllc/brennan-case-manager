@@ -100,6 +100,12 @@ export function normalizeCodeName(raw: string): string {
 }
 
 /** Resolve a code name/abbreviation to its definition, or null. */
+/** Lookup by the two-letter site code, e.g. 'CP'. */
+export function codeByCd(cd: string): CodeDef | null {
+  const up = cd.toUpperCase();
+  return CODES.find((def) => def.cd === up) ?? null;
+}
+
 export function resolveCode(raw: string): CodeDef | null {
   const norm = normalizeCodeName(raw);
   if (!norm) return null;

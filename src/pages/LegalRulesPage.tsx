@@ -7,25 +7,32 @@
 //  - computed outputs stamp the rule versions they relied on.
 
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { LegalRule } from '../domain/billing';
 import { ATTORNEY_USER } from '../domain/billing';
+import type { WatchFlag } from '../domain/statutes';
 import { db } from '../data';
 import { parseCite } from '../cites/parser';
+import { clearTextChangedFlags, snapshotRuleCites } from '../statutes/tripwire';
 
-/** Statutory cites become deep links into the official statutes site
- *  (cite parser T1 — statute-text-and-bill-tracking-design.md A1). Case
- *  cites, rules, and federal cites render as plain text: the parser
- *  classifies them but only live-verified TX code cites get a URL. */
+/** Statutory cites deep-link into the in-app statute viewer (T2, design A3);
+ *  the viewer carries the open-at-source link. Case cites, rules, and
+ *  federal cites render as plain text: the parser classifies them but only
+ *  live-verified TX code cites get a link. */
 function CiteList({ cites }: { cites: string[] }) {
   return (
     <>
       {cites.map((c, i) => {
         const parsed = parseCite(c);
+        const linkable = parsed.url && parsed.code && parsed.chapter;
         return (
           <span key={i}>
             {i > 0 && '; '}
-            {parsed.url
-              ? <a href={parsed.url} target="_blank" rel="noreferrer" title="Open at statutes.capitol.texas.gov">{c}</a>
+            {linkable
+              ? <Link
+                  to={`/statutes/${parsed.code}/${parsed.chapter}${parsed.section ? `#${parsed.section}` : ''}`}
+                  title="Open in the statute viewer"
+                >{c}</Link>
               : c}
           </span>
         );
@@ -36,13 +43,22 @@ function CiteList({ cites }: { cites: string[] }) {
 
 export default function LegalRulesPage() {
   const [rules, setRules] = useState<LegalRule[]>([]);
+  const [flagsByRule, setFlagsByRule] = useState<Map<string, WatchFlag[]>>(new Map());
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [openId, setOpenId] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState('');
+  const [snapshotNote, setSnapshotNote] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
-      setRules(await db.listLegalRules());
+      const [ruleList, activeFlags] = await Promise.all([db.listLegalRules(), db.listWatchFlags(true)]);
+      setRules(ruleList);
+      const grouped = new Map<string, WatchFlag[]>();
+      for (const f of activeFlags) {
+        const list = grouped.get(f.ruleId);
+        if (list) list.push(f); else grouped.set(f.ruleId, [f]);
+      }
+      setFlagsByRule(grouped);
       setLoadState('ready');
     } catch {
       setLoadState('error');
@@ -66,6 +82,15 @@ export default function LegalRulesPage() {
       entityType: 'legal_rule', entityId: rule.id, action: 'confirmed', user: ATTORNEY_USER,
       oldValue: rule.status, newValue: 'verified (attorney sign-off)',
     });
+    // A4: pin the statute text this verification saw, and clear any tripwire
+    // flags — the re-sign-off IS the act that resolves them.
+    const snap = await snapshotRuleCites(rule);
+    const clearedCount = await clearTextChangedFlags(rule.id, ATTORNEY_USER);
+    const parts: string[] = [];
+    if (snap.saved.length) parts.push(`text pinned for ${snap.saved.map((s) => s.sectionRef).join(', ')}`);
+    if (snap.skipped.length) parts.push(`not pinned (${snap.skipped.map((s) => s.ref).join(', ')} — chapter unavailable)`);
+    if (clearedCount) parts.push(`${clearedCount} change flag${clearedCount === 1 ? '' : 's'} cleared`);
+    setSnapshotNote(parts.length ? `${rule.ruleKey}: ${parts.join(' · ')}` : null);
     refresh();
   };
 
@@ -103,6 +128,8 @@ export default function LegalRulesPage() {
         warnings and placeholders only; nothing computes a legal outcome from them.
       </div>
 
+      {snapshotNote && <div className="notice">{snapshotNote}</div>}
+
       <div className="card">
         <table className="list">
           <thead><tr><th>Rule</th><th>Cites</th><th>Scope</th><th>Status</th><th>Verified</th><th></th></tr></thead>
@@ -113,6 +140,12 @@ export default function LegalRulesPage() {
                   <strong>{r.ruleKey}</strong> <span className="muted small">v{r.version}</span>
                   <div className="small">{r.proposition}</div>
                   {r.watchFlags && <div className="small" style={{ color: 'var(--warn)' }}>⚠ {r.watchFlags}</div>}
+                  {(flagsByRule.get(r.id) ?? []).map((f) => (
+                    <div key={f.id} className="small" style={{ color: 'var(--warn)' }}>
+                      ⚠ {f.kind === 'text-changed-since-verified' ? 'Text changed since verification' : f.kind}:{' '}
+                      {f.sourceRef} ({f.raisedAt.slice(0, 10)}) — re-verify to clear.
+                    </div>
+                  ))}
                   {openId === r.id ? (
                     <div style={{ marginTop: 6 }}>
                       <textarea value={notesDraft} onChange={(e) => setNotesDraft(e.target.value)} />
@@ -134,6 +167,11 @@ export default function LegalRulesPage() {
                 <td style={{ whiteSpace: 'nowrap' }}>
                   {r.status !== 'verified' && (
                     <button className="btn small" onClick={() => markVerified(r)}>Mark verified</button>
+                  )}{' '}
+                  {r.status === 'verified' && (flagsByRule.get(r.id)?.length ?? 0) > 0 && (
+                    <button className="btn small" onClick={() => markVerified(r)} title="Re-confirm currency against the changed text — clears the flag and re-pins the snapshot">
+                      Re-verify
+                    </button>
                   )}{' '}
                   {r.status !== 'watch' && (
                     <button className="btn small secondary" onClick={() => setStatus(r, 'watch')}>Watch</button>

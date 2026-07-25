@@ -11,6 +11,24 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (statute cache + viewer + hash tripwire: T2 BUILT — Code session)
+
+**What happened (same session, continued):** Michael said go on T2, so Module A is now complete end-to-end (design §3, A2–A4):
+
+- **Engine (`src/statutes/`):** chapter-HTML→sections parser with per-section FNV-1a content hashes, verified against REAL chapter files; fetch orchestration (cache-on-demand through the DataAdapter; fixtures in demo mode, `statute-fetch` Supabase Edge Function in live mode — targeting `tcss.legis.texas.gov/resources/…` per the SPA discovery); the A4 tripwire (pure `diffSnapshots` + `buildHashIndex` with chapter aggregates for chapter-level cites like "Prop. Code Ch. 55").
+- **Data:** four new tables in schema + both adapters (statute_chapters, statute_sections, registry_verification_snapshots, watch_flags); local store v7→v8 (demo store reseeds — re-import the PFS CSV if needed).
+- **Fixtures (D3):** the five real chapters the seeded registry cites (CP.18, CP.41, CP.146, PR.55, HS.327) committed under `src/statutes/fixtures/` with provenance README — public domain, lazy-chunked out of the main bundle.
+- **UI:** Statutes nav page (cite lookup box, cached-chapters table, "Cache registry-cited chapters", "Refresh cache + run tripwire", re-verification worklist card) + statute viewer (`/statutes/:code/:chapter#section` — section cards, copy-cite, open-at-source, refresh). Legal-rules cites now deep-link INTO the viewer (T1's external links upgraded per A3). **Mark verified now pins snapshots** (per-section hash; chapter aggregate for chapter-level cites), reports what it pinned/skipped, and **clears tripwire flags — re-sign-off is the clearing act**; flagged verified rules get a "Re-verify" button.
+- **Verified live in demo mode, full loop:** prefetch 5 chapters → lookup "CPRC 41.0105" lands at the highlighted section → Mark verified pins `CP 41.0105` → simulated pre-amendment snapshot → refresh raises the flag (worklist card + rule-row ⚠, rule STAYS verified) → Re-verify clears it (attributed) and re-pins. No console errors; cases page regression clean. 141 tests green (21 new). Honesty note: in-browser buttons fired via JS click on the real elements (hidden-pane limitation, same as prior sessions); confirm() stubbed to accept during the walkthrough.
+
+**Not in this slice (by design):** O3's dashboard card is T4 (there's no dashboard page yet — T4 should create the surface); full working-set prefetch by code needs TOC/chapter enumeration — current prefetch covers registry-cited chapters, which is what the tripwire actually protects; live-mode edge function is written but NOT deployed (one CLI command, docs/statute-cache-setup.md).
+
+**Next:** T3 (LegiScan poller + matcher — key is in place as Supabase secret `LEGISCAN_API_KEY`; demo mode with fictional bills first per design), then T4 (unified re-verification worklist + the O3 dashboard card).
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this build.
+
 ## 2026-07-25 (crash recovery; statute-tracking §9 decisions made — Code session)
 
 **What happened:** The Claude Desktop app crashed at the end of the cite-parser session below (~00:25) and Michael reinstalled it (00:29) — the app's chat list was wiped but all transcripts, code, and pushes survived (last push 00:17, nothing lost). The crashed session's final exchange was recovered from its transcript: Michael had answered the three §9 questions with "Q1: how do I register the API key; Q2/Q3: in sequence after." Resolved this session:

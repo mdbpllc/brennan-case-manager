@@ -6,6 +6,10 @@ import type {
 } from '../domain/transcripts';
 import type { Charge, OaaIntakeRecord } from '../domain/oaa';
 import type {
+  StatuteChapter, StatuteChapterMeta, StatuteSection,
+  RegistryVerificationSnapshot, WatchFlag,
+} from '../domain/statutes';
+import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
   ProviderBillingProfile,
@@ -145,4 +149,29 @@ export interface DataAdapter {
   /** Audit record of what an OAA intake extracted (template, text, provenance). */
   createOaaIntake(data: Omit<OaaIntakeRecord, 'id' | 'createdAt'>): Promise<OaaIntakeRecord>;
   getOaaIntakeForCase(caseId: string): Promise<OaaIntakeRecord | null>;
+
+  // ---- Statute cache (T2, statute-text-and-bill-tracking-design.md §6) ----
+  /** Without the html payload — list views. */
+  listStatuteChapters(): Promise<StatuteChapterMeta[]>;
+  getStatuteChapter(code: string, chapter: string): Promise<StatuteChapter | null>;
+  /** Upsert keyed on code+chapter; replaces the chapter's sections wholesale. */
+  saveStatuteChapter(
+    data: Omit<StatuteChapter, 'id'>,
+    sections: Omit<StatuteSection, 'id' | 'chapterId' | 'code' | 'chapter'>[],
+  ): Promise<StatuteChapter>;
+  listSectionsForChapter(code: string, chapter: string): Promise<StatuteSection[]>;
+
+  /** A4: snapshots pin the section text a verification actually saw. */
+  listSnapshotsForRule(ruleId: string): Promise<RegistryVerificationSnapshot[]>;
+  listAllSnapshots(): Promise<RegistryVerificationSnapshot[]>;
+  /** Full replace per rule — re-verification re-pins. */
+  saveSnapshotsForRule(
+    ruleId: string,
+    snaps: Omit<RegistryVerificationSnapshot, 'id' | 'ruleId'>[],
+  ): Promise<RegistryVerificationSnapshot[]>;
+
+  /** Advisory watch flags — never touch a rule's verified status. */
+  listWatchFlags(activeOnly?: boolean): Promise<WatchFlag[]>;
+  createWatchFlag(data: Omit<WatchFlag, 'id' | 'raisedAt'>): Promise<WatchFlag>;
+  clearWatchFlag(id: string, clearedBy: string): Promise<WatchFlag>;
 }

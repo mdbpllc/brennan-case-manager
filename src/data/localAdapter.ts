@@ -11,14 +11,18 @@ import type {
   GlossaryTerm, TagTemplate,
 } from '../domain/transcripts';
 import type { Charge, OaaIntakeRecord } from '../domain/oaa';
+import type {
+  StatuteChapter, StatuteChapterMeta, StatuteSection,
+  RegistryVerificationSnapshot, WatchFlag,
+} from '../domain/statutes';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 7; // v7: OAA criminal intake (charges, oaa_intakes;
-// criminal fields on cases)
+const STORE_VERSION = 8; // v8: statute cache (chapters, sections,
+// verification snapshots, watch flags)
 
 interface Store {
   version: number;
@@ -47,6 +51,10 @@ interface Store {
   tagTemplates: TagTemplate[];
   charges: Charge[];
   oaaIntakes: OaaIntakeRecord[];
+  statuteChapters: StatuteChapter[];
+  statuteSections: StatuteSection[];
+  verificationSnapshots: RegistryVerificationSnapshot[];
+  watchFlags: WatchFlag[];
 }
 
 function load(): Store {
@@ -64,6 +72,7 @@ function load(): Store {
     version: STORE_VERSION,
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
     oaaIntakes: [],
+    statuteChapters: [], statuteSections: [], verificationSnapshots: [], watchFlags: [],
     ...seedData(),
   };
   localStorage.setItem(KEY, JSON.stringify(seeded));
@@ -590,5 +599,84 @@ export class LocalAdapter implements DataAdapter {
 
   async getOaaIntakeForCase(caseId: string): Promise<OaaIntakeRecord | null> {
     return load().oaaIntakes.find((r) => r.caseId === caseId) ?? null;
+  }
+
+  // ---- Statute cache (T2) ----
+
+  async listStatuteChapters(): Promise<StatuteChapterMeta[]> {
+    return load().statuteChapters
+      .map(({ html: _html, ...meta }) => meta)
+      .sort((a, b) => a.code.localeCompare(b.code) || a.chapter.localeCompare(b.chapter, undefined, { numeric: true }));
+  }
+
+  async getStatuteChapter(code: string, chapter: string): Promise<StatuteChapter | null> {
+    return load().statuteChapters.find((c) => c.code === code && c.chapter === chapter) ?? null;
+  }
+
+  async saveStatuteChapter(
+    data: Omit<StatuteChapter, 'id'>,
+    sections: Omit<StatuteSection, 'id' | 'chapterId' | 'code' | 'chapter'>[],
+  ): Promise<StatuteChapter> {
+    const store = load();
+    const existing = store.statuteChapters.find((c) => c.code === data.code && c.chapter === data.chapter);
+    const id = existing?.id ?? uid();
+    const rec: StatuteChapter = { ...data, id };
+    store.statuteChapters = store.statuteChapters.filter((c) => c.id !== id);
+    store.statuteChapters.push(rec);
+    store.statuteSections = store.statuteSections.filter((s) => s.chapterId !== id);
+    for (const s of sections) {
+      store.statuteSections.push({ ...s, id: uid(), chapterId: id, code: data.code, chapter: data.chapter });
+    }
+    save(store);
+    return rec;
+  }
+
+  async listSectionsForChapter(code: string, chapter: string): Promise<StatuteSection[]> {
+    return load().statuteSections
+      .filter((s) => s.code === code && s.chapter === chapter)
+      .sort((a, b) => a.sectionNumber.localeCompare(b.sectionNumber, undefined, { numeric: true }));
+  }
+
+  async listSnapshotsForRule(ruleId: string): Promise<RegistryVerificationSnapshot[]> {
+    return load().verificationSnapshots.filter((s) => s.ruleId === ruleId);
+  }
+
+  async listAllSnapshots(): Promise<RegistryVerificationSnapshot[]> {
+    return load().verificationSnapshots;
+  }
+
+  async saveSnapshotsForRule(
+    ruleId: string,
+    snaps: Omit<RegistryVerificationSnapshot, 'id' | 'ruleId'>[],
+  ): Promise<RegistryVerificationSnapshot[]> {
+    const store = load();
+    store.verificationSnapshots = store.verificationSnapshots.filter((s) => s.ruleId !== ruleId);
+    const recs = snaps.map((s) => ({ ...s, id: uid(), ruleId }));
+    store.verificationSnapshots.push(...recs);
+    save(store);
+    return recs;
+  }
+
+  async listWatchFlags(activeOnly?: boolean): Promise<WatchFlag[]> {
+    const flags = load().watchFlags;
+    return (activeOnly ? flags.filter((f) => !f.clearedAt) : flags)
+      .sort((a, b) => b.raisedAt.localeCompare(a.raisedAt));
+  }
+
+  async createWatchFlag(data: Omit<WatchFlag, 'id' | 'raisedAt'>): Promise<WatchFlag> {
+    const store = load();
+    const rec: WatchFlag = { ...data, id: uid(), raisedAt: now() };
+    store.watchFlags.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async clearWatchFlag(id: string, clearedBy: string): Promise<WatchFlag> {
+    const store = load();
+    const idx = store.watchFlags.findIndex((f) => f.id === id);
+    if (idx === -1) throw new Error('Watch flag not found');
+    store.watchFlags[idx] = { ...store.watchFlags[idx], clearedAt: now(), clearedBy };
+    save(store);
+    return store.watchFlags[idx];
   }
 }
