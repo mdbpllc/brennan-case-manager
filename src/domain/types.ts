@@ -31,6 +31,14 @@ export interface CaseRecord {
   dateClosed?: string;
   courtName?: string;
   causeNumber?: string;
+  // Criminal / OAA-intake fields (spec §1a semantic mappings — all optional)
+  county?: string;
+  /** Custody location present on the OAA → defendant in custody (bench-warrant /
+   *  writ logistics; the docket worksheet's special-notes line). */
+  inCustody?: boolean;
+  custodyLocation?: string;
+  /** Date the appointment order was made (court-appointed criminal matters). */
+  appointmentDate?: string;
   notes?: string;
   createdAt: string;
   updatedAt: string;

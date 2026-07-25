@@ -4,6 +4,7 @@ import type {
   Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
   GlossaryTerm, TagTemplate,
 } from '../domain/transcripts';
+import type { Charge, OaaIntakeRecord } from '../domain/oaa';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -132,4 +133,16 @@ export interface DataAdapter {
   listGlossaryTerms(): Promise<GlossaryTerm[]>;
   createGlossaryTerm(data: Omit<GlossaryTerm, 'id'>): Promise<GlossaryTerm>;
   deleteGlossaryTerm(id: string): Promise<void>;
+
+  // ---- OAA criminal intake (criminal-appointment-intake spec §1) ----
+  listChargesForCase(caseId: string): Promise<Charge[]>;
+  /** All charges across cases — feeds the duplicate-cause check at intake. */
+  listCharges(): Promise<Charge[]>;
+  createCharge(data: Omit<Charge, 'id' | 'createdAt' | 'updatedAt'>): Promise<Charge>;
+  updateCharge(id: string, patch: Partial<Charge>): Promise<Charge>;
+  deleteCharge(id: string): Promise<void>;
+
+  /** Audit record of what an OAA intake extracted (template, text, provenance). */
+  createOaaIntake(data: Omit<OaaIntakeRecord, 'id' | 'createdAt'>): Promise<OaaIntakeRecord>;
+  getOaaIntakeForCase(caseId: string): Promise<OaaIntakeRecord | null>;
 }

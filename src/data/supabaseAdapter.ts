@@ -11,6 +11,7 @@ import type {
   Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
   GlossaryTerm, TagTemplate,
 } from '../domain/transcripts';
+import type { Charge, OaaIntakeRecord } from '../domain/oaa';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -26,8 +27,11 @@ interface CaseRow {
   commercial_policy_involved: boolean | null; pi_flags: string[] | null;
   date_of_incident: string | null; date_opened: string; statute_of_limitations: string | null;
   date_closed: string | null; court_name: string | null; cause_number: string | null;
+  county: string | null; in_custody: boolean | null; custody_location: string | null;
+  appointment_date: string | null;
   notes: string | null; created_at: string; updated_at: string;
 }
+
 
 interface PartyRow {
   id: string; party_type: string; kind: string; display_name: string;
@@ -50,9 +54,13 @@ function caseFromRow(r: CaseRow): CaseRecord {
     dateOfIncident: r.date_of_incident ?? undefined, dateOpened: r.date_opened,
     statuteOfLimitations: r.statute_of_limitations ?? undefined, dateClosed: r.date_closed ?? undefined,
     courtName: r.court_name ?? undefined, causeNumber: r.cause_number ?? undefined,
+    county: r.county ?? undefined, inCustody: r.in_custody ?? undefined,
+    custodyLocation: r.custody_location ?? undefined,
+    appointmentDate: r.appointment_date ?? undefined,
     notes: r.notes ?? undefined, createdAt: r.created_at, updatedAt: r.updated_at,
   };
 }
+
 
 function caseToRow(c: Partial<CaseRecord>): Partial<CaseRow> {
   const row: Partial<CaseRow> = {};
@@ -70,6 +78,10 @@ function caseToRow(c: Partial<CaseRecord>): Partial<CaseRow> {
   if (c.dateClosed !== undefined) row.date_closed = c.dateClosed || null;
   if (c.courtName !== undefined) row.court_name = c.courtName || null;
   if (c.causeNumber !== undefined) row.cause_number = c.causeNumber || null;
+  if (c.county !== undefined) row.county = c.county || null;
+  if (c.inCustody !== undefined) row.in_custody = c.inCustody ?? null;
+  if (c.custodyLocation !== undefined) row.custody_location = c.custodyLocation || null;
+  if (c.appointmentDate !== undefined) row.appointment_date = c.appointmentDate || null;
   if (c.notes !== undefined) row.notes = c.notes || null;
   return row;
 }
@@ -525,5 +537,37 @@ export class SupabaseAdapter implements DataAdapter {
 
   async deleteGlossaryTerm(id: string): Promise<void> {
     await this.deleteRows('glossary_terms', 'id', id);
+  }
+
+  // ---- OAA criminal intake ----
+
+  async listChargesForCase(caseId: string): Promise<Charge[]> {
+    return this.rows<Charge>('charges', (q) => q.select('*').eq('case_id', caseId).order('offense_date'));
+  }
+
+  async listCharges(): Promise<Charge[]> {
+    return this.rows<Charge>('charges', (q) => q.select('*'));
+  }
+
+  async createCharge(data: Omit<Charge, 'id' | 'createdAt' | 'updatedAt'>): Promise<Charge> {
+    return this.insertRow<Charge>('charges', data);
+  }
+
+  async updateCharge(id: string, patch: Partial<Charge>): Promise<Charge> {
+    return this.updateRow<Charge>('charges', id, patch);
+  }
+
+  async deleteCharge(id: string): Promise<void> {
+    await this.deleteRows('charges', 'id', id);
+  }
+
+  async createOaaIntake(data: Omit<OaaIntakeRecord, 'id' | 'createdAt'>): Promise<OaaIntakeRecord> {
+    return this.insertRow<OaaIntakeRecord>('oaa_intakes', data);
+  }
+
+  async getOaaIntakeForCase(caseId: string): Promise<OaaIntakeRecord | null> {
+    const res = await this.sb.from('oaa_intakes').select('*').eq('case_id', caseId).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<OaaIntakeRecord>(res.data as Record<string, unknown>) : null;
   }
 }

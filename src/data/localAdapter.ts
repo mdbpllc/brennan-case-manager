@@ -10,14 +10,15 @@ import type {
   Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
   GlossaryTerm, TagTemplate,
 } from '../domain/transcripts';
+import type { Charge, OaaIntakeRecord } from '../domain/oaa';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 6; // v6: transcript sort & route tables (transcripts,
-// staging inbox, routing decisions, glossary, tag templates)
+const STORE_VERSION = 7; // v7: OAA criminal intake (charges, oaa_intakes;
+// criminal fields on cases)
 
 interface Store {
   version: number;
@@ -44,6 +45,8 @@ interface Store {
   routingDecisions: RoutingDecision[];
   glossaryTerms: GlossaryTerm[];
   tagTemplates: TagTemplate[];
+  charges: Charge[];
+  oaaIntakes: OaaIntakeRecord[];
 }
 
 function load(): Store {
@@ -60,6 +63,7 @@ function load(): Store {
   const seeded: Store = {
     version: STORE_VERSION,
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
+    oaaIntakes: [],
     ...seedData(),
   };
   localStorage.setItem(KEY, JSON.stringify(seeded));
@@ -540,5 +544,51 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     store.glossaryTerms = store.glossaryTerms.filter((g) => g.id !== id);
     save(store);
+  }
+
+  // ---- OAA criminal intake ----
+
+  async listChargesForCase(caseId: string): Promise<Charge[]> {
+    return load().charges.filter((c) => c.caseId === caseId)
+      .sort((a, b) => (a.offenseDate ?? '').localeCompare(b.offenseDate ?? ''));
+  }
+
+  async listCharges(): Promise<Charge[]> {
+    return load().charges;
+  }
+
+  async createCharge(data: Omit<Charge, 'id' | 'createdAt' | 'updatedAt'>): Promise<Charge> {
+    const store = load();
+    const rec: Charge = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.charges.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateCharge(id: string, patch: Partial<Charge>): Promise<Charge> {
+    const store = load();
+    const idx = store.charges.findIndex((c) => c.id === id);
+    if (idx === -1) throw new Error('Charge not found');
+    store.charges[idx] = { ...store.charges[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.charges[idx];
+  }
+
+  async deleteCharge(id: string): Promise<void> {
+    const store = load();
+    store.charges = store.charges.filter((c) => c.id !== id);
+    save(store);
+  }
+
+  async createOaaIntake(data: Omit<OaaIntakeRecord, 'id' | 'createdAt'>): Promise<OaaIntakeRecord> {
+    const store = load();
+    const rec: OaaIntakeRecord = { ...data, id: uid(), createdAt: now() };
+    store.oaaIntakes.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async getOaaIntakeForCase(caseId: string): Promise<OaaIntakeRecord | null> {
+    return load().oaaIntakes.find((r) => r.caseId === caseId) ?? null;
   }
 }

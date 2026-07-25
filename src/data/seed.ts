@@ -2,6 +2,7 @@
 // Entirely fictional. Wiped whenever you clear the browser's site data.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type { CalendarEvent } from '../domain/calendar';
+import type { Charge } from '../domain/oaa';
 import { billingSeedData } from './billingSeed';
 import { transcriptSeedData } from './transcriptSeed';
 
@@ -14,6 +15,7 @@ export function seedData(): {
   links: CasePartyLink[];
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
+  charges: Charge[];
 } & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> {
   const parties: PartyRecord[] = [
     {
@@ -194,8 +196,20 @@ export function seedData(): {
     },
   ];
 
+  // Charges on the criminal seed case (fictional — matches the case notes).
+  const charges: Charge[] = [
+    {
+      id: 'chg-boyd-dwi', caseId: 'c-boyd-dwi',
+      offense: 'DWI', degree: 'MB', offenseDate: '2026-01-25',
+      court: 'Bell County Court at Law No. 2', causeNumber: '26-CR-01452',
+      mtrMta: false, appeal: false,
+      note: 'Penal Code 49.04 — first. (Demo data.)',
+      createdAt: t, updatedAt: t,
+    },
+  ];
+
   return {
-    cases, parties, links, fileCounters: { [yy]: 3 }, events,
+    cases, parties, links, fileCounters: { [yy]: 3 }, events, charges,
     ...billingSeedData(),
     ...transcriptSeedData({ cases, parties, links }),
   };

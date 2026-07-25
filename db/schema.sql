@@ -556,3 +556,57 @@ create policy "authenticated full access glossary_terms" on glossary_terms
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access tag_templates" on tag_templates
   for all to authenticated using (true) with check (true);
+
+-- ============ OAA CRIMINAL INTAKE ============
+-- criminal-appointment-intake-and-docket-enhancements.md §1.
+-- Criminal/OAA fields on cases (idempotent adds so an existing database
+-- upgrades in place; new databases get them from these statements too).
+alter table cases add column if not exists county text;
+alter table cases add column if not exists in_custody boolean;
+alter table cases add column if not exists custody_location text;
+alter table cases add column if not exists appointment_date date;
+
+-- One charged offense per row — the Tier 1 form's offense table repeats
+-- (multi-cause support), so charges are child records of the case.
+create table if not exists charges (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  offense text not null,
+  degree text,                 -- as printed (FS/F3/MA…) — no legal outcome computed from it
+  offense_date date,
+  court text,
+  cause_number text,
+  complaint_number text,
+  mtr_mta boolean not null default false,  -- checked → revocation-adjudication track
+  appeal boolean not null default false,
+  note text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists charges_case_idx on charges (case_id);
+create index if not exists charges_cause_idx on charges (cause_number);
+
+-- Audit record of an OAA intake: which template ran, on what text, what it
+-- extracted (fields_json carries value/confidence/provenance per field).
+create table if not exists oaa_intakes (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  template_key text not null,
+  tier int not null check (tier in (1, 2)),
+  county text,
+  source_file_name text,
+  extracted_text text not null,
+  fields_json text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists oaa_intakes_case_idx on oaa_intakes (case_id);
+
+alter table charges enable row level security;
+alter table oaa_intakes enable row level security;
+
+create policy "authenticated full access charges" on charges
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access oaa_intakes" on oaa_intakes
+  for all to authenticated using (true) with check (true);
