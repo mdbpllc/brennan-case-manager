@@ -11,6 +11,22 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (statute browse UX: cascading picker + title keyword search — Michael feedback, same Code session)
+
+**What happened:** Michael's first hands-on feedback on the Statutes page: the free-text cite box demands formatting he shouldn't have to know. He asked for (a) a dropdown flow — code first, then chapters populate — and (b) keyword search over the titles of the code's parts. Built both this sitting:
+
+- **Discovery:** the .gov SPA's tree data comes from a JSON API on the SAME backing host as the chapter files — `tcss.legis.texas.gov/api/StatuteCode/GetTopLevelHeadings/…` (the /Docs/*.toc.htm files are gone; every one now returns the SPA shell). Full title→subtitle→chapter hierarchy with names. Filed here as the record; consistent with the SPA spec-feedback item.
+- **TOC fixtures:** `scripts/build-toc-fixtures.mjs` (committed; rerun biennially with the cache refresh) pulls the headings API for the twelve working-set codes → compact JSON under `src/statutes/fixtures/toc/` (~376 KB total, lazy-loaded per code; 81–493 chapters per code, real data, public domain).
+- **"Find a statute" card** (replaces the bare cite box, which stays as the third option): (1) **Browse** — code dropdown (working set) → chapter dropdown grouped by TITLE/SUBTITLE with chapter names → Open; non-fixture chapters in demo mode degrade to a clear message + official-site link. (2) **Keyword search** — chapter titles across all twelve codes plus section HEADINGS within cached chapters (labeled as such), live as you type. (3) exact cite.
+- **Bug caught by walking Michael's own example:** "hospital lien" found nothing against "HOSPITAL AND EMERGENCY MEDICAL SERVICES LIENS" — substring search replaced with all-words matching; regression test pins it.
+- **Verified live:** FA → 81 grouped chapters → Ch. 153 opens (demo fallback message + source link, correct); "hospital lien" → PR Ch. 55; "exemplary" → three CP §41 section hits deep-linking into the viewer. 170 tests green. No console errors.
+
+**Design-space note:** subchapter-level browse (Michael mentioned it) is NOT in — the site's tree API stops at chapters; subchapter headings exist inside chapter files and could group the viewer's section list later if Michael wants it. Section-title search beyond cached chapters would need bulk TOC-with-sections fetching — deliberately out, per D1 cache-on-demand.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this entry.
+
 ## 2026-07-25 (bill tracking T3 + unified worklist T4 BUILT — statute-tracking design COMPLETE in-app — Code session)
 
 **What happened (same session, continued):** Michael said keep going, so Module B and the worklist landed. Every in-app slice of the statute-tracking design is now built (T1–T4); only the two edge-function deploys remain (Michael + CLI, docs/statute-cache-setup.md).

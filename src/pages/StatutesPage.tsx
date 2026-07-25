@@ -12,6 +12,10 @@ import { db, usingSupabase } from '../data';
 import { parseCite } from '../cites/parser';
 import { getOrFetchChapter } from '../statutes/fetcher';
 import { refreshCacheAndRunTripwire, snapshotTargetsForRule } from '../statutes/tripwire';
+import {
+  loadAllTocs, loadToc, searchChapterTitles, searchCachedSectionHeadings,
+  TOC_CODES, type ChapterHit, type CodeToc, type SectionHit,
+} from '../statutes/toc';
 
 export default function StatutesPage() {
   const navigate = useNavigate();
@@ -20,6 +24,12 @@ export default function StatutesPage() {
   const [rules, setRules] = useState<LegalRule[]>([]);
   const [lookup, setLookup] = useState('');
   const [lookupMsg, setLookupMsg] = useState<string | null>(null);
+  const [browseCode, setBrowseCode] = useState('');
+  const [browseToc, setBrowseToc] = useState<CodeToc | null>(null);
+  const [browseChapter, setBrowseChapter] = useState('');
+  const [searchQ, setSearchQ] = useState('');
+  const [chapterHits, setChapterHits] = useState<ChapterHit[]>([]);
+  const [sectionHits, setSectionHits] = useState<SectionHit[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
 
@@ -35,6 +45,45 @@ export default function StatutesPage() {
   useEffect(() => { refresh(); }, [refresh]);
 
   const ruleKey = (ruleId: string) => rules.find((r) => r.id === ruleId)?.ruleKey ?? ruleId;
+
+  const pickCode = async (code: string) => {
+    setBrowseCode(code);
+    setBrowseChapter('');
+    setBrowseToc(code ? await loadToc(code) : null);
+  };
+
+  const openBrowse = () => {
+    if (browseCode && browseChapter) navigate(`/statutes/${browseCode}/${browseChapter}`);
+  };
+
+  useEffect(() => {
+    const q = searchQ.trim();
+    if (q.length < 2) {
+      setChapterHits([]);
+      setSectionHits([]);
+      return;
+    }
+    let stale = false;
+    (async () => {
+      const [tocs, sections] = await Promise.all([loadAllTocs(), searchCachedSectionHeadings(q)]);
+      if (stale) return;
+      setChapterHits(searchChapterTitles(tocs, q));
+      setSectionHits(sections);
+    })();
+    return () => { stale = true; };
+  }, [searchQ]);
+
+  /** Chapters grouped by their TITLE/SUBTITLE path for the <optgroup>s. */
+  const chapterGroups = (() => {
+    if (!browseToc) return [];
+    const groups: { path: string; chapters: CodeToc['chapters'] }[] = [];
+    for (const ch of browseToc.chapters) {
+      const last = groups[groups.length - 1];
+      if (last && last.path === ch.path) last.chapters.push(ch);
+      else groups.push({ path: ch.path, chapters: [ch] });
+    }
+    return groups;
+  })();
 
   const openCite = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,10 +155,80 @@ export default function StatutesPage() {
       )}
 
       <div className="card">
-        <form onSubmit={openCite} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <strong>Find a statute</strong>
+
+        <div className="small muted" style={{ marginTop: 8 }}>Browse — pick the code, then the chapter:</div>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
+          <select value={browseCode} onChange={(e) => pickCode(e.target.value)} style={{ flex: 1 }}>
+            <option value="">Choose a code…</option>
+            {TOC_CODES.map((cd) => (
+              <option key={cd} value={cd}>{codeByCd(cd)?.name ?? cd}</option>
+            ))}
+          </select>
+          <select
+            value={browseChapter}
+            onChange={(e) => setBrowseChapter(e.target.value)}
+            disabled={!browseToc}
+            style={{ flex: 2 }}
+          >
+            <option value="">{browseToc ? `Choose a chapter… (${browseToc.chapters.length})` : 'Chapter'}</option>
+            {chapterGroups.map((g, i) => (
+              <optgroup key={i} label={g.path || browseToc?.name}>
+                {g.chapters.map((ch) => (
+                  <option key={ch.ch} value={ch.ch}>Ch. {ch.ch} — {ch.title}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          <button className="btn" onClick={openBrowse} disabled={!browseCode || !browseChapter}>Open</button>
+        </div>
+
+        <div className="small muted" style={{ marginTop: 10 }}>Or search chapter titles by keyword:</div>
+        <input
+          style={{ width: '100%', marginTop: 4 }}
+          placeholder='e.g. "damages", "hospital lien", "expunction", "custody"'
+          value={searchQ}
+          onChange={(e) => setSearchQ(e.target.value)}
+        />
+        {(chapterHits.length > 0 || sectionHits.length > 0) && (
+          <div className="small" style={{ marginTop: 6, maxHeight: 260, overflowY: 'auto' }}>
+            {sectionHits.length > 0 && (
+              <>
+                <div className="muted">Sections (in cached chapters):</div>
+                {sectionHits.map((h) => (
+                  <div key={`${h.code}-${h.section}`}>
+                    <Link to={`/statutes/${h.code}/${h.chapter}#${h.section}`}>
+                      {codeByCd(h.code)?.name ?? h.code} §{h.section}
+                    </Link>{' '}
+                    — {h.heading}
+                  </div>
+                ))}
+              </>
+            )}
+            {chapterHits.length > 0 && (
+              <>
+                <div className="muted" style={{ marginTop: sectionHits.length ? 6 : 0 }}>Chapters (all twelve codes):</div>
+                {chapterHits.map((h) => (
+                  <div key={`${h.code}-${h.ch}`}>
+                    <Link to={`/statutes/${h.code}/${h.ch}`}>{h.codeName} Ch. {h.ch}</Link>
+                    {' — '}{h.title} <span className="muted">({h.path})</span>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
+        {searchQ.trim().length >= 2 && chapterHits.length === 0 && sectionHits.length === 0 && (
+          <div className="small muted" style={{ marginTop: 6 }}>
+            No title matches. Section-level search covers cached chapters only — try the browse picker or an exact cite.
+          </div>
+        )}
+
+        <div className="small muted" style={{ marginTop: 10 }}>Or paste an exact cite:</div>
+        <form onSubmit={openCite} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
           <input
             style={{ flex: 1 }}
-            placeholder='Open a cite — e.g. "CPRC §41.0105", "Tex. Prop. Code Ch. 55", "CCP art. 55A.053"'
+            placeholder='e.g. "CPRC 41.0105", "Tex. Prop. Code Ch. 55", "CCP art. 55A.053"'
             value={lookup}
             onChange={(e) => { setLookup(e.target.value); setLookupMsg(null); }}
           />
