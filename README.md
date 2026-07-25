@@ -1,9 +1,11 @@
-# Brennan Law — Case Manager (Vertical Slice v0.1)
+# Brennan Law — Case Manager
 
-The first working piece of the case management suite: **Cases + Parties, end-to-end.**
-Everything follows the settled design in the project instructions — lean case records,
-YY-NNNN auto file numbers, parties entered once and linked to many cases, roles layered
-on top of party identity, and cross-case history on every party.
+A case management suite for the practice, built in vertical slices. **What is
+built right now lives in `docs/specs/BUILD-STATE.md`** — this README covers setup
+and orientation only. Everything follows the settled design in the project
+instructions — lean case records, YY-NNNN auto file numbers, parties entered once
+and linked to many cases, roles layered on top of party identity, and cross-case
+history on every party.
 
 **Demo data is fictional.** It loads automatically the first time you run the app so
 there's something to click on.
@@ -36,7 +38,7 @@ That's it. In this mode ("Demo mode" in the sidebar), everything you enter is sa
 your browser on this machine — real enough to evaluate, not yet the shared central
 database.
 
-## What to try
+## What to try (the original v0.1 tour — later features are in BUILD-STATE.md)
 
 - **Cases** → open *Garcia v. Allied Freight Lines* → **Parties** tab: parties with
   roles and sides, linked not retyped.
@@ -76,12 +78,11 @@ policies, and the professional security review from the project instructions §1
 - `src/data/` — storage behind one `DataAdapter` interface: `localAdapter.ts`
   (browser localStorage + seed, default) and `supabaseAdapter.ts` (real DB, activates
   when `.env` is set). UI code never touches storage directly.
-- `src/pages/` — Cases list/new/detail (Overview + Parties tabs), Parties
-  directory/detail/form.
+- `src/pages/` — route-level pages; `src/App.tsx` is the live route list.
 - `db/schema.sql` — Postgres schema incl. server-side gapless `YY-NNNN` file-number
   generation and RLS placeholders.
 - `docs/specs/` — read-only snapshots of the canonical specs from the design space
   (see `CLAUDE.md` for the rules); `docs/specs/session-log.md` is the running
   session-to-session log.
-- Next slices per the build sequence: remaining tabs (Medical, Insurance, Liens, …),
-  the deadline engine, playbook surfacing, transcript layer, then Graph integrations.
+- What is built vs. pending: `docs/specs/BUILD-STATE.md` (single source of truth);
+  sequence and standing gates: `CLAUDE.md`.

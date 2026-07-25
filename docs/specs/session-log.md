@@ -12,6 +12,20 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (design-side follow-up: status claims stripped from master spec + README — Code session)
+
+**What happened:** Design side reviewed the BUILD-STATE bridge and found the two remaining places build status could drift: the master spec (`case-management-project-instructions.md` — §5's "v0.1 BUILT AND DELIVERED / Remaining" blocks, §6's "Built so far", the open-action-items entry) and `README.md` (v0.1 title/framing, stale "next slices" list). Same surgery applied to both, **at design's explicit direction** (the one authorized exception to the never-edit-specs-Code-side rule; design-side claims like FULLY SPECIFIED / decisions resolved were left untouched — the master spec still owns what is DESIGNED). A PRECEDENCE note now sits at the top of the master spec: master spec = authoritative for designed; BUILD-STATE.md = authoritative for built. Note the flow reversal this creates: the repo copy of the master spec now LEADS the project-knowledge original until Michael re-uploads — do not "refresh" it from project knowledge in the meantime or the surgery gets undone.
+
+**Michael's re-upload list (four files, each REPLACING its project-knowledge copy):** `BUILD-STATE.md`, `CLAUDE.md`, `case-management-project-instructions.md`, `README.md`.
+
+**Also confirmed for design:** no live data has ever entered the app; both edge functions undeployed — the Supabase Pro gate has not tripped.
+
+**Next:** unchanged carried items (time-tracker §8/§7, edge-function deploys, Entra registration, MRF path, registry sign-offs; OAA remaining tabs).
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** the four re-upload files above; design should confirm the master-spec surgery matches its intent once the re-upload lands.
+
 ## 2026-07-25 (build-state bridge: template adoption + CLAUDE.md single-source status — Code session)
 
 **What happened:** Michael's `PROMPT-build-state-bridge.md` processed. Prompt-lag reconciliation first, per standing practice: the entry below shows this same date's earlier session had already invented the snapshot (`build-state.md`, prose form) and the push convention — so nothing was rebuilt. Instead the existing snapshot was **converged to the prompt's stricter spec**: renamed `BUILD-STATE.md`; mechanical template (screens live / case-tab status table / data layer / **Known stubs & fakes** / git-log deltas / max-5 design-side asks); 120-line cap; overwrite-in-full, never append. CLAUDE.md de-duplicated: the build-sequence section's per-item built/awaiting claims stripped (order + do-not-start gates kept); status now has ONE source of truth, BUILD-STATE.md. Convention extended: refresh commits as `chore: refresh BUILD-STATE`; Michael gets a one-line reminder to re-upload the file to project knowledge (REPLACING the old build-state copy, not duplicating); stale design-side assumptions get corrected in BUILD-STATE.md itself, never only in chat.
