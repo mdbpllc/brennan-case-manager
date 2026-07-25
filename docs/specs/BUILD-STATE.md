@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 88ff3e7  |  Branch: master  |  Generated: 2026-07-25 (second refresh this date)
+Commit: 51aea69  |  Branch: master  |  Generated: 2026-07-25 (third refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,7 +30,12 @@ Commit: 88ff3e7  |  Branch: master  |  Generated: 2026-07-25 (second refresh thi
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-25 session deltas (two handoffs applied same date)
+## 2026-07-25 session deltas (three sessions this date)
+- Heartbeat handoffs b+c ROUTED (third session, DOCS ONLY — zero app
+  change): case-heartbeat-design.md (DESIGN-PARTIAL, unadopted),
+  trcp-deadline-skeleton-2026-03-01.md (UNVERIFIED registry candidates),
+  walkthrough captures b + c (raw); session-log entries for design
+  sessions 2 + 3 appended. Nothing entered the build queue.
 - Medical walkthrough defects fixed (first handoff): schedule selection
   (demo can't shadow imports; per-run choice; selection stamped on run),
   demo-placeholder banners, reseed carry-forward + versioned backup,
@@ -41,8 +46,6 @@ Commit: 88ff3e7  |  Branch: master  |  Generated: 2026-07-25 (second refresh thi
   type (statusesFor throws on undeclared — no silent fall-through; UI shows
   "Unknown case type" warning); explicit itemLabels on all repeating fields;
   updateParty throws on unsupported patch keys in BOTH adapters
-- Already existed, verified not rebuilt: URL-driven tabs, real row links,
-  collapsed empty-fields footer, isClosedStatus filter, bulk fetches
 - Sync-scope ruling recorded in CLAUDE.md (src/ + db/schema.sql + docs/ +
   CLAUDE.md + README.md synced; lockfile/node_modules/dist/pilot-JSON out)
 
@@ -63,8 +66,7 @@ Commit: 88ff3e7  |  Branch: master  |  Generated: 2026-07-25 (second refresh thi
   watch_targets, tracked_bills, bill_statute_refs (no schema changes
   this date — new run fields ride existing jsonb columns)
 - Health: 186 vitest tests green; npm run build (tsc + vite) and oxlint
-  clean at the stated commit; classification editing + schedule selection
-  exercised live in the browser
+  clean as of 88ff3e7 (commits since are docs-only)
 
 ## Known stubs & fakes
 - legiscan-poller + statute-fetch edge functions written, NOT deployed —
@@ -85,13 +87,18 @@ Commit: 88ff3e7  |  Branch: master  |  Generated: 2026-07-25 (second refresh thi
   store reseed (open question for design — migration scope was schedules
   + confirmed runs)
 - Time tracker: design draft only — NOTHING exists in the app
+- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
+  NOTHING exists in the app; TRCP skeleton entries all UNVERIFIED
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
 - EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment)
-- BUILD-SESSION-NOTES review CLEARED per the 07-25 triage; its still-open
-  audit items are now built (B/C/D/E) or explicitly deferred (bulk fetch)
+- EXPORT NEEDED: session-1 heartbeat voice capture
+  (case-heartbeat-voice-capture-2026-07-25.md — the design doc's named
+  source of record; never reached Code; see spec-feedback). Handoffs b+c
+  are otherwise fully applied — captures b/c, design doc, TRCP skeleton
+  all in docs/specs/; the superseded suit-filed addendum was NOT routed
 - Open question: should chargemaster memory + generated documents also
   carry across reseeds?
 - Registry sign-offs, Supabase auth decision (gate 6), edge-function
