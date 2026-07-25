@@ -11,6 +11,18 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-24 (late — probate practice area routed to design space — Code session)
+
+**What happened (Claude Code session):** Michael assembled his Texas probate practice materials — a probate-assistant system prompt (v1.0) plus its knowledge corpus (~1.8 MB: James Publishing *Texas Probate Forms & Procedures* chapters, Dorsaneo *Texas Litigation Guide* Unit IX, and active-matter documents for a standalone decedent's-estate matter). Purpose clarified: these are inputs for **building probate into the case management software as a practice area**; the matter itself is worked in the design space, not here. No code written.
+
+**Code-side steps taken:** (1) **Data hygiene:** the corpus contains copyrighted treatise text AND real client matter data — it stays OUT of the repo, parked at `..\probate_knowledge_corpus.md` (v0.1 folder root, outside git, same posture as the OAA samples and MRF fixture). Never commit it. (2) **Spec-feedback item 1 upgraded** (addendum): the §7 probate-companion decision's "reusable if standalone probate work ever comes in" premise has fired — item 1 is now a full probate-practice-area design pass (proceeding-type-driven lifecycles, the deadline batch as Legal Rule Registry entries requiring Michael's sign-off, probate-specific tracked objects, form-engine tie-in), not just a ladder choice. Details in the addendum.
+
+**For the design space:** run the probate design pass against the corpus + system prompt (both live outside the repo on Michael's machine); output a spec snapshot for `docs/specs/` in the usual discipline. Registry note: probate statutory deadlines are exactly rule-registry material — plan the unverified-entry batch into the spec.
+
+**Staged for Code:** none (awaiting the design pass).
+
+**Awaiting/Returned from Code, unreviewed:** everything listed in the 2026-07-25 entry below, plus the spec-feedback item 1 addendum and this entry.
+
 ## 2026-07-25 (transcript sort & route: design filed + T1/T2 BUILT — Code session)
 
 **What happened (Claude Code session):** Received the design-space handoff for feature-intake item A (`transcript-sort-and-route-design.md`, committed verbatim `9bc00a6`) and built its two hardware-free slices the same sitting, per the doc's §11 and the standing queue (item A was already Michael's designated next target):

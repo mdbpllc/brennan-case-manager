@@ -13,6 +13,48 @@ to `docs/specs/`.
    the master spec (§8) — or a decision that it intentionally shares the PI
    ladder.
 
+   **Addendum 2026-07-24 — the "standalone probate" trigger has fired; this
+   item is now a full design pass, not just a ladder decision.** The master
+   spec's §7 probate-companion decision was scoped to the probate side of PI
+   death/incapacity cases, "reusable if standalone probate work ever comes
+   in." It has: Michael now has an active standalone decedent's-estate matter
+   and wants probate built into the software as a practice area. He is
+   working the matter itself, and the probate design, in the design space —
+   this addendum routes what the design pass should weigh, from the probate
+   practice materials assembled 2026-07-24 (a Texas probate assistant
+   configuration + a ~1.8 MB knowledge corpus of treatise excerpts and
+   matter documents; see the session-log entry of this date for where those
+   live — they stay OUT of the repo):
+   - **Proceeding type is the threshold structure, not a single ladder.**
+     Texas probate is a family of distinct proceedings (probate of will with
+     letters testamentary; independent vs. dependent administration;
+     muniment of title; heirship determination; small-estate affidavit;
+     temporary administration), each with its own lifecycle, and the
+     proceeding-selection decision itself is a modeled step (it can change
+     mid-matter, e.g. lost-will proof falling back to intestacy). One
+     status ladder per proceeding type, or a two-level model
+     (proceeding type × phase), is the design question.
+   - **Probate is deadline-dense, and every deadline is a legal
+     proposition.** Four-year will-probate bar, two-year contest window,
+     qualification/oath windows, 90-day inventory, published creditor notice
+     within one month of letters, certified-mail secured-creditor notice
+     within two months, 60/90-day beneficiary-notice pair, 120-day claim
+     bar, etc. Under the Legal Rule Registry discipline these all enter as
+     UNVERIFIED registry entries and cannot drive computed deadlines until
+     Michael signs off — the probate spec should plan the registry batch as
+     part of the design, not as an afterthought.
+   - **Probate-specific tracked objects** with no PI analogue: letters
+     (issued/status), bond, non-resident representative's resident agent,
+     inventory/affidavit-in-lieu, creditor claims with statutory
+     classification/priority, notices with proof-of-compliance filings.
+   - **Forms:** probate applications, notices, and orders are natural
+     form-engine deliverables (form-engine.md) once the practice area
+     exists; sequencing is the design space's call.
+   - Existing code anchor: `Probate companion` is already a case type in
+     `src/domain/caseTypes.ts` (inheriting the PI ladder). Whether the
+     practice area extends it or supersedes it with linked-matter support
+     is a design decision.
+
 2. **Supabase auth approach (blocks central-database mode).** The schema's RLS
    policies admit only `authenticated` users; the app connects with the anon
    key and has no sign-in. Until this is decided, Supabase mode connects but
