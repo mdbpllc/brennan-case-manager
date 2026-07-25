@@ -8,6 +8,7 @@ import { db } from '../data';
 import { Combobox } from '../components/Combobox';
 import MedicalTab from './MedicalTab';
 import CalendarTab from './CalendarTab';
+import TranscriptsTab from './TranscriptsTab';
 
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,10 +18,11 @@ export default function CaseDetailPage() {
   // Tab lives in the URL so it survives navigation (e.g. returning from
   // "+ New party") and can be bookmarked.
   const path = useLocation().pathname;
-  const tab: 'overview' | 'parties' | 'medical' | 'calendar' =
+  const tab: 'overview' | 'parties' | 'medical' | 'calendar' | 'transcripts' =
     path.endsWith('/parties') ? 'parties'
     : path.endsWith('/medical') ? 'medical'
     : path.endsWith('/calendar') ? 'calendar'
+    : path.endsWith('/transcripts') ? 'transcripts'
     : 'overview';
 
   useEffect(() => {
@@ -59,12 +61,14 @@ export default function CaseDetailPage() {
         <button className={tab === 'parties' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/parties`)}>Parties</button>
         <button className={tab === 'medical' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/medical`)}>Medical</button>
         <button className={tab === 'calendar' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/calendar`)}>Calendar</button>
+        <button className={tab === 'transcripts' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/transcripts`)}>Transcripts</button>
       </div>
 
       {tab === 'overview' && <OverviewTab rec={rec} onChange={setRec} />}
       {tab === 'parties' && <PartiesTab caseId={rec.id} />}
       {tab === 'medical' && <MedicalTab caseRec={rec} />}
       {tab === 'calendar' && <CalendarTab caseRec={rec} />}
+      {tab === 'transcripts' && <TranscriptsTab caseRec={rec} />}
     </div>
   );
 }

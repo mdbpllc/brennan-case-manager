@@ -255,3 +255,15 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
 .badge.evt-appointment { background: #e7f0e9; color: var(--ok); }
 .badge.evt-reminder { background: #f3edda; color: #7a5f1e; }
 .badge.evt-other { background: #eef0f2; color: var(--muted); }
+
+/* ---- Transcript inbox (sort & route) ---- */
+.badge.source-recorder { background: #e4e9f0; color: var(--navy); }
+.badge.source-phone { background: #ece9f4; color: #5b4a8a; }
+.badge.source-manual { background: #eef0f2; color: var(--muted); }
+.badge.signal { background: #eef4ee; color: #3c5a3f; max-width: 100%; white-space: normal; }
+.badge.priv-privileged { background: #f6e2e2; color: #a03030; }
+.badge.priv-work-product { background: #f3edda; color: #7a5f1e; }
+.badge.priv-non-privileged { background: #eef0f2; color: var(--muted); }
+.badge.phi { background: #a03030; color: #fff; }
+.badge.discoverable { background: #f6e9e2; color: var(--warn); }
+mark { background: #f3e8b8; padding: 0 2px; border-radius: 2px; }
