@@ -190,6 +190,14 @@ to `docs/specs/`.
 
 **Status:** T1 built against the corrected facts; design doc §2 should be updated at next revision. No decision needed unless the design space prefers the JSON API over static-file fetching for A2.
 
+### 2026-07-25 — Statute-tracking design snapshot lags the project-knowledge version
+
+**Where:** `docs/specs/statute-text-and-bill-tracking-design.md` (repo snapshot filed at `02da677`).
+
+**Finding:** Per the 2026-07-25 session prompt, the design-space (project-knowledge) version of this doc is AHEAD of the repo snapshot: §9 open items O1–O4 marked resolved in the doc itself (LegiScan key issued 7/24, validated 7/25), W1 banked, A2 carries the .gov redirect implementation note, and B4 is hardened with the LegiScan suspension triggers. The repo copy still shows §9 as open (the RESOLUTIONS are recorded in session-log.md and CLAUDE.md, so no information is lost — but the doc text itself is stale). The Code session applied only the three 2026-07-25 deltas Michael's prompt specified (A4 `section-removed`, A2 normalized-hash note, canonical-path status line) rather than reconstructing the rest.
+
+**Status:** No decision needed — next time the design space touches this doc, export a full refreshed snapshot to replace the repo copy.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

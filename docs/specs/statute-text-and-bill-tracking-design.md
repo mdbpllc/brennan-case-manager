@@ -1,6 +1,6 @@
 # Statute Text & Legislative Tracking — Design Pass
 
-**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§9). **Feeds:** the Legal Rule Registry (system-wide core infrastructure per the 2026-07-22 decision), citation-currency alerts (banked feature #13), the legislative-watch list already noted in the billing synthesis (SB 30 successors), and the 2025 law-change ledger in `pi-case-playbooks.md`.
+**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§9). **Canonical repo path:** `docs/specs/statute-text-and-bill-tracking-design.md`. **Feeds:** the Legal Rule Registry (system-wide core infrastructure per the 2026-07-22 decision), citation-currency alerts (banked feature #13), the legislative-watch list already noted in the billing synthesis (SB 30 successors), and the 2025 law-change ledger in `pi-case-playbooks.md`.
 
 **Architecture decision this doc records:** two sources, cleanly split by what each is authoritative for. **statutes.capitol.texas.gov** (Texas Legislative Council's official codification — public domain, no TOS, no key, predictable URLs) is the sole source for *current statute text*. **LegiScan API** (registered key, free Public tier, data licensed CC BY 4.0) is the sole source for *pending-legislation tracking*. Neither source is scraped outside its sanctioned interface: the .gov site is fetched politely at its documented URL patterns; LegiScan is accessed only via the API — never by crawling legiscan.com (TOS §3.3).
 
@@ -32,11 +32,11 @@ Module A closes gap 1. Module B closes gap 2. Together they give the registry a 
 
 **A1 — Cite parser/resolver (pure TypeScript, unit-testable).** `"Tex. Fam. Code § 153.002"`, `"Family Code 153.002"`, `"CCP art. 55A.053"`, `"CPRC §18.001"` → `{code: 'FA', chapter: '153', section: '153.002', url, anchor}`. Handles the CCP's article numbering and Vernon's civil statutes as special cases. This component is useful everywhere immediately (playbooks, registry, documents) even before any caching exists.
 
-**A2 — Fetch + cache.** Browser can't fetch the .gov site directly (CORS), so fetching runs server-side — a small Supabase Edge Function (`/statute-fetch`) in live mode. Demo mode ships a fixture set of real chapters for the seed codes (statute text is public domain — committing it violates no data-hygiene rule; it is not client data). Cache record stores the raw HTML, extracted per-section text, `fetched_at`, and a **content hash per section**.
+**A2 — Fetch + cache.** Browser can't fetch the .gov site directly (CORS), so fetching runs server-side — a small Supabase Edge Function (`/statute-fetch`) in live mode. Demo mode ships a fixture set of real chapters for the seed codes (statute text is public domain — committing it violates no data-hygiene rule; it is not client data). Cache record stores the raw HTML, extracted per-section text, `fetched_at`, and a **content hash per section**. *(Addition 2026-07-25:)* hashes are computed over **NORMALIZED extracted text** (whitespace collapsed, markup artifacts stripped), not raw HTML, so a .gov template change doesn't trip every cached hash at once.
 
 **A3 — Statute viewer.** In-app pane: chapter view with section anchors, copy-cite button, "open at source" link. Every registry entry, playbook cite, and eligibility-engine readout deep-links into it.
 
-**A4 — The hash tripwire (registry integration).** When Michael verifies a registry entry, the entry stores the **section content hash as of verification**. On every cache refresh, changed hashes automatically raise the `text-changed-since-verified` watch flag on any registry entry citing that section. This converts the biennial refresh into an automatic re-verification worklist — no one has to remember which of the ~40 registry entries the 90th Legislature touched. (Flag only; status stays verified-but-flagged until Michael acts. Registry rules 1–2 untouched.)
+**A4 — The hash tripwire (registry integration).** When Michael verifies a registry entry, the entry stores the **section content hash as of verification**. On every cache refresh, changed hashes automatically raise the `text-changed-since-verified` watch flag on any registry entry citing that section. This converts the biennial refresh into an automatic re-verification worklist — no one has to remember which of the ~40 registry entries the 90th Legislature touched. (Flag only; status stays verified-but-flagged until Michael acts. Registry rules 1–2 untouched.) *(Addition 2026-07-25:)* refresh must also detect **MISSING sections** — if a section cited by a registry entry no longer exists in the refreshed chapter (repeal or renumbering, e.g. the CCP art. 55A recodification), raise a distinct **`section-removed`** watch flag, more urgent than `text-changed-since-verified`; a chapter that failed to refresh proves nothing and raises nothing.
 
 ## 4. Module B — Pending-bill tracking (source: LegiScan API)
 
@@ -69,7 +69,7 @@ Module A closes gap 1. Module B closes gap 2. Together they give the registry a 
 - **`watch_targets`** — id, kind (registry-derived / manual), cite_or_query, active.
 - **`tracked_bills`** — id, legiscan_bill_id, session_id, bill_number, title, status, change_hash, last_polled, raw_json.
 - **`bill_statute_refs`** — tracked_bill_id, code, section, match_confidence, matched_text_excerpt.
-- **`watch_flags`** — registry_entry_id, kind (pending-bill / enacted-change-pending / text-changed-since-verified), source_ref, raised_at, cleared_at, cleared_by.
+- **`watch_flags`** — registry_entry_id, kind (pending-bill / enacted-change-pending / text-changed-since-verified / section-removed), source_ref, raised_at, cleared_at, cleared_by.
 
 All behind `DataAdapter`, working identically in localStorage demo mode (fixture statutes, fictional demo bills) and Supabase.
 
