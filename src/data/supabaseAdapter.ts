@@ -439,6 +439,11 @@ export class SupabaseAdapter implements DataAdapter {
       q.select('*').contains('case_ids', [caseId]).order('recorded_at', { ascending: false }));
   }
 
+  async listOfficeNotes(): Promise<Transcript[]> {
+    return this.rows<Transcript>('transcripts', (q) =>
+      q.select('*').eq('office_note', true).order('recorded_at', { ascending: false }));
+  }
+
   async getTranscript(id: string): Promise<Transcript | null> {
     const res = await this.sb.from('transcripts').select('*').eq('id', id).maybeSingle();
     if (res.error) throw new Error(res.error.message);

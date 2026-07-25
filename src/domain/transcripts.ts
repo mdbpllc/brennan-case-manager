@@ -80,6 +80,9 @@ export interface Transcript {
   /** Presumptively discoverable (TRCP 192.3(h) [CONFIRM] — unverified registry entry,
    *  drives warnings only). Auto-on for witness interviews. */
   discoverableFlag: boolean;
+  /** Not-case-related recordings keep their content in the Office notes
+   *  store instead of being discarded (Michael's O3 decision, 2026-07-25). */
+  officeNote?: boolean;
   /** Manual in Phase 1 — no auto-summary. */
   summary?: string;
   createdAt: string;

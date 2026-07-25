@@ -40,7 +40,14 @@ export default function TranscriptDetailPage() {
   useEffect(() => { refresh(); }, [refresh]);
 
   if (loadState === 'notfound') {
-    return <div className="notice">Transcript not found. <Link to={`/cases/${caseId}/transcripts`}>Back to the case</Link></div>;
+    return (
+      <div className="notice">
+        Transcript not found.{' '}
+        {caseId
+          ? <Link to={`/cases/${caseId}/transcripts`}>Back to the case</Link>
+          : <Link to="/notes">Back to office notes</Link>}
+      </div>
+    );
   }
   if (loadState === 'error') {
     return <div className="notice">Couldn't load this transcript. Check the database connection and refresh.</div>;
@@ -73,6 +80,9 @@ export default function TranscriptDetailPage() {
             {c.fileNumber} — {c.caption || c.caseType}
           </Link>
         ))}
+        {tr.officeNote && cases.length === 0 && (
+          <Link to="/notes" className="badge status">Office note — no matter</Link>
+        )}
       </div>
 
       <FlagsCard tr={tr} onChange={setTr} />

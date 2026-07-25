@@ -99,6 +99,8 @@ export interface DataAdapter {
 
   // ---- Transcript sort & route (T1, transcript-sort-and-route-design.md) ----
   listTranscriptsForCase(caseId: string): Promise<Transcript[]>;
+  /** The Office notes store — not-case-related recordings, kept and searchable (O3). */
+  listOfficeNotes(): Promise<Transcript[]>;
   getTranscript(id: string): Promise<Transcript | null>;
   createTranscript(data: Omit<Transcript, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transcript>;
   /** The verified flag is attorney-only in the UI — nothing programmatic sets it. */

@@ -426,6 +426,11 @@ export class LocalAdapter implements DataAdapter {
       .sort((a, b) => (b.recordedAt ?? '').localeCompare(a.recordedAt ?? ''));
   }
 
+  async listOfficeNotes(): Promise<Transcript[]> {
+    return load().transcripts.filter((tr) => tr.officeNote)
+      .sort((a, b) => (b.recordedAt ?? '').localeCompare(a.recordedAt ?? ''));
+  }
+
   async getTranscript(id: string): Promise<Transcript | null> {
     return load().transcripts.find((tr) => tr.id === id) ?? null;
   }

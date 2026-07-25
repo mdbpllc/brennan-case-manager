@@ -458,6 +458,8 @@ create table if not exists transcripts (
     check (privilege_tier in ('privileged','work-product','non-privileged')),
   phi_flag boolean not null default false,
   discoverable_flag boolean not null default false,
+  -- Not-case-related recordings are kept in the Office notes store (O3).
+  office_note boolean not null default false,
   summary text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

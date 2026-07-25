@@ -178,7 +178,9 @@ export default function InboxPage() {
                       : <span className="muted">—</span>}</td>
                     <td>{tr && tr.caseIds.length > 0
                       ? <Link to={`/cases/${tr.caseIds[0]}/transcripts/${tr.id}`}>open</Link>
-                      : <span className="muted">not filed</span>}</td>
+                      : tr?.officeNote
+                        ? <Link to={`/notes/${tr.id}`}>office note</Link>
+                        : <span className="muted">not filed</span>}</td>
                   </tr>
                 );
               })}
@@ -215,8 +217,9 @@ function StagingCard({ item, transcript, cases, caseById, onDone }: {
   };
 
   const notCaseRelated = async () => {
-    // Disposition of non-case recordings is open item O3 — until Michael
-    // decides, the item is kept (dismissed) with its decision logged.
+    // O3 (decided 2026-07-25): not-case-related recordings keep their
+    // content in the Office notes store — never silently discarded.
+    await db.updateTranscript(item.transcriptId, { officeNote: true });
     await db.updateStagingItem(item.id, { status: 'dismissed' });
     await db.appendRoutingDecision({
       stagingItemId: item.id, suggestedCaseId: best?.caseId,
@@ -225,7 +228,7 @@ function StagingCard({ item, transcript, cases, caseById, onDone }: {
     });
     await db.appendReviewLog({
       entityType: 'staging_item', entityId: item.id, action: 'rejected',
-      user: 'Michael', reason: 'Not case-related — kept unfiled pending the O3 disposition decision.',
+      user: 'Michael', reason: 'Not case-related — filed to Office notes (O3).',
     });
     onDone();
   };
