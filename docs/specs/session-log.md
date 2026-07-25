@@ -8,8 +8,21 @@ Purpose: a dated, running record of what happened session to session in this pro
 - Keep entries short — a few lines each. This is a pointer/recap layer, not a duplicate of the full spec. Detailed specs live in their own docs (`case-management-project-instructions.md`, `pi-case-playbooks.md`, `criminal-offense-playbooks.md`, etc.) — link to those rather than repeating their content here.
 - Do not let this file grow unbounded — if it gets long, consider archiving older entries to a dated sub-file and keeping only the most recent months here.
 - Each entry ends with two round-trip state lines so the Code handoff status is always visible at the top of the log: **"Staged for Code:"** (what this session prepared for a coding session) and **"Awaiting/Returned from Code, unreviewed:"** (what a coding session produced that the design space hasn't reviewed yet). Write "none" rather than omitting them. When a design session reviews returned material, the next entry clears it.
+- **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) refresh `build-state.md` (the one-doc "what is built now" snapshot design sessions read first), and (3) **push to origin** — unpushed commits are invisible outside this machine. If the push is blocked, say so explicitly in the session report so Michael can run it.
 
 ---
+
+## 2026-07-25 (design-side visibility fix: build-state.md + push convention — same Code session)
+
+**What happened:** Michael reported the design side (Opus 5 today) doesn't know the software's current state — it works from the synced spec docs + session log. Root cause found Code-side: the design side's last confirmed repo view was `bf89eca` (7/24 afternoon), **32 commits behind** — everything since (statute tracking T1–T4, OAA real-order tuning, browse UX, today's work) was committed locally but the session's push had been blocked, and there was no compact "what is built now" doc even when the log did sync.
+
+**Fix, three parts:** (1) **`build-state.md`** — new one-doc snapshot of what the software actually does, written for design-side consumption, refreshed at the end of every substantive Code session (now a stated exception to spec read-only in CLAUDE.md); (2) **binding end-of-session rule** added to this log's header and CLAUDE.md's working style: log entry + build-state refresh + **push to origin**, with any blocked push reported to Michael explicitly; (3) this session's backlog pushed.
+
+**For design-side sessions reading this:** start with `build-state.md`, then the entries above it in this log. If build-state's "As of" commit looks old, the repo is ahead of your view — ask Michael for a fresh sync rather than assuming.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus build-state.md itself.
 
 ## 2026-07-25 (two prompts processed: statute deltas built, time-tracker design drafted, Citizens handoff routed — Code session)
 

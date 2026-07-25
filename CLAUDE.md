@@ -130,6 +130,12 @@ coding sessions. The spec documents committed under `docs/specs/` are
   is UNVERIFIED (its §7 lists the nine registry entries to open, for
   sign-off one at a time). NOT in the build queue; do not build from it
   until Michael rules on §8/§7
+- `build-state.md` — the one-doc "what is built right now" snapshot,
+  written for DESIGN-SIDE consumption (Fable/Opus in the Project space
+  read this + the session log; they cannot see the local repo). **The
+  second exception to read-only: refresh it at the end of every
+  substantive Code session** — update the "As of" line and whatever
+  changed. Keep it a snapshot, not a narrative; history lives in the log
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
@@ -212,7 +218,10 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
 ## Working style
 
 - Small, reviewable increments; commit early and often with plain-language
-  messages Michael can follow.
+  messages Michael can follow. **End every substantive session by
+  refreshing `docs/specs/build-state.md`, appending the session-log
+  entry, and pushing to origin** — the design side's view of this repo
+  depends on the push; if it's blocked, tell Michael in the report.
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in
