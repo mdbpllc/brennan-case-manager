@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 5087899  |  Branch: master  |  Generated: 2026-07-25
+Commit: 9dc280f  |  Branch: master  |  Generated: 2026-07-25
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -78,6 +78,8 @@ Commit: 5087899  |  Branch: master  |  Generated: 2026-07-25
   push convention
 - 5087899 Build-state bridge: adopt BUILD-STATE template convention,
   single-source status in CLAUDE.md
+- 9dc280f Strip build-status claims from master spec + README (docs only,
+  no app change)
 
 ## For design side
 - Time-tracker draft awaits Michael's §8 rulings + §7 registry sign-offs;
