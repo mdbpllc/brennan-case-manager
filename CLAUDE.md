@@ -8,8 +8,8 @@ A case management suite for a Texas personal injury / civil litigation /
 criminal law practice. Database-centric: React + TypeScript front-end,
 data-adapter layer with a localStorage demo mode and a Supabase/Postgres
 adapter (`db/schema.sql`), activated via `.env`. Built incrementally in
-vertical slices. Slice v0.1 (Case overview + Parties) is delivered; the
-second slice is the medical billing analysis module, Phase 1a.
+vertical slices; what is built right now lives in ONE place —
+`docs/specs/BUILD-STATE.md`.
 
 The user (Michael) is an attorney, not a developer. Claude does the heavy
 lifting; Michael directs, reviews, and decides. Readability for Michael is
@@ -130,12 +130,20 @@ coding sessions. The spec documents committed under `docs/specs/` are
   is UNVERIFIED (its §7 lists the nine registry entries to open, for
   sign-off one at a time). NOT in the build queue; do not build from it
   until Michael rules on §8/§7
-- `build-state.md` — the one-doc "what is built right now" snapshot,
+- `BUILD-STATE.md` — the one-doc "what is built right now" snapshot,
   written for DESIGN-SIDE consumption (Fable/Opus in the Project space
   read this + the session log; they cannot see the local repo). **The
-  second exception to read-only: refresh it at the end of every
-  substantive Code session** — update the "As of" line and whatever
-  changed. Keep it a snapshot, not a narrative; history lives in the log
+  second exception to read-only: REWRITE IT IN FULL (never append) at
+  the end of every session that changes the app**, commit as
+  `chore: refresh BUILD-STATE`, then tell Michael in one line to
+  re-upload it to project knowledge (REPLACING the old copy, not
+  duplicating it). Hard rules: 120-line cap (cut detail, never add
+  sections); describe what EXISTS, not what's planned; every claim
+  verifiable from the working tree at its stated commit; generate
+  mechanically where possible (routes from the router, tables from
+  `db/schema.sql`, deltas from `git log`). If a design-side handoff
+  arrives assuming a build state that isn't real, correct it in THIS
+  file, not just in chat — chat never reaches the design side
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
@@ -183,45 +191,41 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
   Claude is not a substitute for it. Do not represent any build as
   production-ready for privileged data.
 
-## Build sequence and current state
+## Build sequence and standing gates
 
-1. Data model — complete (master spec §§7–11).
-2. Slice v0.1 (Case overview + Parties) — built; Michael's feedback
-   implemented 2026-07-23 (masked phone inputs, filterable combobox pickers).
-3. Billing module Phase 1a — BUILT, gap-closed, and walkthrough-APPROVED by
-   Michael (2026-07-23). Only CONFIRMED AnalysisRuns may feed settlement/
-   lien math — enforced via settlementEligibleRuns() in src/domain/billing.ts.
-   Phase 1b (local-AI PDF ingestion) is gated on the GPU arm — do not start it.
-4. Outlook calendar push Phase 1 — BUILT 2026-07-24 (Calendar tab on case
-   detail, CalendarEvent entity in both adapters, Graph push layer in
-   src/outlook/ activated by VITE_MSAL_* env vars; setup steps in
-   docs/outlook-setup.md; Michael's Entra app registration pending). Phase 2
-   two-way sync is backlogged — do not start it.
-5. Transcript sort & route (feature-intake item A, design pass in
-   transcript-sort-and-route-design.md): T1 (data model, staging inbox,
-   Transcripts tab) + T2 (routing engine + the repo's first test runner,
-   vitest) BUILT 2026-07-25. T3 (Python/NeMo pipeline service) is gated on
-   the P1 GPU hardware — do not start it; T4 wiring follows T3. Auto-file
-   stays OFF (design D1) until Michael rules otherwise.
-6. OAA criminal appointment intake
-   (criminal-appointment-intake-and-docket-enhancements.md §1–2): Tier 1
-   (Uvalde/Real digital form) BUILT 2026-07-25 — /cases/new/oaa upload →
-   draft review → Create Matter; charges as child records; extraction
-   engine + tests in src/oaa/. Tier 2 (scanned packets: segmentation, OCR,
-   handwriting) is gated on the P1 GPU hardware — do not start it; the
-   in-app fallback is manual entry. §3 docket cross-referencing rides with
-   the docket-worksheet feature (not yet in-app). The Tier 1 parser was
-   built against a fictional fixture — tune it against a real Uvalde OAA
-   (kept OUT of the repo) before first real use. Remaining tabs follow,
-   with feedback each step.
+**Status (what is built/pending) lives ONLY in `docs/specs/BUILD-STATE.md`
+— do not restate it here.** This section records the ORDER of work and the
+standing gates that survive any status change:
+
+1. Data model (master spec §§7–11).
+2. Slice v0.1: Case overview + Parties.
+3. Billing module Phase 1a. Only CONFIRMED AnalysisRuns may feed
+   settlement/lien math — enforced via settlementEligibleRuns() in
+   src/domain/billing.ts. Phase 1b (local-AI PDF ingestion) is gated on
+   the GPU arm — do not start it.
+4. Outlook calendar push Phase 1 (setup steps in docs/outlook-setup.md).
+   Phase 2 two-way sync is backlogged — do not start it.
+5. Transcript sort & route T1+T2 (design pass in
+   transcript-sort-and-route-design.md). T3 (Python/NeMo pipeline
+   service) is gated on the P1 GPU hardware — do not start it; T4 wiring
+   follows T3. Auto-file stays OFF (design D1) until Michael rules
+   otherwise.
+6. OAA criminal appointment intake Tier 1
+   (criminal-appointment-intake-and-docket-enhancements.md §1–2). Tier 2
+   (scanned packets: segmentation, OCR, handwriting) is gated on the P1
+   GPU hardware — do not start it; the in-app fallback is manual entry.
+   §3 docket cross-referencing rides with the docket-worksheet feature.
+   Remaining tabs follow, with feedback each step.
 
 ## Working style
 
 - Small, reviewable increments; commit early and often with plain-language
   messages Michael can follow. **End every substantive session by
-  refreshing `docs/specs/build-state.md`, appending the session-log
-  entry, and pushing to origin** — the design side's view of this repo
-  depends on the push; if it's blocked, tell Michael in the report.
+  rewriting `docs/specs/BUILD-STATE.md` in full, appending the
+  session-log entry, pushing to origin, and reminding Michael in one
+  line to re-upload BUILD-STATE.md to project knowledge** — the push
+  plus that manual re-upload are the only channels that reach the
+  design side; if the push is blocked, tell Michael in the report.
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in

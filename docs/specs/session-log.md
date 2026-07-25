@@ -8,9 +8,19 @@ Purpose: a dated, running record of what happened session to session in this pro
 - Keep entries short — a few lines each. This is a pointer/recap layer, not a duplicate of the full spec. Detailed specs live in their own docs (`case-management-project-instructions.md`, `pi-case-playbooks.md`, `criminal-offense-playbooks.md`, etc.) — link to those rather than repeating their content here.
 - Do not let this file grow unbounded — if it gets long, consider archiving older entries to a dated sub-file and keeping only the most recent months here.
 - Each entry ends with two round-trip state lines so the Code handoff status is always visible at the top of the log: **"Staged for Code:"** (what this session prepared for a coding session) and **"Awaiting/Returned from Code, unreviewed:"** (what a coding session produced that the design space hasn't reviewed yet). Write "none" rather than omitting them. When a design session reviews returned material, the next entry clears it.
-- **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) refresh `build-state.md` (the one-doc "what is built now" snapshot design sessions read first), and (3) **push to origin** — unpushed commits are invisible outside this machine. If the push is blocked, say so explicitly in the session report so Michael can run it.
+- **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) rewrite `BUILD-STATE.md` in full (the one-doc "what is built now" snapshot design sessions read first; template + hard rules in CLAUDE.md), (3) **push to origin** — unpushed commits are invisible outside this machine; if the push is blocked, say so explicitly in the session report so Michael can run it — and (4) remind Michael in one line to re-upload BUILD-STATE.md to project knowledge, replacing the old copy.
 
 ---
+
+## 2026-07-25 (build-state bridge: template adoption + CLAUDE.md single-source status — Code session)
+
+**What happened:** Michael's `PROMPT-build-state-bridge.md` processed. Prompt-lag reconciliation first, per standing practice: the entry below shows this same date's earlier session had already invented the snapshot (`build-state.md`, prose form) and the push convention — so nothing was rebuilt. Instead the existing snapshot was **converged to the prompt's stricter spec**: renamed `BUILD-STATE.md`; mechanical template (screens live / case-tab status table / data layer / **Known stubs & fakes** / git-log deltas / max-5 design-side asks); 120-line cap; overwrite-in-full, never append. CLAUDE.md de-duplicated: the build-sequence section's per-item built/awaiting claims stripped (order + do-not-start gates kept); status now has ONE source of truth, BUILD-STATE.md. Convention extended: refresh commits as `chore: refresh BUILD-STATE`; Michael gets a one-line reminder to re-upload the file to project knowledge (REPLACING the old build-state copy, not duplicating); stale design-side assumptions get corrected in BUILD-STATE.md itself, never only in chat.
+
+**Next:** unchanged carried items — time-tracker §8/§7 rulings, the two edge-function deploys, Entra app registration, Citizens MRF path, registry sign-offs; OAA remaining tabs.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** `BUILD-STATE.md` (template form) — for Michael to re-upload to project knowledge as the replacement for the old build-state artifact.
 
 ## 2026-07-25 (design-side visibility fix: build-state.md + push convention — same Code session)
 
