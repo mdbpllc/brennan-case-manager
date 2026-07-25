@@ -206,6 +206,14 @@ to `docs/specs/`.
 
 **Status:** Next design session should export gates 1–5 verbatim (with the gate-3 amendment applied) so the repo copy becomes complete and canonical under the GitHub sync.
 
+### 2026-07-25 — Session-1 heartbeat voice capture never reached Code (export needed)
+
+**Where:** `docs/specs/case-heartbeat-voice-capture-2026-07-25.md` — referenced as the **source of record** by `case-heartbeat-design.md` and listed in the 2026-07-25b handoff's routing table ("should already exist if that handoff was applied; if not, apply it too").
+
+**Finding:** the 2026-07-25b and 2026-07-25c handoffs were both applied together on 2026-07-25 (this Code session) — the session-1 handoff never reached a Code session, and the session-1 voice capture file is not in the repo, not in either zip, and nowhere on disk. Nothing was reconstructed. The design doc, captures "b" and "c", and the TRCP skeleton are all filed; only the session-1 capture is missing. The superseded mid-session addendum (`case-heartbeat-suit-filed-addendum-2026-07-25c.md`) was correctly NOT routed, per the "c" handoff.
+
+**Status:** Next design session should export the session-1 voice capture (and the session-1 handoff's log entry, if one was written — the synced session log has no session-1 heartbeat entry) so provenance is complete.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

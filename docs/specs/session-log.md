@@ -12,6 +12,137 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (Voice/mixed, session 3, Fable 5: resumed heartbeat walkthrough at H14 suit-filed; limitations master clock + hard 6-month filing rule confirmed; pre-service arming chain walked; session cut mid-H14, resume point recorded)
+
+Third session of the day on the case-heartbeat design. Processed the session-2 zip (design doc, capture "b", TRCP skeleton, handoff "b"), summarized back, then resumed the PI walkthrough at H14 (suit filed / service chase). Session ended early on system slowness; the service chase proper is still unwalked — precise resume point captured.
+
+- **H23 — Limitations master clock [CONFIRMED]:** watched from day one at intake, not a suit-filed concern. Blowing it voids the case regardless of treatment status. At suit filed it becomes the modulator on service-chase urgency (limitations is met on SERVICE, not filing). Michael's explicit instruction: note for Code to consider in the system run-through; wire into both intake and suit-filed stages.
+- **H24 — Hard rule, file ≥ 6 months before limitations [CONFIRMED]:** unconditional buffer regardless of how complete the defendant picture looks ("just leave it as a hard rule"). Three-part rationale: slow citation issuance (out of your hands); service takes time and limitations is met on service; the late-discovered defendant (his brakes example — you can't know the defendant list is closed). **Registry candidate, confirmed** — cite needed, attorney-only sign-off, rationale should note the buffer protects *naming* new defendants, not just serving known ones.
+- **Pre-service arming chain [CONFIRMED]:** file petition (citation request sometimes simultaneous, sometimes later) → acceptance via e-filing email → request issuance → citation issues (same-day to three weeks; weekly follow-up until issued). Citation arrives by any of four channels (mail / clerk pickup / clerk email / e-file copy).
+- **Clerk-relations constraint [CONFIRMED]:** never annoy the clerks — they remember, and future filings suffer. Escalation may get louder AT Michael but never pushes harder ON the clerk. Candidate primitive: counterparty institutional memory caps outward cadence while inward cadence stays free.
+- **Declared vs detected at this stage [CONFIRMED]:** "did citation come in" is a human-remembering problem (Michael now, paralegal later); citation arrival is a DECLARED state. The ONE detection exception: the e-filing acceptance email (known sender) may auto-arm the next step.
+
+New open items: **H25** (acceptance→citation chain — separate armed threads or one thread with checkpoints? asked, unanswered), **H26** (does limitations own its own backstop thread that can override quiet hours, or is it purely a modulator? proposed, redirected, unruled). H21 (service-diligence case-law cite) reinforced — H24's buffer is what protects that gap. H22 registry arithmetic grows by one.
+
+Side note: Claude's two session-start observations remain pending Michael's response — (1) fold primitives #14/#15 into §3 before ruling D3; (2) H4+H20 may collapse into one ruling. Also unconfirmed whether Code applied the "b" artifacts.
+
+**Next:** FIRST review synced session-log top entries (standing convention), then resume mid-H14 at the recorded resume point: (a) what a *touch* looks like once citation is in hand (process-server follow-up / checking court record for the return), then (b) per-defendant fan-out and rhythm, then (c) mechanics of how the limitations clock modulates the service ladder. Then continue the litigation spine. Carried: §10 rulings D1–D10 (D3/H8 blocks T1); registry sign-offs (entries 1–10 priorities unchanged, plus H24 candidate); FLP/MCP setup (promo ends 8/6); BUILD-SESSION-NOTES.md review.
+
+**Staged for Code:** session-log entry (this); capture "c" → `docs/specs/case-heartbeat-walkthrough-capture-2026-07-25c.md` (RAW CAPTURE, fold into design doc §8 suit-filed section, mid-stream flagged); H23 note for the system run-through. Nothing enters the build queue — no §10 rulings were made this session.
+
+**Awaiting/Returned from Code, unreviewed:** Outlook push slice (carried); confirmation whether 2026-07-25b artifacts were applied; BUILD-SESSION-NOTES.md.
+
+## 2026-07-25 (Session 2, mixed voice/text, Opus 5: case-heartbeat design doc written; PI walkthrough resumed and stages 6–9 walked; TRCP deadline skeleton extracted from the 2026-03-01 rules text)
+
+**Design-side throughout. Nothing entered the build queue.** Three artifacts produced: the case-heartbeat design doc
+(written from session 1's voice capture, then revised same-day to absorb this session's walkthrough), a walkthrough
+capture, and a TRCP deadline skeleton of unverified registry candidates.
+
+**The design doc now exists** at `docs/specs/case-heartbeat-design.md`, status **DESIGN-PARTIAL** — architecture
+design-complete pending Michael's review of its §10 decision list, PI stage catalog covering stages 1 through 9, with
+the litigation spine unwalked. Provenance is tagged throughout: **[C]** confirmed by Michael out loud, **[P]** proposed
+and not objected to, **[D]** new in the document and never put to him. Design-side additions worth flagging: legally
+consequential intervals must be registry entries rather than hardcoded constants (the deadline engine says *when*, the
+heartbeat says *how hard to push before then*); the escalation ladder needed defining and in a solo configuration
+resolves to channel-and-frequency only; the serializer needs a no-bulk-affordance rule, an outcome-required dismissal,
+and an explicit queue-ordering policy; and gates-versus-clocks is a cry-wolf risk, not merely unmodeled.
+
+**H6 RESOLVED [C]: declaring treatment complete opens the stage only.** Each provider's records-and-bills request is
+triggered by hand. The declared-state judgment extends to the provider level — ripeness can be true for four providers
+and false for a fifth still owing a visit note.
+
+**New upstream interlock [C, raised by Michael unprompted]: the pre-completion surgical check.** Before treatment may be
+marked complete, the system must prompt a check that the client is not potentially surgical — positive MRI findings
+supporting a possible surgical recommendation block the declaration. His reasoning: a doctor's release and a client who
+simply stops going both look identical to completion, and neither rules out surgery. **This points the opposite
+direction from the rest of the subsystem** — everywhere else the fear is a case dying in silence; here it is a case
+dying *prematurely*, rushed to demand while secretly worth many times more. Recorded as a new primitive: interlocks on
+declared transitions, distinct from both gates (which block) and clocks (which nag).
+
+**Stage 6, records collection [C].** Opening fork is the retrieval method, and it sets the *cadence*, not just the task:
+self-sent requests get a **weekly** chase; a third-party retrieval vendor gets a **2.5–3 week supervisory check-in**,
+because the vendor already runs its own follow-up machinery — Michael's job there is confirming the machinery turns, not
+turning it. **Arrival is not the close**: records landing trips a verification gate with a four-point authenticability
+checklist — legible copies; business-records affidavit page count matching the actual attachment (his example: affidavit
+recites fifty-four pages, sixty-two attached, *"that's not gonna be authenticable"*); correct billing-affidavit amounts;
+and both affidavits actually notarized. Only a declared QC pass closes the provider. A defect spawns a corrected-
+affidavit loop at **two to three days** — hotter than the weekly chase, on the reasoning that a known problem in hand
+outranks an unknown one still out in the world. Records versus billing: **CONFIRMED that the system asks** whether to
+mark the records portion done and keep chasing billing, or hold the provider open; the coupled-thread-with-latent-split
+default is **Claude's refinement and unaffirmed** (H15).
+
+**Stage 7, demand drafted [C].** A completion-driven assembly thread with named sub-components — damages confirmed and
+calculable with proofs in hand (requires Stage 6 closed), medical chronology, facts section, exhibits. The chronology is
+a dependency fork: third-party paid software today, possibly an in-system feature later (H16). **The heartbeat stays
+loud on a half-drafted demand [C, explicit]** — *"keep the heartbeat up on it"* — justified by the same logic as the
+intake ruling: with the tools in place a demand is a twenty-to-twenty-five-minute sit-down. **The cheaper the system
+makes the action, the more license it has to hound** is now confirmed independently at both ends of the lifecycle, and
+this is the stage the whole subsystem was founded on.
+
+**Stage 8, demand sent [C].** One action arms **three** touches, not the two previously recorded: a five-day check-in
+(confirm receipt, confirm they have everything), a deliberate silence window, and the expiration backstop. Weekend rule:
+if day five lands on a Saturday, Sunday, or holiday, roll **back** to the business day before, never forward. Demand
+type sets the deadline unit — **third-party gets 15 calendar days, first-party gets 15 business days** — with an
+identical check-in on both. Expiration branches three ways: an **offer** hands off to negotiation; a **"we need more
+information" letter** splits into constant loud nagging on Michael to get the listed items out, then weekly follow-up on
+their status; **total silence** triggers a **daily** reminder — the highest cadence anywhere in the system — carrying a
+one-tap escape to turn it off and mark complete, *"because really, the next stage from there, if they're not responding
+to me, is me filing a lawsuit."* That escape is P1 in its purest form: marking complete means *"I have decided to stop
+demanding and start litigating,"* a recorded decision rather than neglect, and a clean declared transition into suit
+filed.
+
+**Stage 9, negotiation, is a PARALLEL TRACK, not a stage [C] — this reshapes the back half of the lifecycle.** Michael:
+negotiation continues through suit, through discovery, through trial, *"we could be at trial… and the jury is in
+deliberation. We're still in negotiation phase. There's always room to negotiate until the jury verdict comes out."* It
+runs underneath the entire spine and closes only on settlement or verdict. **No prescribed workflow** — case by case,
+and he declined to invent steps, so the design refuses to impose a cadence it hasn't been taught. The track carries
+**last-touched plus the spread** (his correction: high demand from us against low offer from the carrier), and goes in
+as an **explicit placeholder, empty on purpose**, seeded-not-closed so the structure is there when he cracks a real
+negotiation workflow. It still gets a gentle pulse, because a live negotiation with no next-action is the easiest thread
+to let rot (cadence unspecified, H17).
+
+**TRCP extraction — Michael uploaded the rules text effective 2026-03-01 (370 pp.)**, noting local rules live in the
+court and judge profiles rather than the rulebook. Extracted design-side into a skeleton of **unverified registry
+candidates**; verification remains attorney-only (registry rule 2). Structural findings: **one anchor computes most of
+the case** — initial disclosures fall 30 days after the first answer, and both the Level 1 and Level 2 discovery periods
+begin there; **litigation dates are derived, never stored**, because Level 2's period ends at the earlier of 30 days
+before trial or nine months after the anchor, with expert designations 90 and 60 days before that end, making a trial
+setting a two-hop cascade; and **discovery level determines the source tier** — rule-derived at Levels 1–2,
+document-derived at Level 3 from the DCO (live example: the Curry agreed DCO), local- and judge-derived from the court
+profiles. **Rule 166a is restructured in this text** versus the pre-amendment scheme — response 21 days after the motion
+is filed, reply 7 days after the response, hearing not set within 35 days of filing and required within 60 or 90 —
+flagged as a current-practice risk independent of the build, and as the clearest possible demonstration of why intervals
+are registry entries rather than anything recited from memory. Also noted: Rule 99(b)'s answer date is not service plus
+twenty days but 10:00 a.m. on the Monday next after twenty days expire, needing its own tested function; Rule 4 carries
+three different day-counting modes and requires a legal-holiday table; and **service diligence was deliberately not
+drafted**, since the TRCP sets no service deadline and the consequence lives in case law (H21).
+
+**One amendment to a settled design rule, proposed and unruled (H18).** "The list is the bug" acquires a narrow
+exception: when a trial date moves and many deadlines shift, that is *one causal event with many consequences*, not a
+pile of unrelated asks, so a single interruption showing what moved together is correct. Amended formulation: never a
+pile of unrelated things; one event with many consequences is still one thing.
+
+**Process notes.** The design doc was **revised mid-session rather than superseded**, folding in stages 6–9 and the
+surgical interlock so it would not reach the repo already stale — that fold-in-rather-than-branch pattern is the
+intended one for future walkthrough blocks. Manual filing of the skeleton was declined in favor of this handoff, so Code
+can run the duplicate-routing check against real repo state rather than the design side's lagging view. The skeleton is
+named by **rules edition, not session date**, because the next Supreme Court order supersedes rather than amends it.
+
+**Next:** resume the PI walkthrough at **H14 — the service chase at suit filed** (what a touch is, the per-defendant
+rhythm, and escalation on an unserved defendant), then continue through the litigation spine, folding results back into
+§8 of the design doc. Rule on the design doc's §10 decision list, where **D3 (shared touch substrate with the time
+tracker) blocks T1** and should be settled before either module's schema is built. Return to the time-tracker fee-basis
+draft (§3 schema-ownership call, D1–D4). Carried: registry entries 1–10 (Entry 1 qualified-LOP, Entry 4 fatal-defect
+conflict as priorities) plus the nine from the fee-basis draft plus the TRCP candidates — the queue arithmetic itself
+needs a decision (H22); edge-function deploys per `docs/statute-cache-setup.md`; Citizens MRF path into CLAUDE.md; OAA
+remaining tabs; FLP account + MCP connector setup (promo ends 8/6); `BUILD-SESSION-NOTES.md` review.
+
+**Staged for Code:** none — this session produced no build work. All three artifacts are design-side documents to be
+filed, not built from. Nothing enters the queue until Michael rules on the design doc's §10.
+
+**Awaiting/Returned from Code, unreviewed:** the time-tracker fee-basis-profiles DRAFT (still unadopted — review opened
+2026-07-25 session 1, deferred, and not resumed this session); everything previously listed.
+
 ## 2026-07-25 (second handoff APPLIED: sync-scope recorded + audit triage built — Code session)
 
 **What happened:** Applied `HANDOFF-2026-07-25b-sync-scope-and-audit-triage.md`. Repo was exactly at the expected `7ff8860`, clean. Per the handoff's own instruction, verified before building — **much of Part 2 already existed** in the tree; the audit predates four days of building. Already done, not re-implemented: Item F entirely (case/party list rows have real links on the name cell with middle-click/keyboard reach; the "Not yet filled in" footer is already behind a `<details>` disclosure; "Show closed" already runs through `isClosedStatus()`; the case Parties tab and party detail page already use bulk `getParties`/`getCases`); Item D's mechanism + the three named offenders (`itemLabel` exists on priorInjuries → "prior injury", priorProviders → "provider", priorCriminal → "prior charge"); Item B's flag-editing half (PI overlay flags, commercial-policy, representation type were already editable on the Overview edit form); Item A entirely (built at `3b2b19e` as Item 4 of the first handoff: version-bump reseed migrates imported schedules + confirmed runs + result lines forward, backs up the whole old store to a versioned localStorage key, and records a review-log entry naming what carried and where the backup lives).
