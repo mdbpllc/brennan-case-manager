@@ -106,6 +106,7 @@ export default function OaaIntakePage() {
   const [manualHearing, setManualHearing] = useState({ include: false, date: '', time: '', location: '' });
 
   const [creating, setCreating] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
 
   const processText = async (text: string, name: string) => {
     const template = hasUsableTextLayer(text) ? matchOaaTemplate(text) : null;
@@ -343,13 +344,35 @@ export default function OaaIntakePage() {
             (DeWitt-style) need the local AI hardware — until the P1 arrives they open a manual
             entry form instead, with the packet kept alongside for reference.
           </p>
-          <input
-            type="file"
-            accept=".pdf,.txt"
-            disabled={reading}
-            onChange={(e) => onFile(e.target.files?.[0])}
-            style={{ marginTop: 10 }}
-          />
+          <div
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragOver(false);
+              if (!reading) onFile(e.dataTransfer.files?.[0]);
+            }}
+            style={{
+              marginTop: 10,
+              padding: '28px 16px',
+              border: `2px dashed ${dragOver ? 'var(--navy)' : '#c8ccd4'}`,
+              borderRadius: 8,
+              background: dragOver ? '#eef2f8' : '#fafbfc',
+              textAlign: 'center',
+              transition: 'background 0.15s, border-color 0.15s',
+            }}
+          >
+            <div style={{ marginBottom: 10 }}>
+              {dragOver ? <strong>Drop the order here</strong> : 'Drag & drop the order here (PDF or text file)'}
+            </div>
+            <div className="muted" style={{ marginBottom: 10 }}>or</div>
+            <input
+              type="file"
+              accept=".pdf,.txt"
+              disabled={reading}
+              onChange={(e) => onFile(e.target.files?.[0])}
+            />
+          </div>
           {reading && <div className="muted" style={{ marginTop: 8 }}>Reading document…</div>}
           {readError && <div className="notice" style={{ marginTop: 8 }}>{readError}</div>}
         </div>
