@@ -162,9 +162,18 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
    Transcripts tab) + T2 (routing engine + the repo's first test runner,
    vitest) BUILT 2026-07-25. T3 (Python/NeMo pipeline service) is gated on
    the P1 GPU hardware — do not start it; T4 wiring follows T3. Auto-file
-   stays OFF (design D1) until Michael rules otherwise. OAA-based criminal
-   appointment intake (criminal-appointment-intake-and-docket-enhancements.md)
-   follows, then remaining tabs with feedback each step.
+   stays OFF (design D1) until Michael rules otherwise.
+6. OAA criminal appointment intake
+   (criminal-appointment-intake-and-docket-enhancements.md §1–2): Tier 1
+   (Uvalde/Real digital form) BUILT 2026-07-25 — /cases/new/oaa upload →
+   draft review → Create Matter; charges as child records; extraction
+   engine + tests in src/oaa/. Tier 2 (scanned packets: segmentation, OCR,
+   handwriting) is gated on the P1 GPU hardware — do not start it; the
+   in-app fallback is manual entry. §3 docket cross-referencing rides with
+   the docket-worksheet feature (not yet in-app). The Tier 1 parser was
+   built against a fictional fixture — tune it against a real Uvalde OAA
+   (kept OUT of the repo) before first real use. Remaining tabs follow,
+   with feedback each step.
 
 ## Working style
 

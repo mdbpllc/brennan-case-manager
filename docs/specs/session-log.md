@@ -11,6 +11,21 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (OAA criminal intake Tier 1 BUILT — Code session)
+
+**What happened (same Claude Code session as the verification entry below):** Michael said go on the next queue item, so the OAA intake slice (criminal-appointment-intake spec §1–2) was built end-to-end. **Tier 1 only by hardware reality:** the Uvalde/Real digital form is deterministic text extraction and ships now; Tier 2 (DeWitt scanned packets — segmentation, OCR, handwriting-overrides) needs the local AI arm and is gated on the P1, same as billing 1b and transcript T3. The in-app Tier 2 fallback is manual entry through the same review screen (never auto-accepts anything, trivially satisfying the §1 hard rule).
+
+- **Engine** (`src/oaa/`, commit `6b9d242`): label-anchored Tier 1 parser with per-field provenance ("line 14: …"), per-county template registry (unmatched → Tier 2 fallback), hearing auto-detect with semantic date kinds (confirmed setting / docket availability / administrative) incl. the stale-date guard, attorney hard-stop check (surname-anchored variants), normalized duplicate-cause check. Charges are child records (multi-cause support); cases gain county/custody/appointment fields. Local store v6→v7; 23 new tests (66 total green).
+- **UI** (`bb3cc0c`): `/cases/new/oaa` — upload (PDF via lazy pdf.js chunk, or .txt) → full draft review (matter, editable offense table with low-confidence row highlighting, defendant client record with existing-party linking, settings with pre-checked auto-detected docket availability) → Create Matter commits case + party/link + charges + calendar events (through the standard layer → Outlook push) + an `oaa_intakes` audit record + review log. Criminal case detail shows a Charges card + custody/county/appointment.
+
+**Verified live in demo mode:** fictional Uvalde-style fixture → Tier 1 match, every field pre-filled correctly with provenance, created matter 26-0004 State v. Okafor (2 charges incl. MTR/MTA revocation-track badge, client party linked Ours, docket-availability reminder pending Outlook sync); re-upload of same causes → duplicate banner links the existing matter and blocks create until override, existing-party link offer fires; substituted-attorney fixture → red hard stop, create disabled; unrecognized document → Tier 2 manual path with gating note. No console errors; regression pages clean. (Same JS-dispatched-click caveat as the entry below — hidden-pane limitation.)
+
+**For Michael / the design space:** (1) The Tier 1 parser was built against a FICTIONAL fixture matching the spec §1a field map — the real sample OAAs stay out of the repo. Before first real use, run a real Uvalde order through it in a session and tune; expect a small layout-tolerance pass. (2) Real County sample still outstanding (spec §5) — the template accepts Uvalde OR Real, flagged in code. (3) §3 docket cross-referencing awaits the docket-worksheet feature itself coming in-app. (4) Store v7 reseeds the browser demo store (same class as v5/v6 — re-import the PFS CSV if needed).
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything in the entries below, plus this build.
+
 ## 2026-07-25 (Office-notes verification caveat closed — Code session)
 
 **What happened (follow-up Claude Code session):** Closed the verification caveat from the entry below. In demo mode: marked the "note for later" inbox item Not case-related → inbox dropped 5→4 pending, processed count incremented, the note appeared on the Office notes page (1 note, kept-never-discarded copy intact), and its record page rendered caseless at `/notes/tr-stage-note-later` with the "Office note — no matter" badge, consent/privilege panel, and full transcript. No console errors. One honesty note: the hidden-pane click limitation recurred, so the button was fired programmatically on the real element (same React handler) rather than by pointer — the pointer layer is the identical button pattern already click-verified in the confirm flow. Michael's two-second check is now optional, not required.
