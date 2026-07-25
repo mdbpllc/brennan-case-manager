@@ -6,21 +6,18 @@
 // Each assertion encodes what the design pass (§§3–4) says SHOULD happen on
 // that recording, so these tests are the design's acceptance criteria running
 // against real transcription noise.
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { inferRouting } from '../../engine';
 import { extractIdentifierRuns } from '../../normalizer';
 import { PILOT_CTX } from './pilotUniverse';
+import batch1Json from './transcripts-batch1.json';
+import batch2Json from './transcripts-batch2.json';
 
 interface Batch1Entry { duration_sec: number; text: string }
 interface Batch2Entry { dur: number; text: string }
 
-const batch1 = JSON.parse(
-  readFileSync(new URL('./transcripts-batch1.json', import.meta.url), 'utf8'),
-) as Record<string, Batch1Entry>;
-const batch2 = JSON.parse(
-  readFileSync(new URL('./transcripts-batch2.json', import.meta.url), 'utf8'),
-) as Record<string, Batch2Entry>;
+const batch1 = batch1Json as unknown as Record<string, Batch1Entry>;
+const batch2 = batch2Json as unknown as Record<string, Batch2Entry>;
 
 // batch2 files are content-addressed take names; map them to their scripts.
 const SCRIPT1_TAG_BATTERY = batch2['bb8aa477take1.wav'].text;
