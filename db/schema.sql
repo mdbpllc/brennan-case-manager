@@ -657,7 +657,7 @@ create index if not exists reg_ver_snapshots_rule_idx on registry_verification_s
 create table if not exists watch_flags (
   id uuid primary key default gen_random_uuid(),
   rule_id uuid not null references legal_rules (id) on delete cascade,
-  kind text not null check (kind in ('text-changed-since-verified', 'pending-bill', 'enacted-change-pending')),
+  kind text not null check (kind in ('text-changed-since-verified', 'section-removed', 'pending-bill', 'enacted-change-pending')),
   source_ref text not null,      -- sectionRef (A4) or bill ref (T3)
   detail text,
   effective_date date,           -- enacted-change-pending: worklist join date (B3)
@@ -668,6 +668,11 @@ create table if not exists watch_flags (
 
 -- Idempotent upgrade for databases created from the pre-T3 schema.
 alter table watch_flags add column if not exists effective_date date;
+
+-- Idempotent upgrade: admit the A4 'section-removed' kind (2026-07-25).
+alter table watch_flags drop constraint if exists watch_flags_kind_check;
+alter table watch_flags add constraint watch_flags_kind_check
+  check (kind in ('text-changed-since-verified', 'section-removed', 'pending-bill', 'enacted-change-pending'));
 
 create index if not exists watch_flags_rule_idx on watch_flags (rule_id);
 create index if not exists watch_flags_active_idx on watch_flags (rule_id) where cleared_at is null;

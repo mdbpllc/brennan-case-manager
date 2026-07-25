@@ -38,33 +38,58 @@ export function buildHashIndex(sections: StatuteSection[]): Map<string, string> 
 export interface TripwireHit {
   ruleId: string;
   sourceRef: string;
+  kind: 'text-changed-since-verified' | 'section-removed';
   detail: string;
 }
 
+/** The chapter a snapshot ref lives in, as a chapterRef key:
+ *  'CP 41.0105' → 'CP ch. 41', 'CR 55A.053' → 'CR ch. 55A',
+ *  'PR ch. 55' → itself. */
+export function chapterRefForSnapshotRef(ref: string): string {
+  if (/ ch\. /.test(ref)) return ref;
+  const m = /^(\S+) (\d+[A-Z]?)\./.exec(ref);
+  return m ? chapterRef(m[1], m[2]) : ref;
+}
+
 /** The diff at the heart of A4. Pure: snapshots + current hashes + active
- *  flags in, flags-to-raise out. A ref with no current hash (chapter fell
- *  out of cache) is NOT a hit — no evidence of change, nothing to raise.
- *  Refs already carrying an active same-kind flag don't re-raise. */
+ *  flags in, flags-to-raise out. A ref with no current hash normally is
+ *  NOT a hit (chapter fell out of cache — no evidence of change), EXCEPT
+ *  when its chapter is in `refreshedChapterRefs` (just re-fetched
+ *  successfully): then the section itself is gone from the current file —
+ *  repeal or renumbering (e.g. the CCP art. 55A recodification) — and the
+ *  more urgent `section-removed` flag is raised. Refs already carrying an
+ *  active same-kind flag don't re-raise. */
 export function diffSnapshots(
   snapshots: RegistryVerificationSnapshot[],
   currentHashes: Map<string, string>,
   activeFlags: WatchFlag[],
+  refreshedChapterRefs: Set<string> = new Set(),
 ): TripwireHit[] {
   const alreadyFlagged = new Set(
     activeFlags
-      .filter((f) => f.kind === 'text-changed-since-verified' && !f.clearedAt)
-      .map((f) => `${f.ruleId}|${f.sourceRef}`),
+      .filter((f) => (f.kind === 'text-changed-since-verified' || f.kind === 'section-removed') && !f.clearedAt)
+      .map((f) => `${f.ruleId}|${f.sourceRef}|${f.kind}`),
   );
   const hits: TripwireHit[] = [];
   for (const snap of snapshots) {
     const current = currentHashes.get(snap.sectionRef);
-    if (current === undefined || current === snap.contentHash) continue;
-    if (alreadyFlagged.has(`${snap.ruleId}|${snap.sectionRef}`)) continue;
-    hits.push({
-      ruleId: snap.ruleId,
-      sourceRef: snap.sectionRef,
-      detail: `Statute text changed since verification on ${snap.verifiedAt.slice(0, 10)} — re-verify against current text.`,
-    });
+    let hit: Omit<TripwireHit, 'ruleId' | 'sourceRef'> | undefined;
+    if (current === undefined) {
+      if (!refreshedChapterRefs.has(chapterRefForSnapshotRef(snap.sectionRef))) continue;
+      hit = {
+        kind: 'section-removed',
+        detail: `Section verified on ${snap.verifiedAt.slice(0, 10)} no longer exists in the refreshed chapter — repealed or renumbered. Locate the successor provision, update the cite, and re-verify.`,
+      };
+    } else if (current !== snap.contentHash) {
+      hit = {
+        kind: 'text-changed-since-verified',
+        detail: `Statute text changed since verification on ${snap.verifiedAt.slice(0, 10)} — re-verify against current text.`,
+      };
+    } else {
+      continue;
+    }
+    if (alreadyFlagged.has(`${snap.ruleId}|${snap.sectionRef}|${hit.kind}`)) continue;
+    hits.push({ ruleId: snap.ruleId, sourceRef: snap.sectionRef, ...hit });
   }
   return hits;
 }
@@ -125,10 +150,12 @@ export async function snapshotRuleCites(rule: Pick<LegalRule, 'id' | 'cites'>): 
   return { saved, skipped };
 }
 
-/** Michael re-verifying IS the act that clears the tripwire flags. */
-export async function clearTextChangedFlags(ruleId: string, clearedBy: string): Promise<number> {
+/** Michael re-verifying IS the act that clears the tripwire flags —
+ *  both A4 kinds (text-changed and section-removed). */
+export async function clearTripwireFlags(ruleId: string, clearedBy: string): Promise<number> {
   const active = await db.listWatchFlags(true);
-  const mine = active.filter((f) => f.ruleId === ruleId && f.kind === 'text-changed-since-verified');
+  const mine = active.filter((f) =>
+    f.ruleId === ruleId && (f.kind === 'text-changed-since-verified' || f.kind === 'section-removed'));
   for (const f of mine) await db.clearWatchFlag(f.id, clearedBy);
   return mine.length;
 }
@@ -140,16 +167,22 @@ export interface RefreshResult {
 }
 
 /** The biennial-refresh action: re-fetch every cached chapter from source,
- *  re-hash, and raise flags where verified text moved. Sequential fetches
+ *  re-hash, and raise flags where verified text moved — or, for chapters
+ *  that DID refresh, where a pinned section is gone entirely
+ *  (`section-removed`, the more urgent A4 signal). Sequential fetches
  *  on purpose (courtesy to the source). */
 export async function refreshCacheAndRunTripwire(): Promise<RefreshResult> {
   const chapters = await db.listStatuteChapters();
   const failed: RefreshResult['failed'] = [];
   const allSections: StatuteSection[] = [];
+  // Only a chapter we KNOW is current can prove a section's absence; a
+  // failed refresh keeps the stale cache and stays out of this set.
+  const refreshedChapterRefs = new Set<string>();
 
   for (const ch of chapters) {
     try {
       await getOrFetchChapter(ch.code, ch.chapter, true);
+      refreshedChapterRefs.add(chapterRef(ch.code, ch.chapter));
     } catch (e) {
       // Keep the stale cache — a refresh failure must not lose text.
       failed.push({ code: ch.code, chapter: ch.chapter, reason: e instanceof Error ? e.message : 'fetch failed' });
@@ -158,12 +191,12 @@ export async function refreshCacheAndRunTripwire(): Promise<RefreshResult> {
   }
 
   const [snapshots, activeFlags] = await Promise.all([db.listAllSnapshots(), db.listWatchFlags(true)]);
-  const hits = diffSnapshots(snapshots, buildHashIndex(allSections), activeFlags);
+  const hits = diffSnapshots(snapshots, buildHashIndex(allSections), activeFlags, refreshedChapterRefs);
 
   const raised: WatchFlag[] = [];
   for (const hit of hits) {
     raised.push(await db.createWatchFlag({
-      ruleId: hit.ruleId, kind: 'text-changed-since-verified',
+      ruleId: hit.ruleId, kind: hit.kind,
       sourceRef: hit.sourceRef, detail: hit.detail,
     }));
   }

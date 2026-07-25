@@ -14,7 +14,7 @@ import type { WatchFlag } from '../domain/statutes';
 import { flagKindLabel } from '../domain/statutes';
 import { db } from '../data';
 import { parseCite } from '../cites/parser';
-import { clearTextChangedFlags, snapshotRuleCites } from '../statutes/tripwire';
+import { clearTripwireFlags, snapshotRuleCites } from '../statutes/tripwire';
 import WorklistCard from '../components/WorklistCard';
 
 /** Statutory cites deep-link into the in-app statute viewer (T2, design A3);
@@ -89,7 +89,7 @@ export default function LegalRulesPage() {
     // A4: pin the statute text this verification saw, and clear any tripwire
     // flags — the re-sign-off IS the act that resolves them.
     const snap = await snapshotRuleCites(rule);
-    const clearedCount = await clearTextChangedFlags(rule.id, ATTORNEY_USER);
+    const clearedCount = await clearTripwireFlags(rule.id, ATTORNEY_USER);
     const parts: string[] = [];
     if (snap.saved.length) parts.push(`text pinned for ${snap.saved.map((s) => s.sectionRef).join(', ')}`);
     if (snap.skipped.length) parts.push(`not pinned (${snap.skipped.map((s) => s.ref).join(', ')} — chapter unavailable)`);

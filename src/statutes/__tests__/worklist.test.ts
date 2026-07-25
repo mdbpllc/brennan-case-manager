@@ -46,6 +46,16 @@ describe('buildWorklist', () => {
     expect(w.pendingBills).toBe(1); // same bill (HB 9901) on two rules = one bill
   });
 
+  it('section-removed flags are due immediately and outrank text-changed rules', () => {
+    const w = buildWorklist(RULES, [
+      flag('r1', 'text-changed-since-verified'),
+      flag('r3', 'section-removed', { sourceRef: 'CR 55.02' }),
+    ], TODAY);
+    // r3 sorts before r1 despite ruleKey order: its cite points at nothing.
+    expect(w.due.map((i) => i.rule.id)).toEqual(['r3', 'r1']);
+    expect(w.upcoming).toEqual([]);
+  });
+
   it('a rule due now does not double-list under upcoming; cleared flags ignored', () => {
     const w = buildWorklist(RULES, [
       flag('r1', 'text-changed-since-verified'),

@@ -60,6 +60,7 @@ export interface RegistryVerificationSnapshot {
 
 export type WatchFlagKind =
   | 'text-changed-since-verified' // A4 tripwire
+  | 'section-removed'             // A4 tripwire: cited section gone from a refreshed chapter (repeal/renumbering)
   | 'pending-bill'                // B2 (T3)
   | 'enacted-change-pending';     // B3 (T3)
 
@@ -104,6 +105,7 @@ export function snapshotRefForCite(parsed: ParsedCite): { ref: string; code: str
 export function flagKindLabel(kind: WatchFlagKind): string {
   switch (kind) {
     case 'text-changed-since-verified': return 'Text changed since verification';
+    case 'section-removed': return 'Cited section removed (repealed or renumbered)';
     case 'pending-bill': return 'Pending bill';
     case 'enacted-change-pending': return 'Enacted change pending';
   }

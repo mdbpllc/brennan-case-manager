@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildHashIndex, diffSnapshots, snapshotTargetsForRule } from '../tripwire';
+import { buildHashIndex, chapterRefForSnapshotRef, diffSnapshots, snapshotTargetsForRule } from '../tripwire';
 import type { RegistryVerificationSnapshot, StatuteSection, WatchFlag } from '../../domain/statutes';
 
 function section(code: string, chapter: string, num: string, hash: string): StatuteSection {
@@ -67,6 +67,39 @@ describe('diffSnapshots', () => {
     expect(diffSnapshots([snap('r1', 'HS 327.001', 'xxx')], index, [])).toEqual([]);
   });
 
+  it('changed-text hits carry the text-changed kind', () => {
+    const hits = diffSnapshots([snap('r1', 'CP 41.0105', 'OLD')], index, []);
+    expect(hits[0].kind).toBe('text-changed-since-verified');
+  });
+
+  it('raises section-removed when the ref is gone from a REFRESHED chapter', () => {
+    // CP 41.9999 was pinned at verification but no longer exists in the
+    // chapter file — and chapter 41 just refreshed successfully.
+    const hits = diffSnapshots(
+      [snap('r1', 'CP 41.9999', 'xxx')], index, [], new Set(['CP ch. 41']));
+    expect(hits).toHaveLength(1);
+    expect(hits[0]).toMatchObject({ ruleId: 'r1', sourceRef: 'CP 41.9999', kind: 'section-removed' });
+    expect(hits[0].detail).toContain('repealed or renumbered');
+  });
+
+  it('missing ref in a NON-refreshed chapter still raises nothing', () => {
+    const hits = diffSnapshots(
+      [snap('r1', 'HS 327.001', 'xxx')], index, [], new Set(['CP ch. 41']));
+    expect(hits).toEqual([]);
+  });
+
+  it('an active section-removed flag does not suppress a text-changed hit on another ref (and vice versa)', () => {
+    const removedFlag: WatchFlag = {
+      id: 'f9', ruleId: 'r1', kind: 'section-removed',
+      sourceRef: 'CP 41.9999', raisedAt: '2026-07-25T00:00:00Z',
+    };
+    const hits = diffSnapshots(
+      [snap('r1', 'CP 41.9999', 'xxx'), snap('r1', 'CP 41.0105', 'OLD')],
+      index, [removedFlag], new Set(['CP ch. 41']));
+    expect(hits).toHaveLength(1);
+    expect(hits[0]).toMatchObject({ sourceRef: 'CP 41.0105', kind: 'text-changed-since-verified' });
+  });
+
   it('does not duplicate an active flag, but re-raises after clearing', () => {
     const active: WatchFlag = {
       id: 'f1', ruleId: 'r1', kind: 'text-changed-since-verified',
@@ -76,6 +109,17 @@ describe('diffSnapshots', () => {
     expect(diffSnapshots(snaps, index, [active])).toEqual([]);
     const cleared = { ...active, clearedAt: '2026-07-26T00:00:00Z', clearedBy: 'Michael Brennan' };
     expect(diffSnapshots(snaps, index, [cleared])).toHaveLength(1);
+  });
+});
+
+describe('chapterRefForSnapshotRef', () => {
+  it('maps section refs to their chapter ref, incl. lettered chapters', () => {
+    expect(chapterRefForSnapshotRef('CP 41.0105')).toBe('CP ch. 41');
+    expect(chapterRefForSnapshotRef('CR 55A.053')).toBe('CR ch. 55A');
+  });
+
+  it('passes chapter refs through unchanged', () => {
+    expect(chapterRefForSnapshotRef('PR ch. 55')).toBe('PR ch. 55');
   });
 });
 

@@ -1,5 +1,6 @@
 // Unified re-verification worklist (design T4) — one list from both feeds:
 //   A4  text-changed-since-verified  → due immediately
+//   A4  section-removed              → due immediately, listed first (most urgent)
 //   B3  enacted-change-pending       → joins on its effective date
 // pending-bill flags are watch INFO (shown on rules/bills), never worklist
 // items — nothing is due until text actually changes or a change is enacted.
@@ -35,6 +36,7 @@ export function buildWorklist(rules: LegalRule[], activeFlags: WatchFlag[], toda
     }
     const isDue =
       flag.kind === 'text-changed-since-verified' ||
+      flag.kind === 'section-removed' ||
       (flag.kind === 'enacted-change-pending' && !!flag.effectiveDate && flag.effectiveDate <= today);
     const bucket = isDue ? dueByRule : upcomingByRule;
     const list = bucket.get(flag.ruleId);
@@ -47,8 +49,11 @@ export function buildWorklist(rules: LegalRule[], activeFlags: WatchFlag[], toda
       .filter((i): i is WorklistItem => i.rule !== undefined)
       .sort((a, b) => a.rule.ruleKey.localeCompare(b.rule.ruleKey));
 
-  // A rule already due doesn't also appear under upcoming.
-  const due = toItems(dueByRule);
+  // A rule already due doesn't also appear under upcoming. Rules with a
+  // removed section (cite points at nothing) outrank plain text changes.
+  const due = toItems(dueByRule).sort((a, b) =>
+    Number(b.flags.some((f) => f.kind === 'section-removed')) -
+    Number(a.flags.some((f) => f.kind === 'section-removed')));
   const dueIds = new Set(due.map((i) => i.rule.id));
   const upcoming = toItems(upcomingByRule).filter((i) => !dueIds.has(i.rule.id));
 
