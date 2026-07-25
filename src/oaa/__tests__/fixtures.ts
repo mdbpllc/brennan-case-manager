@@ -45,3 +45,52 @@ export const WRONG_ATTORNEY_OAA_TEXT = UVALDE_OAA_TEXT.replace(
 
 /** A scanned Tier 2 packet as pdf text extraction sees it: no text layer. */
 export const SCANNED_PACKET_TEXT = '\n \n  \n';
+
+/** Fictionalized replica of the REAL standard-form layout (from a scanned
+ *  Medina County order reviewed 2026-07-25 — the real document stays out of
+ *  the repo; every name/number here is invented). Layout differences from the
+ *  Uvalde fixture above: boxed caption with "&" column separators, two-column
+ *  label rows WITHOUT colons, blank Phone row above a filled Cell Phone row,
+ *  right-hand column sharing printed rows (Indigency Status), an "Appointed
+ *  Attorney" heading block, cause column reading "NOT FILED", and a
+ *  "Court Appointed Designee  Date  Time" footer table. */
+export const MEDINA_OAA_TEXT = `ORDER OF ATTORNEY APPOINTMENT
+
+STATE OF TEXAS  &  CCL Courthouse
+VS  &  OF
+MARCUS DEAN HOLLOWAY  &  Medina County, TEXAS
+
+Offense(s)
+Date  Offense  Court  Cause  Complaint  MTR/ MTA  Appeal
+05/02/25  POSS MARIJ <2OZ (MB)  CCL Courthouse  NOT FILED
+
+Defendant
+Name  MARCUS DEAN HOLLOWAY
+Local Id  31544
+Date of Birth  9/14/1992
+Phone
+Cell Phone  830-555-0147  Indigency Status:
+Address  4410 CR 241  Full
+City, State Zip  HONDO, Texas 78861
+Gender  Male
+Race  White
+Custody Location
+
+Appointed Attorney
+Name  MICHAEL BRENNAN
+Phone  830-555-0102
+Fax
+Address  1100 MAIN ST SUITE 200
+City, State Zip  HONDO, Texas 78861
+
+The above attorney is appointed to represent the defendant in the above numbered and entitled
+cause/complaint/case in all litigation in the trial court through and including a ruling on a Motion for New
+Trial, and filing a notice of appeal, if appropriate, unless released by written order of this Court at an earlier
+date or by the Court's appointment of appellate counsel.
+
+Attorney appointed out of rotation by signed judicial order or appointed by judges' designee according to
+Medina County's Approved Policy.
+
+Court Appointed Designee  Date  Time
+Linda Saenz  5/5/2026  10:28 AM
+`;

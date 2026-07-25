@@ -11,6 +11,17 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (OAA parser tuned against the FIRST REAL ORDER — Code session)
+
+**What happened (same session, continued):** Michael added drag-and-drop to the upload card (built, `7f6ed57`), then dropped a real scanned Medina County OAA (#38076). The app behaved as designed — pure image scan, zero text layer → Tier 2 manual entry — but reading the document visually showed it is the SAME standard form family as Uvalde/Real, so the "tune against a real order" pass happened immediately:
+
+- **Parser retuned to the real layout** (the real doc stays out of the repo; a fictionalized replica is the committed fixture): boxed "STATE OF TEXAS & <court>" caption, two-column label rows WITHOUT colons, blank-Phone-above-Cell-Phone, right-column bleed ("Indigency Status:" sharing a printed row), "Appointed Attorney" heading block, "Court Appointed Designee  Date  Time" footer table, cause column "NOT FILED" → no-cause-yet (duplicate check skips it). Template detection is now structural (form-family anchors), county is extracted data — key renamed `oaa-standard-v1`. Both fixtures pass; **72 tests green**; verified live (Medina-layout text → full correct pre-fill, administrative-only dates → "is a hearing already set?" prompt).
+- **Spec-feedback (new 2026-07-25 OAA item, 4 findings):** tier is document quality, not county; **[DECIDE] the real order appoints "Hill Country Regional Public Defender Office," not Michael by name — the §1c attorney check would hard-stop every HCRPDO appointment; Michael to rule which appointee names count as his**; operative case number was handwritten only (#38076) — cause-pending reminder pattern worth designing; Gender/Race fields exist on the form but not in the spec map.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this entry and the spec-feedback OAA item.
+
 ## 2026-07-25 (OAA criminal intake Tier 1 BUILT — Code session)
 
 **What happened (same Claude Code session as the verification entry below):** Michael said go on the next queue item, so the OAA intake slice (criminal-appointment-intake spec §1–2) was built end-to-end. **Tier 1 only by hardware reality:** the Uvalde/Real digital form is deterministic text extraction and ships now; Tier 2 (DeWitt scanned packets — segmentation, OCR, handwriting-overrides) needs the local AI arm and is gated on the P1, same as billing 1b and transcript T3. The in-app Tier 2 fallback is manual entry through the same review screen (never auto-accepts anything, trivially satisfying the §1 hard rule).

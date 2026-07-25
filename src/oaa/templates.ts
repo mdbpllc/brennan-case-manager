@@ -15,24 +15,26 @@ export interface OaaTemplate {
   parse: (text: string) => OaaExtraction;
 }
 
-/** Structural anchors of the Uvalde/Real digital form family. */
+/** Structural anchors of the standard Texas OAA form family. Confirmed against
+ *  a real Medina County order (2026-07-25): the same form is used across
+ *  counties — Uvalde/Real file it digitally, Medina prints and scans it — so
+ *  detection keys on the form's structure and the county is extracted data,
+ *  not a whitelist. (A scan with no text layer still lands in Tier 2 first.) */
 function looksLikeTier1Form(text: string): boolean {
   const t = text.toUpperCase();
-  return (
-    /THE STATE OF TEXAS\s+(?:VS?\.?|V\.)/.test(t) &&
-    /APPOINTED\s+ATTORNEY/.test(t)
-  );
+  const hasCaption =
+    /THE STATE OF TEXAS\s+(?:VS?\.?|V\.)/.test(t) || // one-line caption style
+    (/ORDER OF ATTORNEY APPOINTMENT/.test(t) && /STATE OF TEXAS/.test(t)); // boxed style
+  return hasCaption && /APPOINTED\s+ATTORNEY/.test(t);
 }
 
 export const OAA_TEMPLATES: OaaTemplate[] = [
   {
-    key: 'uvalde-real-v1',
-    label: 'Uvalde / Real County digital OAA',
+    key: 'oaa-standard-v1',
+    label: 'Standard Texas OAA form (Uvalde / Real / Medina)',
     tier: 1,
-    // Real County is assumed to match the Uvalde form family — spec §5 open
-    // item says CONFIRM with a real sample before trusting the Real match.
-    detect: (text) => looksLikeTier1Form(text) && /(UVALDE|REAL)\s+COUNTY/i.test(text),
-    parse: (text) => parseTier1(text, 'uvalde-real-v1'),
+    detect: (text) => looksLikeTier1Form(text),
+    parse: (text) => parseTier1(text, 'oaa-standard-v1'),
   },
 ];
 

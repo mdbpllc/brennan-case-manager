@@ -162,6 +162,22 @@ to `docs/specs/`.
 
 **Status:** Cosmetic; build follows the ≤2 threshold as written.
 
+### 2026-07-25 — OAA intake findings from the first real order (Medina County)
+
+**Where:** criminal-appointment-intake-and-docket-enhancements.md §1, from Michael dropping a real scanned Medina County OAA into the new intake page (behavior was correct — pure image scan → Tier 2 manual entry; the document itself stays OUT of the repo).
+
+**Findings for the design space:**
+
+1. **Tier is document quality, not county.** The Medina order is the SAME standard form family as Uvalde/Real (§1a's regions match exactly) — Medina just prints and scans it. The build now detects the form family structurally and treats county as extracted data; the per-county registry mechanism stays for genuinely different layouts (DeWitt packets). Spec §1's county→tier table may deserve a note: a Tier 1-county form arriving as a scan is still a Tier 2 *document*, and post-P1 OCR output can feed the same Tier 1 parser.
+
+2. **[DECIDE — attorney check] The real order appoints an OFFICE, not Michael:** "Hill Country Regional Public Defender Office" (HCRPDO appointment per Medina County's policy). The §1c attorney check as specced (extracted attorney must be Michael, else hard stop) would hard-stop every such appointment. If Michael takes appointments through HCRPDO, the accepted-appointee list needs to include the office name(s) — and possibly a per-county nuance. Currently the check accepts only Brennan variants; the office name would land as a hard stop. Michael to rule: which appointee names are "mine"?
+
+3. **Cause number can be "NOT FILED"** (pre-filing appointment). The parser now treats that as no-cause-yet; the duplicate check skips it. BUT the operative case number on the real order exists only as a HANDWRITTEN number top-right (#38076) — the Tier 2 handwriting lesson again, now on a Tier 1-family form. The eventual cause number arrives later; consider a follow-up prompt/reminder pattern ("cause number pending — update when filed") in the design.
+
+4. **Fields on the real form not in the spec §1a map:** Gender, Race (defendant block). Not extracted, not stored — the client party registry has no such fields. Flag in case the design space wants them (they matter for some county reporting).
+
+**Status:** 1, 3-parser, and structural detection are implemented; 2 and the cause-pending reminder pattern need Michael's ruling / a design pass.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

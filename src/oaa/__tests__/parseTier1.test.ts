@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { parseTier1, toIsoDate, toLocalTime } from '../parseTier1';
 import { matchOaaTemplate, hasUsableTextLayer } from '../templates';
-import { SCANNED_PACKET_TEXT, UVALDE_OAA_TEXT, WRONG_ATTORNEY_OAA_TEXT } from './fixtures';
+import { MEDINA_OAA_TEXT, SCANNED_PACKET_TEXT, UVALDE_OAA_TEXT, WRONG_ATTORNEY_OAA_TEXT } from './fixtures';
 
 describe('date helpers', () => {
   it('parses common date formats', () => {
@@ -20,8 +20,9 @@ describe('date helpers', () => {
 });
 
 describe('template registry', () => {
-  it('matches the Uvalde/Real form family', () => {
-    expect(matchOaaTemplate(UVALDE_OAA_TEXT)?.key).toBe('uvalde-real-v1');
+  it('matches both printed styles of the standard form family', () => {
+    expect(matchOaaTemplate(UVALDE_OAA_TEXT)?.key).toBe('oaa-standard-v1');
+    expect(matchOaaTemplate(MEDINA_OAA_TEXT)?.key).toBe('oaa-standard-v1');
   });
   it('falls back to Tier 2 for unrecognized formats', () => {
     expect(matchOaaTemplate('SOME OTHER COUNTY DOCUMENT ENTIRELY')).toBeNull();
@@ -86,7 +87,51 @@ describe('parseTier1 — Uvalde fixture', () => {
   });
 
   it('still finds the substituted attorney (validation catches it downstream)', () => {
-    const wrong = parseTier1(WRONG_ATTORNEY_OAA_TEXT, 'uvalde-real-v1');
+    const wrong = parseTier1(WRONG_ATTORNEY_OAA_TEXT, 'oaa-standard-v1');
     expect(wrong.attorneyName?.value).toBe('RAMONA VILLARREAL');
+  });
+});
+
+describe('parseTier1 — Medina-layout fixture (real form, fictionalized)', () => {
+  const ex = parseTier1(MEDINA_OAA_TEXT, 'oaa-standard-v1');
+
+  it('reads the boxed caption: defendant, court, county', () => {
+    expect(ex.defendantName?.value).toBe('MARCUS DEAN HOLLOWAY');
+    expect(ex.court?.value).toBe('CCL Courthouse');
+    expect(ex.county?.value).toBe('Medina');
+  });
+
+  it('reads the offense row and treats NOT FILED as no cause number', () => {
+    expect(ex.charges).toHaveLength(1);
+    const c = ex.charges[0];
+    expect(c.offense).toBe('POSS MARIJ <2OZ');
+    expect(c.degree).toBe('MB');
+    expect(c.offenseDate).toBe('2025-05-02');
+    expect(c.court).toBe('CCL Courthouse');
+    expect(c.causeNumber).toBeUndefined();
+    expect(c.mtrMta).toBe(false);
+  });
+
+  it('reads colon-free two-column label rows, skipping the blank Phone row', () => {
+    expect(ex.localId?.value).toBe('31544');
+    expect(ex.dob?.value).toBe('1992-09-14');
+    expect(ex.phone?.value).toBe('830-555-0147'); // Cell Phone row; blank Phone row skipped
+    expect(ex.address?.value).toBe('4410 CR 241'); // right-column "Full" not swallowed
+    expect(ex.cityStateZip?.value).toBe('HONDO, Texas 78861');
+    expect(ex.custodyLocation).toBeUndefined(); // blank on this order
+  });
+
+  it('reads the Appointed Attorney block (heading + Name/Phone rows)', () => {
+    expect(ex.attorneyName?.value).toBe('MICHAEL BRENNAN');
+    expect(ex.attorneyPhone?.value).toBe('830-555-0102');
+  });
+
+  it('reads the designee footer table', () => {
+    expect(ex.appointmentDesignee?.value).toBe('Linda Saenz');
+    expect(ex.appointmentDate?.value).toBe('2026-05-05T10:28');
+  });
+
+  it('captures the scope paragraph as a note', () => {
+    expect(ex.scopeNote?.value).toMatch(/Motion for New/i);
   });
 });
