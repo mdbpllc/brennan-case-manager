@@ -116,7 +116,20 @@ coding sessions. The spec documents committed under `docs/specs/` are
   `watch-targets-seed.md` (T3's watch-target seed rows; §9-O4 answered —
   all sweep groups in). Build-time discovery: the .gov site is now an SPA —
   user deep links still work, but server-side fetch (A2/T2) must target
-  tcss.legis.texas.gov/resources/ (see spec-feedback 2026-07-25)
+  tcss.legis.texas.gov/resources/ (see spec-feedback 2026-07-25).
+  2026-07-25 addition: the A4 tripwire also raises `section-removed`
+  (more urgent than text-changed) when a successfully refreshed chapter
+  no longer contains a pinned section; re-verify clears both A4 kinds.
+  NOTE: the repo snapshot of this design doc lags the project-knowledge
+  version (see spec-feedback) — refresh from the design space, don't
+  reconstruct here
+- `time-tracker-fee-basis-profiles-design.md` — time-tracker fee-basis
+  profiles design pass (2026-07-25). **DRAFT, not canonical:** authored in
+  a Code session per Michael's session prompt, pending his review of its
+  §8 decisions and design-space adoption. Every legal proposition in it
+  is UNVERIFIED (its §7 lists the nine registry entries to open, for
+  sign-off one at a time). NOT in the build queue; do not build from it
+  until Michael rules on §8/§7
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,

@@ -11,6 +11,23 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (two prompts processed: statute deltas built, time-tracker design drafted, Citizens handoff routed — Code session)
+
+**What happened:** Michael dropped two documents — the 2026-07-25 session prompt (statute-tracking finish + time-tracker design pass) and the Citizens-negotiation handoff. Reconciled against the repo first, per standing practice:
+
+- **Prompt-lag collision (expected pattern):** the session prompt's Item 1d stages T1/T2/T3 as "push-ready slices" — but T1–T4 were all built earlier this same date (through `6a1c9ba`). Only the genuinely new deltas were acted on; nothing was rebuilt. Its "supporting deliverables" (`getSessionList` fixture, `Go_Live_Gates`) never arrived in any handoff and don't exist in the repo — likely mooted by the builds, for design-side confirmation.
+- **A4 `section-removed` BUILT (the one new code delta):** a refreshed chapter that no longer contains a pinned section now raises the distinct, more urgent `section-removed` flag (repeal/renumbering, e.g. CCP art. 55A recodification); a chapter that failed to refresh still proves nothing and raises nothing. Re-verify clears both A4 kinds; worklist lists removed-section rules first; schema check-constraint upgraded idempotently. **Verified live in demo mode full-loop** (pin → simulated repeal → refresh raises → worklist "Due now" + rule-row ⚠ + Re-verify clears, attributed); demo state restored after the walkthrough; no console errors. **177 tests green (7 new).**
+- **A2 normalization delta:** already true in the built code (hashes run over normalized extracted text, not raw HTML) — design doc now says so explicitly. Design doc also got the A4 addition, the canonical-path status line, and the §6 flag-kind update. **Spec-feedback filed:** the repo's design-doc snapshot lags the project-knowledge version (O1–O4 resolutions in-doc, W1, B4 hardening) — export a refreshed snapshot next time the design space touches it.
+- **Item 2 — time-tracker fee-basis profiles:** design pass drafted as `time-tracker-fee-basis-profiles-design.md` — **DRAFT, not canonical**: executed in a Code session at Michael's direction, needs design-space review. Profile structure over uniform capture; *Chapa* segregation moved into the SCHEMA (claims table + multi-tag join, single-claim cases auto-tag); per-profile warnings (advisory, never blocking) and exports (mid-case affidavit readiness, ch. 28 interest placeholder); §8 decisions D1–D4/O1–O3 and §7's nine registry entries — **all UNVERIFIED, for Michael's sign-off one at a time.** Nothing enters the build queue until he rules.
+- **Citizens handoff routed** (duplicate-routing check clean): log entry below, two Phase 2 additions into the billing synthesis spec, postscript onto the dry-run doc.
+- Tooling: vite now honors an assigned PORT (parallel Claude sessions); second launch config `dev-b`.
+
+**Next:** Michael's review of the time-tracker draft (§8 + §7 sign-offs); the carried items (edge-function deploys per `docs/statute-cache-setup.md`, Citizens MRF path into CLAUDE.md, registry entries 1–10); OAA remaining tabs.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this session — especially the time-tracker DRAFT design doc, which the design space has not seen.
+
 ## 2026-07-25 (Design session, Fable 5: Citizens negotiation resolved; two Phase 2 spec additions staged)
 
 **Real-world event (closed):** The Citizens Medical Center account (V00505135029, DOS 02/03–02/04/26, $8,975.00 billed, BCBS Commercial PPO) — the account that originally sparked the billing module — was settled by Michael this session. Sequence:
