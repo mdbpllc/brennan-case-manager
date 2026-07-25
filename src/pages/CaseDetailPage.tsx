@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, RepresentationType } from '../domain/types';
+import type { Charge } from '../domain/oaa';
 import { CASE_ROLES, SIDES } from '../domain/types';
 import { PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
@@ -64,7 +65,12 @@ export default function CaseDetailPage() {
         <button className={tab === 'transcripts' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/transcripts`)}>Transcripts</button>
       </div>
 
-      {tab === 'overview' && <OverviewTab rec={rec} onChange={setRec} />}
+      {tab === 'overview' && (
+        <>
+          <OverviewTab rec={rec} onChange={setRec} />
+          {rec.practiceArea === 'Criminal' && <ChargesCard caseId={rec.id} />}
+        </>
+      )}
       {tab === 'parties' && <PartiesTab caseId={rec.id} />}
       {tab === 'medical' && <MedicalTab caseRec={rec} />}
       {tab === 'calendar' && <CalendarTab caseRec={rec} />}
@@ -123,6 +129,11 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <dt>Date closed</dt><dd>{rec.dateClosed || <span className="empty">—</span>}</dd>
           <dt>Court</dt><dd>{rec.courtName || <span className="empty">—</span>}</dd>
           <dt>Cause number</dt><dd>{rec.causeNumber || <span className="empty">—</span>}</dd>
+          {rec.county && <><dt>County</dt><dd>{rec.county}</dd></>}
+          {rec.inCustody !== undefined && (
+            <><dt>Custody</dt><dd>{rec.inCustody ? `In custody${rec.custodyLocation ? ` — ${rec.custodyLocation}` : ''}` : 'Not in custody'}</dd></>
+          )}
+          {rec.appointmentDate && <><dt>Appointment date</dt><dd>{rec.appointmentDate}</dd></>}
           {rec.commercialPolicyInvolved !== undefined && (
             <><dt>Commercial policy involved</dt><dd>{rec.commercialPolicyInvolved ? 'Yes' : 'No'}</dd></>
           )}
@@ -223,6 +234,40 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
         <button className="btn" onClick={save}>Save</button>
         <button className="btn secondary" onClick={() => { setDraft(rec); setEditing(false); }}>Cancel</button>
       </div>
+    </div>
+  );
+}
+
+/* ================= CHARGES (criminal) ================= */
+
+function ChargesCard({ caseId }: { caseId: string }) {
+  const [charges, setCharges] = useState<Charge[]>([]);
+  useEffect(() => { db.listChargesForCase(caseId).then(setCharges); }, [caseId]);
+  if (charges.length === 0) return null;
+  return (
+    <div className="card">
+      <h3>Charges</h3>
+      <table className="list" style={{ marginTop: 8 }}>
+        <thead>
+          <tr><th>Offense</th><th>Degree</th><th>Offense date</th><th>Court</th><th>Cause no.</th><th>Track</th></tr>
+        </thead>
+        <tbody>
+          {charges.map((c) => (
+            <tr key={c.id}>
+              <td><strong>{c.offense}</strong>{c.note ? <div className="muted">{c.note}</div> : null}</td>
+              <td>{c.degree || <span className="muted">—</span>}</td>
+              <td>{c.offenseDate || <span className="muted">—</span>}</td>
+              <td>{c.court || <span className="muted">—</span>}</td>
+              <td>{c.causeNumber || <span className="muted">—</span>}</td>
+              <td>
+                {c.mtrMta ? <span className="badge flag">MTR/MTA — revocation-adjudication</span>
+                  : c.appeal ? <span className="badge flag">Appeal</span>
+                  : <span className="muted">—</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

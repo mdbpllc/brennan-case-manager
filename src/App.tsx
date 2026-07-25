@@ -1,6 +1,7 @@
 import { NavLink, Route, Routes, Navigate } from 'react-router-dom';
 import CaseListPage from './pages/CaseListPage';
 import NewCasePage from './pages/NewCasePage';
+import OaaIntakePage from './pages/OaaIntakePage';
 import CaseDetailPage from './pages/CaseDetailPage';
 import PartiesPage from './pages/PartiesPage';
 import PartyDetailPage from './pages/PartyDetailPage';
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/cases" replace />} />
           <Route path="/cases" element={<CaseListPage />} />
           <Route path="/cases/new" element={<NewCasePage />} />
+          <Route path="/cases/new/oaa" element={<OaaIntakePage />} />
           <Route path="/cases/:id" element={<CaseDetailPage />} />
           <Route path="/cases/:id/parties" element={<CaseDetailPage />} />
           <Route path="/cases/:id/medical" element={<CaseDetailPage />} />

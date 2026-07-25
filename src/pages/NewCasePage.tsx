@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { PracticeArea, PiFlag, RepresentationType } from '../domain/types';
 import { CASE_TYPES, PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { localISODate } from '../domain/dates';
@@ -122,6 +122,13 @@ export default function NewCasePage() {
                 <input type="checkbox" checked={commercialPolicy} onChange={(e) => setCommercialPolicy(e.target.checked)} />
                 Commercial policy involved (top-line rollup — per-policy detail lives in the Insurance tab later)
               </label>
+            </div>
+          )}
+
+          {isCriminal && (
+            <div className="notice" style={{ marginTop: 14 }}>
+              Appointed matter? <Link to="/cases/new/oaa">Create it from the Order of Attorney
+              Appointment instead</Link> — upload the OAA and review the pre-filled draft.
             </div>
           )}
         </div>
