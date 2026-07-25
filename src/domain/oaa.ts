@@ -84,6 +84,9 @@ export interface OaaExtraction {
   /** From the remarks line: `ATTORNEY AVAILABLE FOR DOCKET ON <date>` — a
    *  docket availability date, NOT a confirmed hearing setting (spec §2). */
   docketAvailability?: ExtractedField;
+  /** From a `DOCKET SETTING <date>` free-text line — an actual setting,
+   *  calendared as a hearing when future (real Uvalde order, 2026-07-25). */
+  docketSetting?: ExtractedField;
   appointmentDate?: ExtractedField;
   appointmentDesignee?: ExtractedField;
   remarks?: ExtractedField;

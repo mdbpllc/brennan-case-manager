@@ -41,6 +41,40 @@ describe('hearing auto-detect (spec §2)', () => {
     const candidates = detectSettings(tier2, TODAY);
     expect(candidates.every((c) => !c.autoCreate)).toBe(true);
   });
+
+  it('a DOCKET SETTING line becomes a confirmed setting (future → auto-create)', () => {
+    const withSetting = {
+      ...ex,
+      docketAvailability: undefined,
+      docketSetting: { value: '2026-08-19', confidence: 'high' as const, provenance: 'line 40: "DOCKET SETTING 08.19.2026"' },
+    };
+    const candidates = detectSettings(withSetting, TODAY);
+    const setting = candidates.find((c) => c.kind === 'confirmed_setting');
+    expect(setting?.startLocal).toBe('2026-08-19');
+    expect(setting?.autoCreate).toBe(true);
+  });
+
+  it('a past DOCKET SETTING trips the stale-date guard', () => {
+    const withSetting = {
+      ...ex,
+      docketAvailability: undefined,
+      docketSetting: { value: '2026-07-08', confidence: 'high' as const, provenance: 'line 40' },
+    };
+    const candidates = detectSettings(withSetting, TODAY); // today 2026-07-24
+    const setting = candidates.find((c) => c.kind === 'confirmed_setting');
+    expect(setting?.inPast).toBe(true);
+    expect(setting?.autoCreate).toBe(false);
+  });
+
+  it('a docket setting AND a docket availability together are ambiguous — nothing auto-creates', () => {
+    const both = {
+      ...ex, // has docketAvailability 2026-08-14
+      docketSetting: { value: '2026-08-19', confidence: 'high' as const, provenance: 'line 40' },
+    };
+    const candidates = detectSettings(both, TODAY);
+    expect(candidates.filter((c) => c.kind !== 'administrative')).toHaveLength(2);
+    expect(candidates.every((c) => !c.autoCreate)).toBe(true);
+  });
 });
 
 describe('attorney check (spec §1c hard stop)', () => {

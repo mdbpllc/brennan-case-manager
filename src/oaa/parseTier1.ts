@@ -20,7 +20,8 @@ const MONTHS: Record<string, number> = {
 /** "08/14/2026", "8-14-26", "August 14, 2026" → "2026-08-14" (null if unparseable). */
 export function toIsoDate(raw: string): string | null {
   const s = raw.trim();
-  let m = s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})/);
+  // Separators seen on real orders: slashes, dashes, and dots ("07.08.2026").
+  let m = s.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})/);
   if (m) {
     const [, mo, d, yRaw] = m;
     const y = yRaw.length === 2 ? Number(yRaw) + 2000 : Number(yRaw);
@@ -61,6 +62,9 @@ function valueOnLine(line: string, label: RegExp): string | null {
   // Colon-style pairs can share a line ("PHONE: …   FAX: …") — a mid-line
   // label counts only with an explicit colon, to avoid false hits.
   if (!m) m = line.match(new RegExp(`(?:^|\\s)(?:${label.source})\\s*[:#]\\s*(.*)$`, 'i'));
+  // OCR text can separate label and value with a SINGLE space
+  // ("Name SHANE PARKER ELLIS") — accepted last, with a word boundary.
+  if (!m) m = line.match(new RegExp(`^\\s*(?:${label.source})\\b (.*)$`, 'i'));
   if (!m) return null;
   // Keep only the first column of the value: on the printed form a right-hand
   // column can share the row ("Cell Phone  210-…  Indigency Status:"), and
@@ -83,10 +87,10 @@ function labeled(
   return undefined;
 }
 
-const CHECKED = /\[\s*[Xx✓]\s*\]|(?:^|\s)(?:X|YES)(?:\s|$)/;
-/** A cell that is only checkbox furniture ("[ ]", "[X]", "X") — used to keep
- *  checkbox marks from being read as cause/complaint numbers. */
-const CHECKBOX_CELL = /^\[?\s*[Xx✓]?\s*\]?$/;
+const CHECKED = /\[\s*[Xx✓]\s*\]|[☑☒✗]|(?:^|\s)(?:X|YES)(?:\s|$)/;
+/** A cell that is only checkbox furniture ("[ ]", "[X]", "☐ ☐", "X") — used
+ *  to keep checkbox marks from being read as cause/complaint numbers. */
+const CHECKBOX_CELL = /^[[\]☐☑☒✓✗Xx\s]+$/;
 /** Cause column values that mean "no cause number yet" (pre-filing appointment). */
 const NO_CAUSE = /NOT\s*FILED|NONE|N\/?A|PENDING/i;
 
@@ -97,10 +101,21 @@ function checkboxChecked(cell: string | undefined): boolean {
 const DATE_START = /^\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b/;
 const CAUSE_LIKE = /^[A-Z0-9][A-Z0-9-]*\d[A-Z0-9-]*$/i;
 
+const COURT_CELL = /COURT|DISTRICT|COUNTY|CCL/i;
+
+/** Append a wrapped-row tail cell to its column's base value. A base ending
+ *  in "-" means the identifier wrapped mid-token ("2026-05-17658-" + "CR"),
+ *  so those join without a space. */
+function joinWrapped(base: string | undefined, tail: string): string {
+  if (!base) return tail;
+  return base.endsWith('-') ? base + tail : `${base} ${tail}`;
+}
+
 /** Parse the offense table between its header and the defendant block.
  *  Prefers positional mapping from the header's column order; falls back to
  *  per-cell heuristics (marked low confidence) when a row doesn't line up.
- *  Rows are left-aligned, so a row with trailing columns blank still maps. */
+ *  Real orders wrap long rows onto a continuation line whose cells carry the
+ *  tails of the offense/court/cause/complaint columns — those are merged. */
 function parseOffenseRows(lines: string[], headerIdx: number, endIdx: number): ExtractedCharge[] {
   const headerCells = lines[headerIdx].split(/\s{2,}/).map((c) => c.trim().toUpperCase());
   const col = (name: RegExp) => headerCells.findIndex((c) => name.test(c));
@@ -108,31 +123,43 @@ function parseOffenseRows(lines: string[], headerIdx: number, endIdx: number): E
     date: col(/^DATE/), offense: col(/OFFENSE/), court: col(/COURT/),
     cause: col(/CAUSE/), complaint: col(/COMPLAINT/), mtr: col(/MTR|MTA/), appeal: col(/APPEAL/),
   };
+  // Positional mapping needs a genuinely columned header; single-space OCR
+  // headers collapse to one or two cells and must use the heuristic path.
+  const positionalOk = headerCells.length >= 5 && cols.offense >= 0 && cols.cause >= 0
+    && cols.offense !== cols.cause;
+
+  // Group data rows (start with a date) with their continuation lines.
+  interface RowGroup { main: string; mainIdx: number; tails: string[][] }
+  const groups: RowGroup[] = [];
+  for (let i = headerIdx + 1; i < endIdx; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    if (DATE_START.test(line)) {
+      groups.push({ main: line, mainIdx: i, tails: [] });
+    } else if (groups.length > 0) {
+      const cells = line.split(/\s{2,}/).map((c) => c.trim()).filter(Boolean);
+      if (cells.length) groups[groups.length - 1].tails.push(cells);
+    }
+    // Non-date lines before the first data row (a wrapped header word like
+    // "MTA") are ignored.
+  }
 
   const charges: ExtractedCharge[] = [];
-  for (let i = headerIdx + 1; i < endIdx; i++) {
-    const line = lines[i];
-    if (!line.trim()) continue;
-    if (!DATE_START.test(line.trim())) continue; // rows start with the offense date
-    const cells = line.trim().split(/\s{2,}/).map((c) => c.trim());
-
-    const positional = cols.offense >= 0 && cols.cause >= 0 && cells.length >= 4;
+  for (const g of groups) {
+    const cells = g.main.split(/\s{2,}/).map((c) => c.trim());
     let charge: ExtractedCharge;
-    if (positional) {
+
+    if (positionalOk && cells.length >= 4) {
       const cell = (idx: number) => (idx >= 0 && idx < cells.length ? cells[idx] : undefined);
-      const offenseRaw = cell(cols.offense) ?? '';
-      const degreeMatch = offenseRaw.match(/\(([A-Z0-9]{1,4})\)\s*$/);
+      let mtr = checkboxChecked(cell(cols.mtr));
       let cause = cell(cols.cause);
       let complaint = cell(cols.complaint);
-      let mtr = checkboxChecked(cell(cols.mtr));
       // Guard: with blank middle columns, a checkbox mark can slide into the
       // cause/complaint slot — reinterpret rather than store "[X]" as a number.
       if (cause && CHECKBOX_CELL.test(cause)) { mtr = mtr || CHECKED.test(cause); cause = undefined; }
       if (complaint && CHECKBOX_CELL.test(complaint)) { mtr = mtr || CHECKED.test(complaint); complaint = undefined; }
-      if (cause && NO_CAUSE.test(cause)) cause = undefined; // "NOT FILED" — no cause yet
       charge = {
-        offense: degreeMatch ? offenseRaw.slice(0, degreeMatch.index).trim() : offenseRaw,
-        degree: degreeMatch?.[1],
+        offense: cell(cols.offense) ?? '',
         offenseDate: toIsoDate(cell(cols.date) ?? '') ?? undefined,
         court: cell(cols.court),
         causeNumber: cause,
@@ -140,26 +167,52 @@ function parseOffenseRows(lines: string[], headerIdx: number, endIdx: number): E
         mtrMta: mtr,
         appeal: checkboxChecked(cell(cols.appeal)),
         confidence: cells.length >= headerCells.length - 1 ? 'high' : 'low',
-        provenance: `line ${i + 1}: "${line.trim()}"`,
+        provenance: `line ${g.mainIdx + 1}: "${g.main}"`,
       };
     } else {
-      // Heuristic fallback: date first, cause = first dash-y token after the
-      // offense text, checkboxes at the tail. Low confidence → review flags it.
-      const dateCell = cells[0];
-      const causeIdx = cells.findIndex((c, idx) => idx > 0 && CAUSE_LIKE.test(c) && /\d{3,}/.test(c));
-      const offenseRaw = cells.slice(1, causeIdx > 0 ? causeIdx : undefined).join(' ');
-      const degreeMatch = offenseRaw.match(/\(([A-Z0-9]{1,4})\)\s*$/);
+      // Heuristic path: the date may be fused to the offense text
+      // ("11/14/25 POSS CS PG 1/1-B >=1G<4G" in one cell). Identify the court
+      // cell by its wording and the cause/complaint cells by shape.
+      const dateMatch = cells[0].match(/^(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})\s*(.*)$/);
+      const offenseSeed = dateMatch?.[2] ?? '';
+      const rest = cells.slice(1);
+      const courtCell = rest.find((c) => COURT_CELL.test(c) && !CAUSE_LIKE.test(c));
+      const idCells = rest.filter((c) => c !== courtCell && CAUSE_LIKE.test(c) && /\d{3,}/.test(c));
+      const extraOffense = rest.filter((c) =>
+        c !== courtCell && !idCells.includes(c) && !CHECKBOX_CELL.test(c));
       charge = {
-        offense: degreeMatch ? offenseRaw.slice(0, degreeMatch.index).trim() : offenseRaw,
-        degree: degreeMatch?.[1],
-        offenseDate: toIsoDate(dateCell) ?? undefined,
-        causeNumber: causeIdx > 0 ? cells[causeIdx] : undefined,
-        mtrMta: CHECKED.test(cells.slice(causeIdx + 1).join('  ')),
+        offense: [offenseSeed, ...extraOffense].filter(Boolean).join(' '),
+        offenseDate: dateMatch ? toIsoDate(dateMatch[1]) ?? undefined : undefined,
+        court: courtCell,
+        causeNumber: idCells[0],
+        complaintNumber: idCells[1],
+        mtrMta: CHECKED.test(rest.filter((c) => CHECKBOX_CELL.test(c)).join('  ')),
         appeal: false,
         confidence: 'low',
-        provenance: `line ${i + 1}: "${line.trim()}"`,
+        provenance: `line ${g.mainIdx + 1}: "${g.main}"`,
       };
     }
+
+    // Merge continuation-line cells: they carry the wrapped tails of the
+    // offense / court / cause / complaint columns, in that order.
+    for (const tail of g.tails) {
+      const slots: (keyof Pick<ExtractedCharge, 'offense' | 'court' | 'causeNumber' | 'complaintNumber'>)[] =
+        ['offense', 'court', 'causeNumber', 'complaintNumber'];
+      tail.slice(0, slots.length).forEach((cellVal, k) => {
+        if (CHECKBOX_CELL.test(cellVal)) return;
+        charge[slots[k]] = joinWrapped(charge[slots[k]], cellVal);
+      });
+      charge.confidence = 'low'; // wrapped rows always get a review glance
+    }
+
+    // Degree rides at the end of the (possibly merged) offense text: "… (F3)".
+    const degreeMatch = charge.offense.match(/\(([A-Z0-9]{1,4})\)\s*$/);
+    if (degreeMatch) {
+      charge.degree = degreeMatch[1];
+      charge.offense = charge.offense.slice(0, degreeMatch.index).trim();
+    }
+    if (charge.causeNumber && NO_CAUSE.test(charge.causeNumber)) charge.causeNumber = undefined;
+
     if (charge.offense || charge.causeNumber) charges.push(charge);
   }
   return charges;
@@ -251,8 +304,18 @@ export function parseTier1(text: string, templateKey: string): OaaExtraction {
     const iso = toIsoDate(dobRaw.value);
     out.dob = iso ? { ...dobRaw, value: iso } : { ...dobRaw, confidence: 'low' };
   }
-  out.phone = labeled(lines, /CELL\s*(?:PHONE)?|PHONE/, defOpts);
-  out.address = labeled(lines, /ADDRESS/, defOpts);
+  const phoneRaw = labeled(lines, /CELL\s*(?:PHONE)?|PHONE/, defOpts);
+  if (phoneRaw) {
+    // Single-space rows can carry right-column bleed — keep just the number.
+    const num = phoneRaw.value.match(/[\d(][\d()\-. ]{6,}\d/);
+    out.phone = num ? { ...phoneRaw, value: num[0].trim() } : { ...phoneRaw, confidence: 'low' };
+  }
+  const addressRaw = labeled(lines, /ADDRESS/, defOpts);
+  if (addressRaw) {
+    // The Indigency Status value ("Full"/"Partial"/"None") from the right
+    // column can bleed onto the address row — strip a trailing one.
+    out.address = { ...addressRaw, value: addressRaw.value.replace(/\s+(Full|Partial|None)\s*$/i, '') };
+  }
   out.cityStateZip = labeled(lines, /CITY\s*[/,]?\s*STATE\s*[/,]?\s*ZIP/, defOpts);
   out.custodyLocation = labeled(lines, /CUSTODY\s+LOCATION/, defOpts);
   out.indigencyStatus = labeled(lines, /INDIGEN\w*\s*(?:STATUS)?/, { after: defStart });
@@ -284,7 +347,7 @@ export function parseTier1(text: string, templateKey: string): OaaExtraction {
     out.scopeNote = field(para.length > 400 ? `${para.slice(0, 397)}…` : para, scopeIdx, lines[scopeIdx]);
   }
 
-  // ---- Remarks: docket availability + custody remarks ----
+  // ---- Remarks: docket availability, docket settings, custody remarks ----
   const remarks = labeled(lines, /REMARKS?/);
   if (remarks) out.remarks = remarks;
   for (let i = 0; i < lines.length; i++) {
@@ -292,6 +355,22 @@ export function parseTier1(text: string, templateKey: string): OaaExtraction {
     if (m) {
       const iso = toIsoDate(m[1]);
       out.docketAvailability = iso ? field(iso, i, lines[i]) : field(m[1], i, lines[i], 'low');
+      break;
+    }
+  }
+  // Free-text "DOCKET SETTING 07.08.2026 --XFERRED FR. …" line (real Uvalde
+  // order): an actual setting, plus transfer/custody notes worth keeping.
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/DOCKET\s+SETTING\s+(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})/i);
+    if (m) {
+      const iso = toIsoDate(m[1]);
+      if (iso) out.docketSetting = field(iso, i, lines[i]);
+      if (!out.remarks) {
+        // The whole line (with its wrap) is remark material.
+        const next = lines[i + 1]?.trim();
+        const wrapped = next && !/COURT\s+APPOINTED\s+DESIGNEE/i.test(next) ? ` ${next}` : '';
+        out.remarks = field(lines[i].trim() + wrapped, i, lines[i]);
+      }
       break;
     }
   }
@@ -305,21 +384,24 @@ export function parseTier1(text: string, templateKey: string): OaaExtraction {
     const time = toLocalTime(appt.value);
     out.appointmentDate = iso ? { ...appt, value: time ? `${iso}T${time}` : iso } : { ...appt, confidence: 'low' };
   }
-  // Style B: "Court Appointed Designee  Date  Time" header row, values beneath.
+  // Style B: "Court Appointed Designee  Date  Time" header row, values beneath
+  // (possibly on the next page — a page break inserts a blank line). The row
+  // may be single-spaced ("Michelle Camacho 7/9/2026 3:59 PM"), so the date
+  // and time are found by pattern anywhere in the row, name = what precedes.
   if (!out.appointmentDate) {
     const hdr = upper.findIndex((l) => /COURT\s+APPOINTED\s+DESIGNEE/.test(l) && /DATE/.test(l));
     if (hdr >= 0) {
-      for (let i = hdr + 1; i < Math.min(hdr + 4, lines.length); i++) {
-        if (!lines[i].trim()) continue;
-        const cells = lines[i].trim().split(/\s{2,}/).map((c) => c.trim());
-        const dateCell = cells.find((c) => toIsoDate(c));
-        if (!dateCell) continue;
-        const iso = toIsoDate(dateCell)!;
-        const timeCell = cells.find((c) => toLocalTime(c));
-        const time = timeCell ? toLocalTime(timeCell) : null;
+      for (let i = hdr + 1; i < Math.min(hdr + 5, lines.length); i++) {
+        const row = lines[i].trim();
+        if (!row) continue;
+        const dm = row.match(/(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})/);
+        if (!dm) continue;
+        const iso = toIsoDate(dm[1]);
+        if (!iso) continue;
+        const time = toLocalTime(row.slice(dm.index! + dm[1].length));
         out.appointmentDate = field(time ? `${iso}T${time}` : iso, i, lines[i]);
-        const nameCell = cells.find((c) => !toIsoDate(c) && !toLocalTime(c));
-        if (nameCell && !out.appointmentDesignee) out.appointmentDesignee = field(nameCell, i, lines[i]);
+        const name = row.slice(0, dm.index!).trim();
+        if (name && !out.appointmentDesignee) out.appointmentDesignee = field(name, i, lines[i]);
         break;
       }
     }

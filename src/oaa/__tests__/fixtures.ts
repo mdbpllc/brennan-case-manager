@@ -54,6 +54,53 @@ export const SCANNED_PACKET_TEXT = '\n \n  \n';
  *  right-hand column sharing printed rows (Indigency Status), an "Appointed
  *  Attorney" heading block, cause column reading "NOT FILED", and a
  *  "Court Appointed Designee  Date  Time" footer table. */
+/** Fictionalized replica of a REAL Uvalde County order with an OCR text layer
+ *  (reviewed 2026-07-25; every name/number invented). What it adds over the
+ *  Medina fixture: SINGLE-space label rows ("Name DEREK WAYNE COLE"), a
+ *  wrapped offense row whose continuation line carries the degree, court,
+ *  cause, and complaint tails, "☐" checkbox glyphs, right-column bleed with
+ *  single spaces, a free-text "DOCKET SETTING" line with dotted dates, and
+ *  the designee value row landing on page 2 (blank line from the page join,
+ *  single-spaced cells). */
+export const UVALDE_OCR_OAA_TEXT = `ORDER OF ATTORNEY APPOINTMENT
+STATE OF TEXAS & 38th District Court
+VS & OF
+DEREK WAYNE COLE & Uvalde County, TEXAS
+Offense(s)
+Date Offense Court Cause Complaint MTR/  Appeal
+MTA
+11/14/25 POSS CS PG 1/1-B >=1G<4G  38th District  2026-05-19342-  8155201990-  ☐ ☐
+(F3)  Court  CR  A001
+Defendant
+Name DEREK WAYNE COLE
+Local Id 40218
+Date of Birth 4/8/1985
+Phone 830-555-0166
+Cell Phone 830-555-0167 Indigency Status:
+Address 5510 PECAN HOLLOW DR Full
+City, State Zip SAN ANTONIO, Texas 78247
+Gender Male
+Race White
+Custody Location
+Appointed Attorney
+Name Michael Brennan
+Phone 830-555-0102
+Fax 830-555-0103
+Address PO Box 91104
+City, State Zip San Antonio, Texas 78209
+The above attorney is appointed to represent the defendant in the above numbered and entitled
+cause/complaint/case in all litigation in the trial court through and including a ruling on a Motion for New
+Trial, and filing a notice of appeal, if appropriate, unless released by written order of this Court at an earlier
+date or by the Court's appointment of appellate counsel.
+Attorney appointed from the County Approved Attorney Wheel and is the next attorney qualified to represent
+the defendant.
+DOCKET SETTING 08.19.2026 --XFERRED FR. BEXAR CO. 07.08.2026--ARRIVED AT UC JAIL @ 13.16 ON
+07.08.2026
+Court Appointed Designee Date Time
+
+Lupe Ortiz 7/9/2026 3:59 PM
+`;
+
 export const MEDINA_OAA_TEXT = `ORDER OF ATTORNEY APPOINTMENT
 
 STATE OF TEXAS  &  CCL Courthouse

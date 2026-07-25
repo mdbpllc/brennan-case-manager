@@ -10,6 +10,21 @@ export function detectSettings(ex: OaaExtraction, todayIso: string): CandidateSe
   const out: CandidateSetting[] = [];
   const isPast = (isoDate: string) => isoDate.slice(0, 10) < todayIso;
 
+  // A "DOCKET SETTING <date>" line is an actual setting — calendared as a
+  // hearing when future (and past ones trip the stale-date guard, §2.3).
+  if (ex.docketSetting && /^\d{4}-\d{2}-\d{2}$/.test(ex.docketSetting.value)) {
+    const d = ex.docketSetting.value;
+    out.push({
+      kind: 'confirmed_setting',
+      startLocal: d,
+      allDay: true,
+      label: 'Docket setting',
+      provenance: ex.docketSetting.provenance,
+      inPast: isPast(d),
+      autoCreate: false, // resolved below once ambiguity is known
+    });
+  }
+
   // Docket availability (Uvalde-style remarks line) — calendared, but labeled
   // as availability, never as a confirmed setting (spec §2.1).
   if (ex.docketAvailability && /^\d{4}-\d{2}-\d{2}$/.test(ex.docketAvailability.value)) {

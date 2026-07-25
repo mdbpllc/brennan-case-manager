@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { parseTier1, toIsoDate, toLocalTime } from '../parseTier1';
 import { matchOaaTemplate, hasUsableTextLayer } from '../templates';
-import { MEDINA_OAA_TEXT, SCANNED_PACKET_TEXT, UVALDE_OAA_TEXT, WRONG_ATTORNEY_OAA_TEXT } from './fixtures';
+import {
+  MEDINA_OAA_TEXT, SCANNED_PACKET_TEXT, UVALDE_OAA_TEXT, UVALDE_OCR_OAA_TEXT,
+  WRONG_ATTORNEY_OAA_TEXT,
+} from './fixtures';
 
 describe('date helpers', () => {
   it('parses common date formats', () => {
@@ -20,9 +23,10 @@ describe('date helpers', () => {
 });
 
 describe('template registry', () => {
-  it('matches both printed styles of the standard form family', () => {
+  it('matches all printed styles of the standard form family', () => {
     expect(matchOaaTemplate(UVALDE_OAA_TEXT)?.key).toBe('oaa-standard-v1');
     expect(matchOaaTemplate(MEDINA_OAA_TEXT)?.key).toBe('oaa-standard-v1');
+    expect(matchOaaTemplate(UVALDE_OCR_OAA_TEXT)?.key).toBe('oaa-standard-v1');
   });
   it('falls back to Tier 2 for unrecognized formats', () => {
     expect(matchOaaTemplate('SOME OTHER COUNTY DOCUMENT ENTIRELY')).toBeNull();
@@ -133,5 +137,52 @@ describe('parseTier1 — Medina-layout fixture (real form, fictionalized)', () =
 
   it('captures the scope paragraph as a note', () => {
     expect(ex.scopeNote?.value).toMatch(/Motion for New/i);
+  });
+});
+
+describe('parseTier1 — Uvalde OCR fixture (single-space labels, wrapped row)', () => {
+  const ex = parseTier1(UVALDE_OCR_OAA_TEXT, 'oaa-standard-v1');
+
+  it('reads the boxed caption', () => {
+    expect(ex.defendantName?.value).toBe('DEREK WAYNE COLE');
+    expect(ex.court?.value).toBe('38th District Court');
+    expect(ex.county?.value).toBe('Uvalde');
+  });
+
+  it('merges the wrapped offense row: degree, court, cause, and complaint tails', () => {
+    expect(ex.charges).toHaveLength(1);
+    const c = ex.charges[0];
+    expect(c.offenseDate).toBe('2025-11-14');
+    expect(c.offense).toBe('POSS CS PG 1/1-B >=1G<4G');
+    expect(c.degree).toBe('F3');
+    expect(c.court).toBe('38th District Court');
+    expect(c.causeNumber).toBe('2026-05-19342-CR');
+    expect(c.complaintNumber).toBe('8155201990-A001');
+    expect(c.mtrMta).toBe(false); // "☐ ☐" glyphs are unchecked furniture
+    expect(c.confidence).toBe('low'); // wrapped rows always get a review glance
+  });
+
+  it('reads single-space label rows with right-column bleed cleaned', () => {
+    expect(ex.localId?.value).toBe('40218');
+    expect(ex.dob?.value).toBe('1985-04-08');
+    expect(ex.phone?.value).toBe('830-555-0166'); // first filled phone row
+    expect(ex.address?.value).toBe('5510 PECAN HOLLOW DR'); // "Full" bleed stripped
+    expect(ex.cityStateZip?.value).toBe('SAN ANTONIO, Texas 78247');
+  });
+
+  it('reads the attorney block in mixed case', () => {
+    expect(ex.attorneyName?.value).toBe('Michael Brennan');
+    expect(ex.attorneyPhone?.value).toBe('830-555-0102');
+    expect(ex.attorneyFax?.value).toBe('830-555-0103');
+  });
+
+  it('reads the DOCKET SETTING line with dotted dates', () => {
+    expect(ex.docketSetting?.value).toBe('2026-08-19');
+    expect(ex.remarks?.value).toContain('XFERRED FR. BEXAR CO.');
+  });
+
+  it('reads the page-2 single-spaced designee row', () => {
+    expect(ex.appointmentDesignee?.value).toBe('Lupe Ortiz');
+    expect(ex.appointmentDate?.value).toBe('2026-07-09T15:59');
   });
 });

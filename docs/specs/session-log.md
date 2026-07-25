@@ -11,6 +11,18 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (second real order: OCR-layer Uvalde OAA now extracts END-TO-END — Code session)
+
+**What happened (same session, continued):** Michael clarified the Medina scan was the PRIOR attorney's order (so the §1c hard stop would have been doing its job there — the office-appointment question in spec-feedback stays open but is less urgent), and provided a real **Uvalde** order WITH an OCR text layer that "didn't do anything" when he dropped it. Diagnosis: his app was on pre-tuning code for the template match, and beyond that the parser couldn't read this layout — single-space label rows ("Name SHANE …"), a wrapped offense row (degree/court/cause/complaint tails on a continuation line), "☐" checkbox glyphs, dotted dates ("07.08.2026"), a free-text "DOCKET SETTING" line, and the designee row on page 2.
+
+**All fixed and proven against the real document** (run locally through the actual engine — never committed): every field extracts high-confidence, the wrapped cause merges to "…-CR", the attorney check passes on "Michael Brennan", and the past docket setting trips the stale-date guard. New extraction field `docketSetting` → confirmed-setting candidate (future ones auto-detect; past ones are history). Third fictionalized fixture (Uvalde-OCR layout) committed; **81 tests green**; verified live in demo mode end-to-end (caption "State v. Cole" fills, charge row complete, docket setting auto-detected).
+
+**For Michael:** re-drop the same OAA — the running app picks the fixes up via hot reload (hard-refresh the tab if not). The parser has now been tuned against two real orders; more variety (Real County, a felony multi-charge order) will keep sharpening it.
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** everything below plus this entry.
+
 ## 2026-07-25 (OAA parser tuned against the FIRST REAL ORDER — Code session)
 
 **What happened (same session, continued):** Michael added drag-and-drop to the upload card (built, `7f6ed57`), then dropped a real scanned Medina County OAA (#38076). The app behaved as designed — pure image scan, zero text layer → Tier 2 manual entry — but reading the document visually showed it is the SAME standard form family as Uvalde/Real, so the "tune against a real order" pass happened immediately:
