@@ -125,7 +125,8 @@ export default function OaaIntakePage() {
       const { first, last } = splitName(defName);
       setDefFirst(first);
       setDefLast(last);
-      setCaption(last ? `State v. ${last}` : '');
+      // Style of the case per Michael (2026-07-25): full formal caption.
+      setCaption(last ? `State of Texas v. ${[first, last].filter(Boolean).join(' ')}` : '');
       setDefDob(ex.dob?.value ?? '');
       setDefPhone(ex.phone?.value ?? '');
       // Address stays as printed — naive title-casing turns "TX" into "Tx".
