@@ -96,6 +96,19 @@ coding sessions. The spec documents committed under `docs/specs/` are
   of its §10 decision list (D1 auto-file posture, O2–O4). T1 (data model +
   inbox UI) and T2 (routing engine) are the hardware-free build slices; T3
   (Python/NeMo pipeline service) is gated on the P1 GPU machine
+- `statute-text-and-bill-tracking-design.md` — Statute Text & Legislative
+  Tracking design pass (2026-07-25): Module A (current statute text from
+  statutes.capitol.texas.gov — cache-on-demand, cite parser, viewer, hash
+  tripwire feeding registry re-verification) + Module B (pending-bill
+  tracking via the LegiScan API only, never crawling legiscan.com).
+  DESIGN-COMPLETE pending Michael's §9 list. T1 (cite parser) built
+  2026-07-25 in src/cites/; T3 is gated on Michael registering the
+  LegiScan API key (§9-O1). Companions:
+  `cite-parser-test-cases.md` (T1's 35-case fixture table, verbatim) and
+  `watch-targets-seed.md` (T3's watch-target seed rows; §9-O4 answered —
+  all sweep groups in). Build-time discovery: the .gov site is now an SPA —
+  user deep links still work, but server-side fetch (A2/T2) must target
+  tcss.legis.texas.gov/resources/ (see spec-feedback 2026-07-25)
 - `session-log.md` — dated session-to-session log. **The one exception to
   read-only:** coding sessions should skim the latest entries at session
   start and append a short dated entry at the top after substantive work,
