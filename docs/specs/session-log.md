@@ -12,6 +12,58 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#3) — Pre-migration reconcile; new build project; K-3 resolved (design, Opus 5)
+
+Michael directed migration of design work to a fresh Claude project after
+per-item deletion of project-knowledge files proved unavailable in the UI
+(final go contingent on one last check of the project main page). The old
+project is redesignated the LEGAL-AUTHORITY ARCHIVE: it retains the sixteen
+case PDFs, the Kostura subrogation paper, and the statutes corpus. K-3
+("second project for legal authority?") is CLOSED — resolved by designation,
+nothing new created. The manifest at docs/authority/case-authority-index.md
+now locates opinions in the archive project until/unless PDFs reach
+docs/authority/pdf/.
+
+Landed this packet:
+- docs/go-live-gates.md — NEW, from the project-knowledge-only original
+  (the verification capture had flagged gates 1-5 as existing nowhere in the
+  repo). REDACTED: the LegiScan API key value is removed per the doc's own
+  gate 4; full-value copy remains in the archive project. Key has appeared
+  in chat transcripts — the doc's rotation plan (rotate after T3) is
+  reaffirmed as firm.
+  [Code note on landing: the repo already had docs/specs/Go_Live_Gates.md
+  (gates 6-8 + a placeholder awaiting gates 1-5, per spec-feedback). Per
+  the packet's fold-in rule, gates 1-5 and the account/API facts were
+  folded THERE — with the staged gate-3 amendment applied — rather than
+  creating a second file; that path stays canonical and the CLAUDE.md
+  pointer targets it.]
+- docs/specs/statute-text-and-bill-tracking-design.md — forward content
+  merged from the project-knowledge copy per the 2026-07-25 spec-feedback
+  entry (PK-ahead items: §9 O1-O4 resolutions in-text, W1 banked, A2 .gov
+  redirect note, B4 suspension-trigger hardening), PRESERVING the repo-only
+  deltas (A4 section-removed, A2 normalized-hash note, canonical-path
+  status line). The two-way lag this doc exhibited is exactly the migration
+  risk; resolved before the PK copy becomes archive-only.
+
+Knowledge disposition for the new project (recorded so the archive's role
+is explicit): repo-canonical docs arrive via sync and are NOT re-uploaded;
+three technical files carry (Forms/Bexar monitoring, NVIDIA memo pending a
+repo check, LegiScan fixture pending a repo check); REAL case data (Noah v.
+Albright — a live case despite the "Model" title — and Curry v. Ledesma)
+was deliberately excluded from all packet artifacts per gate 5 and travels
+only by Michael's hand; Medchron carries only after Michael verifies it is
+fictional; Uvalde instructions remain K-5.
+
+New-project conventions seeding: kickoff prompt staged (delivered to
+Michael, not to the repo); first new-project session records the standing
+conventions as memory edits and verifies the refresh-chat / push-to-code
+user skills survived the project boundary.
+
+Staged for Code: docs/go-live-gates.md (new, redacted); statute design
+merge; CLAUDE.md pointer.
+Awaiting/Returned from Code, unreviewed: Outlook push slice (2026-07-24,
+still unseen design-side); BUILD-SESSION-NOTES.md review.
+
 ## 2026-07-26 (#2) — Case authority index replaced with a locator manifest (design, Opus 5)
 
 Follow-up to the same day's earlier entry. After sync, the design side could

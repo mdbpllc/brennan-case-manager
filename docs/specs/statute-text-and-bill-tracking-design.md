@@ -1,6 +1,6 @@
 # Statute Text & Legislative Tracking — Design Pass
 
-**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§9). **Canonical repo path:** `docs/specs/statute-text-and-bill-tracking-design.md`. **Feeds:** the Legal Rule Registry (system-wide core infrastructure per the 2026-07-22 decision), citation-currency alerts (banked feature #13), the legislative-watch list already noted in the billing synthesis (SB 30 successors), and the 2025 law-change ledger in `pi-case-playbooks.md`.
+**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§9). **Canonical repo path:** `docs/specs/statute-text-and-bill-tracking-design.md` — current as of the 2026-07-26 forward-merge from the project-knowledge copy, which is now historical (archive project). **Feeds:** the Legal Rule Registry (system-wide core infrastructure per the 2026-07-22 decision), citation-currency alerts (banked feature #13), the legislative-watch list already noted in the billing synthesis (SB 30 successors), and the 2025 law-change ledger in `pi-case-playbooks.md`.
 
 **Architecture decision this doc records:** two sources, cleanly split by what each is authoritative for. **statutes.capitol.texas.gov** (Texas Legislative Council's official codification — public domain, no TOS, no key, predictable URLs) is the sole source for *current statute text*. **LegiScan API** (registered key, free Public tier, data licensed CC BY 4.0) is the sole source for *pending-legislation tracking*. Neither source is scraped outside its sanctioned interface: the .gov site is fetched politely at its documented URL patterns; LegiScan is accessed only via the API — never by crawling legiscan.com (TOS §3.3).
 
@@ -32,7 +32,7 @@ Module A closes gap 1. Module B closes gap 2. Together they give the registry a 
 
 **A1 — Cite parser/resolver (pure TypeScript, unit-testable).** `"Tex. Fam. Code § 153.002"`, `"Family Code 153.002"`, `"CCP art. 55A.053"`, `"CPRC §18.001"` → `{code: 'FA', chapter: '153', section: '153.002', url, anchor}`. Handles the CCP's article numbering and Vernon's civil statutes as special cases. This component is useful everywhere immediately (playbooks, registry, documents) even before any caching exists.
 
-**A2 — Fetch + cache.** Browser can't fetch the .gov site directly (CORS), so fetching runs server-side — a small Supabase Edge Function (`/statute-fetch`) in live mode. Demo mode ships a fixture set of real chapters for the seed codes (statute text is public domain — committing it violates no data-hygiene rule; it is not client data). Cache record stores the raw HTML, extracted per-section text, `fetched_at`, and a **content hash per section**. *(Addition 2026-07-25:)* hashes are computed over **NORMALIZED extracted text** (whitespace collapsed, markup artifacts stripped), not raw HTML, so a .gov template change doesn't trip every cached hash at once.
+**A2 — Fetch + cache.** Browser can't fetch the .gov site directly (CORS), so fetching runs server-side — a small Supabase Edge Function (`/statute-fetch`) in live mode. *Implementation note (observed 2026-07-25):* deep links like `/Docs/FA/htm/FA.153.htm` served the site homepage to a non-browser fetcher while working normally in browsers — the server appears to redirect some non-browser requests. T2 must verify fetch behavior from the edge function early (correct headers/UA, follow-redirect handling) and treat "got the homepage instead of a chapter" as a detectable failure mode (sanity-check that the response contains the requested chapter number), not silent success. *(Build-time supersession: the redirect behavior is explained by the .gov site's rebuild as an SPA — server-side fetch must target `tcss.legis.texas.gov/resources/`; see the 2026-07-25 SPA entry in `docs/spec-feedback.md`.)* Demo mode ships a fixture set of real chapters for the seed codes (statute text is public domain — committing it violates no data-hygiene rule; it is not client data). Cache record stores the raw HTML, extracted per-section text, `fetched_at`, and a **content hash per section**. *(Addition 2026-07-25:)* hashes are computed over **NORMALIZED extracted text** (whitespace collapsed, markup artifacts stripped), not raw HTML, so a .gov template change doesn't trip every cached hash at once.
 
 **A3 — Statute viewer.** In-app pane: chapter view with section anchors, copy-cite button, "open at source" link. Every registry entry, playbook cite, and eligibility-engine readout deep-links into it.
 
@@ -48,7 +48,7 @@ Module A closes gap 1. Module B closes gap 2. Together they give the registry a 
 
 **B3 — Lifecycle.** Tracked bill states follow LegiScan status (introduced → engrossed → enrolled → passed/vetoed). On **passage**, the flag hardens: affected entries get `enacted-change-pending` with the effective date; on that date they join the re-verification worklist alongside the hash-tripwire items from A4. Dead bills (session sine die) auto-clear their flags with a log line.
 
-**B4 — Attribution + TOS hygiene.** Tracking views carry a "Legislative data: LegiScan (CC BY 4.0)" footer. API key lives in app secrets/env, never committed. No redistribution of the LegiScan feed outside the app (TOS §3.5); no crawling of legiscan.com.
+**B4 — Attribution + TOS hygiene (HARD REQUIREMENTS, per LegiScan Crash Course + survey answers on file).** Tracking views carry a "Legislative data: LegiScan (CC BY 4.0)" footer. API key lives in app secrets/env (`LEGISCAN_API_KEY`), never committed. No redistribution of the LegiScan feed outside the app (TOS §3.5); no crawling of legiscan.com (suspension trigger); **never create a second Public API key** (suspension trigger — one key for the org, used everywhere); **always compare `dataset_hash` before any dataset download** (skipping this is an explicit suspension trigger); compare `change_hash` before spending `getBill` queries; fetch each document blob (`doc_id`) at most once, cache forever; check `"status"` on every response; respect the per-operation frequency guidelines (manual p.7). The key was issued 2026-07-24 against survey answers describing exactly this design (hash-driven, cache-first, TX-only, internal use) — the implementation must match what was represented.
 
 ## 5. Cadence
 
@@ -91,11 +91,14 @@ This layer is *infrastructure for* the registry, so the discipline bears repeati
 - **D3 — Real statute text ships as demo fixtures** (public domain; consistent with data-hygiene rules, which bar client data, not public law).
 - **D4 — Both fetchers as Supabase Edge Functions**, not the GPU-box service (no PHI ⇒ no local-first requirement).
 
-**Open for Michael:**
-- **O1 —** Register the LegiScan account/API key (only you can; key goes to app secrets, not the repo).
-- **O2 —** Confirm the working-set code list: FA, PE, CR, CP, GV, HS, IN, PR, ES (+ TX? OC? LG?).
-- **O3 —** Should the re-verification worklist surface anywhere besides the registry screen (e.g., dashboard card each Sept. 1 / Jan. 1)?
-- **O4 —** Manual watch targets to seed beyond registry cites: §18.001-overhaul successors is one; others from the 2025 law-change ledger?
+**Banked (wanted-later, per Michael 2026-07-25):**
+- **W1 — Source-credit → legislative-history links.** The T1 cite parser additionally parses the source-credit act chains at the end of each statute section ("Acts 2023, 88th Leg., ch. …") so the statute viewer offers one-click links from any section to its amending bills: TLO for 1989-forward (bill texts/histories), LegiScan API for ~2009-forward (versions, votes, datasets), LRL for pre-1989 intent material (bill files 1913–2005, journals, committee recordings, session laws to 1871). Research-workflow support, not a module — no polling, no storage beyond parsed act references. Build after T1–T4; the act-chain grammar can ship inside T1's parser if it comes cheap.
+
+**Open items — ALL RESOLVED 2026-07-25 (Michael):**
+- **O1 — DONE.** LegiScan key issued 2026-07-24, live-validated 2026-07-25, stored in Supabase secret `LEGISCAN_API_KEY` (digest-verified). Details + confirmed TX session IDs: `Go_Live_Gates.md`; real getSessionList fixture saved as `claude/Fixture_LegiScan_getSessionList_TX_2026-07-25.json`.
+- **O2 — DECIDED: core 9.** Working set = FA, PE, CR, CP, GV, HS, IN, PR, ES. Everything else cache-on-demand. *(Repo-side record: the working set was later extended to +TX, LG, TN per CLAUDE.md / the T1 build.)*
+- **O3 — DECIDED: registry screen + dashboard card** whenever unresolved watch flags exist.
+- **O4 — DECIDED: seed all three topic groups** in addition to registry cites: (a) expunction/nondisclosure terms (CCP 55A, Gov't Code 411 Subch. E-1 topic searches, robust to renumbering overhauls); (b) hospital-lien/billing terms (Prop. Code Ch. 55, Ch. 146 balance billing, price transparency); (c) court costs/fees restructuring. Plus the pre-existing §18.001-overhaul successor watch.
 
 ## 10. Build plan (vertical slices)
 

@@ -201,6 +201,9 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
 — do not restate it here.** This section records the ORDER of work and the
 standing gates that survive any status change:
 
+- Go-live gates are binding — see docs/specs/Go_Live_Gates.md before any
+  live-mode or real-data work.
+
 1. Data model (master spec §§7–11).
 2. Slice v0.1: Case overview + Parties.
 3. Billing module Phase 1a. Only CONFIRMED AnalysisRuns may feed
