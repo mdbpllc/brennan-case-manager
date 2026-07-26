@@ -1,6 +1,14 @@
 # Advanced Personal Injury Law 2025 (41st Annual) — Course Book Mining, PASS 1
 
 **Status:** SOURCE MINING, **PASS 1 of 4** — design side, 2026-07-25. NOT canonical, NOT a design doc, NOT in the build queue.
+
+> **⚠ ERRATUM (added 2026-07-25, per `apil-2025-course-book-mining-pass3.md` §0):** the article map and heat map
+> below are **materially incomplete**. This book has **27 chapter-level articles, not 23**. Four chapters
+> totalling ~233 pp. were omitted: **Ch. 11 Products Liability (PDF 347; 11.1 at 353, 11.2 at 427)**,
+> **Ch. 12 Jury Charge Update (PDF 479)**, **Ch. 20 UM/UIM (PDF 675)**, and **Ch. 23 Estate & Probate
+> (PDF 1017; 23.1 at 1027, 23.2 at 1039)**. Two label corrections also apply: Ch. 2 (premises/Ch. 95) begins at
+> PDF **95**, not 101; and the chapter recorded as "613 CPRC Ch. 72.051" is **chapter 18**. **Use the corrected
+> full article map in pass 3 §0 — not the one below.**
 **Canonical repo path:** `docs/specs/apil-2025-course-book-mining-pass1.md` — routed Code-side per the accompanying handoff.
 **Legislative caveat:** the legislative chapter is a **June 6, 2025 snapshot taken before the June 22 veto deadline** and its outcomes are not final (see §6 below).
 **Source:** State Bar of Texas, 41st Annual Advanced Personal Injury Law (San Antonio July 23–25, 2025 / Houston Sept 3–5, 2025), MCLE 174274303. 1,202 pp., 23 substantive articles. Uploaded by Michael 2026-07-25.
@@ -26,6 +34,10 @@
 **Article map (PDF page → chapter):** 79 Evidence/Trial Notebook · 101 Premises & Ch. 95 · 109 Insurance Update · 139 Legislative · 171 Future Damages · 191 Jury Selection · 215 Noneconomic Damages post-*Chohan* · 239 Mediation · 251 Nonsubscriber · 325 Appellate/Preservation · 487 Discovery Update · 537 AI · 547 Nuclear Verdicts · 577 Trucking Broker · 595 Telematics/Infotainment · 613 CPRC Ch. 72.051 · 625 Tax/Double Tax · 691 Subrogation & Liens (Kostura — already in project knowledge) · 1001 Tilley/Tripartite (Michael's own) · 1095 SCOTX Update · 1137 Pre-Suit Investigation · 1153 Exemplary Damages · 1175 Specialization Exam.
 
 **Deadline-language heat map** (crude line-count, two-column layout undercounts): Subrogation/Liens 111 · Legislative 30 · Tilley 20 · Appellate/Preservation 18 · Specialization 14 · Discovery Update 13 · Tax 10. These are the density targets for passes 2 and 3.
+
+**[ERRATUM 2026-07-25]** The "Specialization 14" entry is a **false positive** — that article is a slide deck
+about sitting for the board-certification exam and its hits are exam application dates. It carries nothing for
+the engine. The heat map also could not rank the four chapters omitted from the article map above.
 
 ---
 
@@ -209,6 +221,9 @@ All [VERIFY]; listed as registry candidates with engine hooks.
 
 ## 9. PASS 2 plan (deeper)
 
+**[SUPERSEDED 2026-07-25]** Executed. See `apil-2025-course-book-mining-pass2.md` / `-pass3.md`. The forward
+plan now lives in pass 3 §11, which is re-prioritised around the four chapters this map omitted.
+
 Targets, in priority order:
 1. **Ch. 21 Subrogation & Liens (Kostura)** — highest deadline density in the book (111 hits) and it owns the disbursement stage, which is entirely unwalked. Already in project knowledge as a PDF; read against the course-book version.
 2. **Ch. 10 remainder** — findings of fact timing, judgment finality, JNOV written ruling, and especially **Way 17 third-party business records** (*Duncan*/*Simien* split) — bears directly on billing-records affidavits and the A1 affidavit chain.
@@ -217,6 +232,9 @@ Targets, in priority order:
 5. **Ch. 24 SCOTX Update** — March 2024 through June 2025, for registry entries whose status may have moved.
 
 ## 10. PASS 3 plan (deepest)
+
+**[SUPERSEDED 2026-07-25]** Executed. See `apil-2025-course-book-mining-pass2.md` / `-pass3.md`. The forward
+plan now lives in pass 3 §11, which is re-prioritised around the four chapters this map omitted.
 
 1. **Ch. 22 Tilley/Tripartite (Michael's own)** — read for what the *system* must not do in a tripartite posture; conflicts rules constrain automation.
 2. **Ch. 5 Future Damages / Ch. 7 Noneconomic post-*Chohan* / Ch. 15 Nuclear Verdicts** — the damages-proof spine, which drives what the medical/billing module must be able to produce and when.

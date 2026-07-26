@@ -1,6 +1,6 @@
 # Case Heartbeat / Anti-Staleness Engine — Design Pass
 
-**Date:** 2026-07-25 (revised after the second walkthrough block; revised again Code-side the same date per the PUSH-TO-CODE work order, folding in the service-chase and answer-received walkthroughs). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — intake through **answer received** is walked AND folded (§§8.1–8.11, H14 closed); the litigation spine from **disclosures/discovery through mediation and expert cadence** is walked in captures **e** and **f** but **NOT yet folded — §8.12 lags two captures**, which remain the source of record. **Resume point: pass 2 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass1.md` §9); the open-item register now runs **H1–H58**. Nothing here is in the build queue.
+**Date:** 2026-07-25 (revised after the second walkthrough block; revised again Code-side the same date per the PUSH-TO-CODE work order, folding in the service-chase and answer-received walkthroughs). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — intake through **answer received** is walked AND folded (§§8.1–8.11, H14 closed); the litigation spine from **disclosures/discovery through mediation and expert cadence** is walked in captures **e** and **f** but **NOT yet folded — §8.12 lags two captures**, which remain the source of record. **Resume point: PASS 4 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass3.md` §11); the open-item register now runs **H1–H83**. Nothing here is in the build queue.
 
 **Canonical repo path:** `docs/specs/case-heartbeat-design.md`.
 
@@ -484,11 +484,15 @@ It closes on exactly two events: **settlement, or verdict.**
 
 ### 8.12 Stages walked-but-unfolded, and stages not yet walked
 
-**Fold queue (stale-correction placed Code-side 2026-07-25 per the handoff-f work order — this section lags TWO captures):** capture **e** walked the default-judgment thread, the post-judgment appellate clocks, the no-answer fork (H32), the discovery phase, and the deposition timing model; capture **f** walked the deposition no-dates ladder end to end, mediation in full (arming, cadence, roster, payment chain, post-mediation fan-out), and specified the DCO ingester, the software-wide audit log, and the expert-disclosure cadence. **None of that is folded into §8 yet; captures e and f are the source of record until it is.** The open-item register now runs **H1–H58** (§11 below stops at H34; H35–H41 live in capture e, H42–H58 in capture f and the APIL mining doc).
+**Fold queue (stale-correction placed Code-side 2026-07-25 per the handoff-f work order — this section lags TWO captures):** capture **e** walked the default-judgment thread, the post-judgment appellate clocks, the no-answer fork (H32), the discovery phase, and the deposition timing model; capture **f** walked the deposition no-dates ladder end to end, mediation in full (arming, cadence, roster, payment chain, post-mediation fan-out), and specified the DCO ingester, the software-wide audit log, and the expert-disclosure cadence. **None of that is folded into §8 yet; captures e and f are the source of record until it is.** The open-item register now runs **H1–H83** (§11 below stops at H34; H35–H41 live in capture e, H42–H58 in
+capture f and mining pass 1, **H59–H67 in mining pass 2 §8, and H68–H83 in mining pass 3 §10**).
 
 Still unwalked: **trial prep · trial · settled (pre-disbursement, including disbursement/liens) · closed.** (Negotiation runs in parallel under all of them, §8.9 — extended by capture f's shared negotiations-tab ruling, H49.)
 
-**Resume point: PASS 2 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass1.md` §9 — Kostura's subrogation/liens chapter first; it has the highest deadline density in the book and owns the never-walked disbursement stage). Alternate service methods for out-of-state companies were explicitly declined and remain unwalked.
+**Resume point: PASS 4 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass3.md` §11 —
+priority 1 is the four chapters omitted from pass 1's article map: Ch. 11 Products Liability remainder,
+Ch. 23.2 Estate/Probate/Guardianship, Ch. 12 Jury Charge Update; then the remaining playbook-level chapters;
+then the unread Kostura sections; then the consolidated registry-candidate table that ends the mining). Alternate service methods for out-of-state companies were explicitly declined and remain unwalked.
 
 ---
 
@@ -567,6 +571,6 @@ Still unwalked: **trial prep · trial · settled (pre-disbursement, including di
 ## 12. Process
 
 1. **This document is design-side and unadopted.** Nothing enters the build queue until Michael rules on §10 — the same discipline that has the time-tracker fee-basis draft sitting as DRAFT-not-canonical.
-2. **The stage catalog is partial by design.** Intake through answer received is walked and folded (H14 closed 2026-07-25); discovery through mediation/expert cadence is walked in captures e and f, unfolded. Resume at **pass 2 of the course-book mining** (§8.12) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was revised on 2026-07-25 to absorb stages 6–9, and again (Code-side, per the PUSH-TO-CODE work order) to absorb suit-filed and answer-received; that is the intended pattern.
+2. **The stage catalog is partial by design.** Intake through answer received is walked and folded (H14 closed 2026-07-25); discovery through mediation/expert cadence is walked in captures e and f, unfolded. Resume at **pass 4 of the course-book mining** (§8.12) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was revised on 2026-07-25 to absorb stages 6–9, and again (Code-side, per the PUSH-TO-CODE work order) to absorb suit-filed and answer-received; that is the intended pattern.
 3. **The capture file remains the source of record** for what was actually said. Where this document and the capture conflict on what Michael ruled, the capture governs.
 4. **Carried, unrelated to this subsystem:** time-tracker fee-basis-profiles review (§3 schema-ownership call, D1–D4, the nine §7 registry entries); registry entries 1–10; edge-function deploys per `docs/statute-cache-setup.md`; Citizens MRF path into CLAUDE.md; OAA remaining tabs; FLP account + MCP connector setup (promo ends 8/6); `BUILD-SESSION-NOTES.md` review.
