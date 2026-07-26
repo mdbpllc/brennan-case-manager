@@ -38,12 +38,16 @@
 - ✅ **CPRC §38.001 + H.B. 1578** — codified text and enrolled bill read 2026-07-26. 87th Leg. 2021, Ch. 665; applies to actions **commenced** on or after 9/1/2021. Four carve-outs and §38.006 newly surfaced.
   - ⬜ **Residual (V8): is the commenced-date capture still worth building?** Any pre-9/1/2021 action is now ~5 years old, and the date is derivable from the filing date.
 - ✅ **Tex. Bus. & Com. Code §17.50(d)** — read 2026-07-26. "Shall be awarded," unqualified; `basis: mandatory` holds. Three date-anchored fee cuts surfaced.
+- ✅ **Tex. Prop. Code §53.156** — full chapter read 2026-07-26 (session 2); enrolled S.B. 539 retrieved. **Date corrected: 2011, not 2021.** May→shall was the only change; applies to proceedings commenced on/after 9/1/2011. Bidirectional. Residential carve-out is a one-directional downgrade as to the owner-as-payor.
+  - ⬜ **Residual (V10): does "equitable and just" permit a ZERO award despite "shall"?** Michael's working position 2026-07-26: yes, given extenuating circumstances. **Not verified — no case law read.** Needs the citator pass.
+  - ⬜ **Residual (V13): is the bidirectional exposure live?** Has a Servpro lien ever been attacked with fees sought against the client?
+- ✅ **Tex. Prop. Code ch. 28** — full chapter read 2026-07-26 (session 2). **O1 closed: fees are DISCRETIONARY** (§28.005(b)). Three corrections to the drafted entry; §28.0091 was missing entirely.
+  - ⬜ **Residual (V11): 1½%/month — simple or compound?** Statute silent. Affects any annualized figure.
+  - ⬜ **Residual (V12): public-entity prompt payment** is outside ch. 28 and outside this project. Gap, not error.
 
 ### Still to pull — the session stopped here
 
-- ⬜ **Tex. Prop. Code §53.156** — **← RESUME POINT.** Does the 2021 may→shall change apply across the board, and how far does the residential carve-out reach?
-- ⬜ **Tex. Prop. Code ch. 28 (Prompt Payment)** — **is the fee award discretionary?** Your own flag from the voice session, where the initial framing implied otherwise. Also confirm the 1.5%/month interest figure and the §28.010 oilfield/pipeline exemption.
-- ⬜ **Tex. Est. Code §352.051** — **is "on proof satisfactory to the court" the operative standard, and does the two-lane separation from the personal representative's commission survive contact with the text?**
+- ⬜ **Tex. Est. Code §352.051** — **← RESUME POINT (moved 2026-07-26 session 2; was §53.156).** **Is "on proof satisfactory to the court" the operative standard, and does the two-lane separation from the personal representative's commission survive contact with the text?**
 - ⬜ **Tex. Fam. Code §§106.002, 6.708, 6.502(a)(4), 156.005** — **how far does §156.005's frivolous-modification mandatory pocket reach**, before the family profile encodes any mandatory branch?
 - ⬜ **TDRPC 1.04** — **does the contingency prohibition cover divorce as squarely as criminal**, so the warning can fire on both without qualification?
 - ⬜ **Tex. R. Civ. P. 204.1** (the rule text; the case line is now done) — **should the IME task hook fire on serving a damages expert report, or on an earlier signal?**

@@ -269,6 +269,37 @@ corrected (header, §8 intro, §8.12, §12.2) — it had cost session time twice
 **Status:** Fold queue is the only carried item; captures e and f are the
 source of record until folded.
 
+### 2026-07-26 — Prop. Code 53/28 packet applied (session 2); three reconcile answers for the design side
+
+**Where:** the 2026-07-26 session-2 PUSH-TO-CODE work order (Servpro deadline-engine
+design pass). Applied in full: design doc filed, fee-basis amendments 1–5 folded,
+review queue updated (amendment 6), session-log entry appended.
+
+1. **The 2011/2021 correction was genuinely applied here** — the working tree
+   still said "2021 may→shall" in all three places (`time-tracker-fee-basis-
+   profiles-design.md` §6 table and §7 item 5, and `attorney-review-queue.md`
+   §2). No prior correction existed. Also fixed for consistency: the fee doc's
+   §5 Prompt Payment companion bullet carried the same "18%/yr" annualization
+   and the stale VERIFY framing — the annual figure is removed there too (per
+   the work order's do-not-annualize rule) and the bullet now cites §28.005(b)
+   / O1-closed / V11.
+2. **No doc existed at `docs/specs/prop-code-53-28-deadline-engine-design.md`
+   or any equivalent** — no ch. 53, lien-deadline, or Servpro doc under any
+   name. Filed as a new file, verbatim, ⛔ BUILD GATE intact at the top.
+3. **No canonical law-change ledger file exists.** The TRCP skeleton's "law-
+   change ledger" is a flag convention inside §7/§8 of that doc, not a ledger
+   file, and `watch-targets-seed.md` is bill-tracking seed data (a different
+   mechanism — LegiScan watch targets, not enacted-change history). The four
+   bills (S.B. 929 2025, H.B. 2237 2021, H.B. 3485 2023, S.B. 1768 2023)
+   therefore stay in `prop-code-53-28-deadline-engine-design.md` §9 as the
+   work order directs. If the design space wants a standing ledger file, that
+   is a design decision — flagging that this is now the third "law-change
+   ledger family" reference (166a, 239a, ch. 53/28 bills) with no single home.
+
+**Status:** No repo contradictions found — nothing heartbeat-, time-tracker-,
+or lien-related is built; D3/H8 still gates T1, matching the work order's
+assumptions.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

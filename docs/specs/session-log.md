@@ -12,6 +12,88 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (Session 2, design space, Opus 5: Prop. Code ch. 53 + ch. 28 read in full; §53.156 date error caught; full Servpro deadline-engine design pass, gated on a Servpro staff meeting)
+
+Resumed the statutes queue at its recorded stopping point (Prop. Code §53.156) and went past it. Michael
+uploaded **ch. 53 and ch. 28 in full official text**; Claude retrieved **enrolled S.B. 539** (82nd Leg., R.S.,
+2011) from Texas Legislature Online. Design-side throughout; **nothing entered the build queue.**
+
+**The correction.** Three places in the repo — `time-tracker-fee-basis-profiles-design.md` §6 and §7 item 5,
+and `attorney-review-queue.md` — said the §53.156 may→shall change was **2021**. It is **2011**: Acts 2011,
+82nd Leg., R.S., Ch. 51 (S.B. 539), §1, eff. 9/1/2011. The 2021 overhaul (H.B. 2237, 87th Leg., Ch. 690) swept
+~30 sections of ch. 53 and did not touch §53.156. Enrolled S.B. 539 confirms the swap on its face with strike
+text intact — *"the court shall [may] award…"* — and shows two further things: may→shall was the **only**
+change (so the residential carve-out predates 2011 and was near-surplusage until the verb changed), and
+applicability keys to **proceedings commenced** on or after 9/1/2011, the §38.001/H.B. 1578 anchor family
+rather than H.B. 4145's date-of-service.
+
+**O1 CLOSED, against the voice-session framing.** §28.005(b): the court "**may** award … as the court
+determines equitable and just." Discretionary confirmed; the "(VERIFY)" flag comes off. Michael's own flag was
+right to raise and the drafted doc's answer was right.
+
+**One design ruling.** Asked whether §53.156 gets a new `basis` enum value or a modifier layer, Michael ruled
+**"new value."** The forcing evidence is a minimal pair read this session: §53.156 says *shall … as are
+equitable and just*; §28.005(b) says *may … as the court determines equitable and just*. Same code, adjacent
+subject matter, identical measure language, different verb. New value `mandatory-equitable` (name is Claude's,
+unruled → O4).
+
+**V10 advanced but NOT closed.** Michael's working position: *"I believe zero could be equitable and just
+given extenuating circumstances, so technically yes."* Recorded as `[JUDGMENT — Michael]`, not a verified
+holding — no case law was read. Consequence: `mandatory-equitable` may never be surfaced as a promise of
+recovery; permitted export language caps at "amount, which may be zero."
+
+**Scope ruled, and it is a large one.** Asked whether ch. 53 is deep enough to justify a deadline-engine
+buildout or stays a fee-basis entry, Michael: *"Yes, this is what the whole Servpro buildout is going to be
+based on in part. Do the full deadline-engine buildout"* — **with an explicit gate**: he will not complete the
+buildout until after an **in-person meeting with Servpro staff**, after which he supplies meeting notes and
+re-feeds whatever statutes are needed for a further pass. New design doc at
+`docs/specs/prop-code-53-28-deadline-engine-design.md`, status DESIGN, gate stated at the top.
+
+**Three structural findings in that doc.** (1) **The homestead gate** — §53.254 requires a written contract,
+executed before any work, signed by both spouses if married, and **filed with the county clerk**; all four are
+retrospective and unfixable at intake, and failure is an enumerated summary-removal ground under
+§53.160(b)(6). Whether Servpro's actual paperwork clears this may decide whether the lien path exists on most
+residential files or few — the highest-value question for the meeting. (2) **"Residential" cannot be one
+boolean** — ch. 53 and ch. 28 use four different formulations, and a condominium job answers differently under
+each (ch. 53 residential; §28.003 100% not 110%; §28.009 suspension right exists). Per-rule predicates over
+structured property facts, not a case flag. (3) **Six deadline primitives the engine lacks** — month-ordinal
+("15th day of the fourth month after the month in which"), multi-anchor reduction, anchor-swap, backward
+"no-earlier-than" constraints, chapter-scoped roll rules, and provisional dates that resolve retroactively.
+Anchor-swap now has two independent instances (§53.158(a-2), §28.008), which makes it a primitive rather than
+a quirk.
+
+Also surfaced: Servpro contracting directly with the homeowner is an **original contractor**, which switches
+off the entire §53.056/§53.057 derivative-notice ladder — the modal path collapses to file-by-the-15th-of-the-
+third-month plus a five-day copy to the owner. And the **close is a liability surface**: §53.152 imposes a
+10-day release duty on request, with §53.282(b)(2)'s 14-day fuse ending in CPRC §12.002 exposure.
+
+Four bills for the law-change ledger: S.B. 929 (89th Leg. 2025, Ch. 98, eff. **5/21/2025** — immediate
+effect, amended §53.003 and §53.124); H.B. 2237 (87th Leg. 2021, Ch. 690); H.B. 3485 (88th Leg. 2023, Ch. 533
+— added §28.0091); S.B. 1768 (88th Leg. 2023, Ch. 291 — amended §53.172).
+
+**Next:** the deadline-engine doc resumes **after the Servpro in-person meeting** (L1–L7 are questions for that
+meeting). Three things can proceed independently before then: the **V10 citator pass** (needs FLP/CourtListener);
+the statutes queue at its new resume point, **Est. Code §352.051**, then the Family Code block; and L0/L1 of the
+build sketch, which are law-free. Carried and unchanged: **D3/H8 still blocks T1**; registry entries 1–10
+sign-off (Entry 1(c-3) qualified LOP; Entry 4 fatal-defect conflict, and V4 still gates the disbursement
+checklist); the heartbeat fold queue — `case-heartbeat-design.md` §8.12 lags captures e and f plus mining
+passes 2–3, register H1–H83 while §11's table stops at H34; H40; H50; H60; H77; V1–V9; `Go_Live_Gates.md`
+gates 1–5 exist only in project knowledge. **FLP account + Tier 1 + connector setup — promo ends 8/6, now
+carried on 8+ consecutive entries.**
+
+**Staged for Code:** `prop-code-53-28-deadline-engine-design.md` (new); fee-basis amendments folding into
+`time-tracker-fee-basis-profiles-design.md` §2/§6/§7/§8 and `attorney-review-queue.md` §2; this log entry.
+Documentation routing only — nothing enters the build queue. *[Code session 2026-07-26b: all applied — design
+doc filed as-is (no prior ch. 53/lien doc existed; build gate intact); the 2011 date correction was genuinely
+applied here (the tree still said 2021 in all three places); `mandatory-equitable` added to the §2 enum,
+`direction`/`conditionalDowngrade` added as PROPOSED; O1 struck, O4/O5 added; review queue updated, resume
+point moved to Est. Code §352.051; no canonical law-change ledger file exists, so the four bills stay in the
+design doc §9 (reported in spec-feedback). Nothing built; no status changed.]*
+
+**Awaiting/Returned from Code, unreviewed:** Outlook push slice (never seen design-side); the 2026-07-26
+Code session's applications (Entry 2 v2, Entries 4/5/10 amendments, fee-basis fold-ins, attorney-review-queue
+and verification-pass files as filed); `BUILD-SESSION-NOTES.md` 2026-07-21 audit.
+
 ## 2026-07-26 (Design space, Opus 5: first sustained verification pass — 8 opinions + 5 statutes read; Entry 2 v2; Entries 4/5/10 amended; fee-basis design corrected; one design ruling)
 
 Michael pulled and read primary authority for a large block of the registry queue while Claude reconciled each reading against the drafted entries. This is the first session in the project whose output is verification rather than proposition. Substance is staged in three amendment docs plus a capture; nothing was built, and no entry status was set to verified — the `[READ]`/`[STATUTE]` flags record what was read, and wording sign-off remains a separate act that has not occurred.
