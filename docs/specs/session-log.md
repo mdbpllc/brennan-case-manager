@@ -12,6 +12,57 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#2) — Case authority index replaced with a locator manifest (design, Opus 5)
+
+Follow-up to the same day's earlier entry. After sync, the design side could
+finally read docs/specs/legal-rule-registry-draft-entries-medical-billing.md
+and docs/specs/registry-verification-pass-2026-07-26.md — neither visible when
+the case authority index was drafted.
+
+CONFIRMED — the index as landed was a hazard and is replaced, not patched.
+Reason: it stated holdings for sixteen opinions with no source flags and no
+verification status, one directory from a registry whose first line is "ALL
+ENTRIES UNVERIFIED" and whose governing rule is that a model asserting legal
+currency is never verification. Michael's ruling: "Let's do the manifest
+version."
+
+Errors found in the landed index, all traced to reading front matter plus the
+first substantive passage rather than the whole opinion:
+- Flag A-3 was WRONG and is withdrawn. It said Huntress is not a billing case
+  and asked whether to refile it. Huntress reaches Haygood at *20-21 and
+  expressly distinguishes it (plaintiff sued the providers for their own tort;
+  reasonableness/necessity not pertinent to the no-evidence SJ burden).
+  Registry Entry 1(d) had this right with a pinpoint cite.
+- McMillan was filed under a "§18.001 affidavits" heading. McMillan has no
+  §18.001 issue. Registry dropped it from Entry 1 entirely.
+- Ahmed omitted the load-bearing ground — a lien reduction is not a debt
+  reduction, the debt is merely undersecured. Registry Entry 1(c-1) has it.
+- Sheppard was summarized on damages sufficiency; registry Entry 1(c-2) treats
+  the part that matters here (stale bills, limitations, Forth dictum).
+- Primoris posture (parties settled, original opinion withdrawn) was not noted.
+
+Replacement is locator-only: case, cite, court/year, filing-label subject,
+observed registry cross-reference, flags. No holdings. Carries an explicit
+instruction not to add propositional content back, and names the registry as
+authoritative on conflict.
+
+Flags now A-1, A-2, A-4, A-5 (unchanged), plus A-6 (McMillan dropped from
+Entry 1) and A-7 (Primoris posture). A-3 recorded as withdrawn rather than
+deleted so anyone who saw it knows not to act on it.
+
+Known gap recorded in the manifest: Ortiz v. Nelapatla, No. 23-0953 (Tex.
+May 1, 2026) has no PDF in the collection; §18.001 lookups route to registry
+Entry 2, not to Gunn or Katy Springs alone.
+
+Process note: the earlier entry's criticism of the first packet's routing was
+withdrawn on review. Code's fold-in check was defensible — the registry is
+rule-organized product content, the index was case-organized; different
+artifacts. The defect was in the index's content, which is design-side.
+
+Staged for Code: docs/authority/case-authority-index.md (replace in full).
+Awaiting/Returned from Code, unreviewed: Outlook push slice (from 2026-07-24,
+still unseen design-side); BUILD-SESSION-NOTES.md review.
+
 ## 2026-07-26 — Project knowledge capacity; case authority index (design, Opus 5)
 
 Trigger: project knowledge at 81% capacity with Phase 1b+ still ahead.
