@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 59808ed  |  Branch: master  |  Generated: 2026-07-26 (eighth refresh this date; app unchanged all day)
+Commit: 369f778  |  Branch: master  |  Generated: 2026-07-26 (ninth refresh this date; app unchanged all day)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,32 +30,38 @@ Commit: 59808ed  |  Branch: master  |  Generated: 2026-07-26 (eighth refresh thi
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (seven Code sessions, ALL DOCS ONLY)
-- Session-7 (queue-runner batch, 59808ed): first QUEUE-RUNNER run, one
-  packet (queue-mechanism bootstrap) — executed cleanly end to end. NEW
-  docs/prompts/QUEUE-RUNNER.md (PROPOSED convention, unruled); inbox/
-  created + gitignored at repo root (transient packet freight, never
-  committed); CLAUDE.md inbox convention line. Same prompt installed as
-  a slash command at .claude/commands/queue-runner.md (untracked;
-  Michael's call). FLP promo clock also CLOSED per Michael this session
-  block (entry #5) — not actionable, no longer carried
-- Session-6 (post-migration, dc167f9): log entry #4 (migration COMPLETE);
-  CLAUDE.md sync scope revised to selective; both carried-file
-  repo-duplication checks CLOSED (NVIDIA memo + LegiScan fixture NOT in
-  repo — knowledge carries warranted)
-- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md COMPLETE
-  (gates 1–5 folded in, redacted; gate-3 amendment; account/API facts);
-  statute design doc forward-merged per spec-feedback preserving repo
-  deltas — repo version CURRENT, PK copy historical; CLAUDE.md pointer
-- Session-4: case-authority-index.md REPLACED with locator-only manifest
-  (registry governs); A-3 WITHDRAWN, A-6/A-7 added; Ortiz PDF gap
-- Session-3: NEW project-knowledge-working-set-policy.md + pointer;
-  verified both v0_1-feedback items already built
-- Session-2: NEW prop-code-53-28-deadline-engine-design.md ⛔ BUILD-GATED
-  (Servpro meeting); §53.156 corrected to 2011; O1 CLOSED
+## 2026-07-26 session deltas (eight Code sessions, ALL DOCS ONLY)
+- Session-8 (queue-runner batch 2, 369f778): Q-1/Q-2 rulings landed —
+  inbox+QUEUE-RUNNER is a STANDING CONVENTION (status lines flipped in
+  docs/prompts/QUEUE-RUNNER.md, CLAUDE.md, both slash-command copies);
+  docs/prompts/ ruled the canonical cross-interface prompt home. NEW
+  binding MAJORITY-OPINION RULE filed: CLAUDE.md registry discipline
+  rule 5 + courtlistener design doc §0.1 (cluster id ≠ majority; the
+  live Haygood near-miss returned the DISSENT). CourtListener doc
+  corrected in place: free-tier rates 5/min-50/hr-125/day rolling
+  (hourly binds), measured Layer-B budget model, parallel-cite caveat
+  [RE-CHECK], §4 FLP-terms gate — app integration UNAUTHORIZED pending
+  Q-6. Q-7 resolved (slash-command file was in the repo subfolder;
+  Code sessions launch from the parent; fixed by copying up). v3
+  project instructions approved design-side (settings text, not repo)
+- Session-7 (queue-runner batch 1, 59808ed): first QUEUE-RUNNER run —
+  NEW docs/prompts/QUEUE-RUNNER.md; inbox/ + .gitignore + CLAUDE.md
+  line. FLP promo clock CLOSED per Michael (entry #5, not carried)
+- Session-6 (dc167f9): migration COMPLETE (entry #4); CLAUDE.md sync
+  scope revised to selective; NVIDIA memo + LegiScan fixture confirmed
+  NOT in repo (knowledge carries warranted)
+- Session-5 (7f3dbf5): Go_Live_Gates.md COMPLETE (gates 1–5 folded in,
+  redacted); statute design doc forward-merged per spec-feedback,
+  repo version CURRENT
+- Session-4: case-authority-index.md → locator-only manifest; A-3
+  withdrawn, A-6/A-7 added
+- Session-3: NEW project-knowledge-working-set-policy.md; v0_1-feedback
+  items verified built
+- Session-2: NEW prop-code-53-28 deadline-engine design ⛔ BUILD-GATED;
+  §53.156 corrected to 2011
 - Session-1: registry Entry 2 v2; Entries 4/5/10 folded; Tanner draft
-  UNADOPTED (V6); Rohrmoos corrected; NEW attorney-review-queue.md.
-  NO registry entry status changed in any session
+  UNADOPTED; NEW attorney-review-queue.md. NO registry entry status
+  changed in any session
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -85,29 +91,32 @@ Commit: 59808ed  |  Branch: master  |  Generated: 2026-07-26 (eighth refresh thi
   storage anywhere — EOB/report "links" are text descriptions
 - OAA intake parses digital Uvalde-layout orders only; scans → manual
 - Demo PFS schedule is fictional; real ratios need the CSV import
-- Playbook engine NOT built — classification edits show a "re-evaluate
-  playbooks" notice; nothing recomputes automatically yet
+- Playbook engine NOT built; classification edits show a notice only
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only — NOTHING in the app; awaits design-side
-  adoption. Servpro deadline engine: DESIGN ONLY, gated on the meeting
+- Time tracker: design draft only; Servpro deadline engine: DESIGN ONLY,
+  gated on the meeting — NOTHING in the app for either
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
-  NOTHING exists in the app; captures e and f NOT folded (§8.12 carries
-  the fold-queue notice); register runs H1–H83; H50 OPEN; TRCP skeleton
-  and ALL course-book propositions UNVERIFIED; deficiency parked (H35)
+  NOTHING in the app; captures e and f NOT folded; register runs H1–H83;
+  H50 OPEN; TRCP skeleton + ALL course-book propositions UNVERIFIED
+- CourtListener: design doc only — NOTHING in the app; app integration
+  UNAUTHORIZED (FLP terms gate Q-6 + unruled §6 sequencing)
 - Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 + fee-basis
-  items 5/6 substantially advanced 2026-07-26 (primary text read) but
-  wording sign-off pending; Tanner draft UNADOPTED (V6); V1–V13 open
+  items 5/6 substantially advanced 2026-07-26 but wording sign-off
+  pending; Tanner draft UNADOPTED (V6); V1–V13 open
 
 ## For design side
 - SYNC (revised 2026-07-26): selective — docs/, db/, supabase/,
   CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc
   is the SOLE design-side authority on what is built. Sync the NEW
   project after each push (old project = archive)
-- QUEUE (PROPOSED, unruled): Q-1 adopt inbox+QUEUE-RUNNER as standing
-  convention? (blocks trigger #3 instructions revision); Q-2 confirm
-  docs/prompts/ as canonical prompt home; Q-3 re-check the sync picker —
-  docs/prompts/ is a NEW directory the selective sync may not auto-add
+- QUEUE: STANDING convention (Q-1/Q-2 ruled 2026-07-26). Still open:
+  Q-3 verify docs/prompts/QUEUE-RUNNER.md visible in a FRESH design
+  chat; Q-4 sync picker includes docs/prompts/?; Q-5 model-usage
+  clarifying clause unruled; Q-6 FLP internal-tooling terms (research
+  OK now, app integration blocked); Q-7 RESOLVED
+- MAJORITY-OPINION RULE is binding for all opinion retrieval —
+  CLAUDE.md registry rule 5 / courtlistener doc §0.1
 - PRUNING: K-1 executed/moot; K-2 open; K-3 CLOSED; K-5 Uvalde scope;
   K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
 - attorney-review-queue.md is the one project-wide review queue; statutes
