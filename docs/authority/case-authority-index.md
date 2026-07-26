@@ -1,7 +1,7 @@
 # Case Authority Index — Medical Billing / Paid-or-Incurred Cluster
 
 **Canonical repo path:** `docs/authority/case-authority-index.md`
-**Status:** LANDED in repo 2026-07-26 (drafted same day, design session, Opus 5; routed by Code — commit recorded below). Replaces the 16 case PDFs in Claude project knowledge; PDFs themselves route to `docs/authority/pdf/`.
+**Status:** LANDED in repo 2026-07-26 at commit `d0b9cfa` (drafted same day, design session, Opus 5; routed by Code). Replaces the 16 case PDFs in Claude project knowledge; PDFs themselves route to `docs/authority/pdf/`.
 **Purpose:** Let a design or build session identify the right authority without loading ~225K tokens of OCR'd opinion text. Look up the proposition here; pull the full opinion from the repo only when the actual language is needed.
 
 **Scope note:** Every summary below is drafted from the opinion text and states the proposition the case is held for *in this project*, not a full holding. This index is a finding aid, not a substitute for reading the case. Nothing here is legal advice or a substitute for shepardizing before filing.

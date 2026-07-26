@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 33b051d  |  Branch: master  |  Generated: 2026-07-26 (second refresh this date)
+Commit: d0b9cfa  |  Branch: master  |  Generated: 2026-07-26 (third refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,27 +30,28 @@ Commit: 33b051d  |  Branch: master  |  Generated: 2026-07-26 (second refresh thi
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (two Code sessions, BOTH DOCS ONLY — zero app change)
-- Session-2 packet APPLIED: NEW prop-code-53-28-deadline-engine-design.md —
-  full Servpro mechanic's-lien / prompt-pay deadline-engine design pass,
-  ⛔ BUILD-GATED on an in-person Servpro staff meeting (L1–L7 are questions
-  for that meeting; its §10 build sketch is NOT COMMITTED). §53.156 date
-  error corrected in three places: may→shall was 2011 (S.B. 539), NOT
-  2021. Fee-basis design: basis enum gains mandatory-equitable (Michael
-  ruled "new value"; name is Claude's → O4); direction/conditionalDowngrade
-  PROPOSED (O5); O1 CLOSED (ch. 28 fees discretionary, §28.005(b));
-  18%/yr annualization removed (V11); §28.010 scope widened; §28.0091
-  added. Review queue: §53.156 + ch. 28 moved to read; resume point now
-  Est. Code §352.051. New open items V10–V13, L1–L7, D-A/B/C, O4/O5.
-  Four law-change bills recorded in the design doc §9 (no canonical
-  ledger file exists — see spec-feedback)
-- Session-1 (verification pass) APPLIED earlier today: registry Entry 2
-  REPLACED in place (redraft v2, post-Ortiz); Entries 4/5/10 folded
-  (Ch. 55 findings, H.B. 4145 date-of-service applicability, IME line
-  [READ]); draft Tanner service-diligence entry staged UNADOPTED (V6);
-  fee-basis Rohrmoos FOUR proof elements corrected, contemporaneity badge
-  RULED; NEW attorney-review-queue.md + registry-verification-pass doc.
-  NO entry status changed either session — reading is not sign-off
+## 2026-07-26 session deltas (three Code sessions, ALL DOCS ONLY — zero app change)
+- Session-3 packet APPLIED (project-knowledge capacity): NEW
+  docs/authority/case-authority-index.md — 16-opinion finding aid
+  (paid-or-incurred / §18.001 / rate discovery / LOP-factoring /
+  payor-side / damages), flags A-1..A-5 (N. Cypress PDF is the WITHDRAWN
+  opinion — cite 559 S.W.3d 128, never 2018 Tex. LEXIS 346). NEW
+  docs/project-knowledge-working-set-policy.md — working-set rule,
+  pinned list, pruning runbook (steps 3–5 PROPOSED, Michael executes;
+  Code cannot touch project knowledge). CLAUDE.md pointer added.
+  VERIFIED: both claude_v0_1-feedback.md items are built (phone masking
+  src/domain/phone.ts+components; Combobox src/components/Combobox.tsx)
+  — runbook steps 1–2 safe. docs/authority/pdf/ staged for the PDFs
+- Session-2 packet APPLIED: NEW prop-code-53-28-deadline-engine-design.md,
+  ⛔ BUILD-GATED on the Servpro staff meeting (L1–L7; §10 sketch NOT
+  COMMITTED). §53.156 date corrected in three places: may→shall was 2011
+  (S.B. 539), NOT 2021. Fee-basis: enum gains mandatory-equitable (name
+  unruled → O4); O1 CLOSED (ch. 28 fees discretionary); 18%/yr
+  annualization removed (V11). Review queue resume: Est. Code §352.051
+- Session-1 (verification pass) APPLIED: registry Entry 2 REPLACED (v2,
+  post-Ortiz); Entries 4/5/10 folded; Tanner draft staged UNADOPTED (V6);
+  Rohrmoos FOUR proof elements corrected, contemporaneity badge RULED;
+  NEW attorney-review-queue.md. NO entry status changed any session
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -84,11 +85,10 @@ Commit: 33b051d  |  Branch: master  |  Generated: 2026-07-26 (second refresh thi
   playbooks" notice; nothing recomputes automatically yet
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only (amended twice 2026-07-26) — NOTHING
-  exists in the app; the draft still awaits design-side adoption
+- Time tracker: design draft only — NOTHING exists in the app; the draft
+  still awaits design-side adoption
 - Servpro lien/prompt-pay deadline engine: DESIGN ONLY, build-gated on
-  the Servpro meeting — NOTHING exists in the app; none of the P1–P6
-  deadline primitives exist in code
+  the Servpro meeting — NOTHING in the app; no P1–P6 primitives in code
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
   NOTHING exists in the app; captures e and f NOT folded (§8.12 carries
   the fold-queue notice); register runs H1–H83; H50 OPEN; TRCP skeleton
@@ -100,20 +100,21 @@ Commit: 33b051d  |  Branch: master  |  Generated: 2026-07-26 (second refresh thi
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
+- PRUNING (K-1..K-6): steps 1–2 verified safe — Michael may delete the
+  McMillan _1 duplicate and claude_v0_1-feedback.md now; steps 3–5
+  (PDFs + Kostura + statutes dump to repo; Uvalde scope check) PROPOSED;
+  second-project question OPEN, decide after 3–4; re-pull N. Cypress
 - attorney-review-queue.md is the one project-wide review queue; statutes
-  resume point now Est. Code §352.051, then the Family Code block
-- Servpro deadline-engine doc awaits the in-person meeting (L1–L7);
-  V10 citator pass and L0/L1 can proceed independently before it
+  resume point Est. Code §352.051, then the Family Code block
+- Servpro deadline-engine doc awaits the in-person meeting (L1–L7)
 - FLP/CourtListener account + Tier 1 + MCP connector — promo ends
-  2026-08-06 (ELEVEN days out; carried on 8+ consecutive entries)
+  2026-08-06 (ELEVEN days out; carried on 9+ consecutive entries)
 - EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment);
   session-1 heartbeat voice capture (never reached Code)
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8
 - D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
   V4 still gate billing LOP math and the disbursement checklist
-- No canonical law-change ledger file exists (third "ledger family"
-  reference now); design decision flagged in spec-feedback
+- No canonical law-change ledger file exists (spec-feedback)
 - Registry sign-offs, Supabase auth (gate 6), edge-function deploys,
-  Entra registration, Citizens MRF path, reseed-survival question — all
-  carried
-- Statute design-doc snapshot still lags project knowledge (spec-feedback)
+  Entra registration, Citizens MRF path, reseed-survival question,
+  statute design-doc snapshot lag — all carried
