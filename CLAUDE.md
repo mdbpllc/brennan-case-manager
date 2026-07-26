@@ -178,6 +178,22 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
    post-session confirmation — deadline rules from it must not be hard-coded.
    (Exception: the record-clearing statutes file already reflects the
    Sept. 1, 2025 amendments per the master spec.)
+5. **Majority-opinion rule (BINDING, ruled 2026-07-26; applies to any
+   opinion retrieval, esp. CourtListener):** a citation lookup returns a
+   CLUSTER id; clusters routinely contain several sub-opinions (majority,
+   concurrence, dissent), and the cluster id collides with one
+   sub-opinion id that is NOT reliably the majority. Never read or
+   characterize an opinion from a cluster id alone — enumerate
+   `sub_opinions` first; identify the majority positively by opinion-type
+   marker and authoring language ("delivered the opinion of the Court"),
+   never by position, id proximity, or assumption; state which
+   sub-opinion was read whenever an opinion is characterized, and say so
+   explicitly when separate opinions exist. A holding attributed to the
+   wrong sub-opinion is the same class of error as an unverified
+   proposition: a flag, never a verification. (Verified examples:
+   Haygood cluster 2829381 resolves to the dissent, majority is 9810727;
+   Cash America cluster 1576064, same collision — see
+   registry-courtlistener-integration-design.md §0.1.)
 
 ## Data hygiene (privileged legal data)
 
@@ -255,7 +271,10 @@ standing gates that survive any status change:
 - `inbox/` (gitignored) holds queued push-to-code packets produced by
   design sessions; process the whole batch with
   docs/prompts/QUEUE-RUNNER.md; delete packets after execution — the
-  session-log entries are the record.
+  session-log entries are the record. STANDING CONVENTION — ruled
+  ADOPTED by Michael 2026-07-26 (Q-1). `docs/prompts/` is the canonical
+  home for cross-interface prompts (prompts meant to be executed by
+  Code sessions) — ruled 2026-07-26 (Q-2).
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in

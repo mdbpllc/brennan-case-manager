@@ -1,8 +1,8 @@
-> PROPOSED convention, unruled as of 2026-07-26. Canonical path: docs/prompts/QUEUE-RUNNER.md
+> STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1). Canonical path: docs/prompts/QUEUE-RUNNER.md
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v1, 2026-07-26. PROPOSED convention pending Michael's ruling. -->
+<!-- v1, 2026-07-26. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1). -->
 
 You are processing a QUEUE of push-to-code packets accumulated while Fable
 tokens were exhausted. Each packet is a standard push-to-code zip (manifest

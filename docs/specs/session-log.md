@@ -12,6 +12,123 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#7) — QUEUE-RUNNER batch: 1 packet (CourtListener + queue conventions) (Code session)
+
+Second QUEUE-RUNNER batch; queue of one
+(push-to-code_courtlistener-and-queue-conventions_2026-07-26.zip), order
+confirmed by Michael's run instruction. Nothing superseded. Executed at
+HEAD 3c4498f — resolving the packet's §1 three-sha ambiguity: 9603ebd and
+3c4498f were both real same-day pushes (22fb053 an intermediate); the
+design side's confusion was sync lag, not repo divergence.
+
+Reconcile deltas and deviations, per the packet's own instructions:
+- §4.1: docs/prompts/QUEUE-RUNNER.md existed — status line flipped to
+  STANDING CONVENTION (Q-1); body untouched, repo copy authoritative.
+- §4.2: CLAUDE.md inbox line marked STANDING + Q-2 canonical-home line.
+- §4.3 / Q-7 RESOLVED: .claude/commands/queue-runner.md EXISTS locally
+  but was never committed (untracked). The "/queue-runner Unknown
+  command" cause is determined: the file lived in the repo subfolder
+  while Code sessions launch from the parent folder; fixed same day by
+  copying to the parent's .claude/commands/, and THIS batch was invoked
+  through the working slash command. Status line flipped in both copies.
+  Whether the repo copy commits is Michael's call.
+- §4.4 deviation: no "registry conventions section" exists in
+  legal-rule-registry-draft-entries-medical-billing.md (entries +
+  sign-off checklist only). The majority-opinion rule was folded into
+  CLAUDE.md's registry discipline as rule 5 (compact, binding) and into
+  registry-courtlistener-integration-design.md as new §0.1 (full text +
+  the two verified example clusters).
+- §4.5: CourtListener doc corrected in place — §1 rates (5/min, 50/hr,
+  125/day rolling; hourly binds), §1 parallel-cite caveat marked
+  [RE-CHECK], §2 budget replaced with the measured model, §4 gains the
+  Q-6 FLP-terms gate line. Doc NOT rewritten.
+- §4.6: Step 0 verified — inbox/, .gitignore line, CLAUDE.md note all
+  already in place from the bootstrap batch.
+- Packet capture file held as reference only (routing marked optional);
+  project-instructions-v3-APPROVED.md NOT committed per §6.
+
+Open items merged from the packet's §7 (Michael's): Q-3 sync
+verification of docs/prompts/QUEUE-RUNNER.md — verify in a FRESH design
+chat; Q-4 does the sync picker include docs/prompts/?; Q-5 model-usage
+clarifying clause unruled (v3 kept v2 wording); Q-6 FLP internal-tooling
+terms — research use proceeds, app integration blocked; Q-7 RESOLVED
+above; M-3 Medchron check, M-4 LegiScan rotation (firm), K-5 Uvalde home
+— carried.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: this entry + the packet entry
+below; BUILD-SESSION-NOTES.md (2026-07-21); Outlook push Phase 1.
+
+## 2026-07-26 (rulings Q-1/Q-2 + v3 instructions; CourtListener connector live; majority-opinion rule — design session, Opus 5)
+
+**What happened (design chat):** Michael issued three rulings resolving the interim-session queue,
+approved a v3 project-instructions revision, and connected the CourtListener MCP connector live.
+Seven CourtListener API calls were spent measuring real retrieval behavior against Haygood
+(356 S.W.3d 390) and Cash America (35 S.W.3d 12). Nothing built.
+
+**Rulings (CONFIRMED):**
+- **Q-1 ADOPTED** — the `inbox/` + QUEUE-RUNNER mechanism is a STANDING CONVENTION, no longer
+  PROPOSED. Reason: batch-processing packets accumulated during token exhaustion works, and the
+  design side cannot write to the repo, so the queue is the only path from design to build.
+  Michael's explicit note: the repo copies still say PROPOSED — stage the status-line change
+  rather than assuming it. (Staged here as §4.1–4.3.)
+- **Q-2 CONFIRMED** — `docs/prompts/` is the canonical home for cross-interface prompts (prompts
+  meant to be executed by Code sessions).
+- **End-of-session packet rule (CONFIRMED, Michael's verbatim text)** — every design session that
+  produces anything repo-bound must end with ONE packet zip named
+  `push-to-code_<short-slug>_<YYYY-MM-DD>.zip`, containing the standard manifest (§0–§8) with the
+  session-log entry INSIDE the packet, never loose in chat; the final message must end with the
+  exact instruction to save the zip into `brennan-case-manager\inbox\`; a session producing nothing
+  repo-bound must say "No packet this session — nothing repo-bound" rather than ending silently.
+  Reason: Michael's one drag into `inbox\` IS the push to the queue — an unsaved zip means the
+  session's work never reaches the repo.
+- **MAJORITY-OPINION RULE (CONFIRMED, binding, filed with the registry conventions)** — see below.
+- **v3 project instructions APPROVED** ("I think v3 looks good"). Michael pastes into project
+  settings; NOT a repo file.
+
+**The near-miss (why the majority-opinion rule exists):** CourtListener's `analyze_citations`
+returns a CLUSTER id. Feeding that id straight to `read_document` — the obvious move — returned
+**Justice Lehrmann's DISSENT** in Haygood, not the Court's opinion. Had Claude characterized the
+holding from that text it would have reported the dissent's reasoning as the holding. Verified as
+systematic, not a fluke: both clusters checked contain three sub-opinions and the cluster id
+collides with one sub-opinion id which is NOT reliably the majority.
+- Haygood cluster `2829381` → sub-opinions `9810727`, `9810728`, `2829381`; the cluster id resolves
+  to the dissent. Majority is `9810727` (Justice Hecht).
+- Cash America cluster `1576064` → sub-opinions `9857637`, `9857638`, `1576064`; same collision.
+The rule: never read or characterize an opinion from a cluster id alone; enumerate `sub_opinions`;
+identify the majority positively by opinion-type marker and authoring language; state which
+sub-opinion was read. A holding attributed to the wrong sub-opinion is a flag, never a verification.
+
+**Measured retrieval cost (7 calls):** citations verify up to 250 per call; document reads take up
+to 10 chunks per call; snippet searches take up to 10 documents per call; local citation extraction
+is free; reads cache 24h. A full careful read of one correctly-identified opinion ≈ 4 calls; ~1.2
+calls/opinion when batched across ten. Free-tier ceilings are 5/min, 50/hr, 125/day on a ROLLING
+window. The hourly cap binds, not the daily.
+
+**Corrections to `registry-courtlistener-integration-design.md` (staged, §4.5):** its §1 rate
+figures (10/min, 75/hr, 300/day) and its §2 Layer B budget claim ("fits standard Tier 1 (300/day)
+with wide margin") are both stale — the documented free-tier ceiling is 125/day. Its §1 parallel-cite
+caveat also needs a targeted re-check: Haygood returned S.W.3d, Tex. LEXIS, and WL parallel cites,
+so the caveat may hold only for memorandum opinions.
+
+**FLP terms boundary (OPEN, Michael's):** Free Law Project's membership API terms welcome solo
+practitioners for research use, but treat internal tooling supporting a firm's operation as
+commercial use requiring a conversation with FLP. Design-session research use is within bounds;
+wiring the API into brennan-case-manager (the design's Layers A and B) is NOT settled. Recorded in
+v3 as an explicit boundary; app integration is unauthorized until Michael resolves it with FLP.
+
+**Claude's errors this session (recorded per the verify-before-criticizing convention):**
+1. Told Michael his Claude Code screenshot was the plain chat interface. It was Code. Corrected
+   after he supplied a wider screenshot.
+2. Claimed the CourtListener connector was confirmed working on the basis of tool definitions
+   having loaded. Loading definitions proves nothing about authorization; only a successful call
+   does. Michael caught this from the connectors settings page.
+
+**Staged for Code:** this log entry; the six doc work orders in the packet's §4.
+
+**Awaiting/Returned from Code, unreviewed:** BUILD-SESSION-NOTES.md (2026-07-21) — still unreviewed;
+Outlook push Phase 1 (needs Michael's Entra setup + first-connect verification); this entry.
+
 ## 2026-07-26 (#6) — QUEUE-RUNNER batch: 1 packet processed (Code session)
 
 First run of the (PROPOSED) queue mechanism. Queue order: single packet,
