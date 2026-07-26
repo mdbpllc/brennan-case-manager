@@ -143,6 +143,18 @@ This confirms a principle already reached on the heartbeat side: **roll rules ar
 ### P6 — Provisional dates that resolve retroactively `[D]`
 §28.004(c)(2): interest stops on the **date of mailing** — *but only if* delivery occurs within three days. At the moment of mailing the stop date is unknowable; a later fact confirms or defeats it. The engine must be able to hold a **provisional** value pending confirmation, which is the declared-versus-detected distinction from the heartbeat design appearing inside an interest calculation.
 
+### P7 — Calendar-month count from a DATE `[D]` *(added 2026-07-26, from CPRC ch. 71)*
+CPRC §71.004(c): if no statutory wrongful-death beneficiary has begun the action within **"three calendar months after the death,"** the executor or administrator shall bring and prosecute it unless requested not to by all those individuals.
+
+```
+calendarMonthsFromDate(anchorDate, n):
+    return sameDayOfMonth(anchorDate, monthOf(anchorDate) + n)   // day PRESERVED
+```
+
+**Distinguish explicitly from P1.** P1 uses only the anchor's *month* and **discards the day** (§53.052: "the 15th day of the fourth month after the month in which…"), so 1 April and 30 April share a deadline. P7 **preserves the day** and counts months forward from it, so 1 April and 30 April are three months apart in their own right. **A single generalized "add months" function will silently mis-compute one of the two shapes** — and the failure is invisible, because both produce a plausible date. They are separate primitives; implement them separately and name them so the difference is unmissable at the call site. (Open, unruled: the end-of-month edge — what "three calendar months after 30 November" means when the target month is shorter.)
+
+This primitive is **not** ch. 53/28 material; it is recorded here because this is where the project's primitive library lives. Its own deadline sits in `pi-case-playbooks.md` row L10.
+
 ---
 
 ## 4. Ch. 53 deadline register

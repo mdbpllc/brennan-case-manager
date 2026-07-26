@@ -18,9 +18,8 @@ A typed in-code registry (sibling of `caseTypes.ts` / `partyRegistry.ts` — leg
 
 | Attribute | Type | Meaning |
 |---|---|---|
-| `basis` | `'mandatory' \| 'mandatory-equitable' \| 'discretionary-equitable' \| 'permissive' \| 'none'` | Whether/how the governing law awards fees to the fee-claiming side. **`mandatory-equitable` added 2026-07-26 `[C — Michael ruled "new value"]`:** the award itself is mandatory (the court must engage and make a determination; it may not decline to consider), while the **amount** is measured by an equitable standard and **may be zero** (V10). Distinct from `mandatory` (verb unqualified) and `discretionary-equitable` (award itself optional). Forcing minimal pair, both read 2026-07-26: §53.156 "the court **shall** award … as are equitable and just" vs. §28.005(b) "the court **may** award … as **the court determines** equitable and just" — same code, identical measure language, different verb; collapsing them would make the verb choice surplusage. (Value ruled; the NAME `mandatory-equitable` is Claude's label — O4. Do not restructure into a two-axis decomposition; see the deadline-engine design doc §7.2) |
-| `direction` | `'claimant-only' \| 'bidirectional'` | **PROPOSED, unruled (O5).** Which side may be ordered to pay. §53.156 is **bidirectional** — its third proceeding-type (declaring a lien invalid or unenforceable) puts a successful challenger inside the statute |
-| `conditionalDowngrade` | optional predicate + target basis | **PROPOSED, unruled (O5).** A statutory relaxation conditioned on case facts. §53.156: where the lien or claim arises out of a *residential construction contract*, the mandatory verb relaxes **as to the property owner as payor only** — a one-directional downgrade, not a general exemption. Must be expressed as a **predicate over structured property facts**, not prose and not a single `isResidential` boolean (see the deadline-engine design doc §2.3 — ch. 53 and ch. 28 use four different formulations of "residential") |
+| `feeBasis` | **record — see below** | **DECOMPOSED 2026-07-26 (O6 RULED — Michael: "I'll go with your suggestion").** Replaces the former flat `basis` enum (`mandatory \| mandatory-equitable \| discretionary-equitable \| permissive \| none`). See the record shape and the reason immediately below this table |
+| `conditionalDowngrade` | *(folded into `feeBasis.conditions`)* | **O5, absorbed by O6 — substance never ruled; CONFIRM.** A statutory relaxation conditioned on case facts becomes a `conditions` predicate rather than a standalone attribute. §53.156: where the lien or claim arises out of a *residential construction contract*, the mandatory verb relaxes **as to the property owner as payor only** — a one-directional downgrade, not a general exemption. Must be expressed as a **predicate over structured property facts**, not prose and not a single `isResidential` boolean (see the deadline-engine design doc §2.3 — ch. 53 and ch. 28 use four different formulations of "residential") |
 | `proofStandard` | text + registry ruleKey | What the record must prove for the AMOUNT (default nearly everywhere: two-step lodestar per *Rohrmoos* — **four** minimum elements (corrected 2026-07-26; the opinion, quoting *El Apple*, states four), general testimony insufficient) |
 | `hardProhibitions` | list of ruleKeys | e.g., contingent fee barred (criminal AND divorce, TDRPC 1.04); no non-lawyer work at lawyer rates |
 | `segregation` | `'required-multi-claim' \| 'n/a'` | *Tony Gullo v. Chapa* posture (§3 — schema-level, not a warning) |
@@ -29,6 +28,39 @@ A typed in-code registry (sibling of `caseTypes.ts` / `partyRegistry.ts` — leg
 | `interestAccrual` | optional ruleKey | statutory interest tracked alongside time (Prompt Payment Act) |
 | `captureFields` | list | extra facts the profile needs captured at intake (e.g., §38.001: opposing-party entity type + action-commenced date) |
 | `registryDependencies` | list of ruleKeys | every entry the profile's behavior rests on — feeds rule-3 stamping on all outputs |
+
+### 2.1 The `feeBasis` record (O6 — decomposition RULED 2026-07-26; field names PROPOSED)
+
+```ts
+feeBasis: {
+  entitlement: 'mandatory' | 'discretionary' | 'conditional'
+  measure:     'reasonable-necessary'
+             | 'equitable-just'
+             | 'court-determined-equitable-just'
+  source:      'opposing-party' | 'fund'      // fee-shifting vs. reimbursement
+  direction:   'claimant-only' | 'bidirectional'   // O5, unchanged in substance
+  conditions:  Predicate[]                    // success-required, good-faith-and-just-cause,
+                                              // proof-satisfactory, residential-downgrade
+}
+```
+
+**Reason recorded:** §352.052 varies entitlement and success-condition **orthogonally inside a single
+section** — (a) vs. (b) vary the entitlement verb holding the success condition constant; (b) vs. (c) vary the
+success condition holding the verb constant. A flat enum needs a value per combination. **Nothing is built on
+it, so there is no migration** — which is precisely why the window was used now; it closes when the tracker
+enters the build queue.
+
+**CONFIRMED/PROPOSED line — read it before renaming anything:** Michael ruled the **decomposition**. The exact
+field names, the enumerated values, and the predicate vocabulary are **Claude's draft and remain PROPOSED,
+unruled — rename freely.**
+
+**The `source` axis is new, and §352.051 forced it.** Every other row in §6 is fee-shifting against an
+opponent; §352.051 is **reimbursement to the representative out of the estate** — different claimant, payor,
+and mechanism. Warning 6's export branches on it.
+
+**The case against, preserved because a rejection encodes a constraint:** a record is harder to switch on than
+an enum (warnings, export selection, and the profile picker currently branch on one value and would branch on
+a shape), and there is real over-fitting risk across only eight provisions.
 
 **Registry discipline applied to profiles:** a profile attribute whose registry entry is *unverified* may drive **warnings and placeholders only**. Concretely: until Michael verifies the underlying entries, the profile system shows "fee basis (unverified): mandatory — Tex. Bus. & Com. Code § 17.50(d)" style annotations and capture nudges, but no computed fee total is labeled recoverable, no interest dollar amount is computed, and no export asserts a legal conclusion.
 
@@ -52,7 +84,15 @@ All warnings are capture/export-time nudges in the UI, never in any generated do
 3. **Description sufficiency:** empty/near-empty descriptions on fee-recovery cases ("call", "work on file") → nudge toward the **four** *Rohrmoos* elements (nature of the work; who performed the services and their rate; approximately when; number of hours worked).
 4. **Hard prohibitions (TDRPC 1.04, UNVERIFIED):** criminal or divorce case type + contingency arrangement selected → warning at the arrangement field itself (broader than criminal alone — divorce included).
 5. **§38.001 capture gap (UNVERIFIED):** contract-fee claim where opposing-party entity type or action-commenced date is missing → capture nudge (HB 1578's organization expansion applies only to actions commenced on/after 9/1/2021 — applicability confirmed on the enrolled bill 2026-07-26: keyed to **commencement of the action**, i.e. the filing date). 2026-07-26 notes: (i) the entity-type capture should check the **four statutory carve-outs** — quasi-governmental entity, religious organization, charitable organization, charitable trust (§38.001(b)) — not merely LLC-versus-corporation; (ii) **V8, asked and unanswered:** whether the commenced-date capture is still worth building, given pre-9/1/2021 actions are now ~5 years old and the date is derivable from the filing date — this warning keeps pairing both captures until Michael rules.
-6. **Probate two-lanes (Est. Code ch. 352, UNVERIFIED):** on probate matters, attorney-fee time (§ 352.051) and personal-representative commission (the separate ~5% statutory commission) are DIFFERENT LANES — the time ledger feeds only the former; blurring them is a real error risk, so the export labels the lane explicitly.
+6. **Probate — THREE lanes, not two (Est. Code ch. 352, UNVERIFIED; rewritten 2026-07-26 after the full chapter was read and V14 was ruled).** The export branches on `feeBasis.source` and separates:
+
+   | Lane | Authority | Export shape |
+   |---|---|---|
+   | Commission | Subch. A — §352.002 (5% of cash actually received/paid out, capped at 5% of gross FMV; three exclusions), §352.003 alternate compensation, §352.004 denial | **not a time-ledger output** |
+   | Expenses | §352.051(1), traveling as §352.053 charges | written, each item + date, PR affidavit, filed with clerk, entered on the claim docket |
+   | Attorney's fees | §352.051(2) | on proof satisfactory to the court; *Rohrmoos*-shaped. **Vehicle unknown — V14a** |
+
+   **V14 RULED 2026-07-26 (Michael: "The 053 expenses are different than the 051(2) fees").** The fee lane does **not** inherit §352.053's procedural shape. Blurring any of the three is a real error risk, so the export labels the lane explicitly.
 7. **Residential carve-out (Prop. Code § 53.156, UNVERIFIED):** mechanic's-lien matters flagged residential → note that the court is not required to make the owner pay.
 
 ## 5. Export targets per profile
@@ -64,17 +104,28 @@ All warnings are capture/export-time nudges in the UI, never in any generated do
 
 ## 6. Starting per-case-type profiles (ALL UNVERIFIED — placeholders until §7 sign-offs)
 
-| Case type / claim | basis (unverified) | Key authority (registry entry) | Notes |
+**Re-expressed in the O6 record shape 2026-07-26.** The seven rows with text read are mechanical
+re-expressions; the **Probate row is a CORRECTION, not a re-expression**; the family row is **DELETED**
+(family law out of scope, ruled 2026-07-26); and two rows **do not fit the axes cleanly** and are left
+unresolved rather than forced.
+
+| Case type / claim | `feeBasis` (unverified) | Key authority (registry entry) | Notes |
 |---|---|---|---|
-| DTPA consumer claim | mandatory | § 17.50(d) — "shall be awarded" | The clearest mandatory case in the set. Text read 2026-07-26: "Each consumer who prevails shall be awarded…" — unqualified; `basis: mandatory` holds. PROPOSED, unruled: model the symmetric §17.50(c) downside too (see §7 item 4) |
-| Breach of contract | permissive | CPRC § 38.001 — "may recover" | Entity-type + commenced-date capture (HB 1578, 87th Leg., R.S. (2021), Ch. 665 — citation confirmed 2026-07-26; V8 open on the commenced-date capture). PROPOSED, unruled: widen the trigger — §38.001(b) covers eight claim categories, not just contract (see §7 item 3) |
-| Mechanic's/materialman's lien | **`mandatory-equitable`** | Prop. Code § 53.156 | **2011** may→shall (S.B. 539, 82nd Leg., R.S., Ch. 51, eff. 9/1/2011 — applies to proceedings **commenced** on or after that date). Bidirectional: reaches proceedings to declare a lien invalid. Residential carve-out relaxes the verb **only where the property owner is the payor**. Amount may be zero (V10). Hooks §53.161 removal-bond pricing — a mid-case fee cut |
-| Prompt Payment Act | **`discretionary-equitable`** | Prop. Code § 28.005(b) | **O1 CLOSED 2026-07-26.** Text: the court "**may** award costs and reasonable attorney's fees as the court determines equitable and just." Discretionary confirmed. Interest companion §28.004; §28.010 exemption |
-| Probate | discretionary-equitable | Est. Code § 352.051 | Two-lanes separation (§4.6) |
-| Family (SAPCR / divorce) | discretionary-disparity | Fam. §§ 106.002, 6.708 | Not prevailing-party driven; mid-case affidavit (6.502(a)(4)); 156.005 frivolous-modification mandatory pocket |
-| First-party UM/UIM (UDJA) | permissive-on-request | master spec §12 note | Jury question; Nicastro waiver trap |
-| Criminal | none | TDRPC 1.04 prohibition context | Contingency barred; time tracker still available for flat/hourly discipline |
-| PI contingency (no fee claim) | none | — | Invoice/none; tracker optional |
+| DTPA consumer claim | `{entitlement: mandatory, measure: reasonable-necessary, source: opposing-party}` | § 17.50(d) — "shall be awarded" | The clearest mandatory case in the set. Text read 2026-07-26: "Each consumer who prevails shall be awarded…" — unqualified. PROPOSED, unruled: model the symmetric §17.50(c) downside too (see §7 item 4) |
+| Breach of contract | `{entitlement: discretionary, measure: reasonable-necessary, source: opposing-party}` | CPRC § 38.001 — "may recover" | Entity-type + commenced-date capture (HB 1578, 87th Leg., R.S. (2021), Ch. 665 — citation confirmed 2026-07-26; V8 open on the commenced-date capture). PROPOSED, unruled: widen the trigger — §38.001(b) covers eight claim categories, not just contract (see §7 item 3) |
+| Mechanic's/materialman's lien | `{entitlement: mandatory, measure: equitable-just, source: opposing-party, direction: bidirectional}` + condition `residential-downgrade` | Prop. Code § 53.156 | **Preserves Michael's 2026-07-26 "new value" ruling in substance** — now expressed rather than labeled (O4 dissolved). **2011** may→shall (S.B. 539, 82nd Leg., R.S., Ch. 51, eff. 9/1/2011 — proceedings **commenced** on or after). Bidirectional: reaches proceedings to declare a lien invalid. Residential carve-out relaxes the verb **only where the property owner is the payor**. Amount may be zero (V10). Hooks §53.161 removal-bond pricing — a mid-case fee cut |
+| Prompt Payment Act | `{entitlement: discretionary, measure: court-determined-equitable-just, source: opposing-party}` | Prop. Code § 28.005(b) | **O1 CLOSED 2026-07-26.** Text: the court "**may** award costs and reasonable attorney's fees as the court determines equitable and just." Discretionary confirmed. Interest companion §28.004; §28.010 exemption. The only live exemplar of `court-determined-equitable-just` after this session |
+| **Probate — CORRECTED** | `{entitlement: mandatory, measure: reasonable-necessary, source: fund}` + condition `proof-satisfactory` | Est. Code § 352.051 | **Was `discretionary-equitable`; both halves were wrong** (ch. 352 read in full 2026-07-26). The verb is **entitlement** — "is entitled to," not "the court may award"; the discretion sits in the proof condition and the necessary/reasonable modifiers. **"Equitable and just" appears NOWHERE in ch. 352.** First and only `source: fund` row — reimbursement out of the estate, not fee-shifting. Three lanes at export (§4.6) |
+| Probate — will contest *(secondary branch, PR-2)* | (a) `{entitlement: mandatory, source: fund}` + `good-faith-and-just-cause`; (b) `{entitlement: discretionary, source: fund}` + same; (c) `{entitlement: discretionary, source: fund}` + `good-faith-and-just-cause` **+ `success-required`** | Est. Code § 352.052 | **The orthogonality that settled O6.** Defending a will is protected win-or-lose; contesting requires success, and "interested person" **excludes creditors and other claimants**. Builds as a rare branch, not a core module (PR-2 ruled 2026-07-26) |
+| First-party UM/UIM (UDJA) | **UNRESOLVED — does not fit the axes.** Old value: `permissive-on-request` | master spec §12 note | Jury question; Nicastro waiver trap. **For design — do not force into the record shape** |
+| Criminal | **UNRESOLVED — does not fit the axes.** Old value: `none` | TDRPC 1.04 prohibition context | Contingency barred; time tracker still available for flat/hourly discipline. **For design — do not force** |
+| PI contingency (no fee claim) | *(no fee claim — profile inapplicable)* | — | Invoice/none; tracker optional |
+
+*(The Family / SAPCR row was **deleted 2026-07-26** — family law is out of scope by ruling; no family case type
+will ever exist. **The schema shape it stress-tested stays**: the §156.005 mandatory-pocket lesson is baked
+into the O6 decomposition above, and the probate chapters are the replacement stress test. Family-law
+*considerations* survive as cross-cutting flags inside probate and PI — heirship, spousal homestead and share,
+common-law marriage and the CPRC §71.005 beneficiary question — but never as a case type.)*
 
 ## 7. Registry entries to open (every one UNVERIFIED — for Michael's sign-off ONE AT A TIME)
 
@@ -102,9 +153,23 @@ Per binding rule 2, each opens as an unverified registry entry; nothing below is
    **Chapter relationship — do not model as alternatives.** §28.007(b): nothing in ch. 28 changes rights or obligations under ch. 53. §28.009(f): its remedies are in addition to others. **Siblings; remedies stack.**
    **Governmental owners are outside ch. 28 entirely** — §28.001(4) excludes governmental entities from "owner," and §28.009(e)(2) excludes government contracts from suspension rights. Texas addresses public-entity prompt payment under a separate regime not present anywhere in this project. **Gap flagged; content not asserted.** → **V12**
    **Remaining for sign-off:** wording; V11 (simple vs. compound); V12 (whether the public-entity gap needs filling).
-7. **Tex. Est. Code ch. 352** — § 352.051 attorney's fees ("on proof satisfactory to the court") vs. the personal representative's separate statutory commission — two lanes, never blurred.
-8. **TDRPC 1.04** — reasonableness factors; unconscionability ceiling; contingent fees barred in CRIMINAL and DIVORCE matters; no billing non-lawyer work at lawyer rates.
-9. **Tex. Fam. Code §§ 106.002, 6.708** (plus 6.502(a)(4) temporary orders; 156.005 frivolous-modification mandatory pocket) — broadly discretionary, financial-disparity-driven.
+7. **Tex. Est. Code ch. 352** — `[STATUTE — ch. 352 read in full 2026-07-26]` **UNVERIFIED; wording sign-off has not occurred.** Full treatment in `statutes-pass-est352-cprc71-2026-07-26.md`.
+   **CLASSIFICATION CORRECTED.** The profile carried `discretionary-equitable`; both halves fail against the text. §352.051 opens *"On proof satisfactory to the court, a personal representative of an estate **is entitled to**:"* — entitlement, not court permission; the discretion sits in the proof condition and in the "necessary and reasonable" / "necessarily incurred" modifiers. **"Equitable and just" appears nowhere in ch. 352.** After this session `discretionary-equitable`'s only live exemplar is Prop. Code §28.005(b). Second consecutive session in which a voice-session classification failed against primary text (cf. O1).
+   **§352.051 in full:** on proof satisfactory to the court a personal representative is entitled to (1) necessary and reasonable expenses incurred in (A) preserving, safekeeping, and managing the estate, (B) collecting or attempting to collect claims or debts, (C) recovering or attempting to recover property to which the estate has title or claim; and (2) reasonable attorney's fees necessarily incurred in connection with the proceedings and management of the estate.
+   **§352.052 — Allowance for Defense or Successful Contest of Will. Was MISSING from our docs entirely** (same failure mode as §28.0091 dropping out of the ch. 28 entry):
+
+   | Subsec. | Who | Condition | Entitlement |
+   |---|---|---|---|
+   | (a) | person designated executor in a will/alleged will, or administrator with will annexed | defends the will or prosecutes any proceeding **in good faith and with just cause**, to have the will admitted to probate — **whether or not successful** | **shall** be allowed out of the estate |
+   | (b) | person designated a devisee in or beneficiary of a will/alleged will | same conditions, **whether or not successful** | **may** be allowed out of the estate |
+   | (c) | "interested person," which **does not include a creditor or any other having a claim against the estate** | **successfully** prosecutes a proceeding to contest a will's validity, in good faith and with just cause | **may** be allowed out of the estate |
+
+   Allowance in each is "necessary expenses and disbursements in those proceedings, **including reasonable attorney's fees**." **The asymmetry:** defending a will is protected win-or-lose; contesting one is not.
+   **§352.053 — Expense Charges, and V14.** (a) the court acts on expense charges as on other claims against the estate; (b) all expense charges shall be (1) made in writing showing specifically each item and its date, (2) verified by the representative's affidavit, (3) filed with the clerk, (4) entered on the claim docket. **V14 RULED (Michael: "The 053 expenses are different than the 051(2) fees")** — the fee lane does not inherit this shape. **V14a OPEN:** §352.053 is the only procedure stated anywhere in ch. 352, so putting fees outside it leaves the chapter silent on what vehicle carries a §352.051(2) fee request — and that vehicle is what the export must be shaped against.
+   **The commission, precisely (Subch. A).** §352.002: a representative *a court finds to have taken care of and managed an estate in compliance with the standards of this title* is entitled to a **five percent commission on all amounts actually received or paid out in cash in the administration of the estate**. **Two five-percent figures, not one** — §352.002(b)(1) caps the aggregate at five percent of the **gross fair market value of the estate subject to administration**: a rate and a cap on different bases. **Three exclusions**, §352.002(b)(2): (A) receiving funds on hand or held for the decedent at death in a financial institution or brokerage firm (checking, savings, CD, money market); (B) **collecting life-insurance proceeds**; (C) **paying out cash to an heir or legatee in that capacity**. **§352.001** exists solely to define "financial institution" for exclusion (A). **§352.003** — the court **may** allow alternate reasonable compensation where the representative manages a farm, ranch, factory, or other estate business, or where the §352.002 figure is unreasonably low; **(b) the county court has jurisdiction over independent executors' applications** — live, not incidental, per PR-1. **§352.004** — the court may **wholly or partly** deny a commission for imprudent management or after removal under §404.003 or Subch. B, ch. 361. **Two exclusions land on PI-adjacent facts:** (B) life insurance and (C) cash paid to heirs.
+   **Law-change entries:** whole chapter added by Acts 2009, 81st Leg., R.S., Ch. 680 (H.B. 2502) §1, **eff. 1 Jan 2014**; §352.004 amended Acts 2011, 82nd Leg., R.S., Ch. 1338 (S.B. 1198) §2.45 and Acts 2013, 83rd Leg., R.S., Ch. 161 (S.B. 1093) §6.013, both eff. 1/1/2014 — **amendments to a provision not yet in effect**, which any enactment-year sort mis-files; §352.052 amended Acts 2015, 84th Leg., R.S., Ch. 949 (S.B. 995) §34, eff. 9/1/2015, and Acts 2019, 86th Leg., R.S., Ch. 1141 (H.B. 2782) §§24 and 25, both eff. 9/1/2019.
+   **Remaining for sign-off:** wording; V14a; V15 survival half; V16 legal half; V17.
+8. **TDRPC 1.04** — reasonableness factors; unconscionability ceiling; contingent fees barred in CRIMINAL and DIVORCE matters; no billing non-lawyer work at lawyer rates. **RETAINED 2026-07-26 notwithstanding the family-law removal** — this is the fee-*reasonableness* rule and is core to PI contingency work; only its divorce-contingency subpart is mooted. **Do not strike it from the statutes queue.**
 
 ## 8. Decisions and open items (Michael)
 
@@ -112,14 +177,39 @@ Per binding rule 2, each opens as an unverified registry entry; nothing below is
 - **D2 — Timekeeper field now?** Solo practice today; TDRPC's non-lawyer-rate warning only bites once staff exist. Design assumes: single implicit timekeeper now, field added when multi-user lands (defer).
 - **D3 — Untagged-entry posture at export:** exclude untagged entries from the affidavit with a visible omission note, or block the export until tagged? (Capture never blocks; this is export-time only.)
 - **D4 — Case types with `basis: none`:** show the tracker on demand (current master-spec posture: flagged on per eligible case) or always-on with exports suppressed? Design assumes current posture.
-- ~~**O1 — Verify ch. 28 fee discretion**~~ — **CLOSED 2026-07-26.** §28.005(b) read; "may … as the court determines equitable and just." `discretionary-equitable` confirmed.
-- **O2 — Fam. 156.005 mandatory pocket:** confirm scope before the family profile encodes any mandatory branch.
-- **O4 — Enum value name.** Michael ruled "new value" but did not rule the **name**. `mandatory-equitable` is Claude's label. Rename freely before anything is built on it.
-- **O5 — `direction` and `conditionalDowngrade` attributes** (§2) — PROPOSED, unruled.
-- **O3 — Build sequencing:** where this sits in the queue (currently behind the Outlook push deploy, OAA remaining tabs, and edge-function deploys) — Michael decides; nothing here enters the build queue until §7 sign-offs begin.
+- ~~**O1 — Verify ch. 28 fee discretion**~~ — **CLOSED 2026-07-26.** §28.005(b) read; "may … as the court determines equitable and just." Discretionary confirmed.
+- ~~**O2 — Fam. 156.005 mandatory pocket**~~ — **MOOT 2026-07-26. Family law is out of scope**; no family case type will ever exist, so there is no family profile to encode a mandatory branch into. **Preservation note (the lesson outlives the row):** the O6 decomposition was stress-tested against §156.005's mandatory pocket sitting inside an otherwise discretionary, disparity-driven regime. **That architectural lesson is baked into the ruled schema and stays** — the probate chapters are the replacement stress test.
+- ~~**O4 — Enum value name**~~ — **DISSOLVED by O6.** No value remains to name; §53.156 is now expressed as `{entitlement: mandatory, measure: equitable-just, source: opposing-party}`. Michael's "new value" ruling survives in substance.
+- **O5 — `direction` / `conditionalDowngrade`** — **ABSORBED into O6's shape; substance NEVER RULED — CONFIRM.** `direction` survives as its own axis; `conditionalDowngrade` becomes a `conditions` predicate. Recorded explicitly because a smooth write-up would make it look settled.
+- ~~**O6 — Fee-basis enum decomposition**~~ — **CLOSED, RULED 2026-07-26: decomposition adopted** (§2.1).
+- **O3 — Build sequencing:** where this sits in the queue — Michael decides; nothing here enters the build queue until §7 sign-offs begin.
+
+**Ruled elsewhere the same day, recorded here because they bind this doc:**
+
+- ~~**S-1 — probate a real practice line?**~~ — **CLOSED: yes, a mapped line, full build-out** notwithstanding low volume.
+- ~~**PR-1 — independent vs. dependent administration**~~ — **CLOSED: independent administration is in scope**; the deadline machinery matters on this line and §352.003(b) is live.
+- ~~**PR-2 — contested vs. uncontested**~~ — **CLOSED: will contests are a rare branch**; §352.052 builds as secondary. With PR-1, the probate spine is **independent, uncontested administration**.
+- ~~**D3 / H8 — shared touch substrate**~~ — **CLOSED: the case-event core (CE), shape (c)** — shared spine plus per-consumer facets, with an operational/evidentiary boundary where **only evidentiary facets are eligible for a sworn fee affidavit**. The time tracker is a **consumer, not the owner**. **This unblocks CE1; it does NOT authorize building it.**
+- **RE-1 — referral engine** — **NEW, OPEN.** Ruled yes-eventually; triggers, logging, letter, and conflicts interaction all open. Not family-specific.
+- ~~**FAM-1 — family furniture in `src`/`db`**~~ — **CLOSED by Code verification 2026-07-26: none exists.** No family practice area or case type, no family roles, no family tables/columns/enum values. The removal was doc-only in fact as well as in authorization.
+
+**Statute-pass residuals now sitting on this doc (all OPEN, all Michael's):** **V14a** (what vehicle carries a §352.051(2) fee request); **V15** survival half (§71.021(b) names heirs, legal representatives, *and* estate — needs case law); **V16** narrowed to the legal half (does "is entitled to" bind the court?); **V17** (are §71.004(c)-compelled fees reimbursable where the recovery is not the estate's? — decides whether the probate profile touches PI at all).
 
 ## 9. Build plan sketch (NOT committed — sequencing is §8-O3)
 
-- **T1 — Core capture:** time_entries + claims + tagging + case-level rate, timer + manual entry, both adapters, demo seeds. No legal behavior — buildable before any §7 verification.
-- **T2 — Profiles + warnings:** profile registry, capture nudges, §38.001-style capture fields. Warnings may reference unverified entries AS unverified (rule-1 compliant).
-- **T3 — Exports:** affidavit bundle + court-application cut + invoice integration + ch. 28 interest placeholder. Any export line that asserts a legal conclusion is gated on the specific registry entry being verified.
+**Slices renamed 2026-07-26 (N-1).** These were `T1`/`T2`/`T3`, which collided with the transcript
+sort-and-route `T1`–`T4` in CLAUDE.md's build sequence — the two were visually identical and "D3/H8 blocks T1"
+was genuinely ambiguous. **The transcript T-series is unchanged; the shared substrate is `CE1`; time-tracker
+slices are `TT<n>`.**
+
+- **CE1 — the shared case-event core** (was "T1 — Core capture"): the CE spine plus the time facet —
+  time_entries + claims + tagging + case-level rate, timer + manual entry, both adapters, demo seeds. No legal
+  behavior; buildable before any §7 verification. **D3/H8 is CLOSED, so CE1 is UNBLOCKED — but it is NOT
+  AUTHORIZED. No build authorization exists.** CE1 is shared infrastructure with four consumers (heartbeat
+  threads, time entries, the Servpro release thread, probate matter threads), so it is not the time tracker's
+  to own.
+- **TT1 — Profiles + warnings** (was T2): profile registry, capture nudges, §38.001-style capture fields.
+  Warnings may reference unverified entries AS unverified (rule-1 compliant).
+- **TT2 — Exports** (was T3): affidavit bundle + court-application cut + invoice integration + ch. 28 interest
+  placeholder. Any export line that asserts a legal conclusion is gated on the specific registry entry being
+  verified.

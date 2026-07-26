@@ -12,6 +12,276 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#10) — QUEUE-RUNNER batch: 2 packets (statutes pass + probate/D3H8 rulings) (Code session)
+
+Third QUEUE-RUNNER batch, and the first with a real multi-packet queue. Run
+on Opus 5 per the packets' model-usage note.
+
+**Queue order — file date was WRONG and the manifests overrode it.** Three
+zips were in `inbox/`: `probate-line-s1` (17:30), `probate-scope-rename-d3h8`
+(18:40), and `est352-cprc71` (18:45, uploaded last after Code flagged it
+missing). Sorting by mtime would have run packet 1 LAST. Both packet-2 zips
+declare "process est352-cprc71 FIRST," so executed order was **packet 1
+(est352-cprc71) → packet 2 revision 2 (probate-scope-rename-d3h8)**.
+
+**SUPERSEDED, not executed:** `probate-line-s1_2026-07-26.zip`. Its own
+successor says "This replaces the first packet-2 zip in full. Discard that
+one" — it predated four later rulings and its log entry was wrong in three
+places (Family Code next, FLP promo carried, D3/H8 blocks T1). Its S-1
+content survives inside revision 2's addendum. Michael was asked before
+anything was deleted; the zip was moved out of `inbox/`, not destroyed.
+
+**Branch determination:** packet 1 had NOT run (capture doc absent, no log
+entry) → **Branch A**. Branch A's two S-1 edits were applied to packet 1's
+own outputs before filing: its §7 S-1 row and the "S-1 probate scope
+unanswered" carry in its §3 entry.
+
+**Deviations and judgment calls, all deliberate:**
+- **FLP promo line struck from packet 1's §3 entry as written**, not left to
+  be corrected downstream. It was already CLOSED repo-side earlier the same
+  day at Michael's direction (entry #5), so appending it as OPEN would have
+  resurrected an item he killed. Revision 2's A8 independently orders it
+  struck "wherever it appears."
+- **§4.4 target did not exist.** The packet routes the majority-opinion
+  material to a "registry conventions section" in
+  `legal-rule-registry-draft-entries-medical-billing.md`; that doc has
+  entries and a sign-off checklist, no conventions section. Filed instead in
+  CLAUDE.md's registry discipline (rule 5) and the CourtListener design doc
+  §0.1 — done in batch 2 earlier today, verified still in place.
+- **T1 rename went one file beyond the packet's sweep list** —
+  `time-tracker-fee-basis-profiles-design.md` §9 carried an unambiguous
+  time-tracker `T1`. Renamed CE1/TT1/TT2; leaving it would have preserved
+  exactly the ambiguity N-1 exists to kill.
+- **`prop-code-53-28-deadline-engine-design.md` line 411 still says "D3/H8
+  still gates T1" and was LEFT ALONE** — packet 1's DO-NOT bars amending
+  that doc beyond adding P7 to §3, and cumulative DO-NOTs bind. Flagged
+  here for the next packet rather than silently fixed.
+
+**T1 rename counts (read in context, no blind replace).** Changed: **8** —
+`case-heartbeat-design.md` 4 (§7.1, §9 build phasing, §10 D3 row, §11 H8
+row, plus the T2–T5 series → HB1–HB4), `time-tracker-fee-basis-profiles-design.md`
+1 (§9), `BUILD-STATE.md` 1 (via the mandatory rewrite),
+`attorney-review-queue.md` 1 (D3 line), and the statutes capture's own
+rename note. **Left alone: 20+** — **CLAUDE.md's 4 occurrences are ALL
+transcript- or statute-sense** (build sequence item 5; the statute T1 cite
+parser and its fixture table), so the packet's expectation that CLAUDE.md
+carries "BOTH senses, highest care here" was **wrong — it carries neither
+heartbeat sense**. Also left alone by the append-only/raw-record exception:
+captures d/e/f (7), the three APIL mining passes (4),
+`registry-verification-pass-2026-07-26.md` (2), and every historical
+`session-log.md` entry (10+).
+
+**§4.3 source verification — the design side was wrong in BOTH directions:**
+- **Probate furniture partly EXISTS.** `src/domain/caseTypes.ts` carries a
+  `Probate companion` case type — but parented under **Personal Injury**,
+  inheriting `_piDefault`, with the code's own comment conceding the ladder
+  does not fit its arc and pointing at a pending design pass. No probate
+  practice area; no estate/decedent/probate tables or columns in
+  `db/schema.sql`; none of executor, administrator, temporary administrator,
+  independent executor, devisee, beneficiary, heir, legatee, or interested
+  person in `partyRegistry.ts`.
+- **Family furniture does NOT exist at all** — no family practice area, case
+  type, roles, tables, columns, or enum values. **FAM-1 closes with nothing
+  to remove**; the deletion was doc-only in fact as well as in
+  authorization, and none of the orphaned-data risk the packet guarded
+  against was real.
+
+**Q-3/Q-4 struck** from BUILD-STATE per packet 1 §4.5 —
+`docs/prompts/QUEUE-RUNNER.md` returned in design-side project-knowledge
+search, so it is indexed and `docs/prompts/` is inside the sync selection.
+
+Open items merged from both §7 tables (all Michael's): **O5** (half-answered
+— `direction`/`conditionalDowngrade` substance never ruled; needs a yes/no),
+**V14a**, **V15 survival half** (V10 citator pass now runnable),
+**V16 narrowed**, **V17**, **V4**, **V11/V12/V13**, **Entry 1(c-3)**,
+**RE-1** (new — referral engine), **Q-5**, **Q-6**, **registry entries 1–10
+sign-off** (deliberately not attempted at the end of a long session),
+**M-3**, **M-4**, **K-5**, and the **claude.ai project instructions v2**,
+which are now wrong in both directions ("PI, criminal defense, family" —
+should be PI, criminal defense, probate) plus the stale carried-file line.
+Michael's paste; neither Claude nor Code can edit them.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: the three entries below; Outlook
+push slice (2026-07-24); BUILD-SESSION-NOTES.md 2026-07-21 audit.
+
+## 2026-07-26 (#9) — Design space, Opus 5: PR-1/PR-2 ruled, D3/H8 CLOSED, slice rename, family law removed
+
+Same conversation as the entries below, later turns. Design-side; **nothing entered the build queue.**
+
+**S-1 CLOSED** (recorded in the entry below): probate is a mapped practice line, full build-out.
+
+**PR-1 CLOSED** — Michael: *"There will be enough independent administration to make it worthwhile to build
+it out."* Independent administration is a real share of the work, so the probate line is built around it. The
+deadline machinery therefore matters on this line, and §352.003(b) (county-court jurisdiction over
+independent executors' alternate-compensation applications) is live rather than incidental.
+
+**PR-2 CLOSED** — Michael: *"Will contest is a rare branch. I'm not doing that that often."* §352.052 builds
+as a secondary branch, not a core module. Combined with PR-1, **the probate line's spine is independent,
+uncontested administration** — the bounding answer "built out fully" needed.
+
+**D3/H8 CLOSED — the case-event core (CE), shape (c).** Michael: *"I'm going with your recommendation,"* read
+back in-session and not corrected. The shared touch substrate is a **shared spine plus per-consumer facets**,
+owned design-side; heartbeat and time tracker are consumers, not owners. Spine: case, timestamp, actor,
+channel, note. Heartbeat facet: thread, outcome, next interval. Time facet: duration, timekeeper, claim tag,
+the four Rohrmoos elements. **Evidentiary boundary ruled as part of the same recommendation:** a facet is
+either operational or evidentiary, and only evidentiary facets are eligible for a sworn fee affidavit — the
+wall that stops an auto-logged event from surfacing in a Rohrmoos affidavit. Rejections encode rules: not two
+tables (the heartbeat could not see a call logged as time); not one union-of-columns table, because the sets
+do not nest — a client call is both, an inbound provider email is a touch and not compensable time, research
+on a brief is time and touches no thread. Ruled against **four** consumers, not the two the design doc was
+written against: heartbeat, time tracker, the Servpro release thread, and probate matter threads.
+**This unblocks the first slice; it does NOT authorize building it.**
+
+**N-1 — slice naming collision resolved.** `T1` was doing two unrelated jobs: the transcript sort-and-route
+slices (T1–T4, CLAUDE.md build sequence item 5) and the first build slice of the heartbeat and time tracker.
+"D3/H8 blocks T1" was genuinely ambiguous. Michael granted a free hand. **Ruled: the transcript T-series is
+UNCHANGED; the substrate is CE1; heartbeat slices are HB1, HB2…; time-tracker slices are TT1, TT2…** Claude
+first ruled an S-series aloud, then caught that `S1` collides with `S-1` (the probate ruling from this same
+session) — one hyphen apart, the identical failure mode — and revised under the same grant. The correction is
+**read-in-context, not a blind search-and-replace**: the two T1s are visually identical.
+
+**Family law REMOVED as a practice line.** Michael: *"I am not going to be practicing family law… Delete
+it."* Then the refinement, which is the operative form of the ruling: *"If there's some family law
+considerations in probate or any my other matters that are worth flagging… you can still keep that stuff, but
+I don't need family law as its own case type. I will not be creating any family law cases… I refer those out
+immediately."* Three parts: (1) no family case type, ever — the fee-basis family row, the family profile, and
+O2 are deleted as a practice line; (2) family-law **considerations** are RETAINED as cross-cutting flags,
+load-bearing for probate specifically — heirship turns on family relationships, spousal homestead and share
+touch the estate, and common-law marriage drives the wrongful-death beneficiary set (CPRC §71.005); (3)
+referral out is first-class behavior. **Two things delete does NOT reach:** the fee-basis schema keeps its
+full shape (§156.005's mandatory-pocket lesson is already baked into the ruled O6 decomposition and stays,
+even though the row that taught it is gone), and **TDRPC 1.04 stays in the statutes queue** — it is the
+fee-reasonableness rule and is core to PI contingency work; only its divorce-contingency subpart is mooted.
+Claude flagged the irreversibility before Michael confirmed.
+
+**RE-1 opened — referral engine.** Michael: *"There should be a referral engine built in, but that'll be an
+open piece."* Logged as its own concept, not a sub-piece of the family ruling: conflicts, out-of-area matters,
+and overflow are all inputs, family being one among several. Ruled yes-eventually; everything else OPEN.
+
+**FLP / CourtListener CLOSED.** Michael already signed up; the 30-day window doubles access for members and
+non-members alike — a usage promotion, not a signup window — so the 2026-08-06 date carried on nine
+consecutive log entries was never a cliff. The CourtListener MCP connector is confirmed live in the claude.ai
+project. **The V10 citator pass is runnable.** Q-6 unchanged: research authorized, app integration blocked.
+The majority-opinion rule still binds every retrieval (cluster IDs do not resolve to the majority; verify
+against the reporter). **Strike the FLP promo line wherever it appears.**
+
+**Process notes.** O5 is a half-answered item from this session — Claude listed it as needing only a yes, and
+Michael answered around it. **Still OPEN.** The registry sign-off queue (entries 1–10) and the billing gates
+(Entry 1(c-3), V4) were deliberately NOT attempted at the end of a long session: both need Michael reading
+primary text and ruling proposition by proposition, and a tired sign-off feeding a sworn-affidavit pipeline is
+the exact failure the registry discipline prevents. Held by reasoning, not oversight.
+
+**Next:** the Family Code block is MOOT and is no longer the resume point. Remaining statutes queue: TDRPC
+1.04, TRCP 204.1, and the Estates Code territory the probate line needs — will admission and letters, heirship,
+notices to beneficiaries and creditors, inventory/appraisement/list of claims, claims presentation and
+allowance, independent administration. **The probate chapters are the new O6 stress test**, replacing family.
+Carried: V10 (now runnable), V11–V13, V4, V14a, V15 survival half, V16 legal half, V17, O5, Entry 1(c-3),
+Q-5, RE-1, FAM-1, registry entries 1–10 sign-off.
+
+**Staged for Code:** the session-rulings addendum (folds into statutes-pass-est352-cprc71-2026-07-26.md);
+master-spec amendment (probate in, family out); attorney-review-queue update; the T1→CE/HB/TT rename across
+CLAUDE.md, BUILD-STATE, case-heartbeat-design.md and captures d/e/f; D3/H8 fold-in at
+case-heartbeat-design.md §7.1 and §10; fee-basis family-row deletion; the src verification report; this entry.
+Documentation routing only — nothing enters the build queue.
+
+**Awaiting/Returned from Code, unreviewed:** Outlook push slice (2026-07-24); BUILD-SESSION-NOTES.md
+2026-07-21 audit.
+
+## 2026-07-26 (#8) — Design space, Opus 5: Est. Code ch. 352 + CPRC ch. 71 read in full; probate fee row misclassified; §352.052 missing entirely; fee-basis enum DECOMPOSED (O6 ruled); V14 ruled; WD commission question closed
+
+Resumed the statutes queue at its recorded resume point, Est. Code §352.051. Michael supplied ch. 352 and,
+when the commission question could not be closed from it, CPRC ch. 71 — both full official text, both read
+in session. Design-side throughout; **nothing entered the build queue.** Every proposition remains
+UNVERIFIED; no entry status changed.
+
+**Both queue questions answered.** "On proof satisfactory to the court" IS the operative standard of
+§352.051 — the 2026-07-25 voice note was right. The two-lane separation survives and is stronger than we
+framed it: the lanes are separate SUBCHAPTERS (A, compensation/commission; B, expenses and attorney's fees),
+not a practice caution.
+
+**But the profile-table classification fails.** `time-tracker-fee-basis-profiles-design.md` §6 carries
+Probate as `discretionary-equitable`. Both halves are wrong: §352.051 says the representative "IS ENTITLED
+TO" (entitlement, not court permission — the discretion sits in the proof condition and the
+necessary/reasonable modifiers), and the phrase "equitable and just" appears NOWHERE in ch. 352. After this
+session `discretionary-equitable`'s only live exemplar is Prop. Code §28.005(b). Second consecutive session
+in which a voice-session classification failed against primary text (cf. O1).
+
+**§352.052 was missing from our docs entirely** — same failure mode as §28.0091 dropping out of the ch. 28
+entry. Will-contest allowance, with a real asymmetry: an executor-designate defending a will in good faith
+and with just cause is allowed fees WHETHER OR NOT SUCCESSFUL (shall), while an interested person contesting
+must SUCCEED (may), and "interested person" there excludes creditors and claimants.
+
+**O6 RULED — fee-basis enum DECOMPOSED (Michael: "I'll go with your suggestion").** §352.052 settled it:
+subsections (a) vs. (b) vary the entitlement verb holding the success condition constant; (b) vs. (c) vary
+the success condition holding the verb constant. Two axes moving orthogonally inside one section — which a
+flat enum cannot express without a value per combination. The flat `basis` enum is replaced by a record:
+entitlement / measure / source / direction / conditions. Field names and value lists are Claude's draft and
+remain PROPOSED. Consequences: **O4 DISSOLVED** (no value left to name; §53.156 becomes
+{mandatory, equitable-just, opposing-party} and Michael's "new value" ruling survives in substance);
+**O5 ABSORBED** into the shape, substance never ruled — confirm; **V16 SPLIT**, schema half gone, legal half
+(does "is entitled to" bind the court?) still open. Nothing is built on the enum, so no migration — which is
+why the window was used now.
+
+**The `source` axis is new and §352.051 forced it.** Every other row in §6 is fee-shifting against an
+opponent; §352.051 is REIMBURSEMENT to the representative out of the estate. Different claimant, payor, and
+mechanism. Warning 6's export now branches on it.
+
+**V14 RULED (Michael: "The 053 expenses are different than the 051(2) fees").** The fee lane does not
+inherit §352.053's shape (written, itemized, dated, affidavit-verified, clerk-filed, claim-docketed). The
+probate export therefore separates three lanes: commission, expenses, attorney's fees. Claude flagged the
+consequence as V14a rather than as a reason to revisit: §352.053 is the only procedure stated in ch. 352, so
+putting fees outside it leaves the chapter silent on what vehicle carries a fee request — and that vehicle
+is what the export must be shaped against.
+
+**CPRC ch. 71 — WD proceeds are not estate funds, on three independent hooks:** §71.004(a) exclusive benefit
+of surviving spouse, children, parents; §71.010(b) apportionment in the jury's verdict among those alive at
+that time; §71.011 not subject to the decedent's debts. So §352.002's commission base ("in the
+administration of the estate") has nothing to attach to on a WD-only file — including the §71.004(c) case
+where the representative is COMPELLED to prosecute (3 calendar months; unless requested not to by all).
+That confirms pi-case-playbooks L10 against text. WD half of V15 closed against the commission, pending
+Michael's sign-off.
+
+**Claude correction, recorded:** Claude stated earlier in the same session that a survival recovery is
+estate property. §71.021(b) does not say that — the action survives "to and in favor of the heirs, legal
+representatives, and estate," three unranked takers. The survival half of V15 is live but unresolved and
+needs case law; same shape as V4. Even where survival funds flow, §352.002(b)(2)(C) excludes cash paid to an
+heir or legatee as such, so the commission would compute on the receipt side only.
+
+**V17 opened, and it is the one that matters for scope:** §352.051(2) reimburses fees "necessarily incurred
+in connection with the proceedings and management of the estate," while §71.004(c) compels a representative
+to prosecute an action whose recovery is not the estate's. Reimbursable or not? Text points both ways;
+neither chapter answers. This decides whether the probate fee profile touches the PI practice at all.
+
+**Two cross-cutting finds.** (1) §71.004(c)'s "three calendar months after the death" is a month-count from
+a DATE — distinct from ch. 53's P1 month-ordinal, which uses only the anchor's month and discards the day.
+Two month shapes; the primitive library needs both. Proposed as P7. (2) §71.005 bars the defense from
+mentioning common-law marriage, an extramarital relationship, or the surviving spouse's marital prospects,
+while actual ceremonial remarriage is admissible if true — a WD trial guardrail our playbook lacked.
+
+**Law-change ledger — fourth homeless family.** Ch. 352 was added by H.B. 2502 (2009) eff. 1 Jan 2014, yet
+§352.004 was amended in 2011 (S.B. 1198) and 2013 (S.B. 1093) — amendments to a provision not yet in effect,
+which any enactment-year sort will mis-file. Also a third applicability-anchor pattern beside "commenced"
+and "date of service." Still no canonical ledger file.
+
+**Q-3 and Q-4 ANSWERED incidentally:** docs/prompts/QUEUE-RUNNER.md returned in project-knowledge search in
+a chat that began today — it is indexed, and docs/prompts/ is inside the sync selection. Strike both from
+BUILD-STATE.
+
+**Next:** the Family Code block (§§106.002, 6.708, 6.502(a)(4), 156.005) — expected to stress the new schema
+shape, better run against a filed version. Carried: V10 citator pass, V11, V12, V13, V4, Entry 1(c-3),
+D3/H8 still blocking T1. *(Both of those last two carries were overtaken by rulings later the same session —
+see entry #9 above; S-1 was closed and struck from this list per the amendment packet's Branch A, and the
+FLP promo line was struck as already closed repo-side in entry #5.)*
+
+**Staged for Code:** `statutes-pass-est352-cprc71-2026-07-26.md` (new); fold-ins into
+`time-tracker-fee-basis-profiles-design.md` §2/§4/§6/§7/§8, `attorney-review-queue.md` §2,
+`pi-case-playbooks.md`, `prop-code-53-28-deadline-engine-design.md` §3; spec-feedback append; Q-3/Q-4 struck
+from BUILD-STATE; this log entry. Documentation routing only — nothing enters the build queue.
+
+**Awaiting/Returned from Code, unreviewed:** Outlook push slice (2026-07-24, never seen design-side);
+BUILD-SESSION-NOTES.md 2026-07-21 audit.
+
 ## 2026-07-26 (#7) — QUEUE-RUNNER batch: 1 packet (CourtListener + queue conventions) (Code session)
 
 Second QUEUE-RUNNER batch; queue of one

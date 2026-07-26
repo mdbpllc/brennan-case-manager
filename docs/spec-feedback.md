@@ -300,6 +300,19 @@ review queue updated (amendment 6), session-log entry appended.
 or lien-related is built; D3/H8 still gates T1, matching the work order's
 assumptions.
 
+### 2026-07-26 — Law-change ledger: a FOURTH homeless family, with a mis-sort trap
+
+**Where:** no canonical file exists — that is the point.
+
+**Finding:** the Est. Code ch. 352 / CPRC ch. 71 statutes pass adds a **fourth** family of law-change entries with nowhere to live (after TRCP 166a, TRCP 239a, and the ch. 53/28 bills). It also surfaces a trap that any naive ledger will fall into:
+
+- **Ch. 352 was added by H.B. 2502 (Acts 2009, 81st Leg., R.S., Ch. 680), effective 1 January 2014** — a four-year gap between enactment and effect.
+- **§352.004 was then amended in 2011 (S.B. 1198) and 2013 (S.B. 1093)** — amendments to a provision **not yet in effect**. Any ledger keyed on enactment year mis-files these; any ledger keyed on effective date collapses three distinct legislative events onto one date.
+- This is also a **third applicability-anchor pattern**, alongside "commenced" (§38.001 / H.B. 1578; §53.156 / S.B. 539) and "date of service" (H.B. 4145).
+- Ch. 71 adds its own: §71.012 and §71.022 added 1999, each amended 2017 and 2019; §71.001 and §71.003 amended 2003; §71.0055 added 2003.
+
+**Status:** flag only. **No ledger file was created** — that is a design decision Michael has not made. Recorded so the fourth family is not lost, and so whoever designs the ledger designs it against the enactment-vs-effective-date split and the three anchor patterns rather than discovering them later.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

@@ -8,7 +8,14 @@ PRECEDENCE (added 2026-07-25): this document is authoritative for what is DESIGN
 
 1. What we are building
 
-A standalone case management suite for a personal injury / civil litigation / criminal law practice. It runs on the user's own machine and connects to online services (OneDrive for documents, Outlook for email). It is a database-centric application: many interconnected structured records, plus document handling and integrations.
+A standalone case management suite for a personal injury / civil litigation / criminal law / **probate** practice.
+
+**Practice-line scope amendment (2026-07-26, Code-side edit made at design's explicit direction — the one authorized exception to spec read-only).** Two changes, both ruled by Michael the same day:
+
+- **PROBATE IS IN — a mapped practice line, to be built out fully.** Michael: *"Probate is actually going to be a practice line. Not so many of these cases, but enough to where I would like to have this built out fully."* Low case volume; full build-out wanted regardless. The line's **spine is independent, uncontested administration** — independent administration is a real share of the work (PR-1), and will contests are a rare secondary branch (PR-2). This is distinct from, and larger than, the existing "Probate companion" case type below, which remains the PI-linked companion matter.
+- **FAMILY LAW IS OUT — no family case type will ever exist.** Michael: *"I am not going to be practicing family law… I will not be creating any family law cases… I refer those out immediately."* But **family-law *considerations* survive as cross-cutting flags inside probate and PI**, where they are load-bearing: heirship turns on family relationships, a surviving spouse's homestead and share touch the estate, and common-law marriage drives the wrongful-death beneficiary set (CPRC §71.005). The system should be able to say *"there is a family-law issue here — flag it, refer it out"* without ever opening a family matter. Referral out is first-class behavior (RE-1, a future design pass).
+
+**No probate practice-line design doc exists yet.** The Estates Code territory the line needs — will admission and letters, heirship, notices to beneficiaries and creditors, inventory/appraisement/list of claims, claims presentation and allowance, independent administration — is entirely unread; only ch. 352 (the compensation corner) has been read, in `statutes-pass-est352-cprc71-2026-07-26.md`. Drafting the design doc is design-side work that has not happened. It runs on the user's own machine and connects to online services (OneDrive for documents, Outlook for email). It is a database-centric application: many interconnected structured records, plus document handling and integrations.
 
 The user is a personal injury attorney (5+ years' experience), not a career developer. The user wants Claude to do the heavy lifting on the build; the user provides direction and feedback and drives the design decisions.
 

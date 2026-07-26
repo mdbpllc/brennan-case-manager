@@ -213,12 +213,25 @@ These recurred often enough across the walkthrough to be built once, as primitiv
 
 ## 7. Boundaries with existing systems
 
-### 7.1 The time tracker — shared touch substrate **[H8]**
+### 7.1 The time tracker — shared touch substrate **[C] RULED 2026-07-26 (D3 / H8 CLOSED)**
 Both subsystems are "log that a case got touched, on a clock." They must not be built twice.
 
-**[D] Recommended direction — the same shape as the `claims` finding in the fee-basis review:** the case-event/touch record is a **core case-model entity owned by the design space**, and both the time tracker and the heartbeat are *consumers* of it. A touch logged for heartbeat purposes carries the fields the heartbeat needs (thread, outcome, next interval); a time entry carries the fields the fee affidavit needs (duration, timekeeper, claim tag). Shaped by whichever module gets built first, the table will be wrong-shaped for the second one.
+**The ruling (Michael: "On the D3/H8, I'm going with your recommendation," read back in-session and not corrected).** The substrate is a **case-event core (CE)** — a **shared spine plus per-consumer facets** — owned design-side. The heartbeat and the time tracker are **consumers, not owners**.
 
-Not designed here; flagged as the boundary that must be settled *before* either module's schema is built, not after.
+- **Spine:** case, timestamp, actor, channel, note.
+- **Heartbeat facet:** thread, outcome, next interval.
+- **Time facet:** duration, timekeeper, claim tag, the four *Rohrmoos* elements.
+
+**The evidentiary boundary, ruled as part of the same recommendation.** A facet is either **operational** or **evidentiary**, and **only evidentiary facets are eligible for a sworn fee affidavit.** This is the wall that stops an auto-logged "inbound email detected" event from surfacing in a *Rohrmoos* affidavit. It also protects the contemporaneity badge ruled the same day: auto-generated touches carry machine-accurate timestamps while human time entries may be back-logged and badged, and the operational/evidentiary split is what keeps the badge's meaning intact `[D]`.
+
+**Why shape (c) — the rejections encode the rule, so do not "simplify" back into either:**
+
+- **Not two independent tables.** The heartbeat could not then see a call logged as time, and "when did this case last move" would have two answers.
+- **Not one table with a union of nullable columns.** **The sets do not nest:** a client phone call is both a touch and a time entry; an inbound provider email that resets the heartbeat clock is a touch and **not** compensable time; research on a brief is time and touches no thread. Any 1:1 table is wrong at both ends.
+
+**Ruled against four consumers, not the two this doc was written against:** heartbeat threads, time entries, the Servpro release thread (arms on payment), and — per the same day's S-1 ruling — probate matter threads.
+
+**Build status: D3/H8 CLOSED; CE1 is UNBLOCKED but NOT AUTHORIZED.** Stated explicitly in-session: unblocking is not authorization, building still routes through Michael, and no build authorization is on the table.
 
 ### 7.2 The registry and the deadline engine — **legally-consequential intervals are registry entries, not constants [D]**
 The 60-day insurer-notice backstop (§8.1) is not a preference; it is a legal rule with a cite, and CLAUDE.md's registry discipline governs it. **The heartbeat must not hardcode any interval that has legal consequence.** It consumes the rule; the registry owns it; the deadline engine computes the date.
@@ -500,13 +513,15 @@ then the unread Kostura sections; then the consolidated registry-candidate table
 
 **Separate the engine from the intelligence [P — Michael did not object].** The engine (threads, clocks, escalation, serializer) is simple and gets built once. The intelligence (auto-detecting case state, so that a demand going out arms its own follow-up) is the expensive part and is deliberately deferred.
 
-**T1 — Substrate.** Touch/case-event record, per §7.1's boundary decision. Blocked on H8; nothing else should be built first.
-**T2 — Engine core.** Threads, clocks, closed outcome set with editable default intervals, arm/reset, escalation levels. No stage content.
-**T3 — Serializer.** One-at-a-time ask surface, yes/no + outcome, snooze/escalate, no bulk affordance, queue ordering (H10), quiet hours. The batched report as a separate, opt-in view.
-**T4 — PI stage pack.** The §8 catalog as data (thread templates, triggers, profiles), hand-tagged posture, reading `PI_FLAGS`. Extensible by Michael at runtime (§8.3).
-**T5 — Intelligence, only after live tuning.** Auto-arming from detected events; inbound-email heartbeat detection.
+**Slices renamed 2026-07-26 (N-1).** These were `T1`–`T5`, which collided with the transcript sort-and-route `T1`–`T4` in CLAUDE.md's build sequence — visually identical, and "D3/H8 blocks T1" was genuinely ambiguous. **The transcript T-series is unchanged; the shared substrate is `CE1`; heartbeat slices are `HB<n>`.**
 
-**9.1 Live-tuning protocol.** Run T1–T4 on real cases for roughly a month. **9.2** The stage pack ships **seeded, not closed** — the add-a-touch path is a T4 requirement, not a later nicety. **9.3 [D] Instrument the annoyance from day one:** log every snooze (with duration), every dismissal, every thread that armed and stayed armed, and every case that went quiet with no open thread. P6 makes this data the spec for T5; it cannot be reconstructed after the fact.
+**CE1 — Substrate (was T1).** The shared **case-event core**: touch/case-event record, per §7.1's ruled shape. **NOT the heartbeat's to own** — it is a shared spine with four consumers (heartbeat threads, time entries, the Servpro release thread, probate matter threads). **D3/H8 is CLOSED, so CE1 is UNBLOCKED — but NOT AUTHORIZED. No build authorization exists.** Nothing else should be built first.
+**HB1 — Engine core (was T2).** Threads, clocks, closed outcome set with editable default intervals, arm/reset, escalation levels. No stage content.
+**HB2 — Serializer (was T3).** One-at-a-time ask surface, yes/no + outcome, snooze/escalate, no bulk affordance, queue ordering (H10), quiet hours. The batched report as a separate, opt-in view.
+**HB3 — PI stage pack (was T4).** The §8 catalog as data (thread templates, triggers, profiles), hand-tagged posture, reading `PI_FLAGS`. Extensible by Michael at runtime (§8.3).
+**HB4 — Intelligence, only after live tuning (was T5).** Auto-arming from detected events; inbound-email heartbeat detection.
+
+**9.1 Live-tuning protocol.** Run CE1 + HB1–HB3 on real cases for roughly a month. **9.2** The stage pack ships **seeded, not closed** — the add-a-touch path is an HB3 requirement, not a later nicety. **9.3 [D] Instrument the annoyance from day one:** log every snooze (with duration), every dismissal, every thread that armed and stayed armed, and every case that went quiet with no open thread. P6 makes this data the spec for HB4; it cannot be reconstructed after the fact.
 
 ---
 
@@ -516,7 +531,7 @@ then the unread Kostura sections; then the consolidated registry-candidate table
 |---|---|---|
 | **D1** | **H1 — one clock or two** (§4.2). Does sending reset the clock, or only a response? | Two clocks; only the did-I-do-my-part clock may interrupt. The other-side clock escalates through the report and the ladder, not through pings |
 | **D2** | **H2 — how much typing at log time** (§3.2). Pick an outcome from the closed set with default intervals, or set the next interval by hand every time? | Pick-an-outcome. Hand-setting puts the remembering back on the human, which is the thing P3 removes. Overriding a default stays available |
-| **D3** | **H8 — shared touch substrate with the time tracker** (§7.1). One table or two? | One core case-event entity, owned design-side; heartbeat and time tracker are both consumers. Same reasoning as the `claims` ownership call in the fee-basis review. **This blocks T1 and should be ruled before either module's schema is built** |
+| **D3** | **H8 — shared touch substrate with the time tracker** (§7.1). One table or two? | **RULED 2026-07-26 — the case-event core (CE), shape (c):** a shared spine (case, timestamp, actor, channel, note) plus **per-consumer facets**, owned design-side; heartbeat and time tracker are **consumers, not owners**. Ruled against **four** consumers, not two: heartbeat threads, time entries, the Servpro release thread, probate matter threads. **Evidentiary boundary ruled with it:** a facet is either operational or evidentiary, and only **evidentiary** facets are eligible for a sworn fee affidavit. **D3/H8 CLOSED; CE1 is unblocked but NOT authorized — no build authorization exists** |
 | **D4** | **H9 — status list** (§7.5). Does folding "Notice letters out" into intake change `STATUSES._piDefault`, or only the heartbeat's view of it? | Only the heartbeat's view. Leave the status list alone |
 | **D5** | **H7 — gates vs. clocks** (§7.4). What happens to a thread whose work a hard gate forbids? | Gate suppresses the threads it blocks and arms a thread on itself |
 | **D6** | Registry treatment of the 60-day insurer-notice interval (§7.2) | It becomes a registry entry with a cite before it drives anything; the heartbeat hardcodes no legally-consequential interval |
@@ -538,7 +553,7 @@ then the unread Kostura sections; then the consolidated registry-candidate table
 | **H5** | Treatment-in-progress clock driven off next-appointment date? (§8.4) | Proposed, unanswered |
 | **H6** | Treatment complete → auto-fire records/bills per provider? (§8.5) | **RESOLVED 2026-07-25 — open the stage only** |
 | **H7** | Heartbeat threads vs. settled hard gates (§7.4) | → **D5** |
-| **H8** | Shared touch substrate with the time tracker (§7.1) | → **D3**; blocks T1 |
+| **H8** | Shared touch substrate with the time tracker (§7.1) | **CLOSED — ruled 2026-07-26 → CE core, shape (c)** (spine + per-consumer facets, operational/evidentiary boundary). See D3 in §10. CE1 unblocked, **not authorized** |
 | **H9** | `STATUSES._piDefault` effect of folding notice letters into intake (§7.5) | → **D4** |
 | **H10** | Serializer queue ordering policy (§5) | **New in this doc**, unruled |
 | **H11** | Escalation ladder definition — channels, thresholds, solo-vs-staff (§4.3) | **New in this doc**, unruled |
