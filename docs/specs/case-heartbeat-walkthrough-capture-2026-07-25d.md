@@ -20,7 +20,7 @@ Carried in as already CONFIRMED from prior sessions: limitations is the cross-cu
 
 ## PART 1 — THE SERVICE-CHASE TOUCH (family of §3.4 email profile)
 
-**[CONFIRMED] The touch is a handoff, not a chase.** Michael uses one process server: **Kelly Follint**, who has **two email addresses** (both used). The touch is a single well-formed email carrying the citation, the petition, and any other context helpful for her downstream server. In Michael's words, "she generally gets the job done. I generally don't have to follow up on her."
+**[CONFIRMED] The touch is a handoff, not a chase.** Michael uses one process server: **Kelly Foland**, who has **two email addresses** (both used). The touch is a single well-formed email carrying the citation, the petition, and any other context helpful for her downstream server. In Michael's words, "she generally gets the job done. I generally don't have to follow up on her."
 
 Consequence for the heartbeat: silence from Kelly means *working on it*, not *blind*. This is the reliable end of the §3.4 communication-profile spectrum, and the thread should stay quiet by default.
 

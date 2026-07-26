@@ -1,6 +1,6 @@
 # Case Heartbeat / Anti-Staleness Engine — Design Pass
 
-**Date:** 2026-07-25 (revised after the second walkthrough block; revised again Code-side the same date per the PUSH-TO-CODE work order, folding in the service-chase and answer-received walkthroughs). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — intake through **answer received** is walked (§§8.1–8.11, H14 closed); the litigation spine from **disclosures/discovery** onward is not. **Resume point: the discovery phase proper (§8.12).** Nothing here is in the build queue.
+**Date:** 2026-07-25 (revised after the second walkthrough block; revised again Code-side the same date per the PUSH-TO-CODE work order, folding in the service-chase and answer-received walkthroughs). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — intake through **answer received** is walked AND folded (§§8.1–8.11, H14 closed); the litigation spine from **disclosures/discovery through mediation and expert cadence** is walked in captures **e** and **f** but **NOT yet folded — §8.12 lags two captures**, which remain the source of record. **Resume point: pass 2 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass1.md` §9); the open-item register now runs **H1–H58**. Nothing here is in the build queue.
 
 **Canonical repo path:** `docs/specs/case-heartbeat-design.md`.
 
@@ -265,7 +265,7 @@ The email profile (§3.4) requires that inbound provider email be detectable, wh
 
 **Reference spine** (`caseTypes.ts` `STATUSES._piDefault` / project-instructions §8): Signed up/intake → Notice letters out → Pre-suit investigation → Treatment setup → Treatment in progress → Treatment complete → Records collection → Demand drafted → Demand sent → Demand outcome → Suit filed → Defendants served → Answer received → Disclosures sent → Experts designated → Discovery → Mediation → Trial prep → Trial → Settled (pre-disbursement) → Closed.
 
-**Walked: §§8.1–8.11 below (intake through answer received). Everything after answer received is unwalked** (§8.12).
+**Walked and folded: §§8.1–8.11 below (intake through answer received). Everything after answer received through mediation/expert cadence is walked in captures e and f but not yet folded in** (§8.12).
 
 ### 8.1 Intake / signed up — *including "Notice letters out"* [C in full]
 
@@ -454,7 +454,7 @@ It closes on exactly two events: **settlement, or verdict.**
 
 **The clerk-relations constraint [C].** Never annoy the clerks — they remember, and future filings suffer. During the citation wait, escalation may get **louder at Michael** but never translates into leaning harder on the clerk (§6 #17).
 
-**The service-chase touch is a handoff, not a chase [C].** Michael uses one process server (currently Kelly Follint, two email addresses, both used); the touch is a single well-formed email carrying the citation, the petition, and context for her downstream server. She is reliable, so silence means *working on it*, not *blind* — the reliable end of the §3.4 communication-profile spectrum; the thread stays quiet by default. **Do not model the process server as a singleton or hardcode her addresses** — the profile machinery is what generalizes.
+**The service-chase touch is a handoff, not a chase [C].** Michael uses one process server (currently Kelly Foland, two email addresses, both used); the touch is a single well-formed email carrying the citation, the petition, and context for her downstream server. She is reliable, so silence means *working on it*, not *blind* — the reliable end of the §3.4 communication-profile spectrum; the thread stays quiet by default. **Do not model the process server as a singleton or hardcode her addresses** — the profile machinery is what generalizes.
 
 **The rush flag is the thread's entire personality [C].** One field drives three axes at once: subject-line tone ("RUSH" in caps vs. a softer no-rush line), body content (seeded with the statute date), and follow-up cadence. **Pre-fill it when limitations is inside a window** — H23 doing real mechanical work — with the side benefit of conditioning the server to recognize the subject-line shape instantly. **Cadence is a continuous gradient, not a switch [C]:** ~2 weeks at no-rush tightening to ~2 days at super-rush, scaling off the actual limitations date of the case — never a hardcoded example date.
 
@@ -482,11 +482,13 @@ It closes on exactly two events: **settlement, or verdict.**
 
 **The calendar-horizon push [C need, mechanism OPEN — H30].** Michael names the gap himself: he calendars about two months out when cases need five — bandwidth setting the horizon instead of the case. A heartbeat job: push the farther-out markers (depo dates, DCO deadlines, discovery response dates) onto the calendar so it reflects the case's real horizon.
 
-### 8.12 Stages not yet walked
+### 8.12 Stages walked-but-unfolded, and stages not yet walked
 
-Untouched: **disclosures sent · experts designated · discovery · mediation · trial prep · trial · settled (pre-disbursement) · closed.** (Negotiation runs in parallel under all of them, §8.9.)
+**Fold queue (stale-correction placed Code-side 2026-07-25 per the handoff-f work order — this section lags TWO captures):** capture **e** walked the default-judgment thread, the post-judgment appellate clocks, the no-answer fork (H32), the discovery phase, and the deposition timing model; capture **f** walked the deposition no-dates ladder end to end, mediation in full (arming, cadence, roster, payment chain, post-mediation fan-out), and specified the DCO ingester, the software-wide audit log, and the expert-disclosure cadence. **None of that is folded into §8 yet; captures e and f are the source of record until it is.** The open-item register now runs **H1–H58** (§11 below stops at H34; H35–H41 live in capture e, H42–H58 in capture f and the APIL mining doc).
 
-**Resume point:** the **discovery phase proper** — initial disclosures, Michael's first set of written discovery, their responses — then depositions beyond the initial defendant-driver date request, experts, mediation, trial prep. Alternate service methods for out-of-state companies were explicitly declined this session and also remain unwalked.
+Still unwalked: **trial prep · trial · settled (pre-disbursement, including disbursement/liens) · closed.** (Negotiation runs in parallel under all of them, §8.9 — extended by capture f's shared negotiations-tab ruling, H49.)
+
+**Resume point: PASS 2 of the APIL 2025 course-book mining** (`apil-2025-course-book-mining-pass1.md` §9 — Kostura's subrogation/liens chapter first; it has the highest deadline density in the book and owns the never-walked disbursement stage). Alternate service methods for out-of-state companies were explicitly declined and remain unwalked.
 
 ---
 
@@ -565,6 +567,6 @@ Untouched: **disclosures sent · experts designated · discovery · mediation ·
 ## 12. Process
 
 1. **This document is design-side and unadopted.** Nothing enters the build queue until Michael rules on §10 — the same discipline that has the time-tracker fee-basis draft sitting as DRAFT-not-canonical.
-2. **The stage catalog is partial by design.** Intake through answer received is walked (H14 closed 2026-07-25). Resume at the **discovery phase proper** (§8.12) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was revised on 2026-07-25 to absorb stages 6–9, and again (Code-side, per the PUSH-TO-CODE work order) to absorb suit-filed and answer-received; that is the intended pattern.
+2. **The stage catalog is partial by design.** Intake through answer received is walked and folded (H14 closed 2026-07-25); discovery through mediation/expert cadence is walked in captures e and f, unfolded. Resume at **pass 2 of the course-book mining** (§8.12) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was revised on 2026-07-25 to absorb stages 6–9, and again (Code-side, per the PUSH-TO-CODE work order) to absorb suit-filed and answer-received; that is the intended pattern.
 3. **The capture file remains the source of record** for what was actually said. Where this document and the capture conflict on what Michael ruled, the capture governs.
 4. **Carried, unrelated to this subsystem:** time-tracker fee-basis-profiles review (§3 schema-ownership call, D1–D4, the nine §7 registry entries); registry entries 1–10; edge-function deploys per `docs/statute-cache-setup.md`; Citizens MRF path into CLAUDE.md; OAA remaining tabs; FLP account + MCP connector setup (promo ends 8/6); `BUILD-SESSION-NOTES.md` review.

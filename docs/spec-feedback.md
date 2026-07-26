@@ -243,6 +243,32 @@ Rule 239a verified in the TRCP skeleton.
 **Status:** No decision needed on 1 (flag placed). 2 is the standing fold
 queue — capture e is the source of record until folded.
 
+### 2026-07-25 — Heartbeat handoff f applied; fold queue now two captures deep
+
+**Where:** the 2026-07-25 mixed voice/text PUSH-TO-CODE work order (capture f
++ APIL 2025 course-book mining pass 1). Applied in full: capture f filed,
+mining doc filed (every proposition UNVERIFIED), session-log entry appended,
+"Follint" → **"Foland"** corrected in place in capture d and
+`case-heartbeat-design.md` §8.10, and the design doc's stale resume point
+corrected (header, §8 intro, §8.12, §12.2) — it had cost session time twice.
+
+1. **No repo contradiction found.** The handoff's assumptions (nothing
+   heartbeat-related built, D3/H8 still gating T1, capture e unfolded)
+   all match the working tree.
+2. **§8.12 now carries an explicit two-capture fold-queue notice** (e AND f)
+   with the corrected resume point — pass 2 of the course-book mining — and
+   the register range H1–H58 (§11's table still stops at H34; H35–H41 live
+   in capture e, H42–H58 in capture f and the mining doc). The full fold of
+   captures e + f into §8 and the register extension remain design-side work
+   per §12.2's pattern.
+3. **One "Follint" instance deliberately left:** the session-log's e-session
+   entry (service-chase line) is history and the log is append-only; the new
+   f-session entry records the correction, so the record is self-correcting
+   downstream.
+
+**Status:** Fold queue is the only carried item; captures e and f are the
+source of record until folded.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
