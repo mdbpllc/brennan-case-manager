@@ -1,7 +1,7 @@
 # Case Opinion Manifest — Medical Billing / Liens Collection
 
 **Canonical repo path:** `docs/authority/case-authority-index.md`
-**Status:** REPLACES the propositional index landed at `d0b9cfa` earlier on 2026-07-26. Same path — this is a replacement, not a second doc. Rewritten 2026-07-26 (design session, Opus 5) after review against `docs/specs/legal-rule-registry-draft-entries-medical-billing.md`; routed by Code (replacement commit recorded below).
+**Status:** REPLACES the propositional index landed at `d0b9cfa` earlier on 2026-07-26. Same path — this is a replacement, not a second doc. Rewritten 2026-07-26 (design session, Opus 5) after review against `docs/specs/legal-rule-registry-draft-entries-medical-billing.md`; routed by Code at commit `0d9cdf4`.
 
 ---
 

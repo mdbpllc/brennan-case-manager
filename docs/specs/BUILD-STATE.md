@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: d0b9cfa  |  Branch: master  |  Generated: 2026-07-26 (third refresh this date)
+Commit: 0d9cdf4  |  Branch: master  |  Generated: 2026-07-26 (fourth refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,18 +30,24 @@ Commit: d0b9cfa  |  Branch: master  |  Generated: 2026-07-26 (third refresh this
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (three Code sessions, ALL DOCS ONLY — zero app change)
+## 2026-07-26 session deltas (four Code sessions, ALL DOCS ONLY — zero app change)
+- Session-4 packet APPLIED: docs/authority/case-authority-index.md
+  REPLACED IN FULL with a locator-only manifest — NO holdings or
+  propositions; the registry doc governs on any conflict; do not add
+  propositional content back. Flag A-3 WITHDRAWN (Huntress BELONGS —
+  registry Entry 1(d) governs); A-6 added (registry dropped McMillan
+  from Entry 1 — not paid-or-incurred authority); A-7 added (Primoris
+  settled/withdrawn-opinion posture). Known gap recorded: Ortiz v.
+  Nelapatla has no PDF on file; §18.001 lookups route to registry
+  Entry 2. No copy of the old propositional version survives
 - Session-3 packet APPLIED (project-knowledge capacity): NEW
-  docs/authority/case-authority-index.md — 16-opinion finding aid
-  (paid-or-incurred / §18.001 / rate discovery / LOP-factoring /
-  payor-side / damages), flags A-1..A-5 (N. Cypress PDF is the WITHDRAWN
-  opinion — cite 559 S.W.3d 128, never 2018 Tex. LEXIS 346). NEW
   docs/project-knowledge-working-set-policy.md — working-set rule,
   pinned list, pruning runbook (steps 3–5 PROPOSED, Michael executes;
   Code cannot touch project knowledge). CLAUDE.md pointer added.
   VERIFIED: both claude_v0_1-feedback.md items are built (phone masking
   src/domain/phone.ts+components; Combobox src/components/Combobox.tsx)
-  — runbook steps 1–2 safe. docs/authority/pdf/ staged for the PDFs
+  — runbook steps 1–2 safe. docs/authority/pdf/ staged for the PDFs.
+  (Its propositional authority index was superseded by Session-4)
 - Session-2 packet APPLIED: NEW prop-code-53-28-deadline-engine-design.md,
   ⛔ BUILD-GATED on the Servpro staff meeting (L1–L7; §10 sketch NOT
   COMMITTED). §53.156 date corrected in three places: may→shall was 2011
@@ -100,10 +106,10 @@ Commit: d0b9cfa  |  Branch: master  |  Generated: 2026-07-26 (third refresh this
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
-- PRUNING (K-1..K-6): steps 1–2 verified safe — Michael may delete the
-  McMillan _1 duplicate and claude_v0_1-feedback.md now; steps 3–5
-  (PDFs + Kostura + statutes dump to repo; Uvalde scope check) PROPOSED;
-  second-project question OPEN, decide after 3–4; re-pull N. Cypress
+- PRUNING: K-1 unblocked (delete McMillan _1 dup + v0.1 feedback now);
+  K-2/K-3 (corpora to repo; second project) PROPOSED/OPEN; K-4 CLOSED
+  (Huntress belongs); K-5 Uvalde scope check; K-6 re-pull N. Cypress
+  559 S.W.3d 128; K-7 NEW — add Ortiz PDF to the collection?
 - attorney-review-queue.md is the one project-wide review queue; statutes
   resume point Est. Code §352.051, then the Family Code block
 - Servpro deadline-engine doc awaits the in-person meeting (L1–L7)
