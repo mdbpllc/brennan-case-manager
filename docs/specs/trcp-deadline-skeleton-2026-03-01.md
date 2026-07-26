@@ -114,7 +114,7 @@ initial disclosures due  ◄── THE ANCHOR DATE
 **Engine notes.**
 - The Rule 99(b) answer date is not "service + 20 days." It is *the Monday following the expiration of 20 days, at 10:00 a.m.* No generic date library computes this; it needs its own function and its own tests.
 - Rule 4 requires a **legal-holiday table**, and business-day math is not uniform: ≤5-day periods skip weekends and holidays, longer periods don't, and the 3-day mail extension counts them. Three different modes in one rule.
-- **Deliberately absent: any deadline for obtaining service.** The TRCP sets none. The diligence requirement that can defeat a limitations-saving filing is case law, and belongs in the registry as its own entry with a case cite — **not** inferred from Rule 99 or 107. Flagged, not drafted.
+- **Deliberately absent: any deadline for obtaining service.** The TRCP sets none. The diligence requirement that can defeat a limitations-saving filing is case law, and belongs in the registry as its own entry with a case cite — **not** inferred from Rule 99 or 107. *2026-07-26: a draft entry now exists (Tanner — UNADOPTED, V6; see §9 note).*
 
 ---
 
@@ -148,7 +148,7 @@ initial disclosures due  ◄── THE ANCHOR DATE
   correct 2026 edition; anything assuming a mailing-address-only 239a
   certificate is **wrong** under this text. Same ledger family as the 166a
   flag in §7.
-- **Service diligence** — case law, no rule cite. Registry entry needed.
+- **Service diligence** — case law, no rule cite. *2026-07-26: draft entry staged in `legal-rule-registry-draft-entries-medical-billing.md` (Tanner — UNADOPTED, V6).*
 - **Local rules and standing orders** — court-profile tier (feature-intake item F). Bexar Monitoring Court's hearing requirement for agreed orders and the noon-Monday trial announcement are examples.
 - **Judge-specific requirements** — judge profile tier.
 - **Level 3 DCO dates** — case-specific documents. Live example on file: the Curry agreed DCO (joinder, plaintiff and defendant expert designations with §18.001 affidavits, mediation, amended pleadings, discovery complete, Robinson challenges, dispositive motions, exhibit/witness lists, charge and limine, trial).
@@ -158,6 +158,8 @@ initial disclosures due  ◄── THE ANCHOR DATE
 ---
 
 ## 9. Sign-off queue
+
+> **2026-07-26:** the full project-wide attorney review queue now lives in `attorney-review-queue.md` (WORKING CHECKLIST, not canonical); this section remains the TRCP-priority detail. Also: a **draft service-diligence entry (H21, *Tex. State Univ. v. Tanner* — UNADOPTED, open item V6)** is now staged at the end of `legal-rule-registry-draft-entries-medical-billing.md`; whether it lives there or in this doc is Michael's to route.
 
 These are registry candidates in the same one-at-a-time queue as entries 1–10 and the nine from the fee-basis draft. Suggested priority if they interleave rather than queue behind:
 
