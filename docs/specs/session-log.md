@@ -12,6 +12,45 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#4) — Migration COMPLETE; new build project live (design, Opus 5, final entry from the archive-side session)
+
+The migration directed in #3 executed successfully. Closing the record:
+- Pre-flight check confirmed no per-item deletion in the old project's UI;
+  migration proceeded. Old project renamed as the LEGAL AUTHORITY ARCHIVE
+  with a redirect guard in its instructions.
+- New build project live. Repo connected with a SELECTIVE sync: docs/, db/,
+  supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md — src/ and build
+  tooling deliberately excluded (BUILD-STATE.md is the sole design-side
+  authority on what is built). Result ~23% capacity vs. 42% full-repo.
+- Kickoff verified against the repo at BUILD-STATE commit 7f3dbf5: resume
+  point read from the #3 entry, both user skills (refresh-chat,
+  push-to-code) survived the project boundary, conventions recorded as
+  memory edits.
+- Instruction-update trigger #6 FIRED on day one and worked: the kickoff
+  session caught v1 instructions citing docs/go-live-gates.md while the
+  repo's canonical is docs/specs/Go_Live_Gates.md (pre-existing; gates 1–8
+  complete after the pre-migration packet). Resolved same day by
+  instructions v2 (2026-07-26), which also encodes the selective-sync
+  working set, the operational notes from migration day, and two new
+  binding conventions: verify-before-criticizing, and no opinion
+  characterization from front matter alone.
+- Three carried files' repo-duplication checks (NVIDIA memo, LegiScan
+  fixture) remain open per the kickoff report; Forms/Bexar carries clean.
+  [Code note, same day: both checks RUN and CLOSED — the NVIDIA memo is
+  NOT in the repo (transcript-sort-and-route-design.md cites "memo §2"
+  as an external source; only its conclusions carried over) and the
+  LegiScan getSessionList fixture is NOT in the repo (no match in src/,
+  docs/, supabase/, db/, or scripts/). Both carries to the new project's
+  knowledge are warranted, not duplicative.]
+
+Open items unchanged from #3 except: K-1 executed or moot (archive keeps
+its files by design); K-3 remains CLOSED. Clock item: FLP/CourtListener
+promo ends 2026-08-06.
+
+Staged for Code: none (this entry only).
+Awaiting/Returned from Code, unreviewed: Outlook push slice (2026-07-24);
+BUILD-SESSION-NOTES.md 2026-07-21 audit.
+
 ## 2026-07-26 (#3) — Pre-migration reconcile; new build project; K-3 resolved (design, Opus 5)
 
 Michael directed migration of design work to a fresh Claude project after

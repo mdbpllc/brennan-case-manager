@@ -242,13 +242,16 @@ standing gates that survive any status change:
   check it against BUILD-STATE's stated commit. The push + his Sync
   click are the only channels that reach the design side; if the push
   is blocked, tell Michael in the report.
-- **Sync scope (settled 2026-07-25):** the project-knowledge GitHub sync
-  carries `src/`, `db/schema.sql`, `docs/`, `CLAUDE.md`, and `README.md`.
-  Excluded as noise: `package-lock.json`, `node_modules/`, `dist/`, and
-  large test-fixture data files. Do not propose narrowing to specs-only —
-  design-side reads source to verify BUILD-STATE's claims, and three
-  logged incidents (2026-07-23, 07-24, 07-25) trace to design-side asking
-  for work that already existed.
+- **Sync scope (revised 2026-07-26 at the new-build-project migration;
+  supersedes the 2026-07-25 full sync):** the project-knowledge GitHub
+  sync carries `docs/`, `db/`, `supabase/`, `CLAUDE.md`, `README.md`, and
+  `BUILD-SESSION-NOTES.md`. `src/` and build tooling are deliberately
+  EXCLUDED (~23% knowledge capacity vs. 42% full-repo). Consequence: the
+  design side can no longer read source to verify claims —
+  `docs/specs/BUILD-STATE.md` is its SOLE authority on what is built,
+  which raises the stakes on BUILD-STATE accuracy (the 2026-07-25 scope
+  carried src/ precisely for verification; that trade was re-made
+  deliberately, session-log 2026-07-26 #4).
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in
