@@ -12,6 +12,101 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-25 (Design-side walkthrough, voice + text, Fable 5: closed H14 service chase; per-defendant fan-out with difficulty profiles; service-completion gate; Rule 99(b) read; answer-received stage walked)
+
+Continued the PI case-heartbeat walkthrough from the H14 resume point. Closed out the suit-filed /
+service-chase stage in full, then walked the first litigation-spine stage past service. Nothing was
+built and nothing entered the build queue. Output: one capture file plus fold-ins to the canonical
+design doc.
+
+- **Service-chase touch is a handoff, not a chase [CONFIRMED].** One process server, Kelly Follint
+  (two email addresses). The touch is a single well-formed email: citation, petition, context for her
+  downstream server. She is reliable, so silence means working-on-it, not blind — the thread stays
+  quiet by default. Reliable end of the §3.4 communication-profile spectrum.
+- **The rush flag is the thread's whole personality [CONFIRMED].** One field drives three axes at
+  once: subject-line tone ("RUSH" in caps vs. a softer no-rush line), body content (seeded with the
+  statute date), and follow-up cadence. Pre-fill it when limitations is inside a window — H23 doing
+  real mechanical work. Michael noted the side benefit of conditioning Kelly to recognize the shape.
+- **Cadence is a continuous gradient [CONFIRMED]:** ~2 weeks at no-rush, tightening to ~2 days at
+  super-rush, scaling off the actual limitations date. The example date given in session was this
+  week's real case and must not be hardcoded.
+- **All escalation aims inward; the system never sends to a counterparty [CONFIRMED].** It drafts
+  every follow-up; Michael sends in his own voice, so automated tone never lands wrong on a real
+  person. Generalizes past Kelly into a standing principle. At the close end the nudge is not a nag —
+  Michael's words, "a slap in the face" — because unserved-at-limitations voids the case.
+- **Per-defendant fan-out [CONFIRMED]:** one handoff, N watched clocks. One email may list every
+  defendant, but a separate return-of-service clock runs per defendant; the parent thread goes silent
+  on the served and escalates only on whoever is still out.
+- **Difficulty profile per defendant, set at filing, with a trapdoor [CONFIRMED].** Three buckets:
+  registered-agent corporation (deterministic, known address, thread stays quiet); out-of-state or
+  no-TX-registered-agent company (harder, alternate methods, runs warmer); individual (wildcard,
+  starts normal, promoted to hard on a failed locate). Set at filing rather than easy-until-proven-hard
+  because the corporate buckets are facts Michael looks up before serving, and limitations is ticking —
+  discovering difficulty by stalling burns buffer that may not exist.
+- **Limitations only bites on open threads [CONFIRMED],** with one exception: the peace-of-mind board.
+- **Service-completion gate [CONFIRMED].** A defendant thread does not die on "served." It dies on
+  three things: file-stamped return of service received, saved into the file system, and date of
+  service logged. That date is legally loaded — it satisfies limitations, drives the Rule 99(b)
+  computation, and on a governmental defendant carries the jurisdictional diligence record.
+
+Michael raised the TRCP Rule 99(b) answer-date question; rule text was pulled from the deadline
+skeleton rather than answered from memory. The read: 99(b) sets the answer date at 10:00 a.m. on the
+Monday next after twenty days expire, so **every** answer date is a Monday by the rule's own terms —
+day twenty landing on a weekend does not trigger the Monday, it merely coincides with what the rule
+always does. Rule 4's generic computation is superseded here. The holiday-Monday edge was explicitly
+deprioritized: rare enough that it never bites in practice, and Michael's habit of checking the
+following Monday errs conservative. For the build: compute to the Monday, treat answer-received as a
+soft check rather than an alarm, and do not burn tests on the edge case. Still needs its own tested
+function — no generic date library computes it.
+
+The answer-received stage turned out not to be a passive unlock but the starting gun on Michael's
+central strategic lever: earliest possible trial date, then hold it and never move it, on the theory
+that between equally prepared parties the one racing the clock wins and an early setting forces
+settle-or-try. The touch is outreach to opposing counsel within three days of an answer, ideally same
+day, via a form letter he ran at a prior firm and cannot run solo now. The letter requests trial dates
+to agree a docket control order and get it filed, and on an MVC also requests defendant-driver
+deposition dates — gated so no depo lands before the defendant's response window on the first set of
+written discovery. Letter *content* is deferred by explicit ruling: it is a form-engine dependency to
+be designed once the system is built and the full palette of dynamic data is visible.
+
+The thread stays loud until the **DCO is filed** — not "letter sent," not "they replied." This is the
+founding failure mode restated in a new stage: the intention is there, something else comes up, and it
+silently falls off. Same proof-in-the-record completion pattern as the service return: the thread dies
+on the filed artifact, not the action. Answer received separately arms the disclosure clocks (initial
+disclosures 30 days after first appearance, TRCP 194.2(a) anchor per the skeleton).
+
+Cross-cutting patterns surfaced: one flag as thread personality; system-drafts / human-sends to
+counterparties; difficulty profile set at filing with a trapdoor; the peace-of-mind board as an
+anti-list exception under a closing master clock (cousin of the H18 cascade exception); the
+proof-in-the-record completion gate (family of primitive #14); continuous gradients over state
+switches.
+
+Side threads opened and left open: the no-answer fork (default judgment vs. grace and a phone call)
+was asked and never answered — H32. Whether the thread should prompt work *on* the answer itself
+(affirmative defenses, counterclaims, responsible-third-party designation) was asked and never
+answered — H33. Alternate service methods for out-of-state companies were explicitly declined this
+session. Two Claude proposals are recorded as unruled and must not be treated as design: trial date
+as a second master clock with a "they're trying to move your date" alarm (H28), and the DCO thread
+running warm rather than alive-but-quiet (H31). Michael also named a real workflow gap — he calendars
+about two months out when cases need five (H30).
+
+**Next:** next design session resumes at the **discovery phase proper** — initial disclosures, first
+set of written discovery, their responses — then depositions, experts, mediation, trial prep. Carried:
+D1–D10, with D3/H8 (shared touch substrate / one core case-event entity) still blocking T1 and needing
+settlement before either module's schema is built; H24 registry candidate (file ≥6 months before
+limitations) with H21's service-diligence cite alongside; H25 and H26; registry entries 1–10 sign-off
+(Entry 1(c-3) qualified-LOP and Entry 4 fatal-defect conflict as priorities); Michael's FLP account and
+MCP connector setup (promo ends 2026-08-06); BUILD-SESSION-NOTES.md review.
+
+**Staged for Code:** `case-heartbeat-walkthrough-capture-2026-07-25d.md` (new file), plus fold-ins to
+`case-heartbeat-design.md` §8 (suit-filed completed, answer-received added), §3 (cross-cutting
+patterns), and §10 (open items H27–H34). No build items — nothing enters the queue until the affected
+open items are ruled on.
+
+**Awaiting/Returned from Code, unreviewed:** Outlook push slice (still unreviewed design-side);
+BUILD-SESSION-NOTES.md.
+*[Code-session routing note, 2026-07-25, added when this entry was applied: the work order's reconcile step found the design doc's suit-filed section did NOT yet exist — handoff "c" had deferred that fold-in to a design session, but design sessions cannot write to the repo — so §8.10 (suit filed / service chase) was built Code-side from captures c + d together, followed by §8.11 (answer received) and §8.12 (stages not yet walked). Register rows H23–H26 (from capture c) were added alongside H27–H34 for the same reason. Fold targets resolved by name per the work order's own §1 rule: cross-cutting patterns → §6 (primitives 17–26); open items → §11. Capture d placed at its canonical path. Nothing was built; nothing entered the build queue.]*
+
 ## 2026-07-25 (Voice/mixed, session 3, Fable 5: resumed heartbeat walkthrough at H14 suit-filed; limitations master clock + hard 6-month filing rule confirmed; pre-service arming chain walked; session cut mid-H14, resume point recorded)
 
 Third session of the day on the case-heartbeat design. Processed the session-2 zip (design doc, capture "b", TRCP skeleton, handoff "b"), summarized back, then resumed the PI walkthrough at H14 (suit filed / service chase). Session ended early on system slowness; the service chase proper is still unwalked — precise resume point captured.

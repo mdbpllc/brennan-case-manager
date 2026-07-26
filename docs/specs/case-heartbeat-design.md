@@ -1,10 +1,10 @@
 # Case Heartbeat / Anti-Staleness Engine — Design Pass
 
-**Date:** 2026-07-25 (revised same day after the second walkthrough block). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — stages 1 through 9 are walked; the litigation spine from **suit filed** onward is not. **Resume point: the service chase at suit filed (H14).** Nothing here is in the build queue.
+**Date:** 2026-07-25 (revised after the second walkthrough block; revised again Code-side the same date per the PUSH-TO-CODE work order, folding in the service-chase and answer-received walkthroughs). **Status:** **DESIGN-PARTIAL.** The architecture (§§1–7, 9) is design-complete pending Michael's review of the decision list (§10). The **PI stage catalog (§8) is incomplete by design** — intake through **answer received** is walked (§§8.1–8.11, H14 closed); the litigation spine from **disclosures/discovery** onward is not. **Resume point: the discovery phase proper (§8.12).** Nothing here is in the build queue.
 
 **Canonical repo path:** `docs/specs/case-heartbeat-design.md`.
 
-**Source of record:** `docs/specs/case-heartbeat-voice-capture-2026-07-25.md` (RAW CAPTURE, 2026-07-25 voice session). Every ruling below is tagged with its provenance:
+**Source of record:** the raw-capture series — `docs/specs/case-heartbeat-voice-capture-2026-07-25.md` (session 1; NOT yet in the repo — design-side export pending, see spec-feedback), `case-heartbeat-walkthrough-capture-2026-07-25b.md` (session 2, stages 6–9), `…-2026-07-25c.md` (session 3, pre-service arming chain), `…-2026-07-25d.md` (session 4, service chase + answer received). Every ruling below is tagged with its provenance:
 
 | Tag | Meaning |
 |---|---|
@@ -196,6 +196,19 @@ These recurred often enough across the walkthrough to be built once, as primitiv
 15. **Parallel tracks vs. spine stages** (§8.9). Negotiation runs alongside the entire lifecycle rather than occupying a position in it. The model needs both shapes; a stage-only model cannot express it.
 16. **One-tap escape as a recorded decision** (§8.8). Turning off the daily demand nag *is* the decision to litigate. Escapes should write a decision, not merely silence a thread — this is what makes P1 auditable.
 
+*Primitives 17–26 folded in Code-side per the 2026-07-25 PUSH-TO-CODE work order, from the suit-filed / answer-received walkthroughs (captures `-2026-07-25c` and `-2026-07-25d` Part 8):*
+
+17. **Counterparty institutional memory caps outward cadence; inward cadence stays free** (§8.10, the clerk constraint — capture c). Extends #11: here the counterparty's *memory of you* limits outward escalation while escalation at Michael is unconstrained.
+18. **The system drafts; the human sends to counterparties** (§8.10). All automated escalation aims inward — outward tone with a real person stays human. Distinct from, and additional to, #17: the clerk constraint protects institutional relationships; this one protects tone.
+19. **Master clocks vs. stage clocks** (§8.10 — capture c). Limitations is the first clock that belongs to no stage: computed from intake, it *modulates* other threads' urgency rather than owning a thread of its own (or does it own one? — **H26**, unruled).
+20. **Arming chains** (§8.10 — capture c). A strict sequence (file → accept → request → issue) where each step arms the next; first appearance of a multi-hop chain with one detected hop and the rest declared.
+21. **One flag as thread personality** (§8.10). The rush flag drives subject-line tone, body content, and cadence together. Look for other single fields doing multi-axis work rather than modeling each axis separately.
+22. **Proof-in-the-record completion gate** (§8.10, §8.11). The thread dies on the filed artifact, not the action — the file-stamped return of service, the filed DCO. Same family as #14.
+23. **Difficulty profile set at filing with a trapdoor** (§8.10). Prefer mostly-knowable-up-front over easy-until-proven-hard whenever a master clock is running, because discovery-by-failure burns buffer.
+24. **Peace-of-mind board: an anti-list exception under a closing master clock** (§8.10 — **H27**). Cousin of the H18 cascade exception: one causal event justifies one consolidated view including closed items.
+25. **Second master clock [PROPOSED — H28, unruled].** Limitations protects the case's survival; the trial date drives its value. Not a ruling; do not build on it.
+26. **Continuous gradients over state switches** (§8.10). Rush cadence scales continuously with proximity rather than flipping between modes.
+
 ---
 
 ## 7. Boundaries with existing systems
@@ -252,7 +265,7 @@ The email profile (§3.4) requires that inbound provider email be detectable, wh
 
 **Reference spine** (`caseTypes.ts` `STATUSES._piDefault` / project-instructions §8): Signed up/intake → Notice letters out → Pre-suit investigation → Treatment setup → Treatment in progress → Treatment complete → Records collection → Demand drafted → Demand sent → Demand outcome → Suit filed → Defendants served → Answer received → Disclosures sent → Experts designated → Discovery → Mediation → Trial prep → Trial → Settled (pre-disbursement) → Closed.
 
-**Walked: Stages 1–5 below. Everything after Stage 5 is unwalked** (§8.6).
+**Walked: §§8.1–8.11 below (intake through answer received). Everything after answer received is unwalked** (§8.12).
 
 ### 8.1 Intake / signed up — *including "Notice letters out"* [C in full]
 
@@ -427,13 +440,53 @@ It closes on exactly two events: **settlement, or verdict.**
 
 **Why it still gets a pulse.** A live negotiation with no next-action is the single easiest thread to let go quiet, and the posture here is plaintiff-side with money on the table — silence is the enemy (P2). So the track carries a gentle "when did you last move this?" pulse even though it carries no workflow. *(Pulse cadence not specified → **H17**.)*
 
-### 8.10 Stages not yet walked
+### 8.10 Suit filed / the service chase [C — H14 CLOSED 2026-07-25]
 
-Untouched: **suit filed · defendants served · answer received · disclosures sent · experts designated · discovery · mediation · trial prep · trial · settled (pre-disbursement) · closed.**
+*Folded in Code-side per the 2026-07-25 PUSH-TO-CODE work order, from captures `-2026-07-25c` (pre-service arming chain) and `-2026-07-25d` Parts 1–4 (service chase). The captures govern where this summary and they conflict (§12.3).*
 
-**Resume point (H14):** the service chase at suit filed. The question posed and not yet answered — what a touch looks like once suit is on file, the rhythm for chasing service per defendant, and how hard the system should lean when a defendant remains unserved.
+**Why this stage is dangerous and belongs to the heartbeat rather than the deadline engine:** Rule 99(a) makes the requesting party responsible for obtaining service, and **the rules set no deadline for it.** The consequence — that a filing inside limitations may not be saved if service is not pursued with diligence — lives in case law, not in a computable rule (**H21**, cite still undrafted). So the most catastrophic clock in the litigation phase is one the rulebook does not state, which is precisely the kind of gap a nagging engine covers and a deadline calculator cannot.
 
-**Why this stage is dangerous and belongs to the heartbeat rather than the deadline engine:** Rule 99(a) makes the requesting party responsible for obtaining service, and **the rules set no deadline for it.** The consequence — that a filing inside limitations may not be saved if service is not pursued with diligence — lives in case law, not in a computable rule. So the most catastrophic clock in the litigation phase is one the rulebook does not state, which is precisely the kind of gap a nagging engine covers and a deadline calculator cannot.
+**Limitations is the cross-cutting master clock at this stage [C — H23].** Watched from day one at intake, not a suit-filed concern that appears late — blowing it voids the case regardless of treatment status. At suit filed it becomes the modulator on service-chase urgency, because **limitations is satisfied on service, not on filing the petition.** The same unserved defendant is a gentle nudge with two years of runway and a five-alarm with 60 days left. Michael's explicit instruction: wire this into both intake (§8.1) and this stage, and carry it into the system run-through.
+
+**Hard rule: file ≥ six months before limitations [C — H24, registry candidate].** Unconditional buffer regardless of how complete the defendant picture looks ("just leave it as a hard rule"). Three-part rationale: citation issuance is out of your hands; service takes time and limitations is met on service; and the late-discovered defendant — you cannot know the defendant list is closed, and the buffer protects the ability to *name* new defendants, not just serve known ones. Needs a cite and attorney sign-off before it drives anything (§7.2 discipline).
+
+**The pre-service arming chain [C].** File the petition (citation request sometimes simultaneous, sometimes later — two variants, not smoothed into one) → acceptance arrives via the e-filing system's email → if accepted, file the request for issuance of citation → citation issues (same-day to three weeks; **weekly follow-up until it issues**). Citation arrives by any of four channels — mail, clerk-office pickup, clerk email, or e-filed copy — so there is no single place to check. "Did the citation come in" is a **declared** state and a human-remembering problem (Michael now, a paralegal later); the system's job is surfacing the "go check" nudge, never sensing arrival across four channels. **The ONE detection exception [C]:** the e-filing acceptance email comes from a known sender and may auto-arm the next step — the single detected hop at the head of an otherwise-declared chain (§6 #5). Whether acceptance→citation is separate armed threads or one thread with checkpoints is open (**H25**).
+
+**The clerk-relations constraint [C].** Never annoy the clerks — they remember, and future filings suffer. During the citation wait, escalation may get **louder at Michael** but never translates into leaning harder on the clerk (§6 #17).
+
+**The service-chase touch is a handoff, not a chase [C].** Michael uses one process server (currently Kelly Follint, two email addresses, both used); the touch is a single well-formed email carrying the citation, the petition, and context for her downstream server. She is reliable, so silence means *working on it*, not *blind* — the reliable end of the §3.4 communication-profile spectrum; the thread stays quiet by default. **Do not model the process server as a singleton or hardcode her addresses** — the profile machinery is what generalizes.
+
+**The rush flag is the thread's entire personality [C].** One field drives three axes at once: subject-line tone ("RUSH" in caps vs. a softer no-rush line), body content (seeded with the statute date), and follow-up cadence. **Pre-fill it when limitations is inside a window** — H23 doing real mechanical work — with the side benefit of conditioning the server to recognize the subject-line shape instantly. **Cadence is a continuous gradient, not a switch [C]:** ~2 weeks at no-rush tightening to ~2 days at super-rush, scaling off the actual limitations date of the case — never a hardcoded example date.
+
+**All escalation aims inward; the system never sends to a counterparty [C].** The system drafts every follow-up; Michael sends in his own voice, so automated tone never lands wrong on a real person (§6 #18). At the close end the nudge stops being a nudge — Michael: it needs to be "a slap of the face," the loudest register the system has, because unserved-at-limitations voids the case.
+
+**Per-defendant fan-out [C]: one handoff, N watched clocks.** One email may list every defendant, but a separate return-of-service clock runs per defendant; the parent "get everyone served" thread is not done until all children close, goes silent on the served, and escalates only on whoever is still out (family of §3.3). **Each defendant thread carries a difficulty profile, set at filing, with a trapdoor [C]:** registered-agent corporation (deterministic, known address — stays quiet); out-of-state / no-TX-registered-agent company (alternate methods, more places to stall — runs warmer; methods explicitly not parsed this session); individual (wildcard — starts normal, **promoted to hard on a failed locate**). Set at filing rather than easy-until-proven-hard because the corporate buckets are facts Michael looks up before serving, and discovering difficulty by stalling burns limitations buffer that may not exist. One case can run all three at once, with the limitations modulator squeezing each off a different baseline.
+
+**Limitations only bites on open threads [C]** — a filed return leaves nothing to squeeze — **with one exception: the peace-of-mind board [C need, mechanism OPEN — H27].** Inside some limitations window, the service fan-out surfaces as one consolidated board, served and unserved together, so Michael can confirm the served ones are put to bed "and not wake up at three in the morning in a cold sweat." A principled exception to the anti-list rule, cousin of the H18 cascade exception (§6 #21). Trigger window, contents, push-or-pull: unruled.
+
+**The service-completion gate [C].** A defendant thread does not die on "served." It dies on three things in hand: the **file-stamped return of service received**, **saved into the file system**, and the **date of service logged**. The server saying it's done is not the completion condition; the proof is. The logged date is legally loaded, not bookkeeping — it satisfies limitations, drives the Rule 99(b) answer-date computation (§8.11), and on a governmental defendant anchors the jurisdictional diligence record. Same interlock family as primitive #14; generalizes with the DCO gate (§8.11) into the **proof-in-the-record completion pattern** (§6 #22).
+
+### 8.11 Answer received — the starting gun [C]
+
+*Folded in Code-side per the same work order, from capture `-2026-07-25d` Parts 5–6.*
+
+**The Rule 99(b) answer date [C — read from the deadline skeleton, not from memory].** Rule 99(b) does not say "answer within twenty days"; it sets the answer at **10:00 a.m. on the Monday next after the expiration of twenty days after the date of service** — so every answer date is a Monday by the rule's own terms. Day twenty landing on a weekend does not *trigger* the Monday; it coincides with what the rule always does. Rule 4's generic computation is superseded here. **The holiday-Monday edge is deprioritized by explicit ruling [C — H34, closed]:** rare enough that it never bites, and Michael's check-the-following-Monday habit errs conservative — do not implement it, do not test it. For the build: compute to the Monday (needs its own tested function — no generic date library produces it — but the stakes are low), and treat answer-received as a **soft** "go see if they answered" check, not an alarm. The no-answer fork — default judgment as a live thread, or grace and a phone call first — was asked and never answered (**H32**); so was whether the thread should prompt work *on* the answer itself — affirmative defenses, counterclaims, responsible-third-party designation (**H33**).
+
+**Answer received is not a passive unlock — it starts Michael's central strategic lever [C]:** earliest possible trial date, then hold it and never move it. Between equally prepared parties the one racing the clock wins, and an early setting forces settle-or-try — given ten months or two years, "I'm gonna take ten months every day of the week."
+
+**The touch: outreach to opposing counsel within three days of the answer, ideally same day [C].** The aspirational form is a form letter Michael ran at a prior firm and cannot run solo now. It does double duty: **always**, request trial dates so the parties can agree a **Docket Control Order (DCO)** and get it filed; **on an MVC**, also request defendant-driver deposition dates — **gated** so no depo lands before the defendant's response window on the first set of written discovery, so Michael walks in with their answers in hand. **Letter content is deferred by explicit ruling [C — H29]:** a form-engine dependency, to be designed once the system is built and the full palette of dynamic data is visible. The letter is a real artifact the thread hands Michael; only its contents are unresolved.
+
+**The thread stays loud until the DCO is FILED [C].** Not "letter sent," not "they replied." Michael, stating the founding failure mode in its clearest form yet: the answer comes in, the best intentions are there, "and then three, two, one, something else comes up, and then boom, I forget about it." The completion condition is the **DCO filed in the record** — the same proof-in-the-record pattern as the service return (§6 #22). Whether the DCO thread runs *warm* rather than alive-but-quiet is Claude's proposal, unruled (**H31**); so is the trial date as a second master clock with a "they're trying to move your date" alarm (**H28**) — attractive, probably right, and **not a ruling**.
+
+**Answer received separately arms the disclosure clocks [C]:** initial disclosures due 30 days after the first answer/appearance (TRCP 194.2(a) anchor per the deadline skeleton — unverified registry candidate, like everything in that file).
+
+**The calendar-horizon push [C need, mechanism OPEN — H30].** Michael names the gap himself: he calendars about two months out when cases need five — bandwidth setting the horizon instead of the case. A heartbeat job: push the farther-out markers (depo dates, DCO deadlines, discovery response dates) onto the calendar so it reflects the case's real horizon.
+
+### 8.12 Stages not yet walked
+
+Untouched: **disclosures sent · experts designated · discovery · mediation · trial prep · trial · settled (pre-disbursement) · closed.** (Negotiation runs in parallel under all of them, §8.9.)
+
+**Resume point:** the **discovery phase proper** — initial disclosures, Michael's first set of written discovery, their responses — then depositions beyond the initial defendant-driver date request, experts, mediation, trial prep. Alternate service methods for out-of-state companies were explicitly declined this session and also remain unwalked.
 
 ---
 
@@ -485,7 +538,7 @@ Untouched: **suit filed · defendants served · answer received · disclosures s
 | **H11** | Escalation ladder definition — channels, thresholds, solo-vs-staff (§4.3) | **New in this doc**, unruled |
 | **H12** | Snooze duration set, and what a legitimate one-tap dismissal looks like (§5) | **New in this doc**, unruled |
 | **H13** | Whether posture models beyond plaintiff-PI (civil defense, criminal defense) get designed now or at generalization time (§2 P2) | **New in this doc**, unruled |
-| **H14** | **Suit filed / the service chase** — touch definition, per-defendant rhythm, escalation on an unserved defendant (§8.10) | **WALKTHROUGH RESUME POINT** |
+| **H14** | **Suit filed / the service chase** — touch definition, per-defendant rhythm, escalation on an unserved defendant (§8.10) | **CLOSED 2026-07-25** — walked in full (captures c + d) |
 | **H15** | Records vs. billing — coupled-with-latent-split, or two sub-threads from the start? (§8.6) | → **D8**; Claude's refinement, unaffirmed |
 | **H16** | Medical chronology — third-party product or in-system feature? (§8.7) | Noted, not ruled |
 | **H17** | Negotiation-track pulse cadence (§8.9) | Not specified |
@@ -493,13 +546,25 @@ Untouched: **suit filed · defendants served · answer received · disclosures s
 | **H19** | Does a stalled retrieval vendor ever escalate to direct-to-provider contact, or does the thread stay on the vendor? (§8.6) | Asked, unanswered |
 | **H20** | Is the five-day post-demand check-in universal on every demand, or are there demands that skip it? (§8.8) | Asked, unanswered |
 | **H21** | Service-diligence rule — needs its own registry entry with a **case-law** cite; deliberately not drafted from the TRCP (§8.10) | Flagged, undrafted |
-| **H22** | Registry queue arithmetic — entries 1–10, plus nine from the fee-basis draft, plus the TRCP skeleton candidates. Queue behind, or interleave by build urgency? | Carried, undecided |
+| **H22** | Registry queue arithmetic — entries 1–10, plus nine from the fee-basis draft, plus the TRCP skeleton candidates, plus H24. Queue behind, or interleave by build urgency? | Carried, undecided |
+| **H23** | Limitations as cross-cutting master clock — computed from intake, modulates service-chase urgency; wire into §8.1 AND §8.10; explicit note for Code's system run-through (§8.10) | CONFIRMED design, for Code run-through |
+| **H24** | Hard rule: file ≥ 6 months before limitations — unconditional buffer (§8.10) | CONFIRMED; registry candidate (cite needed, attorney sign-off) |
+| **H25** | Acceptance → citation: separate armed threads, or one thread with checkpoints? (§8.10) | Asked, unanswered |
+| **H26** | Does limitations own its own backstop thread that can override quiet hours, or is it purely a modulator? (§8.10, §6 #19) | PROPOSED, redirected, unruled |
+| **H27** | Limitations peace-of-mind board: what window triggers it, what it shows, push or pull (§8.10) | Need CONFIRMED; mechanism OPEN |
+| **H28** | Trial date as second master clock + "they're trying to move your date" alarm (§8.11, §6 #25) | **PROPOSED, unruled** |
+| **H29** | Answer-received form letter — content (§8.11) | Deferral CONFIRMED; content TBD post-build (form-engine dependency) |
+| **H30** | Calendar-horizon push (2 months → 5 months) (§8.11) | Need CONFIRMED; mechanism OPEN |
+| **H31** | Should the DCO thread run *warm* rather than alive-but-quiet? (§8.11) | **PROPOSED, unruled** |
+| **H32** | No answer by the Monday — is default judgment a live heartbeat thread, or does Michael give grace / call opposing counsel first? (§8.11) | **OPEN — asked, never answered** |
+| **H33** | Is there work done *on* the answer itself (affirmative defenses, counterclaims, responsible-third-party designation) that the thread should prompt? (§8.11) | **OPEN — asked, never answered** |
+| **H34** | Rule 99(b) Monday falling on a legal holiday (§8.11) | CLOSED — deferred by explicit ruling; do not test |
 
 ---
 
 ## 12. Process
 
 1. **This document is design-side and unadopted.** Nothing enters the build queue until Michael rules on §10 — the same discipline that has the time-tracker fee-basis draft sitting as DRAFT-not-canonical.
-2. **The stage catalog is partial by design.** Stages 1–9 are walked. Resume at **H14** (the service chase at suit filed) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was already revised once on 2026-07-25 to absorb stages 6–9, and that is the intended pattern.
+2. **The stage catalog is partial by design.** Intake through answer received is walked (H14 closed 2026-07-25). Resume at the **discovery phase proper** (§8.12) and continue through the litigation spine. **Fold results back into §8 rather than into a second document** — this doc was revised on 2026-07-25 to absorb stages 6–9, and again (Code-side, per the PUSH-TO-CODE work order) to absorb suit-filed and answer-received; that is the intended pattern.
 3. **The capture file remains the source of record** for what was actually said. Where this document and the capture conflict on what Michael ruled, the capture governs.
 4. **Carried, unrelated to this subsystem:** time-tracker fee-basis-profiles review (§3 schema-ownership call, D1–D4, the nine §7 registry entries); registry entries 1–10; edge-function deploys per `docs/statute-cache-setup.md`; Citizens MRF path into CLAUDE.md; OAA remaining tabs; FLP account + MCP connector setup (promo ends 8/6); `BUILD-SESSION-NOTES.md` review.
