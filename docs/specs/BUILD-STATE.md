@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 0d9cdf4  |  Branch: master  |  Generated: 2026-07-26 (fourth refresh this date)
+Commit: 7f3dbf5  |  Branch: master  |  Generated: 2026-07-26 (fifth refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,34 +30,34 @@ Commit: 0d9cdf4  |  Branch: master  |  Generated: 2026-07-26 (fourth refresh thi
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (four Code sessions, ALL DOCS ONLY — zero app change)
-- Session-4 packet APPLIED: docs/authority/case-authority-index.md
-  REPLACED IN FULL with a locator-only manifest — NO holdings or
-  propositions; the registry doc governs on any conflict; do not add
-  propositional content back. Flag A-3 WITHDRAWN (Huntress BELONGS —
-  registry Entry 1(d) governs); A-6 added (registry dropped McMillan
-  from Entry 1 — not paid-or-incurred authority); A-7 added (Primoris
-  settled/withdrawn-opinion posture). Known gap recorded: Ortiz v.
-  Nelapatla has no PDF on file; §18.001 lookups route to registry
-  Entry 2. No copy of the old propositional version survives
-- Session-3 packet APPLIED (project-knowledge capacity): NEW
-  docs/project-knowledge-working-set-policy.md — working-set rule,
-  pinned list, pruning runbook (steps 3–5 PROPOSED, Michael executes;
-  Code cannot touch project knowledge). CLAUDE.md pointer added.
-  VERIFIED: both claude_v0_1-feedback.md items are built (phone masking
-  src/domain/phone.ts+components; Combobox src/components/Combobox.tsx)
-  — runbook steps 1–2 safe. docs/authority/pdf/ staged for the PDFs.
-  (Its propositional authority index was superseded by Session-4)
-- Session-2 packet APPLIED: NEW prop-code-53-28-deadline-engine-design.md,
-  ⛔ BUILD-GATED on the Servpro staff meeting (L1–L7; §10 sketch NOT
-  COMMITTED). §53.156 date corrected in three places: may→shall was 2011
-  (S.B. 539), NOT 2021. Fee-basis: enum gains mandatory-equitable (name
-  unruled → O4); O1 CLOSED (ch. 28 fees discretionary); 18%/yr
-  annualization removed (V11). Review queue resume: Est. Code §352.051
-- Session-1 (verification pass) APPLIED: registry Entry 2 REPLACED (v2,
-  post-Ortiz); Entries 4/5/10 folded; Tanner draft staged UNADOPTED (V6);
-  Rohrmoos FOUR proof elements corrected, contemporaneity badge RULED;
-  NEW attorney-review-queue.md. NO entry status changed any session
+## 2026-07-26 session deltas (five Code sessions, ALL DOCS ONLY — zero app change)
+- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md is now
+  COMPLETE — gates 1–5 imported verbatim into docs/specs/Go_Live_Gates.md
+  (fold-in; no docs/go-live-gates.md created), gate-3 sign-in amendment
+  applied, Supabase-account + LegiScan facts sections landed, LegiScan key
+  value REDACTED (full copy lives in the archive project; rotation after
+  T3 is firm). statute-text-and-bill-tracking-design.md forward-merged
+  from the PK copy per spec-feedback (O1–O4 resolved in-text, W1 banked,
+  A2 redirect note + SPA cross-ref, B4 hard requirements), preserving
+  repo deltas (A4 section-removed, normalized hashes, canonical path) —
+  repo version now CURRENT; PK copy historical. CLAUDE.md gates pointer.
+  Design work migrates to a NEW Claude project; old project = the
+  LEGAL-AUTHORITY ARCHIVE (K-3 CLOSED by designation)
+- Session-4: case-authority-index.md REPLACED with locator-only manifest
+  (no holdings; registry governs); A-3 WITHDRAWN (Huntress belongs), A-6
+  (McMillan dropped from Entry 1), A-7 (Primoris posture) added; Ortiz
+  PDF gap recorded
+- Session-3: NEW project-knowledge-working-set-policy.md (pruning runbook;
+  steps 3–5 Michael-only) + CLAUDE.md pointer; verified both
+  v0_1-feedback items already built (phone masking, Combobox)
+- Session-2: NEW prop-code-53-28-deadline-engine-design.md, ⛔ BUILD-GATED
+  on the Servpro meeting; §53.156 may→shall corrected to 2011 (S.B. 539);
+  fee-basis enum gains mandatory-equitable; O1 CLOSED; review queue
+  resume Est. Code §352.051
+- Session-1: registry Entry 2 REPLACED (v2, post-Ortiz); Entries 4/5/10
+  folded; Tanner draft staged UNADOPTED (V6); Rohrmoos four proof
+  elements corrected; NEW attorney-review-queue.md. NO entry status
+  changed in any session
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -91,10 +91,8 @@ Commit: 0d9cdf4  |  Branch: master  |  Generated: 2026-07-26 (fourth refresh thi
   playbooks" notice; nothing recomputes automatically yet
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only — NOTHING exists in the app; the draft
-  still awaits design-side adoption
-- Servpro lien/prompt-pay deadline engine: DESIGN ONLY, build-gated on
-  the Servpro meeting — NOTHING in the app; no P1–P6 primitives in code
+- Time tracker: design draft only — NOTHING in the app; awaits design-side
+  adoption. Servpro deadline engine: DESIGN ONLY, gated on the meeting
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
   NOTHING exists in the app; captures e and f NOT folded (§8.12 carries
   the fold-queue notice); register runs H1–H83; H50 OPEN; TRCP skeleton
@@ -102,25 +100,23 @@ Commit: 0d9cdf4  |  Branch: master  |  Generated: 2026-07-26 (fourth refresh thi
 - Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 + fee-basis
   items 5/6 substantially advanced 2026-07-26 (primary text read) but
   wording sign-off pending; Tanner draft UNADOPTED (V6); V1–V13 open
-- docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
-  PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
-- PRUNING: K-1 unblocked (delete McMillan _1 dup + v0.1 feedback now);
-  K-2/K-3 (corpora to repo; second project) PROPOSED/OPEN; K-4 CLOSED
-  (Huntress belongs); K-5 Uvalde scope check; K-6 re-pull N. Cypress
-  559 S.W.3d 128; K-7 NEW — add Ortiz PDF to the collection?
+- MIGRATION: design work moves to the NEW project — sync the repo THERE;
+  old project (archive) sync optional. First new-project session seeds
+  conventions as memory edits + verifies refresh-chat/push-to-code skills
+- Go_Live_Gates.md COMPLETE (1–8) and canonical; gates 1–5 export flag
+  and the statute design-doc snapshot lag are both RESOLVED
+- PRUNING: K-1 unblocked; K-2 open; K-3 CLOSED (archive designation);
+  K-5 Uvalde scope; K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
 - attorney-review-queue.md is the one project-wide review queue; statutes
   resume point Est. Code §352.051, then the Family Code block
-- Servpro deadline-engine doc awaits the in-person meeting (L1–L7)
-- FLP/CourtListener account + Tier 1 + MCP connector — promo ends
-  2026-08-06 (ELEVEN days out; carried on 9+ consecutive entries)
-- EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment);
-  session-1 heartbeat voice capture (never reached Code)
+- FLP/CourtListener promo ends 2026-08-06 (ELEVEN days; carried 10+
+  entries). M-4: LegiScan key rotation after T3 (key seen in transcripts)
+- EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8
 - D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
   V4 still gate billing LOP math and the disbursement checklist
-- No canonical law-change ledger file exists (spec-feedback)
 - Registry sign-offs, Supabase auth (gate 6), edge-function deploys,
   Entra registration, Citizens MRF path, reseed-survival question,
-  statute design-doc snapshot lag — all carried
+  no canonical law-change ledger — all carried
