@@ -12,6 +12,19 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#5) — FLP/CourtListener promo clock item CLOSED (Michael ruling, Code session)
+
+Michael ruled the FLP/CourtListener promo (ends 2026-08-06) is not a
+problem and nothing he needs to capitalize on. The clock item carried on
+10+ consecutive entries is CLOSED — do not carry it forward or re-raise
+it. The CourtListener integration design itself is unaffected
+(registry-courtlistener-integration-design.md; sequencing remains
+Michael's call per its §6, just with no promo deadline attached).
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: unchanged (Outlook push slice
+2026-07-24; BUILD-SESSION-NOTES.md 2026-07-21 audit).
+
 ## 2026-07-26 (#4) — Migration COMPLETE; new build project live (design, Opus 5, final entry from the archive-side session)
 
 The migration directed in #3 executed successfully. Closing the record:

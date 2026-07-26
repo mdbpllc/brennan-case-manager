@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: dc167f9  |  Branch: master  |  Generated: 2026-07-26 (sixth refresh this date)
+Commit: dc167f9  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh this date; delta: FLP promo clock closed)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -112,8 +112,9 @@ Commit: dc167f9  |  Branch: master  |  Generated: 2026-07-26 (sixth refresh this
   K-5 Uvalde scope; K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
 - attorney-review-queue.md is the one project-wide review queue; statutes
   resume point Est. Code §352.051, then the Family Code block
-- FLP/CourtListener promo ends 2026-08-06 (ELEVEN days; carried 10+
-  entries). M-4: LegiScan key rotation after T3 (key seen in transcripts)
+- FLP/CourtListener promo clock CLOSED per Michael 2026-07-26 (not
+  actionable; do not carry). Integration design + sequencing unaffected.
+  M-4: LegiScan key rotation after T3 (key seen in transcripts)
 - EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8
 - D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
