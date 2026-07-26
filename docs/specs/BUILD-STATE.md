@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 369f778  |  Branch: master  |  Generated: 2026-07-26 (ninth refresh this date; app unchanged all day)
+Commit: 87e1f44  |  Branch: master  |  Generated: 2026-07-26 (tenth refresh this date; APP UNCHANGED ALL DAY — every commit today is docs-only)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,45 +30,38 @@ Commit: 369f778  |  Branch: master  |  Generated: 2026-07-26 (ninth refresh this
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (eight Code sessions, ALL DOCS ONLY)
-- Session-8 (queue-runner batch 2, 369f778): Q-1/Q-2 rulings landed —
-  inbox+QUEUE-RUNNER is a STANDING CONVENTION (status lines flipped in
-  docs/prompts/QUEUE-RUNNER.md, CLAUDE.md, both slash-command copies);
-  docs/prompts/ ruled the canonical cross-interface prompt home. NEW
-  binding MAJORITY-OPINION RULE filed: CLAUDE.md registry discipline
-  rule 5 + courtlistener design doc §0.1 (cluster id ≠ majority; the
-  live Haygood near-miss returned the DISSENT). CourtListener doc
-  corrected in place: free-tier rates 5/min-50/hr-125/day rolling
-  (hourly binds), measured Layer-B budget model, parallel-cite caveat
-  [RE-CHECK], §4 FLP-terms gate — app integration UNAUTHORIZED pending
-  Q-6. Q-7 resolved (slash-command file was in the repo subfolder;
-  Code sessions launch from the parent; fixed by copying up). v3
-  project instructions approved design-side (settings text, not repo)
-- Session-7 (queue-runner batch 1, 59808ed): first QUEUE-RUNNER run —
-  NEW docs/prompts/QUEUE-RUNNER.md; inbox/ + .gitignore + CLAUDE.md
-  line. FLP promo clock CLOSED per Michael (entry #5, not carried)
-- Session-6 (dc167f9): migration COMPLETE (entry #4); CLAUDE.md sync
-  scope revised to selective; NVIDIA memo + LegiScan fixture confirmed
-  NOT in repo (knowledge carries warranted)
-- Session-5 (7f3dbf5): Go_Live_Gates.md COMPLETE (gates 1–5 folded in,
-  redacted); statute design doc forward-merged per spec-feedback,
-  repo version CURRENT
-- Session-4: case-authority-index.md → locator-only manifest; A-3
-  withdrawn, A-6/A-7 added
-- Session-3: NEW project-knowledge-working-set-policy.md; v0_1-feedback
-  items verified built
-- Session-2: NEW prop-code-53-28 deadline-engine design ⛔ BUILD-GATED;
-  §53.156 corrected to 2011
-- Session-1: registry Entry 2 v2; Entries 4/5/10 folded; Tanner draft
-  UNADOPTED; NEW attorney-review-queue.md. NO registry entry status
-  changed in any session
+## 2026-07-26 — nine Code sessions, ZERO app change
+Every commit today is documentation. Latest (87e1f44) applied a two-packet
+QUEUE-RUNNER batch:
+- **Est. Code ch. 352 + CPRC ch. 71 read in full** → NEW
+  `statutes-pass-est352-cprc71-2026-07-26.md`. **Fee-basis enum DECOMPOSED**
+  into a record (O6 ruled; nothing is built on it, so no migration). Probate
+  row **reclassified** — was `discretionary-equitable`, wrong on both halves.
+  §352.052 added (was missing entirely). Probate export is **three** lanes
+  (V14). NEW deadline primitive **P7** (calendar-months from a DATE — must
+  not share code with P1's month-ordinal). §71.005 WD trial guardrail added
+  to the playbooks; L10 confirmed against official text
+- **S-1 / PR-1 / PR-2 CLOSED — probate is a mapped practice line**, spine =
+  independent, uncontested administration, full build-out wanted
+- **D3/H8 CLOSED — the case-event core (CE), shape (c):** shared spine +
+  per-consumer facets, four consumers, operational/evidentiary boundary.
+  **CE1 is UNBLOCKED but NOT AUTHORIZED**
+- **N-1 slice rename:** transcript T1–T4 UNCHANGED; the substrate is **CE1**;
+  heartbeat slices **HB1–HB4**; time-tracker slices **TT1–TT2**
+- **Family law REMOVED as a practice line** (doc-only — Code verified no
+  family furniture exists in source). Family *considerations* survive as
+  cross-cutting flags in probate/PI. TDRPC 1.04 stays in the queue
+- Earlier today: Go_Live_Gates completed (gates 1–5, redacted); statute
+  design doc forward-merged; migration to the new build project; selective
+  sync; QUEUE-RUNNER convention adopted; majority-opinion rule filed;
+  CourtListener doc corrected; FLP promo clock closed
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
   to the DataAdapter interface — every feature works in both modes
 - Default mode: demo localStorage, fictional seeds; store version v9;
   version-bump reseeds migrate imported schedules + confirmed runs and
-  back up the whole old store (no more silent wipes)
+  back up the whole old store
 - Schema tables live (db/schema.sql, 32): file_counters, cases, parties,
   case_parties, medical_bills, bill_line_items, code_mappings, eob_records,
   provider_billing_profiles, analysis_runs, analysis_result_lines,
@@ -78,6 +71,7 @@ Commit: 369f778  |  Branch: master  |  Generated: 2026-07-26 (ninth refresh this
   glossary_terms, tag_templates, charges, oaa_intakes, statute_chapters,
   statute_sections, registry_verification_snapshots, watch_flags,
   watch_targets, tracked_bills, bill_statute_refs (no schema changes)
+- **No case-event / CE table exists.** No time_entries, no claims table
 - Health: 186 vitest tests green; npm run build (tsc + vite) and oxlint
   clean as of 88ff3e7 (every commit since is docs-only)
 
@@ -91,43 +85,51 @@ Commit: 369f778  |  Branch: master  |  Generated: 2026-07-26 (ninth refresh this
   storage anywhere — EOB/report "links" are text descriptions
 - OAA intake parses digital Uvalde-layout orders only; scans → manual
 - Demo PFS schedule is fictional; real ratios need the CSV import
-- Playbook engine NOT built; classification edits show a notice only
+- Playbook engine NOT built — classification edits show a notice only
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only; Servpro deadline engine: DESIGN ONLY,
-  gated on the meeting — NOTHING in the app for either
-- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
-  NOTHING in the app; captures e and f NOT folded; register runs H1–H83;
-  H50 OPEN; TRCP skeleton + ALL course-book propositions UNVERIFIED
-- CourtListener: design doc only — NOTHING in the app; app integration
-  UNAUTHORIZED (FLP terms gate Q-6 + unruled §6 sequencing)
-- Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 + fee-basis
-  items 5/6 substantially advanced 2026-07-26 but wording sign-off
-  pending; Tanner draft UNADOPTED (V6); V1–V13 open
+- **PROBATE: only furniture is a `Probate companion` case type parented
+  under Personal Injury with a knowingly wrong ladder (`_piDefault`, see the
+  comment in caseTypes.ts). No probate practice area, no estate/decedent
+  tables, no probate party roles. No probate design doc exists**
+- Time tracker: design draft only — NOTHING in the app. Servpro deadline
+  engine: DESIGN ONLY, gated on the meeting. Case heartbeat: design docs
+  only — NOTHING in the app; captures e and f still NOT folded; register
+  runs H1–H83; TRCP skeleton and ALL course-book propositions UNVERIFIED
+- **CE1 (case-event core) is unblocked by the D3/H8 ruling but NOT
+  authorized — no build authorization exists for it or anything on it**
+- CourtListener: design doc only — app integration UNAUTHORIZED (FLP terms
+  gate Q-6 + unruled §6 sequencing)
+- Registry: ALL entries remain UNVERIFIED; entries 1–10 sign-off is
+  Michael's homework, deliberately not attempted at the end of a long
+  session
 
 ## For design side
-- SYNC (revised 2026-07-26): selective — docs/, db/, supabase/,
-  CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc
-  is the SOLE design-side authority on what is built. Sync the NEW
-  project after each push (old project = archive)
-- QUEUE: STANDING convention (Q-1/Q-2 ruled 2026-07-26). Still open:
-  Q-3 verify docs/prompts/QUEUE-RUNNER.md visible in a FRESH design
-  chat; Q-4 sync picker includes docs/prompts/?; Q-5 model-usage
-  clarifying clause unruled; Q-6 FLP internal-tooling terms (research
-  OK now, app integration blocked); Q-7 RESOLVED
-- MAJORITY-OPINION RULE is binding for all opinion retrieval —
-  CLAUDE.md registry rule 5 / courtlistener doc §0.1
-- PRUNING: K-1 executed/moot; K-2 open; K-3 CLOSED; K-5 Uvalde scope;
-  K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
-- attorney-review-queue.md is the one project-wide review queue; statutes
-  resume point Est. Code §352.051, then the Family Code block
-- M-4: LegiScan key rotation after T3 (key seen in transcripts);
-  M-3: Medchron fictional-content check
-- EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
+- SYNC (2026-07-26): selective — docs/, db/, supabase/, CLAUDE.md,
+  README.md, BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc is the SOLE
+  authority on what is built. Sync the NEW project after each push.
+  **Q-3/Q-4 STRUCK** — docs/prompts/ is indexed and inside the selection
+- **HALF-ANSWERED, needs a yes/no: O5** (`direction` /
+  `conditionalDowngrade` substance — folded into O6's shape without ever
+  being ruled; a smooth write-up makes it look settled)
+- OPEN, Michael's: V14a (vehicle for a §352.051(2) fee request); V15
+  survival half (V10 citator pass now RUNNABLE — FLP done, connector live);
+  V16 narrowed; V17 (decides whether probate touches PI); V4; V11–V13;
+  Entry 1(c-3); RE-1 (referral engine, new); Q-5; Q-6; M-3; M-4; K-5, K-6,
+  K-7; registry entries 1–10
+- **claude.ai project instructions v2 are wrong in BOTH directions** —
+  they say "PI, criminal defense, family"; the truth is PI, criminal
+  defense, **probate**. Plus a stale carried-file line closed in log #4.
+  Michael's paste; neither Claude nor Code can edit them
+- Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the
+  Estates Code territory the probate line needs. **The Family Code block is
+  MOOT**; the probate chapters are the replacement O6 stress test
+- KNOWN STALE, left deliberately: prop-code-53-28-deadline-engine-design.md
+  still says "D3/H8 still gates T1" — packet 1's DO-NOT barred touching that
+  doc beyond adding P7. Fix in a future packet
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8
-- D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
-  V4 still gate billing LOP math and the disbursement checklist
-- Registry sign-offs, Supabase auth (gate 6), edge-function deploys,
-  Entra registration, Citizens MRF path, reseed-survival question,
-  no canonical law-change ledger, Outlook slice + BUILD-SESSION-NOTES
-  2026-07-21 audit unreviewed — all carried
+- EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
+- Supabase auth (gate 6), edge-function deploys, Entra registration,
+  Citizens MRF path, reseed-survival question, no canonical law-change
+  ledger (now FOUR homeless families), Outlook slice +
+  BUILD-SESSION-NOTES 2026-07-21 audit unreviewed — all carried
