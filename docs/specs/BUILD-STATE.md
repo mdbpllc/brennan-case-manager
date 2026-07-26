@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 22fb053  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh this date; delta: FLP promo clock closed)
+Commit: 59808ed  |  Branch: master  |  Generated: 2026-07-26 (eighth refresh this date; app unchanged all day)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,36 +30,32 @@ Commit: 22fb053  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh th
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (six Code sessions, ALL DOCS ONLY — zero app change)
-- Session-6 (post-migration, dc167f9): design log entry #4 appended
-  (migration COMPLETE; new build project live at BUILD-STATE 7f3dbf5).
-  CLAUDE.md sync scope REVISED to the selective new-project sync (see
-  For design side). Both carried-file repo-duplication checks RUN and
-  CLOSED: NVIDIA memo NOT in repo (design doc cites it externally),
-  LegiScan getSessionList fixture NOT in repo — both knowledge carries
-  warranted
-- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md COMPLETE —
-  gates 1–5 imported verbatim into docs/specs/Go_Live_Gates.md (fold-in;
-  no second file), gate-3 sign-in amendment applied, account/API facts
-  landed, LegiScan key value REDACTED (full copy in the archive project;
-  rotation after T3 firm). Statute design doc forward-merged from the PK
-  copy per spec-feedback (O1–O4 in-text, W1 banked, A2 redirect note +
-  SPA cross-ref, B4 hard requirements), preserving repo deltas (A4
-  section-removed, normalized hashes, canonical path) — repo version
-  CURRENT, PK copy historical. CLAUDE.md gates pointer
+## 2026-07-26 session deltas (seven Code sessions, ALL DOCS ONLY)
+- Session-7 (queue-runner batch, 59808ed): first QUEUE-RUNNER run, one
+  packet (queue-mechanism bootstrap) — executed cleanly end to end. NEW
+  docs/prompts/QUEUE-RUNNER.md (PROPOSED convention, unruled); inbox/
+  created + gitignored at repo root (transient packet freight, never
+  committed); CLAUDE.md inbox convention line. Same prompt installed as
+  a slash command at .claude/commands/queue-runner.md (untracked;
+  Michael's call). FLP promo clock also CLOSED per Michael this session
+  block (entry #5) — not actionable, no longer carried
+- Session-6 (post-migration, dc167f9): log entry #4 (migration COMPLETE);
+  CLAUDE.md sync scope revised to selective; both carried-file
+  repo-duplication checks CLOSED (NVIDIA memo + LegiScan fixture NOT in
+  repo — knowledge carries warranted)
+- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md COMPLETE
+  (gates 1–5 folded in, redacted; gate-3 amendment; account/API facts);
+  statute design doc forward-merged per spec-feedback preserving repo
+  deltas — repo version CURRENT, PK copy historical; CLAUDE.md pointer
 - Session-4: case-authority-index.md REPLACED with locator-only manifest
-  (no holdings; registry governs); A-3 WITHDRAWN (Huntress belongs), A-6
-  (McMillan dropped from Entry 1), A-7 (Primoris posture); Ortiz PDF gap
-- Session-3: NEW project-knowledge-working-set-policy.md + CLAUDE.md
-  pointer; verified both v0_1-feedback items already built
-- Session-2: NEW prop-code-53-28-deadline-engine-design.md, ⛔ BUILD-GATED
-  on the Servpro meeting; §53.156 may→shall corrected to 2011 (S.B. 539);
-  fee-basis enum gains mandatory-equitable; O1 CLOSED; review queue
-  resume Est. Code §352.051
-- Session-1: registry Entry 2 REPLACED (v2, post-Ortiz); Entries 4/5/10
-  folded; Tanner draft UNADOPTED (V6); Rohrmoos four proof elements
-  corrected; NEW attorney-review-queue.md. NO entry status changed in
-  any session
+  (registry governs); A-3 WITHDRAWN, A-6/A-7 added; Ortiz PDF gap
+- Session-3: NEW project-knowledge-working-set-policy.md + pointer;
+  verified both v0_1-feedback items already built
+- Session-2: NEW prop-code-53-28-deadline-engine-design.md ⛔ BUILD-GATED
+  (Servpro meeting); §53.156 corrected to 2011; O1 CLOSED
+- Session-1: registry Entry 2 v2; Entries 4/5/10 folded; Tanner draft
+  UNADOPTED (V6); Rohrmoos corrected; NEW attorney-review-queue.md.
+  NO registry entry status changed in any session
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -106,15 +102,18 @@ Commit: 22fb053  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh th
 ## For design side
 - SYNC (revised 2026-07-26): selective — docs/, db/, supabase/,
   CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc
-  is the SOLE design-side authority on what is built. Old project =
-  archive; sync the NEW project after each push
-- PRUNING: K-1 executed/moot; K-2 open; K-3 CLOSED (archive designation);
-  K-5 Uvalde scope; K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
+  is the SOLE design-side authority on what is built. Sync the NEW
+  project after each push (old project = archive)
+- QUEUE (PROPOSED, unruled): Q-1 adopt inbox+QUEUE-RUNNER as standing
+  convention? (blocks trigger #3 instructions revision); Q-2 confirm
+  docs/prompts/ as canonical prompt home; Q-3 re-check the sync picker —
+  docs/prompts/ is a NEW directory the selective sync may not auto-add
+- PRUNING: K-1 executed/moot; K-2 open; K-3 CLOSED; K-5 Uvalde scope;
+  K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
 - attorney-review-queue.md is the one project-wide review queue; statutes
   resume point Est. Code §352.051, then the Family Code block
-- FLP/CourtListener promo clock CLOSED per Michael 2026-07-26 (not
-  actionable; do not carry). Integration design + sequencing unaffected.
-  M-4: LegiScan key rotation after T3 (key seen in transcripts)
+- M-4: LegiScan key rotation after T3 (key seen in transcripts);
+  M-3: Medchron fictional-content check
 - EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8
 - D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
