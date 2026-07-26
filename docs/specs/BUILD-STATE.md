@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 7f3dbf5  |  Branch: master  |  Generated: 2026-07-26 (fifth refresh this date)
+Commit: dc167f9  |  Branch: master  |  Generated: 2026-07-26 (sixth refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,34 +30,36 @@ Commit: 7f3dbf5  |  Branch: master  |  Generated: 2026-07-26 (fifth refresh this
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session deltas (five Code sessions, ALL DOCS ONLY — zero app change)
-- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md is now
-  COMPLETE — gates 1–5 imported verbatim into docs/specs/Go_Live_Gates.md
-  (fold-in; no docs/go-live-gates.md created), gate-3 sign-in amendment
-  applied, Supabase-account + LegiScan facts sections landed, LegiScan key
-  value REDACTED (full copy lives in the archive project; rotation after
-  T3 is firm). statute-text-and-bill-tracking-design.md forward-merged
-  from the PK copy per spec-feedback (O1–O4 resolved in-text, W1 banked,
-  A2 redirect note + SPA cross-ref, B4 hard requirements), preserving
-  repo deltas (A4 section-removed, normalized hashes, canonical path) —
-  repo version now CURRENT; PK copy historical. CLAUDE.md gates pointer.
-  Design work migrates to a NEW Claude project; old project = the
-  LEGAL-AUTHORITY ARCHIVE (K-3 CLOSED by designation)
+## 2026-07-26 session deltas (six Code sessions, ALL DOCS ONLY — zero app change)
+- Session-6 (post-migration, dc167f9): design log entry #4 appended
+  (migration COMPLETE; new build project live at BUILD-STATE 7f3dbf5).
+  CLAUDE.md sync scope REVISED to the selective new-project sync (see
+  For design side). Both carried-file repo-duplication checks RUN and
+  CLOSED: NVIDIA memo NOT in repo (design doc cites it externally),
+  LegiScan getSessionList fixture NOT in repo — both knowledge carries
+  warranted
+- Session-5 (pre-migration packet, 7f3dbf5): Go_Live_Gates.md COMPLETE —
+  gates 1–5 imported verbatim into docs/specs/Go_Live_Gates.md (fold-in;
+  no second file), gate-3 sign-in amendment applied, account/API facts
+  landed, LegiScan key value REDACTED (full copy in the archive project;
+  rotation after T3 firm). Statute design doc forward-merged from the PK
+  copy per spec-feedback (O1–O4 in-text, W1 banked, A2 redirect note +
+  SPA cross-ref, B4 hard requirements), preserving repo deltas (A4
+  section-removed, normalized hashes, canonical path) — repo version
+  CURRENT, PK copy historical. CLAUDE.md gates pointer
 - Session-4: case-authority-index.md REPLACED with locator-only manifest
   (no holdings; registry governs); A-3 WITHDRAWN (Huntress belongs), A-6
-  (McMillan dropped from Entry 1), A-7 (Primoris posture) added; Ortiz
-  PDF gap recorded
-- Session-3: NEW project-knowledge-working-set-policy.md (pruning runbook;
-  steps 3–5 Michael-only) + CLAUDE.md pointer; verified both
-  v0_1-feedback items already built (phone masking, Combobox)
+  (McMillan dropped from Entry 1), A-7 (Primoris posture); Ortiz PDF gap
+- Session-3: NEW project-knowledge-working-set-policy.md + CLAUDE.md
+  pointer; verified both v0_1-feedback items already built
 - Session-2: NEW prop-code-53-28-deadline-engine-design.md, ⛔ BUILD-GATED
   on the Servpro meeting; §53.156 may→shall corrected to 2011 (S.B. 539);
   fee-basis enum gains mandatory-equitable; O1 CLOSED; review queue
   resume Est. Code §352.051
 - Session-1: registry Entry 2 REPLACED (v2, post-Ortiz); Entries 4/5/10
-  folded; Tanner draft staged UNADOPTED (V6); Rohrmoos four proof
-  elements corrected; NEW attorney-review-queue.md. NO entry status
-  changed in any session
+  folded; Tanner draft UNADOPTED (V6); Rohrmoos four proof elements
+  corrected; NEW attorney-review-queue.md. NO entry status changed in
+  any session
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -102,12 +104,11 @@ Commit: 7f3dbf5  |  Branch: master  |  Generated: 2026-07-26 (fifth refresh this
   wording sign-off pending; Tanner draft UNADOPTED (V6); V1–V13 open
 
 ## For design side
-- MIGRATION: design work moves to the NEW project — sync the repo THERE;
-  old project (archive) sync optional. First new-project session seeds
-  conventions as memory edits + verifies refresh-chat/push-to-code skills
-- Go_Live_Gates.md COMPLETE (1–8) and canonical; gates 1–5 export flag
-  and the statute design-doc snapshot lag are both RESOLVED
-- PRUNING: K-1 unblocked; K-2 open; K-3 CLOSED (archive designation);
+- SYNC (revised 2026-07-26): selective — docs/, db/, supabase/,
+  CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc
+  is the SOLE design-side authority on what is built. Old project =
+  archive; sync the NEW project after each push
+- PRUNING: K-1 executed/moot; K-2 open; K-3 CLOSED (archive designation);
   K-5 Uvalde scope; K-6 re-pull N. Cypress 559 S.W.3d 128; K-7 Ortiz PDF
 - attorney-review-queue.md is the one project-wide review queue; statutes
   resume point Est. Code §352.051, then the Family Code block
@@ -119,4 +120,5 @@ Commit: 7f3dbf5  |  Branch: master  |  Generated: 2026-07-26 (fifth refresh this
   V4 still gate billing LOP math and the disbursement checklist
 - Registry sign-offs, Supabase auth (gate 6), edge-function deploys,
   Entra registration, Citizens MRF path, reseed-survival question,
-  no canonical law-change ledger — all carried
+  no canonical law-change ledger, Outlook slice + BUILD-SESSION-NOTES
+  2026-07-21 audit unreviewed — all carried
