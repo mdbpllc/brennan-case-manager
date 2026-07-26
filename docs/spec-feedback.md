@@ -214,6 +214,35 @@ to `docs/specs/`.
 
 **Status:** Next design session should export the session-1 voice capture (and the session-1 handoff's log entry, if one was written — the synced session log has no session-1 heartbeat entry) so provenance is complete.
 
+### 2026-07-25 — Heartbeat handoff e applied; two notes back to the design space
+
+**Where:** the 2026-07-25 voice-session PUSH-TO-CODE work order ("Downstream
+Branches" — capture e). Applied in full: capture e filed, session-log entry
+appended, H28/H31/H32 markers updated in place in `case-heartbeat-design.md`,
+Rule 239a verified in the TRCP skeleton.
+
+1. **Rule 239a verification result:** the deadline skeleton carries NO 239a
+   text at all — neither the 2020 nor the 2026 edition. The skeleton was
+   extracted for the discovery/litigation spine and never included the
+   default-judgment or post-judgment rules. Nothing needed correcting; a
+   change-flag entry was added to the skeleton's §8 (law-change ledger
+   family, next to the 166a flag) so the eventual 239a registry entry is
+   drafted from the March-2026 text.
+
+2. **`case-heartbeat-design.md` §8.12 now lags capture e.** Per the work
+   order, this Code session updated only the H28/H31/H32 markers — no fold.
+   §8.12 still lists discovery and depositions as unwalked with a resume
+   point at "the discovery phase proper," but capture e walked the
+   default-judgment thread, post-judgment clocks, no-answer fork, discovery
+   phase, and the deposition timing model; the real resume point is **H39**
+   (defendant-driver vs. corporate-rep deposition fork), and the open-item
+   register now runs H1–H41 (H35–H41 live only in capture e Part 10). Next
+   design-side pass on the doc should fold capture e Parts 1–7 into §8 and
+   extend the register, per the doc's own §12.2 pattern.
+
+**Status:** No decision needed on 1 (flag placed). 2 is the standing fold
+queue — capture e is the source of record until folded.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

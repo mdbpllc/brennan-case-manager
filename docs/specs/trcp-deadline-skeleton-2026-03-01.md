@@ -135,6 +135,19 @@ initial disclosures due  ◄── THE ANCHOR DATE
 
 ## 8. What is NOT here
 
+- **Default-judgment and post-judgment rules** — TRCP 107(h) ten-day
+  return-on-file gate, 239, 239a, 241, 243, 329b, TRAP 26.1, TRAP 30. Not
+  extracted in this skeleton; walked 2026-07-25 and listed as registry
+  candidates in `case-heartbeat-walkthrough-capture-2026-07-25e.md` Part 11.
+  **⚠ Rule 239a change flag (law-change ledger, verified 2026-07-25):** this
+  skeleton carries NO 239a text in either edition — nothing here needs
+  correcting — but when the 239a entry is drafted it must use the **March
+  2026** text (last known **email AND mailing** address; clerk notice under
+  **Rule 21(f)(10)**; "shall" → "must"), not the May 2020 mailing-only /
+  post-card text. A 2020-edition PDF was uploaded by mistake before the
+  correct 2026 edition; anything assuming a mailing-address-only 239a
+  certificate is **wrong** under this text. Same ledger family as the 166a
+  flag in §7.
 - **Service diligence** — case law, no rule cite. Registry entry needed.
 - **Local rules and standing orders** — court-profile tier (feature-intake item F). Bexar Monitoring Court's hearing requirement for agreed orders and the noon-Monday trial announcement are examples.
 - **Judge-specific requirements** — judge profile tier.
