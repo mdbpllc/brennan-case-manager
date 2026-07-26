@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: dc167f9  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh this date; delta: FLP promo clock closed)
+Commit: 22fb053  |  Branch: master  |  Generated: 2026-07-26 (seventh refresh this date; delta: FLP promo clock closed)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
