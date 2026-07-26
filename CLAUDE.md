@@ -223,6 +223,9 @@ standing gates that survive any status change:
 
 ## Working style
 
+- Project knowledge is a working set, not an archive — see
+  docs/project-knowledge-working-set-policy.md before adding large source
+  documents.
 - Small, reviewable increments; commit early and often with plain-language
   messages Michael can follow. **End every substantive session by
   rewriting `docs/specs/BUILD-STATE.md` in full, appending the

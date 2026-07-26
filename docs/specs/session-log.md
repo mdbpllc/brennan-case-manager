@@ -12,6 +12,65 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 — Project knowledge capacity; case authority index (design, Opus 5)
+
+Trigger: project knowledge at 81% capacity with Phase 1b+ still ahead.
+
+Measured the actual token load rather than file sizes. Result: ~97% of project
+knowledge is three reference corpora — the Kostura subrogation CLE paper (~400K
+tokens), the nondisclosure/expunction statutes dump (~164K), and 16 case
+opinions (~225K OCR text plus 194 pages of scanned images). All twelve claude_*
+design docs together are ~3%. Pruning design docs would have been pointless.
+
+CONFIRMED — capacity is not a hard wall. Project capacity is measured against
+the context window; above the threshold Claude switches to RAG (roughly 10x
+capacity) automatically. The real risk is retrieval dilution, which fails
+silently, not lockout.
+
+CONFIRMED — Michael authorized drafting three things: a case authority index
+from the opinions, the pruning instructions, and the working-set convention as
+a repo doc. ("Yes go ahead.")
+
+Staged: docs/authority/case-authority-index.md — 16 opinions grouped by
+proposition (paid-or-incurred, §18.001 affidavits, rate discovery, LOP/
+factoring, payor-side, damages sufficiency). Replaces the PDFs in project
+knowledge; PDFs route to docs/authority/pdf/.
+
+Staged: docs/project-knowledge-working-set-policy.md — "project knowledge is a
+working set, not an archive; the repo is the archive." Pinned list, standing
+behaviors, pruning runbook.
+
+Findings while reading the opinions, carried as flags A-1..A-5 in the index:
+- N. Cypress PDF is the WITHDRAWN opinion (2018 Tex. LEXIS 346). Operative cite
+  is 559 S.W.3d 128. Correct anywhere it is cited.
+- McMillan _1 PDF is a content-identical duplicate — extracted text matches
+  character-for-character. Safe delete.
+- Huntress v. Hickory Trail is a false-imprisonment/DTPA case, not a billing
+  case. Does not belong to this cluster — Michael to confirm its topic.
+- Sheppard (mem. op.) and Christus Santa Rosa (E.D. Tex.) are non-binding.
+- All 16 PDFs are scanned images with OCR text; quotes must be verified against
+  the reporter before filing.
+
+Corrected in session: the collection is 16 opinions plus one CLE paper, not 17
+opinions as first stated.
+
+PROPOSED, unruled: moving the case PDFs and the two corpora to the repo
+(runbook steps 3-4); standing up a second Claude project for legal authority.
+Reasoning recorded in the policy doc so it is not relitigated.
+
+Code routing note (same day, Code session): both docs landed at their
+canonical paths; CLAUDE.md pointer added. VERIFIED before Michael deletes
+claude_v0_1-feedback.md — both items are built: phone masking
+(src/domain/phone.ts + src/components/phone.tsx, wired into fieldWidgets) and
+the searchable combobox (src/components/Combobox.tsx, "v0.1 feedback item b"
+per its own header, type-to-filter, used across seven pages). Runbook steps
+1–2 are safe to execute; steps 3–5 remain Michael's to rule.
+
+Staged for Code: docs/authority/case-authority-index.md (new);
+docs/project-knowledge-working-set-policy.md (new); CLAUDE.md pointer (fold-in).
+Awaiting/Returned from Code, unreviewed: Outlook push slice (from 2026-07-24,
+still unseen design-side); BUILD-SESSION-NOTES.md review.
+
 ## 2026-07-26 (Session 2, design space, Opus 5: Prop. Code ch. 53 + ch. 28 read in full; §53.156 date error caught; full Servpro deadline-engine design pass, gated on a Servpro staff meeting)
 
 Resumed the statutes queue at its recorded stopping point (Prop. Code §53.156) and went past it. Michael
