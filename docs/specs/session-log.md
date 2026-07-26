@@ -12,6 +12,59 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#6) — QUEUE-RUNNER batch: 1 packet processed (Code session)
+
+First run of the (PROPOSED) queue mechanism. Queue order: single packet,
+push-to-code_queue-mechanism-bootstrap_2026-07-26.zip — order trivially
+confirmed by Michael's run instruction. Nothing superseded (batch of one).
+Reconcile deltas: inbox/ already existed (skipped per §5); the .gitignore
+line and CLAUDE.md note landed this session (CLAUDE.md wording conformed
+to the packet's §4.2 canonical line); NEW docs/prompts/QUEUE-RUNNER.md
+(verbatim + status line). Note: the same prompt is also installed as a
+slash command at .claude/commands/queue-runner.md (Michael's copy,
+content-identical, currently untracked — his call whether it commits).
+The packet zip was deleted from inbox/ after execution; this entry and
+the packet entry below are the record. The mechanism's test run executed
+cleanly end to end.
+
+Open items merged from the packet's §7 (Michael's, not Code's):
+Q-1 adopt inbox+QUEUE-RUNNER as standing convention? (blocks trigger #3
+instructions revision); Q-2 confirm docs/prompts/ as canonical home for
+cross-interface prompts; Q-3 re-check the GitHub sync picker — docs/
+prompts/ is a NEW nested directory the selective sync may not auto-include;
+M-4 LegiScan rotation after T3, M-3 Medchron check, K-5 Uvalde home — all
+carried unchanged.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: this entry + the packet entry.
+
+## 2026-07-26 (design session: interim-session queue mechanism — TEST PACKET)
+
+**What happened:** Michael runs out of Fable 5 tokens before Tuesday and wants to keep
+working interim sessions on Opus 5 without losing their output or hand-shuttling packets.
+Designed a queue mechanism: a gitignored `inbox/` at the repo root collects push-to-code
+zips as they are produced; one QUEUE-RUNNER prompt processes the whole batch in a single
+Code session on Tuesday. Runner reads ALL manifests before executing any, reconciles once,
+applies later-packet-wins on conflicts, honors DO-NOT lists cumulatively, then does ONE
+session-log append, ONE BUILD-STATE rewrite, and ONE verified push. Per-session cost to
+Michael is one file save; end-of-queue cost is one paste.
+
+Rejected: sweeping `~/Downloads` for `push-to-code_*.zip` instead of a deliberate inbox —
+stale zips and clutter make misprocessing likelier, and the saving is one drag per session.
+
+**This packet is itself the test run** of that mechanism, deliberately scoped to the
+mechanism's own setup so a failure costs nothing.
+
+**Status:** the inbox/queue-runner convention is PROPOSED, unruled — Michael has not yet
+ruled it a standing convention. Executing this packet does NOT constitute the ruling.
+If he rules it in, project-instructions trigger #3 fires (binding convention added) and
+the instructions must be revised the same day.
+
+**Staged for Code:** the QUEUE-RUNNER prompt (docs/prompts/QUEUE-RUNNER.md) and the three
+hygiene actions in this packet's §5.
+
+**Awaiting/Returned from Code, unreviewed:** this entry.
+
 ## 2026-07-26 (#5) — FLP/CourtListener promo clock item CLOSED (Michael ruling, Code session)
 
 Michael ruled the FLP/CourtListener promo (ends 2026-08-06) is not a

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Queued push-to-code packets (transient freight; never committed)
+inbox/
+
 # Environment files (keep .env.example)
 .env
 .env.*

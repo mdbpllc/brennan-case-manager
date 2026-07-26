@@ -252,6 +252,10 @@ standing gates that survive any status change:
   which raises the stakes on BUILD-STATE accuracy (the 2026-07-25 scope
   carried src/ precisely for verification; that trade was re-made
   deliberately, session-log 2026-07-26 #4).
+- `inbox/` (gitignored) holds queued push-to-code packets produced by
+  design sessions; process the whole batch with
+  docs/prompts/QUEUE-RUNNER.md; delete packets after execution — the
+  session-log entries are the record.
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in
