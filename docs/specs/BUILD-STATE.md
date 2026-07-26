@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: d2b28d8  |  Branch: master  |  Generated: 2026-07-25 (seventh refresh this date)
+Commit: 72e63e3  |  Branch: master  |  Generated: 2026-07-26
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,31 +30,29 @@ Commit: d2b28d8  |  Branch: master  |  Generated: 2026-07-25 (seventh refresh th
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-25 session deltas (seven sessions this date)
-- APIL mining passes 2+3 APPLIED (seventh session, DOCS ONLY — zero app
-  change): pass 2 (Kostura subrogation/liens = the disbursement stage,
-  appellate/preservation remainder, pre-suit, Rule 204, SCOTX update) and
-  pass 3 (tax, insurance, damages spine, trucking cluster, AI chapter,
-  Tilley/ethics-opinions Ch. 22) filed; session-log entry appended;
-  ERRATUM placed in pass 1 in place — its article map was materially
-  incomplete (27 chapters, not 23; pass 3 §0 map is authoritative;
-  "Specialization 14" heat-map entry is a false positive); design-doc
-  resume point moved PASS 2 → PASS 4; register H1–H58 → H1–H83
-  (H59–H67 pass 2 §8, H68–H83 pass 3 §10). NOTHING built, NOTHING ruled —
-  every proposition in all three mining docs UNVERIFIED
-- Heartbeat handoff f APPLIED (sixth session, DOCS ONLY): capture f placed
-  (deposition no-dates ladder, mediation in full, DCO ingester +
-  software-wide audit log + mediator roster specified, expert cadence);
-  mining pass 1 placed; "Follint" → "Foland" corrected in capture d +
-  design doc §8.10; two-capture fold-queue notice placed in §8.12.
-  Course-book PDF stays OUT of the repo (copyrighted, single-user license)
-- Heartbeat handoffs b–e APPLIED (third–fifth, DOCS ONLY): design doc
-  (DESIGN-PARTIAL, unadopted) + TRCP skeleton + captures b–e; design doc
-  folded through §8.11; H28/H31 RULED, H32 CLOSED; 239a change flag
-- Medical walkthrough defects fixed + audit triage built (first/second
-  handoffs): schedule selection + placeholder banners, reseed backup,
-  classification editable with review log, declared status ladders,
-  adapter patch guard; sync-scope ruling recorded in CLAUDE.md
+## 2026-07-26 session delta (DOCS ONLY — zero app change)
+- Verification-pass packet APPLIED: Michael read 8 opinions + 5 statutes
+  design-side 2026-07-26; Code routed the yield. Registry file: Entry 2
+  REPLACED in place (redraft v2, post-Ortiz — v1 was never routed;
+  duplicate check run); Entries 4/5/10 folded (Ch. 55 full-chapter
+  findings incl. EMS 800k ceiling + §55.007 release teeth; H.B. 4145
+  date-of-service applicability, per-bill flag survives; IME line
+  Sherwin-Williams/Auburn Creek/H.E.B. now [READ], 10(c) FLAGGED not
+  rewritten); draft Tanner service-diligence entry staged at file end —
+  UNADOPTED (V6), both candidate homes noted. Fee-basis design amended:
+  Rohrmoos FOUR proof elements (was five — corrected), contemporaneity
+  badge RULED (the session's only design ruling), §38.001/DTPA statutory
+  findings folded — doc stays DRAFT, NOT adopted. NEW FILES:
+  attorney-review-queue.md (project-wide review queue, WORKING CHECKLIST)
+  and registry-verification-pass-2026-07-26.md (RAW CAPTURE). TRCP
+  skeleton §9 points at both the queue doc and the Tanner draft.
+  NO entry status changed — [READ]/[STATUTE] flags record reading only;
+  wording sign-off has not occurred for any entry. New open items V1–V10
+  (see the capture Part 5). NOTHING built.
+- Prior date (2026-07-25, seven sessions): APIL mining passes 1–3 filed
+  (register H1–H83; 27-chapter corrected map in pass 3 §0); heartbeat
+  captures b–f placed; medical walkthrough defects fixed + audit triage
+  built; sync-scope ruling recorded — see session-log for detail
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -70,8 +68,7 @@ Commit: d2b28d8  |  Branch: master  |  Generated: 2026-07-25 (seventh refresh th
   transcript_participants, staging_items, routing_decisions,
   glossary_terms, tag_templates, charges, oaa_intakes, statute_chapters,
   statute_sections, registry_verification_snapshots, watch_flags,
-  watch_targets, tracked_bills, bill_statute_refs (no schema changes
-  this date — new run fields ride existing jsonb columns)
+  watch_targets, tracked_bills, bill_statute_refs (no schema changes)
 - Health: 186 vitest tests green; npm run build (tsc + vite) and oxlint
   clean as of 88ff3e7 (every commit since is docs-only)
 
@@ -90,31 +87,34 @@ Commit: d2b28d8  |  Branch: master  |  Generated: 2026-07-25 (seventh refresh th
   playbooks" notice; nothing recomputes automatically yet
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only — NOTHING exists in the app
+- Time tracker: design draft only (amended 2026-07-26) — NOTHING exists
+  in the app; the draft itself is still awaiting design-side adoption
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
-  NOTHING exists in the app; walked through mediation/expert cadence
-  (captures b–f; e and f NOT folded — design doc §8.12 carries the
-  fold-queue notice); register runs H1–H83 (doc's §11 stops at H34);
-  resume point: APIL mining PASS 4 (pass 1's article map is SUPERSEDED
-  by pass 3 §0 — erratum placed in pass 1); H50 (supplementation
-  opt-out: dead vs dormant) is OPEN — neither model is decided; TRCP
-  skeleton and ALL course-book propositions UNVERIFIED (incl. every
-  interval in passes 2–3: BCRC/SMART Act clocks, Medicaid 45-day,
-  UM/UIM 4-year); deficiency submodule parked (H35)
+  NOTHING exists in the app; captures e and f NOT folded (§8.12 carries
+  the fold-queue notice); register runs H1–H83; resume point: APIL
+  mining PASS 4 for mining, Prop. Code §53.156 for the verification
+  queue; H50 (supplementation opt-out) OPEN; TRCP skeleton and ALL
+  course-book propositions UNVERIFIED; deficiency submodule parked (H35)
+- Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 substantially
+  advanced 2026-07-26 (primary text read) but wording sign-off pending;
+  Tanner draft entry UNADOPTED (V6); V1–V10 open
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
+- attorney-review-queue.md is now the one project-wide review queue
+  (its §2 marks the verification resume point: Prop. Code §53.156)
+- FLP/CourtListener account + MCP connector setup — promo ends
+  2026-08-06 (ELEVEN days out; carried on 7+ consecutive entries)
 - EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment)
-- EXPORT NEEDED: session-1 heartbeat voice capture (design doc's named
-  source of record; never reached Code; see spec-feedback)
+- EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
 - FOLD PENDING (two captures deep): captures e + f into
   case-heartbeat-design.md §8 + register extension H35–H58
-- FLP/CourtListener account + MCP connector setup — promo ends
-  2026-08-06 (ELEVEN days out; carried on six consecutive entries)
+- D3 (shared touch substrate) still blocks T1 for heartbeat AND time
+  tracker; Entry 1(c-3) + V4 still gate billing LOP math and the
+  disbursement checklist
 - Open question: should chargemaster memory + generated documents also
   carry across reseeds?
-- Registry sign-offs (incl. entries 1–10 + course-book candidates),
-  Supabase auth decision (gate 6), edge-function deploys, Entra
-  registration, Citizens MRF path — all carried
+- Registry sign-offs, Supabase auth decision (gate 6), edge-function
+  deploys, Entra registration, Citizens MRF path — all carried
 - Statute design-doc snapshot still lags project knowledge (spec-feedback)
