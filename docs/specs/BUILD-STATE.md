@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh this date)
+Commit: ccfaf87  |  Branch: master  |  Generated: 2026-07-25 (fifth refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,14 +30,20 @@ Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh thi
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-25 session deltas (four sessions this date)
-- Heartbeat handoff d APPLIED (fourth session, DOCS ONLY — zero app
-  change): capture d placed; design doc folded Code-side per the
-  PUSH-TO-CODE work order — §8.10 suit filed / service chase (from
-  captures c+d; handoff c's deferred fold never happened, reconciled),
+## 2026-07-25 session deltas (five sessions this date)
+- Heartbeat handoff e APPLIED (fifth session, DOCS ONLY — zero app change):
+  capture e placed (default-judgment thread, post-judgment clocks,
+  no-answer fork, discovery phase, deposition timing model); session-log
+  entry appended; design-doc markers updated in place — H28 RULED IN
+  (trial date = second master clock + move-your-date alarm), H31 RULED
+  (DCO thread runs warm), H32 CLOSED both branches; Rule 239a verified
+  ABSENT from the TRCP skeleton, March-2026 change flag added (skeleton
+  §8); deficiency submodule parked pending H35; H35–H41 live in capture e
+- Heartbeat handoff d APPLIED (fourth session, DOCS ONLY): capture d
+  placed; design doc folded Code-side — §8.10 suit filed / service chase,
   §8.11 answer received, primitives 17–26, register H23–H34, H14 CLOSED
-- Heartbeat handoffs b+c ROUTED (third session, DOCS ONLY — zero app
-  change): case-heartbeat-design.md (DESIGN-PARTIAL, unadopted),
+- Heartbeat handoffs b+c ROUTED (third session, DOCS ONLY):
+  case-heartbeat-design.md (DESIGN-PARTIAL, unadopted),
   trcp-deadline-skeleton-2026-03-01.md (UNVERIFIED registry candidates),
   walkthrough captures b + c (raw); session-log entries for design
   sessions 2 + 3 appended. Nothing entered the build queue.
@@ -48,9 +54,8 @@ Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh thi
   scenario-inversion explainer, Caption→Style
 - Audit triage built (second handoff): classification editable post-creation
   with review log + re-evaluation notice; status ladders DECLARED per case
-  type (statusesFor throws on undeclared — no silent fall-through; UI shows
-  "Unknown case type" warning); explicit itemLabels on all repeating fields;
-  updateParty throws on unsupported patch keys in BOTH adapters
+  type; explicit itemLabels on repeating fields; updateParty throws on
+  unsupported patch keys in BOTH adapters
 - Sync-scope ruling recorded in CLAUDE.md (src/ + db/schema.sql + docs/ +
   CLAUDE.md + README.md synced; lockfile/node_modules/dist/pilot-JSON out)
 
@@ -92,9 +97,11 @@ Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh thi
   store reseed (open question for design — migration scope was schedules
   + confirmed runs)
 - Time tracker: design draft only — NOTHING exists in the app
-- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled; stage
-  catalog now walked through answer received, H14 closed) — NOTHING
-  exists in the app; TRCP skeleton entries all UNVERIFIED
+- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
+  NOTHING exists in the app; stage catalog walked through discovery +
+  deposition timing (captures b–e; e NOT yet folded into the design doc,
+  whose §8.12 lags it — see spec-feedback); resume point H39; TRCP
+  skeleton entries all UNVERIFIED; deficiency submodule parked (H35)
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
@@ -102,9 +109,10 @@ Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh thi
 - EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment)
 - EXPORT NEEDED: session-1 heartbeat voice capture
   (case-heartbeat-voice-capture-2026-07-25.md — the design doc's named
-  source of record; never reached Code; see spec-feedback). Handoffs b+c
-  are otherwise fully applied — captures b/c, design doc, TRCP skeleton
-  all in docs/specs/; the superseded suit-filed addendum was NOT routed
+  source of record; never reached Code; see spec-feedback)
+- FOLD PENDING: capture e Parts 1–7 into case-heartbeat-design.md §8 +
+  register extension H35–H41 (Code updated only the H28/H31/H32 markers,
+  per the work order)
 - Open question: should chargemaster memory + generated documents also
   carry across reseeds?
 - Registry sign-offs, Supabase auth decision (gate 6), edge-function
