@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 51aea69  |  Branch: master  |  Generated: 2026-07-25 (third refresh this date)
+Commit: 84b34be  |  Branch: master  |  Generated: 2026-07-25 (fourth refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,7 +30,12 @@ Commit: 51aea69  |  Branch: master  |  Generated: 2026-07-25 (third refresh this
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-25 session deltas (three sessions this date)
+## 2026-07-25 session deltas (four sessions this date)
+- Heartbeat handoff d APPLIED (fourth session, DOCS ONLY — zero app
+  change): capture d placed; design doc folded Code-side per the
+  PUSH-TO-CODE work order — §8.10 suit filed / service chase (from
+  captures c+d; handoff c's deferred fold never happened, reconciled),
+  §8.11 answer received, primitives 17–26, register H23–H34, H14 CLOSED
 - Heartbeat handoffs b+c ROUTED (third session, DOCS ONLY — zero app
   change): case-heartbeat-design.md (DESIGN-PARTIAL, unadopted),
   trcp-deadline-skeleton-2026-03-01.md (UNVERIFIED registry candidates),
@@ -87,8 +92,9 @@ Commit: 51aea69  |  Branch: master  |  Generated: 2026-07-25 (third refresh this
   store reseed (open question for design — migration scope was schedules
   + confirmed runs)
 - Time tracker: design draft only — NOTHING exists in the app
-- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
-  NOTHING exists in the app; TRCP skeleton entries all UNVERIFIED
+- Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled; stage
+  catalog now walked through answer received, H14 closed) — NOTHING
+  exists in the app; TRCP skeleton entries all UNVERIFIED
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
