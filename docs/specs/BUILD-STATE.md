@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 7d81c8c  |  Branch: master  |  Generated: 2026-07-25 (sixth refresh this date)
+Commit: d2b28d8  |  Branch: master  |  Generated: 2026-07-25 (seventh refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,29 +30,31 @@ Commit: 7d81c8c  |  Branch: master  |  Generated: 2026-07-25 (sixth refresh this
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-25 session deltas (six sessions this date)
-- Heartbeat handoff f APPLIED (sixth session, DOCS ONLY — zero app change):
-  capture f placed (deposition no-dates ladder, mediation in full, DCO
-  ingester + software-wide audit log + mediator roster specified, expert
-  cadence); APIL 2025 course-book mining pass 1 placed (every proposition
-  UNVERIFIED; course-book PDF stays OUT of the repo — copyrighted,
-  single-user license); session-log entry appended; "Follint" → "Foland"
-  corrected in capture d + design doc §8.10; design doc's stale resume
-  point corrected in place (§8.12 now carries the two-capture fold-queue
-  notice; register range H1–H58). NOTHING entered the build queue —
-  D3/H8 still gates T1, including the three sub-modules named this session
-- Heartbeat handoff e APPLIED (fifth, DOCS ONLY): capture e placed;
-  H28 RULED IN, H31 RULED (warm), H32 CLOSED both branches; Rule 239a
-  March-2026 change flag added to the TRCP skeleton §8
-- Heartbeat handoffs b+c+d ROUTED (third/fourth, DOCS ONLY): design doc
-  (DESIGN-PARTIAL, unadopted), TRCP skeleton (UNVERIFIED candidates),
-  captures b–d; design doc folded through §8.11 answer-received
+## 2026-07-25 session deltas (seven sessions this date)
+- APIL mining passes 2+3 APPLIED (seventh session, DOCS ONLY — zero app
+  change): pass 2 (Kostura subrogation/liens = the disbursement stage,
+  appellate/preservation remainder, pre-suit, Rule 204, SCOTX update) and
+  pass 3 (tax, insurance, damages spine, trucking cluster, AI chapter,
+  Tilley/ethics-opinions Ch. 22) filed; session-log entry appended;
+  ERRATUM placed in pass 1 in place — its article map was materially
+  incomplete (27 chapters, not 23; pass 3 §0 map is authoritative;
+  "Specialization 14" heat-map entry is a false positive); design-doc
+  resume point moved PASS 2 → PASS 4; register H1–H58 → H1–H83
+  (H59–H67 pass 2 §8, H68–H83 pass 3 §10). NOTHING built, NOTHING ruled —
+  every proposition in all three mining docs UNVERIFIED
+- Heartbeat handoff f APPLIED (sixth session, DOCS ONLY): capture f placed
+  (deposition no-dates ladder, mediation in full, DCO ingester +
+  software-wide audit log + mediator roster specified, expert cadence);
+  mining pass 1 placed; "Follint" → "Foland" corrected in capture d +
+  design doc §8.10; two-capture fold-queue notice placed in §8.12.
+  Course-book PDF stays OUT of the repo (copyrighted, single-user license)
+- Heartbeat handoffs b–e APPLIED (third–fifth, DOCS ONLY): design doc
+  (DESIGN-PARTIAL, unadopted) + TRCP skeleton + captures b–e; design doc
+  folded through §8.11; H28/H31 RULED, H32 CLOSED; 239a change flag
 - Medical walkthrough defects fixed + audit triage built (first/second
-  handoffs): schedule selection + demo-placeholder banners, reseed
-  carry-forward + versioned backup, classification editable post-creation
-  with review log, declared status ladders, adapter patch guard
-- Sync-scope ruling recorded in CLAUDE.md (src/ + db/schema.sql + docs/ +
-  CLAUDE.md + README.md synced; lockfile/node_modules/dist/pilot-JSON out)
+  handoffs): schedule selection + placeholder banners, reseed backup,
+  classification editable with review log, declared status ladders,
+  adapter patch guard; sync-scope ruling recorded in CLAUDE.md
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -92,10 +94,13 @@ Commit: 7d81c8c  |  Branch: master  |  Generated: 2026-07-25 (sixth refresh this
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
   NOTHING exists in the app; walked through mediation/expert cadence
   (captures b–f; e and f NOT folded — design doc §8.12 carries the
-  fold-queue notice); register runs H1–H58 (doc's §11 stops at H34);
-  resume point: APIL mining PASS 2; H50 (supplementation opt-out: dead
-  vs dormant) is OPEN — neither model is decided; TRCP skeleton and ALL
-  course-book propositions UNVERIFIED; deficiency submodule parked (H35)
+  fold-queue notice); register runs H1–H83 (doc's §11 stops at H34);
+  resume point: APIL mining PASS 4 (pass 1's article map is SUPERSEDED
+  by pass 3 §0 — erratum placed in pass 1); H50 (supplementation
+  opt-out: dead vs dormant) is OPEN — neither model is decided; TRCP
+  skeleton and ALL course-book propositions UNVERIFIED (incl. every
+  interval in passes 2–3: BCRC/SMART Act clocks, Medicaid 45-day,
+  UM/UIM 4-year); deficiency submodule parked (H35)
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
@@ -106,7 +111,7 @@ Commit: 7d81c8c  |  Branch: master  |  Generated: 2026-07-25 (sixth refresh this
 - FOLD PENDING (two captures deep): captures e + f into
   case-heartbeat-design.md §8 + register extension H35–H58
 - FLP/CourtListener account + MCP connector setup — promo ends
-  2026-08-06 (twelve days out; carried on five consecutive entries)
+  2026-08-06 (ELEVEN days out; carried on six consecutive entries)
 - Open question: should chargemaster memory + generated documents also
   carry across reseeds?
 - Registry sign-offs (incl. entries 1–10 + course-book candidates),
