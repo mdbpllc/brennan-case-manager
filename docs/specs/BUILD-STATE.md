@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 72e63e3  |  Branch: master  |  Generated: 2026-07-26
+Commit: 33b051d  |  Branch: master  |  Generated: 2026-07-26 (second refresh this date)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -30,29 +30,27 @@ Commit: 72e63e3  |  Branch: master  |  Generated: 2026-07-26
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 session delta (DOCS ONLY — zero app change)
-- Verification-pass packet APPLIED: Michael read 8 opinions + 5 statutes
-  design-side 2026-07-26; Code routed the yield. Registry file: Entry 2
-  REPLACED in place (redraft v2, post-Ortiz — v1 was never routed;
-  duplicate check run); Entries 4/5/10 folded (Ch. 55 full-chapter
-  findings incl. EMS 800k ceiling + §55.007 release teeth; H.B. 4145
-  date-of-service applicability, per-bill flag survives; IME line
-  Sherwin-Williams/Auburn Creek/H.E.B. now [READ], 10(c) FLAGGED not
-  rewritten); draft Tanner service-diligence entry staged at file end —
-  UNADOPTED (V6), both candidate homes noted. Fee-basis design amended:
-  Rohrmoos FOUR proof elements (was five — corrected), contemporaneity
-  badge RULED (the session's only design ruling), §38.001/DTPA statutory
-  findings folded — doc stays DRAFT, NOT adopted. NEW FILES:
-  attorney-review-queue.md (project-wide review queue, WORKING CHECKLIST)
-  and registry-verification-pass-2026-07-26.md (RAW CAPTURE). TRCP
-  skeleton §9 points at both the queue doc and the Tanner draft.
-  NO entry status changed — [READ]/[STATUTE] flags record reading only;
-  wording sign-off has not occurred for any entry. New open items V1–V10
-  (see the capture Part 5). NOTHING built.
-- Prior date (2026-07-25, seven sessions): APIL mining passes 1–3 filed
-  (register H1–H83; 27-chapter corrected map in pass 3 §0); heartbeat
-  captures b–f placed; medical walkthrough defects fixed + audit triage
-  built; sync-scope ruling recorded — see session-log for detail
+## 2026-07-26 session deltas (two Code sessions, BOTH DOCS ONLY — zero app change)
+- Session-2 packet APPLIED: NEW prop-code-53-28-deadline-engine-design.md —
+  full Servpro mechanic's-lien / prompt-pay deadline-engine design pass,
+  ⛔ BUILD-GATED on an in-person Servpro staff meeting (L1–L7 are questions
+  for that meeting; its §10 build sketch is NOT COMMITTED). §53.156 date
+  error corrected in three places: may→shall was 2011 (S.B. 539), NOT
+  2021. Fee-basis design: basis enum gains mandatory-equitable (Michael
+  ruled "new value"; name is Claude's → O4); direction/conditionalDowngrade
+  PROPOSED (O5); O1 CLOSED (ch. 28 fees discretionary, §28.005(b));
+  18%/yr annualization removed (V11); §28.010 scope widened; §28.0091
+  added. Review queue: §53.156 + ch. 28 moved to read; resume point now
+  Est. Code §352.051. New open items V10–V13, L1–L7, D-A/B/C, O4/O5.
+  Four law-change bills recorded in the design doc §9 (no canonical
+  ledger file exists — see spec-feedback)
+- Session-1 (verification pass) APPLIED earlier today: registry Entry 2
+  REPLACED in place (redraft v2, post-Ortiz); Entries 4/5/10 folded
+  (Ch. 55 findings, H.B. 4145 date-of-service applicability, IME line
+  [READ]); draft Tanner service-diligence entry staged UNADOPTED (V6);
+  fee-basis Rohrmoos FOUR proof elements corrected, contemporaneity badge
+  RULED; NEW attorney-review-queue.md + registry-verification-pass doc.
+  NO entry status changed either session — reading is not sign-off
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only
@@ -77,8 +75,7 @@ Commit: 72e63e3  |  Branch: master  |  Generated: 2026-07-26
   no live legislative/statute fetches have ever run
 - Calendar "Connect Outlook" dead until Michael's Entra registration
   (VITE_MSAL_* unset); nothing has ever reached Outlook
-- Inbox has NO automatic ingestion (T3 transcription GPU-gated); manual
-  upload/import only
+- Inbox has NO automatic ingestion (T3 GPU-gated); manual only
 - Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document
   storage anywhere — EOB/report "links" are text descriptions
 - OAA intake parses digital Uvalde-layout orders only; scans → manual
@@ -87,34 +84,36 @@ Commit: 72e63e3  |  Branch: master  |  Generated: 2026-07-26
   playbooks" notice; nothing recomputes automatically yet
 - Attorney-created code mappings and generated documents do NOT survive a
   store reseed (open question for design)
-- Time tracker: design draft only (amended 2026-07-26) — NOTHING exists
-  in the app; the draft itself is still awaiting design-side adoption
+- Time tracker: design draft only (amended twice 2026-07-26) — NOTHING
+  exists in the app; the draft still awaits design-side adoption
+- Servpro lien/prompt-pay deadline engine: DESIGN ONLY, build-gated on
+  the Servpro meeting — NOTHING exists in the app; none of the P1–P6
+  deadline primitives exist in code
 - Case heartbeat: design docs only (DESIGN-PARTIAL, §10 unruled) —
   NOTHING exists in the app; captures e and f NOT folded (§8.12 carries
-  the fold-queue notice); register runs H1–H83; resume point: APIL
-  mining PASS 4 for mining, Prop. Code §53.156 for the verification
-  queue; H50 (supplementation opt-out) OPEN; TRCP skeleton and ALL
-  course-book propositions UNVERIFIED; deficiency submodule parked (H35)
-- Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 substantially
-  advanced 2026-07-26 (primary text read) but wording sign-off pending;
-  Tanner draft entry UNADOPTED (V6); V1–V10 open
+  the fold-queue notice); register runs H1–H83; H50 OPEN; TRCP skeleton
+  and ALL course-book propositions UNVERIFIED; deficiency parked (H35)
+- Registry: ALL entries remain UNVERIFIED. Entries 2/4/5/10 + fee-basis
+  items 5/6 substantially advanced 2026-07-26 (primary text read) but
+  wording sign-off pending; Tanner draft UNADOPTED (V6); V1–V13 open
 - docs/specs/Go_Live_Gates.md holds gates 6–8 verbatim; GATES 1–5 ARE A
   PLACEHOLDER — their text exists only in project knowledge (spec-feedback)
 
 ## For design side
-- attorney-review-queue.md is now the one project-wide review queue
-  (its §2 marks the verification resume point: Prop. Code §53.156)
-- FLP/CourtListener account + MCP connector setup — promo ends
-  2026-08-06 (ELEVEN days out; carried on 7+ consecutive entries)
-- EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment)
-- EXPORT NEEDED: session-1 heartbeat voice capture (never reached Code)
-- FOLD PENDING (two captures deep): captures e + f into
-  case-heartbeat-design.md §8 + register extension H35–H58
-- D3 (shared touch substrate) still blocks T1 for heartbeat AND time
-  tracker; Entry 1(c-3) + V4 still gate billing LOP math and the
-  disbursement checklist
-- Open question: should chargemaster memory + generated documents also
-  carry across reseeds?
-- Registry sign-offs, Supabase auth decision (gate 6), edge-function
-  deploys, Entra registration, Citizens MRF path — all carried
+- attorney-review-queue.md is the one project-wide review queue; statutes
+  resume point now Est. Code §352.051, then the Family Code block
+- Servpro deadline-engine doc awaits the in-person meeting (L1–L7);
+  V10 citator pass and L0/L1 can proceed independently before it
+- FLP/CourtListener account + Tier 1 + MCP connector — promo ends
+  2026-08-06 (ELEVEN days out; carried on 8+ consecutive entries)
+- EXPORT NEEDED: Go_Live_Gates gates 1–5 verbatim (+ gate-3 amendment);
+  session-1 heartbeat voice capture (never reached Code)
+- FOLD PENDING: captures e + f into case-heartbeat-design.md §8
+- D3/H8 still blocks T1 for heartbeat AND time tracker; Entry 1(c-3) +
+  V4 still gate billing LOP math and the disbursement checklist
+- No canonical law-change ledger file exists (third "ledger family"
+  reference now); design decision flagged in spec-feedback
+- Registry sign-offs, Supabase auth (gate 6), edge-function deploys,
+  Entra registration, Citizens MRF path, reseed-survival question — all
+  carried
 - Statute design-doc snapshot still lags project knowledge (spec-feedback)
