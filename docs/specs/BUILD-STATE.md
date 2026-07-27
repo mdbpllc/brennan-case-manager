@@ -103,6 +103,12 @@ change; everything else below is unchanged.
   multi-line + structure (paragraphs, indent, bullets). Minimal fix is a textarea;
   real bullets mean markdown-or-rich-text plus deciding whether the Graph push moves
   to `contentType: html`. Likely affects other notes fields too — audit as one pass
+- **Outlook Phase 2 evidence, logged #20:** the one-way seam surfaced within an hour of
+  first real use. **Deleting an event in Outlook is never observed** (no read path at
+  all), and the next push of that event 404s and **deliberately re-creates it** — a
+  stale belief followed by a silent resurrection, possibly days later. Coherent for a
+  one-way design; do NOT fix in isolation. Phase 2's own pickup criteria asked for
+  daily-use evidence — this is it. Sequencing stays Michael's
 - Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
   arrangement per client; was dropped from the design side's running list and
   restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is

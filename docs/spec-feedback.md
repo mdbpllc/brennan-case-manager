@@ -313,6 +313,54 @@ assumptions.
 
 **Status:** flag only. **No ledger file was created** — that is a design decision Michael has not made. Recorded so the fourth family is not lost, and so whoever designs the ledger designs it against the enactment-vs-effective-date split and the three anchor patterns rather than discovering them later.
 
+### 2026-07-26 — Outlook Phase 2: two concrete arguments surfaced within the first hour of real use
+
+**Where:** `src/outlook/graph.ts`, `src/outlook/sync.ts`, `src/pages/CalendarTab.tsx`, and
+`docs/specs/outlook-calendar-sync.md` §Phase 2.
+
+**Why this is worth recording:** the Phase 2 spec sets its own pickup criteria as *"revisit
+after Phase 1 has run in daily use for a while and the higher-priority queue is clear."*
+Phase 1 reached real use for the first time on 2026-07-26 (log #20). **Michael hit the
+one-way seam within the hour, unprompted**, first asking whether deleting in Outlook would
+delete in the app, then whether the software would push it back. That is the daily-use
+signal the criteria were waiting for, arriving immediately rather than after a while.
+
+**Finding 1 — the one-way limitation is genuinely surprising in use.** Michael's words:
+*"I thought that I was supposed to be able to delete the event in outlook and it would
+delete in the case management software."* The behaviour is correct per spec — Phase 1 is
+one-way, Phase 2 is backlogged — and the UI does say *"Outlook remains the complete picture
+of the schedule."* But the expectation still formed. Contributing factor worth noting for
+whoever writes the Phase 2 pass: the spec's own gloss that *"'One-way' means direction of
+authority (software → Outlook), not create-only"* means edit and cancel DO propagate, so
+the feature behaves bidirectionally in three of four operations. The one that doesn't —
+delete-in-Outlook — is the one a user is most likely to try casually.
+
+**Finding 2 — deleting in Outlook produces a stale belief, then a silent resurrection.**
+This is the concrete failure mode, verified in code:
+- Nothing reads from Outlook. Every Graph call is a write (`POST`/`PATCH`/`DELETE`); there
+  is no poll, no webhook, no read path. So a delete made in Outlook is **never observed**,
+  and the app goes on showing the event as pushed.
+- When the app next pushes that event, `PATCH /me/events/{id}` 404s and
+  `graph.ts:129-131` deliberately falls through to `POST` — *"Deleted directly in Outlook —
+  recreate (software is the authority)."* **The event silently reappears in Outlook with a
+  new id.**
+- The trigger is not immediate: `CalendarTab`'s mount effect does **not** sync, and
+  `syncAllPending` only sweeps events still marked pending. It takes an **edit or cancel of
+  that specific event in the app** to resurrect it — which can be days later, and will feel
+  arbitrary when it happens.
+
+**Assessment `[D]`:** the recreate-on-404 branch is coherent for a one-way design and
+should not be "fixed" in isolation — silently dropping the event instead would be worse,
+since the app would then hold an event it believes exists nowhere. **The real answer is
+Phase 2**, or, if Phase 2 stays backlogged, a narrower affordance: notice the 404 and
+*ask* rather than recreate, and/or surface "this event is no longer in Outlook" on the tab.
+Both are design decisions, not Code's.
+
+**Status:** OPEN — routed to design, nothing built and nothing changed. **This is not a bug
+report; Phase 1 works as specified.** It is the daily-use evidence Phase 2's own pickup
+criteria asked for, logged while it is fresh so the sequencing decision has it. Sequencing
+remains Michael's.
+
 ### 2026-07-26 — DESIGN REQUEST (Michael): calendar event notes need to be multi-line and structured
 
 **Where:** `src/pages/CalendarTab.tsx` (the event form), `EventRecord.notes` in

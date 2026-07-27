@@ -63,6 +63,23 @@ surfaced within minutes of first contact. **The two undeployed edge functions sh
 assumed to carry the same class of risk** — which sharpens the auth-first sequencing from
 #18: deploying them will likely find defects too, not just an auth wall.
 
+**PHASE 2 EVIDENCE, arriving within the hour.** The Phase 2 spec sets its own pickup
+criteria as "revisit after Phase 1 has run in daily use for a while." Phase 1 reached real
+use tonight and **Michael hit the one-way seam almost immediately**, unprompted — first
+*"I thought that I was supposed to be able to delete the event in outlook and it would
+delete in the case management software,"* then asking whether the software would push it
+back. Two findings, both verified in code, both routed to design and **nothing changed**:
+(1) the one-way limitation is genuinely surprising in use — edit and cancel DO propagate,
+so three of four operations behave bidirectionally and the fourth is the one a user tries
+casually; (2) deleting in Outlook produces a **stale belief then a silent resurrection** —
+nothing reads from Outlook, so the delete is never observed, and the next push of that
+event 404s and deliberately falls through to re-create it (`graph.ts:129-131`, *"software
+is the authority"*), with a new id, possibly days later when an unrelated edit triggers it.
+The recreate branch is coherent for a one-way design and should NOT be fixed in isolation —
+dropping the event instead would be worse. The real answer is Phase 2, or a narrower
+affordance (notice the 404 and ask, rather than recreate). **Not a bug report — Phase 1
+works as specified.** Full write-up in `docs/spec-feedback.md`; sequencing stays Michael's.
+
 **NEW DESIGN REQUEST from Michael, raised on first real use of the event form:** calendar
 event **notes must support more than one line** — longer descriptions, paragraphs,
 indentation, bullets. Verified in code and the complaint is exact: the field is an
