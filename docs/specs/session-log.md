@@ -12,6 +12,78 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#17) — Client model COMPLETE: five more rulings, hard gate narrowed, Ch. 1952 read (design session 3, Opus 5)
+
+Design-side, continuing from `2c2bff0`. **Nothing entered the build queue.** Every
+item on the client-model decision list is now ruled or explicitly assigned.
+
+- **D-CL2-9 CLOSED — option (a).** CL-2 ships as its own vertical slice; CE1 is
+  authorized separately afterward. **Reason:** CL-2 reworks the built-and-walked
+  medical module, and Michael confirms that rework before anything builds on it.
+  **Accepted cost: CE1 stays unauthorized until CL-2 is walked, which parks the case
+  heartbeat and the time tracker.**
+- **D-CL2-5 CLOSED — flag placement.** Medicare/Medicaid → CLIENT (Safe Harbor and
+  conditional-payment correspondence name a beneficiary; the lien reaches only that
+  person's recovery). Trucking, product-suspected, government-defendant, and
+  commercial-policy → FILE, Michael: *"true for everyone in the car."*
+  **Minor/incapacitated → FILE, reversing Claude's proposal on practice grounds:**
+  *"We settle the kids with the parents at the same time so this is a non-issue. The
+  tolling on minors is always something in the back of my head and I don't need you to
+  parse that out."* **No tolling is computed or inferred anywhere.** Durable rule
+  adopted for future flags — does this describe a person or the occurrence? — with a
+  standing exception the attorney invokes: a person-level fact may be ruled FILE-level
+  when it never changes what he actually does.
+- **D-CL2-6 CLOSED — Death is FILE-level; the PR-appointment gate narrows to the
+  deceased client only.** Michael: *"I feel like the PR-appointment gate blocks only
+  the deceased client."* **This is one of PI's three hard gates changing scope** — the
+  surviving passenger's ordinary claim no longer parks behind an estate proceeding it
+  has nothing to do with.
+- **D-CL2-7 CLOSED — the client layer hides until a second client exists.**
+  Single-client files render exactly as today; client-scoped fields stay in their
+  current homes. Reason: nearly all work is single-client.
+- **D-CL2-8 CLOSED — parallel, not promotion. Recorded as CLAUDE'S call, not
+  Michael's** — pure implementation, deferred to Claude. `case_parties` stays
+  authoritative for roles; `case_clients` for damages scope.
+
+**Ins. Code ch. 1952 read in session (Michael supplied the text). READING, NOT
+VERIFICATION — no registry entry opened, nothing built.** Candidates: §§1952.101,
+.103, .104(1), .110, .151, .153, .159. Substance in the design doc §3.2.4. Notable:
+§1952.104(1)'s per-occurrence aggregate means multiple clients compete for one
+ceiling; §1952.103 means settlement order among clients can change the coverage
+posture of those who have not settled; the chapter does NOT define who counts as an
+insured, which is the question that actually decides passenger UM access.
+
+**UM/UIM is not a flag (PROPOSED, unruled).** It is a coverage relationship a boolean
+cannot hold — proposed as a client-scoped designation with coverage records beneath it.
+
+**CL-1 justification STRUCK.** Claude designed split UM filings across counties
+(§1952.110) as a second consumer for case-links. Michael: same-household clients share
+a county, and *"very rarely do I have two UIM cases going on for one collision."*
+**One matter, always, in practice. Probate is CL-1's only real consumer and D-CL1-3 is
+gated on PR-3 alone.**
+
+**Claude notes for the record.** (1) **D-CL2-3 was dropped from Claude's running list
+of open items mid-session** and recovered only at the end — the same drop failure
+caught at #13/R-3. Restored to the list, not silently fixed. (2) **Claude over-built
+for a rare edge twice today** — the `claude/` cite rule generalized from one sample,
+then the venue split designed around before checking practice frequency. Same shape:
+structure built on an interesting edge before asking how often it occurs. (3) Claude
+proposed CLIENT for minor/incapacitated and was overruled; both stand in the record.
+
+*(Code notes on execution: fold targets resolved by NAME, since round 1's fold shifted
+numbering — the profile model became §3.0, so amendment C's "new subsection under §3"
+landed as **§3.2.4** and amendment D replaced **§3.3** as named. The minor/incapacitated
+row was **moved** out of the §3.1 table into a new §3.2.1, verified as moved and not
+duplicated. **Amendment C.2's strike target did not exist:** round 1 never wrote the
+split-UM/venue reasoning into the doc — it lived only in the session-3 conversation —
+so there was nothing to remove, and the correction is recorded in §3.2.4 as the reason
+CL-1 has one consumer. Per the packet's answer on BUILD-STATE, nothing was cut this
+refresh.)*
+
+Staged for Code: the round-2 amendment fold-in; this entry.
+Awaiting/Returned from Code, unreviewed: the doc's remaining open items (Michael's);
+Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#16) — FIVE rulings on the client model: entity renamed, profiles, limitations, expenses (design session 2, Opus 5)
 
 Design-side, continuing from the batch at `a74c708`. **Nothing entered the build

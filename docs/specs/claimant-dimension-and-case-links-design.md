@@ -126,28 +126,111 @@ destroy.** No mechanism designed yet; flagged as a consequence so it is not disc
 | Liens / subrogation | unbuilt | Michael's ruling names these explicitly. A lien attaches to one person's recovery |
 | Settlement statement | case-level view | Becomes per-client, with a case-level roll-up |
 | Limitations date | `cases.statute_of_limitations` — **one date** | A minor passenger has a tolled clock. One field cannot hold two. **D-CL2-2 CLOSED 2026-07-26: the case-level field RETIRES.** Limitations lives on client records; the case **displays the earliest, derived and non-writable**. What resolved it — Michael: *"in civil cases, there will never exist a case without a claimant. In criminal cases, there will always only be one client (defendant) and a statute of limitations calculated for each offense they are charged with."* That killed the objection to retiring it: **criminal never used `cases.statute_of_limitations`** (per-offense clocks already live on `charges` and are already built), and with every civil case carrying at least one client, no case is stranded without a home for the date. **Retired rather than kept derived-but-present** because a writable field meant to mirror derived data eventually stops mirroring it, silently, and the heartbeat's master clock would have no way to say which number it read. **Still open (D-CL2-2a):** earliest across *all* clients, or across *unresolved* ones only — a settled client's expired clock should probably not keep a live matter looking urgent. **The ruling is a design direction; NO migration is authorized — do not drop the column** |
-| Minor / incapacitated flag | `cases.pi_flags` | A per-person attribute sitting on the case |
-| Medicare / Medicaid beneficiary flag | `cases.pi_flags` | Same. One passenger may be a beneficiary and another not |
+| Medicare / Medicaid beneficiary flag | `cases.pi_flags` | **D-CL2-5 CLOSED — CLIENT.** The Safe Harbor authorization and conditional-payment correspondence name a specific beneficiary, and the lien reaches only that person's recovery. One passenger may be a beneficiary and another not |
 | Fee arrangement | case-level by settled design | Contracts are per client; the §351.152 >1/3 trap can hit one client and not another |
 | Generated documents | `case_id` | Person-specific outputs (demand, reasonable-value report) need a client; case-level outputs keep `case_id` |
 
-**Latent defect worth naming `[D]`:** the two flags above are wrong *today*, in single-plaintiff cases. It is
-invisible only because case ≈ client when there is one client. Multi-plaintiff exposes an error that already
-exists.
+**Latent defect worth naming `[D]`:** the Medicare/Medicaid flag is wrong *today*, in single-plaintiff cases.
+It is invisible only because case ≈ client when there is one client. Multi-plaintiff exposes an error that
+already exists.
 
-### 3.2 Stays case-scoped `[D]`
+### 3.2 Stays case-scoped (FILE-level) `[D]`, with D-CL2-5 rulings `[C]`
 
 Occurrence date; defendants and their carriers; court, cause number, judge; the status ladder; calendar
-events; transcripts and routing; commercial-policy flag; the liability-driving overlay flags
-(trucking/commercial, product-suspected, government-defendant); liability playbooks; case expenses **as
-records** (see 3.4).
+events; transcripts and routing; liability playbooks; case expenses **as records** (see 3.4).
 
-### 3.3 The Death flag is a client flag `[D]` `[OPEN]`
+**Flag placement RULED 2026-07-26 (D-CL2-5).** The occurrence flags stay FILE-level — **trucking/commercial,
+product-suspected, government-defendant, and commercial-policy** — Michael: *"true for everyone in the car."*
+Death is also FILE-level (see §3.3). Only **Medicare/Medicaid** moves to the client.
 
-Death is currently a case-level PI overlay flag. But in a two-plaintiff collision where one occupant dies, the
-wrongful-death/survival overlay applies **to that client**, not to the matter. Proposed: Death moves to
-client scope and the overlay opens per client. **This has consequences for the PR-appointment gate and the
-WD/survival allocation model and needs Michael's ruling** (D-CL2-6).
+#### 3.2.1 Minor / incapacitated — FILE-level, ruled AGAINST Claude's proposal `[C]`
+
+**This row was placed in §3.1 (client scope) in the round-1 fold and is moved here by ruling. Do not "fix" it
+back.** Claude proposed CLIENT, arguing the tolled limitations clock and the ad litem / friendly-suit /
+§351.152 machinery all attach to a person. **Michael ruled FILE**, and the reason is load-bearing:
+
+> *"A minor's SOL is technically different, but they are generally dealing with medical bills and the parents
+> have to pay them anyway. We settle the kids with the parents at the same time so this is a non-issue. The
+> tolling on minors is always something in the back of my head and I don't need you to parse that out."*
+
+Minors settle alongside the parents, so the divergent clock **never drives a different workflow in practice**.
+Building per-client tolling machinery would be the system computing a date the attorney already carries.
+
+**Standing consequence `[D]`: no tolling is computed or inferred anywhere.** The per-client limitations field
+(§3.1, D-CL2-2) **accepts** a date if one is entered and otherwise stays invisible — a data-entry affordance,
+not machinery. **Proposed, unruled (MIN-1)** — Michael has not confirmed he wants even that.
+
+#### 3.2.2 The durable rule for future flags `[C]` `[D]`
+
+Future flags do not need a session. **The test: does this describe a person, or the occurrence?**
+
+**With a standing exception:** a person-level fact may still be ruled FILE-level when it never changes what
+the attorney actually does. **The minor ruling is the worked example.** The exception is **the attorney's to
+invoke, not Claude's to assume.**
+
+#### 3.2.3 The flag inventory may be incomplete `[D]`
+
+This list comes from the master spec §7 and the playbook doc. `cases.pi_flags` is a free-form `text[]`, and
+`src/` is not synced to the design side — **flags added in build sessions are invisible there.** A Code
+session should enumerate what is actually in use and route anything unlisted through §3.2.2.
+
+### 3.2.4 UM/UIM is NOT a flag `[P]` `[OPEN]` (UM-1)
+
+**Proposed, unruled.** UM/UIM is a **coverage relationship**, which a boolean cannot hold. Within one
+collision, Client A may carry UM under her own policy, also be an insured under the host driver's policy, and
+Client B may have rejected coverage entirely (**Ins. Code §1952.101(c)** permits written rejection by a named
+insured).
+
+**Proposed shape:** a **client-scoped designation** — does this client's matter have a first-party UM
+component and enter that lifecycle branch — with the actual **coverage records underneath**, in the Insurance
+tab where per-policy detail already lives. **Holds even when only one UM claim exists**, which Michael notes
+is the normal case: the coverage still belongs to a particular client, the consent-to-settle gate is hers, and
+the UDJA fee claim is hers. A case-level boolean cannot say which client the branch belongs to.
+
+**Ins. Code ch. 1952 — READING, NOT VERIFICATION `[D]`.** Michael supplied the chapter in session. **No
+registry entry opened; nothing is built on any of this.** Registry candidates: **§§1952.101, .103, .104(1),
+.110, .151, .153, .159.**
+
+- **§1952.104(1)** — per-person limit plus a per-occurrence aggregate across all claimants. **Multiple clients
+  compete for one ceiling**, mirroring the limited-policy problem already flagged in §9.
+- **§1952.103** — a vehicle becomes underinsured if limits were originally lower **or reduced by payment of
+  claims arising from the same accident**. So **settlement order among clients can change the coverage posture
+  of clients who have not settled.**
+- **§1952.159** — a guest/passenger liability claim against the host owner or operator carries a PIP offset.
+  Where both occupants are clients, this is the driver/passenger conflict with a dollar figure attached.
+- **§1952.110** — UM/UIM venue is fixed by the policyholder's residence at the time of the accident, or where
+  the accident occurred.
+- **PIP is cleanly per-client:** §1952.151 names authorized passengers and guest occupants; §1952.153 caps at
+  $2,500 per person.
+- **The chapter does NOT define who counts as an insured** — that is policy language, and it is what actually
+  decides whether a passenger client reaches the host driver's UM coverage.
+
+**Venue split — Claude over-built, corrected `[D]`.** Claude read §1952.110 and designed toward split UM
+filings across counties as a second consumer for CL-1. **Michael:** same-household clients share a county, and
+*"very rarely do I have two UIM cases going on for one collision."* **One matter, always, in practice.** Split
+UM filings are **struck as a CL-1 justification — probate remains CL-1's only real consumer, and D-CL1-3 is
+gated on PR-3 alone.** A venue-mismatch advisory flag may stay (cheap, silent when it never fires) —
+**proposed, unruled (UM-2).**
+
+### 3.3 The Death flag is FILE-level, and the PR gate NARROWS `[C]` (D-CL2-6 CLOSED)
+
+**Part one — the Death flag is FILE-level.** Michael agreed with the reasoning offered: a death changes the
+whole matter's character in a way a minor passenger does not — the case becomes a death case, and the
+exemplary-damages analysis and defense posture shift with it.
+
+**Part two — the PR-appointment gate narrows to the deceased client's claims only.** Michael: *"I feel like
+the PR-appointment gate blocks only the deceased client."*
+
+**Reason:** the surviving passenger's ordinary injury claim should not be parked behind an estate proceeding
+it has nothing to do with. Estates take months; the gate's job is PR capacity, not settlement sequencing.
+
+**This is a HARD GATE changing scope** — recorded as such, since PI's three hard gates are otherwise
+untouchable. **It now blocks per-client rather than per-matter.** *(Ruled design only — the gate's behavior in
+code is unchanged and unauthorized.)*
+
+**Companion PROPOSED, unruled `[P]` (PR-GATE-1):** a **warn-don't-block** notice when the surviving client is
+about to settle while the deceased client's claims remain open **against a shared policy limit**
+(§1952.104(1)). Michael has not ruled on it.
 
 ### 3.4 Expenses — RULED `[C]` (D-CL2-4 and D-CL2-4a CLOSED 2026-07-26)
 
@@ -208,11 +291,14 @@ away their bills and liens.
 Then `client_id` is added to `medical_bills`, `analysis_runs`, and (when built) liens, expenses-allocation,
 and settlement records.
 
-**Relationship to `case_parties` `[OPEN]`:** a client is also a party on the case with a Plaintiff/Client
-role. Two options — `case_clients` as a **parallel** record keyed to the same party, or as a **promotion**
-of a `case_parties` row. Parallel is simpler and avoids disturbing a built, working table; promotion avoids
-two places recording "this person is our client." Proposed: **parallel**, with the client record treated as
-authoritative for damages scope and `case_parties` unchanged for roles. Needs a ruling (D-CL2-8).
+**Relationship to `case_parties` — RESOLVED: PARALLEL (D-CL2-8 CLOSED 2026-07-26).** A client is also a party
+on the case with a Plaintiff/Client role. `case_clients` sits **parallel** to `case_parties`, not as a
+promotion of it: `case_parties` is built, working, and carries roles for every party including opposing ones,
+so the client record **adds the damages spine on top rather than disturbing a table that already works**.
+`case_parties` stays authoritative for **roles**; `case_clients` is authoritative for **damages scope**.
+
+**Recorded as CLAUDE'S call, not Michael's ruling** — it is pure implementation with no practice consequence,
+and Michael deferred it. Noted so a later session does not cite it as an attorney decision.
 
 ## 5. CL-2 — MIGRATION `[D]`
 
@@ -226,12 +312,19 @@ Michael — do not guess and do not invent a placeholder client.** Demo-store ve
 existing migration pattern (the reseed-wipe lesson: migrate forward, back up the old store, write a review-log
 entry).
 
-## 6. CL-2 — UI CONSTRAINT (non-negotiable in the design) `[D]`
+## 6. CL-2 — UI CONSTRAINT — **RULED `[C]`** (D-CL2-7 CLOSED 2026-07-26)
 
 **A single-client case must look and click exactly as it does today.** No selector, no extra step, no
-"which client?" prompt when the answer is obvious. The client dimension appears only when a second client
-exists. Multi-plaintiff files are the minority; making every ordinary file pay for them would be a bad trade
-and would show up as friction on the screen Michael uses most.
+"which client?" prompt when the answer is obvious. **The client layer hides until a second client exists**;
+add a second and the control appears.
+
+**Reason (Michael's, ruling what was previously a Claude constraint):** nearly all work is single-client —
+every criminal matter, every solo PI case, every contract matter. Showing the control always would tax the
+overwhelming majority of files for the occasional multi-plaintiff wreck.
+
+**Consequence `[D]`:** on a single-client file, client-scoped fields **stay in their current homes** —
+limitations on the case Overview, fee arrangement where it lives now — and become client-scoped underneath
+without moving on screen.
 
 ## 7. CL-1 — CASE-TO-CASE LINKS `[P]`
 
@@ -278,6 +371,14 @@ event belongs to the matter as a whole.
 **If CE1 is built case-only and CL-2 lands afterward, the retrofit is not one module — it is the substrate
 that both the heartbeat and the time tracker sit on.** CL-2 should land before or alongside CE1, never after.
 
+**D-CL2-9 CLOSED 2026-07-26 — option (a): CL-2 ships as its own vertical slice; CE1 is authorized separately,
+afterward.** Reason (load-bearing): **CL-2 reworks the medical module, which is already built and walked**, and
+Michael confirms that rework before a second thing builds on top of it.
+
+**Accepted cost, stated plainly:** until CL-2 is built and walked, **CE1 stays unauthorized — which parks the
+case heartbeat and the time tracker**, since both consume that substrate. That cost was accepted deliberately.
+*(Ruling the slice order is not a build authorization: CL-2 itself is still unauthorized.)*
+
 ## 9. CONFLICTS — ADVISORY FLAG, NOT A GATE `[C]`
 
 **Michael, 2026-07-26:** *"This can be a flag that you can bring up to me, but I should be able to mark it as
@@ -298,8 +399,9 @@ discipline applies: only Michael verifies.**
 
 ## 10. DECISION LIST — MICHAEL'S SIGN-OFF BEFORE ANY BUILD
 
-**Five closed 2026-07-26 (session 2). Closing them authorizes nothing** — every one is a design direction
-with no build behind it.
+**Ten closed 2026-07-26 across sessions 2 and 3 — every item on the original decision list is now ruled or
+explicitly assigned. Closing them authorizes NOTHING** — every one is a design direction with no build behind
+it, including D-CL2-9, which rules the slice *order* without authorizing the slice.
 
 | ID | Decision | Status |
 |---|---|---|
@@ -308,16 +410,20 @@ with no build behind it.
 | **D-CL2-4** | Shared-expense allocation | **CLOSED — per-expense tagging at entry; shared expenses split EVENLY (pro rata rejected). See §3.4** |
 | **D-CL2-4a** | Staggered settlements | **CLOSED — shares lock at disbursement; redistribution touches only clients who have not disbursed. See §3.4** |
 | **PROFILE** | Practice-area profiles + derivation | **CLOSED — derived from practice area, no per-client override. See §3.0** |
+| **D-CL2-5** | Flag placement | **CLOSED — minor/incapacitated = FILE (against Claude's proposal); Medicare/Medicaid = CLIENT; the four occurrence flags + Death = FILE. See §3.2** |
+| **D-CL2-6** | Death flag + PR gate | **CLOSED — Death is FILE-level; the PR-appointment HARD GATE narrows to the deceased client only. See §3.3** |
+| **D-CL2-7** | Single-client rendering | **CLOSED — the client layer hides until a second client exists. See §6** |
+| **D-CL2-8** | Parallel vs. promotion | **CLOSED — parallel. Claude's call, not Michael's. See §4** |
+| **D-CL2-9** | Build order: CL-2 before CE1 | **CLOSED — option (a): CL-2 ships as its own slice, CE1 authorized separately afterward. Accepted cost: the heartbeat and time tracker stay parked. See §8** |
 | **D-CL2-2a** | Earliest limitations across **all** clients, or **unresolved** only? | **OPEN — new** |
-| **D-CL2-3** | Fee arrangement per client — does the time tracker's "one rate per case, uniform" rule survive, or become one rate per client? | OPEN |
-| **D-CL2-5** | Confirm the flag split in §3.1/§3.2 (which flags are per-person, which per-matter) | OPEN |
-| **D-CL2-6** | Does the Death flag and its WD/survival overlay move to client scope? | OPEN |
-| **D-CL2-7** | Confirm the §6 constraint: single-client cases render unchanged | OPEN |
-| **D-CL2-8** | `case_clients` parallel to `case_parties`, or a promotion of it? | OPEN |
-| **D-CL2-9** | Build order: CL-2 before CE1 — confirm (Claude's strong recommendation, §8) | OPEN |
+| **D-CL2-3** | Fee arrangement per client — does the time tracker's "one rate per case, uniform" rule survive, or become one rate per client? | **OPEN — dropped from Claude's running list mid-session 2026-07-26 and restored at session end; recorded rather than silently corrected** |
+| **UM-1** | UM/UIM as a client-scoped designation with coverage records beneath (§3.2.4) | **OPEN — new, proposed** |
+| **UM-2** | Venue-mismatch advisory flag — keep or drop? (§3.2.4) | **OPEN — new, proposed** |
+| **PR-GATE-1** | Warn-don't-block when a surviving client settles against a shared limit (§3.3) | **OPEN — new, proposed** |
+| **MIN-1** | Per-client limitations as a plain data-entry field, no tolling computed (§3.2.1) | **OPEN — new, proposed** |
 | **D-CL1-1** | CL-1 directed, typed, non-cascading — confirm | OPEN |
 | **D-CL1-2** | CL-1 link-type vocabulary | OPEN |
-| **D-CL1-3** | Does CL-1 wait on PR-3 and V17? | OPEN |
+| **D-CL1-3** | Does CL-1 wait on PR-3? | **OPEN — narrowed: gated on PR-3 ALONE.** V17 is closed, and split UM filings were struck as a second consumer (§3.2.4), leaving **probate as CL-1's only real consumer** |
 | **CIV-1** | **Civil-litigation damages are UNSPECIFIED** — economic loss, no injury model. Needs its own design session; breach of contract is the workhorse of that line | **OPEN — new** |
 | **PROB-1** | Probate client profile is unwritten | **OPEN — new** |
 | **PA-1** | Practice-area edit vs. derived profiles — warn / log / don't destroy (§3.0.2) | **OPEN — new, proposed only** |
