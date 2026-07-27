@@ -12,6 +12,76 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#18) — Session close: blockers re-analyzed (auth is the root), CL-2 brief staged for Fable (design session, Opus 5)
+
+Final segment of the long design session. **Nothing entered the build queue; nothing
+is authorized.** Two files staged, one dependency finding, one Code question.
+
+- **The four operational blockers are not parallel — two are a chain.** Claude's
+  first pass presented Supabase auth, the edge-function deploys, Entra, and the MRF
+  path as four errands; Michael sent it back ("think all of this through one more
+  time"), and the re-pass found the structure: **deploying the legiscan-poller feeds
+  Supabase tables that nothing can read** — demo mode never touches Supabase, and
+  Supabase mode is refused by anon-key + authenticated-only RLS. **Corrected
+  sequence: auth decision → auth slice → then edge functions.** Entra is genuinely
+  independent (client-side to Graph) with one recorded constraint: **fictional demo
+  events only until Go_Live_Gates says otherwise** — live push invites pushing real
+  hearing dates, and real data is what the gates gate. MRF blocks nothing current;
+  it is a one-line path declaration.
+- **The auth decision is smaller than first framed.** Multi-user is instructions
+  trigger #2 behind the security review, so the choice collapses to single-user
+  sign-in for Michael now. **Magic link is the standing default (PROPOSED, Claude's
+  recommendation — no stored passwords, Supabase-native, no reset machinery ahead of
+  a security review); the auth slice itself is UNAUTHORIZED.** Auth alone does not
+  unlock real data — all of Go_Live_Gates.md still applies.
+- **CL-2 authorization is reserved for Fable, at Michael's direction** ("I really
+  believe that we ought to leave this authorization piece for Fable").
+  `cl2-authorization-brief.md` is staged so that session decides from the record: the
+  six-piece slice, the three carve-outs (CL-1, profiles, the four unruled proposals),
+  the honest risk (the medical repoint reworks approved code; Michael re-walks the
+  tab), the two questions Code would otherwise guess at, and the walkthrough
+  checklist. **The brief carries a bias disclosure** — written by the instance that
+  argued for the slice; read the risk section hardest.
+- **Q-CODE-1 answered this session: NO — demo mode never reaches the Supabase statute
+  cache, and statute-fetch is auth-blocked on its WRITE path, not its call.** What the
+  code shows (`src/statutes/fetcher.ts`, `src/data/adapter.ts`): `fetchChapterHtml`
+  branches on `usingSupabase`. In demo mode it loads a committed fixture chapter from
+  `src/statutes/fixtures` and throws a friendly `notInDemoSet` error for anything
+  outside that set — **it never calls the edge function and never touches Supabase.**
+  Only in Supabase mode does it call `statute-fetch` with the anon key. **The
+  consequence for sequencing is the part that matters:** the edge function's own call
+  would succeed on the anon key, but `getOrFetchChapter` ends by writing through
+  `db.saveStatuteChapter` into `statute_chapters`/`statute_sections` — RLS-protected,
+  authenticated-only. **So statute-fetch is auth-blocked too, for the same root reason
+  as the poller, just one step later in the path.** It is NOT independently
+  deployable in any useful sense: deployed today it would fetch and then fail to
+  cache. The corrected auth-first sequence covers both edge functions, not one.
+  *(Read-only; nothing deployed, nothing modified.)*
+
+**Claude process notes (completing the day's set):** the blockers first pass is the
+third same-day instance of confident presentation ahead of structural check (after
+the claude/ cite over-generalization and the venue-split over-build); the round-2
+packet ordered a strike on text that existed only in chat, never in the doc — the
+design side losing track of disk-versus-said; D-CL2-3 dropped off the running list
+mid-session and was recovered at close.
+
+**Next:** the Fable session opens with the CL-2 decision (brief + design doc), rules
+yes/no/defer, records why. Michael's queue: paste instructions v4 (closes INSTR-3,
+then inbox/ clears); confirm magic link; Entra (fictional only); name the MRF path;
+D-CL2-3; UM-1/UM-2/PR-GATE-1/MIN-1; D-CL2-2a; PR-3; registry 1–10.
+
+*(Code notes: the brief's internal cites were checked against the design doc as it
+stands after three folds and **needed no correction** — §4 is still the schema sketch,
+§5 the migration, and every D-CL2 ID is unchanged. The capture's claim that the
+client-model content is already folded at `a74c708`/`2c2bff0`/`0521c9e` matches this
+session's history. Per §8.2, the settled 2026-07-26 deltas were moved out of
+BUILD-STATE into `docs/specs/archive-2026-07-26-deltas.md` — see that entry below for
+exactly what moved.)*
+
+Staged for Code: the brief; the capture; this entry.
+Awaiting/Returned from Code, unreviewed: the brief and capture (for the Fable
+session); Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#17) — Client model COMPLETE: five more rulings, hard gate narrowed, Ch. 1952 read (design session 3, Opus 5)
 
 Design-side, continuing from `2c2bff0`. **Nothing entered the build queue.** Every

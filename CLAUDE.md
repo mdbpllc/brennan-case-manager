@@ -153,6 +153,17 @@ coding sessions. The spec documents committed under `docs/specs/` are
   (probate profile unwritten), and PA-1. Sequencing note: **CE1 must be
   client-aware** if ever authorized, or the retrofit hits the shared
   substrate under both the heartbeat and the time tracker
+- `cl2-authorization-brief.md` — **DECISION MEMO, not an authorization.** The
+  CL-2 slice put to a decision: the six pieces, the three carve-outs, the
+  honest risk (piece 3 repoints the foreign key under the built-and-walked
+  medical module), two questions Code would otherwise default, and the
+  walkthrough checklist. Michael reserved the authorization for a Fable
+  session. Carries a bias disclosure — written by the instance that argued
+  for the slice. **Do not act on it; it authorizes nothing**
+- `operational-blockers-capture-2026-07-26.md` — RAW CAPTURE of the
+  2026-07-26 session close (blockers re-analysis, auth-first sequencing).
+  Nothing in it routes elsewhere; the client-model content of that same
+  conversation is already folded into the design doc
 - `BUILD-STATE.md` — the one-doc "what is built right now" snapshot,
   written for DESIGN-SIDE consumption (Fable/Opus in the Project space
   read this + the session log; they cannot see the local repo). **The

@@ -1,5 +1,10 @@
 # BUILD STATE — brennan-case-manager
-Commit: dba5c1b  |  Branch: master  |  Generated: 2026-07-26 (seventeenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
+Commit: PENDING  |  Branch: master  |  Generated: 2026-07-26 (eighteenth refresh)
+
+**Practice areas: PI / civil litigation / criminal defense / probate.** The app has
+had **ZERO code changes on 2026-07-26** — every commit that date is documentation.
+Settled history for the date moved to `archive-2026-07-26-deltas.md`; this file is
+live state only.
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -23,119 +28,83 @@ Commit: dba5c1b  |  Branch: master  |  Generated: 2026-07-26 (seventeenth refres
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 — thirteen Code sessions, ZERO app change
-Every commit today is documentation. **Practice areas are PI / civil
-litigation / criminal defense / probate** (four, Michael's wording);
-`caseTypes.ts` carries PI, General Civil Litigation, Criminal — probate has
-none of its own (see stubs); family law REMOVED as a practice line, doc-only.
-- **Est. Code ch. 352 + CPRC ch. 71 read in full** → NEW
-  `statutes-pass-est352-cprc71-2026-07-26.md`. **Fee-basis enum DECOMPOSED**
-  (O6). Probate row **reclassified**. §352.052 added. Probate export is
-  **three** lanes (V14). NEW primitive **P7** (calendar-months from a DATE —
-  must not share code with P1). §71.005 guardrail; L10 confirmed
-- **S-1 / PR-1 / PR-2 / V17 CLOSED — probate is its own practice area** with
-  its own ladder; "companion" goes away. Spine = independent, uncontested
-  administration
-- **D3/H8 CLOSED — case-event core (CE), shape (c):** shared spine +
-  per-consumer facets, four consumers, operational/evidentiary boundary.
-  **N-1 rename:** transcript T1–T4 UNCHANGED; substrate **CE1**; heartbeat
-  **HB1–HB4**; time tracker **TT1–TT2**
-- **CL-2 ruled IN (#15): the case owns the occurrence and liability; the
-  CLIENT owns the damages.** Conflicts check is ADVISORY. NEW
-  `claimant-dimension-and-case-links-design.md` (DRAFT). `claude/` cite class
-  fixed across 8 docs
-- **CLIENT MODEL COMPLETE (#16 + #17) — ten decisions closed, all
-  design-only, NOTHING authorized.** Entity renamed **`claimant` → `client`**
-  + `posture`; **practice-area profiles DERIVED**, no override — **the medical
-  module belongs to the PI profile, not to cases generally**; case-level
-  limitations **retire** for a derived earliest; **per-expense tagging, shared
-  expenses split EVENLY**; shares **lock at disbursement**; **flags split —
-  Medicare/Medicaid = CLIENT, minor/incapacitated + the four occurrence flags
-  + Death = FILE**; single-client files render **unchanged**; `case_clients`
-  sits **parallel** to `case_parties`
-- **PI HARD GATE NARROWED (#17, ruled design, NOT in code):** the
-  PR-appointment gate blocks **only the deceased client**, not the whole
-  matter. **No tolling is computed or inferred anywhere** — ruled out
-- **D-CL2-9: CL-2 ships as its own slice, CE1 authorized separately after.**
-  Accepted cost — **the heartbeat and time tracker stay parked** until CL-2 is
-  built and walked
-- Also: record reconciliation (#13); Go_Live_Gates completed; statute doc
-  forward-merged; migration + selective sync; QUEUE-RUNNER adopted
-
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only to the DataAdapter interface — every feature works in both modes
 - Default mode: demo localStorage, fictional seeds; store version v9; reseeds migrate imported schedules + confirmed runs, back up the old store
-- Schema tables live (db/schema.sql, 32 — no changes): file_counters, cases, parties, case_parties, medical_bills, bill_line_items, code_mappings, eob_records, provider_billing_profiles, analysis_runs, analysis_result_lines, review_log, legal_rules, fee_schedules, fee_schedule_rates, generated_documents, calendar_events, transcripts, transcript_participants, staging_items, routing_decisions, glossary_terms, tag_templates, charges, oaa_intakes, statute_chapters, statute_sections, registry_verification_snapshots, watch_flags, watch_targets, tracked_bills, bill_statute_refs
-- **No case-event / CE table exists.** No time_entries, no claims table
-- **No client dimension and no case-to-case links exist** — verified
-  2026-07-26: no `case_clients`, no `case_links`, no self-reference on
-  `cases`, no `client_id`/`posture` anywhere. Damages key on `case_id`.
-  **`cases.statute_of_limitations` still EXISTS and stays** — its retirement
-  is ruled as direction, with NO migration authorized
+- Schema tables live (db/schema.sql, 32): file_counters, cases, parties, case_parties, medical_bills, bill_line_items, code_mappings, eob_records, provider_billing_profiles, analysis_runs, analysis_result_lines, review_log, legal_rules, fee_schedules, fee_schedule_rates, generated_documents, calendar_events, transcripts, transcript_participants, staging_items, routing_decisions, glossary_terms, tag_templates, charges, oaa_intakes, statute_chapters, statute_sections, registry_verification_snapshots, watch_flags, watch_targets, tracked_bills, bill_statute_refs
+- **No case-event/CE table, no time_entries, no claims table**
+- **No client dimension, no case-to-case links** — no `case_clients`, no
+  `case_links`, no self-reference on `cases`, no `client_id`/`posture`. Damages key
+  on `case_id`. **`cases.statute_of_limitations` EXISTS and stays** — its retirement
+  is ruled direction with NO migration authorized
 - Health: 186 vitest tests green; npm run build (tsc + vite) and oxlint clean as of 88ff3e7 (every commit since is docs-only)
 
 ## Known stubs & fakes
-- legiscan-poller + statute-fetch edge functions written, NOT deployed — no
-  live legislative/statute fetches have ever run
-- Calendar "Connect Outlook" dead until Michael's Entra registration
-  (VITE_MSAL_* unset); nothing has ever reached Outlook
-- Inbox has NO automatic ingestion (T3 GPU-gated); manual only. OAA intake
-  parses digital Uvalde-layout orders only; scans → manual
+- **NO REAL DATA HAS EVER ENTERED THE APP.** Supabase mode is unusable — anon key +
+  authenticated-only RLS, and there is no sign-in flow
+- legiscan-poller + statute-fetch edge functions written, **NOT deployed**. Both are
+  **auth-blocked**, for the same root reason one step apart: the poller writes to
+  tables nothing can read; statute-fetch's own call would pass on the anon key but
+  its cache WRITE hits the same RLS. Deploying either before auth accomplishes
+  nothing (log #18, Q-CODE-1)
+- **/statutes in demo mode never touches Supabase** — it serves committed fixture
+  chapters and reports "not in the demo set" for anything else
+- Calendar "Connect Outlook" dead until Entra registration (VITE_MSAL_* unset);
+  nothing has ever reached Outlook. **When wired: fictional demo events only** until
+  Go_Live_Gates says otherwise
+- Inbox has NO automatic ingestion (T3 GPU-gated); manual only. OAA intake parses
+  digital Uvalde-layout orders only; scans → manual
 - Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage
   anywhere — EOB/report "links" are text descriptions
 - Demo PFS schedule is fictional; real ratios need the CSV import
-- Playbook engine NOT built; code mappings and generated documents do NOT
-  survive a reseed (open for design)
-- **PROBATE: the only furniture is a `Probate companion` case type parented
-  under Personal Injury with a knowingly wrong ladder (`_piDefault`) —
-  MIS-PARENTED per S-1/V17. Re-parenting gated on PR-3; do not touch the
-  case-type tree or ladder. No probate practice area, no estate/decedent
-  tables, no probate roles, no probate design doc**
-- Time tracker: design draft only — NOTHING in the app. Servpro deadline
-  engine: DESIGN ONLY, gated on the meeting. Case heartbeat: design docs only
-  — NOTHING in the app; captures e+f NOT folded; register H1–H83
-- **CE1 (case-event core) is unblocked by D3/H8 but NOT AUTHORIZED. SEQUENCING
-  WARNING (#15): if ever authorized it must be CLIENT-AWARE from the start** —
-  built case-only with CL-2 after, the retrofit hits the shared substrate
-  under both the heartbeat and the time tracker, not one module
-- CourtListener: design doc only — app integration UNAUTHORIZED (Q-6 + §6).
+- Playbook engine NOT built; code mappings and generated documents do NOT survive a
+  reseed (open for design)
+- **PROBATE: the only furniture is a `Probate companion` case type parented under
+  Personal Injury with a knowingly wrong ladder (`_piDefault`) — MIS-PARENTED.
+  Re-parenting gated on PR-3; do not touch the case-type tree or ladder.** No probate
+  practice area, no estate/decedent tables, no probate roles, no probate design doc
+- Time tracker: design draft only — NOTHING in the app. Servpro deadline engine:
+  DESIGN ONLY, gated on the meeting. Case heartbeat: design docs only — NOTHING in
+  the app; captures e+f NOT folded; register H1–H83
+- **CE1 (case-event core): unblocked by D3/H8 but NOT AUTHORIZED, and now behind TWO
+  gates** — CL-2 must be built and walked first (D-CL2-9). If ever authorized it must
+  be **CLIENT-AWARE from the start**, or the retrofit hits the substrate under both
+  the heartbeat and the time tracker
+- CourtListener: design doc only — app integration UNAUTHORIZED (Q-6 + its §6).
   Registry: ALL entries UNVERIFIED; entries 1–10 sign-off is Michael's
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md,
-  BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc is the SOLE authority on
-  what is built. Sync the NEW project after each push
-- **Trim log:** NOTHING cut this refresh — design side ruled "do not cut
-  deeper; archive resolved items rather than compressing live state." Prior
-  refresh removed an added "Practice areas" section and collapsed two stub
-  lines; no build-state fact was ever dropped. **This file now runs slightly
-  over the 120-line cap by that instruction**
-- **Project instructions: LIVE VERSION IS STILL v2.** A **v4 draft awaits
-  Michael's paste** (log #14) — covers INSTR-3 (Q-1, Q-2) + a
-  delivery-destination convention; Code fact-checked it, all claims verify.
-  **INSTR-3 stays OPEN until he pastes it.** Do not re-draft v3
-- **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3) — the
-  2026-07-25 triage clearing stands; ~12 later carries were copy-forward
-- **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade` —
-  folded into O6's shape without ever being ruled)
-- **Client-model §10 list: TEN closed (#16, #17) — every original item is now
-  ruled or assigned.** Still open there: **D-CL2-3** (fee arrangement per
-  client — was dropped from the design side's running list mid-session and
-  restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 now gated on PR-3 ALONE** — split
-  UM filings were struck, leaving probate as CL-1's only consumer), plus new
-  proposals **UM-1, UM-2, PR-GATE-1, MIN-1**, and **CIV-1 (civil-litigation
-  damages entirely UNSPECIFIED — own design session), PROB-1, PA-1**
-- OPEN, Michael's: PR-3 (re-parent the probate case type — **direction now
-  set by V17, execution still unauthorized**); V16; V14a; V15 survival half
-  (V10 citator pass RUNNABLE); V4; V10–V13; Entry 1(c-3); RE-1; INSTR-3
-  (paste v4); Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10. **V17 CLOSED**
-- Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the Estates
-  Code territory probate needs. **Family Code block is MOOT**; the probate
-  chapters are the replacement O6 stress test
-- `claude/` cite class FIXED (#15) — 8 docs, two classes; **still no
-  `claude/` directory in the repo**
-- FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT
-  NEEDED: session-1 heartbeat voice capture (never reached Code)
-- Supabase auth (gate 6), edge deploys, Entra registration, Citizens
-  MRF path, reseed survival, no canonical law-change ledger (FOUR homeless
-  families), Outlook slice unreviewed — all carried
+  BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority
+  on what is built. Sync the NEW project after each push
+- **THE RESUME POINT: the CL-2 build authorization**, reserved for a Fable session.
+  Read `cl2-authorization-brief.md` (DECISION MEMO, authorizes nothing, carries a
+  bias disclosure) with the client-model design doc. **Four of the most-designed
+  modules stand behind that one decision** — the medical rework, CE1, the heartbeat,
+  the time tracker
+- **Blocker chain, corrected (#18): auth decision → auth slice → THEN edge
+  functions.** Not four parallel errands. Magic link is the PROPOSED default
+  (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
+  data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
+  the MRF path blocks nothing
+- **Project instructions: LIVE VERSION IS STILL v2.** A v4 draft awaits Michael's
+  paste (log #14); Code fact-checked it and all claims verify. **INSTR-3 closes only
+  when he pastes it**, and `inbox/` clears then. Do not re-draft v3
+- **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3)
+- Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
+  arrangement per client; was dropped from the design side's running list and
+  restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is
+  CL-1's only consumer), the four new proposals **UM-1, UM-2, PR-GATE-1, MIN-1**, and
+  **CIV-1 (civil-litigation damages entirely UNSPECIFIED — own design session),
+  PROB-1, PA-1**
+- **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade`)
+- OPEN, Michael's: PR-3; V16; V14a; V15 survival half (V10 citator pass RUNNABLE);
+  V4; V10–V13; Entry 1(c-3); RE-1; Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10
+- Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the Estates Code
+  territory probate needs. **Family Code block is MOOT**; the probate chapters are
+  the replacement O6 stress test
+- FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT NEEDED:
+  session-1 heartbeat voice capture (never reached Code)
+- Supabase Pro upgrade (gate 1), security review (gate 2), RLS policies (gate 3),
+  no canonical law-change ledger (FOUR homeless families), Outlook slice unreviewed
+  — all carried
