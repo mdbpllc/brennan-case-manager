@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 6887eb4  |  Branch: master  |  Generated: 2026-07-26 (tenth refresh this date; APP UNCHANGED ALL DAY — every commit today is docs-only)
+Commit: 3542648  |  Branch: master  |  Generated: 2026-07-26 (eleventh refresh this date; APP UNCHANGED ALL DAY — every commit today is docs-only)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
