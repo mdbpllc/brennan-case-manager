@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 0443aad  |  Branch: master  |  Generated: 2026-07-26 (twentieth refresh — Outlook push now WORKING)
+Commit: 459d773  |  Branch: master  |  Generated: 2026-07-26 (twenty-first refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** 2026-07-26 was
 documentation-only **until the Outlook fix late that day** — the one code change of the
