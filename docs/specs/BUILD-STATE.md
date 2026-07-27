@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 76598a6  |  Branch: master  |  Generated: 2026-07-26 (thirteenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
+Commit: 0cb75f7  |  Branch: master  |  Generated: 2026-07-26 (fourteenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -87,13 +87,14 @@ Every commit today is documentation.
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md,
   BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc is the SOLE authority on
   what is built. Sync the NEW project after each push
-- **Project instructions v2 now carry Michael's four-area wording correctly —
-  practice-area drift CLOSED.** Residual: v2's knowledge-working-set section
-  still lists the three carried files' repo-duplication checks as open; log
-  #13 R-2 has the verified state (all three ABSENT from the repo, so all
-  three carries were warranted). **INSTR-3 is live** — v2 mentions neither
-  Q-1 (inbox/QUEUE-RUNNER) nor Q-2 (docs/prompts/), both ruled ADOPTED and
-  binding in CLAUDE.md. Michael's paste; neither Claude nor Code can edit
+- **Project instructions: LIVE VERSION IS STILL v2.** A **v4 draft exists and
+  is awaiting Michael's paste** (log #14) — it fixes the v2 residual (the
+  carried-file checks, now closed per #13 R-2) and covers INSTR-3's ask (Q-1
+  inbox/QUEUE-RUNNER, Q-2 docs/prompts/), plus a delivery-destination
+  convention. Code fact-checked every repo-facing claim in the draft: all
+  paths and the sync list verify clean. **INSTR-3 stays OPEN until Michael
+  pastes v4 and says so** — neither Claude nor Code can edit project settings.
+  Do not re-draft v3
 - **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3) — the
   2026-07-25 triage clearing stands; ~12 later carries were copy-forward
 - **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade`
