@@ -1,14 +1,10 @@
 # BUILD STATE — brennan-case-manager
-Commit: b8e5737  |  Branch: master  |  Generated: 2026-07-27 (twenty-second refresh)
+Commit: e4294c0  |  Branch: master  |  Generated: 2026-07-27 (twenty-third refresh)
 
-**Practice areas: PI / civil litigation / criminal defense / probate.** 2026-07-26 was
-documentation-only **until the Outlook fix late that day** — the one code change of the
-date (4 files, Outlook sign-in; see below and log #20). Settled history for the date
-moved to `archive-project-history-by-day.md` (which now covers 07-21 → 07-26 day by day,
-with model attribution where it was recorded); this file is live state only.
-
-**Calendar tab now has a working "Connect Outlook."** That is the single behavioural
-change; everything else below is unchanged.
+**Practice areas: PI / civil litigation / criminal defense / probate.** The only code
+change since 2026-07-24 is the 2026-07-26 Outlook sign-in fix (4 files, log #20), which
+gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
+`archive-project-history-by-day.md`. This file is live state only.
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -85,6 +81,24 @@ change; everything else below is unchanged.
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md,
   BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority
   on what is built. Sync the NEW project after each push
+- **Fable returns 2026-07-28 21:00 UTC (Tuesday AFTERNOON Central, not morning).**
+  `weekly_scoped` measured 100% — exhausted; `weekly_all` 67%, so ~33% of the pool
+  remains and **expires at the same reset**, usable on Opus/Sonnet until then
+- **NEW, UNRULED: `model-routing-plan.md`** — routes work by model and effort;
+  drafts the Q-5 clause without closing it. **Adopt nothing from it.** Three facts
+  it records: **effort has NEVER been set in this project** (no `effort` key in any
+  settings file — it introduces a dial nobody has used); a **QUEUE-RUNNER defect**
+  (merging a packet's open items keeps each ID and label but loses its *question*,
+  and the packet is then deleted — Q-5's substance is unrecoverable because of it);
+  and **no routing decision touches the registry**, the largest unexercised body,
+  since only Michael can verify
+- **SUPA-1 (new, ten seconds, Michael only):** whether `db/schema.sql` was ever
+  executed against the live project **cannot be determined from this machine** — no
+  `config.toml`, no `migrations/`, no CLI, no linked state, and the dashboard
+  SQL-editor path leaves no local trace. The FILE is complete (32 tables, RLS on
+  all 32, 31 policies; `file_counters` deliberately policy-less). Gate 3 reads
+  future-tense, which leans never-run. **Dashboard → Table Editor settles it, and
+  it materially changes how long the auth path is**
 - **THE RESUME POINT: the CL-2 build authorization**, reserved for a Fable session.
   Read `cl2-authorization-brief.md` (DECISION MEMO, authorizes nothing, carries a
   bias disclosure) with the client-model design doc. **Four of the most-designed
@@ -95,21 +109,19 @@ change; everything else below is unchanged.
   (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
   data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
   the MRF path blocks nothing. **ENTRA-1 is now DONE** — Outlook push verified working
-- **Project instructions: LIVE VERSION IS v4 (2026-07-26).** Michael pasted it;
-  **INSTR-3 is CLOSED** (log #19) — stop carrying it, and stop calling the live
-  instructions v2. `inbox/` is clear. Every repo-facing claim in v4 was fact-checked
-  against the tree (#14) and held
-- **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3)
+- **CLOSED — do not re-raise or carry these:** project instructions are **v4**
+  (pasted; INSTR-3 closed, #19 — stop calling them v2); **BUILD-SESSION-NOTES.md**
+  (#13 R-3); the **`claude/` cite class** (#15); the **FLP promo clock** (#5);
+  **ENTRA-1** (done, #20). Each was previously copy-forwarded after closure
 - **NEW design request:** calendar event notes are a single-line `<input>` and need
   multi-line + structure (paragraphs, indent, bullets). Minimal fix is a textarea;
   real bullets mean markdown-or-rich-text plus deciding whether the Graph push moves
   to `contentType: html`. Likely affects other notes fields too — audit as one pass
-- **Outlook Phase 2 evidence, logged #20:** the one-way seam surfaced within an hour of
-  first real use. **Deleting an event in Outlook is never observed** (no read path at
-  all), and the next push of that event 404s and **deliberately re-creates it** — a
-  stale belief followed by a silent resurrection, possibly days later. Coherent for a
-  one-way design; do NOT fix in isolation. Phase 2's own pickup criteria asked for
-  daily-use evidence — this is it. Sequencing stays Michael's
+- **Outlook Phase 2 evidence, logged #20:** **deleting an event in Outlook is never
+  observed** (no read path at all), and the next push of that event 404s and
+  **deliberately re-creates it** — stale belief, then silent resurrection days later.
+  Coherent for a one-way design; do NOT fix in isolation. Phase 2's pickup criteria
+  asked for daily-use evidence — this is it. Sequencing stays Michael's
 - Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
   arrangement per client; was dropped from the design side's running list and
   restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is
