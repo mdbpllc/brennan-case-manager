@@ -12,6 +12,38 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-27 (#21) — Project history rebuilt day by day, 07-21 → 07-26 (Michael request, Code session)
+
+Michael asked for the archived history broken down **by day, with model usage**. NEW
+`docs/specs/archive-project-history-by-day.md` replaces
+`archive-2026-07-26-deltas.md` (deleted — its content is folded into the 07-26 section).
+Docs only; no code, no rulings.
+
+**Why it was worth doing:** the session log runs ~76 entries in reverse-chronological
+order with no day boundaries, so "what happened on the 24th?" was genuinely hard to answer
+from the record. The new file answers it, and BUILD-STATE's pointer now targets it.
+
+**Shape:** a summary table (sessions per day, Code-vs-design split, models recorded, net
+effect) then a section per day. Counts, taken mechanically from the log: **07-21 five
+sessions (0 Code), 07-22 three (0), 07-23 eleven (2), 07-24 seven (5), 07-25 twenty-seven
+(18), 07-26 twenty-four (9)**.
+
+**Finding worth recording — model attribution does not exist before 2026-07-25.** Entries
+from 07-21 through 07-24 name the interface ("Claude Code", 25 mentions) but **never a
+model**; there is no Fable/Opus/Sonnet string anywhere in those bodies or headings. The
+design side began stamping headings on 07-25. So the new file marks those four days
+**"unrecorded"** rather than inferring — 07-25 shows Fable 5 ×3, one Fable 5 → Opus 5
+handoff, Opus 5 ×2, 21 unstated; 07-26 shows Opus 5 ×13, 11 unstated (mostly Code
+sessions, where the model is whatever was selected). **If per-day model usage matters
+retrospectively, the first four days cannot be reconstructed from this repo.**
+
+**Also noted while reading:** the log is not perfectly chronological — a 2026-07-24 entry
+("probate practice area routed to design space") sits between two 07-25 entries. Left as
+found, since the log is append-only; the new file orders by actual date.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: unchanged from #20.
+
 ## 2026-07-26 (#20) — OUTLOOK PUSH WORKS: first live push ever, after fixing two defects (Code session, APP CODE CHANGED)
 
 **First session in weeks that changed application code**, and the first time anything from
@@ -188,7 +220,7 @@ stands after three folds and **needed no correction** — §4 is still the schem
 §5 the migration, and every D-CL2 ID is unchanged. The capture's claim that the
 client-model content is already folded at `a74c708`/`2c2bff0`/`0521c9e` matches this
 session's history. Per §8.2, the settled 2026-07-26 deltas were moved out of
-BUILD-STATE into `docs/specs/archive-2026-07-26-deltas.md` — see that entry below for
+BUILD-STATE into a dated archive — since superseded by `archive-project-history-by-day.md` (entry #21); see there for
 exactly what moved.)*
 
 Staged for Code: the brief; the capture; this entry.

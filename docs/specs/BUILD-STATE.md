@@ -4,7 +4,8 @@ Commit: 459d773  |  Branch: master  |  Generated: 2026-07-26 (twenty-first refre
 **Practice areas: PI / civil litigation / criminal defense / probate.** 2026-07-26 was
 documentation-only **until the Outlook fix late that day** — the one code change of the
 date (4 files, Outlook sign-in; see below and log #20). Settled history for the date
-moved to `archive-2026-07-26-deltas.md`; this file is live state only.
+moved to `archive-project-history-by-day.md` (which now covers 07-21 → 07-26 day by day,
+with model attribution where it was recorded); this file is live state only.
 
 **Calendar tab now has a working "Connect Outlook."** That is the single behavioural
 change; everything else below is unchanged.
