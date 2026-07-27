@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Signing in…</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <!--
+      MSAL redirect target for the Outlook push sign-in popup.
+
+      Two things about this file are load-bearing:
+
+      1. It lives at the PROJECT ROOT, not in public/, because it must be a real
+         Vite entry point. Files in public/ are copied verbatim and never
+         processed, so a script there could not import from a package.
+      2. It must NOT boot the React app. The app's router does
+         `<Navigate to="/cases" replace />` (App.tsx), which would rewrite this
+         popup's URL and destroy the auth-response fragment before MSAL read it.
+
+      The script below is the whole job: msal-browser v5 no longer polls the
+      popup's URL from the opener — the redirect page itself parses the response
+      and broadcasts it back to the app. See src/outlook/redirect.ts.
+    -->
+    <p>Signing in…</p>
+    <script type="module" src="/src/outlook/redirect.ts"></script>
+  </body>
+</html>

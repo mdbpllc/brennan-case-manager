@@ -313,6 +313,52 @@ assumptions.
 
 **Status:** flag only. **No ledger file was created** — that is a design decision Michael has not made. Recorded so the fourth family is not lost, and so whoever designs the ledger designs it against the enactment-vs-effective-date split and the three anchor patterns rather than discovering them later.
 
+### 2026-07-26 — Outlook push: TWO defects found on first exercise, both fixed
+
+**Where:** `src/outlook/auth.ts`, and the absence of a redirect page.
+
+**Context:** BUILD-STATE had said for weeks that the Outlook push "has never been
+exercised." Michael registered the Entra app and connected for the first time on
+2026-07-26. It failed twice, for two independent reasons — neither of which any amount of
+correct configuration on his side could have overcome. **Both are now fixed and the push
+is verified working end to end.**
+
+**Defect 1 — the redirect URI pointed at the app root, where the router destroyed the auth
+response.** `auth.ts` set `redirectUri: window.location.origin`. The sign-in popup landed
+on `/`, the React app booted inside the popup, and `App.tsx`'s
+`<Route path="/" element={<Navigate to="/cases" replace />} />` immediately rewrote the
+URL — discarding the `#code=…` fragment before MSAL could read it. The popup hung
+displaying the app. **Fix:** a dedicated redirect page (`blank.html`) that does not boot
+the router.
+
+**Defect 2 — the slice was written against an MSAL popup contract this version no longer
+honors.** `@azure/msal-browser` v5 (v5.17.1 installed) removed opener-side URL polling.
+`PopupClient.waitForPopupResponse` now waits on a broadcast that **the redirect page itself
+must send** via `broadcastResponseToMainFrame()`, exported at
+`@azure/msal-browser/redirect-bridge`. A static redirect page can therefore never complete
+sign-in — the popup sits on a valid `#code=…` that nobody reads. **This is the more
+important finding:** it means the Outlook code was authored against older MSAL semantics
+and could not have worked as written with the installed dependency.
+
+**Fix applied (four files):** `blank.html` at the project root (not `public/`, which is
+copied verbatim and would leave its module script unresolvable); `src/outlook/redirect.ts`
+calling the bridge with a visible-failure fallback; `vite.config.ts` declaring the second
+rollup input so the page survives production builds; and the one-line `redirectUri` change.
+Verified: `dist/blank.html` emitted, lint clean, 186/186 tests green, and a demo event
+pushed successfully to the dedicated "MDBP Cases" calendar with title, time, and location
+intact.
+
+**Still unverified, deliberately:** edit- and cancel-propagation to Outlook. Only event
+creation has been exercised. The event pushed was fictional demo data, per the
+2026-07-26 constraint that live push carries **fictional events only** until
+`Go_Live_Gates.md` clears.
+
+**Status:** no decision needed — defects fixed. The generalizable lesson for the design
+side: **"written but never exercised" is not a neutral state.** Two independent
+blocking defects sat in this slice from the day it was written, and both surfaced within
+minutes of the first real attempt. Other never-exercised code in the tree — the two edge
+functions especially — should be assumed to carry the same class of risk.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

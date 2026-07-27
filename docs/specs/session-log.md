@@ -12,6 +12,61 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#20) — OUTLOOK PUSH WORKS: first live push ever, after fixing two defects (Code session, APP CODE CHANGED)
+
+**First session in weeks that changed application code**, and the first time anything from
+this app has reached Outlook. Michael registered the Entra app (SPA redirect,
+`Calendars.ReadWrite` delegated) and connected. **A demo event now sits on the dedicated
+"MDBP Cases" calendar in Outlook** with title, time, and location intact — verified by
+Michael's own Outlook view, not inferred.
+
+Getting there surfaced **two independent blocking defects**, both in code that
+BUILD-STATE had flagged for weeks as "never exercised." Full technical write-up in
+`docs/spec-feedback.md`; in short:
+
+1. **Redirect URI pointed at the app root**, so the popup booted the React app and the
+   router's `<Navigate to="/cases" replace />` destroyed the `#code=…` fragment before
+   MSAL could read it.
+2. **The slice was written against an MSAL popup contract v5 no longer honors.**
+   msal-browser v5.17.1 removed opener-side URL polling; the redirect page must itself
+   call `broadcastResponseToMainFrame()`. A static redirect page can never complete
+   sign-in. **The Outlook code could not have worked as written against the installed
+   dependency.**
+
+**Fixed in four files:** `blank.html` (project root, a real Vite entry — not `public/`,
+which is copied verbatim and would leave its module script unresolvable);
+`src/outlook/redirect.ts` (calls the bridge, fails visibly rather than silently);
+`vite.config.ts` (second rollup input, so the page survives production builds);
+`src/outlook/auth.ts` (the `redirectUri` line). `public/blank.html` removed — it would
+have shadowed the real entry.
+
+**Verified, not assumed:** `/blank.html` sets the document title from inside the MSAL
+bridge (proving it executes); a bare visit produces the correct `empty_response` and is
+caught by the fallback; `dist/blank.html` plus its chunk are emitted by the production
+build; **lint clean; 186/186 tests green**; and the event landed in Outlook.
+
+**Two false trails worth recording, both Code's:** the failure was first diagnosed as a
+`.env` problem — correct, but only the first layer (Michael's values had gone into
+`.env.example`, which Vite never reads; moving them to `.env` and restoring the template
+kept his tenant/client IDs out of a tracked file). Then Code told him to keep the redirect
+page "static and script-free," which was right for older MSAL and **wrong for the
+installed version** — that instruction cost a round trip and is corrected here.
+
+**Still unverified, deliberately:** edit- and cancel-propagation. Only event creation has
+been exercised. **The pushed event was fictional demo data**, per the constraint that live
+push carries fictional events only until `Go_Live_Gates.md` clears — gates 1, 2, and 3
+remain open.
+
+**The generalizable finding for the design side:** "written but never exercised" is not a
+neutral state. Two blocking defects sat in this slice from the day it was written and both
+surfaced within minutes of first contact. **The two undeployed edge functions should be
+assumed to carry the same class of risk** — which sharpens the auth-first sequencing from
+#18: deploying them will likely find defects too, not just an auth wall.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: this Outlook fix (Michael has now walked the
+create path himself); the CL-2 brief and blockers capture for the Fable session.
+
 ## 2026-07-26 (#19) — INSTR-3 CLOSED: project instructions v4 pasted (Michael, Code session)
 
 Michael confirmed in-session: **"v4 is pasted into the claude.ai project settings."**

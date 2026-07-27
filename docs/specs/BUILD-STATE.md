@@ -1,10 +1,13 @@
 # BUILD STATE — brennan-case-manager
 Commit: 64f1bb0  |  Branch: master  |  Generated: 2026-07-26 (nineteenth refresh)
 
-**Practice areas: PI / civil litigation / criminal defense / probate.** The app has
-had **ZERO code changes on 2026-07-26** — every commit that date is documentation.
-Settled history for the date moved to `archive-2026-07-26-deltas.md`; this file is
-live state only.
+**Practice areas: PI / civil litigation / criminal defense / probate.** 2026-07-26 was
+documentation-only **until the Outlook fix late that day** — the one code change of the
+date (4 files, Outlook sign-in; see below and log #20). Settled history for the date
+moved to `archive-2026-07-26-deltas.md`; this file is live state only.
+
+**Calendar tab now has a working "Connect Outlook."** That is the single behavioural
+change; everything else below is unchanged.
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -25,7 +28,7 @@ live state only.
 | Overview | LIVE | all core fields editable INCLUDING practice area, case type, PI overlay flags, commercial-policy, representation type; classification changes review-logged + "re-evaluate playbooks" notice |
 | Parties | LIVE | link/unlink with role registry; bulk party fetch |
 | Medical | LIVE | bill ledger → per-bill workspace: manual line items, fuzzy CPT mapping, coding audit, claim-type detection, PFS benchmark ratios with per-run schedule choice + demo-placeholder banners, EOB typed field, analysis runs (only CONFIRMED feed settlement math), report generator |
-| Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
+| Calendar | LIVE + Outlook push WORKING | event CRUD works; push to the "MDBP Cases" calendar verified 2026-07-26 (creation only — edit/cancel unverified) |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
 ## Data layer
@@ -37,7 +40,7 @@ live state only.
   `case_links`, no self-reference on `cases`, no `client_id`/`posture`. Damages key
   on `case_id`. **`cases.statute_of_limitations` EXISTS and stays** — its retirement
   is ruled direction with NO migration authorized
-- Health: 186 vitest tests green; npm run build (tsc + vite) and oxlint clean as of 88ff3e7 (every commit since is docs-only)
+- Health: **186 vitest tests green, build + oxlint clean, re-run 2026-07-26 after the Outlook code change**
 
 ## Known stubs & fakes
 - **NO REAL DATA HAS EVER ENTERED THE APP.** Supabase mode is unusable — anon key +
@@ -49,9 +52,13 @@ live state only.
   nothing (log #18, Q-CODE-1)
 - **/statutes in demo mode never touches Supabase** — it serves committed fixture
   chapters and reports "not in the demo set" for anything else
-- Calendar "Connect Outlook" dead until Entra registration (VITE_MSAL_* unset);
-  nothing has ever reached Outlook. **When wired: fictional demo events only** until
-  Go_Live_Gates says otherwise
+- **Outlook push WORKS as of 2026-07-26 — the first push ever reached Outlook.** Entra
+  registered, `.env` set, and a demo event landed on the dedicated "MDBP Cases" calendar
+  with title, time, and location intact. Two blocking defects were fixed to get there
+  (redirect URI hit the router; the slice was written against an MSAL popup contract v5
+  no longer honors — see log #20 / spec-feedback). **ONLY event CREATION is exercised —
+  edit- and cancel-propagation are still unverified.** Binding: **fictional demo events
+  only** until Go_Live_Gates clears
 - Inbox has NO automatic ingestion (T3 GPU-gated); manual only. OAA intake parses
   digital Uvalde-layout orders only; scans → manual
 - Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage
@@ -86,7 +93,7 @@ live state only.
   functions.** Not four parallel errands. Magic link is the PROPOSED default
   (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
   data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
-  the MRF path blocks nothing
+  the MRF path blocks nothing. **ENTRA-1 is now DONE** — Outlook push verified working
 - **Project instructions: LIVE VERSION IS v4 (2026-07-26).** Michael pasted it;
   **INSTR-3 is CLOSED** (log #19) — stop carrying it, and stop calling the live
   instructions v2. `inbox/` is clear. Every repo-facing claim in v4 was fact-checked
