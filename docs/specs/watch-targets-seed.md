@@ -1,6 +1,6 @@
 # Watch Targets — Seed Data (Module B, bill tracking)
 
-**Date:** 2026-07-25. **Status:** ready for T3 import (becomes `watch_targets` rows). Companion to `claude/Statute_Text_and_Bill_Tracking_Design_2026-07-25.md` (§4) — O4 decided all groups IN. Cites compiled from the registry verification list (billing synthesis Part 7), the record-clearing lifecycle docs, the plea-hearing eligibility spec, and the transcript design.
+**Date:** 2026-07-25. **Status:** ready for T3 import (becomes `watch_targets` rows). Companion to `docs/specs/statute-text-and-bill-tracking-design.md` (§4) — cite corrected 2026-07-26; it was written as the design-space filename `claude/Statute_Text_and_Bill_Tracking_Design_2026-07-25.md`, which is not a repo path — O4 decided all groups IN. Cites compiled from the registry verification list (billing synthesis Part 7), the record-clearing lifecycle docs, the plea-hearing eligibility spec, and the transcript design.
 
 **Mechanism reminder:** kind `registry-derived` targets are AUTO-generated from Legal Rule Registry cites — the rows below are the currently-known set, listed so T3 can test against reality; the live list must regenerate from the registry at poll time. Kind `manual` targets are standing topic sweeps via `getSearchRaw&state=TX`.
 

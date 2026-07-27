@@ -1,6 +1,6 @@
 # Transcript Sort & Route — Design Pass (Feature-Intake Item A)
 
-**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§10). **Extends** `transcript-workflows.md` (per the 2026-07-24 session-log reconciliation: same local-first pipeline, no re-derivation). Capability grounding: `claude/NVIDIA_Transcription_Stack_Capabilities_2026-07-24.md` (the memo, §§1–12), including two rounds of real recording tests scored against ground truth.
+**Date:** 2026-07-25. **Status:** DESIGN-COMPLETE pending Michael's review of the decision list (§10). **Extends** `transcript-workflows.md` (per the 2026-07-24 session-log reconciliation: same local-first pipeline, no re-derivation). Capability grounding: the NVIDIA transcription-stack capabilities memo (2026-07-24, §§1–12), including two rounds of real recording tests scored against ground truth. That memo lives in **claude.ai project knowledge** (filename `claude_NVIDIA_Transcription_Stack_Capabilities_2026-07-24.md`) and is **NOT in the repo** — it has no repo path (cite corrected 2026-07-26).
 
 **What this adds to transcript-workflows Phase 1:** the hands-off ingestion function and the sort/route staging inbox — feature-intake item A's two problems. Everything else (Transcript object, privilege/PHI/consent architecture, storage, phasing) is already specified there and is incorporated by reference, not restated.
 

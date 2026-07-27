@@ -135,6 +135,15 @@ coding sessions. The spec documents committed under `docs/specs/` are
   is UNVERIFIED (its §7 lists the nine registry entries to open, for
   sign-off one at a time). NOT in the build queue; do not build from it
   until Michael rules on §8/§7
+- `claimant-dimension-and-case-links-design.md` — **DRAFT — not in the
+  build queue.** Claimant dimension (CL-2, ruled IN 2026-07-26: the case
+  owns the occurrence and liability, the claimant owns the damages) plus
+  case-to-case links (CL-1, PROPOSED and unruled). Its §10 carries twelve
+  decisions (D-CL2-1..9, D-CL1-1..3) needing Michael's sign-off before
+  anything is built — no tables, no `claimant_id` columns, no UI. Sequencing
+  note recorded in it: **CE1 must be claimant-aware** if it is ever
+  authorized, or the retrofit hits the shared substrate under both the
+  heartbeat and the time tracker
 - `BUILD-STATE.md` — the one-doc "what is built right now" snapshot,
   written for DESIGN-SIDE consumption (Fable/Opus in the Project space
   read this + the session log; they cannot see the local repo). **The

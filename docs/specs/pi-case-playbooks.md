@@ -935,7 +935,7 @@ D. Verification & provenance note
 
 Assembled from 15 first-pass extraction notes + 1 legislative gap-fill covering all 1,202 pages; grep-audit sweep found no uncovered statute/term clusters; adversarial verification checked ~66 high-stakes assertions against the book text (55 verified verbatim, 3 draft errors corrected — including the TRCP 195.2 inversion the book itself prints backwards in ch. 13 — 4 book-internal conflicts flagged in place, 18 items carrying [CONFIRM] tags because the book does not itself establish them). The book is a pre-veto June 6, 2025 snapshot; all 2025 legislation requires post-session confirmation before any deadline rule is hard-coded.
 
-PART V — TRANSCRIPT HOOKS (added after the transcript-integration layer was designed; full spec in claude/transcript-workflows.md)
+PART V — TRANSCRIPT HOOKS (added after the transcript-integration layer was designed; full spec in docs/specs/transcript-workflows.md)
 
 Michael now records audio of client, adjuster, opposing-counsel, deposition, and witness conversations. The transcript layer plugs into this document's playbooks at these points:
 

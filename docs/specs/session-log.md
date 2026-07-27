@@ -12,6 +12,89 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#15) — V17 ruled (a); CLAIMANT DIMENSION ruled in; conflicts = advisory flag (design session, Opus 5)
+
+*(Packet numbered this #14; renumbered to #15 by Code — #14 was taken earlier
+the same day by the instructions-v4 fact-check entry below.)*
+
+Design-side. **Nothing entered the build queue.** Three rulings, one design doc.
+
+- **V17 CLOSED — ruled (a), clean separation.** Michael ruled probate is its own
+  practice area with its own ladder; the "companion" concept disappears. An estate
+  opened to support a death case is a probate matter LINKED to the PI matter, not a
+  PI-parented case type. **Reason:** it matches the party-once-link-many architecture
+  already carrying weight — an estate is an estate regardless of what motivated
+  opening it. **PR-3 is answered in direction but NOT in execution** — re-parenting
+  touches the case-type tree and still needs Michael's explicit build authorization.
+- **CL-2 CLOSED — the claimant dimension is ruled in.** Michael: *"Records should
+  hang off of each client. Each client has their own medical bills and treatment and
+  subrogation interests/liens. You are right when you say that the liability facts
+  and other details are shared."* The seam: **the case owns the occurrence and
+  liability; the claimant owns the damages.** Recorded precisely because an earlier
+  restatement in the same session ("clients linked to a case") described what
+  `case_parties` already does and would have produced the wrong build.
+- **Conflicts check ruled ADVISORY, not a gate.** Michael: *"This can be a flag that
+  you can bring up to me, but I should be able to mark it as decided once I figure it
+  out. I already see these situations coming and my contract handles them regardless."*
+  Deliberately unlike PI's three hard gates. Disposition + reason go to the review log.
+  The system encodes nothing about what his contract handles.
+- **CL-1 (case-to-case links) specified, PROPOSED, unruled** — directed, typed,
+  non-cascading. Specified in the same doc as CL-2 because the two are constantly
+  confused; implemented separately because they do different work.
+
+**Design-side findings recorded against the schema — Code VERIFIED both against the
+working tree this session and both hold:** there is no `case_links` table and no
+self-reference on `cases` (no `parent_case`, `related_case`, or `linked_case` column
+anywhere in `db/schema.sql` or `src/domain/types.ts`) — while the master spec has
+described the probate companion as "LINKED to the parent PI case" since long before
+today. Two PI overlay flags (minor/incapacitated, Medicare/Medicaid beneficiary) are
+**per-person attributes sitting on the case** — a latent defect today, invisible only
+because case ≈ client when there is one client.
+
+**Time-critical, for whoever sequences the build: CE1 must be claimant-aware.** If the
+case-event core is built case-only and CL-2 lands afterward, the retrofit is the shared
+substrate under both the heartbeat and the time tracker, not one module. CE1 remains
+UNAUTHORIZED.
+
+**Nothing is authorized.** The design doc's §10 carries twelve decisions (D-CL2-1..9,
+D-CL1-1..3) needing Michael's sign-off before any build. D-CL2-4 (shared-expense
+allocation across claimants) has the most direct net-to-client consequence.
+
+**`claude/` cite-class fix — the packet's diagnosis was HALF right, and the fix split
+two ways.** The packet expected one error class (a project-knowledge `claude_` filename
+prefix miswritten as a slash) and directed that every hit become "lives in project
+knowledge, not the repo." Grepping found **42 hits**, and most are a *different* class:
+stale references to docs that **do** live in the repo, left over from when specs sat
+under a `claude/` folder in project knowledge. Applying the packet's rule literally
+would have broken working cross-references to real files, so the fix was split — per
+§1.2's "write what you find, do not force the doc's claim":
+  - **Class A, target EXISTS in the repo → repointed to the real path** (`docs/specs/…`):
+    `citizens-mrf-dry-run.md`, `medical-billing-analysis-module-prompt.md`,
+    `medical-billing-analysis-module-synthesis.md`,
+    `plea-hearing-eligibility-reminder.md`, `session-log.md`,
+    `transcript-workflows.md` — across `case-management-project-instructions.md`,
+    `criminal-offense-playbooks.md`, `pi-case-playbooks.md`,
+    `medical-billing-analysis-module-synthesis.md`. Also
+    `watch-targets-seed.md`, which cited the statute design doc by its design-space
+    filename; now points at `docs/specs/statute-text-and-bill-tracking-design.md`.
+  - **Class B, target NOT in the repo → plain statement, no invented path**, exactly as
+    the packet directed: the LegiScan fixture (in
+    `statute-text-and-bill-tracking-design.md` §9 O1) and the NVIDIA memo (in
+    `transcript-sort-and-route-design.md` header). Both now say the file lives in
+    claude.ai project knowledge under its `claude_` filename and has no repo path.
+  - **Left alone:** one `claude/v0.1-feedback.md` cite inside a historical
+    `session-log.md` entry (append-only), and `.claude/commands` references, which are
+    a real local directory and not this error class.
+
+**`inbox/` cleanup NOT performed — condition not met.** §4.4 permits deleting
+`project-instructions-v4_2026-07-26.md` only if Michael has confirmed he pasted v4 into
+project settings. He has not said so this session, so it stays and Code asks. INSTR-3
+remains OPEN.
+
+Staged for Code: the design doc; this entry; the `claude/` cite-class fix.
+Awaiting/Returned from Code, unreviewed: this design doc (Michael's §10 sign-off);
+Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#14) — QUEUE-RUNNER: no packets; project-instructions v4 fact-checked against the repo (Code session)
 
 Queue run found **zero zips**. What was in `inbox/` was
@@ -1890,9 +1973,9 @@ Verified live in demo mode against the running dev server (mask typing incl. ext
 - **Legal Rule Registry PROMOTED to system-wide core infrastructure now** — project instructions §2 updated; banked feature #13 (citation-currency alerts) folded in.
 - **Billing-module Phase 1a is the SECOND vertical slice** (after Michael's v0.1 feedback). Phase 1 split into 1a (deterministic — minimal Medical tab, manual/assisted line-item entry, chargemaster fuzzy match, Medicare PFS benchmarks, report generator) and 1b (local-AI PDF ingestion, gated on the GPU arm).
 
-**Dry-run outcome (`claude/citizens-mrf-dry-run.md`, v2):** Citizens' current file is **CMS v3.0.0, dated 2026-05-11, attested, with BCBS negotiated dollar rates for the exact exercise codes** (70450 CT head: $487.55 BCBS PPO outpatient vs $3,166 gross); median/percentile columns essentially unpopulated (5 of ~33k rows) → usable evidence tier = negotiated dollar, not attested median. Facility rates ran 4–10× the professional-schedule estimate from the original exercise (claim-type disclaimer empirically vindicated) while still ~20–50% of billed. Anomalies found and specced into the Phase 2 loader: setting-split rates, above-gross outpatient ED E/M rates, CPT reuse across chargemaster lines, stale CDN caching, defective CMS TXT indicator. The Citizens file is the Phase 2 reference fixture (copy staged this session; Michael has the original in Downloads).
+**Dry-run outcome (`docs/specs/citizens-mrf-dry-run.md`, v2):** Citizens' current file is **CMS v3.0.0, dated 2026-05-11, attested, with BCBS negotiated dollar rates for the exact exercise codes** (70450 CT head: $487.55 BCBS PPO outpatient vs $3,166 gross); median/percentile columns essentially unpopulated (5 of ~33k rows) → usable evidence tier = negotiated dollar, not attested median. Facility rates ran 4–10× the professional-schedule estimate from the original exercise (claim-type disclaimer empirically vindicated) while still ~20–50% of billed. Anomalies found and specced into the Phase 2 loader: setting-split rates, above-gross outpatient ED E/M rates, CPT reuse across chargemaster lines, stale CDN caching, defective CMS TXT indicator. The Citizens file is the Phase 2 reference fixture (copy staged this session; Michael has the original in Downloads).
 
-**Docs updated:** `claude/medical-billing-analysis-module-synthesis.md` (v2.1 — decisions + dry-run corrections), `case-management-project-instructions.md` (registry promotion, second slice, billing hooks), `claude/citizens-mrf-dry-run.md` (v2, completed).
+**Docs updated:** `docs/specs/medical-billing-analysis-module-synthesis.md` (v2.1 — decisions + dry-run corrections), `case-management-project-instructions.md` (registry promotion, second slice, billing hooks), `docs/specs/citizens-mrf-dry-run.md` (v2, completed).
 
 **Next:** (1) Michael runs slice v0.1 + feedback; (2) billing Phase 1a build chat (re-attach current codebase first); (3) registry verification items remain open per synthesis Part 7 — attorney sign-off required, incl. the new sub-question whether an attested v3.0.0 file with empty median columns is compliant.
 
@@ -1903,7 +1986,7 @@ Verified live in demo mode against the running dev server (mask typing incl. ext
 **What happened:** Michael asked whether Claude uses "Memory" in this project, prompting a discussion of Anthropic's memory tool (a client-side API feature for developers) versus what's actually available here — the Project's persistent docs. Set up this session log as the practical equivalent. Discussed reliability (a new session isn't guaranteed to check/update it — it's instruction-driven, not automatic) and token cost of making that more reliable. Decided against backfilling history from old chats (not worth it — `case-management-project-instructions.md` already captures the substance, and old chat transcripts aren't accessible to a session anyway). Added a short pointer line to the top of `case-management-project-instructions.md` referencing this log, to raise the odds a session checks it (that doc already gets read reliably every session) without merging the log's growing content into it (which would add token cost to every read).
 
 **Decisions:**
-- This log lives at `claude/session-log.md`, is checked at the start of relevant sessions, and updated at the end of substantive ones.
+- This log lives at `docs/specs/session-log.md`, is checked at the start of relevant sessions, and updated at the end of substantive ones.
 - It complements, not replaces, `case-management-project-instructions.md` as the master spec.
 - `case-management-project-instructions.md` now carries a one-line pointer to this log (added under its opening paragraph) rather than having log entries merged into it — keeps the reliability benefit without the token cost of the log's history being re-read every time the instructions doc is read.
 - No backfill of past chat history into this log — start clean from today; pull forward specific gaps only if they surface later.

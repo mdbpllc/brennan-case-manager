@@ -1,8 +1,8 @@
 # Medical Billing Analysis Module — Design Synthesis (v2.1)
 
 **Project:** Case Management Software — Michael Brennan (Texas PI / civil / criminal practice)
-**Date:** July 21, 2026; **decision queue and Part 8 items resolved July 22, 2026** (all eight defaults accepted with refinements — see Part 6; MRF dry run COMPLETED incl. per-code comparison — see `claude/citizens-mrf-dry-run.md`).
-**Provenance:** (1) Original design exploration written as a prompt (`claude/medical-billing-analysis-module-prompt.md`), sparked by the Citizens Medical Center / BCBS-TX 2026 fee-schedule exercise. (2) An external model's response to that prompt ("v1.1 Post-Review"). (3) This document — a critical merge of both, plus new material neither had. This is the working spec for the module going forward; the prompt doc remains as provenance.
+**Date:** July 21, 2026; **decision queue and Part 8 items resolved July 22, 2026** (all eight defaults accepted with refinements — see Part 6; MRF dry run COMPLETED incl. per-code comparison — see `docs/specs/citizens-mrf-dry-run.md`).
+**Provenance:** (1) Original design exploration written as a prompt (`docs/specs/medical-billing-analysis-module-prompt.md`), sparked by the Citizens Medical Center / BCBS-TX 2026 fee-schedule exercise. (2) An external model's response to that prompt ("v1.1 Post-Review"). (3) This document — a critical merge of both, plus new material neither had. This is the working spec for the module going forward; the prompt doc remains as provenance.
 
 ---
 
@@ -50,7 +50,7 @@ Both documents treated commercial rates as scarce (discovery-only) and facility 
 
 - 45 CFR pt. 180 is in force, and CMS enforcement of **upgraded** requirements begins **April 1, 2026** — meaning as of now. The upgrade is a gift to this module: instead of "estimated allowed amounts," hospitals must now report **historical payment data per payer — median allowed amount (12–15-month lookback), 10th and 90th percentile allowed amounts, and the count of claims behind the calculation** — plus the hospital's NPI for cross-dataset linkage, and a senior-official attestation that the data is true, accurate, and complete with all dollar-expressible negotiated charges included. The hospital's own attested *median actually-allowed amount* per code is materially stronger lien-reduction evidence than a negotiated "sticker rate," and the attestation requirement blunts the "our file is unreliable" defense.
 - Texas Health & Safety Code Ch. 327 and its enforcement regs (26 TAC §511.77 et al.) exist as a parallel state hook; Texas HHSC publishes SB 1137 guidance.
-- **Concrete validation on the triggering case: DRY RUN COMPLETED 2026-07-22 on Citizens Medical Center's actual file** (`claude/citizens-mrf-dry-run.md`). Headline: the current file is **CMS v3.0.0, dated 2026-05-11, attested, with BCBS-specific negotiated dollar rates for the exact exercise codes** — but the median/percentile columns are essentially unpopulated (5 of ~33,000 rows), so today's usable evidence tier there is **negotiated dollar rates, not attested medians**. Schema adoption is running ahead of data population; quality grading must measure column *population*, not template version.
+- **Concrete validation on the triggering case: DRY RUN COMPLETED 2026-07-22 on Citizens Medical Center's actual file** (`docs/specs/citizens-mrf-dry-run.md`). Headline: the current file is **CMS v3.0.0, dated 2026-05-11, attested, with BCBS-specific negotiated dollar rates for the exact exercise codes** — but the median/percentile columns are essentially unpopulated (5 of ~33,000 rows), so today's usable evidence tier there is **negotiated dollar rates, not attested medians**. Schema adoption is running ahead of data population; quality grading must measure column *population*, not template version.
 
 Why this changes the design:
 
@@ -170,7 +170,7 @@ The external response's "status" notes are noted but do **not** count as verific
 1. The eight decision-queue defaults — **all accepted with refinements; see Part 6.**
 2. Legal Rule Registry promotion — **promoted system-wide now; project instructions updated; feature #13 folded in.**
 3. Vertical slice — **overtaken by events** (Case overview + Parties v0.1 was built and delivered 2026-07-21). **DECIDED:** billing-module **Phase 1a is the second build target** after Michael's v0.1 feedback, structured as the 1a/1b split in Part 3 so it forces the minimal Medical tab into existence without waiting on GPU hardware.
-4. Citizens Medical Center MRF dry run — **COMPLETED 2026-07-22 including the per-code comparison** (file staged from Michael's machine after chat-upload timeouts; findings in `claude/citizens-mrf-dry-run.md`). Verdict: MRF source confirmed on real data — current attested v3.0.0 file with BCBS negotiated dollar rates for the exercise codes (e.g., 70450 at $487.55 PPO-outpatient vs $3,166 gross); medians unpopulated; loader requirements and anomaly handling (setting split, above-gross ED rates, code reuse, stale CDN caching) now specced from evidence. The Citizens file is the Phase 2 reference fixture.
+4. Citizens Medical Center MRF dry run — **COMPLETED 2026-07-22 including the per-code comparison** (file staged from Michael's machine after chat-upload timeouts; findings in `docs/specs/citizens-mrf-dry-run.md`). Verdict: MRF source confirmed on real data — current attested v3.0.0 file with BCBS negotiated dollar rates for the exercise codes (e.g., 70450 at $487.55 PPO-outpatient vs $3,166 gross); medians unpopulated; loader requirements and anomaly handling (setting split, above-gross ED rates, code reuse, stale CDN caching) now specced from evidence. The Citizens file is the Phase 2 reference fixture.
 
 ---
 

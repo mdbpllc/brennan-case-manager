@@ -202,7 +202,7 @@ The discovery-to-demand buckets feed directly into the planned criminal discover
 The deadline rows feed the existing deadline engine.
 The defenses and collateral-consequence prompts tie into the collateral-consequences screening module and the mitigation tracker from the first pass.
 No new architecture — this is offense-aware content layered onto the spine you already have.
-TRANSCRIPT HOOKS (added after the transcript-integration layer was designed; full spec in claude/transcript-workflows.md)
+TRANSCRIPT HOOKS (added after the transcript-integration layer was designed; full spec in docs/specs/transcript-workflows.md)
 
 Michael now records and transcribes audio of conversations. On the criminal side, the transcript layer plugs into this engine at these points — with harder guardrails than the civil side, because the discovery and privilege stakes cut differently:
 
