@@ -5,7 +5,10 @@ Guidance for Claude Code when working in this repository.
 ## What this is
 
 A case management suite for a Texas personal injury / civil litigation /
-criminal law practice. Database-centric: React + TypeScript front-end,
+criminal defense / probate practice — four practice areas, Michael's own
+wording 2026-07-26 (probate added and family law removed by ruling that
+date; see docs/specs/case-management-project-instructions.md §1).
+Database-centric: React + TypeScript front-end,
 data-adapter layer with a localStorage demo mode and a Supabase/Postgres
 adapter (`db/schema.sql`), activated via `.env`. Built incrementally in
 vertical slices; what is built right now lives in ONE place —

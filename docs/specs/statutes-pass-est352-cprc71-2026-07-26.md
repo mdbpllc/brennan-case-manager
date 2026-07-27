@@ -580,8 +580,10 @@ retrieval is checked before an opinion is characterized.
 
 - **`case-management-project-instructions.md`** was wrong in **two** directions — probate absent, family
   present. One amendment fixed both (applied 2026-07-26).
-- **The claude.ai project instructions (v2)** describe the practice as *"PI, criminal defense, family."* The
-  truth is **PI, criminal defense, probate.** Neither Claude nor Code can edit these — Michael's paste. Also
+- **The claude.ai project instructions (v2)** describe the practice as *"PI, criminal defense, family."*
+  **Michael's exact correction, 2026-07-26: the practice areas are "PI, civil litigation, criminal defense,
+  probate"** — four, not three; civil litigation was dropped in the design side's paraphrase and again in
+  Code's first pass at this line. Neither Claude nor Code can edit these — Michael's paste. Also
   carried for that revision: the stale line showing the three carried-file duplication checks as open when
   session-log entry #4 closed them.
 

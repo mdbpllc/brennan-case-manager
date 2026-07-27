@@ -8,7 +8,7 @@ PRECEDENCE (added 2026-07-25): this document is authoritative for what is DESIGN
 
 1. What we are building
 
-A standalone case management suite for a personal injury / civil litigation / criminal law / **probate** practice.
+A standalone case management suite for a **personal injury / civil litigation / criminal defense / probate** practice — four practice areas, in Michael's own wording (2026-07-26).
 
 **Practice-line scope amendment (2026-07-26, Code-side edit made at design's explicit direction — the one authorized exception to spec read-only).** Two changes, both ruled by Michael the same day:
 

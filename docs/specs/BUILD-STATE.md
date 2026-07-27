@@ -102,9 +102,11 @@ QUEUE-RUNNER batch:
   Entry 1(c-3); **PR-3 (new — re-parent the mis-filed probate case type?)**;
   RE-1 (referral engine, new); Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10
 - **claude.ai project instructions v2 are wrong in BOTH directions** —
-  they say "PI, criminal defense, family"; the truth is PI, criminal
-  defense, **probate**. Plus a stale carried-file line closed in log #4.
-  Michael's paste; neither Claude nor Code can edit them
+  they say "PI, criminal defense, family". **Michael's exact wording
+  2026-07-26: "PI, civil litigation, criminal defense, probate"** (four
+  areas — civil litigation had been dropped from earlier paraphrases, incl.
+  Code's). Plus a stale carried-file line closed in log #4. Michael's
+  paste; neither Claude nor Code can edit them
 - Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the
   Estates Code territory the probate line needs. **The Family Code block is
   MOOT**; the probate chapters are the replacement O6 stress test

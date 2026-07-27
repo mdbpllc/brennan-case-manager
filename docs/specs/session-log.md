@@ -12,6 +12,32 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#12) — Practice areas corrected to FOUR (Michael, Code session)
+
+Michael's exact wording: **"My practice areas should read 'PI, civil
+litigation, criminal defense, probate'."** Four areas. Two drifts corrected:
+the design side's instructions v2 say "PI, criminal defense, family" (family
+out by the same day's ruling, probate absent), and **Code's own entries #10
+and #11 below paraphrased the fix as "PI, criminal defense, probate" —
+dropping civil litigation**, which has been a mapped practice area since the
+master spec's original §7 and carries Debt, DTPA, mechanic's lien, Servpro
+mechanic's lien, bailment, and breach of contract. Those two entries stand as
+written (append-only); this entry corrects them downstream.
+
+Applied: CLAUDE.md's "What this is" and the master spec's §1 now read
+**personal injury / civil litigation / criminal defense / probate**, and the
+instructions-are-stale note in BUILD-STATE and the statutes capture now quote
+Michael's four-area wording verbatim instead of Code's paraphrase. Also
+aligned "criminal law" → **"criminal defense"** per his phrasing.
+
+No case types changed and nothing was built — the four practice areas already
+exist in `src/domain/caseTypes.ts` as Personal Injury, General Civil
+Litigation, and Criminal; **probate remains the mis-parented
+`Probate companion` under PI, still gated on PR-3.**
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: unchanged from #11.
+
 ## 2026-07-26 (#11) — Design reply applied: PR-3 opened, FAM-1 closed no-op, capture-annotation rule (Code session)
 
 The design side answered Code's queue questions mid-run via
