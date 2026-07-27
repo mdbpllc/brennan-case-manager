@@ -313,6 +313,42 @@ assumptions.
 
 **Status:** flag only. **No ledger file was created** — that is a design decision Michael has not made. Recorded so the fourth family is not lost, and so whoever designs the ledger designs it against the enactment-vs-effective-date split and the three anchor patterns rather than discovering them later.
 
+### 2026-07-26 — DESIGN REQUEST (Michael): calendar event notes need to be multi-line and structured
+
+**Where:** `src/pages/CalendarTab.tsx` (the event form), `EventRecord.notes` in
+`src/domain/types.ts`, and the Graph mapping in `src/outlook/graph.ts`.
+
+**Michael, 2026-07-26, on first use of the calendar event form:** *"on the notes section
+for calendar event creation, I want to be able to put a longer description than one line
+and want to be able to indent and go to another paragraph or bullet point."*
+
+**Current state, verified in code — the request is well founded:**
+- The form renders notes as **`<input type="text">`** (`CalendarTab.tsx:256`) — a
+  single-line control. It cannot accept a newline at all; Enter submits rather than
+  breaking the line. There is no paragraph, indent, or bullet affordance.
+- `EventRecord.notes` is a plain `string?` — the data model itself imposes no limit, so
+  this is a UI constraint, not a schema one.
+- The Outlook side is **already better than the form**: `graph.ts:96` sends
+  `body: { contentType: 'text', content: [matterLine, ev.notes].join('\n\n') }` — it
+  already joins with a blank line and Graph accepts multi-line text. So longer structured
+  notes would survive the push today if the form could capture them.
+
+**Not designed here — the questions the design pass has to answer:**
+1. **Plain multi-line, or formatted?** A `<textarea>` gets paragraphs and manual
+   indentation immediately and is a near-trivial change. Real bullets and indent levels
+   mean either a markdown convention or a rich-text editor, which is a much larger
+   commitment (sanitization, storage format, a new dependency).
+2. **What reaches Outlook?** Graph accepts `contentType: 'html'` as well as `'text'`. If
+   notes become structured, the push should probably send HTML so bullets survive — but
+   that changes what `graph.ts` sends and wants deciding, not assuming.
+3. **Does this generalize?** The same one-line-input limitation likely affects other notes
+   fields in the app (office notes, party notes, the docket worksheet's special-notes
+   line). Worth auditing as one pass rather than fixing the calendar in isolation.
+
+**Status:** OPEN — routed to design, **nothing built**. Flagged as probably cheap in its
+minimal form (single-line input → textarea) and genuinely not cheap in its full form
+(rich text). Michael should be told which he is buying before it is built.
+
 ### 2026-07-26 — Outlook push: TWO defects found on first exercise, both fixed
 
 **Where:** `src/outlook/auth.ts`, and the absence of a redirect page.

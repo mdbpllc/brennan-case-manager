@@ -63,9 +63,22 @@ surfaced within minutes of first contact. **The two undeployed edge functions sh
 assumed to carry the same class of risk** — which sharpens the auth-first sequencing from
 #18: deploying them will likely find defects too, not just an auth wall.
 
+**NEW DESIGN REQUEST from Michael, raised on first real use of the event form:** calendar
+event **notes must support more than one line** — longer descriptions, paragraphs,
+indentation, bullets. Verified in code and the complaint is exact: the field is an
+`<input type="text">` (`CalendarTab.tsx:256`), which cannot take a newline at all. The
+data model doesn't constrain it (`notes?: string`), and the Graph push already joins with
+blank lines and would carry multi-line text today — **so the form is the only thing in the
+way.** Routed to design, nothing built: the minimal fix (textarea) is near-trivial, but
+real bullets/indent levels mean a markdown convention or a rich-text editor, plus deciding
+whether the push switches to `contentType: 'html'` so structure survives into Outlook. The
+same one-line limitation probably affects other notes fields and is worth auditing as one
+pass. Full write-up in `docs/spec-feedback.md`.
+
 Staged for Code: none.
 Awaiting/Returned from Code, unreviewed: this Outlook fix (Michael has now walked the
-create path himself); the CL-2 brief and blockers capture for the Fable session.
+create path himself); the notes-field design request; the CL-2 brief and blockers capture
+for the Fable session.
 
 ## 2026-07-26 (#19) — INSTR-3 CLOSED: project instructions v4 pasted (Michael, Code session)
 

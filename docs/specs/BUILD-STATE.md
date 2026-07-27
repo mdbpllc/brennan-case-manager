@@ -99,6 +99,10 @@ change; everything else below is unchanged.
   instructions v2. `inbox/` is clear. Every repo-facing claim in v4 was fact-checked
   against the tree (#14) and held
 - **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3)
+- **NEW design request:** calendar event notes are a single-line `<input>` and need
+  multi-line + structure (paragraphs, indent, bullets). Minimal fix is a textarea;
+  real bullets mean markdown-or-rich-text plus deciding whether the Graph push moves
+  to `contentType: html`. Likely affects other notes fields too — audit as one pass
 - Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
   arrangement per client; was dropped from the design side's running list and
   restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is
