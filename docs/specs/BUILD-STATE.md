@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: aa7750a  |  Branch: master  |  Generated: 2026-07-26 (sixteenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
+Commit: dba5c1b  |  Branch: master  |  Generated: 2026-07-26 (seventeenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -23,7 +23,7 @@ Commit: aa7750a  |  Branch: master  |  Generated: 2026-07-26 (sixteenth refresh;
 | Calendar | LIVE (local only) | event CRUD works; Outlook push code present but never exercised — see stubs |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## 2026-07-26 — twelve Code sessions, ZERO app change
+## 2026-07-26 — thirteen Code sessions, ZERO app change
 Every commit today is documentation. **Practice areas are PI / civil
 litigation / criminal defense / probate** (four, Michael's wording);
 `caseTypes.ts` carries PI, General Civil Litigation, Criminal — probate has
@@ -44,12 +44,21 @@ none of its own (see stubs); family law REMOVED as a practice line, doc-only.
   CLIENT owns the damages.** Conflicts check is ADVISORY. NEW
   `claimant-dimension-and-case-links-design.md` (DRAFT). `claude/` cite class
   fixed across 8 docs
-- **FIVE client-model rulings (#16), all design-only:** entity renamed
-  **`claimant` → `client`** + `posture` (every case gets a client, civil and
-  criminal); **practice-area profiles DERIVED**, no override — **the medical
+- **CLIENT MODEL COMPLETE (#16 + #17) — ten decisions closed, all
+  design-only, NOTHING authorized.** Entity renamed **`claimant` → `client`**
+  + `posture`; **practice-area profiles DERIVED**, no override — **the medical
   module belongs to the PI profile, not to cases generally**; case-level
-  limitations **retire** for a derived earliest; **per-expense tagging,
-  shared expenses split EVENLY**; shares **lock at disbursement**
+  limitations **retire** for a derived earliest; **per-expense tagging, shared
+  expenses split EVENLY**; shares **lock at disbursement**; **flags split —
+  Medicare/Medicaid = CLIENT, minor/incapacitated + the four occurrence flags
+  + Death = FILE**; single-client files render **unchanged**; `case_clients`
+  sits **parallel** to `case_parties`
+- **PI HARD GATE NARROWED (#17, ruled design, NOT in code):** the
+  PR-appointment gate blocks **only the deceased client**, not the whole
+  matter. **No tolling is computed or inferred anywhere** — ruled out
+- **D-CL2-9: CL-2 ships as its own slice, CE1 authorized separately after.**
+  Accepted cost — **the heartbeat and time tracker stay parked** until CL-2 is
+  built and walked
 - Also: record reconciliation (#13); Go_Live_Gates completed; statute doc
   forward-merged; migration + selective sync; QUEUE-RUNNER adopted
 
@@ -96,11 +105,11 @@ none of its own (see stubs); family law REMOVED as a practice line, doc-only.
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md,
   BUILD-SESSION-NOTES.md; src/ EXCLUDED. This doc is the SOLE authority on
   what is built. Sync the NEW project after each push
-- **Trim log (this refresh, per the packet's ask):** removed the standalone
-  "Practice areas" section (facts folded into the deltas header — a section
-  should never have been added); collapsed the OAA-scans line into the inbox
-  line; shortened the `claude/`-cite and instructions-v4 entries. **No
-  build-state fact was dropped**
+- **Trim log:** NOTHING cut this refresh — design side ruled "do not cut
+  deeper; archive resolved items rather than compressing live state." Prior
+  refresh removed an added "Practice areas" section and collapsed two stub
+  lines; no build-state fact was ever dropped. **This file now runs slightly
+  over the 120-line cap by that instruction**
 - **Project instructions: LIVE VERSION IS STILL v2.** A **v4 draft awaits
   Michael's paste** (log #14) — covers INSTR-3 (Q-1, Q-2) + a
   delivery-destination convention; Code fact-checked it, all claims verify.
@@ -109,11 +118,13 @@ none of its own (see stubs); family law REMOVED as a practice line, doc-only.
   2026-07-25 triage clearing stands; ~12 later carries were copy-forward
 - **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade` —
   folded into O6's shape without ever being ruled)
-- **Largest open block: the §10 list in
-  `claimant-dimension-and-case-links-design.md`.** Five closed (#16); open:
-  D-CL2-2a, -3, -5..9, D-CL1-1..3, plus **CIV-1 (civil-litigation damages
-  entirely UNSPECIFIED — own design session), PROB-1 (probate client profile
-  unwritten), PA-1** (practice-area edits vs. derived profiles, proposed only)
+- **Client-model §10 list: TEN closed (#16, #17) — every original item is now
+  ruled or assigned.** Still open there: **D-CL2-3** (fee arrangement per
+  client — was dropped from the design side's running list mid-session and
+  restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 now gated on PR-3 ALONE** — split
+  UM filings were struck, leaving probate as CL-1's only consumer), plus new
+  proposals **UM-1, UM-2, PR-GATE-1, MIN-1**, and **CIV-1 (civil-litigation
+  damages entirely UNSPECIFIED — own design session), PROB-1, PA-1**
 - OPEN, Michael's: PR-3 (re-parent the probate case type — **direction now
   set by V17, execution still unauthorized**); V16; V14a; V15 survival half
   (V10 citator pass RUNNABLE); V4; V10–V13; Entry 1(c-3); RE-1; INSTR-3
