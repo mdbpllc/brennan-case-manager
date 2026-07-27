@@ -12,6 +12,75 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#16) — FIVE rulings on the client model: entity renamed, profiles, limitations, expenses (design session 2, Opus 5)
+
+Design-side, continuing from the batch at `a74c708`. **Nothing entered the build
+queue.** Five decisions closed on the CL-2/CL-1 design doc; amendments folded in.
+
+- **D-CL2-1 CLOSED — the entity is `client`, not `claimant`, and EVERY case gets
+  one.** Michael sits defense-side in civil matters *"very rarely… but it happens
+  occasionally,"* and ruled the criminal defendant gets a record too. **Reason:** a
+  name that is wrong a few times a year is wrong in the schema permanently. New
+  `posture` field (claimant/defendant) handles defense-side and counterclaim matters.
+  Item IDs (CL-2, D-CL2-*) deliberately unchanged.
+- **PROFILE MODEL CLOSED — practice-area profiles, derived.** Michael: the data on a
+  criminal defendant client differs from civil litigation and PI, and *"a personal
+  injury client will have different types of damages than a typical civil litigation
+  client, who does not have injuries or medical records/bills, but rather some other
+  type of economic loss."* Lean client row + profile, mirroring the `parties` registry
+  pattern. **Consequence: the medical module belongs to the PI profile, not to cases
+  generally** — a civil-litigation client having no medical tab is correct, not a gap.
+  Derivation ruled automatic from practice area, **no per-client override**, Michael's
+  reason quoted in the doc: deploy, find the hiccups, fix them then.
+- **D-CL2-2 CLOSED — case-level limitations RETIRES.** Lives on client records; the
+  case displays the earliest, derived and non-writable. What resolved it: *"in civil
+  cases, there will never exist a case without a claimant. In criminal cases, there
+  will always only be one client (defendant) and a statute of limitations calculated
+  for each offense."* Criminal never used `cases.statute_of_limitations` — per-offense
+  clocks on `charges` are already built.
+- **D-CL2-4 CLOSED — per-expense tagging at entry; shared expenses split EVENLY.**
+  Pro rata by recovery rejected. Claude had proposed pro rata; the tradeoff (an even
+  split bites harder into a smaller recovery) was in front of Michael when he ruled
+  and is recorded as considered, not overlooked. Bonus Claude under-weighted: an even
+  split computes at logging time, which largely dissolves the staggered-settlement
+  problem.
+- **D-CL2-4a CLOSED — shares lock at disbursement.** Later changes to the client set
+  redistribute only across clients who have not disbursed. No retroactive
+  recomputation, no reissued settlement statements.
+
+**New open items:** **CIV-1** — civil-litigation damages are entirely unspecified
+(economic loss, no injury model) and need their own design session; breach of contract
+is the workhorse of that line. **PROB-1** — probate's client profile is unwritten.
+**PA-1** — editing a case's practice area changes its clients' profiles; proposed to
+ride the existing warn-and-review-log rail rather than destroy data (unruled).
+**D-CL2-2a** — derive the case's limitations from all clients or only unresolved ones.
+
+**Claude error recorded (2026-07-26, previous packet).** The `claude/` cite-fix order
+generalized one sample into a rule — "every hit becomes a project-knowledge statement"
+— which, applied literally, would have broken six working cross-references to real
+`docs/specs/` files. Code correctly split the 42 hits into two classes and repointed
+the stale ones. **The order should have said grep, report, then apply.** The record
+matters more than looking right.
+
+**Process notes for Code:** (1) packets will stop hardcoding session-log entry numbers
+— the design side cannot see what landed since its last sync (proposed convention,
+unruled). (2) BUILD-STATE hit 140 lines and needed two trims to reach the 120 cap
+last batch; **please name what gets cut when you trim**, since BUILD-STATE is the
+design side's only view of build state and silent cuts are the wrong kind of quiet.
+
+*(Code notes on execution: the rename was applied doc-wide with two deliberate
+exceptions — the canonical-path line, since the FILENAME stays `claimant-…` to keep
+the cross-references repaired at `a74c708` intact, and one legal-sense use in §9
+about multiple claimants sharing a limited policy, which is terminology rather than
+the entity. Section numbering as filed matched the amendment's fold targets exactly,
+so no fold-by-name fallback was needed. Both process notes accepted: this entry took
+the next number in sequence (#16, not a hardcoded one), and the BUILD-STATE trim below
+names what was cut.)*
+
+Staged for Code: the amendment fold-in; this entry.
+Awaiting/Returned from Code, unreviewed: the design doc's remaining §10 decisions
+(Michael's); Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#15) — V17 ruled (a); CLAIMANT DIMENSION ruled in; conflicts = advisory flag (design session, Opus 5)
 
 *(Packet numbered this #14; renumbered to #15 by Code — #14 was taken earlier
