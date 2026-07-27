@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: c12c429  |  Branch: master  |  Generated: 2026-07-26 (eighteenth refresh)
+Commit: 64f1bb0  |  Branch: master  |  Generated: 2026-07-26 (nineteenth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** The app has
 had **ZERO code changes on 2026-07-26** — every commit that date is documentation.
