@@ -12,6 +12,41 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#14) — QUEUE-RUNNER: no packets; project-instructions v4 fact-checked against the repo (Code session)
+
+Queue run found **zero zips**. What was in `inbox/` was
+`project-instructions-v4_2026-07-26.md` — project-settings text, which by the
+standing DO-NOT carried on every packet since the queue bootstrap **never
+enters the repo**. Not committed, not moved; left in place for Michael to
+paste into project settings. (Minor convention note: `inbox/` is the packet
+queue and the runner collects zips, so an instructions draft dropped there is
+outside the mechanism — harmless, but it is a paste target, not a packet.)
+
+Since v4's whole purpose is to quote a true record, Code fact-checked its
+repo-facing claims rather than just filing it. **Everything checks out.**
+Verified present at the asserted paths: `docs/project-knowledge-working-set-policy.md`,
+`docs/authority/case-authority-index.md`, `docs/specs/Go_Live_Gates.md`,
+`docs/prompts/QUEUE-RUNNER.md`, `BUILD-SESSION-NOTES.md`, `README.md`, `db/`,
+`supabase/`, and `docs/specs/legal-rule-registry-draft-entries-medical-billing.md`.
+The selective-sync list matches CLAUDE.md exactly. The four-area practice
+wording matches #12. The three-carried-files paragraph reproduces #13 R-2
+correctly, **including the two-vs-three resolution**. The copy-forward warning
+cites #13 R-3 accurately. And v4 absorbs the `claude/` finding as its own
+named error class — correctly: **there is no `claude/` directory in the repo**,
+re-verified this session.
+
+**INSTR-3 status: a draft exists and is awaiting Michael's paste.** v4 covers
+what INSTR-3 asked for (Q-1 inbox/QUEUE-RUNNER and Q-2 docs/prompts/ are both
+stated as binding) plus a new delivery-destination convention. Recorded so the
+design side does not re-draft v3 — but the item is **not closed**: Claude and
+Code cannot edit project settings, so it closes only when Michael pastes it and
+says so. Until then the live instructions are still v2.
+
+No packets, no build, no rulings, nothing else changed.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#13) — Record reconciliation: four stale/contradictory record items settled (design → Code)
 
 Short design session (Opus 5), design space. **Nothing was built; no rulings were
