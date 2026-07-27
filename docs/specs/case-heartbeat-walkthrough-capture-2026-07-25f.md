@@ -1,5 +1,7 @@
 # Case Heartbeat — Depositions, Mediation, DCO Ingest & Expert Cadence Capture (2026-07-25)
 
+**NOTE 2026-07-26:** "T1" in this capture refers to the heartbeat/time-tracker slice, renamed **CE1** (see session log). The transcript T-series is unrelated.
+
 **Status:** RAW CAPTURE — mixed voice/text session, design side. Not canonical, not a design doc, not in the build queue.
 **Canonical repo path:** `docs/specs/case-heartbeat-walkthrough-capture-2026-07-25f.md` — routed Code-side per the accompanying handoff.
 **Sequence note:** follows `-2026-07-25b`, `-c`, `-d`, `-e`. This is the **f** capture — sixth in sequence. **Source of record for Parts 1–5 until folded into `case-heartbeat-design.md` §8.**

@@ -72,8 +72,10 @@ QUEUE-RUNNER batch:
   reseed (open question for design)
 - **PROBATE: only furniture is a `Probate companion` case type parented
   under Personal Injury with a knowingly wrong ladder (`_piDefault`, see the
-  comment in caseTypes.ts). No probate practice area, no estate/decedent
-  tables, no probate party roles. No probate design doc exists**
+  comment in caseTypes.ts) — MIS-PARENTED per S-1, which makes probate a
+  line in its own right. Re-parenting is gated on PR-3 (new, Michael's); do
+  not touch the case-type tree or ladder. No probate practice area, no
+  estate/decedent tables, no probate roles, no probate design doc**
 - Time tracker: design draft only — NOTHING in the app. Servpro deadline
   engine: DESIGN ONLY, gated on the meeting. Case heartbeat: design docs
   only — NOTHING in the app; captures e and f still NOT folded; register
@@ -97,8 +99,8 @@ QUEUE-RUNNER batch:
 - OPEN, Michael's: V14a (vehicle for a §352.051(2) fee request); V15
   survival half (V10 citator pass now RUNNABLE — FLP done, connector live);
   V16 narrowed; V17 (decides whether probate touches PI); V4; V11–V13;
-  Entry 1(c-3); RE-1 (referral engine, new); Q-5; Q-6; M-3; M-4; K-5–K-7;
-  registry entries 1–10
+  Entry 1(c-3); **PR-3 (new — re-parent the mis-filed probate case type?)**;
+  RE-1 (referral engine, new); Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10
 - **claude.ai project instructions v2 are wrong in BOTH directions** —
   they say "PI, criminal defense, family"; the truth is PI, criminal
   defense, **probate**. Plus a stale carried-file line closed in log #4.

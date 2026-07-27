@@ -12,6 +12,64 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#11) — Design reply applied: PR-3 opened, FAM-1 closed no-op, capture-annotation rule (Code session)
+
+The design side answered Code's queue questions mid-run via
+`REPLY-TO-CODE_2026-07-26.md` (dropped in `inbox/`, processed and removed —
+not a packet, so it routes nowhere else). Four corrections, all applied on
+top of batch 3 below.
+
+**PR-3 OPENED — the probate case type is MIS-PARENTED, and the design side
+records that it was wrong.** Design asserted no probate furniture existed.
+Source verification found a **`Probate companion` case type at
+`src/domain/caseTypes.ts`, parented under Personal Injury and inheriting
+`_piDefault`**, with the code's own comment conceding the ladder does not fit
+its arc and a pending design pass already logged as spec-feedback item 1.
+Everything else design claimed absent — practice area, estate/decedent
+tables, the nine probate roles — is genuinely absent. **S-1 rules probate a
+practice line in its own right, which the companion-under-PI structure
+contradicts.** Re-parenting touches the case-type tree and the ladder
+assignment: **PR-3 is Michael's, and NOTHING was re-parented, no ladder
+changed, nothing built.** One sentence recording the gate was added to the
+master spec per the reply's §4.2 addition.
+
+**FAM-1 CLOSED — no-op, verified.** No family furniture in source means
+there was nothing to authorize; the family removal is doc-only in fact as
+well as in authorization.
+
+**§4.5's internal contradiction resolved — in favor of not rewriting raw
+records.** The work order listed captures d/e/f as rename targets and then
+forbade editing raw-record captures; the reply ruled the second rule wins.
+So: **no rename inside raw-capture body text** (same principle as the
+append-only log); instead **one dated editorial line at the top of each
+affected capture** pointing "T1" at CE1 and noting the transcript T-series is
+unrelated. The reply also confirmed **Code's file list, not §4.5's, is
+authoritative** — the work order had omitted
+`time-tracker-fee-basis-profiles-design.md`.
+
+**Final rename counts, three ways:** **RENAMED (live authoritative docs) —
+`case-heartbeat-design.md`** (§7.1, §9 build phasing where T1–T5 became
+CE1/HB1–HB4, §10 D3 row, §11 H8 row), **`time-tracker-fee-basis-profiles-design.md`**
+§9 (T1→CE1, T2→TT1, T3→TT2), **`BUILD-STATE.md`** (via the mandatory
+rewrite), **`attorney-review-queue.md`** (D3 line). **`CLAUDE.md`: ZERO
+renamed** — all four of its `T1`s are transcript- or statute-sense, so the
+work order's "expect BOTH senses here, highest care" was wrong in the
+harmless direction. **ANNOTATED — 3 files** (captures d, e, f; 7
+occurrences). **LEFT ALONE as transcript/statute-sense or raw record —
+CLAUDE.md 4, the three APIL mining passes 4,
+`registry-verification-pass-2026-07-26.md` 2, historical session-log entries
+10+.** Still knowingly stale and deliberately untouched:
+`prop-code-53-28-deadline-engine-design.md` line 411 ("D3/H8 still gates
+T1"), barred by packet 1's DO-NOT.
+
+**Superseded zip deleted** with explicit authorization ("Delete the
+superseded 17:30 zip — yes"); it was held out of `inbox/` until that answer
+arrived rather than destroyed on Code's own judgment.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: this entry and the three below;
+Outlook push slice (2026-07-24); BUILD-SESSION-NOTES.md 2026-07-21 audit.
+
 ## 2026-07-26 (#10) — QUEUE-RUNNER batch: 2 packets (statutes pass + probate/D3H8 rulings) (Code session)
 
 Third QUEUE-RUNNER batch, and the first with a real multi-packet queue. Run

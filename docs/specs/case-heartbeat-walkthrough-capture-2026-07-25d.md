@@ -1,5 +1,7 @@
 # Case Heartbeat — PI Walkthrough Capture, Service Chase + Answer Received (2026-07-25d)
 
+**NOTE 2026-07-26:** "T1" in this capture refers to the heartbeat/time-tracker slice, renamed **CE1** (see session log). The transcript T-series is unrelated.
+
 **Status:** RAW CAPTURE — design-side voice/text session, Fable 5. Not canonical, not a design doc, not in the build queue.
 **Canonical repo path (when adopted):** `docs/specs/case-heartbeat-walkthrough-capture-2026-07-25d.md`
 **Folds into:** `docs/specs/case-heartbeat-design.md` §8 (suit-filed subsection completed; answer-received subsection new). Fold in — do not branch.

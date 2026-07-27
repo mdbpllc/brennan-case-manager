@@ -1,5 +1,7 @@
 # Case Heartbeat — Downstream Branches Walkthrough Capture (2026-07-25)
 
+**NOTE 2026-07-26:** "T1" in this capture refers to the heartbeat/time-tracker slice, renamed **CE1** (see session log). The transcript T-series is unrelated.
+
 **Status:** RAW CAPTURE — voice walkthrough session, design side. Not canonical, not a design doc, not in the build queue.
 **Canonical repo path:** `docs/specs/case-heartbeat-walkthrough-capture-2026-07-25e.md` — routed Code-side 2026-07-25 per the PUSH-TO-CODE work order.
 **Sequence note:** follows `-2026-07-25b`, `-2026-07-25c`, `-2026-07-25d`. This is the `e` capture.
