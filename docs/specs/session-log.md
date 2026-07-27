@@ -12,6 +12,34 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#19) — INSTR-3 CLOSED: project instructions v4 pasted (Michael, Code session)
+
+Michael confirmed in-session: **"v4 is pasted into the claude.ai project settings."**
+That satisfies the condition the last three packets attached to it.
+
+- **INSTR-3 is CLOSED.** The live project instructions are **v4 (2026-07-26)**, not
+  v2. Trigger #3 — fired twice on 2026-07-26 for Q-1/Q-2 and the
+  delivery-destination convention — is resolved. **Design side: stop carrying
+  INSTR-3, and stop describing the live instructions as v2.**
+- **`inbox/` is clear.** The staged `project-instructions-v4_2026-07-26.md` is gone;
+  only `.gitkeep` remains. Recorded precisely: **Code's delete was a no-op — the file
+  had already been removed from `inbox/` before this session ran**, evidently by
+  Michael when he pasted it. Code never committed it anywhere, per the standing
+  DO-NOT carried on every packet since the queue bootstrap.
+- **What v4 carries that v2 did not**, per the fact-check at #14: the four-area
+  practice wording; the queue convention (Q-1) and `docs/prompts/` as the canonical
+  cross-interface prompt home (Q-2), both binding in CLAUDE.md; the corrected
+  carried-file status (all three verified absent from the repo, so all three carries
+  were warranted); the `claude_`-prefix-is-not-a-directory error class; the
+  copy-forward warning drawn from #13 R-3; and the delivery-destination convention.
+  Every repo-facing claim in it was verified against the tree at #14 and all held.
+
+No build, no rulings, nothing else changed this session.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: the CL-2 brief and blockers capture (for
+the Fable session); Outlook push slice (2026-07-24).
+
 ## 2026-07-26 (#18) — Session close: blockers re-analyzed (auth is the root), CL-2 brief staged for Fable (design session, Opus 5)
 
 Final segment of the long design session. **Nothing entered the build queue; nothing

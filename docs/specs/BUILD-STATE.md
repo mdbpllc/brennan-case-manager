@@ -87,9 +87,10 @@ live state only.
   (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
   data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
   the MRF path blocks nothing
-- **Project instructions: LIVE VERSION IS STILL v2.** A v4 draft awaits Michael's
-  paste (log #14); Code fact-checked it and all claims verify. **INSTR-3 closes only
-  when he pastes it**, and `inbox/` clears then. Do not re-draft v3
+- **Project instructions: LIVE VERSION IS v4 (2026-07-26).** Michael pasted it;
+  **INSTR-3 is CLOSED** (log #19) — stop carrying it, and stop calling the live
+  instructions v2. `inbox/` is clear. Every repo-facing claim in v4 was fact-checked
+  against the tree (#14) and held
 - **BUILD-SESSION-NOTES.md is CLOSED and NOT carried** (log #13 R-3)
 - Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
   arrangement per client; was dropped from the design side's running list and
