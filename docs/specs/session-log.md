@@ -12,6 +12,66 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-27 (#22) — Model routing plan filed UNRULED; queue defect surfaced; two corrections (design session, Opus 5)
+
+Design-side. **Nothing built, nothing ruled, nothing authorized.** One decision memo
+filed; one read-only Code consultation run and folded in.
+
+- **`model-routing-plan.md` FILED UNRULED** at `docs/specs/model-routing-plan.md`,
+  same footing as the CL-2 brief: Tuesday's Fable session reads it from the record
+  instead of re-deriving it. It drafts the **Q-5 clause** (§7.2) but **does not close
+  Q-5** — that is Michael's ruling, and it fires instructions trigger #3.
+- **Usage measured 2026-07-27T05:37Z.** `weekly_scoped` at **100% — Fable exhausted**;
+  `weekly_all` at 67%, so ~33% of the pool remained, expiring at the same reset
+  (2026-07-28 21:00 UTC, Tuesday afternoon). Reading `weekly_scoped` as the Fable
+  meter is an INFERENCE, not a label the report supplies.
+- **Effort has NEVER been set anywhere** — no `effort` key in `~/.claude/settings.json`,
+  the parent `.claude/settings.local.json`, or the repo's. Every Code session in this
+  project's history has run on the harness default. The memo's effort column
+  **introduces a control nobody has touched**, rather than correcting a mis-set one.
+- **QUEUE DEFECT surfaced (memo §7.1), PROPOSED and unruled.** QUEUE-RUNNER step 4.2
+  merges each packet's §7 open-items into the runner entry and then deletes the packet
+  as "no longer the record" — but **what survives is the item's ID and label, not its
+  question.** Q-5 is the worked example: its substance lived in a processed-and-deleted
+  packet and is **not recoverable from the repo**, which is why a design session spent
+  a turn unable to verify what it was asked to resolve. Proposed fix: the merge carries
+  each open item's question, or packets are archived rather than deleted. **This is a
+  defect in a convention ruled binding 2026-07-26 (Q-1).**
+- **CORRECTION — the Supabase RLS dispute dissolves; both statements were true about
+  different things.** `db/schema.sql` creates 32 tables, enables RLS on all 32, and
+  attaches **31 policies**; `file_counters` is deliberately policy-less and documented
+  as such in the file ("never touched via the API" — driven by a security-definer
+  function). The design side's reading of the FILE was correct. The Code review was
+  describing the LIVE PROJECT, where **whether the schema was ever executed cannot be
+  determined from the machine** — no `config.toml`, no `migrations/`, no CLI, no linked
+  state, though the dashboard SQL-editor path leaves no local trace either.
+  `Go_Live_Gates.md` gate 3 is still future-tense, which leans toward never-run.
+  **Settled only by Michael: Supabase dashboard → Table Editor.**
+- **CORRECTION — the Outlook unexercised interval was understated.** Built `8a1752b`,
+  2026-07-24 00:01 local; first successful connect `8da26fb`, 2026-07-26 23:11 local.
+  **Just under three days**, not "two nights" — not a UTC artifact. The
+  written-but-never-exercised lesson is stronger than it was told.
+- **Code's independent sequencing read: CL-2 first**, on grounds different from the
+  design side's — **CL-2's case is time-asymmetric and auth's is not.** Migration cost
+  only rises; auth costs the same in November. Both sequences still go to Fable.
+- **The memo's own limit, recorded (§8):** the largest body of unexercised work in this
+  project is **the registry, every entry unverified**, and no model routing touches it
+  at any tier because only Michael can verify. Model routing optimizes the half of the
+  work Claude does; the half that gates real use moves at Michael's pace.
+
+*(Code notes on filing: both facts the packet required re-verifying before writing were
+**re-checked and match exactly** — schema 32/32/31 with `file_counters` the deliberate
+exception, and the two Outlook commit timestamps to the minute. One edit to an otherwise
+verbatim file: the memo's header read "This resolves open item Q-5," which contradicted
+both the packet's §4.1 status line and its own §3 log entry, each saying it drafts the
+clause without closing the item; reconciled to the packet's framing and the change flagged
+inside the memo. Also noted, not acted on: §7 lists **ENTRA-1 as "done, unlogged"** — it
+was in fact logged at #20 and marked done in BUILD-STATE on 2026-07-26.)*
+
+Staged for Code: the memo; this entry.
+Awaiting/Returned from Code, unreviewed: the memo (Michael's ruling on §7.2 and §4.2);
+the CL-2 brief and blockers capture (for the Fable session); Outlook push slice.
+
 ## 2026-07-27 (#21) — Project history rebuilt day by day, 07-21 → 07-26 (Michael request, Code session)
 
 Michael asked for the archived history broken down **by day, with model usage**. NEW

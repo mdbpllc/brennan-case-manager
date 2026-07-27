@@ -153,6 +153,17 @@ coding sessions. The spec documents committed under `docs/specs/` are
   (probate profile unwritten), and PA-1. Sequencing note: **CE1 must be
   client-aware** if ever authorized, or the retrofit hits the shared
   substrate under both the heartbeat and the time tracker
+- `model-routing-plan.md` — **DECISION MEMO — UNRULED; authorizes nothing.** How
+  work should route across Fable 5 / Opus 5 / Sonnet 5 and across effort
+  levels, argued from documented model strengths and from cost rather than
+  from any capability ranking (§2 explains why no such ranking exists in
+  Anthropic's docs). Drafts the **Q-5** model-usage clause at its §7.2 but
+  **does not close Q-5** — that ruling is Michael's and fires instructions
+  trigger #3. Also records: **effort has never been set in this project**;
+  a queue defect (open items lose their question when packets are merged
+  and deleted); and that the largest body of unexercised work is the
+  registry, which no routing decision touches. **Do not adopt any part of
+  it, set an effort level, or change model configuration from it**
 - `cl2-authorization-brief.md` — **DECISION MEMO, not an authorization.** The
   CL-2 slice put to a decision: the six pieces, the three carve-outs, the
   honest risk (piece 3 repoints the foreign key under the built-and-walked
