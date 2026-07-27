@@ -408,7 +408,7 @@ All **UNVERIFIED**. Sign-off one at a time, per binding rule 2.
 
 **L1 is buildable before any verification** — it is arithmetic, not law, and the same is true of L0. Everything from L2 up is gated on registry sign-off **and** on the Servpro meeting.
 
-Sequencing against the rest of the project is Michael's call and is **not** decided here. Note the standing constraint: **D3/H8 (shared touch substrate) still gates T1** for both the heartbeat and the time tracker, and any thread-shaped work here inherits that dependency.
+Sequencing against the rest of the project is Michael's call and is **not** decided here. Status of the former constraint, corrected 2026-07-26: **D3/H8 is CLOSED** — the shared touch substrate is the **case-event core (CE), shape (c)**, a shared spine (case, timestamp, actor, channel, note) plus per-consumer facets, owned design-side, with heartbeat and time tracker as consumers rather than owners (session-log #9). The substrate slice is now **CE1** (the transcript T-series is unrelated and unchanged). **CE1 is UNBLOCKED but NOT AUTHORIZED — no build authorization exists for it or for anything built on it**, so any thread-shaped work here still waits, on authorization rather than on the ruling.
 
 ---
 

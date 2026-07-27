@@ -12,6 +12,84 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-26 (#13) — Record reconciliation: four stale/contradictory record items settled (design → Code)
+
+Short design session (Opus 5), design space. **Nothing was built; no rulings were
+made.** Session-start read of BUILD-STATE (`5ea39ef`) + log entries through #12
+surfaced four record problems; Michael directed that they be settled with Code
+before further design or ruling work, so the next project-instructions revision
+can quote a true record.
+
+- **R-1 — the "instructions are stale" ask is now only HALF true.** Michael pasted
+  the current claude.ai project instructions (v2, 2026-07-26) into the design
+  session: they carry his four-area wording verbatim — **"PI, civil litigation,
+  criminal defense, probate"** — so the practice-area drift BUILD-STATE flagged is
+  APPLIED and closed. The residual is narrower: v2's working-set section still
+  lists the three carried files' repo-duplication checks as open. BUILD-STATE's
+  ask is replaced with that narrower statement, not struck.
+- **R-2 — carried-file duplication checks verified against the repo. All three
+  files are ABSENT from the repo; all three carries into project knowledge were
+  and remain warranted, and none is a duplicate.** File by file:
+  **(1) Bexar monitoring-court Motion to Set / NOH forms doc — NO repo copy.**
+  The only hits are incidental and unrelated: `criminal-appointment-intake-and-docket-enhancements.md`
+  mentions a Notice of Hearing as one document type inside a scanned OAA packet,
+  and the TRCP skeleton uses the terms generically. `form-engine.md` exists but
+  carries no Bexar or monitoring-court content. If Michael wants a repo home the
+  natural path is alongside the form engine under `docs/specs/`; **not created —
+  placement is his call.**
+  **(2) NVIDIA transcription-stack memo (2026-07-24) — NO repo copy.** No file
+  matches its title or content; `transcript-sort-and-route-design.md` cites
+  "memo §2" as an *external* source and carries only its conclusions (engine
+  default Parakeet-TDT-0.6b-v3, Sortformer diarization ≤4 speakers).
+  **(3) LegiScan `getSessionList` TX fixture (2026-07-25 JSON) — NO repo copy.**
+  The poller calls the operation live at
+  `supabase/functions/legiscan-poller/index.ts`, and `Go_Live_Gates.md` records the
+  confirmed TX session IDs in prose, but the raw fixture JSON is nowhere in the
+  tree. Related record defect found while checking: the statute design doc's §9 O1
+  cites the fixture as `claude/Fixture_LegiScan_getSessionList_TX_2026-07-25.json`
+  — **that path does not exist; the repo has no `claude/` directory at all.** The
+  cite points at the archive project's knowledge, not the repo. Flagged, not
+  edited.
+  **Two-vs-three inconsistency RESOLVED:** there were always **three files** but
+  only **two open checks**. Entry #4 recorded Forms/Bexar as already "carries
+  clean" per the kickoff report, leaving NVIDIA and LegiScan open; the Code note
+  in that same entry closed those two. This session re-verified all three
+  independently and confirms the same answer for each.
+- **R-3 — BUILD-SESSION-NOTES.md contradiction resolved: THE 2026-07-25 CLEARING
+  STANDS, and the later carry is a copy-forward error.** Both halves of the
+  clearing check out in the log itself: the 2026-07-25 design entry records the
+  doc reviewed for the first time since 2026-07-21, triaged into five items closed
+  as already done or withdrawn and six carried as Part 2, and cleared with "do not
+  carry forward again"; the Code entry immediately above it applied Part 2 (Items
+  B/C/D/E built, Items A/D-mechanism/F verified as already existing) and closed
+  with "(`BUILD-SESSION-NOTES.md` cleared per the triage — not carried forward.)"
+  Nothing in that audit remains unreviewed. Every appearance of it on an
+  Awaiting/Returned line after 2026-07-25 — roughly a dozen entries, including
+  Code's own this session — is a copy-forward artifact, not a live item.
+  **Removed from BUILD-STATE's carried line permanently; it leaves the
+  Awaiting/Returned line for good.**
+- **R-4 — stale gate line corrected.** `prop-code-53-28-deadline-engine-design.md`
+  still said "D3/H8 still gates T1"; D3/H8 was CLOSED 2026-07-26 (entry #9, the
+  case-event core, shape (c) — shared spine plus per-consumer facets). Corrected in
+  place; the earlier packet's DO-NOT covering that file was explicitly lifted by
+  this packet for this one line only. **CE1 remains UNAUTHORIZED** — unblocked is
+  not authorized, and nothing was built on it.
+
+**Process note:** Claude recommended opening with the cheap-rulings block
+(PR-3, V17, O5, V16, V14a); Michael sequenced record reconciliation ahead of it.
+That is a sequencing choice, not a withdrawal — the rulings queue remains the
+project's stated bottleneck and is the next design session's opening item.
+
+**Also carried, deliberately NOT in this packet:** the fold of heartbeat captures
+e + f into `case-heartbeat-design.md` §8, and the missing session-1 heartbeat voice
+capture export.
+
+Staged for Code: this entry; the four R-item corrections above. Nothing entered the
+build queue.
+Awaiting/Returned from Code, unreviewed: the R-2 and R-3 findings (design side needs
+them before drafting project-instructions v3); Outlook push slice (2026-07-24).
+**BUILD-SESSION-NOTES.md is NOT carried — R-3 closed it.**
+
 ## 2026-07-26 (#12) — Practice areas corrected to FOUR (Michael, Code session)
 
 Michael's exact wording: **"My practice areas should read 'PI, civil
