@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: bef4570  |  Branch: master  |  Generated: 2026-07-26 (fifteenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
+Commit: 307052b  |  Branch: master  |  Generated: 2026-07-26 (fifteenth refresh; APP UNCHANGED ALL DAY — every commit today is docs-only)
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -33,24 +33,23 @@ REMOVED as a practice line the same day (doc-only; none ever existed in source).
 Every commit today is documentation.
 - **Est. Code ch. 352 + CPRC ch. 71 read in full** → NEW
   `statutes-pass-est352-cprc71-2026-07-26.md`. **Fee-basis enum DECOMPOSED**
-  into a record (O6). Probate row **reclassified**. §352.052 added. Probate
-  export is **three** lanes (V14). NEW primitive **P7** (calendar-months from
-  a DATE — must not share code with P1). §71.005 guardrail; L10 confirmed
+  (O6). Probate row **reclassified**. §352.052 added. Probate export is
+  **three** lanes (V14). NEW primitive **P7** (calendar-months from a DATE —
+  must not share code with P1). §71.005 guardrail; L10 confirmed
 - **S-1 / PR-1 / PR-2 CLOSED — probate is a mapped practice line**, spine =
   independent, uncontested administration, full build-out wanted
 - **D3/H8 CLOSED — case-event core (CE), shape (c):** shared spine +
-  per-consumer facets, four consumers, operational/evidentiary boundary
-- **N-1 rename:** transcript T1–T4 UNCHANGED; substrate **CE1**; heartbeat
+  per-consumer facets, four consumers, operational/evidentiary boundary.
+  **N-1 rename:** transcript T1–T4 UNCHANGED; substrate **CE1**; heartbeat
   **HB1–HB4**; time tracker **TT1–TT2**
-- **Record reconciliation (#13):** three carried-file checks re-verified;
-  BUILD-SESSION-NOTES carry closed as a copy-forward error
 - **V17 CLOSED / CL-2 ruled IN (#15):** probate is its own practice area with
   its own ladder — "companion" goes away. **The case owns the occurrence and
   liability; the claimant owns the damages.** Conflicts check is ADVISORY.
   NEW `claimant-dimension-and-case-links-design.md` (DRAFT). `claude/` cite
   class fixed across 8 docs
-- Earlier: Go_Live_Gates completed (redacted); statute doc forward-merged;
-  migration + selective sync; QUEUE-RUNNER adopted; majority-opinion rule
+- Also: record reconciliation (#13); Go_Live_Gates completed (redacted);
+  statute doc forward-merged; migration + selective sync; QUEUE-RUNNER
+  adopted; majority-opinion rule filed
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only to the DataAdapter interface — every feature works in both modes
@@ -106,16 +105,14 @@ Every commit today is documentation.
 - **NEW and largest open block: the §10 decision list in
   `claimant-dimension-and-case-links-design.md` — TWELVE decisions**
   (D-CL2-1..9, D-CL1-1..3) gating any claimant/case-link build. **D-CL2-4
-  (shared-expense allocation across claimants) has the most direct
-  net-to-client consequence**
+  (shared-expense allocation) has the most direct net-to-client consequence**
 - OPEN, Michael's: PR-3 (re-parent the probate case type — **direction now
   set by V17, execution still unauthorized**); V16; V14a; V15 survival half
-  (V10 citator pass RUNNABLE — FLP done, connector live); V4; V10–V13;
-  Entry 1(c-3); RE-1; INSTR-3 (paste v4); Q-5; Q-6; M-3; M-4; K-5–K-7;
-  registry 1–10. **V17 is CLOSED — ruled (a), clean separation**
+  (V10 citator pass RUNNABLE); V4; V10–V13; Entry 1(c-3); RE-1; INSTR-3
+  (paste v4); Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10. **V17 CLOSED**
 - Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the Estates
-  Code territory the probate line needs. **The Family Code block is MOOT**;
-  the probate chapters are the replacement O6 stress test
+  Code territory probate needs. **Family Code block is MOOT**; the probate
+  chapters are the replacement O6 stress test
 - `claude/` cite class FIXED (#15) — 8 docs. Two classes, not one: most hits
   pointed at files that DO live in `docs/specs/` and were repointed; only the
   LegiScan fixture and NVIDIA memo are project-knowledge-only and now say so
