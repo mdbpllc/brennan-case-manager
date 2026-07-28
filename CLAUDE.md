@@ -187,9 +187,11 @@ coding sessions. The spec documents committed under `docs/specs/` are
   file manually was never the mechanism). Hard rules: **150-line cap** (cut
   detail, never add sections) — the cap exists for READABILITY, not token
   cost, so the file gets read rather than skimmed. *Raised 120 → 150 by
-  Michael's ruling 2026-07-27 (BS-1). Three lines of headroom at the time of
-  ruling; if it is exceeded again, the open options are splitting out the
-  anti-resurrection ledger or trimming live state — both unruled.*
+  Michael's ruling 2026-07-27 (BS-1); the cap stands.* **The
+  anti-resurrection ledger lives at `docs/specs/anti-resurrection-ledger.md`
+  (split out 2026-07-27, BS-1). BUILD-STATE carries a pointer line to it;
+  every full rewrite of BUILD-STATE must preserve that pointer. The
+  150-line cap applies to BUILD-STATE only, not to the ledger.**
   Describe what EXISTS, not what's planned; every claim
   verifiable from the working tree at its stated commit; generate
   mechanically where possible (routes from the router, tables from

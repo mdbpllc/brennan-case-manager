@@ -121,10 +121,9 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
   (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
   data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
   the MRF path blocks nothing. **ENTRA-1 is now DONE** — Outlook push verified working
-- **CLOSED — do not re-raise or carry these:** project instructions are **v4**
-  (pasted; INSTR-3 closed, #19 — stop calling them v2); **BUILD-SESSION-NOTES.md**
-  (#13 R-3); the **`claude/` cite class** (#15); the **FLP promo clock** (#5);
-  **ENTRA-1** (done, #20). Each was previously copy-forwarded after closure
+- **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed,
+  withdrawn, and deliberately-not-built items live there. Check it before proposing or
+  rebuilding anything that appears absent from the repo
 - **Two Outlook design items, both in spec-feedback, neither built:** event notes are
   a single-line `<input>` and need multi-line + structure; and **deleting an event in
   Outlook is never observed** (no read path), so the next push 404s and

@@ -59,7 +59,7 @@ For each packet, oldest first:
    built.
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's.
-3. Rewrite docs/specs/BUILD-STATE.md IN FULL (120-line cap; describe what
+3. Rewrite docs/specs/BUILD-STATE.md IN FULL (150-line cap; describe what
    exists, verifiable at the stated commit).
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
    from an unchecked command.
