@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 8015e9c  |  Branch: master  |  Generated: 2026-07-27 (twenty-fourth refresh)
+Commit: 4aad410  |  Branch: master  |  Generated: 2026-07-27 (twenty-fifth refresh; cap now 150)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** The only code
 change since 2026-07-24 is the 2026-07-26 Outlook sign-in fix (4 files, log #20), which
@@ -102,9 +102,11 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
 - **CL-2 remains UNAUTHORIZED.** A **sealed dual-track run** is set for 2026-07-28:
   Fable rules the sequence and the authorization blind, reconsiders the ten closed
   D-CL2 rulings under unbounded latitude, then seals open and Michael reconciles.
-  Protocol at `docs/prompts/CL2-dual-track-protocol_2026-07-27.md`. **A sequence
-  ruling exists and is sealed outside the repo — do not state, infer, or search for
-  its direction; it enters the log at reconciliation.** One-off, not precedent
+  Protocol at `docs/prompts/CL2-dual-track-protocol_2026-07-27.md`, amended #24 —
+  **D-CL2-2a reads CLOSED to Fable; D-CL2-9's status is Fable's judgment.** **A
+  sequence ruling exists and is sealed outside the repo — do not state, infer, or
+  search for its direction; it enters the log at reconciliation.** One-off, not
+  precedent
 - **D-CL2-2a CLOSED (#23):** earliest-limitations derives from **unresolved clients
   only**; "resolved" means **disbursement** (D-CL2-4a). **The CL-2 walkthrough must
   include a two-client case with one client settled** — the rule is invisible with a
