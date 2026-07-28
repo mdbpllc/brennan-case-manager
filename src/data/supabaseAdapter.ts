@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { type SupabaseClient } from '@supabase/supabase-js';
 import { assertPartyPatchKeys, type DataAdapter } from './adapter';
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
 import type {
@@ -137,8 +137,10 @@ function fromRow<T>(row: Record<string, unknown>): T {
 export class SupabaseAdapter implements DataAdapter {
   private sb: SupabaseClient;
 
-  constructor(url: string, anonKey: string) {
-    this.sb = createClient(url, anonKey);
+  /** Takes the shared client rather than building its own — see supabaseClient.ts
+   *  for why there must be exactly one (session/auth-lock sharing). */
+  constructor(client: SupabaseClient) {
+    this.sb = client;
   }
 
   private static unwrap<T>(res: { data: T | null; error: { message: string } | null }): T {

@@ -1,12 +1,10 @@
 import type { DataAdapter } from './adapter';
 import { LocalAdapter } from './localAdapter';
 import { SupabaseAdapter } from './supabaseAdapter';
+import { supabase, usingSupabase } from './supabaseClient';
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-export const usingSupabase = Boolean(url && key);
+export { usingSupabase };
 
 export const db: DataAdapter = usingSupabase
-  ? new SupabaseAdapter(url!, key!)
+  ? new SupabaseAdapter(supabase!)
   : new LocalAdapter();

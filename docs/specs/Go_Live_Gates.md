@@ -56,6 +56,17 @@ confirmed on a real bill.
 AnalysisRun-level schedule provenance to be built. That was a design-side misread —
 provenance is already implemented per line. Do not rebuild it.
 
+## Gate 9 (appended 2026-07-28, auth slice §5A)
+
+**9. Production SMTP / email sender for authentication.** Sign-in is magic-link (AUTH-1, ruled
+2026-07-28), so the email sender is now load-bearing: no email, no access to the system.
+Supabase's built-in sender is **development-grade and rate-limited** (a small number of messages
+per hour, shared infrastructure, no delivery guarantee) and is explicitly not intended for
+production. A custom SMTP sender on the firm's own domain must be configured before live use.
+Trigger: before the app is relied on for real work — not merely before real data, since being
+locked out is an availability problem rather than a confidentiality one. No SMTP work was done in
+the 2026-07-28 auth session; this is a gate note only.
+
 ## Supabase account facts (for future sessions)
 
 - Account created 2026-07-25 via GitHub login (mdbpllc identity), free tier.

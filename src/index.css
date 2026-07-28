@@ -267,3 +267,31 @@ table.list td.num, table.list th.num { text-align: right; font-variant-numeric: 
 .badge.phi { background: #a03030; color: #fff; }
 .badge.discoverable { background: #f6e9e2; color: var(--warn); }
 mark { background: #f3e8b8; padding: 0 2px; border-radius: 2px; }
+
+/* ===== Auth (sign-in, magic link) ===== */
+.signin { max-width: 520px; margin: 48px auto; }
+.signin .card { padding: 24px 26px; }
+.signin form { display: flex; flex-direction: column; gap: 14px; }
+.signin p { line-height: 1.5; }
+
+.sidebar .whoami {
+  margin-top: 10px; display: flex; flex-direction: column; gap: 4px;
+}
+.sidebar .whoami span {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #c7d3e2;
+}
+.sidebar .whoami .linky { color: #9fb0c6; align-self: flex-start; }
+.sidebar .whoami .linky:hover { color: #fff; }
+
+/* Link-styled button — an action, not a navigation, so not an <a>. */
+button.linky {
+  background: none; border: 0; padding: 0; font: inherit; color: var(--navy-2);
+  text-decoration: underline; cursor: pointer;
+}
+
+.notice.bad { background: #f6e9e2; border-color: #e2c3b0; color: #8a3a12; }
+
+input[type='email'] {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px;
+  font-size: 14px; font-family: inherit; background: #fff; color: var(--text);
+}

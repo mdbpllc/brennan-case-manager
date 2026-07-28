@@ -15,9 +15,37 @@ import BillTrackingPage from './pages/BillTrackingPage';
 import InboxPage from './pages/InboxPage';
 import OfficeNotesPage from './pages/OfficeNotesPage';
 import TranscriptDetailPage from './pages/TranscriptDetailPage';
+import SignInPage from './pages/SignInPage';
+import AuthCallbackPage from './pages/AuthCallbackPage';
+import DiagnosticsPage from './pages/DiagnosticsPage';
 import { usingSupabase } from './data';
+import { useAuth } from './auth/useAuth';
 
 export default function App() {
+  const { session, loading, email, signOut } = useAuth();
+
+  // The magic-link landing page renders outside the shell and outside the gate —
+  // it IS the thing that produces a session, so it cannot require one.
+  if (window.location.pathname === '/auth/callback') {
+    return (
+      <main className="main">
+        <Routes>
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        </Routes>
+      </main>
+    );
+  }
+
+  // Demo mode has no sign-in: there is nothing to authenticate against and the
+  // zero-setup localStorage mode must keep working untouched.
+  if (usingSupabase && !session) {
+    return (
+      <main className="main">
+        {loading ? <div className="signin"><div className="card"><h3>Loading…</h3></div></div> : <SignInPage />}
+      </main>
+    );
+  }
+
   return (
     <div className="shell">
       <aside className="sidebar">
@@ -34,9 +62,18 @@ export default function App() {
           <NavLink to="/rules" className={({ isActive }) => (isActive ? 'active' : '')}>Legal rules</NavLink>
           <NavLink to="/statutes" className={({ isActive }) => (isActive ? 'active' : '')}>Statutes</NavLink>
           <NavLink to="/bills" className={({ isActive }) => (isActive ? 'active' : '')}>Bill tracking</NavLink>
+          {usingSupabase && (
+            <NavLink to="/diagnostics" className={({ isActive }) => (isActive ? 'active' : '')}>Diagnostics</NavLink>
+          )}
         </nav>
         <div className="mode">
           {usingSupabase ? 'Connected: central database' : 'Demo mode: data stays in this browser'}
+          {usingSupabase && session && (
+            <div className="whoami">
+              <span title={email ?? ''}>{email}</span>
+              <button className="linky" onClick={signOut}>Sign out</button>
+            </div>
+          )}
         </div>
       </aside>
       <main className="main">
@@ -64,6 +101,8 @@ export default function App() {
           <Route path="/parties/new" element={<PartyFormPage mode="new" />} />
           <Route path="/parties/:id" element={<PartyDetailPage />} />
           <Route path="/parties/:id/edit" element={<PartyFormPage mode="edit" />} />
+          <Route path="/diagnostics" element={<DiagnosticsPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
         </Routes>
       </main>
     </div>
