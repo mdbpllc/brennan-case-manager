@@ -12,6 +12,209 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-28 (RUNNER) — QUEUE-RUNNER batch: two packets processed (Code session, Opus 5)
+
+**Packets, in Michael's confirmed order:** (1) `push-to-code_BS1-ledger-split_2026-07-27.zip`
+→ entry #25; (2) `push-to-code_cl2-dualtrack-reconciliation-rev2_2026-07-28.zip` → entries #26
+and #27. Rev-1 of the reconciliation packet was never in `inbox/`; nothing to discard. Repo was
+clean at `ba34966` — the exact sync point both packets assumed, so no interim work existed and
+nothing was skipped as already built. Numbering verified free before append (#25/#26/#27).
+
+**Superseded under later-packet-wins, each noted rather than silently dropped:**
+- BS1 §5 "the CL-2 slice remains **UNAUTHORIZED**" — superseded by #27. CL-2 is AUTHORIZED,
+  execution queued behind the auth slice.
+- BS1 §6 seal-silence DO-NOTs ("do not state the sequence direction anywhere") — superseded.
+  The seals expired at reconciliation; the direction is on the record in #27.
+- BS1 §7 rows CL2-A, CL2-B, CL2-D — resolved by #27 and dropped from the carried list.
+- **NOT superseded:** BS1's §4 doc work orders. The split executed verbatim.
+
+**NOTHING WAS BUILT.** §5A (auth slice) is authorized but gated on **AUTH-1 — the sign-in
+method — which Michael has not confirmed**; the packet's own DO-NOT forbids starting without
+it. §5B (CL-2) is queued behind §5A. Zero source files changed this session; 186-test suite
+untouched and not re-run (no code delta to re-run it against).
+
+**BS-1 premise failure, reported because the ruling rests on it.** BUILD-STATE contained **no
+anti-resurrection ledger section** — only a single five-line bullet (`CLOSED — do not re-raise
+or carry these`). That bullet was moved verbatim and nothing else; choosing which other lines
+qualify would be the "let Code trim live state" option BS-1 explicitly rejected. **Result:
+BUILD-STATE went 149 → 148 before the rewrite — one line of headroom, not "real headroom."**
+The split's durable value stands (a capped-free home for future closed items, named from
+BUILD-STATE by a load-bearing pointer), but it did not solve the length problem it was ruled
+to solve. Candidates a future ruling could designate are listed in the ledger file itself, not
+moved. **The length question is therefore still live and is Michael's.**
+
+**Authorized correction (Michael, 2026-07-28):** `docs/prompts/QUEUE-RUNNER.md` step 4.3 said
+"120-line cap," stale against the ruled 150 (**BS-1, entry #24**). Fixed in both the tracked
+copy and the untracked `.claude/commands/queue-runner.md`.
+
+**Disclosed deviation, one, in CLAUDE.md.** Work order §4.2 named only the
+`statute_of_limitations` clause. Left alone, the same sentence's "no `case_clients`, no
+`posture` column" would have read as a live guard against a now-authorized slice — the exact
+contradiction-trap Fable flagged in #26, one clause over. The lift was written to cover all
+three guards, scoped explicitly to that slice and no other. Same reasoning applied in the
+design doc, where the §10 D-CL2-2 row carried a variant of the guard wording the order named.
+
+**Open items carried, full question text preserved (QR-1 lesson — the packets are deleted, so
+the question must live here):**
+
+| ID | Question, in full | Status |
+|---|---|---|
+| AUTH-1 | Which sign-in method for the single-user auth slice? Magic link is the standing PROPOSED default (no stored passwords, Supabase-native, no reset machinery ahead of a security review) | **OPEN — gates §5A; the build cannot start without it** |
+| BS-1a | BUILD-STATE is at cap again with the split delivering one line. Designate more content for the ledger, split live state differently, or accept the cap pressure? | **NEW — OPEN, raised by this run** |
+| D-CL2-3 | Does the time tracker's "one rate per case, uniform" rule survive per-client fee arrangements, or become one rate per client? | OPEN — not closed by CL-2's `fee_arrangement` field |
+| CL2-CHECK-1 | Advisory client-role ↔ client-record consistency check (flag/review-log, never auto-fix) — adopt later or drop? | DEFERRED 2026-07-28 |
+| QR-1 | QUEUE-RUNNER merges packet open items to ID + label then deletes the packet, losing the question (this destroyed Q-5's original wording) | PROPOSED, unruled — worked around here by carrying full text |
+| RR-1 | Re-read documents authored earlier in a session against rulings made later in it, before the packet ships | PROPOSED, unruled |
+| Q-5 meters | The 2026-07-28 design session ran without stated meter readings (placeholder came through twice); supply for the record if wanted | NOTE |
+| M-3 | Medchron fictional-content check | OPEN |
+| M-4 | LegiScan key rotation after the T3 build | OPEN — firm |
+| K-5 | Uvalde docket worksheet instructions — home undecided | OPEN |
+
+Staged for Code: none — the queue is empty. Next Code action is gated on AUTH-1.
+Awaiting/Returned from Code, unreviewed: this run's four log entries, the ledger split, and the
+guard lifts. (Do not copy forward items cleared in #13, #22, #23, or #24 — verify against the
+entry that cleared them.)
+
+## 2026-07-28 (#27) — RECONCILIATION: sequence unsealed AUTH FIRST; CL-2 AUTHORIZED, queued behind auth (Michael ruling, design session, Fable 5)
+
+**The seals opened after Track F (#26) was recorded; the protocol expired here.**
+
+**SEQUENCE RULED AND NOW ON THE RECORD: AUTH FIRST, CL-2 SECOND** (Michael, sealed
+2026-07-27, confirmed at reconciliation 2026-07-28 after a full read of Track F). The
+divergence record, stated plainly: Fable (blind) and Opus (sealed, low-to-moderate
+confidence, advocate-authored) both held CL-2-first; the attorney ruled auth-first and the
+ruling stands. Fable conceded on the merits without re-litigating: the sealed premise that
+both items run BACK-TO-BACK collapses the time-asymmetry argument (near-zero accretion
+between builds); an ALTER against an empty days-old database is nearly as cheap as a text
+edit; the accepted RLS-revisit is rework, not loss; and the dead-work principle (#21, the
+Outlook precedent — unexercised code cost nothing until first use found two blocking
+defects) reads the long runway as a reason to run the feedback loop EARLY. No specific,
+checkable defect in auth-first was found. **Two blind convergences for the record:** Fable's
+"new ground" (the never-executed schema) appears independently in Opus's sealed §1.1; and
+D-CL2-2a — the item Opus's memo most wanted ruled, with "unresolved only" as its forced
+default — had already been ruled by Michael exactly that way before either seal opened.
+
+**CL-2 AUTHORIZED (Michael, 2026-07-28): "2. yes."** Execution QUEUED BEHIND the auth
+slice. Scope: the brief's six pieces exactly; the three carve-outs as DO-NOTs; the §5
+checklist PLUS the two-client-one-settled scenario (D-CL2-2a is invisible without it) as
+the walkthrough; Michael re-walks the medical tab afterward on the v0.1/Phase 1a model.
+
+**Rulings closing the reconciliation, all Michael, 2026-07-28:**
+- **D-CL2-8 ADOPTED as Michael's own ruling** — parallel, not promotion. The "Claude's
+  call, not Michael's" asterisk retires.
+- **CL2-CHECK-1 (advisory client-role ↔ client-record consistency check, Fable's proposed
+  addition): EXPLICITLY DEFERRED.** Not in the CL-2 slice. Do not build; carried open.
+- **The limitations column DROPS** (not dormant) when CL-2 executes. Reason on the record:
+  a retained-but-unwritten column still holds stale dates and answers queries plausibly and
+  wrongly — the same silent-mirror failure D-CL2-2 retired, relocated to the schema; the
+  schema is documentation; drop cost is at its floor (empty DB, no real data, backup
+  pattern) and only rises.
+- **The two §4 defaults LEFT AS DEFAULTS** (backfill never touches `case_parties`; the
+  criminal case's nearly-empty client record is created). Code follows them attributed as
+  stated defaults, not attorney rulings.
+- **AUTH SLICE: authorized via the reconciled sequence ruling** (the sealed ruling names
+  first schema execution, sign-in, and the first real RLS test as what auth-first entails;
+  Michael confirmed after full read). **AUTH-1 — the METHOD — remains PROPOSED (magic
+  link): flagged, not assumed. Code does not start the auth slice until Michael confirms
+  the method.**
+- **D-CL2-3 remains OPEN** — the `fee_arrangement` field creates the per-client home but
+  does not decide the time-tracker's one-rate question.
+
+**Meters:** readings were not supplied this session (placeholder came through twice);
+proceeded per the protocol's post-reset usage note. For the record, not a blocker.
+
+Staged for Code: this entry; #26; the §4 doc work orders; the two §5 authorizations.
+Awaiting/Returned from Code, unreviewed: none new. (Do not copy forward items cleared in
+#13, #22, or #23 — verify against the entry that cleared them.)
+
+## 2026-07-28 (#26) — TRACK F recorded: sequence, CL-2 authorization, ten rulings reconsidered (design session, Fable 5, blind per protocol)
+
+**Dual-track protocol Step 2 executed blind.** Neither sealed file was opened, searched for,
+or reconstructed. Disclosure for the reconciliation: the record Fable was directed to read
+contains Code's independent sequencing view (#22, CL-2 first, time-asymmetry grounds); Fable
+flagged the exposure in-session and formed its additional grounds from the record, not from
+Code's conclusion. All items below are RECOMMENDATIONS — nothing is ruled, nothing is
+authorized, nothing enters the build queue until Michael's reconciled ruling (Step 4).
+
+**SEQUENCE — Fable recommends CL-2 FIRST.** Three grounds. (1) Time asymmetry: CL-2's cost
+is a function of accreted data and dependent code and is at its floor now (no live data
+ever, established demo-store migration pattern, 186 tests green at last report); auth's
+cost is flat. (2) NEW GROUND — the never-executed schema: per SUPA-1, `db/schema.sql` has
+never run, so CL-2-first makes the Supabase half of the migration a text edit and the
+eventual first execution already client-aware; auth-first converts CL-2 into ALTER TABLE
+surgery against a live instance and exercises the first schema execution twice. (3) The
+runway (3–6 months, no near-term real-data date), weighed explicitly: moderately toward
+CL-2-first — it removes auth's only urgent payoff and lengthens the window in which the
+parked pipeline (CL-2 → CE1 → heartbeat, time tracker) can be built before launch. Not
+decisive alone. Auth-first's best case (exercise the three stacked unknowns early) was
+weighed and found outweighed on Fable's premises. *(Superseded by #27: the sealed
+back-to-back premise, unavailable to the blind pass, thinned grounds 1 and 2; Fable
+conceded at reconciliation.)*
+
+**CL-2 AUTHORIZATION — Fable recommends YES**, scoped to the brief's six pieces, three
+carve-outs as DO-NOTs, §5 checklist + the D-CL2-2a two-client-one-settled scenario as the
+walkthrough, Michael re-walking the medical tab afterward. Severable from the sequence.
+Read §3 hardest per the bias disclosure; the named FK-repoint risk is real, mitigated, and
+at its floor. **Trap found (packet-drafting, not design):** the design doc's D-CL2-2 row
+and CLAUDE.md's summary still carry "NO migration is authorized — do not drop the column";
+an authorization packet must EXPLICITLY lift those guard lines or Code's reconcile will
+correctly stop on the contradiction. Fable recommends DROP over dormant. Scope note:
+piece 1's `fee_arrangement` field does NOT close D-CL2-3.
+
+**TEN RULINGS reconsidered under unbounded latitude — no changes recommended; one
+addition.** D-CL2-1, -2, -4, -4a, PROFILE, -5, -6, -7 affirmed (schema note on D-CL2-1:
+keep `posture`'s constraint loose enough for a future mixed-posture value). D-CL2-2a:
+closed; no reason found to recommend reopening. **D-CL2-8: re-argued from scratch and
+AFFIRMED — parallel, not promotion**; Fable recommends Michael adopt it as his own ruling.
+**The one addition: an advisory consistency check** (every client-role party has a
+`case_clients` row and vice versa; flag/review-log, never auto-fix). **D-CL2-9: Fable chose
+to reconsider it and AFFIRMS option (a)** — CE1 must be client-aware, so building it before
+CL-2 is walked hardens a shared substrate on a foreign key about to move.
+
+**TWO DEFAULTS (CL2-D) — adopt both.** Backfill never touches `case_parties`; the criminal
+nearly-empty client record is created.
+
+Staged for Code: this entry (via the reconciliation packet).
+Awaiting/Returned from Code, unreviewed: none new.
+
+## 2026-07-27 (#25) — BS-1 RULED: anti-resurrection ledger split out of BUILD-STATE (design session, Opus 5)
+
+**BS-1 RULED (Michael, 2026-07-27): split the anti-resurrection ledger into its own file, with a
+pointer line in BUILD-STATE naming it.** This supersedes the same-day 120 → 150 cap raise (entry
+#24) as the durable fix; the raised cap stands and is not reverted. Reason the cap alone was
+insufficient: it bought hours, not sessions — BUILD-STATE reached 149 of 150 in the very next pass,
+and Tuesday's session adds the dual-track outcome and the authorization result on top.
+
+**The known risk, and the mitigation that was ruled with it.** Splitting a section into its own
+file risks the BUILD-SESSION-NOTES failure — a doc that stops being read and quietly goes stale,
+which in that case produced roughly a dozen entries of copy-forward before anyone checked (#13,
+R-3). The mitigation is the pointer line: BUILD-STATE names `docs/specs/anti-resurrection-ledger.md`
+explicitly, so a session reading BUILD-STATE cannot be unaware the ledger exists. The ledger is
+read when a session is about to rebuild or re-raise something; it is not required reading at every
+session start.
+
+**Rejected alternative, recorded because the rejection encodes a rule:** "let Code trim live state"
+was available and not taken. It would have meant a build session exercising unruled judgment about
+what matters, every session, indefinitely. Note that a partial exercise of exactly this option
+already occurred and was disclosed (#24) — the compression from 151 to 147. Not a criticism of that
+pass; a reason not to make it standing practice.
+
+**Third documented instance of a structural fix arriving after the cheap fix failed.** The cap
+raise was chosen the same evening on explicit "cheapest option" grounds, with the tightness flagged
+at the time of ruling. It is recorded here that the flag was correct and still understated: the
+prediction was "a few sessions," the reality was one pass.
+
+Staged for Code: this entry; the ledger split; the BUILD-STATE pointer line; the CLAUDE.md
+reference.
+Awaiting/Returned from Code, unreviewed: none new. (Do not copy forward items cleared in #13, #22,
+#23, or #24 — verify against the entry that cleared them.)
+
+*(Code note, 2026-07-28: executed in the queue-runner batch. The §1 reconcile condition FAILED —
+BUILD-STATE had no ledger section, only a five-line `CLOSED — do not re-raise` bullet. No duplicate
+risk existed and Michael directed the split to execute, so that bullet was moved verbatim and
+nothing else. Net effect on length: 149 → 148. See the RUNNER entry above; the length question
+survives this ruling.)*
+
 ## 2026-07-27 (#24) — Protocol amendment: D-CL2-2a conflict corrected; CL2-C and BS-1 ruled (design session, Opus 5)
 
 **CORRECTION (six-field form).** **What was asserted:** the CL-2 dual-track protocol filed at
