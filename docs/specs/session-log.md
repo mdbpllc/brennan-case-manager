@@ -12,6 +12,120 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-27 (#23) — CL-2 dual-track sealed; correction conventions codified; Q-5 closed (design session, Opus 5)
+
+**SUPA-1 CLOSED.** Michael opened the live Supabase dashboard: project "Brennan Management
+System", org mdbpllc, FREE tier, schema public — **no tables**. `db/schema.sql` has NEVER
+executed against the live project. `Go_Live_Gates.md` gate 3's future tense was accurate, not
+stale. Consequence: the auth branch begins with three unexercised things stacked — first schema
+execution, first sign-in, first real test of the 31 RLS policies against an authenticated user.
+
+**SEQUENCE RULING: MADE and SEALED (Michael, 2026-07-27).** Direction withheld from this entry
+BY DESIGN. Held outside the repo in `SEALED-michael-ruling-sequence_2026-07-27.md`, DO-NOT-OPEN
+until Tuesday's Fable session has independently ruled the sequence and recorded its reasoning.
+Opus 5's position memo is likewise sealed and outside the repo. Reason for the omission: the
+protocol sends Fable to the 2026-07-26/27 log entries, so stating the direction here would
+anchor the blind pass and make agreement uninformative. **The direction enters the log in the
+reconciliation entry.** If reconciliation slips more than a few days, open the seals early
+rather than leaving the record incomplete.
+
+**CL-2 dual-track protocol — ONE-OFF, not a convention** (Michael, 2026-07-27). Staged at
+`docs/prompts/CL2-dual-track-protocol_2026-07-27.md`. Fable rules the sequence and the CL-2
+authorization blind; reconsiders the ten closed D-CL2 rulings under UNBOUNDED latitude
+(recommends; Michael rules); then both seals open and Michael reconciles. Expires at
+reconciliation; explicitly not precedent, so trigger #3 does NOT fire from it. Michael's launch
+runway — **three to six months to full launch, no near-term date for real client data** — is
+disclosed to Fable in the protocol §1a, deliberately UN-INTERPRETED (an earlier draft analyzed
+which way it cuts; that analysis was stripped because it pointed at one of the two answers Fable
+is being asked to reach independently).
+
+**D-CL2-2a RULED (Michael): earliest-limitations derives from UNRESOLVED clients only.** Reason:
+a settled client's expired clock must not keep a live matter showing false urgency. Tied to
+D-CL2-4a — a client counts as resolved at **disbursement**, not at agreed number — which closes
+the mirror risk (dropping a clock while the claim is arguably still live, e.g. a minor's
+settlement pending court approval). Invisible until a case has a second client, so the CL-2
+walkthrough must include a two-client case with one client settled.
+
+**Q-5 CLOSED BY REPLACEMENT (Michael).** Q-5's original wording was unrecoverable — the queue
+convention deleted the packet that carried it, leaving only the label. Rather than rule an item
+nobody could state, the clause was replaced. New model-usage clause (v5): allocation, not
+conservation — the weekly Fable allowance does not roll over, Fable and Opus draw from one pool,
+unspent allowance is lost at reset, so moving work off Fable pays only if the freed allowance is
+spent the same week; plus **no model choice relaxes any verification convention.**
+
+**CORRECTION-ENTRY CONVENTIONS CODIFIED (Michael, two rulings).** (1) Every correction entry names
+**the actor** whose error it was — Opus 5, Fable 5, Sonnet, Michael, or "unknown" where
+attribution predates 2026-07-25, never inferred from session type. Reason: "error-logging binds
+Fable too" has no teeth if the record cannot say which model erred. (2) The six-field format is
+codified: what was asserted / what is true instead + evidence / which entry it corrects / the
+actor / the failure class where one recurs / what changed as a result. Fallback, not a loophole:
+a bare correction beats no correction. Not retroactive.
+
+**Project instructions v5 pasted by Michael 2026-07-27** — trigger #3 fired by the three rulings
+above and closed the same day.
+
+**STANDING THREAD — opportunistic model comparison.** When the same task naturally goes to both
+Fable and Opus, log the instance, the blind conditions, and Michael's call on which was more
+useful and why. **Not a ranking; a track record**, under registry discipline — a preference count
+with logged instances is evidence; "X is better at design" stays unverified. Explicitly NOT a
+convention: capture what falls in your lap, never manufacture comparisons. Reason it is worth
+only this much: the cost of a deliberate program (doubled passes, months of samples, moving
+targets, no answer key for design quality) exceeds its value when the routing it would inform is
+already settled on cost grounds. **Instance one: the CL-2 sealed dual-track run.**
+
+**USAGE-CHECK THREAD.** Limits reset weekly, **Tuesday 4 PM Central** — wall-clock is
+authoritative; the UTC equivalent shifts with daylight saving (= 21:00 UTC while Central is on
+DST). The running model cannot read the meters; Michael checks (`/usage` in Code, Settings →
+Usage in the app) and states both readings before substantive sessions. A reading goes stale once
+significant work has run against it.
+
+**CORRECTIONS (this session, six-field form — first entries under the new convention):**
+
+1. **Asserted:** Fable would return Tuesday with roughly a third of the pool remaining, so a broad
+   agenda and Fable-side packet assembly were too expensive. **True instead:** both meters reset at
+   the SAME reset, and the Tuesday session IS that reset — Fable returns to a FULL allowance.
+   Evidence: usage screenshot showing "All models 68% used, resets 21hr30min" and "Fable only 100%
+   used, resets 21hr30min". **Corrects:** assertions made repeatedly earlier in this same session
+   (no prior log entry). **Actor:** Opus 5. **Failure class:** scarcity premise carried forward
+   without checking — same shape as R-3 copy-forward, in that a stale figure kept traveling.
+   **Changed:** the pool-cost arguments against a broad agenda are withdrawn; the real Tuesday
+   constraint is timing (no Fable session before the reset), not budget.
+2. **Asserted:** conserving Fable is the behavior that let a full allowance expire unused this week.
+   **True instead:** Fable was at 100% *used* — exhausted, not stranded. The unspent third was on
+   the shared "All models" meter. **Evidence:** same screenshot. **Corrects:** an assertion made
+   later in this session. **Actor:** Opus 5. **Failure class:** conflating the two meters; the
+   labels were confirmed earlier in this same session, so this was a regression against a known
+   fact. **Changed:** Option C's justification now rests on the documented no-rollover fact alone,
+   not on a lived instance; the substance of the clause is unaffected.
+3. **Asserted (by omission):** the verify-before-criticizing convention framed as "when I have been
+   wrong." **True instead:** it binds every model equally. **Evidence:** Michael's correction in
+   session; the convention's own wording says Claude, not Opus. **Corrects:** phrasing used earlier
+   this session. **Actor:** Opus 5. **Failure class:** first instance recorded. **Changed:** v5 now
+   states "this binds every model equally" explicitly; the protocol carries the same line for Fable.
+
+**Process note — a leak Claude created and caught.** An earlier draft of the protocol §1a analyzed
+which way the launch runway cuts (weakening CL-2-first, strengthening auth-first) — written before
+Michael ruled. Once the ruling was sealed, that analysis would have handed a blind Fable session
+the sealed conclusion. Stripped before delivery. Recorded because the failure mode is general:
+analysis written in good faith at T1 becomes a leak at T2 when the situation changes underneath it.
+
+Staged for Code: this entry; `CL2-dual-track-protocol_2026-07-27.md`; the D-CL2-2a fold-in.
+Awaiting/Returned from Code, unreviewed: none new. (Do not copy forward items cleared in #13 or
+#22 — verify against the entry that cleared them before carrying anything.)
+
+*(Code notes on filing. **CONFLICT INSIDE THIS PACKET, flagged not fixed — needs Michael before
+Tuesday.** §4.2 closes D-CL2-2a with Michael's ruling (applied), but the protocol filed by §4.1
+tells Fable at its Step 2.2 that **"D-CL2-2a is OPEN and sits INSIDE the slice — Fable rules it
+or defaults it explicitly."** As filed, Tuesday's session is instructed to rule an item Michael
+ruled two days earlier. §4.1 forbids editing the protocol, so it went in verbatim; amending it is
+Michael's call. **Seal integrity verified before writing:** neither sealed filename exists
+anywhere in the repo or working tree, and the staged protocol was grep-checked for a stated
+direction — its only sequence line poses the question ("CL-2 first vs. auth first… Fable weighs
+both directions on the record") and does not answer it. Nothing about the direction appears in
+this entry, BUILD-STATE, any commit message, or the handback. No duplicate protocol doc existed.
+**BS-1 acknowledged:** BUILD-STATE was already over cap; this refresh did not grow it — see the
+handback.)*
+
 ## 2026-07-27 (#22) — Model routing plan filed UNRULED; queue defect surfaced; two corrections (design session, Opus 5)
 
 Design-side. **Nothing built, nothing ruled, nothing authorized.** One decision memo

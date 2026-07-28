@@ -92,18 +92,28 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
   and the packet is then deleted — Q-5's substance is unrecoverable because of it);
   and **no routing decision touches the registry**, the largest unexercised body,
   since only Michael can verify
-- **SUPA-1 (new, ten seconds, Michael only):** whether `db/schema.sql` was ever
-  executed against the live project **cannot be determined from this machine** — no
-  `config.toml`, no `migrations/`, no CLI, no linked state, and the dashboard
-  SQL-editor path leaves no local trace. The FILE is complete (32 tables, RLS on
-  all 32, 31 policies; `file_counters` deliberately policy-less). Gate 3 reads
-  future-tense, which leans never-run. **Dashboard → Table Editor settles it, and
-  it materially changes how long the auth path is**
-- **THE RESUME POINT: the CL-2 build authorization**, reserved for a Fable session.
-  Read `cl2-authorization-brief.md` (DECISION MEMO, authorizes nothing, carries a
-  bias disclosure) with the client-model design doc. **Four of the most-designed
-  modules stand behind that one decision** — the medical rework, CE1, the heartbeat,
-  the time tracker
+- **SUPA-1 CLOSED (#23): the live Supabase project is EMPTY — `db/schema.sql` has
+  NEVER been executed there.** Michael checked the dashboard: project "Brennan
+  Management System", free tier, schema public, **no tables**. Gate 3's future tense
+  was accurate. **Consequence: the auth branch starts with three unexercised things
+  stacked** — first schema execution, first sign-in, first real test of the 31 RLS
+  policies against an authenticated user. *(Superseded detail: the FILE is complete —
+  32 tables, RLS on all 32, 31 policies, `file_counters` deliberately policy-less.)*
+- **CL-2 remains UNAUTHORIZED.** A **sealed dual-track run** is set for 2026-07-28:
+  Fable rules the sequence and the authorization blind, reconsiders the ten closed
+  D-CL2 rulings under unbounded latitude, then seals open and Michael reconciles.
+  Protocol at `docs/prompts/CL2-dual-track-protocol_2026-07-27.md`. **A sequence
+  ruling exists and is sealed outside the repo — do not state, infer, or search for
+  its direction; it enters the log at reconciliation.** One-off, not precedent
+- **D-CL2-2a CLOSED (#23):** earliest-limitations derives from **unresolved clients
+  only**; "resolved" means **disbursement** (D-CL2-4a). **The CL-2 walkthrough must
+  include a two-client case with one client settled** — the rule is invisible with a
+  single client
+- **THE RESUME POINT: Tuesday's sealed dual-track run** (above). Its inputs:
+  `cl2-authorization-brief.md` (DECISION MEMO, authorizes nothing, carries a bias
+  disclosure), the client-model design doc, and the protocol. **Four of the
+  most-designed modules stand behind that one decision** — the medical rework, CE1,
+  the heartbeat, the time tracker
 - **Blocker chain, corrected (#18): auth decision → auth slice → THEN edge
   functions.** Not four parallel errands. Magic link is the PROPOSED default
   (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
@@ -113,15 +123,11 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
   (pasted; INSTR-3 closed, #19 — stop calling them v2); **BUILD-SESSION-NOTES.md**
   (#13 R-3); the **`claude/` cite class** (#15); the **FLP promo clock** (#5);
   **ENTRA-1** (done, #20). Each was previously copy-forwarded after closure
-- **NEW design request:** calendar event notes are a single-line `<input>` and need
-  multi-line + structure (paragraphs, indent, bullets). Minimal fix is a textarea;
-  real bullets mean markdown-or-rich-text plus deciding whether the Graph push moves
-  to `contentType: html`. Likely affects other notes fields too — audit as one pass
-- **Outlook Phase 2 evidence, logged #20:** **deleting an event in Outlook is never
-  observed** (no read path at all), and the next push of that event 404s and
-  **deliberately re-creates it** — stale belief, then silent resurrection days later.
-  Coherent for a one-way design; do NOT fix in isolation. Phase 2's pickup criteria
-  asked for daily-use evidence — this is it. Sequencing stays Michael's
+- **Two Outlook design items, both in spec-feedback, neither built:** event notes are
+  a single-line `<input>` and need multi-line + structure; and **deleting an event in
+  Outlook is never observed** (no read path), so the next push 404s and
+  **deliberately re-creates it** — stale belief, then silent resurrection. The latter
+  is coherent for a one-way design; do NOT fix in isolation — it is Phase 2 evidence
 - Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
   arrangement per client; was dropped from the design side's running list and
   restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is
