@@ -1,5 +1,8 @@
 # CL-2 DUAL-TRACK DECISION PROTOCOL (ONE-OFF)
 
+**STATUS: EXPIRED at reconciliation 2026-07-28 (log #27). Spent history — not precedent,
+binds nothing.** Body untouched below.
+
 ## SCOPE AND EXPIRY — READ FIRST
 **This document binds ONE decision: the CL-2 build authorization and its sequencing.**
 It is NOT a standing convention. It does NOT bind future sessions. It does NOT establish

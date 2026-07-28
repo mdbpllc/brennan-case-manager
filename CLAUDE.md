@@ -148,7 +148,10 @@ coding sessions. The spec documents committed under `docs/specs/` are
   derived earliest, per-expense tagging with shared expenses split **evenly**,
   and shares locking at disbursement. **None of that authorizes a build** —
   no `case_clients`, no `posture` column, and `cases.statute_of_limitations`
-  stays put until a migration is authorized. Its §10 still carries the open
+  stays put until a migration is authorized *(authorized 2026-07-28, log #27
+  — drops when the CL-2 slice executes, which is QUEUED BEHIND the auth
+  slice; the same authorization covers `case_clients` and `posture`, so
+  the three guards above are lifted for that slice and no other)*. Its §10 still carries the open
   decisions plus CIV-1 (civil-litigation damages unspecified), PROB-1
   (probate profile unwritten), and PA-1. Sequencing note: **CE1 must be
   client-aware** if ever authorized, or the retrofit hits the shared
