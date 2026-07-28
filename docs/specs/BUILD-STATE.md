@@ -1,10 +1,15 @@
 # BUILD STATE — brennan-case-manager
-Commit: 4aad410  |  Branch: master  |  Generated: 2026-07-27 (twenty-fifth refresh; cap now 150)
+Commit: b73dc74  |  Branch: master  |  Generated: 2026-07-28 (twenty-sixth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** The only code
 change since 2026-07-24 is the 2026-07-26 Outlook sign-in fix (4 files, log #20), which
-gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
+gave the Calendar tab a **working "Connect Outlook."** **The 2026-07-28 queue batch
+changed NO source files** — docs only. Day-by-day history:
 `archive-project-history-by-day.md`. This file is live state only.
+
+- **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed,
+  withdrawn, and deliberately-not-built items live there. Check it before proposing or
+  rebuilding anything that appears absent from the repo. **Never drop this pointer line**
 
 ## Screens live (what Michael can click)
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
@@ -33,11 +38,11 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
 - Default mode: demo localStorage, fictional seeds; store version v9; reseeds migrate imported schedules + confirmed runs, back up the old store
 - Schema tables live (db/schema.sql, 32): file_counters, cases, parties, case_parties, medical_bills, bill_line_items, code_mappings, eob_records, provider_billing_profiles, analysis_runs, analysis_result_lines, review_log, legal_rules, fee_schedules, fee_schedule_rates, generated_documents, calendar_events, transcripts, transcript_participants, staging_items, routing_decisions, glossary_terms, tag_templates, charges, oaa_intakes, statute_chapters, statute_sections, registry_verification_snapshots, watch_flags, watch_targets, tracked_bills, bill_statute_refs
 - **No case-event/CE table, no time_entries, no claims table**
-- **No client dimension, no case-to-case links** — no `case_clients`, no
-  `case_links`, no self-reference on `cases`, no `client_id`/`posture`. Damages key
-  on `case_id`. **`cases.statute_of_limitations` EXISTS and stays** — its retirement
-  is ruled direction with NO migration authorized
-- Health: **186 vitest tests green, build + oxlint clean, re-run 2026-07-26 after the Outlook code change**
+- **No client dimension yet** — no `case_clients`, no `case_links`, no
+  `client_id`/`posture`. Damages key on `case_id`. `cases.statute_of_limitations`
+  EXISTS. **All three are now AUTHORIZED to change by the CL-2 slice (#27) — but
+  the slice has NOT run.** Nothing here has moved
+- Health: **186 vitest tests green, build + oxlint clean, re-run 2026-07-26 after the Outlook code change** (not re-run 07-28 — no code delta)
 
 ## Known stubs & fakes
 - **NO REAL DATA HAS EVER ENTERED THE APP.** Supabase mode is unusable — anon key +
@@ -70,77 +75,70 @@ gave the Calendar tab a **working "Connect Outlook."** Day-by-day history:
 - Time tracker: design draft only — NOTHING in the app. Servpro deadline engine:
   DESIGN ONLY, gated on the meeting. Case heartbeat: design docs only — NOTHING in
   the app; captures e+f NOT folded; register H1–H83
-- **CE1 (case-event core): unblocked by D3/H8 but NOT AUTHORIZED, and now behind TWO
-  gates** — CL-2 must be built and walked first (D-CL2-9). If ever authorized it must
-  be **CLIENT-AWARE from the start**, or the retrofit hits the substrate under both
-  the heartbeat and the time tracker
+- **CE1 (case-event core): still NOT AUTHORIZED and behind CL-2** (D-CL2-9, reaffirmed
+  by Fable #26). It must be **CLIENT-AWARE from the start**, or the retrofit hits the
+  substrate under both the heartbeat and the time tracker
 - CourtListener: design doc only — app integration UNAUTHORIZED (Q-6 + its §6).
   Registry: ALL entries UNVERIFIED; entries 1–10 sign-off is Michael's
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md,
   BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority
-  on what is built. Sync the NEW project after each push
-- **Fable returns 2026-07-28 21:00 UTC (Tuesday AFTERNOON Central, not morning).**
-  `weekly_scoped` measured 100% — exhausted; `weekly_all` 67%, so ~33% of the pool
-  remains and **expires at the same reset**, usable on Opus/Sonnet until then
-- **NEW, UNRULED: `model-routing-plan.md`** — routes work by model and effort;
-  drafts the Q-5 clause without closing it. **Adopt nothing from it.** Three facts
-  it records: **effort has NEVER been set in this project** (no `effort` key in any
-  settings file — it introduces a dial nobody has used); a **QUEUE-RUNNER defect**
-  (merging a packet's open items keeps each ID and label but loses its *question*,
-  and the packet is then deleted — Q-5's substance is unrecoverable because of it);
-  and **no routing decision touches the registry**, the largest unexercised body,
-  since only Michael can verify
+  on what is built. Sync the project after each push
+- **THE SEQUENCE IS RULED AND UNSEALED: AUTH FIRST, CL-2 SECOND** (Michael, sealed
+  07-27, confirmed at reconciliation 07-28, #27). Both seals expired; the dual-track
+  protocol is EXPIRED and is spent history. Fable and Opus had both held CL-2-first;
+  the attorney ruled otherwise and Fable conceded on the merits — the two run
+  BACK-TO-BACK, which collapses the time-asymmetry argument
+- **CL-2 IS AUTHORIZED (#27), QUEUED BEHIND THE AUTH SLICE — neither has been built.**
+  Scope: `cl2-authorization-brief.md` §1's six pieces exactly, three carve-outs as
+  DO-NOTs. Reconciliation deltas: **the limitations column DROPS, not dormant** (a
+  retained-but-unwritten column answers queries plausibly and wrongly); because auth
+  runs first this piece now includes a **live-DB ALTER/DROP migration** under the
+  backup-and-review-log pattern; the brief's two §4 questions run as **stated
+  defaults** (backfill never touches `case_parties`; the criminal case's nearly-empty
+  client record is created) — defaults, not attorney rulings; keep `posture`'s
+  constraint admissive of a future mixed-posture value
+- **THE RESUME POINT: the auth slice — BLOCKED ON ONE ANSWER.** **AUTH-1, the sign-in
+  METHOD, is PROPOSED (magic link) and NOT confirmed. Code must not start §5A without
+  Michael's word.** Slice scope: first-ever execution of `db/schema.sql` against the
+  live project, sign-in, first real test of the 31 RLS policies against an
+  authenticated user. Single-user, Michael only (multi-user is instructions trigger
+  #2, gated on the security review). **Accepted cost, named so it isn't
+  rediscovered:** some RLS work may need revisiting after CL-2 restructures the
+  schema — rework, not loss. **Auth alone unlocks no real data** — all of
+  Go_Live_Gates.md still applies
+- **The CL-2 walkthrough is specified: the brief's §5 checklist PLUS a two-client case
+  with one client settled**, settled meaning DISBURSED (D-CL2-2a / D-CL2-4a) — the
+  derivation rule is invisible with a single client. Michael re-walks the medical tab
+  afterward on the v0.1/Phase 1a model; not a glance
 - **SUPA-1 CLOSED (#23): the live Supabase project is EMPTY — `db/schema.sql` has
-  NEVER been executed there.** Michael checked the dashboard: project "Brennan
-  Management System", free tier, schema public, **no tables**. Gate 3's future tense
-  was accurate. **Consequence: the auth branch starts with three unexercised things
-  stacked** — first schema execution, first sign-in, first real test of the 31 RLS
-  policies against an authenticated user. *(Superseded detail: the FILE is complete —
-  32 tables, RLS on all 32, 31 policies, `file_counters` deliberately policy-less.)*
-- **CL-2 remains UNAUTHORIZED.** A **sealed dual-track run** is set for 2026-07-28:
-  Fable rules the sequence and the authorization blind, reconsiders the ten closed
-  D-CL2 rulings under unbounded latitude, then seals open and Michael reconciles.
-  Protocol at `docs/prompts/CL2-dual-track-protocol_2026-07-27.md`, amended #24 —
-  **D-CL2-2a reads CLOSED to Fable; D-CL2-9's status is Fable's judgment.** **A
-  sequence ruling exists and is sealed outside the repo — do not state, infer, or
-  search for its direction; it enters the log at reconciliation.** One-off, not
-  precedent
-- **D-CL2-2a CLOSED (#23):** earliest-limitations derives from **unresolved clients
-  only**; "resolved" means **disbursement** (D-CL2-4a). **The CL-2 walkthrough must
-  include a two-client case with one client settled** — the rule is invisible with a
-  single client
-- **THE RESUME POINT: Tuesday's sealed dual-track run** (above). Its inputs:
-  `cl2-authorization-brief.md` (DECISION MEMO, authorizes nothing, carries a bias
-  disclosure), the client-model design doc, and the protocol. **Four of the
-  most-designed modules stand behind that one decision** — the medical rework, CE1,
-  the heartbeat, the time tracker
-- **Blocker chain, corrected (#18): auth decision → auth slice → THEN edge
-  functions.** Not four parallel errands. Magic link is the PROPOSED default
-  (AUTH-1); the auth slice is UNAUTHORIZED (AUTH-2). **Auth alone unlocks no real
-  data — all of Go_Live_Gates.md still applies.** Entra is independent (ENTRA-1);
-  the MRF path blocks nothing. **ENTRA-1 is now DONE** — Outlook push verified working
-- **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed,
-  withdrawn, and deliberately-not-built items live there. Check it before proposing or
-  rebuilding anything that appears absent from the repo
-- **Two Outlook design items, both in spec-feedback, neither built:** event notes are
-  a single-line `<input>` and need multi-line + structure; and **deleting an event in
-  Outlook is never observed** (no read path), so the next push 404s and
-  **deliberately re-creates it** — stale belief, then silent resurrection. The latter
-  is coherent for a one-way design; do NOT fix in isolation — it is Phase 2 evidence
-- Client-model §10: **ten decisions closed**; still open — **D-CL2-3** (fee
-  arrangement per client; was dropped from the design side's running list and
-  restored), D-CL2-2a, D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE** — probate is
-  CL-1's only consumer), the four new proposals **UM-1, UM-2, PR-GATE-1, MIN-1**, and
-  **CIV-1 (civil-litigation damages entirely UNSPECIFIED — own design session),
-  PROB-1, PA-1**
+  NEVER been executed there.** The FILE is complete: 32 tables, RLS on all 32, 31
+  policies, `file_counters` deliberately policy-less
+- **BS-1's split under-delivered — the length question is LIVE (BS-1a, Michael's).**
+  BUILD-STATE had no ledger *section*, only a five-line bullet; moving it verbatim
+  bought ONE line (149 → 148). Cap stands at 150. Candidates for the ledger are listed
+  in the ledger file, not moved — designating them is Michael's call
+- **NEW, UNRULED: `model-routing-plan.md`** — **adopt nothing from it.** Records that
+  **effort has NEVER been set in this project**, and a **QUEUE-RUNNER defect** (merged
+  open items keep ID and label but lose the *question*; Q-5's substance was lost that
+  way). The 07-28 runner entry worked around it by carrying full question text
+- Client-model §10: **D-CL2-8 is now Michael's own ruling** (parallel, not promotion).
+  **CL2-CHECK-1** (advisory client-role ↔ client-record consistency check) is
+  **EXPLICITLY DEFERRED — do not build.** Still open: **D-CL2-3** (NOT closed by CL-2's
+  `fee_arrangement` field), D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE**), **UM-1, UM-2,
+  PR-GATE-1, MIN-1**, and **CIV-1 (civil-litigation damages entirely UNSPECIFIED — own
+  design session), PROB-1, PA-1**
 - **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade`)
-- OPEN, Michael's: PR-3; V16; V14a; V15 survival half (V10 citator pass RUNNABLE);
-  V4; V10–V13; Entry 1(c-3); RE-1; Q-5; Q-6; M-3; M-4; K-5–K-7; registry 1–10
+- OPEN, Michael's: **AUTH-1 (blocking)**; BS-1a; PR-3; V16; V14a; V15 survival half
+  (V10 citator pass RUNNABLE); V4; V10–V13; Entry 1(c-3); RE-1; Q-6; M-3; M-4; K-5–K-7;
+  registry 1–10
 - Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the Estates Code
-  territory probate needs. **Family Code block is MOOT**; the probate chapters are
-  the replacement O6 stress test
+  territory probate needs. The probate chapters are the O6 stress test
+- **Two Outlook design items, both in spec-feedback, neither built:** event notes are a
+  single-line `<input>` needing multi-line + structure; and **deleting an event in
+  Outlook is never observed**, so the next push 404s and **deliberately re-creates it**
+  — stale belief, then silent resurrection. Do NOT fix in isolation — Phase 2 evidence
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT NEEDED:
   session-1 heartbeat voice capture (never reached Code)
 - Supabase Pro upgrade (gate 1), security review (gate 2), RLS policies (gate 3),
