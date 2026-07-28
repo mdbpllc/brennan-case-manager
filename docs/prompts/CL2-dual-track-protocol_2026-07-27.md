@@ -81,8 +81,19 @@ Fable independently:
    may recommend changes to any; Michael rules. Limit: where a ruling rests on facts about
    Michael's practice, Fable may reframe the question but not supply new practice facts.
    D-CL2-8 is flagged as the record's "Claude's call, not Michael's" — the strongest
-   candidate for a fresh look. D-CL2-2a is OPEN and sits INSIDE the slice (derivation rule
-   for the retired limitations field) — Fable rules it or defaults it explicitly.
+   candidate for a fresh look.
+   **D-CL2-2a is CLOSED — do not re-rule it.** Michael ruled it 2026-07-27:
+   earliest-limitations derives from **unresolved clients only**; "resolved" means
+   **disbursement** per D-CL2-4a, not an agreed number. Reason: a settled client's expired
+   clock must not keep a live matter showing false urgency. It is one of the closed D-CL2
+   rulings and therefore within the unbounded latitude — Fable may *recommend* a change if
+   it sees a reason, but must not treat it as an open question awaiting a first answer. The
+   CL-2 walkthrough must include a two-client case with one client settled; the rule is
+   invisible with a single client.
+   **D-CL2-9 (build order: CL-2 slice, CE1 after) — status: Fable's judgment** (Michael,
+   2026-07-27). It is one of the ten closed rulings and sits inside the unbounded latitude.
+   Fable decides for itself whether to reconsider; it recommends, Michael rules. Stated
+   explicitly here so it is not left to inference.
 3. Rules the **authorization** yes/no/defer, per the brief's §7.
 4. Records all of the above in the session log with reasoning.
 

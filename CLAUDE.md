@@ -184,8 +184,13 @@ coding sessions. The spec documents committed under `docs/specs/` are
   repo's GitHub sync — after the verified push, the one-line reminder to
   Michael is: **"Pushed at `<sha>` — click Sync now on the repo in the
   Claude project"** (2026-07-25 correction: telling him to re-upload the
-  file manually was never the mechanism). Hard rules: 120-line cap (cut detail, never add
-  sections); describe what EXISTS, not what's planned; every claim
+  file manually was never the mechanism). Hard rules: **150-line cap** (cut
+  detail, never add sections) — the cap exists for READABILITY, not token
+  cost, so the file gets read rather than skimmed. *Raised 120 → 150 by
+  Michael's ruling 2026-07-27 (BS-1). Three lines of headroom at the time of
+  ruling; if it is exceeded again, the open options are splitting out the
+  anti-resurrection ledger or trimming live state — both unruled.*
+  Describe what EXISTS, not what's planned; every claim
   verifiable from the working tree at its stated commit; generate
   mechanically where possible (routes from the router, tables from
   `db/schema.sql`, deltas from `git log`). If a design-side handoff

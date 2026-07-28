@@ -12,6 +12,71 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-27 (#24) — Protocol amendment: D-CL2-2a conflict corrected; CL2-C and BS-1 ruled (design session, Opus 5)
+
+**CORRECTION (six-field form).** **What was asserted:** the CL-2 dual-track protocol filed at
+`docs/prompts/CL2-dual-track-protocol_2026-07-27.md` told Fable at Step 2.2 that "D-CL2-2a is OPEN
+and sits INSIDE the slice — Fable rules it or defaults it explicitly." **What is true instead:**
+Michael RULED D-CL2-2a earlier the same session — earliest-limitations derives from unresolved
+clients only, resolved meaning disbursement per D-CL2-4a. As filed, Tuesday's session was
+instructed to rule a closed item. **Evidence:** the ruling is recorded in entry #23 and applied by
+Code at `8f3b78e` in the design doc's §10 row and §3.1 limitations cell; Code flagged the conflict
+in its handback rather than editing a file its work order forbade it to touch — correct behavior.
+**Which entry it corrects:** #23, which stands as written; the protocol text it staged was wrong.
+**Actor:** Opus 5. **Failure class:** a document written accurately at T1 becomes wrong at T2 when
+a ruling lands underneath it, with nothing prompting a re-read of the author's own prior output.
+**Third instance this session** — the first was the protocol's §1a runway analysis (written before
+the sequence ruling, would have leaked the sealed conclusion to a blind Fable pass; caught and
+stripped by Opus before delivery); the second is this one (caught by Code); the third is the
+general pattern now being named. Prior related class: R-3 copy-forward (#13), where stale content
+kept travelling because nobody checked the entry that cleared it. **What changed:** protocol Step
+2.2 corrected in place this entry; D-CL2-2a needed no change, being already correctly closed.
+
+**Process finding worth keeping.** The design side does not re-read its own staged documents after
+a ruling lands mid-session. Every document authored earlier in a session should be re-checked
+against every ruling made later in that session before the packet ships. Not proposed as a binding
+convention tonight — recorded so a future session can rule on it with instances behind it.
+
+**CL2-C RULED (Michael): left to Fable's judgment.** D-CL2-9 (build order — CL-2 slice, CE1 after)
+is one of the ten closed D-CL2 rulings and therefore already inside the unbounded latitude granted
+2026-07-27. Fable decides for itself whether to reconsider it; it recommends, Michael rules.
+Reason: the gap was never Fable's authority, which already covered it, but that the protocol left
+the point to inference. Now stated explicitly.
+
+**BS-1 RULED (Michael): the BUILD-STATE line cap rises 120 → 150.** Reason: cheapest fix; the cap
+exists for readability, not tokens, and 150 preserves that purpose. Applied to `CLAUDE.md` this
+entry. **Noted at the time of ruling:** BUILD-STATE stood at 147 after Code's compression, leaving
+three lines of headroom against a file that is rewritten in full every app-changing session — this
+will likely return. The other two options (split the anti-resurrection ledger; let Code trim live
+state) remain available and unruled if it does.
+
+**Code's disclosed deviation, recorded.** Processing `8f3b78e`, Code's additions took BUILD-STATE
+from 141 to 151. The packet instructed it to flag the overage rather than resolve it; Code instead
+compressed two Outlook design bullets fully captured in spec-feedback, landing at 147, and
+disclosed this plainly in its handback. That is a partial exercise of BS-1 option (c) — "let Code
+trim live state" — which was unruled at the time. Recorded because an unruled option was partly
+taken, not because the compression was wrong; the material was captured elsewhere and the
+disclosure was immediate and complete.
+
+**Seal held through the `8f3b78e` pass.** Code verified neither sealed filename exists in the repo
+or working tree, grep-checked the staged protocol for a stated direction, and scanned the full
+staged diff before committing. No direction appears in the log, BUILD-STATE, the commit messages,
+or the handback. Filename references that do appear come from entry #23's own text — names, not
+contents.
+
+Staged for Code: this entry; protocol Step 2.2 correction; CLAUDE.md cap change.
+Awaiting/Returned from Code, unreviewed: none new. (Do not copy forward items cleared in #13, #22,
+or #23 — verify against the entry that cleared them.)
+
+*(Code note: the amendment's §1 reconcile conditions were both checked before writing — the
+protocol existed at the stated path with the quoted Step 2.2 text intact, and D-CL2-2a was already
+CLOSED in both sites, so it was not re-applied. **Step 2.2 now reads CLOSED and no "D-CL2-2a is
+OPEN" string remains in the protocol** — verified after the edit. §1a, the seal language, and the
+DO-NOT-OPEN handling were not touched. **SYNC-1 answered:** "the NEW project" in Code's handbacks
+is stale phrasing carried from the 2026-07-26 migration, when the reminder had to distinguish the
+new build project from the archive. Only one project is in use; Code will say "the project" from
+here. No second project is believed to exist.)*
+
 ## 2026-07-27 (#23) — CL-2 dual-track sealed; correction conventions codified; Q-5 closed (design session, Opus 5)
 
 **SUPA-1 CLOSED.** Michael opened the live Supabase dashboard: project "Brennan Management
