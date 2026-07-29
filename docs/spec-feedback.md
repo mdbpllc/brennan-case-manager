@@ -443,6 +443,53 @@ blocking defects sat in this slice from the day it was written, and both surface
 minutes of the first real attempt. Other never-exercised code in the tree — the two edge
 functions especially — should be assumed to carry the same class of risk.
 
+## 2026-07-28 — RLS is not access control on its own; the schema was missing every GRANT (auth slice §5A)
+
+**Fixed in code; recorded because it corrects a load-bearing assumption the design side
+has been carrying, and because the next slice walks straight into it.**
+
+First-ever live execution of `db/schema.sql` succeeded — 32 tables, RLS on all 32, 31
+policies — and then **every single API request was refused 401**, signed out and with two
+different key formats. The key was never at fault. The error was
+`42501 permission denied for table`, a **PostgreSQL table-privilege** error raised one
+layer *below* RLS.
+
+**The distinction, stated plainly because it has been conflated throughout this project's
+docs:** RLS decides WHICH ROWS a role may touch. It does not grant access to the table at
+all — that is a separate SQL privilege layer, and PostgREST hits it FIRST. A table can have
+RLS enabled and a perfect policy and still be totally unreachable. `db/schema.sql` contained
+**zero GRANT statements**; on most Supabase projects that is invisible because new public
+tables are exposed automatically, but this project was deliberately created with
+**"auto-expose new tables" OFF** (`Go_Live_Gates.md`). Nothing granted them.
+
+**Consequences for the record:**
+
+1. **Gate 3 ("RLS policies written and tested") was even further from satisfiable than gate
+   6 suggested.** Gate 6 correctly said policies could not be tested without a sign-in flow.
+   It did not anticipate that they could not be *reached* either. Both were true at once.
+2. **CL-2 INHERITS THIS.** `case_clients` — and any other table that slice adds — will be
+   unreachable the moment it is created unless its GRANT is written with it. `ALTER DEFAULT
+   PRIVILEGES` was deliberately NOT set, because silently exposing future tables is exactly
+   the posture this project rejected. The cost is that every new table needs an explicit
+   grant. `db/schema.sql` carries a *** READ THIS BEFORE ADDING A TABLE *** note at the
+   grants block.
+3. **The two undeployed edge functions probably share this root cause.** BUILD-STATE
+   describes them as auth-blocked because "the poller writes to tables nothing can read."
+   That diagnosis is likely incomplete — `service_role` grants were never issued either.
+   NOT investigated this session (the functions are not deployed and are out of slice
+   scope); flagged so the deploy session starts from the right hypothesis rather than
+   re-deriving it.
+4. **No client upgrade is required.** The new `sb_publishable_` key format and the legacy
+   `eyJ` JWT both work with the installed `@supabase/supabase-js` 2.110.8. The key-format
+   theory was tested and eliminated; either value may stay in `.env`.
+
+**The generalizable lesson, and it is the #21 lesson again one layer down:** the schema had
+been read, reviewed, and described accurately in three documents for weeks. Every
+description was *true* — 32 tables, RLS on, 31 policies — and the system was still
+completely non-functional, because the true statements did not cover the thing that was
+missing. Reviewing an artifact confirms what is present; only executing it finds what was
+never there.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

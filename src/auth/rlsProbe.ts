@@ -60,13 +60,29 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'bill_statute_refs', policy: true },
 ];
 
+/**
+ * Which gate refused the request. Postgres reports BOTH "permission denied for
+ * table" and "new row violates row-level security policy" as 42501, so the code
+ * alone cannot tell them apart — and they mean very different things. The
+ * 2026-07-28 first live run was refused entirely at `privilege`, which is why no
+ * policy was exercised despite 31 of them existing.
+ */
+export type DenialLayer = 'privilege' | 'rls' | 'other';
+
+export function classifyDenial(code?: string, message?: string): DenialLayer {
+  if (code !== '42501') return 'other';
+  return /permission denied/i.test(message ?? '') ? 'privilege' : 'rls';
+}
+
 export interface ReadResult {
   table: string;
   /** Query returned without error — table exists and is API-exposed. */
   ok: boolean;
   rows: number | null;
+  status?: number;
   code?: string;
   message?: string;
+  layer?: DenialLayer;
 }
 
 export interface WriteResult {
@@ -78,8 +94,10 @@ export interface WriteResult {
   asExpected: boolean;
   /** Whether the probe row was cleaned up (only meaningful for 'inserted'). */
   cleanedUp?: boolean;
+  status?: number;
   code?: string;
   message?: string;
+  layer?: DenialLayer;
 }
 
 /** Reads every table. See methodology: proves existence, not grant.
@@ -94,11 +112,26 @@ export async function probeReads(): Promise<ReadResult[]> {
   if (!supabase) throw new Error('Not connected to Supabase (demo mode).');
   const out: ReadResult[] = [];
   for (const { name } of SCHEMA_TABLES) {
-    const { count, error } = await supabase
+    // NOT head:true. A HEAD response carries no body by HTTP spec, so PostgREST's
+    // {code, message, hint} never arrives and supabase-js hands back an error
+    // object with nothing in it — which is exactly how the 2026-07-28 run showed
+    // a bare "—" in the error column while every request was failing 401. A GET
+    // with limit(0) is just as cheap, still returns the exact count, and carries
+    // a real error body when it fails.
+    const { count, error, status } = await supabase
       .from(name)
-      .select('*', { count: 'exact', head: true });
+      .select('*', { count: 'exact' })
+      .limit(0);
     if (error) {
-      out.push({ table: name, ok: false, rows: null, code: error.code, message: error.message });
+      out.push({
+        table: name,
+        ok: false,
+        rows: null,
+        status,
+        code: error.code,
+        message: error.message,
+        layer: classifyDenial(error.code, error.message),
+      });
     } else if (typeof count !== 'number') {
       out.push({
         table: name,
@@ -116,7 +149,13 @@ export async function probeReads(): Promise<ReadResult[]> {
 
 /** Fictional probe rows. Kept to tables with no foreign-key prerequisites so the
  *  probe never has to build a dependency graph of demo records. */
-function probeRows(tag: string): { table: string; expect: 'allow' | 'deny'; row: Record<string, unknown> }[] {
+function probeRows(tag: string): {
+  table: string;
+  expect: 'allow' | 'deny';
+  /** For deny rows: which gate is supposed to do the refusing. */
+  expectLayer?: DenialLayer;
+  row: Record<string, unknown>;
+}[] {
   return [
     {
       table: 'parties',
@@ -143,8 +182,11 @@ function probeRows(tag: string): { table: string; expect: 'allow' | 'deny'; row:
       expect: 'allow',
       row: { kind: 'manual', cite_or_query: `"RLS probe ${tag}"`, note: 'fictional', active: false },
     },
-    // Negative control — see the methodology note above.
-    { table: 'file_counters', expect: 'deny', row: { yy: 'ZZ', counter: 0 } },
+    // Negative control — see the methodology note above. It is refused at the
+    // PRIVILEGE layer, not by RLS: the grants migration explicitly revokes
+    // file_counters from `authenticated`, because file numbers are issued only
+    // through the SECURITY DEFINER function.
+    { table: 'file_counters', expect: 'deny', expectLayer: 'privilege', row: { yy: 'ZZ', counter: 0 } },
   ];
 }
 
@@ -157,18 +199,26 @@ export async function probeWrites(): Promise<WriteResult[]> {
   const tag = Math.random().toString(36).slice(2, 8);
   const out: WriteResult[] = [];
 
-  for (const { table, expect, row } of probeRows(tag)) {
-    const { data, error } = await supabase.from(table).insert(row).select();
+  for (const { table, expect, expectLayer, row } of probeRows(tag)) {
+    const { data, error, status } = await supabase.from(table).insert(row).select();
 
     if (error) {
-      const denied = error.code === '42501';
+      const layer = classifyDenial(error.code, error.message);
+      const denied = layer === 'privilege' || layer === 'rls';
       out.push({
         table,
         expect,
         outcome: denied ? 'denied' : 'other-error',
-        asExpected: denied && expect === 'deny',
+        // Denial alone is not enough — the LAYER has to match too. file_counters
+        // is expected to be refused at `privilege` (we revoke it), so a refusal
+        // there is correct; an `rls` refusal on a table we granted would mean
+        // something else entirely. Scoring only on "was it refused" is what let
+        // the first live run look like an RLS result when nothing had reached RLS.
+        asExpected: expect === 'deny' && layer === expectLayer,
+        status,
         code: error.code,
         message: error.message,
+        layer,
       });
       continue;
     }

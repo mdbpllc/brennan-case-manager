@@ -744,3 +744,43 @@ create policy "authenticated full access tracked_bills" on tracked_bills
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access bill_statute_refs" on bill_statute_refs
   for all to authenticated using (true) with check (true);
+
+-- ============ API ROLE PRIVILEGES ============
+-- ADDED 2026-07-28, auth slice §5A, after the first live run of this file found
+-- every request refused 401 / 42501 "permission denied for table" — 32 tables,
+-- RLS on, 31 policies, and not one of them ever evaluated.
+--
+-- RLS decides WHICH ROWS a role may touch. It does NOT grant access to the table
+-- itself; that is a separate SQL privilege layer and PostgREST hits it FIRST.
+-- Everything below was missing, so requests never reached the policies.
+--
+-- Most Supabase projects mask this because new public tables are exposed
+-- automatically. THIS project was deliberately created with "auto-expose new
+-- tables" OFF (Go_Live_Gates.md, Supabase account facts), so nothing granted
+-- these for us. That posture is correct and is being kept — the grants are
+-- simply made explicit here.
+--
+-- `authenticated` ONLY. `anon` is deliberately granted NOTHING: all 31 policies
+-- are `to authenticated`, so a signed-out caller is refused at the privilege
+-- layer and never reaches RLS at all.
+--
+-- *** READ THIS BEFORE ADDING A TABLE ***  With auto-expose off, a new table is
+-- unreachable until it is granted. The statement below is written as ALL TABLES
+-- so a fresh run of this file is complete, but it is point-in-time, not a
+-- standing rule — ALTER DEFAULT PRIVILEGES is deliberately NOT set, because
+-- silently exposing future tables is the posture this project rejected. Any
+-- migration adding a table must add its own grant. This includes the CL-2
+-- slice's `case_clients`.
+
+grant usage on schema public to authenticated;
+
+grant select, insert, update, delete
+  on all tables in schema public to authenticated;
+
+-- file_counters is the one exception, and it is intentional: RLS on, no policy,
+-- no API access. File numbers are issued ONLY through next_file_number(), which
+-- is SECURITY DEFINER and so bumps the counter without the caller needing any
+-- privilege of their own. Granting here would defeat that design.
+revoke all on file_counters from authenticated;
+
+grant execute on function next_file_number() to authenticated;
