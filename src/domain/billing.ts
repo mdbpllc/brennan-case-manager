@@ -13,6 +13,11 @@ export type ClaimTypeSource = 'detected' | 'attorney';
 export interface MedicalBill {
   id: string;
   caseId: string;
+  /** CL-2: the client whose body this bill belongs to. Pooling across clients
+   *  distorts paid-or-incurred and the Ch. 146 cap input. Optional because a
+   *  case the backfill flagged has no client yet — its bills are not blocked
+   *  and never get an invented owner. */
+  clientId?: string;
   /** Provider-business party this bill attaches to (bills live at the provider-business level, §10). */
   providerPartyId?: string;
   /** Short human label, e.g. "ProCare — chiropractic course of treatment". */
@@ -135,6 +140,9 @@ export interface AnalysisRun {
   id: string;
   caseId: string;
   billId: string;
+  /** CL-2: follows the bill, carried DENORMALIZED so per-client queries don't
+   *  join through bills. Keep it in step with the bill's own clientId. */
+  clientId?: string;
   runDate: string;
   scheduleIds: string[];
   /** Free-form assumptions (e.g. ED-level scenario selections), JSON-serializable. */

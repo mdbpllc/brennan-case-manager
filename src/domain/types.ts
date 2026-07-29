@@ -4,15 +4,21 @@ export type PracticeArea = 'Personal Injury' | 'General Civil Litigation' | 'Cri
 
 export type RepresentationType = 'Court-appointed' | 'Private hire';
 
-/** Stackable PI overlay flags — flags, NOT case types (settled). */
+/** Stackable PI overlay FILE-level overlay flags — flags, NOT case types (settled).
+ *
+ *  D-CL2-5 (CLOSED): these are OCCURRENCE flags — "true for everyone in the car"
+ *  — and stay case-scoped. 'Medicare/Medicaid beneficiary' was removed from this
+ *  list by CL-2 and lives on the client record (`ClientFlag`): the Safe Harbor
+ *  authorization names a specific beneficiary and the lien reaches only that
+ *  person's recovery. One passenger may be a beneficiary and another not.
+ *  Minor/incapacitated stays HERE by ruling — do not "fix" it to the client. */
 export type PiFlag =
   | 'UM/UIM (first-party)'
   | 'Trucking/commercial vehicle'
   | 'Product-suspected'
   | 'Death (wrongful-death/survival)'
   | 'Government defendant'
-  | 'Minor/incapacitated client'
-  | 'Medicare/Medicaid beneficiary';
+  | 'Minor/incapacitated client';
 
 export interface CaseRecord {
   id: string; // internal ID (behind the scenes)
@@ -27,7 +33,13 @@ export interface CaseRecord {
   piFlags: PiFlag[];
   dateOfIncident?: string;
   dateOpened: string;
-  statuteOfLimitations?: string;
+  /** NO `statuteOfLimitations` HERE — RETIRED by CL-2 (D-CL2-2, executed
+   *  2026-07-28). The date lives on the client record; the case DISPLAYS the
+   *  earliest across unresolved clients, derived and non-writable, via
+   *  `earliestLimitations()` in domain/client.ts. Do not re-add this field: a
+   *  writable column meant to mirror derived data stops mirroring it silently,
+   *  and the heartbeat's master clock could not say which number it read.
+   *  Criminal matters never used it — per-offense clocks live on `charges`. */
   dateClosed?: string;
   courtName?: string;
   causeNumber?: string;

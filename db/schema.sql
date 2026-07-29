@@ -44,7 +44,12 @@ create table if not exists cases (
   pi_flags text[] default '{}',           -- stackable overlay flags (settled: flags, not case types)
   date_of_incident date,
   date_opened date not null default current_date,
-  statute_of_limitations date,
+  -- NO statute_of_limitations HERE — RETIRED by CL-2 (D-CL2-2), dropped from the
+  -- live database 2026-07-28 by db/migrations/2026-07-28-cl2-client-dimension.sql.
+  -- The date lives on case_clients; the case DISPLAYS the earliest across
+  -- unresolved clients, derived and non-writable. Do not re-add it: a writable
+  -- column meant to mirror derived data stops mirroring it silently. Criminal
+  -- matters never used it — per-offense clocks live on `charges`.
   date_closed date,
   court_name text,
   cause_number text,
@@ -86,6 +91,52 @@ create table if not exists case_parties (
 create index if not exists case_parties_case_idx on case_parties (case_id);
 create index if not exists case_parties_party_idx on case_parties (party_id);
 
+-- ============ CLIENT DIMENSION (CL-2) ============
+-- The case owns the occurrence and liability; the CLIENT owns the damages.
+-- `case_clients` sits PARALLEL to case_parties, not as a promotion of it
+-- (D-CL2-8): case_parties stays authoritative for ROLES, case_clients for
+-- DAMAGES SCOPE. Design: docs/specs/claimant-dimension-and-case-links-design.md.
+create table if not exists case_clients (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  -- restrict, not cascade: deleting a client party must not silently take
+  -- their bills, runs, and (later) liens with it.
+  party_id uuid not null references parties (id) on delete restrict,
+  -- 'mixed' admitted now so a future mixed-posture value needs no constraint
+  -- migration (D-CL2-1). Nothing writes it yet.
+  posture text not null default 'claimant'
+    check (posture in ('claimant', 'defendant', 'mixed')),
+  display_order integer not null default 0,
+  statute_of_limitations date,
+  sol_basis text check (sol_basis in ('standard','minor-tolled','survival-tolled','manual')),
+  client_flags text[] not null default '{}',   -- Medicare/Medicaid ONLY (D-CL2-5)
+  fee_arrangement jsonb not null default '{}', -- does NOT close D-CL2-3
+  profile_fields jsonb not null default '{}',  -- shape DERIVED from practice area
+  disbursed_at date,                           -- D-CL2-4a; "resolved" per D-CL2-2a
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (case_id, party_id)
+);
+
+create index if not exists case_clients_case_idx on case_clients (case_id);
+create index if not exists case_clients_party_idx on case_clients (party_id);
+
+-- Cases the CL-2 backfill could not derive a client for. Never guessed, never
+-- placeholdered. Holds the limitations date the dropped case column carried, so
+-- a flagged case loses nothing; it carries to the client record on resolve.
+create table if not exists case_client_flags (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  reason text not null,
+  preserved_statute_of_limitations date,
+  resolved_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique (case_id)
+);
+
+create index if not exists case_client_flags_case_idx on case_client_flags (case_id);
+
 -- ============ updated_at triggers ============
 create or replace function touch_updated_at()
 returns trigger language plpgsql as $$
@@ -101,6 +152,10 @@ create trigger cases_touch before update on cases
 
 drop trigger if exists parties_touch on parties;
 create trigger parties_touch before update on parties
+  for each row execute function touch_updated_at();
+
+drop trigger if exists case_clients_touch on case_clients;
+create trigger case_clients_touch before update on case_clients
   for each row execute function touch_updated_at();
 
 -- ============ ROW LEVEL SECURITY ============
@@ -123,6 +178,13 @@ create policy "authenticated full access parties" on parties
 create policy "authenticated full access links" on case_parties
   for all to authenticated using (true) with check (true);
 
+alter table case_clients enable row level security;
+alter table case_client_flags enable row level security;
+create policy "authenticated full access case_clients" on case_clients
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access case_client_flags" on case_client_flags
+  for all to authenticated using (true) with check (true);
+
 -- ============================================================
 -- BILLING MODULE — Phase 1a (spec: docs/specs/medical-billing-analysis-module-synthesis.md Part 4)
 -- ============================================================
@@ -137,6 +199,10 @@ create extension if not exists pg_trgm;
 create table if not exists medical_bills (
   id uuid primary key default gen_random_uuid(),
   case_id uuid not null references cases (id) on delete cascade,
+  -- CL-2: a bill belongs to a BODY. Pooling distorts paid-or-incurred and the
+  -- Ch. 146 cap input. Nullable because a flagged case has no client yet and
+  -- its bills must not be blocked or invented.
+  client_id uuid references case_clients (id) on delete set null,
   provider_party_id uuid references parties (id) on delete set null,
   label text not null,
   bill_type integer not null check (bill_type in (1, 2)),
@@ -156,6 +222,7 @@ create table if not exists medical_bills (
 );
 
 create index if not exists medical_bills_case_idx on medical_bills (case_id);
+create index if not exists medical_bills_client_idx on medical_bills (client_id);
 
 create table if not exists bill_line_items (
   id uuid primary key default gen_random_uuid(),
@@ -236,6 +303,9 @@ create table if not exists analysis_runs (
   id uuid primary key default gen_random_uuid(),
   case_id uuid not null references cases (id) on delete cascade,
   bill_id uuid not null references medical_bills (id) on delete cascade,
+  -- CL-2: follows the bill, carried DENORMALIZED so per-client queries do not
+  -- have to join through medical_bills (§3.1).
+  client_id uuid references case_clients (id) on delete set null,
   run_date timestamptz not null default now(),
   schedule_ids jsonb not null default '[]',
   assumptions jsonb not null default '{}',
@@ -249,6 +319,7 @@ create table if not exists analysis_runs (
 
 create index if not exists analysis_runs_case_idx on analysis_runs (case_id);
 create index if not exists analysis_runs_bill_idx on analysis_runs (bill_id);
+create index if not exists analysis_runs_client_idx on analysis_runs (client_id);
 
 create table if not exists analysis_result_lines (
   id uuid primary key default gen_random_uuid(),
@@ -769,8 +840,14 @@ create policy "authenticated full access bill_statute_refs" on bill_statute_refs
 -- so a fresh run of this file is complete, but it is point-in-time, not a
 -- standing rule — ALTER DEFAULT PRIVILEGES is deliberately NOT set, because
 -- silently exposing future tables is the posture this project rejected. Any
--- migration adding a table must add its own grant. This includes the CL-2
--- slice's `case_clients`.
+-- migration adding a table must add its own grant.
+--
+-- WORKED EXAMPLE, 2026-07-28: the CL-2 slice added `case_clients` and
+-- `case_client_flags` and shipped their grants in the SAME migration
+-- (db/migrations/2026-07-28-cl2-client-dimension.sql, step 5). The
+-- `all tables` statement below covers them on a fresh run of this file; the
+-- migration covers them on an existing database. Both paths are required —
+-- neither one alone is enough. Do the same for every table you add.
 
 grant usage on schema public to authenticated;
 

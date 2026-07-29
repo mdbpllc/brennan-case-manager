@@ -49,7 +49,10 @@ export const PI_FLAGS: PiFlag[] = [
   'Death (wrongful-death/survival)',
   'Government defendant',
   'Minor/incapacitated client',
-  'Medicare/Medicaid beneficiary',
+  // 'Medicare/Medicaid beneficiary' moved to the CLIENT record by CL-2
+  // (D-CL2-5) — see CLIENT_FLAGS in domain/client.ts. Do not re-add it here:
+  // the lien reaches one person's recovery, and one passenger may be a
+  // beneficiary while another is not.
 ];
 
 /** Per-case-type status lists (tailored per type — settled §8). Starter set for the slice. */

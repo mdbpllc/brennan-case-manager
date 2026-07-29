@@ -16,20 +16,24 @@ import type {
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
 import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
+import { sortClients } from '../domain/client';
 import { seedData } from './seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 9; // v9: bill tracking (watch targets incl. seeded
-// manual sweeps, tracked bills, bill statute refs)
+const STORE_VERSION = 10; // v10: CL-2 client dimension (case_clients, backfill
+// flags, client_id on bills and runs, case-level SOL retired)
 
 interface Store {
   version: number;
   cases: CaseRecord[];
   parties: PartyRecord[];
   links: CasePartyLink[];
+  clients: CaseClient[];
+  clientFlags: ClientBackfillFlag[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
   bills: MedicalBill[];
   lineItems: BillLineItem[];
@@ -75,6 +79,140 @@ function carryForward(old: Partial<Store>) {
   return { feeSchedules, feeRates, runs, resultLines };
 }
 
+/** The v9 case shape, before CL-2 retired the case-level limitations date.
+ *  Declared locally because CaseRecord no longer carries these. */
+type LegacyCase = Omit<CaseRecord, 'piFlags'> & { statuteOfLimitations?: string; piFlags: string[] };
+
+const MEDICARE_FLAG = 'Medicare/Medicaid beneficiary';
+
+/**
+ * v9 → v10: the CL-2 client dimension, migrated FORWARD in place.
+ *
+ * Deliberately NOT the reseed path. The reseed carries only imported fee
+ * schedules and confirmed runs; everything else — cases, parties, bills,
+ * line items — is thrown away and re-seeded. That is acceptable when a record
+ * SHAPE changes incompatibly, but CL-2 adds a dimension that can be DERIVED
+ * from what is already there, so wiping would destroy demo work for no reason
+ * and would not exercise the backfill Michael has to walk.
+ *
+ * Mirrors db/migrations/2026-07-28-cl2-client-dimension.sql step for step, so
+ * both modes behave identically (the adapter-seam rule).
+ */
+export function migrateV9ToV10(old: Store, raw: string): Store {
+  localStorage.setItem(`${KEY}-backup-v9`, raw);
+  const stamp = now();
+  const clients: CaseClient[] = [];
+  const clientFlags: ClientBackfillFlag[] = [];
+  const reviewLog: ReviewLogEntry[] = [...(old.reviewLog ?? [])];
+  const cases = (old.cases ?? []) as LegacyCase[];
+
+  for (const c of cases) {
+    // case_parties is NOT touched — D-CL2-8, parallel not promotion. The
+    // client-role row stays exactly where it is. Stated so nobody "tidies".
+    const clientLinks = (old.links ?? []).filter(
+      (l) => l.caseId === c.id && (l.role === 'Client' || l.role === 'Plaintiff'),
+    );
+
+    if (clientLinks.length === 0) {
+      // NEVER guessed, NEVER placeholdered (design §5). The limitations date is
+      // preserved on the flag and carries to the client record on resolve
+      // (Michael's ruling 2026-07-28) — the case column is about to disappear.
+      const flag: ClientBackfillFlag = {
+        id: uid(),
+        caseId: c.id,
+        reason:
+          'CL-2 backfill: no party on this case carries a Client or Plaintiff role, so no '
+          + 'client record could be derived. Not guessed and not placeholdered. Link a '
+          + 'client-role party and create the client record; any preserved limitations '
+          + 'date carries over to it.',
+        preservedStatuteOfLimitations: c.statuteOfLimitations,
+        createdAt: stamp,
+      };
+      clientFlags.push(flag);
+      reviewLog.push({
+        id: uid(), entityType: 'case', entityId: c.id, action: 'edited',
+        user: 'system (CL-2 backfill)', timestamp: stamp,
+        oldValue: c.statuteOfLimitations ?? '(no date)',
+        reason:
+          'FLAGGED FOR MICHAEL: no client-role party, so no client record was derived. '
+          + 'Limitations date preserved on the flag and carries to the client record '
+          + 'when one is created.',
+      });
+      continue;
+    }
+
+    clientLinks.forEach((link, i) => {
+      // sol_basis is 'manual', not 'standard': the case-level date was typed by
+      // hand and its true basis is unknown. Asserting a basis would be a guess
+      // about a legal deadline.
+      const client: CaseClient = {
+        id: uid(),
+        caseId: c.id,
+        partyId: link.partyId,
+        posture: 'claimant',
+        displayOrder: i,
+        statuteOfLimitations: c.statuteOfLimitations,
+        solBasis: c.statuteOfLimitations ? 'manual' : undefined,
+        clientFlags: (c.piFlags ?? []).includes(MEDICARE_FLAG) ? [MEDICARE_FLAG] : [],
+        feeArrangement: {},
+        profileFields: {},
+        notes: 'Derived by the CL-2 backfill, 2026-07-28.',
+        createdAt: stamp,
+        updatedAt: stamp,
+      };
+      clients.push(client);
+      reviewLog.push({
+        id: uid(), entityType: 'case_client', entityId: client.id, action: 'created',
+        user: 'system (CL-2 backfill)', timestamp: stamp,
+        reason:
+          `Client derived from the case's ${link.role}-role party during the CL-2 `
+          + 'migration. Limitations date carried from the case before that field '
+          + 'was retired.',
+      });
+    });
+  }
+
+  // Unambiguous only where the case has exactly ONE client — which is every
+  // case in existence today. Multi-client cases get assigned by hand: a wrong
+  // body on a bill is worse than an unassigned one.
+  const soleClientByCase = new Map<string, string>();
+  for (const c of clients) {
+    if (soleClientByCase.has(c.caseId)) soleClientByCase.set(c.caseId, '');
+    else soleClientByCase.set(c.caseId, c.id);
+  }
+  const soleId = (caseId: string) => soleClientByCase.get(caseId) || undefined;
+
+  const migrated: Store = {
+    ...(old as Store),
+    version: STORE_VERSION,
+    clients,
+    clientFlags,
+    reviewLog,
+    bills: (old.bills ?? []).map((b) => ({ ...b, clientId: b.clientId ?? soleId(b.caseId) })),
+    runs: (old.runs ?? []).map((r) => ({ ...r, clientId: r.clientId ?? soleId(r.caseId) })),
+    // Medicare/Medicaid moved to the client records above — a move, not a loss.
+    // The other occurrence flags stay put (D-CL2-5).
+    cases: cases.map((c) => {
+      const { statuteOfLimitations: _retired, ...rest } = c;
+      return { ...rest, piFlags: (c.piFlags ?? []).filter((f) => f !== MEDICARE_FLAG) } as CaseRecord;
+    }),
+  };
+
+  const summary =
+    `Store migrated v9→v${STORE_VERSION} (CL-2 client dimension). Derived `
+    + `${clients.length} client record(s); flagged ${clientFlags.length} case(s) with no `
+    + `client-role party; stamped client_id on bills and runs for single-client cases. `
+    + `Case-level statute of limitations retired. Full pre-migration backup at `
+    + `localStorage key "${KEY}-backup-v9".`;
+  migrated.reviewLog.push({
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (CL-2 migration)', timestamp: stamp, reason: summary,
+  });
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -82,6 +220,9 @@ function load(): Store {
     try {
       const parsed = JSON.parse(raw) as Store;
       if (parsed.version === STORE_VERSION) return parsed;
+      // v9 can be migrated forward without losing anything — do that instead
+      // of reseeding. Older stores fall through to the reseed path below.
+      if (parsed.version === 9) return migrateV9ToV10(parsed, raw);
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
       old = parsed;
@@ -236,6 +377,78 @@ export class LocalAdapter implements DataAdapter {
     save(store);
   }
 
+  // ---- Client dimension (CL-2) ----
+
+  async listClientsForCase(caseId: string): Promise<CaseClient[]> {
+    return sortClients(load().clients.filter((c) => c.caseId === caseId));
+  }
+
+  async listClients(): Promise<CaseClient[]> {
+    return load().clients;
+  }
+
+  async createClient(data: Omit<CaseClient, 'id' | 'createdAt' | 'updatedAt'>): Promise<CaseClient> {
+    const store = load();
+    if (store.clients.some((c) => c.caseId === data.caseId && c.partyId === data.partyId)) {
+      throw new Error('That party is already a client on this case');
+    }
+    const rec: CaseClient = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.clients.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateClient(id: string, patch: Partial<CaseClient>): Promise<CaseClient> {
+    const store = load();
+    const idx = store.clients.findIndex((c) => c.id === id);
+    if (idx === -1) throw new Error('Client not found');
+    store.clients[idx] = { ...store.clients[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.clients[idx];
+  }
+
+  async deleteClient(id: string): Promise<void> {
+    const store = load();
+    // Mirrors Postgres `on delete restrict`: a client is a damages spine, and
+    // silently orphaning their bills is exactly what that constraint prevents.
+    const owned = store.bills.filter((b) => b.clientId === id).length;
+    if (owned > 0) {
+      throw new Error(`Cannot remove this client — ${owned} bill(s) are assigned to them. Reassign the bills first.`);
+    }
+    store.clients = store.clients.filter((c) => c.id !== id);
+    store.runs = store.runs.map((r) => (r.clientId === id ? { ...r, clientId: undefined } : r));
+    save(store);
+  }
+
+  async listClientFlags(unresolvedOnly = false): Promise<ClientBackfillFlag[]> {
+    const flags = load().clientFlags;
+    return unresolvedOnly ? flags.filter((f) => !f.resolvedAt) : flags;
+  }
+
+  async getClientFlagForCase(caseId: string): Promise<ClientBackfillFlag | null> {
+    return load().clientFlags.find((f) => f.caseId === caseId && !f.resolvedAt) ?? null;
+  }
+
+  async createClientFlagIfAbsent(
+    data: Omit<ClientBackfillFlag, 'id' | 'createdAt' | 'resolvedAt'>,
+  ): Promise<ClientBackfillFlag | null> {
+    const store = load();
+    if (store.clientFlags.some((f) => f.caseId === data.caseId)) return null;
+    const rec: ClientBackfillFlag = { ...data, id: uid(), createdAt: now() };
+    store.clientFlags.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async resolveClientFlag(id: string): Promise<ClientBackfillFlag> {
+    const store = load();
+    const idx = store.clientFlags.findIndex((f) => f.id === id);
+    if (idx === -1) throw new Error('Flag not found');
+    store.clientFlags[idx] = { ...store.clientFlags[idx], resolvedAt: now() };
+    save(store);
+    return store.clientFlags[idx];
+  }
+
   // ---- Billing module (Phase 1a) ----
 
   async listBillsForCase(caseId: string): Promise<MedicalBill[]> {
@@ -260,6 +473,12 @@ export class LocalAdapter implements DataAdapter {
     const idx = store.bills.findIndex((b) => b.id === id);
     if (idx === -1) throw new Error('Bill not found');
     store.bills[idx] = { ...store.bills[idx], ...patch, id, updatedAt: now() };
+    // analysis_runs.clientId is DENORMALIZED off the bill (§3.1). Reassigning a
+    // bill to another client has to carry its runs, or per-client totals would
+    // report against the wrong body — enforced here so no caller can forget.
+    if ('clientId' in patch) {
+      store.runs = store.runs.map((r) => (r.billId === id ? { ...r, clientId: patch.clientId } : r));
+    }
     save(store);
     return store.bills[idx];
   }

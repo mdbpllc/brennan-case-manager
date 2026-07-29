@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import type { CaseRecord, PartyRecord } from '../domain/types';
 import type { AnalysisRun, BillType, FeeSchedule, GeneratedDocument, LegalRule, MedicalBill } from '../domain/billing';
 import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount, settlementEligibleRuns } from '../domain/billing';
+import type { CaseClient } from '../domain/client';
+import { isResolved, showsClientLayer, sortClients } from '../domain/client';
 import { computeAnalysis, runScheduleSelection } from '../analysis/benchmark';
 import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
@@ -19,7 +21,12 @@ function money(n: number | undefined): string {
 }
 
 export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
-  const [bills, setBills] = useState<MedicalBill[]>([]);
+  const [allBills, setAllBills] = useState<MedicalBill[]>([]);
+  const [clients, setClients] = useState<CaseClient[]>([]);
+  const [clientParties, setClientParties] = useState<Record<string, string>>({});
+  /** null = "All clients" (the roll-up view). Only ever offered when a second
+   *  client exists — D-CL2-7: a single-client case looks exactly as today. */
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [runs, setRuns] = useState<AnalysisRun[]>([]);
   const [docs, setDocs] = useState<GeneratedDocument[]>([]);
   const [providers, setProviders] = useState<PartyRecord[]>([]);
@@ -30,24 +37,51 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const [openDoc, setOpenDoc] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    const [bs, rs, ds, links, scheds, lrs] = await Promise.all([
+    const [bs, rs, ds, links, scheds, lrs, cls] = await Promise.all([
       db.listBillsForCase(caseRec.id),
       db.listRunsForCase(caseRec.id),
       db.listDocumentsForCase(caseRec.id),
       db.listLinksForCase(caseRec.id),
       db.listFeeSchedules(),
       db.listLegalRules(),
+      db.listClientsForCase(caseRec.id),
     ]);
-    setBills(bs);
+    setAllBills(bs);
     setRuns(rs);
     setDocs(ds);
     setSchedules(scheds);
     setRules(lrs);
-    const parties = await db.getParties(links.map((l) => l.partyId));
+    setClients(sortClients(cls));
+    const parties = await db.getParties([
+      ...links.map((l) => l.partyId),
+      ...cls.map((c) => c.partyId),
+    ]);
     setProviders(parties.filter((p) => p.partyType === 'providerBusiness'));
+    setClientParties(Object.fromEntries(parties.map((p) => [p.id, p.displayName])));
   }, [caseRec.id]);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  const multiClient = showsClientLayer(clients);
+  const clientName = useCallback(
+    (c: CaseClient) => clientParties[c.partyId] ?? '(party not found)',
+    [clientParties],
+  );
+
+  /** The ledger below this line is per-client whenever a client is selected.
+   *  Pooling bills across bodies distorts paid-or-incurred and the Ch. 146 cap
+   *  input, which is why the bill carries a client at all (§3.1). */
+  const bills = useMemo(
+    () => (selectedClientId ? allBills.filter((b) => b.clientId === selectedClientId) : allBills),
+    [allBills, selectedClientId],
+  );
+
+  /** Bills the backfill could not assign — only possible on a flagged case or
+   *  after a second client arrives. Surfaced rather than silently pooled. */
+  const unassignedCount = useMemo(
+    () => (multiClient ? allBills.filter((b) => !b.clientId).length : 0),
+    [allBills, multiClient],
+  );
 
   const providerName = useCallback(
     (id?: string) => providers.find((p) => p.id === id)?.displayName,
@@ -68,6 +102,8 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
     return m;
   }, [runs, schedules, rules]);
 
+  // Roll-up follows the selection: with a client picked it is THAT client's
+  // ledger, so each client's totals stand independently.
   const rollup = useMemo(() => {
     const billed = bills.reduce((s, b) => s + b.billedAmount, 0);
     const outstanding = bills.reduce((s, b) => s + outstandingAmount(b), 0);
@@ -110,9 +146,49 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
 
   return (
     <div>
+      {/* D-CL2-7: this whole block is absent on a single-client case. */}
+      {multiClient && (
+        <div className="card">
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <strong>Client:</strong>
+            <button
+              className={`btn small ${selectedClientId === null ? '' : 'secondary'}`}
+              onClick={() => setSelectedClientId(null)}
+            >All clients</button>
+            {clients.map((c) => (
+              <button
+                key={c.id}
+                className={`btn small ${selectedClientId === c.id ? '' : 'secondary'}`}
+                onClick={() => setSelectedClientId(c.id)}
+              >
+                {clientName(c)}{isResolved(c) ? ' — disbursed' : ''}
+              </button>
+            ))}
+          </div>
+          <div className="muted" style={{ marginTop: 6, fontSize: '0.85em' }}>
+            This case has {clients.length} clients, so bills and totals are kept per client — a bill
+            belongs to a body, and pooling them would distort paid-or-incurred and the Ch. 146 cap input.
+          </div>
+          {unassignedCount > 0 && (
+            <div className="notice" style={{ marginTop: 8 }}>
+              <strong>{unassignedCount} bill(s) are not assigned to a client.</strong> They appear under
+              "All clients" only and are excluded from every per-client total. Open each bill and set its
+              client — nothing here will guess whose body a bill belongs to.
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <h3>Medical bills</h3>
+          <h3>
+            Medical bills
+            {selectedClientId && (
+              <span className="muted" style={{ fontWeight: 'normal' }}>
+                {' '}— {clientName(clients.find((c) => c.id === selectedClientId)!)}
+              </span>
+            )}
+          </h3>
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="btn small secondary" disabled={busy || bills.length === 0} onClick={analyzeAll}>
               {busy ? 'Analyzing…' : 'Analyze all bills'}
@@ -125,6 +201,11 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
           <NewBillForm
             caseId={caseRec.id}
             providers={providers}
+            clients={clients}
+            clientName={clientName}
+            // Single-client case: the one client is implicit, exactly as today.
+            // Multi-client: whichever client is selected, or an explicit pick.
+            defaultClientId={clients.length === 1 ? clients[0].id : selectedClientId}
             onDone={() => { setAdding(false); refresh(); }}
           />
         )}
@@ -239,19 +320,30 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   );
 }
 
-function NewBillForm({ caseId, providers, onDone }: { caseId: string; providers: PartyRecord[]; onDone: () => void }) {
+function NewBillForm({
+  caseId, providers, clients, clientName, defaultClientId, onDone,
+}: {
+  caseId: string;
+  providers: PartyRecord[];
+  clients: CaseClient[];
+  clientName: (c: CaseClient) => string;
+  defaultClientId: string | null;
+  onDone: () => void;
+}) {
   const [label, setLabel] = useState('');
   const [providerId, setProviderId] = useState('');
   const [billType, setBillType] = useState<BillType>(1);
   const [serviceStart, setServiceStart] = useState('');
   const [serviceEnd, setServiceEnd] = useState('');
   const [billedAmount, setBilledAmount] = useState('');
+  const [clientId, setClientId] = useState(defaultClientId ?? '');
 
   const create = async () => {
     if (!label.trim()) return;
     const bill = await db.createBill({
       caseId, providerPartyId: providerId || undefined, label: label.trim(), billType,
       claimType: 'unknown', claimTypeSource: 'detected',
+      clientId: clientId || undefined,
       serviceStart: serviceStart || undefined, serviceEnd: serviceEnd || undefined,
       billedAmount: Number(billedAmount) || 0,
     });
@@ -274,6 +366,15 @@ function NewBillForm({ caseId, providers, onDone }: { caseId: string; providers:
           placeholder="— (link provider party later)"
         />
       </label>
+      {/* Only asked when there is a real choice — D-CL2-7. */}
+      {clients.length > 1 && (
+        <label className="fld"><span className="lab">Client (whose bill)</span>
+          <select value={clientId} onChange={(e) => setClientId(e.target.value)}>
+            <option value="">— unassigned</option>
+            {clients.map((c) => <option key={c.id} value={c.id}>{clientName(c)}</option>)}
+          </select>
+        </label>
+      )}
       <label className="fld"><span className="lab">Type</span>
         <select value={billType} onChange={(e) => setBillType(Number(e.target.value) as BillType)}>
           <option value={1}>Type 1 — raw (provider unpaid)</option>

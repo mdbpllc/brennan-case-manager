@@ -50,10 +50,22 @@ export default function NewCasePage() {
       piFlags: isPI ? flags : [],
       dateOfIncident: dateOfIncident || undefined,
       dateOpened,
-      statuteOfLimitations: sol || undefined,
       courtName: courtName || undefined,
       causeNumber: causeNumber || undefined,
       notes: notes || undefined,
+    });
+    // CL-2: the limitations date belongs to a CLIENT, and a brand-new case has
+    // no parties linked yet — so there is no client record to put it on. Rather
+    // than guess or drop it, hold it on the same flag the backfill uses; it
+    // carries onto the client record when one is added on the Parties tab
+    // (Michael's ruling, 2026-07-28).
+    await db.createClientFlagIfAbsent({
+      caseId: rec.id,
+      reason:
+        'New case: no client record yet. Link a party with the Client or Plaintiff role on the '
+        + 'Parties tab and add them as a client — any limitations date entered at intake carries '
+        + 'onto that record.',
+      preservedStatuteOfLimitations: sol || undefined,
     });
     nav(`/cases/${rec.id}`);
   };

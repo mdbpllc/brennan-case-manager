@@ -3,6 +3,9 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType } from '../domain/types';
 import type { Charge } from '../domain/oaa';
 import { CASE_ROLES, SIDES } from '../domain/types';
+import type { CaseClient } from '../domain/client';
+import { earliestLimitations, isResolved } from '../domain/client';
+import ClientsCard from './ClientsCard';
 import { CASE_TYPES, PI_FLAGS, statusesFor } from '../domain/caseTypes';
 import { ATTORNEY_USER } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
@@ -72,7 +75,7 @@ export default function CaseDetailPage() {
           {rec.practiceArea === 'Criminal' && <ChargesCard caseId={rec.id} />}
         </>
       )}
-      {tab === 'parties' && <PartiesTab caseId={rec.id} />}
+      {tab === 'parties' && <PartiesTab caseRec={rec} />}
       {tab === 'medical' && <MedicalTab caseRec={rec} />}
       {tab === 'calendar' && <CalendarTab caseRec={rec} />}
       {tab === 'transcripts' && <TranscriptsTab caseRec={rec} />}
@@ -103,7 +106,27 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
   const [draft, setDraft] = useState(rec);
   const [reclassNotice, setReclassNotice] = useState<string | null>(null);
 
+  // CL-2: there is no case-level limitations column any more. The case DISPLAYS
+  // the earliest across clients who have not yet disbursed (D-CL2-2, D-CL2-2a).
+  const [clients, setClients] = useState<CaseClient[]>([]);
+  const [solDraft, setSolDraft] = useState('');
+
+  const loadClients = useCallback(
+    () => db.listClientsForCase(rec.id).then(setClients),
+    [rec.id],
+  );
+  useEffect(() => { loadClients(); }, [loadClients]);
+
   useEffect(() => setDraft(rec), [rec]);
+
+  const derivedSol = earliestLimitations(clients);
+  /** D-CL2-7: a single-client case must click exactly as it does today, so the
+   *  Overview keeps an editable limitations field — it just writes THROUGH to
+   *  the one client record instead of to a case column. With two or more
+   *  clients there is no single target, so it becomes read-only derived and
+   *  the per-client dates are edited on the Parties tab. */
+  const solPassthrough = clients.length === 1 ? clients[0] : null;
+  useEffect(() => setSolDraft(solPassthrough?.statuteOfLimitations ?? ''), [solPassthrough]);
 
   // Conditional sections follow the DRAFT while editing, so switching
   // classification immediately shows the right flag controls.
@@ -124,9 +147,18 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
     setDraft((d) => ({ ...d, practiceArea: pa, caseType: pa === rec.practiceArea ? rec.caseType : '' }));
 
   const save = async () => {
+    // Write the limitations date through to the single client record. On a
+    // multi-client case solPassthrough is null and the field isn't offered.
+    if (solPassthrough && (solPassthrough.statuteOfLimitations ?? '') !== solDraft) {
+      await db.updateClient(solPassthrough.id, {
+        statuteOfLimitations: solDraft || undefined,
+        solBasis: solDraft ? (solPassthrough.solBasis ?? 'manual') : undefined,
+      });
+      await loadClients();
+    }
     const updated = await db.updateCase(rec.id, {
       caption: draft.caption, status: draft.status, dateOfIncident: draft.dateOfIncident,
-      dateOpened: draft.dateOpened, statuteOfLimitations: draft.statuteOfLimitations,
+      dateOpened: draft.dateOpened,
       dateClosed: draft.dateClosed, courtName: draft.courtName, causeNumber: draft.causeNumber,
       notes: draft.notes, legacyRef: draft.legacyRef,
       practiceArea: draft.practiceArea, caseType: draft.caseType,
@@ -172,7 +204,21 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <dt>Style</dt><dd>{rec.caption || <span className="empty">—</span>}</dd>
           <dt>Date of incident</dt><dd>{rec.dateOfIncident || <span className="empty">—</span>}</dd>
           <dt>Date opened</dt><dd>{rec.dateOpened}</dd>
-          <dt>Statute of limitations</dt><dd>{rec.statuteOfLimitations || <span className="empty">—</span>}</dd>
+          <dt>Statute of limitations</dt>
+          <dd>
+            {derivedSol || <span className="empty">—</span>}
+            {clients.length > 1 && (
+              <span className="muted" style={{ fontSize: '0.85em' }}>
+                {' '}— earliest across {clients.filter((c) => !isResolved(c)).length} client(s) not yet
+                disbursed; per-client dates are on the Parties tab
+              </span>
+            )}
+            {clients.length === 0 && (
+              <span className="muted" style={{ fontSize: '0.85em' }}>
+                {' '}— no client record on this case yet; see the flag on the Parties tab
+              </span>
+            )}
+          </dd>
           <dt>Date closed</dt><dd>{rec.dateClosed || <span className="empty">—</span>}</dd>
           <dt>Court</dt><dd>{rec.courtName || <span className="empty">—</span>}</dd>
           <dt>Cause number</dt><dd>{rec.causeNumber || <span className="empty">—</span>}</dd>
@@ -226,10 +272,27 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <span className="lab">Date opened</span>
           <input type="date" value={draft.dateOpened} onChange={(e) => setDraft({ ...draft, dateOpened: e.target.value })} />
         </label>
-        <label className="fld">
-          <span className="lab">Statute of limitations</span>
-          <input type="date" value={draft.statuteOfLimitations ?? ''} onChange={(e) => setDraft({ ...draft, statuteOfLimitations: e.target.value })} />
-        </label>
+        {solPassthrough ? (
+          <label className="fld">
+            <span className="lab">Statute of limitations</span>
+            <input type="date" value={solDraft} onChange={(e) => setSolDraft(e.target.value)} />
+            <span className="muted" style={{ fontSize: '0.8em' }}>Saved on the client record</span>
+          </label>
+        ) : (
+          <div className="fld">
+            <span className="lab">Statute of limitations</span>
+            <div>
+              {derivedSol
+                ? <><strong>{derivedSol}</strong> <span className="muted">(earliest, derived)</span></>
+                : <span className="muted">—</span>}
+            </div>
+            <span className="muted" style={{ fontSize: '0.8em' }}>
+              {clients.length === 0
+                ? 'No client record on this case — see the flag on the Parties tab.'
+                : 'Derived across clients not yet disbursed. Edit per-client dates on the Parties tab.'}
+            </span>
+          </div>
+        )}
         <label className="fld">
           <span className="lab">Date closed</span>
           <input type="date" value={draft.dateClosed ?? ''} onChange={(e) => setDraft({ ...draft, dateClosed: e.target.value })} />
@@ -346,7 +409,8 @@ function ChargesCard({ caseId }: { caseId: string }) {
 
 /* ================= PARTIES ================= */
 
-function PartiesTab({ caseId }: { caseId: string }) {
+function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
+  const caseId = caseRec.id;
   const [links, setLinks] = useState<CasePartyLink[]>([]);
   const [parties, setParties] = useState<Record<string, PartyRecord>>({});
   const [allParties, setAllParties] = useState<PartyRecord[]>([]);
@@ -437,6 +501,8 @@ function PartiesTab({ caseId }: { caseId: string }) {
           </tbody>
         </table>
       </div>
+
+      <ClientsCard caseRec={caseRec} onChanged={refresh} />
 
       <div className="notice">
         Enter a party once, link it to as many cases as needed — roles (what a party <em>does</em> here) sit on top of

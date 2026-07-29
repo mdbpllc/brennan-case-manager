@@ -192,6 +192,10 @@ export function computeAnalysis(input: BenchmarkInput): BenchmarkOutput {
     id: runId,
     caseId: bill.caseId,
     billId: bill.id,
+    // CL-2: the run follows its bill's client, denormalized so per-client
+    // queries don't join through bills. Stamped HERE so every path that
+    // creates a run keeps them in step — there is no second place to forget.
+    clientId: bill.clientId,
     runDate: new Date().toISOString(),
     scheduleIds: schedules.map((s) => s.id),
     assumptions: {

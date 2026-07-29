@@ -1,4 +1,5 @@
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import type { CalendarEvent } from '../domain/calendar';
 import type {
   Transcript, TranscriptParticipant, StagingItem, RoutingDecision,
@@ -48,6 +49,29 @@ export interface DataAdapter {
   createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord>;
   /** Only displayName and fields are mutable — party type/kind are frozen at creation. */
   updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord>;
+
+  // ---- Client dimension (CL-2, claimant-dimension-and-case-links-design.md) ----
+  /** Parallel to case_parties, NOT a promotion of it (D-CL2-8): links stay
+   *  authoritative for roles, clients for damages scope. */
+  listClientsForCase(caseId: string): Promise<CaseClient[]>;
+  /** All clients across cases — the medical roll-up and flag banner read this. */
+  listClients(): Promise<CaseClient[]>;
+  createClient(data: Omit<CaseClient, 'id' | 'createdAt' | 'updatedAt'>): Promise<CaseClient>;
+  updateClient(id: string, patch: Partial<CaseClient>): Promise<CaseClient>;
+  /** Refuses while the client still owns bills or runs — a client is a damages
+   *  spine, and orphaning that ledger silently is the failure this prevents. */
+  deleteClient(id: string): Promise<void>;
+
+  /** Cases the backfill could not derive a client for. Never guessed. */
+  listClientFlags(unresolvedOnly?: boolean): Promise<ClientBackfillFlag[]>;
+  /** No-op when the case already has a flag (the table is unique on case_id).
+   *  Used at case creation, where no party is linked yet so no client record
+   *  can exist — the intake limitations date rides on the flag until one does. */
+  createClientFlagIfAbsent(data: Omit<ClientBackfillFlag, 'id' | 'createdAt' | 'resolvedAt'>): Promise<ClientBackfillFlag | null>;
+  getClientFlagForCase(caseId: string): Promise<ClientBackfillFlag | null>;
+  /** Marks the flag resolved. The caller creates the client record first and
+   *  carries `preservedStatuteOfLimitations` onto it (Michael, 2026-07-28). */
+  resolveClientFlag(id: string): Promise<ClientBackfillFlag>;
 
   listLinksForCase(caseId: string): Promise<CasePartyLink[]>;
   listLinksForParty(partyId: string): Promise<CasePartyLink[]>;

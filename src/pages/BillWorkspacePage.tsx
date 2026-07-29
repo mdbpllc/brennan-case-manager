@@ -8,6 +8,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { CaseRecord } from '../domain/types';
+import type { CaseClient } from '../domain/client';
+import { showsClientLayer, sortClients } from '../domain/client';
 import type {
   AnalysisResultLine, AnalysisRun, BillLineItem, CodeMapping, EOBRecord,
   FeeSchedule, GeneratedDocument, LegalRule, MedicalBill,
@@ -67,6 +69,8 @@ export default function BillWorkspacePage() {
   const [schedules, setSchedules] = useState<FeeSchedule[]>([]);
   const [rules, setRules] = useState<LegalRule[]>([]);
   const [providerName, setProviderName] = useState<string | undefined>();
+  const [clients, setClients] = useState<CaseClient[]>([]);
+  const [clientNames, setClientNames] = useState<Record<string, string>>({});
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
 
   const refresh = useCallback(async () => {
@@ -74,12 +78,14 @@ export default function BillWorkspacePage() {
     try {
       const [c, b] = await Promise.all([db.getCase(caseId), db.getBill(billId)]);
       if (!c || !b) { setLoadState('notfound'); return; }
-      const [ls, ms, e, rs, scheds, lrs] = await Promise.all([
+      const [ls, ms, e, rs, scheds, lrs, cls] = await Promise.all([
         db.listLineItems(b.id), db.listCodeMappings(), db.getEobForBill(b.id), db.listRunsForBill(b.id),
-        db.listFeeSchedules(), db.listLegalRules(),
+        db.listFeeSchedules(), db.listLegalRules(), db.listClientsForCase(c.id),
       ]);
       setCaseRec(c); setBill(b); setLines(ls); setMappings(ms); setEob(e); setRuns(rs);
-      setSchedules(scheds); setRules(lrs);
+      setSchedules(scheds); setRules(lrs); setClients(sortClients(cls));
+      const cps = await db.getParties(cls.map((x) => x.partyId));
+      setClientNames(Object.fromEntries(cps.map((p) => [p.id, p.displayName])));
       if (b.providerPartyId) {
         const p = await db.getParty(b.providerPartyId);
         setProviderName(p?.displayName);
@@ -113,6 +119,10 @@ export default function BillWorkspacePage() {
         <div><span className={`badge claim-${bill.claimType}`}>{bill.claimType} claim</span></div>
       </div>
 
+      {/* D-CL2-7: absent entirely on a single-client case. */}
+      {showsClientLayer(clients) && (
+        <BillClientCard bill={bill} clients={clients} clientNames={clientNames} onChanged={refresh} />
+      )}
       <LedgerCard bill={bill} onChange={(b) => { setBill(b); }} />
       <ClaimTypeCard bill={bill} lines={lines} onChange={setBill} />
       {bill.billType === 2 && <EobCard bill={bill} eob={eob} onSaved={refresh} onBillChange={setBill} />}
@@ -121,6 +131,54 @@ export default function BillWorkspacePage() {
       <AnalysisCard bill={bill} caseRec={caseRec} lines={lines} runs={runs} schedules={schedules} rules={rules} providerName={providerName} onChanged={refresh} />
 
       <div className="notice">{DISCLAIMER_TEXT}</div>
+    </div>
+  );
+}
+
+/* ================= CLIENT (multi-client cases only) ================= */
+
+/** A bill belongs to a BODY (§3.1). Reassigning carries the bill's analysis
+ *  runs with it — the adapters enforce that, so the totals cannot end up
+ *  reported against the wrong client. */
+function BillClientCard({ bill, clients, clientNames, onChanged }: {
+  bill: MedicalBill;
+  clients: CaseClient[];
+  clientNames: Record<string, string>;
+  onChanged: () => void;
+}) {
+  const [saving, setSaving] = useState(false);
+  const assign = async (clientId: string) => {
+    setSaving(true);
+    try {
+      const before = bill.clientId ? clientNames[clients.find((c) => c.id === bill.clientId)?.partyId ?? ''] : '(unassigned)';
+      await db.updateBill(bill.id, { clientId: clientId || undefined });
+      await db.appendReviewLog({
+        entityType: 'medical_bill', entityId: bill.id, action: 'edited', user: ATTORNEY_USER,
+        oldValue: before ?? '(unassigned)',
+        newValue: clientId ? clientNames[clients.find((c) => c.id === clientId)?.partyId ?? ''] ?? clientId : '(unassigned)',
+        reason: 'Bill reassigned to a different client (attorney). Its analysis runs moved with it.',
+      });
+      onChanged();
+    } finally {
+      setSaving(false);
+    }
+  };
+  return (
+    <div className="card">
+      <h3>Client</h3>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+        <select value={bill.clientId ?? ''} disabled={saving} onChange={(e) => assign(e.target.value)}>
+          <option value="">— unassigned</option>
+          {clients.map((c) => (
+            <option key={c.id} value={c.id}>{clientNames[c.partyId] ?? '(party not found)'}</option>
+          ))}
+        </select>
+        {!bill.clientId && (
+          <span className="muted">
+            This bill is not assigned to a client, so it is excluded from every per-client total.
+          </span>
+        )}
+      </div>
     </div>
   );
 }

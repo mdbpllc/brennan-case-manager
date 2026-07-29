@@ -17,6 +17,8 @@ import type {
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
 import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
+import { sortClients } from '../domain/client';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -30,7 +32,10 @@ interface CaseRow {
   id: string; file_number: string; legacy_ref: string | null; practice_area: string;
   case_type: string; caption: string | null; status: string; representation_type: string | null;
   commercial_policy_involved: boolean | null; pi_flags: string[] | null;
-  date_of_incident: string | null; date_opened: string; statute_of_limitations: string | null;
+  // No statute_of_limitations — the column was DROPPED by the CL-2 migration
+  // (D-CL2-2). The date lives on case_clients; the case displays the earliest
+  // across unresolved clients, derived and non-writable.
+  date_of_incident: string | null; date_opened: string;
   date_closed: string | null; court_name: string | null; cause_number: string | null;
   county: string | null; in_custody: boolean | null; custody_location: string | null;
   appointment_date: string | null;
@@ -57,7 +62,7 @@ function caseFromRow(r: CaseRow): CaseRecord {
     commercialPolicyInvolved: r.commercial_policy_involved ?? undefined,
     piFlags: (r.pi_flags ?? []) as CaseRecord['piFlags'],
     dateOfIncident: r.date_of_incident ?? undefined, dateOpened: r.date_opened,
-    statuteOfLimitations: r.statute_of_limitations ?? undefined, dateClosed: r.date_closed ?? undefined,
+    dateClosed: r.date_closed ?? undefined,
     courtName: r.court_name ?? undefined, causeNumber: r.cause_number ?? undefined,
     county: r.county ?? undefined, inCustody: r.in_custody ?? undefined,
     custodyLocation: r.custody_location ?? undefined,
@@ -79,7 +84,6 @@ function caseToRow(c: Partial<CaseRecord>): Partial<CaseRow> {
   if (c.piFlags !== undefined) row.pi_flags = c.piFlags;
   if (c.dateOfIncident !== undefined) row.date_of_incident = c.dateOfIncident || null;
   if (c.dateOpened !== undefined) row.date_opened = c.dateOpened;
-  if (c.statuteOfLimitations !== undefined) row.statute_of_limitations = c.statuteOfLimitations || null;
   if (c.dateClosed !== undefined) row.date_closed = c.dateClosed || null;
   if (c.courtName !== undefined) row.court_name = c.courtName || null;
   if (c.causeNumber !== undefined) row.cause_number = c.causeNumber || null;
@@ -237,6 +241,84 @@ export class SupabaseAdapter implements DataAdapter {
     if (res.error) throw new Error(res.error.message);
   }
 
+  // ---- Client dimension (CL-2) ----
+  // case_clients / case_client_flags map 1:1 snake_case↔camelCase, so the
+  // generic row helpers below the billing header serve them unchanged.
+
+  async listClientsForCase(caseId: string): Promise<CaseClient[]> {
+    const res = await this.sb.from('case_clients').select('*')
+      .eq('case_id', caseId).order('display_order');
+    if (res.error) throw new Error(res.error.message);
+    return sortClients(((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<CaseClient>(r)));
+  }
+
+  async listClients(): Promise<CaseClient[]> {
+    const res = await this.sb.from('case_clients').select('*').order('display_order');
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<CaseClient>(r));
+  }
+
+  async createClient(data: Omit<CaseClient, 'id' | 'createdAt' | 'updatedAt'>): Promise<CaseClient> {
+    const res = await this.sb.from('case_clients').insert(toRow(data)).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<CaseClient>(res.data as Record<string, unknown>);
+  }
+
+  async updateClient(id: string, patch: Partial<CaseClient>): Promise<CaseClient> {
+    const res = await this.sb.from('case_clients').update(toRow(patch)).eq('id', id).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<CaseClient>(res.data as Record<string, unknown>);
+  }
+
+  async deleteClient(id: string): Promise<void> {
+    // Same guard as the local adapter, checked here rather than left to the FK:
+    // medical_bills.client_id is `on delete set null`, so Postgres would let the
+    // delete through and silently orphan the ledger. The adapters must not
+    // diverge on this (2026-07-21 audit item 9).
+    const owned = await this.sb.from('medical_bills').select('id').eq('client_id', id);
+    if (owned.error) throw new Error(owned.error.message);
+    const n = (owned.data ?? []).length;
+    if (n > 0) {
+      throw new Error(`Cannot remove this client — ${n} bill(s) are assigned to them. Reassign the bills first.`);
+    }
+    const res = await this.sb.from('case_clients').delete().eq('id', id);
+    if (res.error) throw new Error(res.error.message);
+  }
+
+  async listClientFlags(unresolvedOnly = false): Promise<ClientBackfillFlag[]> {
+    let q = this.sb.from('case_client_flags').select('*');
+    if (unresolvedOnly) q = q.is('resolved_at', null);
+    const res = await q;
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<ClientBackfillFlag>(r));
+  }
+
+  async createClientFlagIfAbsent(
+    data: Omit<ClientBackfillFlag, 'id' | 'createdAt' | 'resolvedAt'>,
+  ): Promise<ClientBackfillFlag | null> {
+    // case_client_flags is unique on case_id — let the constraint decide rather
+    // than racing a read against a write.
+    const res = await this.sb.from('case_client_flags')
+      .upsert(toRow(data), { onConflict: 'case_id', ignoreDuplicates: true })
+      .select().maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<ClientBackfillFlag>(res.data as Record<string, unknown>) : null;
+  }
+
+  async getClientFlagForCase(caseId: string): Promise<ClientBackfillFlag | null> {
+    const res = await this.sb.from('case_client_flags').select('*')
+      .eq('case_id', caseId).is('resolved_at', null).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<ClientBackfillFlag>(res.data as Record<string, unknown>) : null;
+  }
+
+  async resolveClientFlag(id: string): Promise<ClientBackfillFlag> {
+    const res = await this.sb.from('case_client_flags')
+      .update({ resolved_at: new Date().toISOString() }).eq('id', id).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<ClientBackfillFlag>(res.data as Record<string, unknown>);
+  }
+
   // ---- Billing module (Phase 1a) ----
   // Generic helpers: billing columns are 1:1 snake_case of the camelCase keys.
 
@@ -278,7 +360,15 @@ export class SupabaseAdapter implements DataAdapter {
   }
 
   async updateBill(id: string, patch: Partial<MedicalBill>): Promise<MedicalBill> {
-    return this.updateRow<MedicalBill>('medical_bills', id, patch);
+    const updated = await this.updateRow<MedicalBill>('medical_bills', id, patch);
+    // Keep the denormalized run.client_id in step with its bill (§3.1). The
+    // local adapter does the same — the two must not diverge (audit item 9).
+    if ('clientId' in patch) {
+      const res = await this.sb.from('analysis_runs')
+        .update({ client_id: patch.clientId ?? null }).eq('bill_id', id);
+      if (res.error) throw new Error(res.error.message);
+    }
+    return updated;
   }
 
   async deleteBill(id: string): Promise<void> {

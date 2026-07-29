@@ -1,6 +1,7 @@
 // Demo seed data so the slice is clickable out of the box.
 // Entirely fictional. Wiped whenever you clear the browser's site data.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import type { CalendarEvent } from '../domain/calendar';
 import type { Charge } from '../domain/oaa';
 import { billingSeedData } from './billingSeed';
@@ -14,6 +15,8 @@ export function seedData(): {
   cases: CaseRecord[];
   parties: PartyRecord[];
   links: CasePartyLink[];
+  clients: CaseClient[];
+  clientFlags: ClientBackfillFlag[];
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
   charges: Charge[];
@@ -140,7 +143,9 @@ export function seedData(): {
       caseType: 'Motor vehicle collision', caption: 'Garcia v. Allied Freight Lines, Inc.',
       status: 'Treatment in progress', commercialPolicyInvolved: true,
       piFlags: ['Trucking/commercial vehicle'],
-      dateOfIncident: '2026-03-14', dateOpened: '2026-03-16', statuteOfLimitations: '2028-03-14',
+      // No statuteOfLimitations — retired by CL-2. It lives on the client
+      // record below and the Overview derives the earliest from there.
+      dateOfIncident: '2026-03-14', dateOpened: '2026-03-16',
       notes: 'Preservation letters out to Allied re: ELD/telematics and dash-cam within 24 hrs of signing.',
       createdAt: t, updatedAt: t,
     },
@@ -179,6 +184,43 @@ export function seedData(): {
     { id: 'l13', caseId: 'c-servpro-lien', partyId: 'p-adj-pruitt', role: 'Adjuster on claim', side: 'Opposing', createdAt: t },
   ];
 
+  // Client records (CL-2). One per client-role party — parallel to `links`,
+  // which keeps its Client rows untouched (D-CL2-8).
+  //
+  // c-servpro-lien deliberately gets NO client: it has no client-role party, so
+  // it is the demo-mode instance of the backfill flag. It is flagged, never
+  // guessed and never placeholdered.
+  const clients: CaseClient[] = [
+    {
+      id: 'cc-garcia', caseId: 'c-garcia-mvc', partyId: 'p-client-garcia',
+      posture: 'claimant', displayOrder: 0,
+      statuteOfLimitations: '2028-03-14', solBasis: 'standard',
+      clientFlags: [], feeArrangement: { type: 'contingency', contingencyPercent: 33.33 },
+      profileFields: {}, createdAt: t, updatedAt: t,
+    },
+    {
+      // Criminal: the nearly-empty row. No damages spine, no limitations date —
+      // per-offense clocks live on `charges`. Created anyway, as the future
+      // anchor for representation type (brief §4 q2, stated default, #27).
+      id: 'cc-boyd', caseId: 'c-boyd-dwi', partyId: 'p-client-boyd',
+      posture: 'defendant', displayOrder: 0,
+      clientFlags: [], feeArrangement: { type: 'flat' },
+      profileFields: {}, createdAt: t, updatedAt: t,
+    },
+  ];
+
+  const clientFlags: ClientBackfillFlag[] = [
+    {
+      id: 'ccf-servpro', caseId: 'c-servpro-lien',
+      reason:
+        'CL-2 backfill: no party on this case carries a Client or Plaintiff role, so no '
+        + 'client record could be derived. Not guessed and not placeholdered. Link a '
+        + 'client-role party and create the client record; any preserved limitations '
+        + 'date carries over to it.',
+      createdAt: t,
+    },
+  ];
+
   // Demo calendar events (Garcia case) — 'pending' until Outlook is connected.
   const events: CalendarEvent[] = [
     {
@@ -210,7 +252,7 @@ export function seedData(): {
   ];
 
   return {
-    cases, parties, links, fileCounters: { [yy]: 3 }, events, charges,
+    cases, parties, links, clients, clientFlags, fileCounters: { [yy]: 3 }, events, charges,
     ...billingSeedData(),
     ...transcriptSeedData({ cases, parties, links }),
     ...billsSeedData(),

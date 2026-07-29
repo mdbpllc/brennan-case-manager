@@ -256,6 +256,16 @@ export default function OaaIntakePage() {
       }
       await db.createLink({ caseId: rec.id, partyId, role: 'Client', side: 'Ours' });
 
+      // CL-2: intake already knows exactly who the client is, so create the
+      // client record outright rather than leaving a flag for Michael. A
+      // criminal client is the nearly-empty row (ruled default, #27): no
+      // damages spine and no limitations date — the per-offense clocks live on
+      // `charges` below. It is the future anchor for representation type.
+      await db.createClient({
+        caseId: rec.id, partyId, posture: 'defendant', displayOrder: 0,
+        clientFlags: [], feeArrangement: {}, profileFields: {},
+      });
+
       // Charges
       for (const c of charges) {
         if (!c.offense.trim() && !c.causeNumber.trim()) continue;
