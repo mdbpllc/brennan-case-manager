@@ -29,3 +29,14 @@ unruled judgment BS-1 explicitly rejected ("let Code trim live state").
 Candidates a future ruling could designate for this file, listed but NOT moved:
 the two Outlook design items kept as Phase 2 evidence ("do NOT fix in isolation"); the
 MOOT Family Code statutes block. Both remain in BUILD-STATE until Michael says otherwise.
+
+**RESOLVED 2026-07-28 by Michael's BS-1a ruling — and resolved WITHOUT moving anything
+here.** The eleven dispositions worked by deletion, compression, and pointers to the
+documents that already own the content, not by designating live state as closed. Both
+candidates were disposed of in place: the two Outlook items compressed to a single
+BUILD-STATE line pointing at `spec-feedback.md` (they are live Phase-2 evidence, not
+closed items, so this file was the wrong home for them); the Family Code statutes block
+was already gone from BUILD-STATE before the ruling — the removal is recorded at the
+attorney review queue's §2 "Still to pull" entry, where family law is struck as out of
+scope by the 2026-07-26 ruling. **No candidate list is carried forward. This section is
+history, not a pending question.**

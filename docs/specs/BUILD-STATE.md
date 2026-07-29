@@ -9,16 +9,11 @@ Supabase mode went from unusable to working. History: `archive-project-history-b
   withdrawn, and deliberately-not-built items live there. Check it before proposing or
   rebuilding anything that appears absent from the repo. **Never drop this pointer line**
 
-- **LENGTH: 168 LINES AGAINST THE 150 CAP — 18 OVER. FLAGGED PER BS-1a, NOT SOLVED.** Auth is
-  a genuine addition (~30 lines: the auth section, the grants finding, the exercised-vs-untested
-  record). Code compressed **its own new prose** (171 → 168) but trimmed **no** pre-existing
-  content: choosing what dies is the BS-1a decision and it is Michael's. **BS-1a is now
-  overdue** — the 07-27 split bought one line; this session spent thirty
-
 ## Screens live (what Michael can click)
 - **Sign-in gate — Supabase mode only.** Magic link; no password anywhere. Demo mode is
   deliberately ungated and unchanged
-- /diagnostics — database + RLS probe (Supabase mode only); see "RLS, exercised" below
+- /diagnostics — database + RLS probe (Supabase mode only); see "RLS, exercised" below;
+  treat probe output as evidence, not gospel
 - /cases — case list; compact statute-worklist card (the de facto dashboard)
 - /cases/new — new-case form (case types, file numbers auto-assigned)
 - /cases/new/oaa — OAA order upload → draft review → Create Matter; charges as child records
@@ -45,28 +40,19 @@ Supabase mode went from unusable to working. History: `archive-project-history-b
   session persistence, sign-out (scoped `local`) all work and were used. The form **cannot
   create an account** (`shouldCreateUser: false`) — his user was made by hand in the
   dashboard, so nobody can self-provision. One shared client serves data + auth
-- **Implicit flow, chosen from the installed auth-js 2.110.8 source, not the docs** (PKCE
-  needs a code-verifier in the browser that requested the link). Tokens arrive in the URL
-  fragment; a dedicated `/auth/callback` plus a first-import ordering guard keep the SPA
-  router from destroying them — the log-#20 Outlook failure, designed out deliberately
-- **Tokens are single-use and effectively single-device.** Proven live: the first link was
-  opened on a phone, consuming the token and expiring the desktop's. Open the link in the
-  browser you want signed in
+- Implicit flow, chosen from the installed auth-js source; rationale in log #28
+- **Tokens are single-browser: open the link in the browser you want signed in**
 
 ## Data layer
 - Adapters working: local (localStorage demo) AND supabase; UI talks only to the DataAdapter
   interface — every feature works in both modes
 - Default mode: demo localStorage, fictional seeds; store version v9; reseeds migrate
   imported schedules + confirmed runs, back up the old store
-- **`db/schema.sql` HAS NOW BEEN EXECUTED against the live project (first time ever,
-  2026-07-28) — SUPA-1's "never executed" premise is retired.** 32 tables, RLS on all 32,
-  31 policies, `file_counters` deliberately policy-less
-- **GRANTS ARE NOW PART OF THE SCHEMA — load-bearing.** RLS decides which ROWS a role may
-  touch; it does NOT grant access to the table, and PostgREST checks the privilege layer
-  FIRST. The schema had **zero GRANTs**, so the first live run refused all 32 tables 401
-  (`42501 permission denied`), no policy ever evaluated. Fixed by
-  `db/migrations/2026-07-28-api-role-grants.sql`, also appended to `db/schema.sql`.
-  `authenticated` ONLY; **`anon` gets nothing by design**
+- **`db/schema.sql` EXECUTED against the live project 2026-07-28** (first time ever). 32
+  tables, RLS on all 32, 31 policies, `file_counters` deliberately policy-less
+- **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY; **`anon` gets
+  nothing by design.** `db/migrations/2026-07-28-api-role-grants.sql`, also appended to
+  `db/schema.sql`
 - **`ALTER DEFAULT PRIVILEGES` deliberately NOT set** (auto-expose stays off): **every new
   table must carry its own GRANT or it is unreachable — CL-2's `case_clients` INHERITS THIS**
 - **No case-event/CE table, no time_entries, no claims table**
@@ -85,11 +71,6 @@ Supabase mode went from unusable to working. History: `archive-project-history-b
 - **`file_counters` is protected at the PRIVILEGE layer, not by RLS** (revoked on purpose,
   reached only via the SECURITY DEFINER function). Its 403 is NOT an RLS result. The
   signed-out baseline is likewise a privilege refusal, not an RLS empty set
-- **The probe told three lies before it told the truth** — 32/32 tables against a server with
-  no database; a bare "—" for errors while everything failed 401 (`head:true`, and HEAD carries
-  no body by spec); and a banner firing on a healthy run. Two caught by its own controls,
-  **the third by Michael**. Banner trigger is now a pure function under test. Treat probe
-  output as evidence, not gospel
 
 ## Known stubs & fakes
 - **NO REAL CLIENT DATA HAS EVER ENTERED THE APP.** Still true after auth — everything
@@ -143,24 +124,14 @@ Supabase mode went from unusable to working. History: `archive-project-history-b
   medical tab afterward on the v0.1/Phase 1a model; not a glance
 - Accepted cost, now realized in part: some RLS work may need revisiting after CL-2
   restructures the schema — rework, not loss
-- **BS-1a IS OVERDUE AND THIS FILE IS OVER CAP** (see the flag at the top). Designating
-  content for the ledger is Michael's call; Code will not trim unruled live state
-- **UNRULED: `model-routing-plan.md`** — **adopt nothing from it.** Records that **effort has
-  NEVER been set in this project**, and a **QUEUE-RUNNER defect** (merged open items keep ID
-  and label but lose the *question*; Q-5's substance was lost that way)
-- Client-model §10: **D-CL2-8 is Michael's own ruling** (parallel, not promotion).
-  **CL2-CHECK-1** is **EXPLICITLY DEFERRED — do not build.** Still open: **D-CL2-3**,
-  D-CL1-1..3 (**D-CL1-3 gated on PR-3 ALONE**), **UM-1, UM-2, PR-GATE-1, MIN-1**, and
-  **CIV-1 (civil-litigation damages entirely UNSPECIFIED — own design session), PROB-1, PA-1**
-- **HALF-ANSWERED, needs a yes/no: O5** (`direction`/`conditionalDowngrade`)
-- OPEN, Michael's: **BS-1a (overdue)**; PR-3; V16; V14a; V15 survival half (V10 citator pass
-  RUNNABLE); V4; V10–V13; Entry 1(c-3); RE-1; Q-6; M-3; M-4; K-5–K-7; registry 1–10.
-  **AUTH-1 is CLOSED — ruled magic link 2026-07-28**
+- **UNRULED: `model-routing-plan.md`** — adopt nothing; the memo carries its own findings
+- **Client-model decisions: design doc §10 is authoritative**; live openers are D-CL2-3 and
+  CL2-CHECK-1 (deferred, do not build)
+- **Everything awaiting Michael's ruling lives in `docs/specs/attorney-review-queue.md`** —
+  reconciled to log #28. Do not maintain a second roster here
 - Statutes queue resume: TDRPC 1.04 (retained), TRCP 204.1, then the Estates Code territory
   probate needs. The probate chapters are the O6 stress test
-- **Two Outlook design items, both in spec-feedback, neither built:** event notes need
-  multi-line + structure; and **deleting an event in Outlook is never observed**, so the next
-  push 404s and **deliberately re-creates it**. Do NOT fix in isolation — Phase 2 evidence
+- Two Outlook Phase-2 design items in spec-feedback; do not fix in isolation
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT NEEDED: session-1
   heartbeat voice capture (never reached Code)
 - Supabase Pro upgrade (gate 1), security review (gate 2), **gate 3 RLS now PARTLY satisfied —

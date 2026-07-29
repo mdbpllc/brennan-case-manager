@@ -1,12 +1,12 @@
 # ATTORNEY REVIEW QUEUE — everything awaiting Michael's personal read or ruling
 
-**Status:** WORKING CHECKLIST. Compiled 2026-07-26 in the design space, then updated the same day as items closed.
+**Status:** WORKING CHECKLIST. Compiled 2026-07-26 in the design space, then updated the same day as items closed. **Reconciled to session-log #28 on 2026-07-28 (BS-1a item 10)** — §7 was added in that pass, and `BUILD-STATE.md` now points here instead of carrying its own roster. **This file is the single register of what awaits Michael's ruling; keep it current or the pointer lies.**
 
 **Canonical repo path:** `docs/specs/attorney-review-queue.md` — filed 2026-07-26. Duplicate-routing check run at filing: no equivalent review-queue document existed; the only prior partial is `trcp-deadline-skeleton-2026-03-01.md` §9 (TRCP entries only), which now points here and remains the TRCP-priority detail.
 
 **Why this exists.** The mining has outrun the ruling. Research has produced propositions faster than they can be verified, and the queue — not the research — is now the project's bottleneck (H22). This document is the whole queue in one place, so the bottleneck is at least visible.
 
-**Convention:** ✅ = closed on 2026-07-26 · ⬜ = open. Each open item carries **the actual question in bold**.
+**Convention:** ✅ = closed (2026-07-26 unless a later date is stated) · ⬜ = open. Each open item carries **the actual question in bold**.
 
 ---
 
@@ -104,7 +104,7 @@
 - ⬜ **`apil-2025-course-book-mining-pass2.md` §8** — H59–H67. **H60: do payer threads arm at intake off the coverage inventory, rather than at settlement?**
 - ⬜ **`apil-2025-course-book-mining-pass3.md` §10** — H68–H83. **H77: does the registry get a `precedential_status` field separate from verification status?** *Gregory v. Chohan* is a plurality treated as binding by nearly every court citing it. **Now has a second live exhibit** — the contested *Allstate* dicta in Entry 2(j).
 - ⬜ **`trcp-deadline-skeleton-2026-03-01.md` §9** — **H22: do the TRCP entries queue behind entries 1–10, or interleave by build urgency?** The queue arithmetic is the project's bottleneck.
-- ⬜ **`registry-courtlistener-integration-design.md`** — **webhook or email given current hosting posture, and does cite-validation pull forward?** Separately: **FLP account + Tier 1 + connector setup — promo ends 8/6.**
+- ⬜ **`registry-courtlistener-integration-design.md`** — **webhook or email given current hosting posture, and does cite-validation pull forward?** *(FLP account + Tier 1 + connector: CLOSED 2026-07-26 — see §2. The "promo ends 8/6" clause is struck; it was never a cliff.)*
 - ⬜ **`criminal-appointment-intake-and-docket-enhancements.md`** — **which appointee names count as yours, and does that vary by county?** The Hill Country Regional Public Defender Office would currently hard-stop.
 - ⬜ **`spec-feedback.md`, 2026-07-25 OAA entry** — **do you want a cause-number-pending reminder, and should gender and race be captured at all?**
 - ⬜ **`BUILD-SESSION-NOTES.md`** — 2026-07-21 audit, unreviewed across ~10 log entries. **Should case classification stay frozen at creation, or become editable?**
@@ -120,4 +120,43 @@ Unchanged by today's work, and worth stating plainly at the top of any session:
 1. **D3** — the shared touch substrate. Blocks every schema build in the project.
 2. **Entry 1(c-3) and Entry 4** — qualified LOP and the fatal-defect conflict. Together they block the disbursement checklist and the billing module's LOP math. *Entry 4 advanced today but did not close: the surviving question (V4) is a case-law question the statute cannot answer.*
 
-**Hardest date on the board: FLP by 8/6.**
+*(The former "hardest date on the board: FLP by 8/6" line is struck — closed 2026-07-26. There is no dated deadline on this board.)*
+
+---
+
+## 7 — PROJECT AND BUILD OPEN ITEMS
+
+**Added 2026-07-28 (BS-1a item 10).** These were carried in `BUILD-STATE.md`'s own roster until that ruling replaced it with a pointer to this file. They are Michael's, same as everything above; they are separated only because they are build/process items rather than legal-research items.
+
+### Closed by ruling, recorded so the status lines stay truthful
+
+- ✅ **AUTH-1 — sign-in method for the single-user auth slice?** **CLOSED 2026-07-28: magic link** ("Let's go with Magic Link"). Built and exercised the same day; see log #28.
+- ✅ **BS-1a — BUILD-STATE was at cap with the ledger split delivering one line: designate more content for the ledger, split live state differently, or accept the cap pressure?** **CLOSED 2026-07-28 by eleven item-by-item dispositions** — deletion, compression, and pointers rather than ledger moves. Post-cut length 139 of 150. See log #29.
+- ✅ **D-CL2-8** — parallel, not promotion. **Adopted 2026-07-28 as Michael's own ruling**; the "Claude's call" asterisk retired.
+- ✅ **D-CL2-2a** — earliest limitations derives from **unresolved clients only**, resolved meaning disbursement (D-CL2-4a). Closed 2026-07-26.
+
+### Client model — the design doc's §10 is authoritative for all of these
+
+`docs/specs/claimant-dimension-and-case-links-design.md` §10 carries the full table. Listed here by ID so the queue is complete; **do not maintain a second copy of the question text**.
+
+- ⬜ **D-CL2-3** — **does the time tracker's "one rate per case, uniform" rule survive per-client fee arrangements, or become one rate per client?** NOT closed by CL-2's `fee_arrangement` field (#27, reaffirmed by the CL-2 build).
+- ⬜ **CL2-CHECK-1** — advisory client-role ↔ client-record consistency check (flag/review-log, never auto-fix). **DEFERRED 2026-07-28 — do not build.** Adopt later or drop?
+- ⬜ **D-CL1-1 · D-CL1-2 · D-CL1-3** — CL-1 / `case_links` shape. **D-CL1-3 is gated on PR-3 alone.**
+- ⬜ **UM-1 · UM-2 · PR-GATE-1 · MIN-1** — the four unruled proposals; none blocks any authorized slice.
+- ⬜ **CIV-1** — **civil-litigation damages are entirely UNSPECIFIED.** Needs its own design session; breach of contract is the workhorse of that line.
+- ⬜ **PROB-1** — probate client profile unwritten. ⬜ **PA-1** — practice-area edit vs. derived profiles.
+
+### Process, tooling, and housekeeping
+
+- ⬜ **O5 — half-answered, needs a yes/no.** `direction` / `conditionalDowngrade`: **absorbed into the ruled fee-profile shape, but the substance was never ruled — confirm or reject it.**
+- ⬜ **Q-5** — the model-usage clarifying clause. Drafted at `model-routing-plan.md` §7.2; **the memo does not close it.** Ruling it fires instructions trigger #3.
+- ⬜ **Q-6** — **FLP internal-tooling terms.** Research use is within bounds; wiring the CourtListener API into the app is **UNAUTHORIZED** until Michael resolves it with FLP directly.
+- ⬜ **PR-3** — the mis-parented `Probate companion` case type (also at §2 above).
+- ⬜ **RE-1** — referral engine (also at §2 above).
+- ⬜ **M-3** — Medchron fictional-content check. ⬜ **M-4** — **LegiScan key rotation after the T3 build (firm).**
+- ⬜ **K-5** — Uvalde docket worksheet instructions: home undecided.
+- ⬜ **QR-1** — QUEUE-RUNNER merges packet open items down to ID + label and then deletes the packet, **losing the question itself** (this destroyed Q-5's original wording). PROPOSED, unruled.
+- ⬜ **RR-1** — re-read documents authored earlier in a session against rulings made later in it, before the packet ships. PROPOSED, unruled.
+- ⬜ **Registry entries 1–10 sign-off** — Michael's, one at a time (detail at §5 above).
+
+**Flagged 2026-07-28, not invented:** BUILD-STATE carried the range **"K-5–K-7"**, but **K-6 and K-7 have no question text anywhere in the repo** — no log entry, no doc. Only K-5 is defined. This is the QR-1 defect class (an ID surviving its question) or a copy-forward error. Recorded as unknown rather than reconstructed; **Michael or the design side has to say what they were, or the IDs retire.**
