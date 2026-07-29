@@ -132,6 +132,29 @@ function toRow(obj: object): Record<string, unknown> {
   return out;
 }
 
+/**
+ * Row mapping for UPDATES, where "absent" and "present but undefined" mean
+ * different things:
+ *   - key absent       → don't touch that column
+ *   - key === undefined → CLEAR that column (write null)
+ *
+ * `toRow` collapses both to "don't touch", which made every clear-a-field
+ * action a silent no-op against Postgres while working fine in localStorage —
+ * the demo/Supabase divergence the adapter seam exists to prevent (2026-07-21
+ * audit item 9). Found live 2026-07-28: "Undo disbursed" did nothing, because
+ * `{ disbursedAt: undefined }` mapped to an empty update.
+ *
+ * Deliberately NOT used for inserts: there, an explicit null would override a
+ * column default (e.g. `posture`, which is NOT NULL with a default).
+ */
+export function toUpdateRow(obj: object): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    out[snakeKey(k)] = v === undefined ? null : v;
+  }
+  return out;
+}
+
 function fromRow<T>(row: Record<string, unknown>): T {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) out[camelKey(k)] = v === null ? undefined : v;
@@ -275,7 +298,7 @@ export class SupabaseAdapter implements DataAdapter {
   }
 
   async updateClient(id: string, patch: Partial<CaseClient>): Promise<CaseClient> {
-    const res = await this.sb.from('case_clients').update(toRow(patch)).eq('id', id).select().single();
+    const res = await this.sb.from('case_clients').update(toUpdateRow(patch)).eq('id', id).select().single();
     if (res.error) throw new Error(res.error.message);
     return fromRow<CaseClient>(res.data as Record<string, unknown>);
   }
@@ -356,7 +379,7 @@ export class SupabaseAdapter implements DataAdapter {
   }
 
   private async updateRow<T>(table: string, id: string, patch: object): Promise<T> {
-    const res = await this.sb.from(table).update(toRow(patch)).eq('id', id).select().single();
+    const res = await this.sb.from(table).update(toUpdateRow(patch)).eq('id', id).select().single();
     if (res.error) throw new Error(res.error.message);
     return fromRow<T>(res.data as Record<string, unknown>);
   }
