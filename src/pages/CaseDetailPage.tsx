@@ -109,24 +109,40 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
   // CL-2: there is no case-level limitations column any more. The case DISPLAYS
   // the earliest across clients who have not yet disbursed (D-CL2-2, D-CL2-2a).
   const [clients, setClients] = useState<CaseClient[]>([]);
+  const [clientNames, setClientNames] = useState<Record<string, string>>({});
   const [solDraft, setSolDraft] = useState('');
 
-  const loadClients = useCallback(
-    () => db.listClientsForCase(rec.id).then(setClients),
-    [rec.id],
-  );
+  const loadClients = useCallback(async () => {
+    const cs = await db.listClientsForCase(rec.id);
+    setClients(cs);
+    const ps = await db.getParties(cs.map((c) => c.partyId));
+    setClientNames(Object.fromEntries(ps.map((p) => [p.id, p.displayName])));
+  }, [rec.id]);
   useEffect(() => { loadClients(); }, [loadClients]);
 
   useEffect(() => setDraft(rec), [rec]);
 
   const derivedSol = earliestLimitations(clients);
   /** D-CL2-7: a single-client case must click exactly as it does today, so the
-   *  Overview keeps an editable limitations field — it just writes THROUGH to
-   *  the one client record instead of to a case column. With two or more
-   *  clients there is no single target, so it becomes read-only derived and
-   *  the per-client dates are edited on the Parties tab. */
+   *  Overview keeps an editable limitations field — it writes THROUGH to the one
+   *  client record instead of to a case column. With two or more clients there
+   *  is no single target, so it goes read-only derived and the per-client dates
+   *  are edited on the Parties tab.
+   *
+   *  APPROVED by Michael 2026-07-28 as honoring D-CL2-2's REASON, not merely its
+   *  wording: that ruling retired the case field because a writable SECOND COPY
+   *  drifts silently against a derived value. The pass-through has no second
+   *  copy — it writes the client record itself, the only storage location, and
+   *  the display derives from that same source — so silent divergence is
+   *  structurally impossible here. */
   const solPassthrough = clients.length === 1 ? clients[0] : null;
   useEffect(() => setSolDraft(solPassthrough?.statuteOfLimitations ?? ''), [solPassthrough]);
+
+  /** Label the field by what it DOES, not by what it is derived from. Michael,
+   *  walking the slice 2026-07-28: "I edited it believing I was overriding a
+   *  derived value." A field that writes one place and reads from the same
+   *  place has to say so. */
+  const passthroughName = solPassthrough ? clientNames[solPassthrough.partyId] : undefined;
 
   // Conditional sections follow the DRAFT while editing, so switching
   // classification immediately shows the right flag controls.
@@ -207,6 +223,12 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <dt>Statute of limitations</dt>
           <dd>
             {derivedSol || <span className="empty">—</span>}
+            {solPassthrough && (
+              <span className="muted" style={{ fontSize: '0.85em' }}>
+                {' '}— {passthroughName ? `${passthroughName}'s` : "the client's"} date, stored on the
+                client record; Edit writes it there
+              </span>
+            )}
             {clients.length > 1 && (
               <span className="muted" style={{ fontSize: '0.85em' }}>
                 {' '}— earliest across {clients.filter((c) => !isResolved(c)).length} client(s) not yet
@@ -274,9 +296,15 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
         </label>
         {solPassthrough ? (
           <label className="fld">
-            <span className="lab">Statute of limitations</span>
+            <span className="lab">
+              Statute of limitations — writes {passthroughName ? `${passthroughName}'s` : "the client's"} limitations date
+            </span>
             <input type="date" value={solDraft} onChange={(e) => setSolDraft(e.target.value)} />
-            <span className="muted" style={{ fontSize: '0.8em' }}>Saved on the client record</span>
+            <span className="muted" style={{ fontSize: '0.8em' }}>
+              Not an override. The client record is the only place this date is stored, and the
+              Overview reads it back from there — editing here and editing it on the Parties tab
+              are the same edit.
+            </span>
           </label>
         ) : (
           <div className="fld">
