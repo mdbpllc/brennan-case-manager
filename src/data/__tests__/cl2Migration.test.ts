@@ -84,6 +84,14 @@ describe('CL-2 demo-store migration (v9 → v10)', () => {
     expect(pi.solBasis).toBe('manual');
   });
 
+  it('derives posture from the practice area — our criminal client is the DEFENDANT', () => {
+    // Regression: the first cut hardcoded 'claimant', which was wrong on every
+    // criminal file. Caught in the browser against a real pre-existing store.
+    const s = run();
+    expect(s.clients.find((c) => c.caseId === 'c-crim')!.posture).toBe('defendant');
+    expect(s.clients.find((c) => c.caseId === 'c-pi')!.posture).toBe('claimant');
+  });
+
   it('creates the criminal client as a nearly-empty row with no limitations date', () => {
     // Ruled default (#27): every case gets one; criminal clocks stay on charges.
     const crim = run().clients.find((c) => c.caseId === 'c-crim')!;

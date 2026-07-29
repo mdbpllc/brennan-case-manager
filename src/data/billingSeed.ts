@@ -54,7 +54,7 @@ export function billingSeedData(): {
 
   const bills: MedicalBill[] = [
     {
-      id: 'mb-procare', caseId: 'c-garcia-mvc', providerPartyId: 'p-prov-procare',
+      id: 'mb-procare', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', providerPartyId: 'p-prov-procare',
       label: 'ProCare — chiropractic course of treatment', billType: 1,
       claimType: 'professional', claimTypeSource: 'detected',
       serviceStart: '2026-03-18', serviceEnd: '2026-05-29',
@@ -63,7 +63,7 @@ export function billingSeedData(): {
       createdAt: t, updatedAt: t,
     },
     {
-      id: 'mb-ctrmc', caseId: 'c-garcia-mvc', providerPartyId: 'p-hosp-ctrmc',
+      id: 'mb-ctrmc', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', providerPartyId: 'p-hosp-ctrmc',
       label: 'Central Texas Regional — ER visit day of collision', billType: 2,
       claimType: 'facility', claimTypeSource: 'detected',
       serviceStart: '2026-03-14', serviceEnd: '2026-03-14',

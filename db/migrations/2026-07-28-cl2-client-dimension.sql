@@ -137,7 +137,10 @@ insert into case_clients (case_id, party_id, posture, display_order,
 select
   cp.case_id,
   cp.party_id,
-  'claimant',
+  -- Posture follows the practice area: our client on a criminal matter is the
+  -- DEFENDANT. Defaulting everyone to 'claimant' would be wrong on every
+  -- criminal file in the system.
+  case when c.practice_area = 'Criminal' then 'defendant' else 'claimant' end,
   row_number() over (partition by cp.case_id order by cp.created_at, cp.id) - 1,
   c.statute_of_limitations,
   case when c.statute_of_limitations is not null then 'manual' end,

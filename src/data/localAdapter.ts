@@ -149,7 +149,10 @@ export function migrateV9ToV10(old: Store, raw: string): Store {
         id: uid(),
         caseId: c.id,
         partyId: link.partyId,
-        posture: 'claimant',
+        // Posture follows the practice area: our client on a criminal matter is
+        // the DEFENDANT. Deriving it beats defaulting everyone to 'claimant',
+        // which would be wrong on every criminal file in the system.
+        posture: c.practiceArea === 'Criminal' ? 'defendant' : 'claimant',
         displayOrder: i,
         statuteOfLimitations: c.statuteOfLimitations,
         solBasis: c.statuteOfLimitations ? 'manual' : undefined,
