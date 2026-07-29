@@ -35,9 +35,17 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 32 schema tables with one policy-less exception', () => {
-    expect(SCHEMA_TABLES).toHaveLength(32);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(31);
+  it('covers all 34 schema tables with one policy-less exception', () => {
+    // 32 + the two CL-2 tables (case_clients, case_client_flags). A table the
+    // probe does not list is a table whose missing GRANT nothing would catch.
+    expect(SCHEMA_TABLES).toHaveLength(34);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(33);
+  });
+
+  it('lists the CL-2 tables, so their grants are actually probed', () => {
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('case_clients');
+    expect(names).toContain('case_client_flags');
   });
 });
 

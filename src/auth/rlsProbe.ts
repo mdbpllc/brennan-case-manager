@@ -24,12 +24,19 @@ import { supabase } from '../data/supabaseClient';
  * real client data, ever — including anything created to exercise RLS).
  */
 
-/** All 32 tables in db/schema.sql. `policy: false` marks the deliberate omission. */
+/** All 34 tables in db/schema.sql. `policy: false` marks the deliberate omission.
+ *
+ *  KEEP THIS IN STEP WITH THE SCHEMA. A table missing here is not probed, so a
+ *  missing GRANT on it stays invisible to the one instrument built to catch
+ *  that — the 2026-07-28 401 wall in a quieter form. CL-2 added the two
+ *  case_client* tables below; do the same for every table you add. */
 export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'file_counters', policy: false },
   { name: 'cases', policy: true },
   { name: 'parties', policy: true },
   { name: 'case_parties', policy: true },
+  { name: 'case_clients', policy: true },
+  { name: 'case_client_flags', policy: true },
   { name: 'medical_bills', policy: true },
   { name: 'bill_line_items', policy: true },
   { name: 'code_mappings', policy: true },
