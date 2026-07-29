@@ -19,6 +19,21 @@ No length cap applies to this file. It is append-mostly and is not read at every
 
 ---
 
+## K-6 and K-7 — RETIRED 2026-07-28 (Michael's ruling)
+
+Two open-item IDs that survived without their questions. Nothing in the repo — no log
+entry, no doc — ever recorded what they asked, and Michael does not remember. **Both
+retired. Do not resurrect these IDs, and do not reconstruct question text for them from
+plausibility, inference, or context.**
+
+Michael's reasoning, standing rule rather than one-off disposition: **a fabricated open
+item is worse than a lost one.** If either question mattered, the work that raised it
+will raise it again — and it gets a **new** ID with its text intact.
+
+Failure class: the same one that destroyed Q-5's original wording — an ID carried forward
+while its question is dropped (**QR-1**, PROPOSED and unruled). Actor for the loss:
+**unknown**; it predates attribution or was lost in the queue.
+
 ## Note on scope at the time of the split (Code, 2026-07-27 packet, run 2026-07-28)
 
 BUILD-STATE contained no section titled "anti-resurrection ledger" — only the single

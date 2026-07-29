@@ -159,4 +159,19 @@ Unchanged by today's work, and worth stating plainly at the top of any session:
 - ⬜ **RR-1** — re-read documents authored earlier in a session against rulings made later in it, before the packet ships. PROPOSED, unruled.
 - ⬜ **Registry entries 1–10 sign-off** — Michael's, one at a time (detail at §5 above).
 
-**Flagged 2026-07-28, not invented:** BUILD-STATE carried the range **"K-5–K-7"**, but **K-6 and K-7 have no question text anywhere in the repo** — no log entry, no doc. Only K-5 is defined. This is the QR-1 defect class (an ID surviving its question) or a copy-forward error. Recorded as unknown rather than reconstructed; **Michael or the design side has to say what they were, or the IDs retire.**
+### K-6 and K-7 — RETIRED 2026-07-28 (Michael's ruling)
+
+BUILD-STATE carried the range "K-5–K-7", but **K-6 and K-7 had no question text anywhere in the repo** — no log entry, no doc, only the IDs. Michael does not remember what they asked. **Both are RETIRED.**
+
+**Nothing was reconstructed** — not by Code, not by the design side, not from plausibility. A fabricated open item is worse than a lost one. Michael's reasoning, recorded because it is a standing rule and not just this disposition: *if either question mattered, the work that raised it will raise it again, and it gets a new ID with its text intact.*
+
+Failure class: the same one that destroyed Q-5's original wording — an ID carried forward without its question (**QR-1**, still PROPOSED and unruled). Actor for the loss: **unknown** — it predates attribution or was lost in the queue. **Do not resurrect these IDs.** See `anti-resurrection-ledger.md`.
+
+### Captured 2026-07-28, awaiting an ID from a design session
+
+Raised by Michael during the CL-2 live walkthrough. **PROPOSED and unruled — captured, not built.** No IDs assigned here on purpose; a design session issues them.
+
+- ⬜ **Auto-create the client record on PI cases.** Linking a party with the Client role on a PI case and having no damages-scope record is an **impossible real-world state** — a PI client without damages isn't a client. Michael: don't make me build it by hand; assigning the Client role on PI case types should auto-create the damages-scope record, posture defaulting from case type, ready to populate. Data model stays parallel (D-CL2-8); **UI workflow only**. Brushes directly against deferred **CL2-CHECK-1** — "auto-create on PI" and "flag Client-role-without-record" are two answers to the same gap, and Michael fell into that gap himself on 2026-07-28.
+- ⬜ **Itemized-bill ingest.** Drop an itemized medical bill into a client's bill workspace and auto-extract the line items — description, date of service, revenue code, quantity, unit price, CPT — populating the ledger automatically; Michael renames/labels the bill and the treatment lines fill themselves. His rationale: hand-keying every line of every itemized bill *"would take insanely too much time"* — **a viability issue for the medical spine, not a convenience.** The OAA criminal-intake OCR/extract layer already proves the document-in → structured-rows-out shape; **reuse, don't reinvent.** Michael recalls this being discussed before and a transcript search found no record — **check the ARCHIVE project before designing from scratch.**
+- ⬜ **Party-credibility watch.** A fact about a party (indictment, credibility damage, evidence mishandling) should be able to raise a flag on **every case where that party appears in a testimony-bearing role** — a cousin of the registry watch flags, attached to people instead of rules. Capture only; no design pass, no ID.
+- ⬜ **Bill label should default to the provider name**, editable only to disambiguate ("ProCare — initial eval" vs "— follow-up"). **Code answered the blocking question 2026-07-28: the label is NOT load-bearing** — display-only in all five uses, and the report generator already prefers the provider (`providerName ?? bill.label`). Safe to pre-fill; not built, as it sits outside CL-2's six pieces.

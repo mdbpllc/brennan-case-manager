@@ -12,6 +12,198 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-28 (#29) — CL-2 §5B BUILT, MIGRATED LIVE, AND WALKED: the client dimension exists; BS-1a closed (Code session, Opus 5)
+
+**Two work orders, both complete.** BS-1a ruled and executed on BUILD-STATE; then the CL-2
+slice built, migrated against the live database, and walked by Michael end to end in both
+modes. **The case owns the occurrence and liability; the CLIENT owns the damages.**
+
+### PART 1 — BS-1a CLOSED (eleven dispositions, ruled item by item)
+
+**Post-cut length: 168 → 139 lines**, 11 under the 150 cap, so item 11's condition was met
+and the cap-breach flag block came out. Deletions: the probe's three lies (one clause kept
+on the /diagnostics line), the 401 origin story inside the grants block, the SUPA-1 aside,
+the flag block itself. Compressions: implicit-flow rationale, phone-token story, the
+RLS-vs-privilege mechanism explainer. Replacements with pointers: the two Outlook items,
+model-routing-plan, the client-model §10 restatement, the open-items roster.
+
+**Every deletion was verified present in its stated owner BEFORE deleting** — log #28,
+spec-feedback, `db/schema.sql`'s grants block, design doc §10. Nothing was deleted on the
+ruling's word alone; that check was the point of the instruction and it passed on all
+eleven.
+
+**Item 10 forced a second job:** the open-items roster became a pointer to
+`attorney-review-queue.md`, so that queue was reconciled to the log through #28 — AUTH-1
+and BS-1a closed, a new §7 holding the build/process items BUILD-STATE had been carrying,
+and **two stale "FLP by 8/6" deadline lines struck** (closed 2026-07-26; never a cliff).
+The ledger's Sunday candidate list is marked resolved — by deletion, compression, and
+pointers, **not** by ledger moves.
+
+### K-6 / K-7 — RETIRED (Michael's ruling)
+
+BUILD-STATE carried the range "K-5–K-7". **K-6 and K-7 had no question text anywhere in the
+repo** — only the IDs. Code flagged them rather than reconstructing; Michael does not
+remember what they asked and **retired both**. **Nothing reconstructed**, by anyone, from
+anything. His reasoning is a standing rule, not a one-off: **a fabricated open item is worse
+than a lost one** — if either question mattered, the work that raised it will raise it again
+and it gets a NEW ID with its text intact. Failure class: the one that destroyed Q-5's
+wording — an ID carried forward without its question (QR-1, PROPOSED, unruled). **Actor for
+the loss: unknown** (predates attribution or lost in the queue). Recorded in the
+anti-resurrection ledger.
+
+### PART 2 — CL-2 (§5B), all six pieces, authorized #27
+
+`case_clients` + `case_client_flags`, parallel to `case_parties` (D-CL2-8, never touched);
+backfill deriving one client per client-role party; `client_id` on `medical_bills` and
+`analysis_runs` (denormalized on runs); **`cases.statute_of_limitations` DROPPED**;
+Medicare/Medicaid moved off `pi_flags` to the client; single-client files render exactly as
+today (D-CL2-7). `posture`'s constraint admits `'mixed'` now so a future value needs no
+constraint migration. **Both new tables ship their own GRANT in the same migration** — the
+trap this slice was warned about, since auto-expose is off and ALTER DEFAULT PRIVILEGES is
+deliberately unset.
+
+**Michael's in-session ruling on the flagged case:** the orphaned limitations date is
+**preserved on the flag and carries onto the client record** when one is created. Nothing
+guessed, nothing placeholdered, nothing lost. The new-case form reuses the same mechanism,
+since a fresh case has no party linked yet either.
+
+**Demo mode migrates FORWARD (v9 → v10), not reseeds.** The existing reseed path carries
+only imported fee schedules and confirmed runs; everything else is wiped. That would have
+destroyed demo work the backfill can derive from, and would not have exercised the backfill
+Michael had to walk.
+
+**D-CL2-3 is NOT closed by `fee_arrangement`.** The field creates the per-client home; the
+time-tracker's one-rate question stays open.
+
+**Single-client SOL pass-through — APPROVED by Michael, on his reasoning, which supersedes
+Code's structural justification.** D-CL2-2 retired the case field because a writable SECOND
+COPY drifts silently against a derived value. The pass-through has **no second copy** — it
+writes the client record itself, the only storage location, and the display derives from
+that same source — so the silent-divergence failure is **structurally impossible** here.
+Single-client files stay editable through it per D-CL2-7; two or more clients go read-only
+derived. Michael also caught that the label misled him in practice ("I edited it believing I
+was overriding a derived value") and required it to say what it DOES; it now reads "writes
+[client]'s limitations date". He credited the final wording as better disclosure than the
+spec required.
+
+### LIVE MIGRATION — executed against the real database, verified in words
+
+`db/migrations/2026-07-28-cl2-client-dimension.sql`, run by Michael in the SQL editor after
+a backup, pasted alone in an empty buffer (the #28 contamination lesson, applied). All four
+verification checks passed: **client_count 0** (his fixture has no client-role party, so
+nothing was guessed); **flag row carrying `2028-07-28`**; **review_log row carrying the same
+date**; **`sol_column` → "gone (correct)"**.
+
+**Act 2 PASSED: `2028-07-28` travelled from the dropped column → the flag → the client
+record, character for character.** Michael linked a fictional party, created the record, and
+the date arrived intact with basis `manual` (honest — the original date's basis was never
+recorded, so nothing claims `standard`).
+
+**Multi-client exercised on live Postgres too** (Michael ruled: do it, don't record it as
+asserted). Second fictional client added, SOL set earlier, Overview flipped to read-only
+derived showing the earlier date, **Mark disbursed dropped him and the date snapped back**,
+**Undo disbursed restored it** — D-CL2-2a proven against real RLS and grants, not just
+localStorage. The RLS probe was extended 32 → 34 tables so the two new tables' grants are
+actually probed rather than assumed.
+
+### SIX DEFECTS FOUND BY EXERCISING, FIVE OF THEM ONLY BECAUSE SOMEONE CLICKED
+
+Recorded together because the pattern is the point, and it is #28's lesson holding a second
+time: reviewing an artifact confirms what is present; only running it finds what is wrong.
+
+1. **Backfill hardcoded posture `claimant`** — wrong on every criminal file, where our
+   client is the DEFENDANT. Found running the migration against a real pre-existing v9
+   store. Fixed in the TS migration and the SQL; regression test.
+2. **Removing a case's sole client left it with zero clients AND NO FLAG** — a silent hole,
+   worse than the visible flagged branch the design mandates. Now confirms explicitly, then
+   flags the case and preserves the date. Raised by Michael as a question (4c); it was a
+   defect.
+3. **`createClientFlagIfAbsent` no-opped against the unique constraint when a RESOLVED flag
+   existed**, so a re-flag would have vanished. It re-opens now. This one would have
+   defeated fix 2.
+4. **The RLS probe's hardcoded table list omitted both new tables** — a missing GRANT on
+   either would have been invisible to the one instrument built to catch exactly that. The
+   2026-07-28 401 wall in a quieter form.
+5. **No double-submit guard on client creation.** Michael double-clicked; the second insert
+   hit the unique constraint and put `duplicate key value violates unique constraint
+   "case_clients_case_id_party_id_key"` in front of an attorney. The constraint was working —
+   it is what prevented a duplicate row — but write buttons now disable in flight, and the
+   Supabase adapter maps 23505 to the sentence the local adapter already used.
+6. **THE SERIOUS ONE — clearing any field silently did nothing in Supabase mode.** Michael:
+   "Undo disbursed does nothing and I cannot undo." Root cause was not the toggle but the row
+   mapper: `toRow()` DROPS undefined keys, so `{disbursedAt: undefined}` became an empty
+   update. PostgREST accepts that, changes nothing, and **reports success**. Clearing a
+   limitations date, an SOL basis, or a bill's negotiated reduction failed the same way. The
+   local adapter has always treated present-undefined as CLEAR (it falls out of
+   `{...record, ...patch}`), so **demo mode was right and Postgres was the outlier** — the
+   demo/Supabase divergence the seam exists to prevent, third instance tonight and the only
+   invisible one. New `toUpdateRow()`; deliberately not used for inserts, where an explicit
+   null would override a column default. Eight tests including the falsy-value trap.
+
+**Health: 195 → 232 vitest tests, build and oxlint clean.**
+
+### MICHAEL'S FINDINGS FROM THE WALKTHROUGH — captured, PROPOSED, none built
+
+1. **HEADLINE — auto-create the client record on PI cases.** A party with the Client role on
+   a PI case and no damages-scope record is an **impossible real-world state**: a PI client
+   without damages isn't a client. Assigning the Client role on PI case types should
+   auto-create the record, posture defaulting from case type. Data model stays parallel
+   (D-CL2-8); **UI workflow only**. Brushes directly against deferred **CL2-CHECK-1** —
+   "auto-create on PI" and "flag Client-role-without-record" are two answers to the same gap,
+   and **Michael fell into that gap himself tonight**. Needs an ID from a design session.
+2. **NEW FEATURE — itemized-bill ingest.** Drop an itemized bill into a client's workspace
+   and auto-extract line items (description, DOS, revenue code, quantity, unit price, CPT).
+   Michael: hand-keying every line *"would take insanely too much time"* — **a viability
+   issue for the medical spine, not a convenience.** The OAA intake layer already proves the
+   document-in → rows-out shape; reuse, don't reinvent. **Check the ARCHIVE project first** —
+   Michael recalls prior discussion; a transcript search of this session found none.
+3. **Bill label should default to the provider name.** Code answered the blocking question:
+   **the label is NOT load-bearing** — display-only in five places, and the report already
+   prefers `providerName ?? bill.label`. Safe to pre-fill; **not built**, being outside the
+   six pieces.
+4. **Boyd items.** (a) double-dash empty state — fixed, now reads "None set — would be stored
+   on X's client record". (b) **"Mark disbursed" appears on criminal files: KNOWN
+   CONSEQUENCE of the profiles carve-out, deliberately NOT fixed** — hiding it by practice
+   area would be profile machinery through the back door while CIV-1 and PROB-1 are
+   unwritten. The do-not-fix reasoning is written into the code itself. (c) the sole-client
+   guard question — answered by fixing it (defect 2 above).
+5. **Party-credibility watch.** A fact about a party (indictment, credibility damage,
+   evidence mishandling) should raise a flag on every case where they appear in a
+   testimony-bearing role — cousin of the registry watch flags, attached to people. Capture
+   only; no design, no ID.
+
+**Parties tab on criminal files — APPROVED on Michael's own reasoning, which supersedes the
+structural justification Code gave.** Parties (officers, witnesses) are **cross-case
+strategic objects** in criminal defense: if an officer is later charged, lies, or mishandles
+evidence, his testimony collapses across every case where he appears. **The cross-case
+identity model is load-bearing for criminal practice, not just tidy data.**
+
+### CORRECTIONS, both recorded
+
+**(a) Actor: Code (Opus 5).** A handback told Michael the two-client Garcia scenario was
+"built and waiting at localhost:5173". **False on his machine.** Demo mode is localStorage —
+per-browser AND per-origin — so a staged scenario exists only where it was staged. Michael's
+browser had a fresh store and he rebuilt the scenario by hand, which turned out to be the
+better test. Failure class: asserting environment state that cannot travel. Documented in
+`.env.example`; **handbacks must say what to build, never that it is already sitting there.**
+
+**(b) Actor: Fable 5.** During the walkthrough Fable flagged Garcia's editable SOL field and
+single-client label as a discrepancy against disclosed behaviour. **WRONG** — in the store
+actually on screen Garcia was single-client, and the field was the approved pass-through.
+Diagnosed against **Code's described state instead of the visible state**; struck on the
+spot. Same failure class verify-before-criticizing exists to prevent.
+
+### CARRIED
+
+No real client data entered anything — every record created tonight, in both modes and in the
+live database, was fictional. CL-1/`case_links` not built; profiles machinery not built;
+UM-1, UM-2, PR-GATE-1, MIN-1 untouched; **CL2-CHECK-1 still explicitly deferred**; CE1 still
+unauthorized and still must be client-aware. `Go_Live_Gates.md` applies in full.
+
+Staged for Code: none. Next Code action is unassigned — CL-2 is complete.
+Awaiting/Returned from Code, unreviewed: this entry; the six defects; Michael's five
+findings (1, 2 and 5 need IDs from a design session); the K-6/K-7 retirement.
+
 ## 2026-07-28 (#28) — AUTH SLICE §5A BUILT AND EXERCISED: Michael signed in; RLS reached for the first time (Code session, Opus 5)
 
 **AUTH-1 RULED — MAGIC LINK** (Michael, 2026-07-28: "Let's go with Magic Link"). That ruling
