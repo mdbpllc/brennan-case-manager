@@ -170,3 +170,35 @@ describe('CL-2 demo-store migration (v9 → v10)', () => {
     expect(run().version).toBe(10);
   });
 });
+
+describe('client flag re-opening (sole-client removal guard)', () => {
+  beforeEach(() => mem.clear());
+
+  it('re-opens a RESOLVED flag instead of no-opping on the unique constraint', async () => {
+    // Michael, walkthrough 2026-07-28: removing a case's only client is one
+    // click. Without this, a case that was flagged, resolved, then lost its
+    // client again would end up with no client AND no flag — a silent hole,
+    // worse than the visible flagged state the design mandates.
+    const { LocalAdapter } = await import('../localAdapter');
+    const db = new LocalAdapter();
+
+    const first = await db.createClientFlagIfAbsent({ caseId: 'c-x', reason: 'first' });
+    expect(first).not.toBeNull();
+
+    // Same case, still open — nothing to say twice.
+    expect(await db.createClientFlagIfAbsent({ caseId: 'c-x', reason: 'again' })).toBeNull();
+
+    await db.resolveClientFlag(first!.id);
+    expect(await db.getClientFlagForCase('c-x')).toBeNull();
+
+    const reopened = await db.createClientFlagIfAbsent({
+      caseId: 'c-x', reason: 'sole client removed', preservedStatuteOfLimitations: '2029-02-02',
+    });
+    expect(reopened).not.toBeNull();
+    expect(reopened!.resolvedAt).toBeUndefined();
+    expect(reopened!.preservedStatuteOfLimitations).toBe('2029-02-02');
+
+    const live = await db.getClientFlagForCase('c-x');
+    expect(live?.reason).toBe('sole client removed');
+  });
+});

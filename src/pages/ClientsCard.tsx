@@ -91,8 +91,43 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
 
   const remove = async (c: CaseClient) => {
     setErr(null);
+    // D-CL2-1: every case has a client. Removing the LAST one is a real action
+    // (the wrong party may have been linked), but it must be deliberate and it
+    // must not leave a silent hole — without the flag the case would simply
+    // have no client and nothing would say so. Michael raised this at the
+    // walkthrough: one unguarded click could do it by accident.
+    const sole = clients.length === 1 && clients[0].id === c.id;
+    if (sole) {
+      const ok = window.confirm(
+        `Remove ${name(c.partyId)} as the client on this case?\n\n`
+        + 'This is the only client on the file. The case will be FLAGGED as having no '
+        + 'client record until you add one.'
+        + (c.statuteOfLimitations
+          ? `\n\nTheir limitations date (${c.statuteOfLimitations}) will be held on that flag `
+            + 'and carried onto the next client record you create.'
+          : ''),
+      );
+      if (!ok) return;
+    }
     try {
       await db.deleteClient(c.id);
+      if (sole) {
+        await db.createClientFlagIfAbsent({
+          caseId: caseRec.id,
+          reason:
+            'The only client record on this case was removed by the attorney, so the case has '
+            + 'no damages scope. Link a client-role party and add them as a client; any '
+            + 'preserved limitations date carries onto that record.',
+          preservedStatuteOfLimitations: c.statuteOfLimitations,
+        });
+        await db.appendReviewLog({
+          entityType: 'case', entityId: caseRec.id, action: 'edited', user: ATTORNEY_USER,
+          oldValue: c.statuteOfLimitations ?? '(no date)',
+          reason:
+            `Sole client (${name(c.partyId)}) removed by the attorney; case flagged as having no `
+            + 'client record. Limitations date preserved on the flag.',
+        });
+      }
       await refresh();
       onChanged?.();
     } catch (e) {
@@ -229,6 +264,11 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
                     </td>
                     <td style={{ whiteSpace: 'nowrap' }}>
                       <button className="btn small secondary" onClick={() => setEditingId(c.id)}>Edit</button>{' '}
+                      {/* KNOWN CONSEQUENCE, ruled 2026-07-28: disbursement is PI
+                          furniture and it shows on criminal files too. NOT fixed
+                          on purpose — hiding it by practice area would be profile
+                          machinery, which the CL-2 carve-out excludes until CIV-1
+                          and PROB-1 are written. Do not "fix" this. */}
                       <button className="btn small secondary" onClick={() => toggleDisbursed(c)}>
                         {isResolved(c) ? 'Undo disbursed' : 'Mark disbursed'}
                       </button>{' '}

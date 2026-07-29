@@ -222,11 +222,16 @@ function OverviewTab({ rec, onChange }: { rec: CaseRecord; onChange: (c: CaseRec
           <dt>Date opened</dt><dd>{rec.dateOpened}</dd>
           <dt>Statute of limitations</dt>
           <dd>
-            {derivedSol || <span className="empty">—</span>}
+            {/* One em dash, not two: the empty state reads as a sentence rather
+                than a placeholder followed by an explanation. */}
+            {derivedSol
+              ? <>{derivedSol}</>
+              : <span className="empty">{solPassthrough ? 'None set' : '—'}</span>}
             {solPassthrough && (
               <span className="muted" style={{ fontSize: '0.85em' }}>
-                {' '}— {passthroughName ? `${passthroughName}'s` : "the client's"} date, stored on the
-                client record; Edit writes it there
+                {' '}— {derivedSol ? 'stored on' : 'would be stored on'}{' '}
+                {passthroughName ? `${passthroughName}'s` : "the client's"} client record;
+                Edit writes it there
               </span>
             )}
             {clients.length > 1 && (

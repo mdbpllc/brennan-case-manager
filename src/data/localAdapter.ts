@@ -436,7 +436,19 @@ export class LocalAdapter implements DataAdapter {
     data: Omit<ClientBackfillFlag, 'id' | 'createdAt' | 'resolvedAt'>,
   ): Promise<ClientBackfillFlag | null> {
     const store = load();
-    if (store.clientFlags.some((f) => f.caseId === data.caseId)) return null;
+    const idx = store.clientFlags.findIndex((f) => f.caseId === data.caseId);
+    if (idx !== -1) {
+      // Already flagged and still open — nothing to say twice.
+      if (!store.clientFlags[idx].resolvedAt) return null;
+      // Previously resolved, and the case has lost its client again. RE-OPEN
+      // rather than no-op: the table is unique on case_id, so a plain insert
+      // would silently do nothing and leave the case in an unflagged hole.
+      store.clientFlags[idx] = {
+        ...store.clientFlags[idx], ...data, resolvedAt: undefined, createdAt: now(),
+      };
+      save(store);
+      return store.clientFlags[idx];
+    }
     const rec: ClientBackfillFlag = { ...data, id: uid(), createdAt: now() };
     store.clientFlags.push(rec);
     save(store);

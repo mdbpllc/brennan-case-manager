@@ -296,13 +296,24 @@ export class SupabaseAdapter implements DataAdapter {
   async createClientFlagIfAbsent(
     data: Omit<ClientBackfillFlag, 'id' | 'createdAt' | 'resolvedAt'>,
   ): Promise<ClientBackfillFlag | null> {
-    // case_client_flags is unique on case_id — let the constraint decide rather
-    // than racing a read against a write.
-    const res = await this.sb.from('case_client_flags')
-      .upsert(toRow(data), { onConflict: 'case_id', ignoreDuplicates: true })
-      .select().maybeSingle();
+    // case_client_flags is unique on case_id, so a plain insert would silently
+    // do nothing when a RESOLVED flag is already there — leaving a case that has
+    // lost its client again sitting in an unflagged hole. Branch explicitly.
+    const existing = await this.sb.from('case_client_flags')
+      .select('*').eq('case_id', data.caseId).maybeSingle();
+    if (existing.error) throw new Error(existing.error.message);
+    if (existing.data) {
+      const row = existing.data as Record<string, unknown>;
+      if (!row.resolved_at) return null;             // already flagged and open
+      const reopened = await this.sb.from('case_client_flags')
+        .update({ ...toRow(data), resolved_at: null, created_at: new Date().toISOString() })
+        .eq('id', row.id as string).select().single();
+      if (reopened.error) throw new Error(reopened.error.message);
+      return fromRow<ClientBackfillFlag>(reopened.data as Record<string, unknown>);
+    }
+    const res = await this.sb.from('case_client_flags').insert(toRow(data)).select().single();
     if (res.error) throw new Error(res.error.message);
-    return res.data ? fromRow<ClientBackfillFlag>(res.data as Record<string, unknown>) : null;
+    return fromRow<ClientBackfillFlag>(res.data as Record<string, unknown>);
   }
 
   async getClientFlagForCase(caseId: string): Promise<ClientBackfillFlag | null> {
