@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { probeReads, probeWrites, SCHEMA_TABLES, type ReadResult, type WriteResult } from '../auth/rlsProbe';
+import {
+  probeReads, probeWrites, SCHEMA_TABLES, expectedUnreachable, shouldWarnPrivilegeWall,
+  type ReadResult, type WriteResult,
+} from '../auth/rlsProbe';
 
 /**
  * Renders the RLS probe (see rlsProbe.ts for what the results do and do not prove).
@@ -24,10 +27,14 @@ export default function RlsProbePanel({ context }: { context: 'signed-out' | 'si
     }
   }
 
+  const byDesign = expectedUnreachable();
   const missing = reads?.filter((r) => !r.ok) ?? [];
-  // The 2026-07-28 failure, made self-identifying: tables present, RLS on,
-  // policies written, and every request refused one layer BELOW the policies.
-  const privilegeWall = missing.length > 0 && missing.every((r) => r.layer === 'privilege');
+  // Refusals that are NOT supposed to happen. file_counters is revoked on
+  // purpose, so counting it as a problem made the banner fire on a healthy run.
+  const unexpectedMissing = missing.filter((r) => !byDesign.has(r.table));
+  const reachable = reads?.filter((r) => r.ok).length ?? 0;
+  const shouldBeReachable = SCHEMA_TABLES.length - byDesign.size;
+  const privilegeWall = reads ? shouldWarnPrivilegeWall(reads) : false;
   const control = writes?.find((w) => w.table === 'file_counters');
   const grants = writes?.filter((w) => w.expect === 'allow') ?? [];
   const allowed = grants.filter((w) => w.outcome === 'inserted');
@@ -53,7 +60,10 @@ export default function RlsProbePanel({ context }: { context: 'signed-out' | 'si
 
       {reads && (
         <>
-          <h4>Schema — {reads.filter((r) => r.ok).length} of {SCHEMA_TABLES.length} tables reachable</h4>
+          <h4>
+            Schema — {reachable} of {shouldBeReachable} API tables reachable
+            {byDesign.size > 0 && <span className="muted"> · {byDesign.size} unreachable by design</span>}
+          </h4>
           {privilegeWall && (
             <p className="notice bad">
               Every table was refused at the <strong>table-privilege</strong> layer, not by RLS —
@@ -63,15 +73,21 @@ export default function RlsProbePanel({ context }: { context: 'signed-out' | 'si
               {context === 'signed-out' && ' (Signed out, this is also the expected result: anon is granted nothing by design.)'}
             </p>
           )}
-          {missing.length === 0 ? (
-            <p className="muted">All {SCHEMA_TABLES.length} tables exist and are exposed through the API.</p>
-          ) : (
+          {unexpectedMissing.length === 0 && (
+            <p className="muted">
+              All {shouldBeReachable} API tables exist and are reachable.
+            </p>
+          )}
+          {missing.length > 0 && (
             <table className="list">
               <thead><tr><th>Table</th><th>Status</th><th>Refused at</th><th>Error</th></tr></thead>
               <tbody>
                 {missing.map((r) => (
                   <tr key={r.table}>
-                    <td>{r.table}</td>
+                    <td>
+                      {r.table}
+                      {byDesign.has(r.table) && <span className="muted"> — by design</span>}
+                    </td>
                     <td>{r.status ?? '—'}</td>
                     <td>{r.layer === 'privilege' ? 'table privilege' : r.layer === 'rls' ? 'RLS policy' : '—'}</td>
                     <td>{[r.code, r.message].filter(Boolean).join(' — ') || 'no detail returned'}</td>

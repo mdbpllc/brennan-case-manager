@@ -12,6 +12,102 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-28 (#28) — AUTH SLICE §5A BUILT AND EXERCISED: Michael signed in; RLS reached for the first time (Code session, Opus 5)
+
+**AUTH-1 RULED — MAGIC LINK** (Michael, 2026-07-28: "Let's go with Magic Link"). That ruling
+closed the gate on §5A and is the authorization event for this session. **The definition of
+done was met**: Michael signed in himself from a fresh browser, clicked an emailed link,
+landed authenticated, and created a fictional case through the real UI — a write that was
+impossible before tonight.
+
+**All three unexercised things are now exercised.** (1) `db/schema.sql` executed against the
+live project for the first time ever (SUPA-1's premise retired). (2) Magic-link sign-in,
+session persistence, and sign-out built and used. (3) RLS tested against an authenticated
+user — with an important qualification below.
+
+**ROOT-CAUSE FINDING, the session's main technical event: the schema granted nothing.** The
+first live run left **every one of the 32 tables refused 401** under both key formats.
+Diagnosis isolated it away from auth entirely: `/auth/v1/health` accepted the key (200), and
+curl reproduced the failure identically, so no client code and no key format was implicated.
+The error was `42501 permission denied for table` — a **PostgreSQL table-privilege** error
+raised one layer BELOW RLS. **`db/schema.sql` contained zero GRANT statements.** RLS decides
+which ROWS a role may touch; it does not grant access to the table, and PostgREST checks the
+privilege layer first. 32 tables, RLS on, 31 correct policies, and not one ever evaluated.
+Normally invisible on Supabase because new public tables are auto-exposed — this project was
+created with **auto-expose OFF** (`Go_Live_Gates.md`), so nothing granted them. Fixed by
+`db/migrations/2026-07-28-api-role-grants.sql`, same block appended to `db/schema.sql`.
+Grants go to `authenticated` ONLY; `anon` gets nothing by design. `ALTER DEFAULT PRIVILEGES`
+deliberately NOT set — **every new table must grant explicitly, and CL-2's `case_clients`
+inherits this.** Filed to spec-feedback.
+
+**EXERCISED vs. MERELY PRESENT — stated precisely, because "RLS works" would be false.**
+
+- **Actually consulted:** authenticated SELECT across all 31 API tables (reads succeeded and
+  returned counts), and the INSERT + DELETE policies on **four** tables — `parties`,
+  `legal_rules`, `glossary_terms`, `watch_targets` — each written and cleaned up. Plus the
+  app's own authenticated write path: one fictional case created through the UI, which also
+  exercised `cases` INSERT and the SECURITY DEFINER `next_file_number()`.
+- **Present but NOT exercised:** the INSERT/UPDATE/DELETE paths of the remaining **26**
+  policy-bearing tables. All 31 policies are textually identical
+  (`for all to authenticated using (true) with check (true)`), so the four that were
+  exercised are strong evidence for the pattern — but that is an inference, not a test.
+- **`file_counters` is protected at the PRIVILEGE layer, not by RLS.** Its 403 is the
+  deliberate revoke working, and it is NOT an RLS result. Recorded so no future session
+  reads it as one.
+- **The signed-out baseline is a privilege refusal, not an RLS denial** — stronger evidence
+  than the empty-set denial originally designed for, and captured before sign-in.
+
+**TIMELINE, including both user-error detours, recorded verbatim per Michael.**
+1. First grants attempt failed — the migration was pasted beneath the full schema AND
+   leftover prose from the diagnostic prompt; syntax error at line 747, whole run rolled
+   back, **no harm**. Cleared editor, ran the four statements alone: "Success. No rows
+   returned."
+2. Signed-out probe still showed bare "—" rows: **stale dev server**, last restarted before
+   `c74e422`. Full stop/start + hard reload; baseline then captured properly.
+3. **First magic link was clicked on Michael's PHONE.** Token consumed cross-device; the
+   desktop link expired. Real-world failure mode, filed to spec-feedback. The implicit-flow
+   choice made this degrade to a plain expired-token page rather than a code-verifier
+   mismatch that would read as a broken app.
+4. Second link opened on the computer, pasted into the browser running the app → landed on
+   the callback authenticated. Signed in.
+5. One fictional case created through the real UI while authenticated — the first
+   authenticated write through the app itself, separate from the probe's writes.
+
+**THREE INSTRUMENT DEFECTS IN THE PROBE, ALL FOUND AND FIXED IN ONE SESSION.** Recorded
+together because the pattern is the point: the tool built to verify was itself the least
+verified thing in the slice. (a) It reported **"32 of 32 tables reachable" against a server
+with no database**, because it read "no error" as success — caught by its own negative
+control. (b) Its error column showed a bare **"—" while every request was failing 401**:
+`head: true` was in use, and **HEAD responses carry no body by HTTP spec**, so PostgREST's
+`{code, message}` never arrived — a structural defect, not sloppy display; fixed by moving
+to a `limit(0)` GET. (c) The privilege-wall banner **fired on a healthy signed-in run**,
+telling Michael to re-run a migration that had already succeeded, because "every refused
+table was privilege-refused" is vacuously true when the only refusal is the deliberately
+revoked control. **Caught by Michael, not by the instrument.** Fixed, and the trigger is now
+a pure function under **nine new unit tests** (186 → 195) — the only one of the three that
+can regress silently.
+
+**Also this session:** `Go_Live_Gates.md` **gate 9** added — production SMTP is required
+before live use; Supabase's built-in sender is rate-limited and development-grade, and with
+magic-link auth the sender is load-bearing for access itself. Gate note only, no SMTP work.
+
+**Carried, unchanged:** CL-2 (§5B) did NOT start and remains authorized-and-queued. No real
+client data entered anything — every record created tonight was fictional, including probe
+rows, all of which were deleted. Multi-user remains out of scope.
+
+**CL-2 test material, from Michael:** the fictional case created tonight has a **case-level
+statute of limitations and no linked party**. Deliberate — the SOL must carry to the derived
+client record, and the no-client-role-party backfill should **flag** this case rather than
+guess.
+
+**BS-1a BREACHED AND FLAGGED, NOT WORKED AROUND** — see the close of this entry and
+BUILD-STATE's own note. Auth state is a real addition and the file no longer fits 150 lines.
+Per BS-1a the cap question is Michael's; no unruled content was trimmed to force a fit.
+
+Staged for Code: none — §5A is complete. Next Code action is CL-2 (§5B), already authorized.
+Awaiting/Returned from Code, unreviewed: this entry; the grants root-cause and its
+spec-feedback item; the cross-device magic-link item; gate 9; the three probe defects.
+
 ## 2026-07-28 (RUNNER) — QUEUE-RUNNER batch: two packets processed (Code session, Opus 5)
 
 **Packets, in Michael's confirmed order:** (1) `push-to-code_BS1-ledger-split_2026-07-27.zip`

@@ -490,6 +490,24 @@ completely non-functional, because the true statements did not cover the thing t
 missing. Reviewing an artifact confirms what is present; only executing it finds what was
 never there.
 
+## 2026-07-28 — magic-link tokens are single-use and effectively single-device
+
+**For any future auth documentation; no decision needed.** Observed live during the §5A
+walkthrough: the first sign-in link was opened on Michael's **phone**. The token was
+consumed there, and the desktop — the machine actually running the app — was left with an
+expired link. The second attempt (open the email on the computer, put the link into the
+browser running the app) worked.
+
+Worth naming because the instinct is to open email wherever it lands. Two properties combine:
+the token is **single-use**, and a session is established in **the browser that opens it**.
+Signing in on a phone therefore signs in the *phone*, not the desktop.
+
+The implicit flow (chosen at AUTH-1 — see the session log) is what kept this benign: it
+degraded to a plainly-worded expired-token page. Under PKCE the same click would have failed
+with a code-verifier mismatch, which reads as a broken app rather than a stale link. Any
+user-facing sign-in instructions should say: **open the link in the browser where you want
+to be signed in.**
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

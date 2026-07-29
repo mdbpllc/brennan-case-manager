@@ -100,6 +100,30 @@ export interface WriteResult {
   layer?: DenialLayer;
 }
 
+/** Tables that are SUPPOSED to be unreachable through the API. Exactly the
+ *  policy-less ones — file_counters is policy-less and revoked for the same
+ *  reason: it is reached only through the SECURITY DEFINER function. */
+export function expectedUnreachable(): Set<string> {
+  return new Set(SCHEMA_TABLES.filter((t) => !t.policy).map((t) => t.name));
+}
+
+/**
+ * Should the panel raise the "refused below RLS" alarm?
+ *
+ * ONLY when a table that is supposed to be reachable was refused at the
+ * privilege layer. The first version asked "was every refused table refused at
+ * the privilege layer", which is vacuously true when the ONLY refusal is the
+ * deliberately-revoked control — so it fired on a healthy signed-in run, telling
+ * Michael to re-run a migration that had already succeeded. Third instrument
+ * defect of the 2026-07-28 session and the first one caught by a person rather
+ * than by the probe's own controls; hence this is a pure function with tests.
+ */
+export function shouldWarnPrivilegeWall(reads: ReadResult[]): boolean {
+  const byDesign = expectedUnreachable();
+  const unexpected = reads.filter((r) => !r.ok && !byDesign.has(r.table));
+  return unexpected.length > 0 && unexpected.every((r) => r.layer === 'privilege');
+}
+
 /** Reads every table. See methodology: proves existence, not grant.
  *
  *  "No error" is NOT accepted as success. Anything that answers 200 with a body
