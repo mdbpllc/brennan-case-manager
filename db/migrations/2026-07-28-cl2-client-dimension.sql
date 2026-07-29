@@ -199,8 +199,11 @@ where 'Medicare/Medicaid beneficiary' = any(coalesce(pi_flags, '{}'));
 -- 8. REVIEW LOG — the migration says what it did, per the
 --    backup-and-review-log pattern (the reseed-wipe lesson).
 -- ------------------------------------------------------------
+-- distinct on (cc.id): a party can hold BOTH a Client and a Plaintiff role on
+-- the same case, which would otherwise log the same client twice.
 insert into review_log (entity_type, entity_id, action, "user", reason)
-select 'case_client', cc.id::text, 'created', 'system (CL-2 backfill)',
+select distinct on (cc.id)
+       'case_client', cc.id::text, 'created', 'system (CL-2 backfill)',
        'Client derived from the case''s ' || cp.role || '-role party during the CL-2 '
          || 'migration. Limitations date carried from cases.statute_of_limitations '
          || 'before that column was dropped.'
