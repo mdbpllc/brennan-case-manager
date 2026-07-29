@@ -25,6 +25,11 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
   const [adding, setAdding] = useState(false);
   const [addPartyId, setAddPartyId] = useState('');
   const [err, setErr] = useState<string | null>(null);
+  /** In-flight guard. Without it a second click lands before the first insert
+   *  returns and the unique constraint refuses it — which is the constraint
+   *  working, but it put a raw Postgres error in front of Michael during the
+   *  2026-07-28 live walkthrough. Buttons that write must not stay live. */
+  const [busy, setBusy] = useState(false);
 
   const refresh = useCallback(async () => {
     const [cs, f, ls] = await Promise.all([
@@ -53,8 +58,9 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
   }, [links, clients]);
 
   const addClient = async (opts: { carryFlagDate?: ClientBackfillFlag } = {}) => {
-    if (!addPartyId) return;
+    if (!addPartyId || busy) return;
     setErr(null);
+    setBusy(true);
     try {
       const carried = opts.carryFlagDate?.preservedStatuteOfLimitations;
       const created = await db.createClient({
@@ -86,6 +92,8 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
       onChanged?.();
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -201,8 +209,8 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
                   <option key={l.partyId} value={l.partyId}>{name(l.partyId)} ({l.role})</option>
                 ))}
               </select>
-              <button className="btn small" disabled={!addPartyId} onClick={() => addClient({ carryFlagDate: flag })}>
-                Create client record
+              <button className="btn small" disabled={!addPartyId || busy} onClick={() => addClient({ carryFlagDate: flag })}>
+                {busy ? 'Creating…' : 'Create client record'}
               </button>
             </div>
           )}
@@ -217,7 +225,9 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
               <option key={l.partyId} value={l.partyId}>{name(l.partyId)} ({l.role})</option>
             ))}
           </select>
-          <button className="btn small" disabled={!addPartyId} onClick={() => addClient()}>Add client</button>
+          <button className="btn small" disabled={!addPartyId || busy} onClick={() => addClient()}>
+            {busy ? 'Adding…' : 'Add client'}
+          </button>
         </div>
       )}
 

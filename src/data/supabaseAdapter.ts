@@ -260,7 +260,17 @@ export class SupabaseAdapter implements DataAdapter {
 
   async createClient(data: Omit<CaseClient, 'id' | 'createdAt' | 'updatedAt'>): Promise<CaseClient> {
     const res = await this.sb.from('case_clients').insert(toRow(data)).select().single();
-    if (res.error) throw new Error(res.error.message);
+    if (res.error) {
+      // Say the same thing the local adapter says. Postgres reports this as
+      // `duplicate key value violates unique constraint
+      // "case_clients_case_id_party_id_key"`, which reached Michael verbatim
+      // during the 2026-07-28 live walkthrough. The constraint is doing its
+      // job; the sentence was the problem.
+      if (res.error.code === '23505' || /duplicate key|unique constraint/i.test(res.error.message)) {
+        throw new Error('That party is already a client on this case');
+      }
+      throw new Error(res.error.message);
+    }
     return fromRow<CaseClient>(res.data as Record<string, unknown>);
   }
 
