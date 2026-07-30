@@ -12,6 +12,83 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-07-30 (#31) — QUEUE-RUNNER batch: one packet processed (doc routing only, nothing built) (Code session, Opus 5)
+
+**Queue as found in `inbox/`:** two zips. Only one was a push-to-code packet.
+
+| Order | Packet | Disposition |
+|---|---|---|
+| 1 | `push-to-code_qbo-capture_2026-07-28.zip` | EXECUTED — §4 doc work order only |
+| — | `Probate Corpus.zip` | NOT A PACKET — no manifest, no §0–§8, no routing table. It is Domser probate reference material (`probate_system_prompt.md` + a 1.8 MB `probate_knowledge_corpus.md`) dropped in `inbox/` as a landing spot. **Michael ruled: leave it alone.** Still sitting in `inbox/`, unextracted, untouched |
+
+**What was executed:** the packet's single §4 work order —
+`future-modules-capture-2026-07-28.md` written verbatim to
+`docs/specs/future-modules-capture-2026-07-28.md`. The duplicate watch ran first: a grep for
+`quickbooks|QBO|future-modules` across all of `docs/` returned **nothing**, so this is a
+genuinely new file, not a fold into an existing home.
+
+**What was NOT executed:** §5 is explicitly **NONE** — nothing in the packet was authorized
+for build, and nothing was built. The QuickBooks integration stays PROPOSED and unruled. No
+QuickBooks credential, OAuth setup, or live-QBO anything was touched. The three #29 proposals
+(auto-create client on PI, itemized-bill ingest, party-credibility watch) were **not**
+duplicated from the capture doc's cross-references — they stay canonical in #29.
+
+**Superseded by the conflict rule:** nothing. A single packet has nothing to disagree with.
+**Skipped as already built:** nothing — no packet content described work the repo already had.
+
+**Reconciliation:** the packet's §1 assumed `5b814b9` (Code's #29 push). That is exactly where
+HEAD stood, working tree clean, so there was no drift between the design-side view and the repo.
+
+**Contradiction flagged, not silently obeyed:** `docs/prompts/QUEUE-RUNNER.md` (v1, 2026-07-26)
+says to rewrite BUILD-STATE under a **120-line cap**. CLAUDE.md says **150** — raised 120 → 150
+by Michael's ruling 2026-07-27 (BS-1) — and the packet's own §8 says 150. The runner prompt
+predates BS-1 and is stale on this one point. **CLAUDE.md was followed (150).** The runner
+prompt was NOT edited; correcting it is Michael's call.
+
+**Open items carried in from the packet's §7 — Michael's, not Code's:**
+
+| Item | Status |
+|---|---|
+| QuickBooks integration proposal: needs a design session + an ID + Michael's ruling | PROPOSED, unruled |
+| Settlement/disbursement module: undesigned; couples with the QB proposal | Unimagined — map only |
+| Conflicts checking as a pre-multi-user professional-responsibility gate candidate | Unimagined — map only |
+| Next build slice: the queue is empty after CL-2; Michael names the target | OPEN (his) |
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** the capture doc is now in the repo; nothing needs
+design-side review beyond the §7 rulings above.
+
+---
+
+## 2026-07-28 — #30 (design side, Fable 5): post-close-out capture — QuickBooks proposal + territory map
+
+**What happened:** After #29 closed, Michael asked what remains unimagined in the system
+and whether QuickBooks could be built in. Two things captured, neither ruled, neither
+built:
+
+- **QuickBooks integration — PROPOSED, unruled.** Fact confirmed by Michael: the firm
+  uses QuickBooks Online (not Desktop). Proposal shape: link-don't-rebuild (QB stays the
+  system of record for money; the case system supplies the case↔money join); read-only
+  first, write-back only if earned; sandbox-only until the go-live gates (live OAuth to
+  the firm's real books is credential-tier, LegiScan-class, and waits for the gates and
+  arguably the security review); trust/operating separation as a day-one design
+  constraint; designed TOGETHER with the undesigned settlement/disbursement module —
+  one conversation, not two.
+- **Unbuilt-territory map** recorded for roadmap use: money (settlement/disbursement/
+  trust; liens & subro), documents (generation, discovery tracking), conflict checking
+  (pre-multi-user professional-responsibility gate candidate), intake pipeline, probate/
+  criminal/trial-prep gaps, communications log. Map only — no IDs, no designs.
+
+Capture doc: docs/specs/future-modules-capture-2026-07-28.md. The three #29 proposals
+are not restated there (already canonical in #29).
+
+**Staged for Code:** none.
+
+**Awaiting/Returned from Code, unreviewed:** none from this entry.
+
+---
+
 ## 2026-07-28 (#29) — CL-2 §5B BUILT, MIGRATED LIVE, AND WALKED: the client dimension exists; BS-1a closed (Code session, Opus 5)
 
 **Two work orders, both complete.** BS-1a ruled and executed on BUILD-STATE; then the CL-2

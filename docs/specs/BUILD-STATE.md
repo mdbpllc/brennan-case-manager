@@ -1,10 +1,9 @@
 # BUILD STATE — brennan-case-manager
-Commit: ec28c08  |  Branch: master  |  Generated: 2026-07-28 (twenty-eighth refresh)
+Commit: 5b814b9  |  Branch: master  |  Generated: 2026-07-30 (twenty-ninth refresh)
 
-**Practice areas: PI / civil litigation / criminal defense / probate.** **2026-07-28, second
-slice tonight: CL-2 IS BUILT, MIGRATED AGAINST THE LIVE DATABASE, AND WALKED** — the client
-dimension exists. Auth (§5A) landed earlier the same day. History:
-`archive-project-history-by-day.md`.
+**Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT,
+MIGRATED LIVE, AND WALKED (2026-07-28)** — the client dimension exists; auth (§5A) landed the
+same day. **NOTHING BUILT SINCE.** History: `archive-project-history-by-day.md`.
 
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed,
   withdrawn, and deliberately-not-built items live there. Check it before proposing or
@@ -36,7 +35,7 @@ dimension exists. Auth (§5A) landed earlier the same day. History:
 | Calendar | LIVE + Outlook push WORKING | event CRUD works; push to "MDBP Cases" verified 2026-07-26 (creation only — edit/cancel unverified) |
 | Transcripts | LIVE | filed transcripts for the case; detail view |
 
-## Client dimension (CL-2, NEW 2026-07-28 — built, migrated live, walked)
+## Client dimension (CL-2, built 2026-07-28 — migrated live, walked)
 **The case owns the occurrence and liability; the CLIENT owns the damages.**
 - `case_clients` is **PARALLEL to `case_parties`, not a promotion of it** (D-CL2-8).
   `case_parties` stays authoritative for ROLES; `case_clients` for DAMAGES SCOPE. The
@@ -116,6 +115,7 @@ dimension exists. Auth (§5A) landed earlier the same day. History:
   Injury with a knowingly wrong ladder (`_piDefault`) — MIS-PARENTED. Re-parenting gated on
   PR-3; do not touch the case-type tree or ladder.** No probate practice area, no
   estate/decedent tables, no probate roles, no probate design doc
+- **NO MONEY MACHINERY:** no settlement ledger, disbursement statements, trust/IOLTA, liens
 - Time tracker: design draft only. Servpro deadline engine: DESIGN ONLY, gated on the meeting.
   Case heartbeat: design docs only; captures e+f NOT folded; register H1–H83
 - **CE1 (case-event core): still NOT AUTHORIZED** (D-CL2-9). Must be **CLIENT-AWARE from the
@@ -128,13 +128,14 @@ dimension exists. Auth (§5A) landed earlier the same day. History:
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
 - **THERE IS NO ASSIGNED NEXT SLICE.** CL-2 completed the authorized queue; auth and CL-2
   both ran 2026-07-28. The next build target is Michael's to name
-- **Six defects found by EXERCISING this slice, five only because someone clicked** — worst:
-  **clearing any field silently did nothing in Supabase mode** (`toRow` dropped undefined →
-  empty update → PostgREST reports success). Full list in log #29. Reviewing an artifact
-  confirms what is present; only running it finds what is wrong
+- **NEW: `future-modules-capture-2026-07-28.md`** — QuickBooks Online proposal (link-don't-
+  rebuild; read-only first; **sandbox-only, no live books until the gates**) + unbuilt-territory
+  map. **PROPOSED, unruled, authorizes nothing**; couples with settlement/disbursement
+- **Six defects found by EXERCISING CL-2, five only because someone clicked** — worst:
+  **clearing any field silently did nothing in Supabase mode** (`toRow`). Full list in log #29
 - **Everything awaiting Michael's ruling lives in `docs/specs/attorney-review-queue.md`** —
-  reconciled through this session. Do not maintain a second roster here. **K-6 and K-7 are
-  RETIRED — their question text was lost and NOTHING is to be reconstructed**
+  reconciled through #29. Do not maintain a second roster here. **K-6 and K-7 are RETIRED —
+  their question text was lost and NOTHING is to be reconstructed**
 - **UNRULED: `model-routing-plan.md`** — adopt nothing; the memo carries its own findings
 - **Client-model decisions: design doc §10 is authoritative**; live openers are D-CL2-3 and
   CL2-CHECK-1 (deferred, do not build). **CL2-CHECK-1 now has a live sibling** — Michael's
