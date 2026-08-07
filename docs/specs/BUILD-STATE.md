@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 033692b  |  Branch: master  |  Generated: 2026-08-06 (thirtieth refresh)
+Commit: 37732ce  |  Branch: master  |  Generated: 2026-08-06 (thirty-first refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT,
 MIGRATED LIVE, AND WALKED (2026-07-28)** — the client dimension exists; auth (§5A) landed the
@@ -109,8 +109,7 @@ History: `archive-project-history-by-day.md`.
   Injury with a knowingly wrong ladder (`_piDefault`). Re-parenting gated on PR-3; do not touch
   the case-type tree or ladder.** No probate practice area, tables, roles, or design doc
 - **NO MONEY MACHINERY:** no settlement ledger, disbursement statements, trust/IOLTA, liens
-- **FORM ENGINE: specified-not-built; the POC changed nothing.** No skeleton extraction, no
-  template code, no engine slice — §12 is findings, not machinery
+- **FORM ENGINE: specified-not-built; the POC changed nothing** — §12 is findings, not machinery
 - Time tracker: design draft only. Servpro deadline engine: DESIGN ONLY, gated on the meeting.
   Case heartbeat: design docs only; captures e+f NOT folded; register H1–H83
 - **CE1 (case-event core): still NOT AUTHORIZED** (D-CL2-9). Must be **CLIENT-AWARE from the
@@ -123,15 +122,16 @@ History: `archive-project-history-by-day.md`.
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
 - **THERE IS NO ASSIGNED NEXT SLICE.** CL-2 completed the authorized queue; auth and CL-2
   both ran 2026-07-28. The next build target is Michael's to name
-- **NEW 2026-08-06 — form-engine POC routed, nothing built:** `form-engine.md` **§12** holds
-  the method findings from the 2026-07-31 live drafting, DISTINCT from §8 (§8 = shell, §12 =
-  method); `form-engine-helpers.md` is reference code, unbuilt. **The feared duplicate
-  learnings section from a 2026-07-23 packet does not exist — that packet never landed.**
-  New and Michael's: **FE-1** (chronologies lack provider addresses/phones/charges — interview
-  cards vs. a directory table) and **FE-2** (entity discovery from billing document names)
-- **NEW: `docs/new-machine-bootstrap.md`** — Windows provisioning checklist. **Gap found while
-  running it: git identity was unset**, blocking the first commit (set globally to Michael
-  Brennan <michael@brennanstx.com>). The checklist does not yet carry that step
+- **NEW 2026-08-06 — form-engine POC routed, nothing built:** `form-engine.md` **§12** holds the
+  method findings from the 2026-07-31 live drafting, DISTINCT from §8 (§8 = shell, §12 = method);
+  `form-engine-helpers.md` is reference code, unbuilt. **The feared duplicate learnings section
+  from a 2026-07-23 packet does not exist — that packet never landed.** New and Michael's:
+  **FE-1** (chronologies lack provider addresses/phones/charges) and **FE-2** (entity discovery)
+- **NEW: `docs/new-machine-bootstrap.md`** — Windows provisioning checklist. **Gap found running
+  it: git identity was unset**, blocking the first commit; the checklist still lacks that step
+- **QUEUE-RUNNER.md is v2 — Q-1 amended by Michael's ruling 2026-08-06.** Step 4 item 3 now
+  carries BS-1 provenance, displace-don't-append, and ledger-pointer preservation. **The "stale
+  120-line cap" flag was NEVER TRUE and is RETIRED** — the file has said 150 since 2026-07-28
 - `future-modules-capture-2026-07-28.md` — QuickBooks proposal (link-don't-rebuild, read-only
   first, **sandbox-only until the gates**). **PROPOSED, unruled, authorizes nothing**
 - **Six defects found by EXERCISING CL-2, five only because someone clicked** — worst:
