@@ -65,6 +65,40 @@ predates this packet and §6 forbids restructuring existing sections, so it was 
 but it is real-case-flavored content sitting in a synced doc, and it is Michael's call whether it
 should be scrubbed.
 
+**CORRECTION — the QUEUE-RUNNER stale-cap flag was never true.**
+- *Asserted:* `docs/prompts/QUEUE-RUNNER.md` Step 4 was stale at a **120-line cap** (asserted in
+  log #31, 2026-07-30; repeated by a cloud runner session 2026-08-06; endorsed unverified by the
+  design side 2026-08-06).
+- *True instead:* the file has stated **150** since the authorized correction logged in the
+  2026-07-28 runner entry. *Evidence:* the file text as read this session — line 62 read verbatim,
+  and the string `120` appears nowhere in the file.
+- *Corrects:* log #31's contradiction flag. **That entry stands as written**; only the flag retires.
+- *Actors:* #31 runner per its own header (Opus 5); cloud runner session model **unstated — not
+  inferred**; design-side endorsement Fable 5.
+- *Failure class:* **R-3 copy-forward** (restating a flag without checking the entry that cleared
+  it) for the runners; **verify-before-criticizing** for the design side.
+- *What changed:* nothing in the file needed changing for the cap number; the stale flag is retired.
+
+**RULED (Michael, 2026-08-06) — Q-1 standing convention amended.** Step 4 item 3 of
+QUEUE-RUNNER.md replaced with text carrying three things that previously lived ONLY in CLAUDE.md
+and individual packets, so a runner reading only the prompt would have missed them: (a) **BS-1
+provenance** for the 150-line cap (ruled 2026-07-27, raised from 120, rationale = readability, not
+token cost), (b) **displace — cut detail, never add sections** at the cap, and (c) **preserve
+BUILD-STATE's pointer line** to `docs/specs/anti-resurrection-ledger.md`, with the cap applying to
+BUILD-STATE only, not the ledger. Also made explicit: rewrite IN FULL, never append. File version
+note bumped **v1 → v2 (2026-08-06)**. This session hit exactly that gap — the prompt supplied the
+number but not the behavior at the cap, and both (b) and (c) had to be pulled from CLAUDE.md.
+
+**SECOND CORRECTION — the slash-command copy, two wrong premises (mine to check, found before
+acting).** The amendment instruction assumed `.claude/commands/queue-runner.md` might be absent on
+a fresh clone and, if present elsewhere, was an **untracked** copy living **only on the other
+laptop** that would drift unless updated there. Both premises are false: the file **exists on this
+machine** and is **git-tracked** (`git ls-files -s` returns it; last touched in `2d7bd54`), so it
+travels with the repo and cannot drift per-machine in the way described. It is, however, **outside
+the design-side sync scope** (docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md),
+which is the likely origin of the "untracked" impression — the design side cannot see it.
+**Both copies were updated identically this session**, and both already stated 150 beforehand.
+
 **Open items merged from the packet's §7 (Michael's, not Code's):** FE-1 (provider-data source
 fork: interview cards vs. persistent provider-directory table) — OPEN, new; FE-2 (entity
 discovery from billing-record document names) — OPEN, new, proposed and unruled; QBO integration

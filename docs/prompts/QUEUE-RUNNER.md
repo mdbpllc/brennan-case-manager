@@ -2,7 +2,8 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v1, 2026-07-26. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1). -->
+<!-- v2, 2026-08-06. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+     Step 4 item 3 amended by Michael's ruling 2026-08-06. -->
 
 You are processing a QUEUE of push-to-code packets accumulated while Fable
 tokens were exhausted. Each packet is a standard push-to-code zip (manifest
@@ -59,8 +60,13 @@ For each packet, oldest first:
    built.
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's.
-3. Rewrite docs/specs/BUILD-STATE.md IN FULL (150-line cap; describe what
-   exists, verifiable at the stated commit).
+3. Rewrite docs/specs/BUILD-STATE.md IN FULL — never append. **150-line
+   hard cap** (Michael's ruling 2026-07-27, BS-1, raised from 120; the cap
+   exists for READABILITY, not token cost). At the cap, **displace — cut
+   detail, never add sections**. Preserve the pointer line to
+   `docs/specs/anti-resurrection-ledger.md`; the cap applies to BUILD-STATE
+   only, not the ledger. Describe what EXISTS, verifiable from the working
+   tree at the stated commit.
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
    from an unchecked command.
 5. Delete the processed zips from `inbox/` (the session-log entries are
