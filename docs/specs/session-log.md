@@ -51,6 +51,14 @@ deliberately (Q-3).
 They are scrubbed — placeholders only (`EXAMPLE CO.`); no case, client, provider, opposing party,
 or counsel is identifiable. Nothing was withheld.
 
+**Bootstrap gap found by running it:** the first commit of this session **failed — git identity
+was unset on this machine** (`user.name`/`user.email`, neither local nor global). Set globally to
+`Michael Brennan <michael@brennanstx.com>`, matching all eight prior commits, and the commit then
+succeeded. **`docs/new-machine-bootstrap.md` does not carry that step** — it was routed verbatim
+per §4.3 and not edited. Recommend adding it to §3 or §4 of that checklist; the doc currently
+claims end-to-end verification, and this is the one thing the verification session did not hit
+(that session never committed).
+
 **Observation for Michael, not acted on:** `form-engine.md` §8's pre-existing contamination
 ruling names a witness and a defendant list carried over from Michael's working form. That text
 predates this packet and §6 forbids restructuring existing sections, so it was left untouched —
