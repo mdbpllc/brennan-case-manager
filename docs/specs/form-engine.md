@@ -178,3 +178,57 @@ Notes: eligible credentials PA, PA-C, NP, FNP, MA. "Within the scope of" caps th
 3. Extract the clean master .docx skeleton from Michael's uploaded form (fix table width 9900→9360, computed § column, strip vestigial tabs) — first build task when this feature's slice begins.
 4. In-app template editor UX.
 5. Confirm the pharmacy/custodian variants against current § 18.001 practice when the deadline-engine's CONFIRM items are verified.
+
+## 12. POC learnings — live disclosure drafting (2026-07-31)
+
+Status: POC-validated findings, generalized/scrubbed; canonical at docs/specs/form-engine.md §12.
+Routed to the repo 2026-08-06 (design session, Fable 5). Helper code: `docs/specs/form-engine-helpers.md`.
+
+**Distinct from §8 — do not merge the two.** §8 is *shell findings* (what Michael's physical
+document is made of). This section is *method findings* (how the surgery is performed). They
+cross-reference; neither subsumes the other.
+
+Provenance: a design session drafted real combined TRCP 194.2(b)/195.5 disclosures for an active multi-defendant PI case by direct XML surgery on the practice's shell .docx — the exact operation the engine's first deliverable automates. The case work product stays out of the repo; everything below is method, generalized. This validates §5 (token substitution against a real .docx skeleton, never regeneration) end-to-end: the output survived XSD validation against the original, rendered correctly page-by-page, and a zip-member diff proved only word/document.xml changed — styles, numbering, footers, and settings byte-identical.
+
+### 12.1 Preconditions
+
+**Run-merge is a hard precondition, not an optimization.** Word fragments visible text across many `<w:r>` runs (revision IDs, spell-check state). On the live shell, the merge pass coalesced 464 fragmented runs. Without it, anchor strings that are plainly visible in the document do not exist as contiguous XML, and every downstream find fails silently or partially. The engine must run-merge before ANY anchor search, every time.
+
+### 12.2 Anchoring rules
+
+**Node-delimited anchors beat raw strings.** A short party name collided with a longer caption line containing it as a substring. The fix: match at the text-node level — `>EXAMPLE CO.<` (the string bounded by its `<w:t>` delimiters) rather than `EXAMPLE CO.` — so a standalone node match cannot collide with a longer line elsewhere.
+
+**Every replacement carries an expected-count assertion.** The POC's replacement helper took `expect=N` (how many occurrences must exist) and `which=[...]` (1-based occurrence indexing for selective replacement) and hard-failed on any count mismatch. This caught the substring collision immediately instead of silently editing the caption. The engine's token pass must fail loudly on count mismatch; a token that matches an unexpected number of times is a wrong-shell or wrong-mapping signal, never something to power through.
+
+### 12.3 The two-mechanic edit model
+
+Every edit the POC needed reduced to exactly two mechanics:
+
+1. **In-place text-node swap** (merge fields): replace the content of a `<w:t>` node; never touch anything outside it. Formatting is untouchable by construction.
+2. **Whole-paragraph clone** (structure): capture an existing paragraph from the document itself as a template, blank all its `<w:t>` nodes, set the first to the new text (with `xml:space="preserve"`). The paragraph's `pPr` survives byte-for-byte — this is what preserves spacing, tabs, small caps, and justification without ever parsing them.
+
+**Repeating blocks are span-capture-and-rebuild:** locate the span from the first block's first paragraph to the last block's last paragraph by anchor, capture (a) line templates of each distinct paragraph style present, and (b) the raw inter-block chunk (usually one empty paragraph) as the spacer, then rebuild the whole span from templates and splice it in. The document supplies its own templates; the engine never fabricates paragraph XML from scratch.
+
+**Per-block paragraph deletion** (e.g., a template block with three name lines when a target block needs one): delete whole `<w:p>` elements from the cloned block string, never blank-and-leave (an emptied paragraph renders as a stray blank line — a formatting change).
+
+### 12.4 Clone hygiene
+
+**Bookmark dedup is a mandatory post-pass.** Cloned paragraphs carry `bookmarkStart`/`bookmarkEnd` elements; duplicated IDs fail XSD validation. The fix that worked: strip bookmarks from clones at build time, plus a global post-pass that keeps the first start/end per ID and drops subsequent duplicates. The engine should run the global pass unconditionally after any clone-bearing edit.
+
+### 12.5 Proof chain (ship gate)
+
+Three checks, in order, all mandatory before output leaves the engine:
+1. **Validate** — XSD validation of the edited docx against the original.
+2. **Render and inspect** — convert to PDF, rasterize, check every page (page-count change vs. the shell is expected when content grows; layout breakage is not).
+3. **Parts-diff** — unzip both, diff every member; only word/document.xml may differ. Any other changed member is a defect.
+
+A leftover-sweep assertion (a list of shell-origin strings that must NOT survive — prior-case names, placeholder tokens) belongs at the end of the edit script itself, before packaging. On the live run it confirmed zero survivors across ~40 tracked strings.
+
+### 12.6 Spec-relevant findings
+
+- **FE-1 (open): chronology sources carry provider identities but NOT addresses, phones, or billed charges.** The POC filled addresses/phones from web lookups (flagged unverified for attorney review) and set every charge to TBD. The engine cannot ship a servable draft from a chronology alone; it must obtain this data from somewhere — §4 interview cards, a persistent provider-directory table, or another source. **Which one is a design fork reserved for Michael; the finding is not a decision about the how.**
+- **FE-2 (open, proposed):** one billing entity existed ONLY in the chronology's billing-record document names — no chronology row of its own. A human noticed it; the engine's §4 intake would have missed it. Proposed: intake sweeps document-name columns for entities not otherwise listed. Unruled.
+- **Custodian-only variant (§9) exercised live** on two entities, one because its billing records named no provider. The variant works as specced; no mental-health-style exclusions were implicated.
+- **Role-neutral narrative fallback:** where a provider's role could not be established from the source (named in records, function unclear), the POC wrote role-neutral narrative language rather than guessing a specialty, and flagged for attorney sharpening. Recommend the engine adopt this as the default when the variant library's role-specific language cannot be safely selected.
+- **Occurrence-position sensitivity:** party names recur across caption, TO paragraphs, certificate of service, and response bodies with different required replacements in each. The token map must be position-aware (which occurrence gets which value), not name-aware only. The expect/which mechanism above is sufficient to express this.
+- **Scale datum:** the full live edit was ~45 occurrence-controlled text-node swaps plus five structural rebuilds (one paragraph clone-insert, one block clone-insert, one three-block rebuild, two multi-block span rebuilds) in a 7-phase scripted pass. Well within a single scripted operation; no human-in-the-loop steps were needed between data map and validated output.

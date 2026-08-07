@@ -12,6 +12,95 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-06 (#33) — QUEUE-RUNNER batch: form-engine POC packet routed (docs only, nothing built) (Code session, Opus 5)
+
+**Queue as found in `inbox/`:** one zip, `push-to-code_form-engine-poc_2026-08-06.zip`. Executed
+as the only item; no ordering decision to make. (`Probate Corpus.zip`, left alone by Michael's
+ruling in #31, was NOT in this machine's inbox — see the cross-machine note below.)
+
+**What was executed — §4 doc work orders, all three:**
+
+| # | Artifact | Landed at | Action |
+|---|---|---|---|
+| 1 | form-engine POC learnings | `docs/specs/form-engine.md` §12 | NEW section — no merge needed (see reconciliation) |
+| 2 | docx-surgery helpers | `docs/specs/form-engine-helpers.md` | NEW file, copied whole, byte-identical |
+| 3 | new-machine bootstrap | `docs/new-machine-bootstrap.md` | NEW file, copied whole, byte-identical |
+
+**What was NOT executed:** §5 is explicitly **NONE**. Nothing was built. The form engine remains
+specified-not-built; the master .docx skeleton extraction (§11 item 3) was **not** started and
+still awaits an explicit ruling. FE-1 was **not** resolved — the learnings section records the
+finding (provider addresses/phones/charges are missing from chronologies) without deciding the
+how, per §6. No new top-level directory was created; the helper file went to `docs/specs/`
+deliberately (Q-3).
+
+**Superseded by the conflict rule:** nothing — a single packet has nothing to disagree with.
+**Skipped as already built:** nothing.
+
+**Reconciliation — the packet's §1 vs. actual repo state:**
+- §1's flagged collision risk (a POC-learnings section already landed by a 2026-07-23 packet)
+  was **not real** — `form-engine.md` carried no POC/learnings/XML-surgery material at all, so
+  the fold-in is a new §12, not a merge. **That earlier packet appears never to have landed.**
+- §8 (shell findings) vs. §12 (method findings) kept **distinct and cross-referenced**, per §4.1.
+  Existing sections were not renumbered or restructured.
+- §3's expected entry number (#32) was correct — the log's top entry was #31.
+- BUILD-STATE's staleness was exactly as described (recorded `5b814b9`, tip `01b1488`, docs-only
+  intervening commit) and sat at exactly 150 lines. Trued up in this session's rewrite.
+- Repo was clean and already level with `origin/master` at `01b1488`; nothing to pull.
+
+**Data-hygiene backstop (§6) ran:** all three staged files were read in full before writing.
+They are scrubbed — placeholders only (`EXAMPLE CO.`); no case, client, provider, opposing party,
+or counsel is identifiable. Nothing was withheld.
+
+**Observation for Michael, not acted on:** `form-engine.md` §8's pre-existing contamination
+ruling names a witness and a defendant list carried over from Michael's working form. That text
+predates this packet and §6 forbids restructuring existing sections, so it was left untouched —
+but it is real-case-flavored content sitting in a synced doc, and it is Michael's call whether it
+should be scrubbed.
+
+**Open items merged from the packet's §7 (Michael's, not Code's):** FE-1 (provider-data source
+fork: interview cards vs. persistent provider-directory table) — OPEN, new; FE-2 (entity
+discovery from billing-record document names) — OPEN, new, proposed and unruled; QBO integration
+— PROPOSED, unruled (carried); registry entries 1–10 sign-off — OPEN (carried); next build slice
+after CL-2 — OPEN, Michael names the target (carried). Full roster stays in
+`docs/specs/attorney-review-queue.md`; not duplicated here.
+
+- Staged for Code: none.
+- Awaiting/Returned from Code, unreviewed: §12 fold-in, the two new files, and the BUILD-STATE
+  true-up from this session.
+
+## 2026-08-06 (#32) — Design session (Fable 5): form-engine live POC; P1 Gen 8 provisioned
+
+- LIVE POC OF THE FORM ENGINE (2026-07-31): drafted real combined 194.2(b)/195.5 disclosures
+  for an active multi-defendant PI case by XML surgery on Michael's shell .docx, in-chat.
+  Deliverable handed to Michael directly; case content stays out of the repo per the
+  no-client-data rule. Method: ~45 occurrence-controlled text-node swaps + cloned-paragraph
+  structural rebuilds across a 7-phase scripted pass with hard count assertions; validated
+  (XSD vs original), rendered and page-checked, parts-diff confirmed only word/document.xml
+  changed. Token-substitution-not-regeneration (form-engine.md §5) validated end-to-end.
+- Generalized learnings staged (this packet): merge-runs precondition; node-delimited anchors
+  with expect/which; two-mechanic edit model; span-capture-and-rebuild; bookmark dedup
+  post-pass; validate→render→parts-diff proof chain. Spec-relevant findings: chronology
+  sources carry provider identities but NOT addresses/phones/charges (→ FE-1, open);
+  custodian-only variant exercised live (incl. one entity surfaced only via billing-record
+  document names — an entity-discovery wrinkle for §4).
+- P1 GEN 8 PROVISIONED (2026-08-06): Claude Code v2.1.224 native install, repo cloned,
+  gitignored inbox/ recreated by hand, local session verified on master at 01b1488 with
+  CLAUDE.md auto-loaded. Cross-machine rules restated: inboxes never sync; pull at session
+  start, verified push at end. Bootstrap checklist staged for docs/.
+- CORRECTION (in-session assertion, this session; no earlier log entry affected).
+  Asserted: a cloud Code session had created a stray remote branch (claude/new-session-wy2oej)
+  requiring cleanup. True instead: the branch was never pushed — remote held only master;
+  evidence: git ls-remote run by the verifying local session, 2026-08-06. Corrects: an
+  in-chat assertion, not a log entry. Actor: Fable 5. Failure class: structural assertion
+  without repo visibility (recurring; prior instances on record). Result: no-op; the
+  verification check was run anyway and confirmed clean.
+- Observed drift (not an error): BUILD-STATE records 5b814b9/master while tip is 01b1488;
+  the intervening commit was docs-only. Trued up in this Code session's rewrite.
+- Staged for Code: form-engine POC learnings (fold into docs/specs/form-engine.md);
+  docx-surgery helper reference (new: docs/specs/form-engine-helpers.md); new-machine
+  bootstrap (new: docs/new-machine-bootstrap.md).
+- Awaiting/Returned from Code, unreviewed: none carried into this packet.
+
 ## 2026-07-30 (#31) — QUEUE-RUNNER batch: one packet processed (doc routing only, nothing built) (Code session, Opus 5)
 
 **Queue as found in `inbox/`:** two zips. Only one was a push-to-code packet.
