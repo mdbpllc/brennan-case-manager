@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: abcbee6  |  Branch: master  |  Generated: 2026-08-08 (thirty-fifth refresh)
+Commit: 8ec439a  |  Branch: master  |  Generated: 2026-08-08 (thirty-sixth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT SINCE** — every
@@ -93,11 +93,10 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
 - **/statutes in demo mode never touches Supabase** — committed fixture chapters only
 - **Outlook push WORKS as of 2026-07-26.** **ONLY event CREATION is exercised** — edit/cancel
   unverified. Binding: **fictional demo events only** until Go_Live_Gates clears
-- Inbox has NO automatic ingestion (T3 unbuilt); OAA intake parses digital Uvalde-layout orders only,
-  scans → manual. Demo PFS schedule is fictional
+- Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual
 - Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage — EOB/report "links"
-  are text. **Hand-keying itemized bills is a VIABILITY issue** (Michael); see queue. Playbook
-  engine NOT built; generated docs and code mappings do NOT survive a reseed
+  are text. **Hand-keying itemized bills is a VIABILITY issue** (Michael). Playbook engine NOT
+  built; generated docs and code mappings do NOT survive a reseed
 - **"Mark disbursed" shows on criminal files — KNOWN CONSEQUENCE of the profiles carve-out,
   deliberately NOT fixed.** Hiding it by practice area = profile machinery by the back door
 - **PROBATE: the only furniture is a `Probate companion` case type MIS-PARENTED under Personal
@@ -114,37 +113,38 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
 - Time tracker: design draft only. Servpro deadline engine: DESIGN ONLY, gated on the meeting. Case
   heartbeat: design docs only; captures e+f NOT folded; register H1–H83. **CE1 (case-event core)
   still NOT AUTHORIZED** (D-CL2-9) — must be **CLIENT-AWARE from the start**
-- CourtListener: design doc only — app integration UNAUTHORIZED (Q-6 + its §6). Registry: ALL
-  entries UNVERIFIED; entries 1–10 sign-off is Michael's
+- CourtListener: design doc only, integration UNAUTHORIZED (Q-6). Registry: ALL entries UNVERIFIED
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **NEW 2026-08-08 (log #38)** — `rulings-capture-2026-08-08.md` routed. **CD-1 ISSUED, UNRULED,
-  NOT AUTHORIZED:** one global contact directory as the identity source for the form engine and all
-  case-linked people/entities — views over one directory, or tables linked to
-  `case_parties`/`case_clients`? **Own design session, schema on screen. LIVING SPEC**
+- **CD-1 ISSUED, UNRULED, NOT AUTHORIZED** (log #38): one global contact directory as the identity
+  source for the form engine and all case-linked people/entities — views over one directory, or
+  tables linked to `case_parties`/`case_clients`? **Own design session, schema on screen. LIVING**
 - **CL2-AC-1 is DIRECTION-CONFIRMED, not closed** — auto-create on PI client-role link is policy;
-  **link-removal, mixed-posture, and backfill are explicitly UNRULED**, doc-on-screen required
-- **CORPUS-HOME CLOSED 2026-08-08: the ARCHIVE project** (the DOMSER proposal was not adopted).
-  Execution is **Michael's hand** — an upload, never a repo action
+  **link-removal, mixed-posture, backfill UNRULED**. Its two queue homes were consolidated 08-08
+- **CORPUS-HOME CLOSED 2026-08-08: the ARCHIVE project.** Execution **Michael's hand**, never a repo action
 - **The probate corpus is NOT in the repo and never has been** — one directory ABOVE the repo root;
   **the repo root is a SUBFOLDER of the project folder.** Re-verified 2026-08-08: untracked, in no
-  commit. `Probate Corpus.zip` sits untouched in gitignored `inbox/`
+  commit; `Probate Corpus.zip` untouched in gitignored `inbox/`
 - **PROBATE-LADDER PASS DEFERRED** pending Domser; unblock is the letters-issued arc capture.
   **PL-1..PL-4 UNRULED**; PL-1's proceeding-as-case-type pick is Claude's, **PROPOSED only**
-- **PROPOSED, unruled: SAT-1** (satellite pattern + one-ruling-space) and **QR-2** (make the
-  machine-local runner copies POINTERS to the repo file). QR-2's evidence is now **three
-  consecutive runs** stale — #38 loaded v1 against repo v3, self-caught again
-- **QUEUE-RUNNER.md is v3 (QR-1)** in both tracked copies. **ID collision flagged, not
-  renumbered:** §2's O1 (Prop. Code fees) ≠ the transcript O-series O1 (auto-file)
+- **QR-2 CLOSED 2026-08-08 — ruled YES.** Runner copies are now POINTERS; `docs/prompts/
+  QUEUE-RUNNER.md` is the **ONLY full copy** and `.claude/commands/queue-runner.md` was rewritten
+  to point at it. **The P15/P1 machine-local copies are still full text — Michael's hand**
+- **PROPOSED, unruled (SAT-1** satellite pattern**)**, plus two new sweeps, both Michael's:
+  **queue-wide duplication** (does any other item live twice?) and **cross-document status drift**
+  (do design-doc status rows lag the register?) — raised by a stale §10 row, different classes
+- **ID collision flagged, not renumbered:** §2's O1 (Prop. Code fees) ≠ O-series O1 (auto-file)
 - **#36's routing is REVIEWED AND CLEARED design-side (log #37).** The carried **#31–#35 material
-  is still UNREVIEWED**, as is **#37–#38's own routing** — do not copy the #36 clearance forward
+  is still UNREVIEWED**, as is **#37–#39's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting Michael's ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #38. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through #39. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`** (QuickBooks)
-- **Client model: design doc §10 is authoritative.** Open: **D-CL2-3a** (affidavit rate),
-  **CL2-CHECK-1** (deferred). Statutes resume: TDRPC 1.04, TRCP 204.1, then Estates Code
-- FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT NEEDED: session-1
-  heartbeat voice capture. Carried: Supabase Pro (gate 1), security review (gate 2), **gate 3 RLS
-  PARTLY satisfied**, no canonical law-change ledger, Outlook slice unreviewed
+- **Client model: design doc §10 is authoritative** for ruling detail; the queue governs
+  completeness (QR-1). §10's CL2-AC-1 status cell was corrected in place 2026-08-08 under a
+  one-line lift of the spec-edit bar — **NOT consolidated; the split stands.** Open: **D-CL2-3a**
+  (affidavit rate), **CL2-CHECK-1** (deferred). Statutes resume: TDRPC 1.04, TRCP 204.1, Estates
+- FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT: session-1 heartbeat voice
+  capture. Carried: Supabase Pro (gate 1), security review (gate 2), **gate 3 RLS PARTLY**, no
+  canonical law-change ledger, Outlook slice unreviewed
