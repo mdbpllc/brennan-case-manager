@@ -12,6 +12,70 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-07 (#36) — QUEUE-RUNNER batch: evening rulings routed; **PHASE 0 + T3 AUTHORIZED BUT NOT BUILT — PREFLIGHT FAILED ON THE WRONG MACHINE** (Code session, Opus 5)
+
+**Queue as found in `inbox/`:** two zips, one of them a real packet.
+`push-to-code_evening-rulings-pipeline_2026-08-07.zip` was executed as the only item — no ordering
+decision to make. It is a **second, later packet from the same date** as #35's (`...rulings-batch...`,
+processed at 22:33; this one landed 23:23). **`Probate Corpus.zip` is still NOT a packet** and was
+**left untouched** for the third consecutive runner — not deleted, not extracted, not moved, not
+diffed — per Michael's #31 ruling. CORPUS-HOME (below) is the item that would change that.
+
+**Clone freshness (cross-machine rule):** HEAD and `origin/master` were both at `5257677` before any
+write; working tree clean. No pull needed, no staleness this time.
+
+### §5 PREFLIGHT — FAILED. Docs routed, **nothing built.**
+
+The packet's §0 and §5 both say it plainly: *incomplete preflight → docs only, builds hold, say so.*
+Saying so. **This session did not run on the P1.** Measured, not assumed:
+
+| Preflight item | Required | Found on this machine | |
+|---|---|---|---|
+| Machine | ThinkPad **P1 Gen 8** (the build target) | **LENOVO 20TQ002EUS** — a different machine | ❌ |
+| GPU / VRAM | 8 GB (the sequential-loading rule, memo §8) | **Quadro P620, 4096 MiB** — half the design floor | ❌ |
+| NVIDIA driver | ≥ 570 | **582.41** | ✅ |
+| WSL2 + Ubuntu 24.04+ | installed | **no distribution installed at all** (`wsl -l -v` and `wsl --status` both return nothing) | ❌ |
+| Pilot + scripted audio reachable | yes | `..\data\pilot-recordings\` is present here | ✅ |
+| 13 pilot transcript bundle | supplied by Michael | **not in the packet, not supplied** | ❌ (fixture rider skipped) |
+
+The VRAM finding is the one worth carrying: **4 GB is not a slow P1, it is a different constraint
+class.** The whole T3 shape — full-precision Parakeet plus Sortformer, loaded sequentially — is
+written against 8 GB. Nothing was attempted, so no scorecard exists, and **the stage-1 checkpoint
+was never reached, let alone self-certified.** Stage 2 (T3) is untouched. T4 remains unauthorized.
+**The authorization is not spent** — it is still live and waits for a session on the P1.
+
+**What was executed — §4 doc work orders, all three:**
+
+| # | Artifact | Landed at | Action |
+|---|---|---|---|
+| 1 | Rulings capture 07b | `docs/specs/rulings-capture-2026-08-07b.md` | NEW file, copied whole, **SHA-256 verified byte-identical**. Duplicate watch run first: the same-date "a" capture exists and was **not merged and not touched** |
+| 2 | Sort-and-route fold-in | `docs/specs/transcript-sort-and-route-design.md` | Both edits applied. §10 O2 row replaced; new section appended. **Numbering had not drifted — §12 was correct.** Heading normalized to the doc's own style (`## 12.` not `## §12 —`); body text verbatim. An execution-status line was added at the end of §12 pointing here, so the design side does not read the authorization as executed |
+| 3 | Queue merges | `docs/specs/attorney-review-queue.md` | Ten items, **full question text per QR-1**. New "Probate ladder (PL series)" heading with PL-1..PL-4; SAT-1, CORPUS-HOME, O1/O3/O4, Domser setup and Tascam under process/housekeeping; **O2 recorded ✅ CLOSED**; PR-3 annotation updated with the deferral and its unblock condition |
+
+**The fold-in instruction file was NOT committed** and was deleted with the packet, as instructed.
+
+**ID collision found and disambiguated, not renumbered:** the queue's §2 already uses **O1** for a
+closed Prop. Code ch. 28 attorney-fee question, and the transcript design doc's O-series also starts
+at O1. Both now carry a series label in the queue. Flagging rather than fixing — renumbering an ID
+is how questions lose their history (K-6/K-7).
+
+**Nothing superseded** — this packet is additive to #35's, not in conflict with it. No §4 order
+duplicated work already landed, and no earlier DO-NOT was lifted; #35's cumulative DO-NOTs were
+honored alongside this packet's.
+
+**§7 open items are Michael's and were merged, not resolved** — PL-1..PL-4 (unruled, deferred with
+the probate pass pending Domser), SAT-1 and CORPUS-HOME (both PROPOSED, unruled), PR-3 (annotated),
+O1/O3/O4 (carried), Domser project setup and the Tascam purchase (Michael's hand, outside the repo).
+Full text now lives in `attorney-review-queue.md`, which is the point of QR-1.
+
+**Next:** run the packet's §5 from a session **on the P1 Gen 8**, starting with the preflight
+verified with Michael. Everything else in this entry is already done.
+
+Staged for Code: the Phase 0 + T3 build order, **unspent** — it needs the right machine, not a new packet.
+Awaiting/Returned from Code, unreviewed: this entry's doc routing; plus the carried #31–#35 material per the #35 entry.
+
+---
+
 ## 2026-08-07 (#35) — QUEUE-RUNNER batch: rulings packet routed (docs only, nothing built) (Code session, Opus 5)
 
 **Queue as found in `inbox/`:** two zips, one of them a real packet.

@@ -131,7 +131,13 @@ Consent (Tex. Penal Code §16.02 [CONFIRM]), witness-statement discoverability (
 
 **Open for Michael:**
 - **O1 —** Confirm or veto D1 (auto-file posture).
-- **O2 —** P1 OS at purchase: native Ubuntu vs. Windows+WSL2 (either works; affects setup docs only).
+- **O2 — CLOSED 2026-08-07 (Michael: "windows only"): Windows host, WSL2 runtime.** Native
+  Ubuntu and dual-boot rejected: the P1 is already the provisioned second Claude Code machine
+  on Windows; the ingest design is OneDrive-based and OneDrive has no official Linux client;
+  and a dual-boot background service only exists while booted into the OS nobody works in,
+  which defeats hands-off ingestion. NeMo has no native Windows support, so WSL2 (CUDA
+  passthrough) is the runtime inside the Windows-only ruling. Future escape hatch on record:
+  a dedicated headless native-Ubuntu box if volume outgrows the laptop.
 - **O3 —** Where do not-case-related recordings go (personal store vs. discard-with-log)?
 - **O4 —** Phone→PC sync channel at go-live (OneDrive Shortcut vs. iCloud folder vs. stay-manual) — deferred by D2.
 
@@ -143,3 +149,34 @@ Consent (Tex. Penal Code §16.02 [CONFIRM]), witness-statement discoverability (
 - **T4 — Wiring:** service→Supabase staging writes; OneDrive audio placement + Opus transcode job; pass-2 re-decode action.
 
 T1+T2 are buildable **now** with zero hardware. Sequencing against the OAA criminal-intake slice stays Michael's call per the standing queue.
+
+## 12. O2 closure, model-currency check, and Phase 0/T3 execution notes (2026-08-07)
+
+**O2 closed** (see §10). **Model currency re-checked 2026-08-07** per the capabilities memo's
+build-time instruction: parakeet-tdt-0.6b-v3 and Sortformer (offline 4spk-v1; streaming
+v2/v2.1) remain the current generation; **D4 stands unchanged**. Setup floor: Windows NVIDIA
+driver ≥ 570; WSL2 distribution Ubuntu 24.04+.
+
+**Phase 0 + T3 authorized 2026-08-07** (rulings capture 2026-08-07b, Part 8) with this
+structure, binding on the executing session:
+
+1. **Preflight verified with Michael at session start** (driver, WSL2, audio files reachable,
+   disk headroom; pilot transcript bundle if the fixture rider runs). Incomplete preflight →
+   docs-only session; builds hold.
+2. **Stage 1:** WSL2/CUDA/NeMo environment; pilot + scripted batches rerun at full precision
+   with word boosting against existing ground truth; two-voice diarization; Spanish trial if a
+   sample exists. **Scorecard committed to `docs/specs/` as a design-reviewable artifact** —
+   it is the evidence base D1 and the confidence thresholds are waiting on.
+3. **Michael's in-session checkpoint:** the executing session presents the scorecard and
+   STOPS. Stage 2 proceeds only on his word. The gate is his read, never the session's
+   self-certification.
+4. **Stage 2 — T3** per §11-T3 and memo §9: FastAPI, OpenAI-compatible surface, NeMo runtime
+   (never ONNX — it loses decode-time word boosting), sequential model loading (8 GB VRAM,
+   memo §8), CPU/int8 fallback included. **WSL2 I/O rule:** copy audio into the WSL filesystem
+   for processing; only the watch step touches the Windows mount.
+5. **T4 is not authorized** and follows separately. **Fixture rider:** T2 tests upgrade to the
+   13 real pilot transcripts (fictional-content, repo-safe); transcript TEXT only — audio
+   never enters the repo (`..\data\` convention).
+
+**Execution status:** the first session to receive this order (2026-08-07 evening, queue-runner
+#36) **did not build** — preflight failed on the machine it ran on. See session-log #36.
