@@ -12,6 +12,41 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-07 (#37) — ADDENDUM: #36 routing REVIEWED design-side; QR-2 proposed (design session close-out, Fable 5; staged 2026-08-07 late, processed the same night)
+
+Close-out sweep of the evening design session, run after #36's push and sync. **Docs only; nothing
+built, and nothing here authorizes a build.** Packet: `push-to-code_addendum-qr2_2026-08-07.zip`,
+which landed in `inbox/` minutes after #36's push — a second runner invocation, not a re-run.
+
+**Date note:** the packet's §3 entry was written as **2026-08-08**, anticipating processing after
+midnight. It was processed at **23:42 on 2026-08-07**, so the entry carries the real date. Nothing
+else in it was altered.
+
+- **#36's ROUTING IS REVIEWED AND CLEARED.** The design side read the routed docs at `89651e8`:
+  capture 07b faithful; §12 applied with the execution-status line (approved — it prevents the
+  design side misreading the authorization as spent); queue merges preserve every
+  CONFIRMED/PROPOSED line including the PL-1 do-not-build-from guard; O-series disambiguation
+  and the untouched "a" capture both correct; BUILD-STATE's live-unspent block is right.
+  **Cleared: #36's doc routing only. NOT cleared: the carried #31–#35 material**, which remains
+  unreviewed — verify against the entries that staged it.
+- **QR-2 PROPOSED (unruled, Michael's)** — full text in `attorney-review-queue.md`. Evidence: the
+  machine-local queue-runner skill copy loaded stale twice in two runs (#35 started under v1
+  against repo v2; #36 loaded v1 against repo v3), self-caught both times. The proposal removes
+  the failure class instead of relying on the runner catching it. **Confirmed from this side:**
+  `.claude/commands/queue-runner.md` is tracked and current at v3; the lag is in the untracked
+  machine-local skill copy, exactly as the proposal states.
+- Interim mitigation regardless of QR-2 (Michael's hand): re-sync the P15's local skill copy to
+  v3, and check the P1's copy before its first runner session — same lag class, third copy.
+- Meter readings: not supplied (third consecutive design session; noted).
+- **`Probate Corpus.zip` untouched for the fourth consecutive runner** (#31 ruling stands).
+
+Staged for Code: none beyond this entry and the QR-2 merge. **The Phase 0 + T3 authorization
+remains live and unspent, waiting on a P1 session** (see #36) — the addendum did not touch it.
+Awaiting/Returned from Code, unreviewed: carried #31–#35 material per the #35 entry. **#36's
+routing is cleared and is NOT carried forward onto this line.**
+
+---
+
 ## 2026-08-07 (#36) — QUEUE-RUNNER batch: evening rulings routed; **PHASE 0 + T3 AUTHORIZED BUT NOT BUILT — PREFLIGHT FAILED ON THE WRONG MACHINE** (Code session, Opus 5)
 
 **Queue as found in `inbox/`:** two zips, one of them a real packet.
