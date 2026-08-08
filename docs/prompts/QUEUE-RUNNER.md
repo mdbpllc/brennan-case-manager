@@ -1,4 +1,5 @@
 > STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1). Canonical path: docs/prompts/QUEUE-RUNNER.md
+> QR-2 (ruled 2026-08-08): this file is the ONLY full copy; all skill/command copies are pointers to it at HEAD.
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->

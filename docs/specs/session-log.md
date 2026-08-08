@@ -12,6 +12,89 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-08 — QUEUE-RUNNER batch (runner line; SIXTH invocation, same day)
+
+One packet, one close-out, no split — the run STALLED mid-reconciliation on a conflict, then
+resumed on a design ruling delivered in-session.
+
+- **Queue as found:** `push-to-code_qr2-and-cl2ac1-consolidation_2026-08-08.zip` (landed 10:39,
+  after the #38 run began). `Probate Corpus.zip` still parked, **not a packet, untouched** —
+  CORPUS-HOME execution remains Michael's hand.
+- **STALL AND RESUME — the only interesting thing about this run.** §1 reconciliation surfaced a
+  **third CL2-AC-1 location**: the §10 table row in `claimant-dimension-and-case-links-design.md`,
+  still reading "PROPOSED, unruled" a day after DIRECTION-CONFIRMED. The packet's §4.4 said to
+  "consolidate identically and flag it." **Code flagged rather than obeyed**, because consolidating
+  it would have collapsed the QR-1 authority split (queue governs completeness; §10 authoritative
+  for ruling detail) and because CLAUDE.md bars Code from rewriting an unrouted spec doc. A brief
+  went to design; the reply resolved it the same session. **Nothing was written during the stall.**
+- **Resolution, per the design reply:** (a) **"consolidate identically" stops at the register** —
+  the b-capture's own Part 2 scope guard controls; §10 was NOT consolidated. (b) Stale design-doc
+  status is fixed **only on a routed instruction**; Code's lean adopted as the standing answer.
+  (c) The sweep gets a **second line, not a widening**.
+- **SPEC-EDIT BAR LIFTED, ONE LINE, #13 R-4 PRECEDENT** — recorded here the way R-4 recorded its
+  own. `claimant-dimension-and-case-links-design.md` §10's CL2-AC-1 row still said "PROPOSED,
+  unruled"; the item went DIRECTION-CONFIRMED 2026-08-08. **Status cell corrected in place; no
+  reasoning text touched; §10 remains authoritative for detail.** The standing spec-edit bar was
+  **explicitly lifted for this one line** by the design reply Michael pasted into the session —
+  that paste is the authorization, the same hand-approval class as moving a zip to `inbox/`.
+- **FAILURE CLASS — stale status line on a ruled item.** Same family as #13's R-3/R-4
+  copy-forward artifacts: a ruling lands in the register and the design doc's summary row keeps
+  the old status. **Actor: the 08-07/08-08 design sessions that ruled CL2-AC-1 without routing a
+  §10 status update.** Not a Code miss and not a packet miss — a gap in what a ruling routes.
+  The new status-drift sweep item exists to find the rest of them.
+- **SECOND FAILURE, design-side drafting — the actual cause of the stall.** §4.4's "if a third
+  location surfaces, consolidate identically" sat inside a *queue* work order but read as
+  unbounded. **Actor: Fable 5, the 08-08b design session.** Design's own words: it "meant a third
+  location in the queue; it should have said so." Cost: one round trip and a stalled run. Cheap
+  here only because Code stopped instead of guessing.
+- **QR-1 catch:** the packet's §7 carried a **queue-wide duplication sweep** item that had never
+  been entered in the register — it existed only in packet tables. Carried into
+  `attorney-review-queue.md` with its wording verbatim, per QR-1. This is exactly the loss QR-1
+  was ruled to prevent, caught one packet later.
+- **Nothing superseded between packets** (single-packet batch). §5 was NONE; **nothing built,
+  nothing authorized.** The §6 DO-NOT list bound in full, as amended by the one-line lift.
+- **Runner-copy note, closing the arc:** this invocation ALSO loaded the machine-local skill at
+  **v1** against repo **v3** — a fourth consecutive stale load, and the last one that can happen
+  in this class from the repo side, since `.claude/commands/queue-runner.md` is now a pointer.
+  **The P15 and P1 machine-local copies are still full text and still Michael's hand.**
+
+---
+
+## 2026-08-08 (#39) — QR-2 RULED YES (pointers, not copies); CL2-AC-1 queue duplication CONSOLIDATED (design session, typed)
+
+Two rulings, Michael's, one line: "QR-2 - yes, CL2-AC-1 dedup - consolidate." Made on review of
+the #38 run report, which supplied the evidence for both. Full reasoning in
+`docs/specs/rulings-capture-2026-08-08b.md`. Nothing built; nothing authorized.
+
+- **QR-2 CLOSED — ruled yes.** Machine-local queue-runner skill/command copies become POINTERS
+  ("read `docs/prompts/QUEUE-RUNNER.md` at HEAD and follow it"); canonical full text lives ONLY
+  at `docs/prompts/QUEUE-RUNNER.md`. Reason: #38 was the third consecutive stale-skill run, and
+  the lag cost nothing only by luck — the packet and the design reply independently supplied both
+  deltas. Repo-tracked command copy rewritten this session; the P15/P1 machine-local copies are
+  Michael's hand and SUPERSEDE the interim re-sync mitigation (convert, don't re-sync).
+  **Instructions trigger #3 fired** — v7 drafted and handed to Michael same-day.
+- **CL2-AC-1 CONSOLIDATED in the queue** — full text, kept 2026-07-28 framing, DIRECTION-CONFIRMED
+  status, and the three UNRULED edges now live in the ID-bearing entry only; the "Captured
+  2026-07-28" block is a dated pointer. Reason: one register, one home per question — duplicated
+  text drifts (QR-1's disease). Text moved, not deleted. The item itself remains OPEN
+  (edges unruled, doc-on-screen).
+- **THIRD LOCATION found and ruled** (added in execution, not in the packet's draft): the §10 row
+  in `claimant-dimension-and-case-links-design.md` was stale. **NOT consolidated** — the QR-1
+  authority split stands — but its **status cell was corrected in place** under a one-line lift of
+  the spec-edit bar (#13 R-4 precedent). See the runner entry above for the full record.
+- **NEW, PROPOSED and unruled, both Michael's:** a **cross-document status-drift sweep** (do any
+  design-doc status rows lag the queue/log record?) and the **queue-wide duplication sweep**
+  carried in from the packet's §7 per QR-1. Distinct failure classes; both entered in the queue.
+- Standing notes: BUILD-STATE at exactly 150 — displace-before-add binds the next touch.
+  CORPUS-HOME execution (ARCHIVE upload) still Michael's hand, outstanding.
+
+Staged for Code: this entry; the b-capture; the pointer rewrite; the queue consolidation.
+Awaiting/Returned from Code, unreviewed: this packet's routing; plus carried #31–#33 material per
+the #35 entry (verify against the entries that staged them; do not copy forward items cleared in
+#13/#22/#23/#24).
+
+---
+
 ## 2026-08-08 — QUEUE-RUNNER batch (runner line; fifth invocation)
 
 One packet processed, single-packet collapse per Michael's confirmation this session.
