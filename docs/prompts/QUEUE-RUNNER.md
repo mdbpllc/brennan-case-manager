@@ -2,8 +2,9 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v2, 2026-08-06. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
-     Step 4 item 3 amended by Michael's ruling 2026-08-06. -->
+<!-- v3, 2026-08-07 (QR-1). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+     Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
+     Michael's ruling 2026-08-07 (QR-1). -->
 
 You are processing a QUEUE of push-to-code packets accumulated while Fable
 tokens were exhausted. Each packet is a standard push-to-code zip (manifest
@@ -59,7 +60,16 @@ For each packet, oldest first:
    ran, in what order, what was superseded, what was skipped as already
    built.
 2. Merge the packets' §7 open-items tables into the runner entry so the
-   top of the log stays truthful — Michael's items remain Michael's.
+   top of the log stays truthful — Michael's items remain Michael's — AND
+   into `docs/specs/attorney-review-queue.md`, which is the standing
+   register of what awaits Michael's ruling. **When merging a packet's
+   open items into `attorney-review-queue.md`, carry the FULL question
+   text into the queue entry — the actual question, in bold, per that
+   file's stated convention — never ID + label alone. The packet is
+   deleted after processing, so the queue entry is the only place the
+   question survives.** (QR-1, ruled 2026-08-07. Failure class this
+   prevents: Q-5's original wording destroyed; K-6/K-7 retired because
+   their text existed nowhere.)
 3. Rewrite docs/specs/BUILD-STATE.md IN FULL — never append. **150-line
    hard cap** (Michael's ruling 2026-07-27, BS-1, raised from 120; the cap
    exists for READABILITY, not token cost). At the cap, **displace — cut

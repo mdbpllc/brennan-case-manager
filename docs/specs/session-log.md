@@ -12,6 +12,208 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-07 (#35) — QUEUE-RUNNER batch: rulings packet routed (docs only, nothing built) (Code session, Opus 5)
+
+**Queue as found in `inbox/`:** two zips, one of them a real packet.
+`push-to-code_rulings-batch_2026-08-07.zip` was executed as the only item — no ordering decision to
+make. **`Probate Corpus.zip` is NOT a packet** (no manifest, no §0–§8; it holds the system prompt and
+the 1.8 MB corpus) and was **left untouched** per Michael's #31 ruling, reaffirmed in the 2026-08-07
+REPLY-TO-CODE checkpoint: not deleted, not extracted, not moved, not diffed.
+
+**Pre-flight checks (REPLY-TO-CODE §1), both run BEFORE reading the packet's §4:**
+
+- **Check A — is `probate_knowledge_corpus.md` tracked?** **NO — and it is not in the repo at all.**
+  `git ls-files --error-unmatch` errors, `git check-ignore -v` returns nothing, `git log --all` over
+  the path is empty, and `git status --porcelain` is clean. The file sits **one directory ABOVE the
+  repo root** — `brennan-case-manager-v0.1/probate_knowledge_corpus.md`, while the repo root is
+  `brennan-case-manager-v0.1/brennan-case-manager/`. **None of the three branches the checkpoint
+  anticipated applies** (tracked / untracked-in-worktree / ignored); there is no incident, nothing
+  to remove, and nothing for Michael to rule on. The design-side tension that prompted the check —
+  "repo is clean" alongside "1.82 MB file at project root" — resolves as a **wording collision**:
+  the Code report said *project* root, meaning the project folder, and the design side read it as
+  *repo* root. **Recorded so the same alarm does not fire again: in this project those are two
+  different directories** (the repo is a subfolder of the project folder). No grep for `corpus` or
+  `probate` in `git ls-files` returns anything. The licensed/privileged material never entered.
+- **Check B — is the clone stale?** **YES — the design side was right and this clone was wrong.**
+  HEAD was `01b1488`; `origin/master` was `768db47`, four commits ahead. Fast-forwarded cleanly
+  (no merge, no conflict): `033692b` → `f6802ef` → `37732ce` → `768db47`. The design side's
+  `37732ce` view was therefore **current, not anomalous**, and BUILD-STATE was one refresh behind
+  that (`768db47`). Everything below was executed against the updated tree. **Cross-machine rule
+  earned its keep — the pull happened before any write.**
+
+**Consequence of Check B worth carrying:** the pull brought **QUEUE-RUNNER v2**, which this session
+had started under **v1** (the skill copy loaded at invocation predated the 2026-08-06 amendment).
+The v1/v2 delta is Step 4 item 3 — the 150-line cap, displace-don't-append, and the ledger pointer.
+**Close-out below followed v2 as amended to v3, not the v1 text the session opened with.**
+
+**What was executed — §4 doc work orders, all six:**
+
+| # | Artifact | Landed at | Action |
+|---|---|---|---|
+| 1 | Rulings capture | `docs/specs/rulings-capture-2026-08-07.md` | NEW file, copied whole, byte-identical. Duplicate watch run first: no `rulings-capture` file existed |
+| 2 | QR-1 amendment | `docs/prompts/QUEUE-RUNNER.md` **and** `.claude/commands/queue-runner.md` | Both amended identically, both v2 → **v3 (2026-08-07, QR-1)** |
+| 3 | Queue folds | `docs/specs/attorney-review-queue.md` | Nine items; **the whole FE series was absent and was added** |
+| 4 | FE-1 / FE-2 rulings | `docs/specs/form-engine.md` §12.6 | Append-within-row; findings preserved verbatim, rulings appended beneath |
+| 5 | Client-model updates | `docs/specs/claimant-dimension-and-case-links-design.md` §10 | D-CL2-3 closed; D-CL2-3a and CL2-AC-1 rows added |
+| 6 | Rate-model correction | `docs/specs/time-tracker-fee-basis-profiles-design.md` §1, §5, §8 | §1 premise struck-and-corrected with the old wording preserved |
+
+**What was NOT executed:** §5 is explicitly **NONE**, and nothing was built. No provider-directory
+table, migration, or UI (FE-1 is a spec ruling only). No `caseTypes.ts` touch, no re-parent, no
+ladder change (PR-3 execution HELD). No time tracker (parked behind CE1, unauthorized). Nothing
+under `src/` or `db/` was opened. `claude_Project_Instructions_v6_2026-08-07.md` was **not filed
+anywhere** — it is Michael's paste, not a repo doc.
+
+**Reconciliation findings — three genuine deltas, none of them re-applications:**
+
+1. **§4.2's target step does not exist as the packet describes it.** The packet directs an amendment
+   to "the step that merges packet open items into `attorney-review-queue.md`." **No such step
+   existed:** v2's Step 4 item 2 merged open items into the *session-log runner entry* only. QR-1 as
+   ruled presumes the queue file as a destination. Amended **by behavior, as §4.2 instructs** — Step 4
+   item 2 now names both destinations and carries the full-question-text requirement. **The
+   amendment therefore adds a destination as well as a rule; recorded rather than glossed.**
+2. **`attorney-review-queue.md`'s own convention contradicted QR-1.** Its client-model section said
+   *"do not maintain a second copy of the question text"* (2026-07-28), while QR-1 (2026-08-07, later,
+   and Michael's) requires exactly that. **Later ruling wins; the older instruction is superseded in
+   place, not deleted** — the file now records that §10 governs ruling detail while the queue governs
+   completeness. **Flagged for Michael rather than silently resolved.**
+3. **FE-3's absence was real, not a search miss.** The design side could not surface an FE-3 row and
+   asked Code to verify. **Verified absent** — and so were FE-1 and FE-2; the FE series had never
+   been in the queue file at all, living only in `form-engine.md` §12.6. All three were added with
+   full question text per QR-1, FE-3 as ⬜ OPEN.
+
+**Verified as already landed, not re-applied (packet §1):** `form-engine.md` §12 (POC fold-in),
+`form-engine-helpers.md`, `new-machine-bootstrap.md`, QUEUE-RUNNER v2, and the BUILD-STATE true-up
+are all present. **No fold target had been renumbered** — §12.6, §10, and the time-tracker §1/§5/§8
+were located by name and matched their expected numbers, so no fold-by-name fallback was needed.
+
+**Superseded by the conflict rule:** nothing across packets (a batch of one). The two supersessions
+above are packet-vs-repo, both recorded in place.
+
+**FLAG FOR MICHAEL — client name in a committed doc.** The filed capture and the #34 entry both name
+**Domser** as the matter whose material sits in the corpus's Part III. No facts, documents, or case
+data — the name appears only to explain *why* the corpus can never enter the repo. It was filed as
+written because §4.1 says verbatim and altering a raw capture is its own defect, and because the name
+already appears in `session-log.md` from earlier entries. **But CLAUDE.md's data-hygiene rule is
+absolute on its face, so this is Michael's call, not Code's** — say the word and both mentions get
+redacted to "a live client matter" in a follow-up commit.
+
+**Disposition of the REPLY-TO-CODE file:** it arrived as chat text and **never existed as a file in
+`inbox/`**, so there was nothing to remove; this entry is its record, as it directed. The processed
+packet zip was deleted from `inbox/`. `Probate Corpus.zip` remains.
+
+**Open items merged from packet §7 — every one Michael's, none resolved here.** Full question text
+now lives in `attorney-review-queue.md` per QR-1; carried here in short form only because that file
+is the register:
+
+| ID | Item | Status |
+|---|---|---|
+| FE-3 | `form-engine.md` §8 shell-content hygiene — needs §8 on screen | OPEN — **added to the queue this session; it was genuinely missing** |
+| O5 | `direction` / `conditionalDowngrade` confirm-or-reject | OPEN — deferred by scope ruling; needs the fee-profile doc on screen |
+| D-CL2-3a | Which rate the fee affidavit carries when clients differ | OPEN — new |
+| CL2-AC-1 | Auto-create client record on PI client-role link | PROPOSED, unruled — ID issued 2026-08-07 |
+| PR-3 | Probate re-parent | Direction CONFIRMED; **execution HELD** for the ladder design pass |
+| — | Probate-ladder design session (corpus in hand); proceeding-driven ladders | OPEN — schedulable |
+| — | Next build slice | OPEN — Michael names it |
+| — | Instructions v6 paste | OPEN — Michael's hand |
+| — | #31–#33 returned material review | OPEN — carried |
+| — | Probate corpus final home (recommended: ARCHIVE project) | PROPOSED, unruled |
+
+**Health:** untouched — this was a docs-only session; no test, build, or lint state changed since
+2026-07-28 (232 vitest tests, build + oxlint clean).
+
+**Next:** Michael's, in whatever order — probate-ladder design pass, FE-3 with §8 on screen, O5 with
+the fee-profile doc on screen, #31–#33 review, or naming the next build slice.
+
+Staged for Code: none — the queue is empty.
+Awaiting/Returned from Code, unreviewed: this entry and #34's routing; plus the carried #31–#33
+material (form-engine §12 fold-in, `form-engine-helpers.md`, `new-machine-bootstrap.md`,
+QUEUE-RUNNER v2, BUILD-STATE true-up).
+
+---
+
+## 2026-08-07 (#34) — RULINGS BATCH: FE-1 directory + 3 sub-rulings; FE-2; PR-3 held-for-ladder; QR-1 + RR-1 adopted; D-CL2-3 per-client rates; CL2-AC-1 issued (design session, Fable 5, dictated inputs)
+
+Voice-style dictated design session run to clear the rulings backlog. Seven rulings, all Michael's,
+all CONFIRMED aloud; full reasoning in `docs/specs/rulings-capture-2026-08-07.md`. Nothing built;
+nothing authorized for build. Meter readings not supplied this session (noted for the record).
+
+- **FE-1 CLOSED — persistent provider-directory table** is the source of provider identity data;
+  the §4 interview card survives as fallback for a provider not yet in the directory and writes
+  back into it. Michael: *"I like the persistent directory because I'm gonna be adding to it over
+  time... I do use a number of providers over and over again."* Three sub-rulings, all CONFIRMED:
+  **(a) identity in the directory, dollars on the case** — billed charges are per-case facts and
+  storing them per-provider would recreate the wrong-level defect class CL-2 was built to kill;
+  **(b) Option A pointer model** — case-level provider records point at the directory entry and
+  read live; the served .docx files are the historical record of what went out; **(c) silent trust**
+  — directory fills carry no confirm flags (attorney-entered data, caught by the proofread every
+  filing gets anyway). Michael's own requirement, recorded as load-bearing: editing a provider
+  FROM WITHIN A CASE must propagate to every linked case — which only the pointer model delivers
+  (one row, no sync). Build-facing consequences: the directory entry must be editable in case
+  context, and the edit surface must state firm-wide scope with a linked-case count (labeling,
+  not a confirm click).
+- **FE-2 CLOSED — ruled yes.** Intake sweeps document-name columns for entities with no chronology
+  row; finds surface as flags for Michael (catch-net, never auto-add); one-click dismissal;
+  dismissals remembered per case. The live POC proved the miss is real — one billing entity
+  existed only in billing-record document names.
+- **PR-3 — direction CONFIRMED per V17, execution HELD.** Probate becomes its own practice area
+  with its own ladder(s); the re-parent does not execute until the probate-ladder design pass
+  produces the ladder it lands on — a placeholder ladder is how the current wrong one happened.
+  That design pass is now SCHEDULABLE: the Texas probate knowledge corpus arrived design-side
+  (James Publishing chs. 1–15 + Dorsaneo 390–392; Ch. 7 independent administration is 118 docs and
+  reads as a near-ready ladder). New design question the pass must answer: probate is a
+  proceeding-selection practice — independent administration, muniment, heirship, small estate
+  have different arcs — so one "Probate" ladder may recreate the `_piDefault` mistake one level up;
+  proceeding-driven case types/ladders are the live candidate shape. D-CL1-3 stays gated on PR-3.
+- **QR-1 CLOSED — ruled yes.** The queue runner carries FULL question text into
+  `attorney-review-queue.md` when merging packet open items; ID+label-only merges are barred.
+  Evidence class already on record: Q-5's wording destroyed; K-6/K-7 retired unreconstructable.
+  QUEUE-RUNNER.md goes to v3 (this packet). Fires instructions trigger #3 → v6 drafted.
+- **RR-1 CLOSED — ruled yes, now a binding convention.** Before a packet ships, every document
+  authored earlier in the session is re-read against every ruling made later in it. Live exhibit:
+  FE-3's shell content, which postdating rules would have caught. Fires trigger #3 → v6 drafted.
+  (Complied with tonight trivially: all artifacts were authored after the last ruling.)
+- **D-CL2-3 CLOSED — one rate per CLIENT, on Michael's own fact pattern**, which killed the
+  proposed keep-case-level recommendation (withdrawn on facts): *"I will have some cases where I
+  have two clients and one will have a discounted rate for a certain reason and the other client
+  will have the standard rate."* Rate lives on the client record beside `fee_arrangement`;
+  single-client cases render exactly as today (D-CL2-7 principle). **Mid-case changes are
+  PROSPECTIVE** with an effective-dated rate history — Michael: *"the hours already billed would
+  likely stay the same because we already contracted for this and I would discount the hours
+  incurred going forward."* Hours are valued at the rate in force when incurred; nothing silently
+  revalues (the `toRow` lesson); a retroactive courtesy is a visible invoice write-down, not a
+  recompute. NEW OPEN **D-CL2-3a**: the fee-affidavit export assumed a uniform case rate
+  (lodestar-shaped); per-client rates need a design touch — Claude's lean (rate of the client
+  whose claim carries the fee demand) is PROPOSED, unruled. Nothing here authorizes the time
+  tracker; it stays parked behind CE1, which stays unauthorized.
+- **CL2-AC-1 ISSUED** — the auto-create-client-on-PI capture (2026-07-28) gets its durable ID.
+  Substance remains PROPOSED, unruled; the ID exists so it cannot die the K-6/K-7 death.
+- **O5 deliberately deferred** — confirm-or-reject on field semantics; not ruled from memory;
+  needs the fee-profile doc on screen.
+- **Working-set policy raised unprompted** on the probate corpus arrival: manifest + system prompt
+  + README in project knowledge are the index and stay; the 1.8 MB corpus itself must NOT enter
+  project knowledge, and can NEVER enter the repo (licensed James/LexisNexis material AND Part III
+  is privileged Domser client matter — the no-client-data rule). Recommended home: the ARCHIVE
+  project. `Probate Corpus.zip` stays untouched in `inbox/` per Michael's #31 ruling (gitignored).
+- Process notes: FE-3 could not be confirmed present in the synced `attorney-review-queue.md` —
+  verify and, if absent, add it with full question text per QR-1 (see §4.3). Instructions v6
+  drafted and handed to Michael (QR-1 + RR-1 + the 2026-08-06 QUEUE-RUNNER v2 note); pasting it
+  is his step, not Code's.
+
+**Next:** Michael reviews the #31–#33 returned material; probate-ladder design session (corpus in
+hand) or FE-3 design session or O5 doc-on-screen session; next build slice still Michael's to name
+(form engine now has no open design blockers except FE-3's content hygiene).
+
+Staged for Code: this entry; the rulings capture; the QUEUE-RUNNER v3 amendment; fold-ins to
+attorney-review-queue.md, form-engine.md §12.6, claimant-dimension §10, time-tracker doc.
+Awaiting/Returned from Code, unreviewed: carried from #31–#33 (form-engine §12 fold-in,
+form-engine-helpers.md, new-machine-bootstrap.md, QUEUE-RUNNER v2 amendment, BUILD-STATE true-up)
+— verify against the entries that staged them; do not copy forward items cleared in #13/#22/#23/#24.
+
+*Code note (#35): FE-3 was verified ABSENT and added with full text; so were FE-1 and FE-2, which
+had never been in that file either.*
+
+---
+
 ## 2026-08-06 (#33) — QUEUE-RUNNER batch: form-engine POC packet routed (docs only, nothing built) (Code session, Opus 5)
 
 **Queue as found in `inbox/`:** one zip, `push-to-code_form-engine-poc_2026-08-06.zip`. Executed
