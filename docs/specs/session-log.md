@@ -12,6 +12,98 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-08 — QUEUE-RUNNER batch (runner line; fifth invocation)
+
+One packet processed, single-packet collapse per Michael's confirmation this session.
+
+- **Queue as found:** two zips in `inbox/`. Only one was a packet —
+  `push-to-code_contact-directory-reframe_2026-08-08.zip`. **`Probate Corpus.zip` is NOT a packet**
+  (it holds `probate_system_prompt.md` + the 1.8 MB corpus); it was **not opened, not extracted, not
+  moved, not deleted** — CORPUS-HOME execution is Michael's hand, and the #31 ruling stands until
+  the ARCHIVE upload. It stays parked in `inbox/`.
+- **Corpus containment VERIFIED before push** (required by Michael's reply this session):
+  `git ls-files "*probate*"` returns **nothing** — the corpus is not tracked, in no commit. The only
+  probate object anywhere inside the repo tree is the **gitignored** `inbox/Probate Corpus.zip`
+  (`.gitignore:16`). The 1.8 MB `probate_knowledge_corpus.md` sits at
+  `brennan-case-manager-v0.1\probate_knowledge_corpus.md` — the **PROJECT folder**, one directory
+  ABOVE the repo root, outside git entirely. **Clean; no stop condition.**
+- **Nothing superseded, nothing skipped as already built** — one packet, so no cross-packet conflict
+  rule applied. §5 was NONE; **nothing was built and nothing is authorized.** The §6 DO-NOT list was
+  honored in full.
+- **Numbering:** the packet's §3 guessed "#37 — verify". Verified: #37 was already taken, so the
+  entry below is **#38**.
+- **Reconciliation deltas found (design-side view was accurate):** FE-1's ✅ entry was exactly where
+  §1 expected (queue "Form engine (FE series)" section) — annotated in place, not moved or
+  renumbered. **No CD-series ID existed anywhere in the repo** — no collision, CD-1 issued clean.
+  **No "instructions v6 paste" line exists in the queue** — per §1 and the DO-NOT list, none was
+  added; the DONE status is recorded here in the log only, where it belongs.
+- **One Code's-call flagged, per §4.2 item 2:** CD-1 got a **new `### Contact directory (CD series)`
+  heading** in the queue's §7 rather than being filed under the FE section — §7 is already sectioned
+  by series (FE, PL), so a new heading fits the structure. Placed directly beneath the FE series.
+- **One judgment call worth Michael's eye:** **CL2-AC-1 exists TWICE in the queue** — the ID-bearing
+  entry under "Client model" and the fuller original text under "Captured 2026-07-28" (a
+  pre-existing arrangement the file itself documents). The packet said "update its entry," singular.
+  The full DIRECTION-CONFIRMED annotation went on the ID-bearing entry; the fuller block got a
+  one-line status pointer to it, so a reader landing there isn't told it is still unruled. Nothing
+  struck, nothing shrunk.
+- **Open items merged** from the packet's §7 (full question text lives in
+  `attorney-review-queue.md` per QR-1; these stay Michael's): **CD-1** (own design session, schema on
+  screen, NOT authorized) · **CL2-AC-1** (edges: link-removal, mixed-posture, backfill) · **next
+  build slice — REOPENED**, Slice A withdrawn · **FE-2** build home PARKED · **FE-3** (§8 on screen)
+  · **O5** (fee-profile doc) · **D-CL2-3a** · **#31–#33 returned-material review** (carried) ·
+  **PL-1..4** (deferred pending Domser arc evidence) · **QR-2 / SAT-1** (proposed, unruled — both
+  verified present in the queue) · **M-3 / M-4 / K-5 / Q-5 / Q-6** carried unchanged.
+- **Runner-copy lag note:** this invocation loaded the machine-local skill copy at **v1** against the
+  repo's **v3** — the **third consecutive run** with a stale local copy, again self-caught. This is
+  exactly the failure class **QR-2** proposes to remove; the evidence line in QR-2 should now read
+  three runs, not two. Michael's interim mitigation (re-sync the P15 copy; check the P1's before its
+  first runner session) is still outstanding. **What the lag cost this run: nothing** — the two v1→v3
+  deltas are Step 4 item 2 (QR-1: merge open items into `attorney-review-queue.md` with full question
+  text) and Step 4 item 3 (BUILD-STATE cap 120 → **150**). Both were supplied independently — QR-1 by
+  the packet's own §4.2, the 150 cap by Michael's reply — and both were followed. **The catch was
+  luck, not process**, which is the argument for QR-2.
+
+---
+
+## 2026-08-08 (#38) — REFRAME: contact directory supersedes FE-1; CD-1 issued; Slice A WITHDRAWN; CL2-AC-1 to direction-confirmed; CORPUS-HOME closed (design session, mixed voice/typed)
+
+Slice-naming session that turned into a scope ruling. Claude proposed the form engine as the next
+slice, split with a provider-directory sub-slice (Slice A) first; Michael approved starting it,
+then stopped it on scope: the form builder pulls from ALL contacts — deliverables go to potentially
+anyone, any case type, any phase, intake through closing. Full reasoning and verbatim wording in
+`docs/specs/rulings-capture-2026-08-08.md`. Nothing built; nothing authorized.
+
+- **REFRAME (CONFIRMED — "that's the decider"):** one global CONTACT DIRECTORY is the identity
+  source for the form engine; "provider" is a role on a contact, not a table.
+- **FE-1 SUPERSEDED by CD-1** — not reopened. FE-1 stands as ruled for its narrower question;
+  its mechanics (pointer model, enter-once write-back, firm-wide edit propagation with scope
+  label, identity-in-directory/dollars-on-case) carry into CD-1 as PROPOSED inputs only.
+- **CD-1 ISSUED** (full text in the queue per QR-1): global contact directory vs.
+  `case_parties`/`case_clients` architecture — views over one directory or linked tables. Own
+  design session, schema on screen; LIVING SPEC, revisited as modules surface needs; NOT
+  authorized for build. New ID by the K-6/K-7 rule — not "FE-1R."
+- **SLICE A WITHDRAWN** — not paused. Nothing entered the build queue. "Next build slice" is
+  OPEN again; form engine cannot be named until CD-1 resolves.
+- **CL2-AC-1 → DIRECTION-CONFIRMED** (Michael chose (b) after Claude flagged its own bad
+  elicitation): auto-create-on-PI-client-link is policy; link-removal, mixed-posture, and
+  backfill behavior explicitly UNRULED, doc-on-screen required.
+- **CORPUS-HOME CLOSED:** probate corpus's final home is the ARCHIVE project. Execution is
+  Michael's hand; never the repo.
+- **FE-2 build home PARKED** unattached — the 08-07 ruling stands; lands with the CD-1 build or
+  the intake pipeline, whichever comes first.
+- **Process:** Michael directed an afternoon re-read of the morning before packaging. It caught a
+  proposal about to ship as a ruling ("FE-1 reopen" — never ruled), three orphaned half-answers
+  from one crowded exchange, and one badly-elicited yes. All cured by explicit rulings before
+  anything reached the record; failure classes named in the capture Part 8. Instructions v6 paste
+  is DONE (live instructions are v6). Meter readings not supplied.
+
+Staged for Code: this entry; the rulings capture; queue and form-engine.md fold-ins.
+Awaiting/Returned from Code, unreviewed: this packet's routing; plus the carried #31–#33 material
+per the #35 entry (verify against the entries that staged them; do not copy forward items cleared
+in #13/#22/#23/#24).
+
+---
+
 ## 2026-08-07 (#37) — ADDENDUM: #36 routing REVIEWED design-side; QR-2 proposed (design session close-out, Fable 5; staged 2026-08-07 late, processed the same night)
 
 Close-out sweep of the evening design session, run after #36's push and sync. **Docs only; nothing
