@@ -73,6 +73,9 @@ Michael confirmed). §5 was **NONE in both** — nothing built, nothing authoriz
   **✅ while its own text says "still outstanding."** Its wording was sharpened per MM1 §4.4.3;
   the status marker was left alone because changing it is a status call, not a wording call. This
   is an instance of the queue's own pending **cross-document status-drift sweep**.
+  **RULED SAME DAY (Michael, via design side): flip it — ✅ → ⬜, marker only, wording unchanged**,
+  since ✅ means nothing left to do and the deletion is still his hand. **This status-drift instance
+  is CURED; the sweep itself stays PROPOSED and unruled.**
 - **THIS SESSION RAN ON THE P1 GEN 8, verified when Michael ordered the check** — ThinkPad P1 Gen 8
   (21Q80015US), **RTX PRO 2000 Blackwell 8151 MiB**, driver 595.71. Machine/GPU/driver preflight
   rows PASS; **WSL2 is still NOT installed**, so the T3 order is on the right machine but not yet
