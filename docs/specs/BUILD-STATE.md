@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 25378cf  |  Branch: master  |  Generated: 2026-08-08 (thirty-seventh refresh)
+Commit: 39dc204  |  Branch: master  |  Generated: 2026-08-08 (thirty-seventh refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT SINCE** — every
