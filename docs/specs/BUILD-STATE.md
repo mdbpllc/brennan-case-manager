@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 23bae5e  |  Branch: master  |  Generated: 2026-08-07 (thirty-third refresh)
+Commit: 062c112  |  Branch: master  |  Generated: 2026-08-07 (thirty-fourth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT,
 MIGRATED LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT
@@ -110,10 +110,8 @@ SINCE** — every refresh since is docs-only routing. History: `archive-project-
   Injury with a knowingly wrong ladder (`_piDefault`).** PR-3 direction CONFIRMED (own practice
   area, own ladder) but **EXECUTION HELD** until the probate-ladder pass names the destination.
   **Do not touch the case-type tree or ladder.** No probate tables or roles exist
-- **NO MONEY MACHINERY:** no settlement ledger, disbursement statements, trust/IOLTA, liens.
-  **FORM ENGINE: specified-not-built** — FE-1 (provider-directory table, pointer model, in-case
-  edits propagating firm-wide) and FE-2 (document-name entity sweep, flags only) CLOSED
-  2026-08-07, **SPEC ONLY; no table, migration, or UI authorized.** FE-3 open, Michael's
+- **NO MONEY MACHINERY:** no settlement ledger, disbursement statements, trust/IOLTA, liens
+- **FORM ENGINE: specified-not-built.** FE-1 (provider-directory table, pointer model, in-case edits propagating firm-wide) and FE-2 (document-name entity sweep, flags only) CLOSED 2026-08-07 — **SPEC ONLY: no table, migration, or UI authorized.** FE-3 open, Michael's
 - Time tracker: design draft only. Servpro deadline engine: DESIGN ONLY, gated on the meeting.
   Case heartbeat: design docs only; captures e+f NOT folded; register H1–H83
 - **CE1 (case-event core): still NOT AUTHORIZED** (D-CL2-9). Must be **CLIENT-AWARE from the
@@ -127,20 +125,22 @@ SINCE** — every refresh since is docs-only routing. History: `archive-project-
 - **NO ASSIGNED NEXT SLICE this machine can run.** The one live authorization (Phase 0 + T3)
   is hardware-bound — see the block at the top
 - **NEW 2026-08-07 evening (log #36)** — `rulings-capture-2026-08-07b.md` routed. **O2 CLOSED:
-  windows host, WSL2 runtime** (native Ubuntu and dual-boot rejected); model currency
-  re-checked, **D4 stands**; execution structure at `transcript-sort-and-route-design.md` §12
+  windows host, WSL2 runtime** (native Ubuntu and dual-boot rejected); model currency re-checked, **D4 stands**; execution structure at `transcript-sort-and-route-design.md` §12
 - **PROBATE-LADDER PASS DEFERRED** pending the Domser matter — no probate matter has been run end to end, so a ladder now would be treatise-derived
 - **Unblock: the letters-issued arc capture.** **PL-1..PL-4 issued UNRULED**; PL-1's proceeding-as-case-type pick is Claude's, **PROPOSED only — do not build from it**
-- **PROPOSED, unruled: SAT-1** (satellite-project pattern + one-ruling-space) and
-  **CORPUS-HOME** (corpus → the Domser project, superseding #34's ARCHIVE pick)
-- **The probate corpus is NOT in the repo and never has been** — one directory ABOVE the repo
-  root; **the repo root is a SUBFOLDER of the project folder.** `Probate Corpus.zip` sits
-  untouched in gitignored `inbox/`, third runner running
+- **PROPOSED, unruled: SAT-1** (satellite-project pattern + one-ruling-space) and **CORPUS-HOME** (corpus → the Domser project, superseding #34's ARCHIVE pick)
+- **The probate corpus is NOT in the repo and never has been** — one directory ABOVE the repo root; **the repo root is a SUBFOLDER of the project folder.**
+  `Probate Corpus.zip` sits untouched in gitignored `inbox/`, fourth runner running
 - **QUEUE-RUNNER.md is v3 (QR-1)** in both tracked copies — full question text now travels into
   `attorney-review-queue.md`, superseding that file's "no second copy" rule. **ID collision
   flagged, not renumbered:** §2's O1 (Prop. Code fees) ≠ the transcript O-series O1 (auto-file)
+- **#36's DOC ROUTING IS REVIEWED AND CLEARED design-side (log #37).** The carried **#31–#35
+  material is still UNREVIEWED** — do not copy #36's routing forward onto that line
+- **QR-2 PROPOSED, unruled:** make the machine-local runner copies POINTERS to the repo file.
+  The local skill copy loaded stale in two consecutive runs; the tracked
+  `.claude/commands/queue-runner.md` is current at v3, so the lag is in untracked local copies
 - **Everything awaiting Michael's ruling is in `docs/specs/attorney-review-queue.md`** —
-  reconciled through #36. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  reconciled through #37. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`** (QuickBooks)
 - **Client model: design doc §10 is authoritative.** Open: **D-CL2-3a** (affidavit rate),
   **CL2-AC-1** (auto-create client on PI), **CL2-CHECK-1** (deferred, do not build)
