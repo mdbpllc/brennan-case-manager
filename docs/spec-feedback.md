@@ -508,6 +508,24 @@ with a code-verifier mismatch, which reads as a broken app rather than a stale l
 user-facing sign-in instructions should say: **open the link in the browser where you want
 to be signed in.**
 
+## 2026-08-08 — `new-machine-bootstrap.md` has no `npm install` step
+
+Found on the P1 Gen 8 while closing the QR3/MM1 queue batch: the machine is
+provisioned per the bootstrap checklist and the clone is present, but
+`node_modules` does not exist, so `npm test`, `npm run build`, and
+`npm run lint` all fail with "'vitest' is not recognized". The checklist
+covers git, Claude Code, the clone, `inbox/`, and (as of MM-1) git identity —
+but never installs dependencies.
+
+Consequence, and why it matters now: **a freshly provisioned machine cannot
+run the verification suite CLAUDE.md requires before ending a session.** The
+Phase 0 + T3 kickoff targets this machine, and a build session there will hit
+this on its first `npm run build`.
+
+Suggested fix is one line in §4 after the clone (`npm install`), but the
+bootstrap doc was only amended today under MM-1's routed work order, so this
+is left for a routed instruction rather than added here. **Michael's call.**
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

@@ -12,6 +12,159 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-08 — QUEUE-RUNNER batch (runner line; SEVENTH invocation, same day)
+
+Two packets, one close-out. Order run: **QR3-Checkout-Gate → MM1-Multi-Machine** (oldest first,
+Michael confirmed). §5 was **NONE in both** — nothing built, nothing authorized.
+
+- **RUNNER WENT v3 → v5 IN ONE EDIT PASS; v4 NEVER EXISTED AS A COMMITTED STATE.** The packets
+  specify v3→v4 (QR-3) and v4→v5 (MM-1) as separate steps, but both landed in this single session,
+  so the tree goes straight from v3 to v5 and **no commit anywhere holds a v4 file**. The v5
+  version line records both rulings in its history. Anyone auditing #40's "runner to v4" against
+  git will not find it — that is this collapse, not a missing edit.
+- **The checkout gate fired on its own first run, before it existed in the tree — and had to be
+  applied BY HAND.** The session loaded the machine-local skill at **v2** against repo **v3** — a
+  fifth consecutive stale load — and was about to run the queue from a tree **10 commits behind**.
+  The gate that would have caught this was in the packet, not yet in the file, so nothing automatic
+  could fire: **Michael caught it and ordered the fetch.** `git fetch` + `--ff-only` took
+  768db47 → **25378cf**; the runner was then re-read from the canonical path and executed at v3.
+  **This is QR-3's exact failure case, observed one packet before the gate landed.** Both packets'
+  §1 named 25378cf as the design-side view; after the fast-forward the local tree matched it
+  exactly, so no §1 delta remained.
+- **Sha correction, recorded because it was asserted mid-session and is wrong:** this tree's stale
+  HEAD was **768db47**, NOT `01b1488`. `01b1488` is the stale *cloud branch* sha from the
+  c-capture's NOT COVERED block — a different machine, a different ref. The staleness was real;
+  the sha coincidence was not. Nothing was decided on the bad sha.
+- **QR-2 verified, not acted on.** `.claude/commands/queue-runner.md` was already converted to
+  pointer form at 25378cf (#39). Nothing was converted by hand. The runner's earlier report that
+  it was still a full copy was reading the pre-fetch tree.
+- **Superseded between packets (conflict rule, later wins) — three:** (1) the standing P15/P1 hand
+  item went from QR3's *"convert to pointers"* to MM-1(3)'s **"DELETE"** — a user-level copy can
+  shadow the repo pointer; (2) QR3's instructions-paste item (**v8**) is superseded by MM1's
+  **v9**, which folds QR-2 + QR-3 + MM-1 and supersedes unpasted v8/v7; (3) QR3's §7 carried the
+  stale cloud branch as OPEN and its §6 barred touching it — MM1 closes it **as MOOTED on facts**.
+  QR3's §6 bar was honored throughout: the fetch ran without `--prune` and nothing was touched.
+- **Skipped as already true / not present, and why:** the stale-branch queue entry was **never
+  entered in the register** — MM1 §4.4.2 says do not add one just to close it, so none was added.
+  Verified independently on this machine: `git branch -a` and `git ls-remote` show **no
+  `wy2oej` ref**, local or remote, confirming MM-1's mooted finding here too.
+- **MM1 §4.5 took the do-nothing branch.** CLAUDE.md's queue note (lines 324–330) is a **bare
+  pointer** to `docs/prompts/QUEUE-RUNNER.md` and states no runner mechanics, so nothing was
+  folded — duplication is the drift QR-2 exists to prevent.
+- **BUILD-STATE displacement — started at exactly 150/150, ends at exactly 150/150.** Both packets'
+  "at cap" warning was correct, so displacement was mandatory, not optional. Added: the P1
+  hardware verification, the kickoff-is-not-a-packet line, and the QR-1/2/3 + MM-1 runner-discipline
+  bullet (which absorbed the old QR-2-only bullet). Cut, in every case prose whose conclusion
+  survives adjacently: the P15 constraint-class gloss, the `dev:demo` port/origin mechanism, the
+  RLS "textually identical" reasoning, FE-1's mechanics parenthetical, the §10 spec-edit-lift
+  history, CD-1's answer options (full text lives in the queue register), the corpus re-verification
+  provenance (log #38 carries it), and Slice A's "before it was ever packaged" clause.
+- **TWO DESIGN-SIDE REDIRECTS DURING THAT TRIM, both Michael's, both correct — recorded because
+  they are a standing rule, not a one-off.** (1) I proposed cutting **`disbursed_at` is a marker
+  only — settlement records unbuilt**; refused — that is stubs-and-fakes content, **the
+  highest-value thing BUILD-STATE carries**, stated nowhere else in the file. (2) I proposed
+  cutting **FOLD PENDING: captures e + f into case-heartbeat-design.md §8**; refused — a carried
+  open obligation, and **dropping it from the snapshot is how carried items die silently.** Both
+  retained. **The rule that came out of it: displace prose whose conclusion survives in adjacent
+  text — never a standalone fact about what is fake, and never a carried obligation. If the file
+  cannot make cap without cutting one of those, STOP and flag it — that is BS-1a's cap-pressure
+  question resurfacing, and it is Michael's call, not a trim.**
+- **Flag for Michael, not fixed:** the P15/P1 hand item in `attorney-review-queue.md` is marked
+  **✅ while its own text says "still outstanding."** Its wording was sharpened per MM1 §4.4.3;
+  the status marker was left alone because changing it is a status call, not a wording call. This
+  is an instance of the queue's own pending **cross-document status-drift sweep**.
+- **THIS SESSION RAN ON THE P1 GEN 8, verified when Michael ordered the check** — ThinkPad P1 Gen 8
+  (21Q80015US), **RTX PRO 2000 Blackwell 8151 MiB**, driver 595.71. Machine/GPU/driver preflight
+  rows PASS; **WSL2 is still NOT installed**, so the T3 order is on the right machine but not yet
+  runnable — `wsl --install -d Ubuntu-24.04` plus a reboot comes first. (WMI reports the GPU as
+  4 GB; that is the known 32-bit `AdapterRAM` overflow — **`nvidia-smi` is authoritative**.)
+- **Verification suite could NOT be run: `node_modules` does not exist on this machine.** Nothing
+  in `src/` changed, so the suite's last recorded status is unaffected — but the bootstrap
+  checklist has **no `npm install` step**, which a T3 build session here will hit immediately.
+  Filed to `docs/spec-feedback.md`; not fixed, because the bootstrap doc was amended today only
+  under MM-1's routed work order.
+- `KICKOFF-phase0-t3-p1-session_2026-08-08.md` sits in `inbox/` and is **not a packet** — it says
+  so itself. Left in place, not processed, not deleted; it runs on the P1 Gen 8. **Phase 0 + T3
+  authorization remains staged and UNSPENT.**
+
+**Open items after this batch (merged from both §7 tables; full question text lives in
+`attorney-review-queue.md` per QR-1):** DELETE the user-level runner copies on P15 + P1 (Michael's
+hand, sharpened by MM-1(3)); paste instructions **v9** (Michael's hand); CORPUS-HOME execution —
+ARCHIVE upload (Michael's hand, outstanding); **CD-1** contact-directory architecture (own design
+session, NOT authorized); **CL2-AC-1** edge rulings (doc-on-screen); next build slice (OPEN, gated
+on CD-1 for the form engine); queue-duplication sweep and cross-document status-drift sweep (both
+PROPOSED, unruled); **FE-3 / O5 / D-CL2-3a / #31–#33 review / PL-1..4 / SAT-1 / M-3 / M-4 / K-5 /
+Q-5 / Q-6** carried unchanged.
+
+Staged for Code: none — this batch closed its own work; the Phase 0 + T3 kickoff stays staged and
+UNSPENT for a dedicated P1 session (WSL2 install + reboot first).
+Awaiting/Returned from Code, unreviewed: this batch's routing (#40 + #41 execution, runner v5,
+bootstrap addendum, queue fold-ins); the P1 hardware verification and the `npm install` bootstrap
+gap filed to `docs/spec-feedback.md`; plus the carried #31–#35 and #37–#39 material.
+
+---
+
+## 2026-08-08 (#41) — MM-1 RULED YES: concurrent two-machine conventions; stale-branch item MOOTED; runner to v5 (design session, typed)
+
+One ruling, Michael's: "I am ruling with your recommendation" — MM-1 adopted, all four parts.
+Context: Fable-in-chat design + Opus-in-Code build continues on BOTH machines concurrently (P15 +
+P1 Gen 8), not a migration. Full reasoning in `docs/specs/rulings-capture-2026-08-08d.md`.
+Nothing built.
+
+- **MM-1 CLOSED — ruled yes.** (1) ONE RUNNER AT A TIME — queue-runner sessions never run
+  simultaneously on two machines; backstop: any non-fast-forward push rejection STOPS the
+  session to reconcile — never force-push. Reason: BUILD-STATE and the log are single-writer;
+  concurrency has no merge story. (2) Packet DESTINATIONS NAME THE MACHINE — inbox-bound zips'
+  closing destination paragraph says which machine runs it and reminds about the other machine's
+  pending queue. Reason: inboxes never sync; the corpus zip already demonstrated silent splits.
+  (3) User-level runner copies DELETED, not converted — a user-level copy can shadow the repo
+  pointer (Code's live flag); the repo pointer travels with every clone. Sharpens the standing
+  P15/P1 hand item to "delete." (4) Bootstrap addendum — git-identity step (#33's failed first
+  commit) + the deletion step, so no future provision rediscovers either.
+- Runner v4 → v5: non-FF-stop at the push step; concurrency line at the top.
+- **Stale-branch item CLOSED AS MOOTED, not ruled** — ls-remote proved the remote branch was
+  already deleted on GitHub; only a stale local tracking ref existed, pruned by Code as hygiene.
+- **Trigger #3 fired (third time today)** — v9 instructions drafted same-day (supersedes
+  unpasted v8/v7; Michael pastes v9 directly).
+- T3 remains P1-only by measured fact; no new rule needed. Design side machine-agnostic.
+
+Staged for Code: this entry; the d-capture; runner v5; bootstrap addendum; queue fold-ins.
+Awaiting/Returned from Code, unreviewed: this packet's routing; carried #31–#33 material per the
+#35 entry (verify against the entries that staged them; do not copy forward items cleared in
+#13/#22/#23/#24).
+
+---
+
+## 2026-08-08 (#40) — QR-3 RULED YES: checkout gate on the runner, sync-and-proceed shape; runner to v4 (design session, typed)
+
+One ruling, Michael's: "I rule with your recommendation" — QR-3 adopted with the sync-and-proceed
+shape. Full reasoning in `docs/specs/rulings-capture-2026-08-08c.md`. Nothing built.
+
+- **QR-3 CLOSED — ruled yes.** The runner's Step 0 now fetches origin and confirms the checkout
+  is at origin HEAD BEFORE reading the runner text or any packet. Behind-but-clean-on-master
+  fast-forwards silently and continues; dirty, diverged, or off-master STOPS and tells Michael.
+  Reason: QR-2 closed copy-drift within a checkout, not checkout-drift — the 2026-08-08 cloud
+  session read v1 runner text as current from a tree 14 commits stale, with no warning; the
+  pointer would have served the same stale file. Family complete: QR-1 protects question text,
+  QR-2 the runner text, QR-3 the tree it is read from. Runner v3 → v4.
+  *[Code annotation, 2026-08-08 — packet text left intact above: **no v4 was ever committed.** This
+  packet and MM-1's ran in the same batch, so the file went v3 → v5 in one pass. See the runner
+  entry. Nothing about the QR-3 ruling changes; only where to look for it in git.]*
+- Sync-and-proceed over stop-always: enforces pull-at-session-start at the moment that matters,
+  on git's own clean/dirty split; stop-always adds ritual without information.
+- **Trigger #3 fired** — instructions draft folded QR-3 same-day, producing v8 (supersedes the
+  unpasted v7; Michael pastes v8 directly if v7 never landed).
+- Standing, unchanged: P15/P1 machine-local runner copies still full text, Michael's hand; the
+  gate travels to them automatically once they are pointers. Stale cloud branch word still
+  pending (delete / ff / leave; design lean delete — the cloud session is the channel).
+
+Staged for Code: this entry; the c-capture; the Step 0 amendment; the queue close.
+Awaiting/Returned from Code, unreviewed: this packet's routing; carried #31–#33 material per the
+#35 entry (verify against the entries that staged them; do not copy forward items cleared in
+#13/#22/#23/#24).
+
+---
+
 ## 2026-08-08 — QUEUE-RUNNER batch (runner line; SIXTH invocation, same day)
 
 One packet, one close-out, no split — the run STALLED mid-reconciliation on a conflict, then

@@ -3,9 +3,14 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v3, 2026-08-07 (QR-1). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v5, 2026-08-08 (MM-1). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
-     Michael's ruling 2026-08-07 (QR-1). -->
+     Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
+     2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
+     2026-08-08 (MM-1, v5). -->
+
+**Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
+the same time. One runner, anywhere, at a time.
 
 You are processing a QUEUE of push-to-code packets accumulated while Fable
 tokens were exhausted. Each packet is a standard push-to-code zip (manifest
@@ -13,6 +18,18 @@ with §0–§8, plus staged deliverables). Follow the house conventions in
 CLAUDE.md throughout.
 
 ## Step 0 — One-time setup (skip if already done)
+
+**Checkout gate (QR-3, ruled 2026-08-08) — do this before reading the rest of
+this file or any packet.** `git fetch origin`, then compare HEAD to
+`origin/master`:
+- Behind but clean, on master, and fast-forwardable → fast-forward and continue.
+- Dirty, diverged, or not on master → STOP and tell Michael before touching
+  anything.
+
+A stale checkout serves stale runner text with no warning (demonstrated
+2026-08-08: v1 read as current from a tree 14 commits behind). Never run the
+queue from an unverified tree.
+
 1. If `inbox/` does not exist at the repo root, create it.
 2. Ensure `.gitignore` contains a line `inbox/` (packets are transient
    freight; they are never committed).
@@ -79,7 +96,10 @@ For each packet, oldest first:
    only, not the ledger. Describe what EXISTS, verifiable from the working
    tree at the stated commit.
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
-   from an unchecked command.
+   from an unchecked command. **If the push is rejected non-fast-forward
+   (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
+   NEVER force-push. A rejected push means another session moved the record;
+   the record wins.
 5. Delete the processed zips from `inbox/` (the session-log entries are
    now the record).
 6. Tell Michael in one line: "Pushed at `<sha>` — click Sync now on the

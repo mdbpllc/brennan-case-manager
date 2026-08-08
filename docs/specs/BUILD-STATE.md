@@ -1,25 +1,25 @@
 # BUILD STATE — brennan-case-manager
-Commit: 8ec439a  |  Branch: master  |  Generated: 2026-08-08 (thirty-sixth refresh)
+Commit: 25378cf  |  Branch: master  |  Generated: 2026-08-08 (thirty-seventh refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT SINCE** — every
 refresh since is docs-only routing. History: `archive-project-history-by-day.md`.
 
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed, withdrawn, and
-  deliberately-not-built items live there. Check it before proposing or rebuilding anything that
-  looks absent from the repo. **Never drop this pointer line**
+  deliberately-not-built items. **Check it before rebuilding anything absent. Never drop this line**
 
 ## NEXT SLICE IS OPEN; the one live authorization is hardware-bound (read this first)
 - **"Next build slice" is OPEN.** Slice A (the provider-directory build) was **WITHDRAWN, not
-  paused**, on 2026-08-08 before it was ever packaged; nothing entered the build queue. **The
-  form engine cannot be named as the next slice until CD-1 resolves**
+  paused**, 2026-08-08. **The form engine cannot be named as the next slice until CD-1 resolves**
 - **PHASE 0 + T3: AUTHORIZED 2026-08-07, stage-gated, NOT BUILT, AUTHORIZATION UNSPENT.** The
-  2026-08-07 evening runner **did not build it — preflight FAILED, wrong machine**
-- Measured, not assumed: **Quadro P620 with 4 GB VRAM against T3's 8 GB design floor**, and **no WSL
-  distribution installed at all**. Driver 582.41 passes; pilot audio is reachable. **4 GB is a
-  different constraint class, not a slower P1.** **No scorecard exists; the stage-1 checkpoint was
-  never reached, let alone self-certified.** T4 stays unauthorized
-- **Needs a session ON THE P1 GEN 8, not a new packet.** 13 pilot transcripts never supplied
+  2026-08-07 evening runner **did not build it — preflight FAILED, wrong machine** (P15: Quadro
+  P620, **4 GB against T3's 8 GB floor**). **No scorecard exists.** T4 stays unauthorized
+- **THE P1 GEN 8 IS PROVISIONED AND THIS REPO IS ON IT** — verified 2026-08-08: ThinkPad P1 Gen 8
+  (21Q80015US), **RTX PRO 2000 Blackwell, 8151 MiB**, driver 595.71 — those preflight rows PASS.
+  **WSL2 is STILL NOT INSTALLED — the one remaining blocker**; `wsl --install -d Ubuntu-24.04`
+  needs a **reboot** before any T3 session. 13 pilot transcripts still never supplied
+- The Phase 0 + T3 kickoff prompt sits in **this machine's** `inbox/`. It is **NOT a packet** —
+  **run it as its own dedicated session, never inside a queue run**
 
 ## Screens live (what Michael can click)
 - **Sign-in gate — Supabase mode only.** Magic link, no password. Demo mode deliberately ungated
@@ -66,8 +66,7 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
 - Adapters: local (localStorage demo) AND supabase; the UI talks only to the DataAdapter
   interface — every feature works in both modes. Seeds are fictional; **store version v10**,
   and v9→v10 migrates **FORWARD in place** (a reseed wipes what the backfill derives from)
-- **`npm run dev:demo`** (5175, `.env.demo`) runs demo mode while a real `.env` exists. **Demo
-  state does NOT travel** — localStorage is per-browser AND per-origin
+- **`npm run dev:demo`** runs demo mode while a real `.env` exists. **Demo state does NOT travel**
 - **`db/schema.sql` EXECUTED live 2026-07-28**, then the CL-2 migration that night. **34 tables**
 - **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing
   by design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is
@@ -78,8 +77,8 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
 ## RLS, exercised — the distinction matters
 - **ACTUALLY CONSULTED:** authenticated SELECT on all API tables; INSERT+DELETE on `parties`,
   `legal_rules`, `glossary_terms`, `watch_targets`; the app's write path; **CL-2's live paths**
-- **PRESENT BUT UNTESTED: the write paths of every other policy-bearing table.** Policies are
-  textually identical, so the exercised ones are **an inference, not coverage**
+- **PRESENT BUT UNTESTED: the write paths of every other policy-bearing table** — the exercised
+  ones are **an inference, not coverage**
 - **`file_counters` is protected at the PRIVILEGE layer, not by RLS** — its 403 is NOT an RLS
   result. Probe covers **34** tables; **keep it in step with the schema** or a missing GRANT hides
 
@@ -89,8 +88,8 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
   `Go_Live_Gates.md` still applies.** **Gate 9: production SMTP is required before live use** —
   magic-link auth makes the email sender load-bearing for access itself; no SMTP work done
 - legiscan-poller + statute-fetch edge functions written, **NOT deployed**. Called auth-blocked, but
-  **that diagnosis is incomplete — `service_role` was never granted either**; start there
-- **/statutes in demo mode never touches Supabase** — committed fixture chapters only
+  **that diagnosis is incomplete — `service_role` was never granted either**; start there.
+  **/statutes in demo mode never touches Supabase** — committed fixture chapters only
 - **Outlook push WORKS as of 2026-07-26.** **ONLY event CREATION is exercised** — edit/cancel
   unverified. Binding: **fictional demo events only** until Go_Live_Gates clears
 - Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual
@@ -106,44 +105,45 @@ refresh since is docs-only routing. History: `archive-project-history-by-day.md`
 - **NO MONEY MACHINERY:** no settlement ledger, disbursement statements, trust/IOLTA, liens
 - **FORM ENGINE: specified-not-built, identity source REFRAMED 2026-08-08.** **FE-1 (provider
   directory) is SUPERSEDED by CD-1** — a global CONTACT directory, provider being a role on a
-  contact rather than a table. FE-1's mechanics (pointer model, enter-once write-back, firm-wide
-  propagation with scope label) survive **as PROPOSED inputs to CD-1 only**. FE-2 (document-name
+  contact rather than a table. FE-1's mechanics survive **as PROPOSED inputs to CD-1 only**.
+  FE-2 (document-name
   sweep, flags only) still CLOSED, **build home PARKED**. **Nothing authorized: no table,
   migration, or UI.** FE-3 open, Michael's
 - Time tracker: design draft only. Servpro deadline engine: DESIGN ONLY, gated on the meeting. Case
   heartbeat: design docs only; captures e+f NOT folded; register H1–H83. **CE1 (case-event core)
-  still NOT AUTHORIZED** (D-CL2-9) — must be **CLIENT-AWARE from the start**
-- CourtListener: design doc only, integration UNAUTHORIZED (Q-6). Registry: ALL entries UNVERIFIED
+  still NOT AUTHORIZED** (D-CL2-9) — must be **CLIENT-AWARE from the start**. CourtListener: design
+  doc only, integration UNAUTHORIZED (Q-6). Registry: **ALL entries UNVERIFIED**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
 - **CD-1 ISSUED, UNRULED, NOT AUTHORIZED** (log #38): one global contact directory as the identity
-  source for the form engine and all case-linked people/entities — views over one directory, or
-  tables linked to `case_parties`/`case_clients`? **Own design session, schema on screen. LIVING**
+  source for the form engine and all case-linked people/entities. **Own design session, schema on
+  screen. LIVING** — full question text in the queue register
 - **CL2-AC-1 is DIRECTION-CONFIRMED, not closed** — auto-create on PI client-role link is policy;
   **link-removal, mixed-posture, backfill UNRULED**. Its two queue homes were consolidated 08-08
 - **CORPUS-HOME CLOSED 2026-08-08: the ARCHIVE project.** Execution **Michael's hand**, never a repo action
 - **The probate corpus is NOT in the repo and never has been** — one directory ABOVE the repo root;
-  **the repo root is a SUBFOLDER of the project folder.** Re-verified 2026-08-08: untracked, in no
-  commit; `Probate Corpus.zip` untouched in gitignored `inbox/`
+  **the repo root is a SUBFOLDER of the project folder.** `Probate Corpus.zip` sits untouched in
+  the **P15's** gitignored `inbox/` — not this machine's (verification: log #38)
 - **PROBATE-LADDER PASS DEFERRED** pending Domser; unblock is the letters-issued arc capture.
   **PL-1..PL-4 UNRULED**; PL-1's proceeding-as-case-type pick is Claude's, **PROPOSED only**
-- **QR-2 CLOSED 2026-08-08 — ruled YES.** Runner copies are now POINTERS; `docs/prompts/
-  QUEUE-RUNNER.md` is the **ONLY full copy** and `.claude/commands/queue-runner.md` was rewritten
-  to point at it. **The P15/P1 machine-local copies are still full text — Michael's hand**
-- **PROPOSED, unruled (SAT-1** satellite pattern**)**, plus two new sweeps, both Michael's:
-  **queue-wide duplication** (does any other item live twice?) and **cross-document status drift**
-  (do design-doc status rows lag the register?) — raised by a stale §10 row, different classes
+- **RUNNER DISCIPLINE — QR-1/2/3 + MM-1 all CLOSED; runner now v5.** QR-1: full question text
+  travels into the queue register. QR-2: `docs/prompts/QUEUE-RUNNER.md` is the **ONLY full copy**.
+  QR-3 (08-08): Step 0 **fetches origin and fast-forwards before reading anything**. MM-1 (08-08):
+  **one runner at a time**; a non-FF push rejection **stops the session — never force-push**;
+  packets name their machine. **Michael's hand: DELETE the user-level
+  `%USERPROFILE%\.claude\commands\queue-runner.md` on P15 + P1**, and paste instructions **v9**
+- **PROPOSED, unruled (SAT-1** satellite pattern**)**, plus two sweeps, both Michael's: **queue-wide
+  duplication** and **cross-document status drift** (do design-doc status rows lag the register?)
 - **ID collision flagged, not renumbered:** §2's O1 (Prop. Code fees) ≠ O-series O1 (auto-file)
 - **#36's routing is REVIEWED AND CLEARED design-side (log #37).** The carried **#31–#35 material
-  is still UNREVIEWED**, as is **#37–#39's own routing** — do not copy the #36 clearance forward
+  is still UNREVIEWED**, as is **#37–#41's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting Michael's ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #39. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through #41. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`** (QuickBooks)
 - **Client model: design doc §10 is authoritative** for ruling detail; the queue governs
-  completeness (QR-1). §10's CL2-AC-1 status cell was corrected in place 2026-08-08 under a
-  one-line lift of the spec-edit bar — **NOT consolidated; the split stands.** Open: **D-CL2-3a**
+  completeness (QR-1). §10 was **NOT consolidated; the split stands.** Open: **D-CL2-3a**
   (affidavit rate), **CL2-CHECK-1** (deferred). Statutes resume: TDRPC 1.04, TRCP 204.1, Estates
 - FOLD PENDING: captures e + f into case-heartbeat-design.md §8. EXPORT: session-1 heartbeat voice
   capture. Carried: Supabase Pro (gate 1), security review (gate 2), **gate 3 RLS PARTLY**, no
