@@ -12,6 +12,92 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-09 (#42) — PHASE 0 ENVIRONMENT STOOD UP ON THE P1; **scoring HELD, no scorecard, authorization PARTLY spent** (Code session, Opus 5, ThinkPad P1 Gen 8)
+
+Ran the Phase 0 + T3 kickoff (`inbox/KICKOFF-phase0-t3-p1-session_2026-08-08.md`) as its own
+dedicated session, not a queue run. **Nothing in `src/` changed; nothing in the app was built.**
+Tree was already current with origin at `ec970eb` — no fast-forward needed. Meter reading not
+supplied (noted; the kickoff asked for one).
+
+### §5 PREFLIGHT — 6 of 7 green. The audio row FAILED and STAYS RED.
+
+Measured, not assumed. **Machine ✅** LENOVO 21Q80015US / ThinkPad P1 Gen 8 — the right machine
+this time. **GPU ✅** RTX PRO 2000 Blackwell, 8151 MiB. **Driver ✅** 595.71. **WSL2 ✅** Ubuntu
+24.04.4 LTS, v2 — **installed since #40, so BUILD-STATE's "one remaining blocker" line was stale
+and is corrected**. **Disk ✅** 955 G free in the WSL filesystem. **Fixture rider ✅ already
+spent** (below). **Audio ❌** `..\data\` does not exist on this machine.
+
+**Michael's RULING, 2026-08-09 — a narrow exception to his own gate, ruled explicitly, not a
+workaround:** environment setup proceeds on the six green rows; **Stage 1 scoring HOLDS**; **no
+synthetic, substitute, or fixture audio may stand in for the recordings**; the audio row stays
+RED and the preflight is **not** marked passed. **Michael's hand, outstanding: stage the 13 pilot
+recordings into `..\data`** (directory created at staging time, outside the repo tree), after
+which a session re-runs that row and Stage 1 proceeds under the original authorization.
+
+**A related standing instruction, given mid-session and worth carrying:** do not sweep the user
+profile looking for case material — **audio filenames alone can carry client information**, so a
+listing is already an exposure. Check the declared path only; real-case material enters a session
+by Michael's hand.
+
+### What was built: environment only. Full record in `phase0-environment-standup-2026-08-09.md`.
+
+- **Stack** in the WSL filesystem at `~/phase0/` (never `/mnt/c`, per the I/O rule), ~11 GB:
+  torch **2.11.0+cu128**, **nemo_toolkit[asr] 3.0.0**, Python 3.12.3. apt pieces
+  (python3.12-venv, ffmpeg, libsndfile1) by Michael's hand — sudo needs a password and Code runs
+  non-interactive. **A get-pip bootstrap around that was proposed and Michael declined it**;
+  the venv was recreated the standard way.
+- **Checkpoints pulled** and revision-pinned for reproducibility: `parakeet-tdt-0.6b-v3`
+  (627.01 M params, rev `541d1f99…`), `diar_sortformer_4spk-v1` (123.22 M, rev `9f17b10d…`).
+- **CUDA proven end to end, not just imported:** capability (12, 0), **`sm_120` in the compiled
+  arch list**, a 4096³ matmul ×20 on the GPU in 1.15 s, all-finite. The Blackwell risk is closed.
+- **THE `[cu12]` TRAP — recorded because it is silent.** NeMo 3.0.0's `[cu12]` extra pins
+  `torch==2.12.0+cu126`, and **CUDA 12.6 has no sm_120 kernels**: the conventional install path
+  yields a stack that imports cleanly and fails at device time. Avoided with a `constraints.txt`
+  over a pinned cu128 torch; NeMo's own floor is only `torch>=2.6.0`, so it cost nothing.
+- **VRAM measured (weights at rest):** Parakeet fp32 **2433 MiB**, fp16 **1216 MiB**; Sortformer
+  fp32 **491 MiB**; **both concurrent 2924 MiB** over a 1137 MiB idle desktop. Release is clean
+  (0 MiB after `del`+`empty_cache`). **A first measurement appeared to show a leak and was
+  wrong** — it read `mem_get_info`, i.e. the caching-allocator pool; corrected before reporting.
+- **Bearing on memo §8, deliberately bounded:** weight residency is **not** the binding constraint
+  on 8 GB — ~3.5 GB stays clear with both resident. **This does not retire sequential loading.**
+  Peak *activation* memory during decode is the deciding figure, is unmeasured, and needs audio.
+  Filed to `spec-feedback.md` so §8 is revisited with data, not on assumption. **#36's 4 GB
+  finding is confirmed as a constraint class** — Parakeet fp32 alone does not fit the P15.
+
+### Corrections and carried items
+
+- **Fixture rider was ALREADY SPENT before this session.** Part 8 lists it as work to do; the 13
+  pilot transcripts are already at `src/routing/__tests__/pilot/` (8 unscripted + 5 scripted) and
+  `pilot.test.ts` already asserts against them. Stage 1's job is the **full-precision** comparison.
+- **MM-1(3) on this machine: no action needed.** `%USERPROFILE%\.claude\commands\queue-runner.md`
+  is **absent** on the P1; the repo copy is in pointer form. **The P15 half remains Michael's.**
+- **#40's `npm install` gap is closed on this machine** — `node_modules` exists and the suite runs.
+  The bootstrap-doc defect itself is unfixed and still Michael's routed call.
+- **Filed to `spec-feedback.md`: the capabilities memo is not in the repo.** Part 8 and §12 both
+  specify Stage 2 "per the capabilities memo §9 shape" and cite §8/§2, but no copy exists under
+  `docs/` — sync carries `docs/` and excludes `src/`, so a Stage 2 session can read the pointer
+  and not the section. Should be routed before Stage 2 is authorized. Michael's call.
+- **OPEN, Michael's, not decided in-session — telemetry posture.** The NeMo install pulled
+  `wandb`, `sentry-sdk`, and NVIDIA OneLogger as transitive deps. OneLogger self-disabled and the
+  others are inert unless configured, but this machine is to process privileged audio and the PHI
+  posture makes that a privilege call. **Flagged, not silently "fixed."**
+- **OPEN, Michael's — the smoke test.** Nothing has ever been decoded on this stack, so the first
+  Stage 1 run is also its first inference. A ~3-second generated tone would prove the decode path
+  executes while making no transcription-quality claim; whether that crosses the no-substitute-audio
+  rule is his call, not the session's.
+
+**Authorization status: PARTLY SPENT.** Stage 1 environment done; **Stage 1 scoring HELD; no
+scorecard exists**; Stage 2 (T3) untouched; **T4 still unauthorized**.
+
+Health on this machine: **232 tests pass, build ✓, lint clean** (nothing in `src/` was touched).
+
+Staged for Code: **Stage 1 scoring + Stage 2**, still under the original 2026-08-07 authorization
+— they need the audio staged, not a new packet.
+Awaiting/Returned from Code, unreviewed: this entry, the environment stand-up record, and the two
+new spec-feedback items; plus the carried #31–#35 and #37–#41 material.
+
+---
+
 ## 2026-08-08 — QUEUE-RUNNER batch (runner line; SEVENTH invocation, same day)
 
 Two packets, one close-out. Order run: **QR3-Checkout-Gate → MM1-Multi-Machine** (oldest first,

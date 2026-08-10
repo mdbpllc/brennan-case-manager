@@ -526,6 +526,43 @@ Suggested fix is one line in §4 after the clone (`npm install`), but the
 bootstrap doc was only amended today under MM-1's routed work order, so this
 is left for a routed instruction rather than added here. **Michael's call.**
 
+## 2026-08-09 — the capabilities memo is not in the repo, but Stage 2 is specified against it
+
+Found on the P1 Gen 8 during the Phase 0 environment stand-up. Both the Part 8
+authorization and `transcript-sort-and-route-design.md` §12 specify Stage 2 (T3)
+"per §11-T3 and **the capabilities memo §9** shape", and cite **memo §8** for the
+8 GB sequential-loading rule and **memo §2** for the engine default. **That memo
+exists only in the design space — there is no copy anywhere under `docs/`.**
+
+Consequence: the sync scope carries `docs/` but excludes `src/`, so a Code session
+executing Stage 2 can read the *pointer* to §9 and not §9 itself. Part 8 and §12
+between them carry enough to have done the environment work (FastAPI,
+OpenAI-compatible surface, NeMo-not-ONNX, sequential loading, CPU/int8 fallback),
+but "the memo §9 shape" is doing real specification work that the executing session
+cannot see.
+
+Suggested fix: route the capabilities memo (or at least §§2, 8, 9) into `docs/specs/`
+before Stage 2 is authorized. **Michael's call** — it is a design-space document and
+routing it is a design-side action, not a repo edit.
+
+## 2026-08-09 — memo §8's sequential-loading rule now has measurements under it
+
+Not a defect; evidence the design side does not have. Measured on the P1 Gen 8
+(full detail in `phase0-environment-standup-2026-08-09.md` §3.1): Parakeet fp32
+weights occupy **2433 MiB**, Sortformer fp32 **491 MiB**, both concurrently
+**2924 MiB** of live tensors over a 1137 MiB idle desktop — so on 8151 MiB,
+**weight residency is not the binding constraint** and roughly 3.5 GB stays clear.
+
+This does **not** retire sequential loading: peak *activation* memory during decode
+is unmeasured and is the figure that decides it, and measuring it needs audio, which
+is held. Flagged so §8 can be revisited **with data** when Stage 1 produces it,
+rather than being either kept or dropped on assumption.
+
+Also worth folding into the memo when it is next revised: NeMo's `[cu12]` extra pins
+`torch==2.12.0+cu126`, and **CUDA 12.6 has no sm_120 kernels** — on Blackwell it
+installs a stack that imports cleanly and fails at device time. The working pairing
+is plain `nemo_toolkit[asr]` over a pinned cu128 torch.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
