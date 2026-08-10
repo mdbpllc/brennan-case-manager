@@ -15,7 +15,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   (WSL2, torch cu128, NeMo 3.0.0, both checkpoints, CUDA proven on **sm_120**), **outside the repo**
   at `~/phase0`. **Stage 1 SCORING IS HELD, NO SCORECARD EXISTS**; Stage 2 untouched; **T4
   unauthorized**. Measurements + record: `phase0-environment-standup-2026-08-09.md`
-- **The one RED preflight row is AUDIO** — nothing has ever been decoded on this stack. **Michael
+- **The one RED preflight row is AUDIO** — no real speech has ever run on this stack. **Michael
   ruled a NARROW EXCEPTION 08-09**: environment proceeds, scoring holds, **no substitute audio**,
   row stays RED, preflight NOT passed. **His hand: stage the 13 pilot recordings into `..\data`**,
   outside the repo. Kickoff **stays in `inbox/`** — **NOT a packet**, stages still live
@@ -117,10 +117,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **PHASE 0 OPENED TWO MICHAEL CALLS, flagged NOT resolved:** telemetry posture (NeMo pulled
-  `wandb`/`sentry-sdk`/OneLogger onto the machine that will process privileged audio), and whether
-  a generated tone may smoke-test the decode path. **Also filed: the capabilities memo is NOT in
-  the repo** though Stage 2 is specified against its §9 — route it before authorizing Stage 2
+- **PHASE 0 LEAVES ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled
+  `wandb`/`sentry-sdk`/OneLogger onto the machine that will process privileged audio. **Smoke test
+  RULED AND RUN 08-09** (tone only; both model paths execute, no quality claim). **Also filed: the
+  capabilities memo is NOT in the repo** though Stage 2 is specified against its §9 — route it first
 - **CD-1 ISSUED, UNRULED, NOT AUTHORIZED** (log #38): one global contact directory as the identity
   source for the form engine and all case-linked people. **Own design session, schema on screen.
   LIVING** — full question text in the queue register

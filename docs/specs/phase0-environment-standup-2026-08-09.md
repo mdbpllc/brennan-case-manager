@@ -102,6 +102,56 @@ held. The rule stands; it now has evidence under it rather than an assumption.
 **On the 4 GB finding of #36:** confirmed as a constraint class, not a speed difference.
 Parakeet alone at fp32 (2433 MiB) plus desktop overhead plus activations does not fit 4 GB.
 
+### 3.2 Tone smoke test — ruled 2026-08-09, run once
+
+**Michael's ruling (a scoped allowance to the no-substitute-audio rule, not a relaxation of it):**
+a short generated tone, **once**, purely to prove the decode path executes. **No quality claim
+attaches to it; it does not stand in for the recordings; the audio row stays RED; and Stage 1
+still waits on the real recordings.** **Extended the same day, same scope and limits, to
+Sortformer** — one run on the same tone, execution-proof only.
+
+Input: a 3-second 440 Hz sine generated with ffmpeg (`sine=frequency=440:duration=3`, 16 kHz mono
+PCM). Not a recording of anything — synthesized signal, no microphone involved.
+
+Result — **the decode path executes**:
+
+| Observation | Value |
+|---|---|
+| `transcribe()` | **returned normally in 0.92 s** |
+| Return type | `Hypothesis` (as expected) |
+| Transcribed text | `''` — empty, the mechanically correct result for a pure tone |
+| Timestamp payload | all four keys present: `char`, `segment`, `timestep`, `word` |
+| Word entries | 0 (no speech in the input) |
+| Peak VRAM during decode | **2512 MiB** = 2433 weights + **79 MiB activations** |
+
+**What this establishes:** the full CUDA → NeMo → decode chain runs end to end and returns the
+structures the design depends on — in particular the **word and segment timestamp payload** that
+§2 of the design pass requires. The first Stage 1 run will no longer also be this stack's first
+inference.
+
+**What it does NOT establish, stated so it is not misread later:** nothing about transcription
+accuracy, word boosting, or language handling — an empty result on a tone is not a quality
+measurement in any direction. And the **79 MiB activation figure must not be extrapolated**: it
+is a 3-second clip, while the pilot recordings run to minutes, and activation growth with audio
+length is not characterized here. Memo §8's sequential-loading question stays open on the
+evidence in §3.1.
+
+**Sortformer, same tone, same limits — the diarization path also executes:**
+
+| Observation | Value |
+|---|---|
+| `diarize()` | **returned normally in 0.64 s** |
+| Return shape | `list` of 1 element, itself a `list` |
+| Speaker segments | **0** — empty, the mechanically correct result for a tone with no speech |
+| Peak VRAM during diarize | **511 MiB** = 491 weights + **20 MiB activations** |
+
+Same limits apply verbatim: no accuracy claim, no speaker-count claim, and the 20 MiB activation
+figure is a 3-second datapoint that must not be extrapolated to minutes-long recordings.
+
+**Both model paths in the pipeline have now been executed end to end at least once.** What
+remains unexercised is everything that needs real speech: word boosting, language handling,
+word→speaker alignment across the two models, and long-form activation behaviour.
+
 ## 4. Fixture rider — already spent
 
 Part 8 lists the rider as work to do: upgrade T2's tests from synthetic stand-ins to the 13 real
@@ -121,11 +171,7 @@ the **full-precision** comparison, not to introduce them.
    processing a privilege decision rather than a hosting choice. Three packages whose purpose is
    shipping run data off-box should be explicitly neutered and verified before any real
    recording touches the stack. **Not done; flagged rather than resolved silently.**
-3. **Open question for Michael — the smoke test.** Nothing has ever been decoded on this stack,
-   so the first Stage 1 run will also be its first inference; a failure in the decode path would
-   surface there rather than here. A ~3-second generated tone would prove the path executes
-   while producing no transcription-quality claim of any kind. Whether that crosses the "no
-   substitute audio" rule is **Michael's call and was not decided in-session.**
+3. **Smoke test — RULED AND RUN (§3.2).** Resolved same day; no longer open.
 
 ## 6. Reproduction
 

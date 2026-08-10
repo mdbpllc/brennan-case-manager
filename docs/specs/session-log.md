@@ -85,6 +85,16 @@ by Michael's hand.
   Stage 1 run is also its first inference. A ~3-second generated tone would prove the decode path
   executes while making no transcription-quality claim; whether that crosses the no-substitute-audio
   rule is his call, not the session's.
+  **[Same day: RULED AND RUN — a scoped allowance to the no-substitute-audio rule (tone only,
+  once, execution-proof; no quality claim, does not stand in for the recordings, audio row stays
+  RED, Stage 1 still waits on the real recordings), extended in a second ruling to Sortformer.
+  Both paths execute: `transcribe()` 0.92 s, empty text, full timestamp payload present
+  (`char`/`segment`/`timestep`/`word`); `diarize()` 0.64 s, zero speaker segments. Empty results
+  are mechanically correct for a tone and are NOT accuracy evidence. Activation peaks 79 MiB /
+  20 MiB are 3-second datapoints and must NOT be extrapolated — memo §8 stays open on §3.1's
+  evidence. The first Stage 1 run is no longer this stack's first inference. Still unexercised:
+  word boosting, language handling, word→speaker alignment, long-form behaviour. See
+  `phase0-environment-standup-2026-08-09.md` §3.2.]**
 
 **Authorization status: PARTLY SPENT.** Stage 1 environment done; **Stage 1 scoring HELD; no
 scorecard exists**; Stage 2 (T3) untouched; **T4 still unauthorized**.
