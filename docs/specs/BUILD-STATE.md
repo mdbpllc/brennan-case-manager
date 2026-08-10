@@ -18,9 +18,12 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **The one RED preflight row is AUDIO** — no real speech has ever run on this stack. **NARROW
   EXCEPTION ruled 08-09**: environment proceeds, scoring holds, **no substitute audio**, row stays
   RED, preflight NOT passed. **His hand (H4): stage the 13 recordings into `..\data`**, outside the
-  repo — a session then re-runs the row and Stage 1 proceeds **under the ORIGINAL authorization**.
-  Kickoff **stays in `inbox/`** — **NOT a packet**. **Memo §8:** weights fit (2924 of 8151 MiB), but
-  that **does NOT retire sequential loading** (decode activations unmeasured)
+  repo — then a session re-runs the row under the **ORIGINAL authorization**. **BUT THE KICKOFF DOC
+  IS GONE (KICK-1):** the P1's `inbox/` is EMPTY and `KICKOFF-phase0-t3-p1-session_2026-08-08.md`
+  was **never git-tracked**, so the loss cannot be dated. It is the **authoritative text of that
+  authorization** — **until Michael locates it or re-issues, FURTHER T3 WORK IS UNAUTHORIZED.** Not
+  a packet. **Memo §8:** weights fit (2924 of 8151 MiB) but that **does NOT retire sequential
+  loading** (activations unmeasured)
 - **Fixture rider was ALREADY SPENT** — the 13 pilot transcripts have been
   `src/routing/__tests__/pilot/` fixtures all along; Stage 1 owes the FULL-PRECISION comparison
 
@@ -118,8 +121,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   OneLogger onto the machine that will process privileged audio. **Smoke test RULED AND RUN 08-09**
   (tone only, no quality claim). **Also filed: the capabilities memo is NOT in the repo** — route it
 - **CD-1 ISSUED, UNRULED, NOT AUTHORIZED** (log #38): one global contact directory as the identity
-  source for the form engine and all case-linked people. **Own design session, schema on screen;
-  LIVING** — full text in the queue register
+  source for form engine and all case-linked people. **Own design session, schema on screen; LIVING**
 - **CL2-AC-1 is DIRECTION-CONFIRMED, not closed** — auto-create on PI client-role link is policy;
   **link-removal, mixed-posture, backfill UNRULED**. Its two queue homes were consolidated 08-08
 - **CORPUS-HOME CLOSED 2026-08-08: the ARCHIVE project.** Execution **Michael's hand**, never a repo action
@@ -127,12 +129,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   in the **P15's** gitignored `inbox/`, not this machine's (verification: log #38)
 - **PROBATE-LADDER PASS DEFERRED** pending Domser; unblock is the letters-issued arc capture.
   **PL-1..PL-4 UNRULED**; PL-1's proceeding-as-case-type pick is Claude's, **PROPOSED only**
-- **RUNNER DISCIPLINE — QR-1/2/3 + MM-1 all CLOSED; runner now v5**, rules in
-  `docs/prompts/QUEUE-RUNNER.md` (the **ONLY full copy**). **Michael's hand: ONLY the P15 deletion
-  remains — the P1 copy is verified ABSENT** (08-09), plus instr. **v9**
-- **NEW, log #44 (T3/Phase 0 advisory H series):** **H1** npm advisories · **H2** Fable-5-on-Max vs.
-  MODEL USAGE · **H4** stage the recordings · **H5** Michael-supplied-material rule · **H6** adopt
-  the raw capture. **IDs COLLIDE with the heartbeat register's H1–H83 — flagged, NOT renumbered**
+- **RUNNER DISCIPLINE — QR-1/2/3 + MM-1 CLOSED; runner v5** (`docs/prompts/QUEUE-RUNNER.md`, the
+  **ONLY full copy**). **Michael's hand: ONLY the P15 deletion remains** (P1 ABSENT); instr. **v9**
+- **NEW, log #44 (T3/Phase 0 H series):** **H1** npm advisories · **H2** Fable-5-on-Max · **H4** stage
+  recordings · **H5** supplied-material rule · **H6** raw capture. **IDs COLLIDE with heartbeat H1–H83**
 - **PROPOSED, unruled (SAT-1** satellite pattern**)**, plus two sweeps, both Michael's: **queue-wide
   duplication** and **cross-document status drift** (do design-doc status rows lag the register?)
 - **ID collision flagged, not renumbered:** §2's O1 (Prop. Code fees) ≠ O-series O1 (auto-file)

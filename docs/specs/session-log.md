@@ -63,6 +63,43 @@ fast-forward needed.
 
 Health: **232 tests pass, build ✓, lint clean** — `src/` untouched this session (docs only).
 
+*[Same-day addendum, after the close-out push at `b1063bf` — the pushed bullets above stand as
+written and were not edited.]*
+
+**CORRECTION (six-field form).** **What was asserted:** that the kickoff document
+`KICKOFF-phase0-t3-p1-session_2026-08-08.md` remains in `inbox/` on the P1 — carried in
+BUILD-STATE as "Kickoff **stays in `inbox/`** — **NOT a packet**", and repeated in this batch's
+close-out bullets. **What is true instead, with evidence:** it is **absent from the P1**, and this
+machine **is** the P1 (`Win32_ComputerSystem.Model` = `21Q80015US`, matching #42's identification).
+It was already gone at session start — the opening `inbox/` listing showed the two packet zips and
+nothing else — and the runner's Step 4.5 deletion named only those two zips, so **this session did
+not remove it**. `git log --all -- 'inbox/*'` returns **zero commits**: `inbox/` is gitignored and
+the file was never tracked, so the loss can be **neither dated nor recovered from history**.
+**Which entry/line it corrects:** the carried BUILD-STATE line, and the close-out bullet in the
+runner entry above that repeated it — **that pushed text stands as written**; this addendum is the
+correction, not an edit to it. **Actor: Opus 5** (this session) for carrying the line forward into
+the thirty-ninth refresh without verifying it — **attribution taken from this session's own
+declared model, not inferred from session type.** The line originated in a single commit,
+`dc766df`, whose entry **#42 self-declares "(Code session, Opus 5…)"** in its header; but **#42 is
+not charged with the error** — the file cannot be dated, so its assertion may have been true when
+written. **Whether the line was ever false before this refresh is UNKNOWN and is not inferred.**
+The error logged here is the **carry-forward**, which is this session's alone. **Failure class:** copy-forward of
+a carried line without verification — a claim about the local filesystem, cheap to check, that
+rode three refreshes on inheritance instead. Prior instance: **#13, R-3**, where stale content kept
+travelling because nobody re-checked the entry that cleared it. **What changed as a result:**
+BUILD-STATE corrected in place at the thirty-ninth refresh; this addendum appended; **KICK-1**
+opened in `attorney-review-queue.md`; **nothing amended, nothing force-pushed** — the correction
+rides its own commit on top of the pushed close-out.
+
+**Open item raised (mirrors `attorney-review-queue.md` KICK-1):** **KICK-1 — locate
+`KICKOFF-phase0-t3-p1-session_2026-08-08.md`.** It is the authoritative text of the Phase 0/T3
+authorization and its stage definitions, which #42 recorded as **PARTLY SPENT**. **Until it is
+located — or Michael re-issues the remaining authorization in his own words — further T3 work is
+UNAUTHORIZED**, because §5 discipline requires quoting Michael's explicit authorization and the
+quoted source is missing. Likely locations: Michael's Downloads on either machine; the 2026-08-08
+design chats; partial reconstruction from `rulings-capture-2026-08-08*.md` and #42. **Michael's.
+It is not a packet and must never be processed as one.**
+
 Staged for Code: none. Awaiting/Returned from Code, unreviewed: this runner entry plus #43–#44;
 the carried #31–#35 and #37–#42 material stands unchanged. Do not copy any clearance forward.
 
