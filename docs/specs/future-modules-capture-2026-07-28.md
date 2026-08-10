@@ -70,3 +70,29 @@ builds from it.
 
 **Claude's one-line read (opinion, not a ruling):** money and conflicts are the two
 widest gaps between "real practice" and "this system."
+
+## 3. Watch item — Slack / Claude Tag (considered 2026-08-09)
+
+> STATUS: OBSERVATION / CONSIDERED-AND-DECLINED-FOR-NOW — nothing here is proposed
+> for build. Preserved at Michael's instruction, 2026-08-09 design session (Fable 5).
+
+Michael asked (2026-08-09) whether Slack integration would add significant value to
+the software. Claude's recommendation: **no, not in the current phase** — solo
+practice, clients will never be on Slack, the real communication surfaces are
+Outlook email, phone/dictation, and e-filing notices, and any future team-messaging
+need is better served by Teams on the already-committed M365/Entra/Graph stack (one
+tenant, one auth surface). The **one strong future use case** identified: **Claude
+Tag** — Anthropic's shared-channel Claude (Team/Enterprise beta as of Aug 2026) —
+as a way to harness attorney↔paralegal conversations once a paralegal is hired:
+one Claude per channel, persistent channel memory, taggable by either person to
+draft, chase, or summarize against the accumulated matter discussion. Gates before
+any real matter flows through such a channel: (1) privilege/PHI data-handling-terms
+review — conversation content is work product with client PHI; credential-tier
+discipline, same class as QBO live OAuth; (2) plan tier — Claude Tag requires
+Team/Enterprise; verify seat minimums at hire time; (3) platform watch — Anthropic
+has stated intent to expand Tag beyond Slack; by hire time the Slack-vs-Teams
+question may have dissolved. Design consequence worth carrying: the
+communications-log module (unbuilt-territory map, this doc) should be
+**platform-agnostic** — able to ingest attorney/staff chat from either platform —
+rather than betting its architecture on one. Decision point: the paralegal hire
+itself, not now.

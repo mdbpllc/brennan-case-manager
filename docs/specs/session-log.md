@@ -12,6 +12,161 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-09 — QUEUE-RUNNER batch (runner line; EIGHTH invocation)
+
+Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.**
+Runner v5, read from `docs/prompts/QUEUE-RUNNER.md` at HEAD via the pointer command (QR-2 working
+as designed). QR-3 checkout gate: **clean, on master, HEAD == origin/master at `9513194`** — no
+fast-forward needed.
+
+- **ORDER RUN — Michael's call, against the runner's default.** Step 1 sorts by mtime, which put
+  `t3-kickoff-advisory-log` (Aug 9 20:43) before `slack-claude-tag` (Aug 9 21:36) — **the reverse
+  of the filename dates.** Michael ruled **filename-date order: slack-claude-tag (08-09) →
+  t3-kickoff-advisory-log (08-10)**, on the ground that **mtimes are inbox save times, not session
+  times**, with t3 therefore winning any conflict. Verified against each manifest's §3 date before
+  executing, as he directed: slack = 2026-08-09; t3 = 2026-08-09 spanning 08-08 evening, amended
+  08-10. **No disagreement; no stop.** *(Worth carrying: inbox mtime is not a reliable session
+  clock. The runner's Step 1 default silently assumes it is.)*
+- **Nothing superseded.** The two packets share no canonical path and no design question — one
+  routes a watch item into the future-modules capture, the other appends a session-log entry. The
+  conflict rule never fired.
+- **t3's §1 STOP condition did NOT fire.** It holds the packet unless the dedicated T3 session has
+  closed and pushed. It has: **#42 is in the log, and BUILD-STATE carries no "WSL2 STILL NOT
+  INSTALLED" line.** Checked both, as specified, rather than assuming from the commit titles.
+- **Slack packet's §1 reconcile: clean.** No Slack, Teams, Claude Tag, or chat-integration section
+  existed in `future-modules-capture-2026-07-28.md` (only §1 QuickBooks, §2 unbuilt-territory map)
+  or in `outlook-email-intake.md` — so it folded in as a **new §3**, not a reconcile-into-existing.
+  The design side's view of that doc was accurate, not stale.
+- **One temporal lag, recorded rather than harmonized (t3's §1 forbids silent harmonizing).** The
+  t3 entry's closing line lists the T3 session's output as awaiting review "once it closes and
+  pushes." **It has since closed and pushed** — that is #42. Not a contradiction; the design side
+  wrote before the fact. **Entry text left verbatim** per the packet's "strip nothing."
+- **ID COLLISION FLAGGED, NOT RENUMBERED.** t3's open items are lettered **H1, H2, H4, H5, H6** —
+  which collide head-on with the **case-heartbeat register's H1–H83**. Renumbering Michael's items
+  is not Code's call, so they enter `attorney-review-queue.md` under their packet IDs in their own
+  labeled subsection, with the collision stated. Same disposition as the standing §2-O1 / O-series-O1
+  collision. **H3 is CLOSED per the entry's 08-10 amendment and was not entered.**
+- **Open items merged to `attorney-review-queue.md` with FULL question text (QR-1):** H1 (file the
+  npm-advisories spec-feedback item), H2 (Fable-5-on-Max economics vs. the MODEL USAGE section),
+  H4 (stage the 13 pilot recordings into `..\data`), H5 (standing rule — preflight rows about
+  Michael-supplied material are answered by Michael, not by searching his machine), H6 (adopt the
+  raw capture into the repo). **The slack packet contributed no open items by design** — its three
+  Claude Tag gates were deliberately left ID-less so they don't sit on the roster until the
+  paralegal hire. **Two carried hand items were already registered** and were annotated, not
+  duplicated: the P15 runner-copy deletion (**P1 half now verified absent, so only P15 remains**)
+  and CORPUS-HOME execution.
+- **DO-NOT lists honored cumulatively.** Nothing built. `docs/specs/t3-kickoff-day-capture-2026-08-09.md`
+  **not created** (H6 is Michael's open call). The T3 preflight is **not** marked passed anywhere —
+  6/7 with a dated ruled exception, audio row still RED. No pre-`ec970eb` material re-routed. The
+  Slack-decline and the Teams preference are recorded as **Claude recommendations, unruled**, and
+  Claude Tag entered **no** build queue or roadmap. Nothing set to verified.
+
+Health: **232 tests pass, build ✓, lint clean** — `src/` untouched this session (docs only).
+
+Staged for Code: none. Awaiting/Returned from Code, unreviewed: this runner entry plus #43–#44;
+the carried #31–#35 and #37–#42 material stands unchanged. Do not copy any clearance forward.
+
+---
+
+## 2026-08-09 (#44) — P1 environment COMPLETED by Michael's hand; T3 kickoff LAUNCHED; preflight 6/7; AUDIO-ROW EXCEPTION RULED (design-side advisory session, typed; Fable 5 believed, spans 08-08 evening → 08-09)
+
+Advisory session riding alongside Michael's hands-on work on the P1 and the T3 kickoff launch.
+Screenshot-relay pattern throughout; per-command approvals coached, several redirects issued.
+Nothing built in this chat; the running T3 session logs its own work separately.
+
+- **P1 ENVIRONMENT COMPLETED (Michael's hand, 2026-08-08 evening):** WSL2 + VirtualMachinePlatform
+  installed, reboot, Ubuntu 24.04.4 LTS installed (user `brennan`), CUDA passthrough VERIFIED by
+  `nvidia-smi` in-distro (RTX PRO 2000 Blackwell, 8151 MiB, driver 595.71, CUDA 13.2), and
+  `npm install` completed (74 packages). The WSL2 blocker recorded in #41/BUILD-STATE is DEAD.
+- **npm audit on fresh install: 5 advisories (1 moderate, 4 high) — NOT auto-fixed**, on Claude's
+  advice: dev-dep chains, lockfile green at 232 tests 07-28; `npm audit fix` could silently desync
+  this machine from the tested lockfile. PROPOSED, unruled: file as a spec-feedback item and
+  triage as a routed task. Michael neither ruled nor filed it this session.
+- **T3 KICKOFF LAUNCHED 2026-08-09** (dedicated session, P1, Opus 5, terminal): §5 preflight
+  measured, not assumed — **6/7 rows GREEN** (machine, GPU/VRAM, driver, WSL2+CUDA, disk 955G
+  WSL / 1.7T C:, fixture rider). **AUDIO ROW RED:** `..\data` does not exist; pilot recordings
+  NOT STAGED. Session read the packet's gate literally — incomplete preflight → docs-only,
+  builds hold — and held its own authorization. Correct behavior, confirmed.
+- **RULING (CONFIRMED, Michael): NARROW EXCEPTION on the audio row** — "I do not have the
+  recordings available at the moment." Environment setup (NeMo install, model pulls) proceeds on
+  the six green rows; **Stage 1 scoring HOLDS**; no synthetic/substitute/fixture audio stands in
+  for recordings; the red row stays on the record as a dated exception, not a pass. NEW Michael's-
+  hand item: stage the 13 pilot recordings into `..\data` (create outside the repo tree at staging
+  time); a session then re-runs the audio row and Stage 1 proceeds under the ORIGINAL
+  authorization — no new ruling needed. Delivered as
+  `RULING_t3-preflight-audio-exception_2026-08-09.md`.
+- **Three T3-session corrections CONFIRMED into the record** (it will fix per its own close-out):
+  (1) BUILD-STATE's "WSL2 STILL NOT INSTALLED — the one remaining blocker" line is STALE;
+  (2) the FIXTURE RIDER IS ALREADY SPENT — all 13 pilot transcripts (8 unscripted rec_3-10 + 5
+  scripted takes) are in `src/routing/__tests__/pilot/` and `pilot.test.ts` already tests T2
+  against them verbatim, so "13 pilot transcripts never supplied" is stale as to TEXT; the gap is
+  AUDIO recordings only — same name, different layer;
+  (3) MM-1(3) on the P1 needs NO ACTION — user-level runner copy ABSENT; **only the P15 copy
+  remains Michael's hand.**
+- **Privacy redirect (design-side, honored):** the session's audio hunt proposed a recursive
+  $env:USERPROFILE sweep for *.m4a/wav/mp3 — REFUSED: audio filenames can carry client
+  information; real-case material enters a session by Michael's hand only. Re-scoped to pipeline
+  locations only. Standing principle worth carrying: preflight rows about Michael-supplied
+  material are answered by Michael, not by searching his machine.
+- **Cloud-session findings (earlier, this chat):** QR-3's checkout gate TRIPPED ON ITS FIRST LIVE
+  ENCOUNTER — a cloud session on the forced `claude/new-session-*` auto-branch stopped itself per
+  not-on-master. The gate works. Stale remote branch confirmed already deleted (remote is
+  master-only); that hand item is DEAD. Queue empty everywhere = correct state, all packets
+  processed.
+- **Instructions v9 is PASTED and LIVE** (this chat ran under it) — that hand item is DONE.
+- **Fable 5 now standard on Max** (banner, 2026-08-09: up to 50% of weekly limit on Fable, faster
+  drawdown than Opus). OPEN: revisit MODEL USAGE section assumptions in a design session; the
+  ruled Opus-for-agentic-work default was reaffirmed for the T3 session regardless.
+- Meter readings not supplied this session (noted).
+- **[Amended 2026-08-10, design side, before routing]** Paste-state RESOLVED: the exception
+  ruling WAS pasted into the running T3 session — confirmed by screenshot relay 2026-08-10
+  ("Ruling logged. Proceeding on the six green rows: environment stand-up only, no audio path
+  exercised"), with environment stand-up beginning at the WSL toolchain-baseline check. H3
+  CLOSED. The original capture recorded paste-state as UNKNOWN; that uncertainty is
+  superseded, not corrected — the capture stood accurate at capture time.
+
+**Next:** let the T3 session's environment setup run to its own close-out and push. Then
+Michael's hands: stage the 13 recordings → `..\data`; delete the P15 user-level runner copy;
+CORPUS-HOME upload. Design side next acts unchanged: CD-1 session (schema on screen), FE-3
+(§8 on screen), O5 (fee-profile doc).
+
+**Staged for Code:** this entry (routed via the 2026-08-10 packet); nothing else — the
+exception ruling traveled as chat-paste, and the T3 session logs and pushes its own work.
+
+**Awaiting/Returned from Code, unreviewed:** the T3 session's entire output (its log entry,
+BUILD-STATE corrections, environment setup) once it closes and pushes; plus the carried #37–#41
+routing per #41's own line. Do not copy any clearance forward.
+
+*[Runner note, added at append 2026-08-09 — not part of the design-side entry: the T3 session
+HAS since closed and pushed; its output is #42, directly below. The line above was written before
+that landed and is left verbatim per the packet's strip-nothing instruction.]*
+
+---
+
+## 2026-08-09 (#43) — Slack considered and DECLINED for now; Claude Tag logged as a paralegal-era watch item (design session, Fable 5)
+
+**What happened:** Michael asked whether Slack integration would add significant value to
+the software. Claude's recommendation (opinion, not a ruling): no for the current phase —
+solo practice, clients aren't on Slack, real comm surfaces are Outlook/phone/e-filing, and
+any eventual team-messaging need is better served by Teams on the committed M365 stack. A
+follow-up question reframed it: would Slack be a way to harness Claude with future
+attorney↔paralegal conversations? Answer: yes — Claude Tag (Anthropic's shared-channel
+Claude, Team/Enterprise beta as of Aug 2026, channel-persistent memory) is the one strong
+Slack use case on the horizon, gated on (1) privilege/PHI data-handling-terms review,
+(2) plan-tier/seat requirements, (3) whether Tag expands to Teams by hire time. Design
+consequence: the communications-log module should be platform-agnostic on chat-source
+ingest. Michael instructed the exchange be preserved; captured as a watch-item section in
+future-modules-capture-2026-07-28.md. **No ruling was made on Slack, Teams, or Claude Tag
+adoption; nothing entered the build queue.** Decision point named: the paralegal hire.
+
+**Staged for Code:** none (this packet is the routing of the above; once applied, nothing
+remains staged from this session).
+
+**Awaiting/Returned from Code, unreviewed:** per the current top entry — carry forward
+unchanged, plus this entry.
+
+---
+
 ## 2026-08-09 (#42) — PHASE 0 ENVIRONMENT STOOD UP ON THE P1; **scoring HELD, no scorecard, authorization PARTLY spent** (Code session, Opus 5, ThinkPad P1 Gen 8)
 
 Ran the Phase 0 + T3 kickoff (`inbox/KICKOFF-phase0-t3-p1-session_2026-08-08.md`) as its own
