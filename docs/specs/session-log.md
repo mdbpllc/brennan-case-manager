@@ -12,6 +12,148 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-10 — QUEUE-RUNNER batch (runner line; NINTH invocation)
+
+Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.**
+Runner **v5** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD via the pointer command (QR-2
+working as designed). QR-3 checkout gate: **clean, on master, HEAD == origin/master at
+`ffb5869`** — no fast-forward needed.
+
+- **ORDER — the mtime/filename-date disagreement RECURRED, second consecutive batch.** mtime put
+  `qr4-runner-ordering` (Aug 9, 23:04) before `drafting-disclosures` (Aug 10, 18:43); the
+  filename dates are the exact reverse (08-06 vs 08-10). Michael ruled **filename-date order:
+  disclosures (08-06) → QR-4 (08-10)**. Cross-checked against each manifest's §3 date before
+  executing — 2026-08-06 and 2026-08-10 respectively, consistent with the filenames. *(Cause,
+  now on the record via the QR-4 capture: a cloud design session running past 17:00 Central
+  stamps the next UTC date, so the later-authored packet legitimately carries the later filename
+  date while being downloaded earlier.)*
+- **New run shape, worth carrying:** Michael ruled a **read-only reconnaissance pass first** —
+  read both manifests' §0/§1/§2, report what QR-4 said and whether the packets collided, then
+  return for the order confirmation. The order question was answered from the packets' own
+  contents rather than from the runner's inference.
+- **QR-4 RULED ADOPTED the same day it was proposed** (Michael, 2026-08-10): filename date
+  primary, mtime tiebreak and fallback for undated filenames, both orders printed on
+  disagreement, confirmed order cross-checked against manifest §3 dates. `QUEUE-RUNNER.md`
+  Step 1 replaced, one sentence appended to Step 2 item 2, version line **v5 → v6**. The §4.2
+  conditional gate passed on this ruling; it would otherwise have been skipped.
+- **ONE INSTRUCTION FLAGGED, NOT OBEYED — `.claude/commands/queue-runner.md` was NOT bumped.**
+  Michael's ruling directed the bump "in both the tracked copy and
+  `.claude/commands/queue-runner.md`." That file is a **pointer** carrying no runner text and no
+  version line (QR-2, ruled 2026-08-08); the QR-4 packet's own §4.2 says it "needs no edit," and
+  its §6 bars restoring full text there. Adding a version line would begin re-creating the
+  second copy QR-2 closed — the exact stale-copy failure class. **The pointer reads the canonical
+  file at HEAD, so it serves v6 automatically with no edit.** Flagged rather than silently
+  obeyed, per the runner's hard limits. **If Michael wants a version marker in the pointer
+  anyway, that is his call to make explicitly.**
+- **Nothing superseded.** The two packets share **no canonical path and no design question** —
+  one adds a skill file, the other registers a ruling and amends the runner. The conflict rule
+  never fired, so the execution order affected only session-log append order.
+- **The disclosures packet was FOUR DAYS STALE and had never been processed.** Verified three
+  ways: no `docs/skills/` directory, no `drafting-disclosures` anywhere in `docs/`, no mention in
+  this log. Its claimed entry number **#34 collided head-on with the real #34** (the 2026-08-07
+  rulings batch); renumbered to **#45** per that packet's own §1 instruction to verify against the
+  log top. Consequence recorded: the design side had **no record the skill was ever staged**, four
+  days on.
+- **DATE/NUMBER ANOMALY, stated plainly rather than fudged (Michael's direction):** **#45 carries
+  its 2026-08-06 authoring date while landing above #44 (2026-08-09).** Entry numbers follow
+  **processing** order; dates follow **authoring**. Not an error — the artifact of a packet that
+  sat unprocessed.
+- **Both §1 STOP conditions checked and cleared.** Disclosures: `form-engine.md` §12 exists
+  (line 182) and `form-engine-helpers.md` exists → packet in order, not out of sequence. QR-4:
+  the runner was **v5**, not v6+ → no later ruling had superseded the packet.
+- **Duplicate watches, both clean.** No `rulings-capture-2026-08-10` file existed (six other
+  dated captures do), so no `b` suffix was needed. No prior `drafting-disclosures` or skill file
+  anywhere in `docs/`.
+- **Data-hygiene backstop run** (disclosures §6). The staged `SKILL.md` was read in full before
+  landing: method-only, **no case-identifying content** — no party, provider, or case names. The
+  skill itself forbids case data entering the repo and routes its provider-data blocks to
+  Michael's own files by hand.
+- **Open items merged to `attorney-review-queue.md` with FULL question text (QR-1).** **Entered
+  new:** the **Q-3 `docs/skills/` sync-picker re-check** — never registered here before, only in
+  the 08-06 packet's §7 table (precisely the loss class QR-1 exists to prevent, caught because
+  the packet was read before deletion). **QR-4** entered with its full proposed text plus its
+  closure. **Carried and annotated, not duplicated:** KICK-1, H4, the P15 runner-copy deletion,
+  FE-2. **FE-1 annotated** with the evidence channel the skill opens — its mandatory provider-data
+  block was designed as the FE-1 scout, but since FE-1 closed and was superseded, **that evidence
+  now feeds CD-1**.
+- **Instructions trigger #3 fired** by QR-4. Michael reports the **v10 instructions draft exists
+  design-side as of 2026-08-10**; no Code action.
+- **DO-NOT lists honored cumulatively.** Nothing built. No spec file modified — `form-engine.md`
+  and `form-engine-helpers.md` untouched. FE-1/FE-2 not resolved. Nothing uploaded to claude.ai
+  (Michael's hand). No second runner copy created anywhere. H-series, KICK-1, and closed QR items
+  not renumbered or reorganized. No pushed log entry edited. `src/` and `db/` untouched.
+
+**Staged for Code:** none — the queue is empty.
+**Awaiting/Returned from Code, unreviewed:** this batch (runner entry, #46, #45, BUILD-STATE
+refresh) and, still, the eighth-invocation batch. Review in a fresh post-sync design chat.
+
+---
+
+## 2026-08-10 (#46) — QR-4 PROPOSED: runner ordering by filename date (design session, Fable 5, advisory to the eighth queue run) — **RULED ADOPTED same day; see addendum**
+
+This session rode alongside the eighth queue-runner invocation (P1) in real time; the run itself
+is logged by that session (its runner entry, #44, and the KICK-1 correction addendum). This entry
+records only the design-side outputs.
+
+- **Ordering call (batch-scoped, CONFIRMED):** the two packets' mtime order and filename-date
+  order disagreed. Michael ruled filename-date for the batch — mtimes are inbox save times and had
+  inverted authoring order (the later-authored 2026-08-10 packet was saved first). Verified
+  against manifest §3 dates before execution.
+- **QR-4 PROPOSED, unruled:** make that ordering standing — filename date primary, mtime
+  tiebreak, mandatory disagreement flag, manifest-date cross-check. Full text in
+  attorney-review-queue.md per QR-1. If ruled yes: runner v5 → v6, fires instructions trigger #3
+  → v10.
+- Advisory work during the run (guarded amend, sha reachability vs resolvability, enumerated
+  absence checks) is recorded in the Code session's entries and its two saved working-practice
+  notes; reasoning preserved in docs/specs/rulings-capture-2026-08-10.md.
+
+Staged for Code: this packet (QR-4 registration; conditional runner amendment).
+Awaiting/Returned from Code, unreviewed: the eighth-invocation batch (runner entry, #44, KICK-1
+correction addendum, BUILD-STATE refresh at reported tip ffb5869) — review in a fresh post-sync
+design chat.
+
+**[Addendum, Code, 2026-08-10 — appended at processing, entry text above left verbatim.]** The
+packet's §4.2 was written as a conditional gated on a ruling that had not happened. **It happened
+during this batch:** Michael ruled QR-4 ADOPTED at the ninth invocation, where the same
+mtime/filename-date inversion recurred. So the entry above describes QR-4 as PROPOSED because that
+was true when authored — it was ruled hours later. The amendment was applied: runner **v6**.
+`.claude/commands/queue-runner.md` was **not** edited despite the ruling's wording; see the ninth
+runner entry for why (QR-2 pointer form).
+
+---
+
+## 2026-08-06 (#45) — Design session (Fable 5): drafting-disclosures skill v1 staged
+
+- RULED (Michael): create the drafting-disclosures skill; canonical copy lives in the REPO at
+  docs/skills/drafting-disclosures/SKILL.md (QR-2 pattern: one canonical copy at HEAD; the
+  claude.ai uploaded copy carries a version line + canonical-path pointer and is checked
+  against HEAD at run start). Spec stays canonical for method (form-engine.md §12/§8/§9,
+  helpers file); the skill operationalizes and cites, never restates rationale.
+- Skill scope v1 = exactly the validated POC behavior: shell + medchron + answers in;
+  draft + mandatory verification list + mandatory provider-data block out. FE-1 deliberately
+  NOT solved by the skill; instead every run emits provider records (the FE-1 scout) so the
+  directory-vs-interview-cards ruling can be made on accumulated evidence.
+- Upgrade protocol on the record: learnings → spec §12 first via packet; skill revises citing
+  the spec; version bump; claude.ai copy re-uploaded after the revision reaches HEAD.
+- Q-3 re-check required: docs/skills/ is a new nested directory; confirm the GitHub sync
+  picker includes it so the skill reaches design-side knowledge.
+- Staged for Code: the SKILL.md (this packet).
+- Awaiting/Returned from Code, unreviewed: the skill file once landed; Michael then uploads
+  it as a claude.ai skill by hand.
+
+**[Addendum, Code, 2026-08-10 — appended at processing, entry text above left verbatim.]**
+**Renumbered #34 → #45.** The packet proposed #34, but #34 was taken by the 2026-08-07 rulings
+batch; the packet's own §1 required verifying against the log top, which caught it. **This entry
+therefore carries its 2026-08-06 authoring date while sitting above #44 (2026-08-09)** — the
+packet sat unprocessed for four days, and entry numbers follow processing order while dates follow
+authoring. **Landed as specified:** `docs/skills/drafting-disclosures/SKILL.md`, byte-identical to
+the staged file (md5 verified). **The FE-1 note above is now stale in one respect:** FE-1 closed
+2026-08-07 and was superseded 2026-08-08 by CD-1, so the provider-data blocks the skill emits feed
+**CD-1**, not FE-1 — annotated in the review queue rather than rewritten here. The Q-3 re-check is
+now a registered queue item with full text.
+
+---
+
 ## 2026-08-09 — QUEUE-RUNNER batch (runner line; EIGHTH invocation)
 
 Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.**

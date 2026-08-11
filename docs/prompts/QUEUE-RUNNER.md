@@ -3,11 +3,12 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v5, 2026-08-08 (MM-1). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v6, 2026-08-10 (QR-4). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
-     2026-08-08 (MM-1, v5). -->
+     2026-08-08 (MM-1, v5); Step 1 ordering amended by Michael's ruling 2026-08-10
+     (QR-4, v6). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -38,16 +39,22 @@ queue from an unverified tree.
    process with the QUEUE-RUNNER prompt; delete packets after execution."
 
 ## Step 1 — Inventory and confirm order
-1. List every `*.zip` in `inbox/`, sorted by file modification time,
-   oldest first.
-2. Print the inferred queue order (filename + date) and STOP. Ask Michael
-   to confirm or reorder before executing anything. Do not proceed on
-   silence.
+1. List every `*.zip` in `inbox/`, sorted by the date embedded in the filename,
+   oldest first. Break ties — and place any filename with no parseable date,
+   flagging it explicitly — by file modification time. Filename dates track the
+   authoring design session; mtimes are inbox save times and can invert
+   authoring order (demonstrated 2026-08-09/10; QR-4).
+2. Also compute the pure-mtime order. If the two orders disagree, print BOTH and
+   name the difference — never silently pick one.
+3. Print the inferred queue order (filename + date) and STOP. Ask Michael to
+   confirm or reorder before executing anything. Do not proceed on silence.
 
 ## Step 2 — Read everything before executing anything
 1. Unzip all packets to a temp location.
 2. Read every manifest's §0 (READ ME FIRST), §1 (RECONCILE FIRST), and
    §2 (routing table) across ALL packets before acting on any.
+   Cross-check the confirmed order against each manifest's §3 entry date; if the
+   manifests contradict the confirmed order, STOP and ask before executing.
 3. Conflict rule: where packets disagree (same canonical path, same
    design question, contradictory instructions), the LATER packet wins —
    design thinking evolved across the interim sessions. Note each
