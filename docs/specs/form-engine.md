@@ -242,3 +242,41 @@ A leftover-sweep assertion (a list of shell-origin strings that must NOT survive
 - **Scale datum:** the full live edit was ~45 occurrence-controlled text-node swaps plus five structural rebuilds (one paragraph clone-insert, one block clone-insert, one three-block rebuild, two multi-block span rebuilds) in a 7-phase scripted pass. Well within a single scripted operation; no human-in-the-loop steps were needed between data map and validated output.
 
 **2026-08-08:** FE-1 SUPERSEDED by CD-1 — the form engine's identity source is a global CONTACT directory (provider = role), per the contact-directory reframe. FE-1's mechanics survive as PROPOSED inputs to the CD-1 design session. See `rulings-capture-2026-08-08.md` and `attorney-review-queue.md` CD-1. The provider-directory build (Slice A) was withdrawn unbuilt.
+
+---
+
+*Folded 2026-08-10 drafting-session learnings (§§12.7–12.13): first live run of `docs/skills/drafting-disclosures/SKILL.md` v1. Client-clean by design — method only, no case-identifying content. Per the ruled upgrade protocol, the spec fold-in comes FIRST; the skill's own v2 revision cites this spec at HEAD and is a later design-session deliverable.*
+
+### 12.7 Medchron attribution fields are unverified input
+
+Two live mis-attributions surfaced in one run, both caught only by the attorney:
+1. A treating physician attributed to a hospital where he does not practice (the chronology software hallucinated the facility association).
+2. Referring physicians listed as an imaging entity's treaters (attribution contamination: the people who ordered the imaging appeared as the people who read it).
+
+Rule: every provider→treater→facility attribution in a machine-generated chronology is UNVERIFIED until the attorney confirms it. The drafting flow must (a) carry every attribution onto the verification list, and (b) ask one targeted step-0-style question for imaging entities specifically: "are these names the entity's radiologists, or the referring physicians?" Imaging entities are the high-risk class because their records name both roles.
+
+### 12.8 Certificate-of-service date: operator-local time, never container time
+
+The cloud container clock is UTC. A session running in the evening (operator local) stamps tomorrow's date. In this run the certificate of service briefly carried the next day's date until the operator corrected it — which also inverted the deadline analysis (a timely service read as one day late). This is the QR-4 failure class (filename dates vs mtimes) surfacing in document content. Rule: the service date is confirmed with the operator in his local time; any date the engine derives is computed against operator-local timezone, and the drafting flow states which timezone it used.
+
+### 12.9 Style-by-role, not style-by-run (run-merge corollary)
+
+The shell styles lines by ROLE: entity/firm name lines carry a distinct house style (Times New Roman Bold + smallCaps); address, phone, and person-name lines are plain bold. Swapping replacement text into whatever run occupies the target paragraph inherits the OLD line's role style. Three live defects in one run: an address line inherited the entity style from the firm-name line it replaced; a person's name inherited underline/italic from an e-mail line; a caption line lost bold by landing in a spacer paragraph's run. Rule: the §12.1 run-merge pass is not sufficient alone — after any text swap, the line's formatting is asserted against its ROLE (entity vs address vs person vs label), with the role styles harvested from the shell itself before editing. The ship-gate render inspection is the backstop, not the mechanism. **This EXTENDS §12.1; it does not replace it.**
+
+### 12.10 Caption party-label style
+
+Party labels in the caption ("Plaintiff," / "Defendants.") are styled: label word italic (bold-italic), the leading tab and trailing punctuation NOT italic, and a blank spacer line before each label. When a longer party block needs more lines than the shell caption has, ADD lines (clone paragraphs); never consume the spacer blanks to make room — the operator restored a consumed spacer by hand in this run.
+
+### 12.11 Provider blocks keep together across page breaks
+
+A provider block (names + entity + address + phone, and in the expert section its narrative paragraph) must not be split by a page break — unless the block is genuinely long (a hospital treater list running most of a page may split). The operator enforced this by hand with blank-paragraph pagination in the served final. Engine rule: keep-together treatment per block, with a length escape hatch; hand-drafting rule: check the render for split blocks before delivery and repaginate.
+
+### 12.12 The operator's served final is the next shell and the style authority
+
+The returned, operator-edited, served version supersedes the drafted version as the working form for the next case (the skill's shell input). Style deltas between the draft and the served final are learnings by definition — diff them and fold them in, as this section does.
+
+### 12.13 Confirmed in this run (no change needed, recorded as evidence)
+
+- The three §12.5 ship gates held through three revision cycles (parts-diff stayed at word/document.xml only; leftover sweep caught nothing after setup; render inspection caught all three style-by-role defects).
+- The verification list functioned as the review interface as designed: the operator answered its flags directly (addresses supplied, entities removed, attributions corrected) without re-deriving the draft.
+- The provider-data block (FE-1 scout) was emitted and routed to the operator's own files by hand.

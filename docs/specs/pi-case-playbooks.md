@@ -217,6 +217,24 @@ Employment-status worksheet (TWC 20 / Limestone 5 factor scoring).
 Arbitration sub-module: agreement on file, delegation clause, covered-parties language, FAA § 1 flag, waiver analysis.
 Instrumentalities interview record (Warren factors); task-analysis fields (usual duty? performed before? requested equipment/help?).
 RTP tracker (designations, objection deadlines); removal status + § 1445(c) motion; vice-principal worksheet (Spotter B).
+
+6. Nonsubscriber discovery battery (first-wave, per entity defendant)
+
+Added 2026-08-11 from the trucking first-sets REQ-CAPTURE (packet-local REQ-06; no durable ID — this is playbook CONTENT, not an open item). Placed as a subsection of A5 rather than a standalone section: A5 is the workers'-comp / employment-posture playbook, and the fold-in barred a second playbook doc. Pattern-application MECHANICS land with the form engine (gated on CD-1); this is the CONTENT they will apply.
+
+Posture trigger: plaintiff injured in an employment-adjacent capacity (including owner-operator contractor postures where employee status is contested) and a defendant pleads an alternative occupational-benefits policy or denies subscriber status. Legal substrate: Tex. Lab. Code § 406.033 (registry entry VERIFIED 2026-08-11) — a nonsubscribing employer loses contributory-negligence, assumption-of-risk, and fellow-servant defenses in the employee's injury action. The battery's purpose is to pin, early and per entity, every fact that decides whether § 406.033 applies: coverage status, employee status, course and scope.
+
+The matched battery (applied PER entity defendant; role tags select phrasing per CD-2):
+RFAs: no workers'-compensation coverage in force on the incident date; plaintiff was eligible for benefits under any alternative policy pleaded; plaintiff was defendant's employee on the incident date; plaintiff was acting in the course and scope of that employment at the time of the incident. (Each admission also drafted in the sibling-entity variant — "X, not you, employed plaintiff" — so the family cannot deny in every direction at once.)
+Interrogatory: state defendant's workers'-compensation coverage status on the incident date, identifying any policy, carrier, and every filing made with the Texas Department of Insurance, Division of Workers' Compensation concerning coverage or non-coverage.
+RFPs: the alternative occupational-benefits policy pleaded in defendant's answer, in full; all plan documents, summary plan descriptions, and enrollment materials; payroll and premium-deduction records showing plaintiff's participation or non-participation.
+
+Why the battery is matched across instruments: admissions pin the elements, the interrogatory forces the coverage narrative and regulator paper trail, the RFPs make the pleaded policy prove itself. A defendant who pleaded the alternative policy affirmatively (the live-case evidence) has put its terms at issue — the RFP set follows the pleading, not a hunch.
+
+Employee-status caution (attorney judgment, not automation): in owner-operator postures the employee-status RFA cuts both ways — an admission helps § 406.033 but may interact with contract and control-test theories. The battery ships the requests; sequencing and whether to serve the employee-status admission is Michael's call per case. Nothing here auto-serves.
+
+Provenance: distilled from the 2026-08-11 trucking first-sets drafting session (six sets, five answering entities, corporate-family posture, alternative-benefits policy affirmatively pleaded). Template candidate per FE-7 (distillation queue, first-candidates list).
+
 A6. Texas Tort Claims Act (Governmental Defendants)
 
 1. Challenge / watch-out

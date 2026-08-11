@@ -12,6 +12,151 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; TENTH invocation)
+
+Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.** Runner
+**v6** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD via the pointer command (QR-2). QR-3 checkout
+gate PASSED: clean, on master, HEAD == `origin/master` at `74c5559`.
+
+- **Order confirmed by Michael before execution:** (1) `push-to-code_drafting-disclosures-learnings_2026-08-10`,
+  (2) `push-to-code_req-capture-trucking_2026-08-11`. **QR-4 ordering produced no disagreement this
+  time** — filename-date order and pure-mtime order were identical, both filenames carried parseable
+  dates, and both were printed. First batch in three where the two orders agreed.
+- **Inbox hazard checked and clear:** no non-packet zip present. `Probate Corpus.zip` (which the
+  08-11 packet's §1 warned about) is **not on this machine** — it sits in the P15's `inbox/`, per
+  BUILD-STATE. Nothing was opened that was not a packet.
+- **SESSION-NUMBER COLLISION, resolved by the runner:** both packets drafted their entry as the next
+  number against a log top of #46. The 08-10 packet said "#NN — verify"; the 08-11 packet said
+  "#47 — renumber if a Code entry landed between." Since the 08-10 design session lands between,
+  it takes **#47** and the trucking capture becomes **#48**. The queue's header reconciliation line
+  cites #48 accordingly. Second consecutive batch where the packet-supplied number was wrong —
+  cheap check, worth keeping.
+- **Nothing superseded.** The two packets share no canonical path except the log and BUILD-STATE, and
+  their §7 items pair rather than conflict (the 08-10 Q-3 `docs/skills/` check and the 08-11
+  `docs/templates/` check are now one paired re-check). **Nothing was skipped as already built** —
+  every §2 destination was a genuine delta: no REQ-CAPTURE, no `docs/templates/`, no
+  `cd-1-session-prep.md`, and no CD-2/FE-4–FE-7/IN/DL rows existed anywhere in the repo, and
+  `form-engine.md` §12 ran 12.1–12.6 with none of the six learnings folded.
+- **ROUTING DEVIATION, FLAGGED FOR MICHAEL — the registry fold-in had no valid target.** It directed
+  thirteen VERIFIED propositions into `docs/specs/legal-rule-registry-*`, interleaved by subject.
+  That glob matches exactly ONE file: `legal-rule-registry-draft-entries-medical-billing.md`, scoped
+  to medical damages/billing/liens and headed **"ALL ENTRIES UNVERIFIED."** Folding discovery-procedure
+  and FMCSR entries into it would have broken both its subject scope and its status header. A second
+  file in the same naming family was opened instead —
+  **`docs/specs/legal-rule-registry-discovery-and-carrier-duties.md`** — with the deviation stated in
+  its own header. **Michael's to confirm or redirect.** The ruled "interleaved, not sectioned"
+  constraint is honored structurally: entries are headed by CITE, ordered by subject, with **no
+  section headings at all**, so the FMCSR entries cannot acquire a section.
+- **Two placement calls, both non-obvious, both stated in the file rather than left silent.** (1) The
+  IN-series heading was directed "after the FE series," but the file documents at its CD heading that
+  CD sits directly beneath FE *deliberately* (CD-1 supersedes FE-1's framing); IN therefore lands
+  after the CD series rather than splitting that documented adjacency. (2) DL-INPUT got a new
+  **Deadline engine (DL series)** heading — §7 carried no deadline-engine design-input home, and §3's
+  TRCP rows are *verification* items, a different act.
+- **Registry status line changed for the first time.** Thirteen entries are now VERIFIED **in the
+  docs registry**. The **app's `/rules` registry seed is untouched and remains ALL UNVERIFIED** —
+  no build was authorized and no seed data was edited. BUILD-STATE now states both halves separately.
+  Code set nothing: the verification is Michael's ruling 3, transcribed.
+- **Deliberately NOT entered in the repo:** the 08-10 packet's **VL-1** (a case-side charges-table
+  question) — its own §7 routes it to Michael's case notes, explicitly not here. Recorded as withheld
+  by instruction, with no content carried, so the omission is not mistaken for a loss.
+- **`PROMPT_pi-discovery-roster-mining.md` was NOT committed** (§6 bars it) but was **extracted to the
+  gitignored `inbox/`** before the zips were deleted — the packet shipped it so Michael would have one
+  artifact to move to PI DISCOVERY, and deleting the zip would otherwise have destroyed his only copy.
+  It is a loose `.md`, not a packet; future runs inventory `*.zip` and will ignore it.
+- Open items from both packets merged into `attorney-review-queue.md` with **full question text per
+  QR-1**, and into this entry's §7 lines below.
+- Health check at close: **232 tests pass, `npm run build` clean, `npm run lint` clean** — unchanged,
+  as expected from a docs-only batch.
+
+## 2026-08-11 (#48) — FIRST REQ-1 CAPTURE RECONCILED: ten durable IDs entered (CD-2, FE-4–FE-7, new IN series); templates home ruled; thirteen registry entries VERIFIED; CD-1 path ruled — bounded evidence pass, then the schema session (design session, Fable 5)
+
+*(Drafted as #47; renumbered to #48 by the runner — the 2026-08-10 drafting session takes #47.)*
+
+First use of the REQ-1 channel: the trucking multidefendant first-sets REQ-CAPTURE (PI DISCOVERY,
+Michael's hand) reconciled against BUILD-STATE (dbb5362) and log #46 BEFORE staging, per REQ-1.
+No collisions with closed items; no build claims. Michael ruled item by item. Nothing built;
+nothing authorized.
+
+- **RULING 1 (CONFIRMED — "Yes on 1"):** the capture's ten requirements enter
+  `attorney-review-queue.md` under durable IDs, full text per QR-1: **CD-2** (case-type party
+  rosters + typed contact relationships — framing RULED: general across practice areas, trucking
+  corporate edges and probate family edges are one structure, rosters are intake slots never
+  auto-created records; reason: "there are a number of different kinds of cases where each type
+  will have generally the same list of different kinds of parties"); **FE-4** (definitions as
+  case-level objects); **FE-5** (interrogatory count budget + subpart warning); **FE-6**
+  (packaging modes); **FE-7** (distillation queue, guardrails in from birth); **IN-1/IN-2/IN-3**
+  under a NEW Intake pipeline heading (answer-mining; crash-report extraction + per-field source
+  attribution; HOLD/service triggers, trigger source pre-answered MANUAL per Q-6); one
+  deadline-engine input (per-defendant service dates, §5.5). REQ-06 routed to
+  `pi-case-playbooks.md` as content, no ID. *Elicitation caveat, on the record: the IN-series
+  naming rode inside "Yes on 1" as sub-call (b); renaming to FE numbers is a one-word veto before
+  the IDs get load-bearing.*
+- **RULING 2 (CONFIRMED — "I'll rule with you on (a) and confirm the template is clean"):**
+  house templates live at **`docs/templates/`** (new directory; discovery subfolder), starting
+  with `template_definitions-instructions_requests.md`. Reason: templates are neither specs nor
+  prompts nor skills, and FE-7's distillation output needs the same home. **Michael confirmed
+  the template client-clean.** SYNC-PICKER RE-CHECK required after this push (new folder under
+  docs/) — pair with the outstanding Q-3 `docs/skills/` check.
+- **RULING 3 (CONFIRMED — "(a) they are VERIFIED; (b) interleaved"):** all thirteen §4
+  propositions enter the legal-rule registry **VERIFIED — Michael, 2026-08-11**, FMCSR entries
+  interleaved, not sectioned. Verification attaches to the proposition wording as captured.
+  FE-5's prior verification gate is retired.
+- **RULING 4 (CONFIRMED — "I am ruling with your recommendation here"):** the CD-1 schema
+  session fires after a BOUNDED evidence pass — opportunistic REQ-CAPTUREs continue unchanged,
+  plus ONE deliberate roster-mining pass over the document bank (in PI DISCOVERY; prompt shipped
+  by Michael's hand) — then the session, typed, schema on screen, where the
+  views-vs-linked-tables fork is decided deliberately. Reason: evidence has diminishing returns
+  on an architecture fork, and Michael's caseload skews organic evidence (trucking-rich,
+  probate-thin until Domser); the bank gives roster coverage in one sitting. Rejected: making
+  the session contingent on practice serendipity — converts a ruled design action into an
+  open-ended wait on the project's widest gate. Prep scaffold: `docs/specs/cd-1-session-prep.md`.
+- **RR-1 sweep (pre-packet):** caught three — the capture's §4 "ALL UNVERIFIED" header
+  superseded by ruling 3 (cured by addendum, capture text stands as written); the prep doc
+  drafted before ruling 4's revision (cured — roster capture listed as gate input); the
+  IN-series elicitation ambiguity (flagged above rather than smoothed over).
+
+Staged for Code: this entry; the reconciled REQ-CAPTURE; the template (new `docs/templates/`
+home); queue, registry, and playbook fold-ins; `cd-1-session-prep.md`.
+Awaiting/Returned from Code, unreviewed: this packet's routing; the carried #31–#33 returned
+material per #35 (verify against the entries that staged them; do not copy forward items cleared
+in #13/#22/#23/#24).
+
+## 2026-08-10 (#47) — Drafting session (Fable 5): drafting-disclosures v1 first live run; learnings staged
+
+*(Drafted as "#NN — verify"; the runner assigned #47.)*
+
+- First live execution of docs/skills/drafting-disclosures/SKILL.md (v1), run from the HEAD
+  copy via the design-side sync. Q-3 EVIDENCE: docs/skills/ is present in the design-side
+  sync selection — the skill file was readable and executed in a design session. Michael can
+  close Q-3 on this evidence.
+- Run shape per the skill: shell + medchron + answers (+ crash report) in; draft +
+  verification list + provider-data block out. Three revision cycles from operator
+  corrections. All three §12.5 ship gates ran on every cycle; parts-diff held at
+  word/document.xml only. Case data stayed in the chat and the operator's files — none is in
+  this packet or this entry, and no conversation capture exists for this session by design
+  (data hygiene).
+- LEARNINGS staged as a §12 fold-in (skill v2 bump follows per the ruled upgrade protocol,
+  in a design session, citing the spec at HEAD): (1) medchron attribution fields are
+  unverified — two live mis-attributions in one run, imaging entities the high-risk class
+  (referring-physician contamination); (2) certificate-of-service dates confirm in
+  operator-local time — the UTC container clock stamped tomorrow's date until corrected
+  (QR-4 failure class, new surface); (3) style-by-role, not style-by-run — three formatting
+  inheritance defects from text swaps into runs carrying the wrong role style; (4) caption
+  party-label style (italic label word, plain tab/punctuation, spacer line preserved);
+  (5) provider blocks keep together across page breaks unless genuinely long; (6) the
+  operator's served final is the next run's shell and the style authority.
+- Provider-data block (FE-1 scout) emitted and routed to the operator's own files by hand.
+- Staged for Code: this packet (fold-in doc + this entry).
+- Awaiting/Returned from Code, unreviewed: the §12 fold-in once landed; then a design
+  session revises the skill to v2 citing the spec, and the claude.ai copy is re-uploaded
+  (that hand-upload round-trip line from #45 remains open).
+
+*(Runner note: the fold-in landed at `form-engine.md` §§12.7–12.13 — six learnings plus the
+evidence note, continuing §12's sequence. Learning (3) is written as EXTENDING §12.1, per the
+packet's duplicate watch; §12.6 was not touched. The skill itself was NOT edited — §6 bars it,
+and the v2 revision is a design-session deliverable, now tracked as **SK-v2** in the queue.)*
+
 ## 2026-08-10 — QUEUE-RUNNER batch (runner line; NINTH invocation)
 
 Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.**
