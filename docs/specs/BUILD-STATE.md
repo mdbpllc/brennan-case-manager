@@ -1,9 +1,9 @@
 # BUILD STATE — brennan-case-manager
-Commit: c38c61b  |  Branch: master  |  Generated: 2026-08-11 (forty-second refresh)
+Commit: 9db9048  |  Branch: master  |  Generated: 2026-08-11 Central (forty-third refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
-— 08-09 built a GPU environment OUTSIDE the repo; 08-10, 08-11 and this batch routed docs only. `archive-project-history-by-day.md`
+— 08-09 built a GPU environment OUTSIDE the repo; 08-10 and 08-11 routed docs only. `archive-project-history-by-day.md`
 
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed, withdrawn, and
   deliberately-not-built items. **Check it before rebuilding anything absent. Never drop this line**
@@ -11,11 +11,9 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 ## NEXT SLICE IS OPEN; the CD-1 GATE IS NOW MET (read this first)
 - **"Next build slice" is OPEN.** Slice A (the provider-directory build) was **WITHDRAWN, not
   paused**, 2026-08-08. **The form engine cannot be named as the next slice until CD-1 resolves**
-- **CD-1'S GATE IS MET (log #49).** #48's bounded evidence pass is COMPLETE: the roster-mining pass
-  produced its capture (85 documents, both banks), and it plus the attorney-edit capture are
-  reconciled and ruled item by item. **The typed schema session — schema on screen,
-  views-vs-linked-tables fork — is FIREABLE AT YOUR CHOOSING; Code will not prep or trigger it.**
-  Scaffold: `cd-1-session-prep.md`
+- **CD-1'S GATE IS MET (log #49).** #48's bounded evidence pass is COMPLETE: the roster-mining pass produced its capture (85 documents, both banks), and it plus the attorney-edit capture are reconciled and ruled item by item.
+  **The typed schema session — schema on screen, views-vs-linked-tables fork — is FIREABLE AT YOUR
+  CHOOSING; Code will not prep or trigger it.** Scaffold: `cd-1-session-prep.md`
 - **PHASE 0 + T3 (authorized 2026-08-07): PARTLY SPENT 2026-08-09 on the P1.** Environment STOOD UP
   (WSL2, torch cu128, NeMo 3.0.0, both checkpoints, CUDA on **sm_120**), **outside the repo** at
   `~/phase0`. **Stage 1 SCORING IS HELD, NO SCORECARD EXISTS**; Stage 2 untouched; **T4 unauthorized**.
@@ -107,43 +105,44 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only;
   captures e+f NOT folded; register H1–H83. **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
-- **REGISTRY — read both halves.** **DOCS: TWENTY entries are now VERIFIED** (Michael) in
-  `legal-rule-registry-discovery-and-carrier-duties.md` — thirteen on 08-11 (TRCP discovery, Lab.
-  Code § 406.033, four FMCSR) plus **seven on 08-12** (TRCP 152/scire facias, TRCP 194 **expanded to
-  your four-category list**, CPRC §§ 17.044/17.062, § 17.024, TTCA incl. § 101.106, FTCA, Prop. Code
-  ch. 142 / TRCP 44 & 173). Its TITLE widened to cover parties and service — **routing yours to
-  confirm or redirect**; 193.7 took a second observation, not a duplicate. **THE APP's `/rules` SEED
-  IS UNTOUCHED AND ALL UNVERIFIED**: verified propositions live in docs only, Code set nothing
+- **REGISTRY — read both halves.** **DOCS: TWENTY entries VERIFIED** (Michael) in
+  `legal-rule-registry-discovery-and-carrier-duties.md` — thirteen (TRCP discovery, Lab. Code
+  § 406.033, four FMCSR) plus **seven** (TRCP 152/scire facias, TRCP 194 **expanded to your
+  four-category list**, CPRC §§ 17.044/17.062, § 17.024, TTCA incl. § 101.106, FTCA, Prop. Code
+  ch. 142 / TRCP 44 & 173). TITLE widened to cover parties/service — **you CONFIRMED it (#50); flag
+  closed**; 193.7 took an observation, not a duplicate. **THE APP's `/rules` SEED IS UNTOUCHED AND
+  ALL UNVERIFIED**: verified propositions live in docs only
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
+- **DT-1 RULED, NOT YET IN FORCE (#50): date stamps use YOUR Central wall clock, never container
+  UTC** (rolls 19:00 Central daylight / 18:00 standard). **Binds when you paste v14 — your hand.**
+  Why: the #49 batch stamped **08-12** on rulings you made **08-11 Central**. Those stamps are
+  **DELIBERATELY LEFT ALONE** by your ruling; #50 records the truth. **NOT retroactive**
 - **TWO SYNC-PICKER RE-CHECKS, ONE CLICK EACH, BOTH YOURS:** `docs/skills/` (Q-3 — evidence says it
   IS syncing, since the skill ran design-side from HEAD; you close it) and `docs/templates/`
   (08-11, the first house template). **If the picker excludes new nested dirs, neither reaches you**
-- **BOTH REQ-1 CAPTURES ARE NOW FILED IN THE REPO**, addenda included, and are CD-1 session input:
-  `REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md`, `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`.
+- **BOTH REQ-1 CAPTURES ARE NOW FILED IN THE REPO**, addenda included, and are CD-1 session input: `REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md`, `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`.
   **CD-1 stays UNRULED and NOT AUTHORIZED** — only its gate is met. **CD-2** holds the roster
   evidence; distinct from CL-1 (`case_links` links cases)
-- **NEW QUEUE ENTRIES THIS BATCH, all substance OPEN:** **FE-8** as-generated retention + edit
-  diffing · **FE-9** family drift · **FE-10** render-time format lint · **FE-11** caption-body
-  integrity · **FE-12** template provenance · **IN-4** instrument lifecycle w/ service-bound
-  certificate dates · **IN-5** disclosure-mining · **WF-1** under a **NEW WF series**. **IN-2 was
-  EXTENDED IN PLACE, not duplicated.** **FE-8 carries a dangling cite** ("a prior packet's REQ-12")
-  resolving to nothing; recorded, **NOT reconstructed** per K-6/K-7
+- **QUEUE ENTRIES ADDED IN #49, all substance OPEN:** **FE-8** as-generated retention + edit diffing
+  · **FE-9** family drift · **FE-10** render-time format lint · **FE-11** caption-body integrity ·
+  **FE-12** template provenance · **IN-4** instrument lifecycle w/ service-bound certificate dates ·
+  **IN-5** disclosure-mining · **WF-1** under a **NEW WF series**. **IN-2 EXTENDED IN PLACE, not
+  duplicated.** **FE-8's cite** ("a prior packet's REQ-12") resolves to nothing — recorded, **NOT
+  reconstructed** per K-6/K-7
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
   machine that will process privileged audio; **smoke test RULED AND RUN 08-09** (tone only). **The
   capabilities memo is NOT in the repo** — route it. **CL2-AC-1 is DIRECTION-CONFIRMED, not closed**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**.
   **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
-- **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the
-  **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). instr. **v10**.
-  **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83.** The 08-12
-  packet ran on a machine dated 08-11 — packet dates carried verbatim, not restamped
+- **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT).
+  instr. **v10 in force, v14 drafted awaiting your paste**. **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
 - **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still
-  UNREVIEWED**, as is **#37–#49's own routing** — do not copy the #36 clearance forward
+  UNREVIEWED**, as is **#37–#50's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #49. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through #50. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`; `cd-1-session-prep.md`** (a
   scaffold — delete it when the CD-1 spec exists). Client-model detail: design doc §10 (**D-CL2-3a**,
   **CL2-CHECK-1** open there)
