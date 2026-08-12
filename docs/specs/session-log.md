@@ -12,6 +12,89 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; NINETEENTH invocation)
+
+One packet, one close-out. **§5 was NONE**: one log entry and BUILD-STATE — **the queue register
+was not touched at all**, for the reason below. **No new files; no spec files; no instruction
+document entered the repo.** Runner **v6** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per
+QR-2. QR-3 checkout gate PASSED: clean, on master, HEAD == `origin/master` at `d0d3c55`. Clock
+check before stamping: 00:46 CDT, 2026-08-12.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_probate-practice-project_2026-08-12`. Filename-date and mtime order identical;
+  manifest §3 date matches. No conflict rule fired.
+- **#57 was free** (log top = eighteenth runner line + #56); no renumbering.
+- **§4.1's conditional resolved to the "add nothing" branch, and the finding is the point:**
+  **`attorney-review-queue.md` holds NO standalone probate-practice-project-home row.** Verified
+  by full case-insensitive search, not by a single phrasing — every probate hit in that file is a
+  different item (PR-3's mis-parented case type, the PL-1–PL-4 ladder series, PROB-1's unwritten
+  client profile, CORPUS-HOME, the Estates Code research targets). The home question rode in
+  packet §7 tables and in BUILD-STATE's design-side section from #54 onward and **was never
+  registered in the queue.** Per §4.1 and the MM-1-batch precedent, **no row was created just to
+  close it** — #57 is its record. Same disposition C2 received in #54; the opposite call from the
+  one the thirteenth invocation made for the next-slice question, and the difference is that that
+  item was still OPEN when found while this one arrives already ruled.
+- **Nothing identifies the two grandfathered matter workspaces** (§6). They are referred to
+  generically here, in BUILD-STATE, and in the commit message — no name, no matter, no client, no
+  distinguishing detail. Their observations reach the build side by exactly one path, recorded in
+  BUILD-STATE: **PROBATE's client-clean REQ-CAPTUREs.** The build project sees one probate
+  channel, not three.
+- **No instruction document was routed into the repo** — PROBATE v1, the two matter paste-ins, and
+  case-management v16 are claude.ai pastes by Michael's hand and were not in this packet (§6).
+- **§6 honored in full:** nothing built, CD-1 slice not begun, #53–#56 and the #49 batch's 08-12
+  stamps untouched, no Michael's-hand item resolved, `src/`/`db/`/schema/migrations untouched.
+- **§7 merge:** **PROBATE setup is NEW and Michael's** — create the project, paste v1, paste the
+  carry snippet into each of the two matter workspaces, paste v16 into the build project. Carried
+  unchanged: CD-1 build (GL-1 floor item 1), gates 1 and 9, CRIM DEFENSE setup, SK-v2 re-upload,
+  picker pair, KICK-1, H4, P15 runner-copy deletion, telemetry posture, email-workflow doc,
+  IN-series naming caveat; FE-8–FE-12, IN-4, IN-5, WF-1, IN-2's extraction half stay open.
+  **Probate's homelessness is no longer among them** — it was the last practice area without one.
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#57) — PROBATE PRACTICE PROJECT RULED (third practice project; REQ-1
+extended; instructions v16, trigger #3 sixth firing); MATTER-CARRY channel for two
+grandfathered probate matter workspaces (design session, Fable 5, typed, Cowork)
+
+Same design session as #54–#56, continuing. All rulings Michael's, 2026-08-12 Central.
+
+- PROBATE PRACTICE PROJECT RULED into existence: ALL probate practice work — live-matter
+  drafting, estate-administration paperwork, ancillary probate filings, shared probate
+  drafting assets. Probate drafting's no-home status (standing since the practice-project
+  channel opened) ENDS. REQ-1's practice-project channel extends to it; the practice
+  channel is now THREE (CIVIL LIT + CRIM DEFENSE + PROBATE). Reason: the last practice
+  area without a privileged home, ruled on the CRIM DEFENSE pattern.
+- NEW probate matters RULED to live as CHATS inside PROBATE (the CIVIL LIT / CRIM DEFENSE
+  pattern), so the matter-workspace split does not grow.
+- TWO pre-existing probate matter workspaces (separate Claude projects, ACTIVE, identified
+  generically in every build-side record by design) RULED grandfathered: they remain their
+  matters' homes, are matter workspaces rather than practice projects, never address this
+  project, the repo, or Code, and have no REQ-1 channel of their own. They feed PROBATE via
+  MATTER-CARRY files — a single .md per session that earned one, carried by Michael's hand,
+  privileged space to privileged space, NO scrubbing (scrubbing happens once, at PROBATE's
+  REQ-CAPTURE authoring). The carry MECHANICS (single-file format, sections, no-scrub rule)
+  are ACCEPTED-BY-DELEGATION per the house pattern, not independently ruled: Michael's
+  words — "craft a way that I can work on those two separate projects and have them inform
+  the probate home in the easiest and most streamlined way possible" — with the crafted
+  design adopted in-session. Format defined in PROBATE's instructions; PROBATE distills
+  accumulated software observations into client-clean REQ-CAPTUREs — the build project sees
+  ONE probate channel, not three.
+- Instructions trigger #3 FIRED (sixth firing; first of this date) → v16 drafted same
+  session: three practice projects, REQ-1 extension, grandfathered-workspaces note (generic),
+  corpus hand-copy permission to PROBATE (ARCHIVE remains its ruled home), GH-1 pointer
+  noted at trigger 2. Paste is Michael's hand. PROBATE v1 instructions and the two
+  matter-project paste-ins drafted the same session, also Michael's hand.
+- DT-1 process note: authored 2026-08-12 Central (clock check 00:35 CDT).
+
+Staged for Code: this entry; conditional probate-home queue reconcile; BUILD-STATE deltas.
+Awaiting/Returned from Code, unreviewed: this packet's routing. The #54/#55/#56 batches are
+all REVIEWED (design-side post-sync verification, this session). Carried items per
+#49/#50/#52/#53/#54: KICK-1, H4, P15 runner-copy deletion, telemetry posture, email-workflow
+doc, IN-series naming caveat — verify against the entries that staged them; do not copy
+forward cleared items.
+*[Runner's finding, 2026-08-12: the conditional queue reconcile resolved to NO ACTION — no
+standalone probate-home row existed to close (full search, all phrasings). None was created;
+this entry is the record. See the nineteenth runner line.]*
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; EIGHTEENTH invocation)
 
 One packet, one close-out — the smallest of the night. **§5 was NONE**: one log entry, one new
