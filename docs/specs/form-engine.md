@@ -79,7 +79,7 @@ Michael's live form (P's 194.2(b) and 195.5 Disclosures) was inspected at the XM
 - **Vertical alignment is paragraph-count-dependent:** each cell has exactly 12 paragraphs (several empty spacers). The engine must COMPUTE the § count and spacer paragraphs from the number of party lines — never freeze at 12.
 - Vestigial tab stops (720/4680/9360) on the § paragraphs — leftovers; strip from the master.
 - Page setup: US Letter, margins top 990 twips (0.6875") / others 1440; Times New Roman 12pt default; `titlePg` different-first-page footer: page 1 footer = bare PAGE field; page 2+ footer = "Plaintiff's TRCP 194.2(b) and 195.5 Disclosures — Page {PAGE} of {NUMPAGES}" (live fields, title token per template).
-- **Contamination ruling:** the uploaded file mixes several cases (XXX/1111/2222 placeholders, a stray H2-LAUNCH-SA defendant list, a Deanna Smith witness paragraph, he/she drift). It was NEVER SERVED — it's Michael's working form. Use it as the **formatting skeleton only**; all text blocks come from the clean masters in §9.
+- **Contamination ruling:** the uploaded file mixes several cases (numeric placeholders, a stray prior-case defendant list, a recycled prior-case witness paragraph, he/she drift). It was NEVER SERVED — it's Michael's working form. Use it as the **formatting skeleton only**; all text blocks come from the clean masters in §9. *(Example descriptions generalized 2026-08-12 per FE-3's ruling — the original identifying strings live in the shell itself, Michael's files, not the spec; see session log #55.)*
 
 ## 9. APPROVED VARIANT LIBRARY (verbatim — do not rewrite)
 

@@ -12,6 +12,96 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; SEVENTEENTH invocation)
+
+One packet, one close-out. **§5 was NONE**: one surgical spec amend, one queue closure, one log
+entry, two BUILD-STATE residuals. **No new files.** Runner **v6** read from
+`docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2. QR-3 checkout gate PASSED: clean, on master,
+HEAD == `origin/master` at `ecbd9ea`.
+
+- **DT-1 clock check BEFORE stamping, and it mattered:** the machine's Central wall clock read
+  **2026-08-12 00:04 CDT** at run start — past midnight, so this batch genuinely stamps 08-12. The
+  packet's own check (00:01 CDT) agrees. The preceding must-carry batch correctly stamps 08-11.
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_fe3-close-and-buildstate-residuals_2026-08-12`. Filename-date and mtime order
+  identical; manifest §3 date matches. No conflict rule fired.
+- **Three of the four §1 reconcile points held as stated; the fourth did not, and the miss was
+  Code's.** #55 was free; §8's original parenthetical was present **exactly once** (the
+  expected-count discipline the work order demanded was satisfiable, so the amend proceeded); FE-3
+  was still ⬜. **But `BUILD-STATE.md` at `ecbd9ea` was 151 lines, not 150** — the sixteenth
+  invocation's close-out reported cutting a line to make the cap and no such cut was made (the
+  diff is net +1: 30 insertions, 29 deletions). **The file sat one over the BS-1 cap for one
+  commit.** Corrected in this batch's rewrite.
+- **§4.4's disposition, therefore:** there is **no displaced line to name** — nothing was cut, so
+  nothing was content-bearing-and-dropped and nothing was owed to the anti-resurrection ledger.
+  The sixteenth invocation's changes were rewordings and joins; the one genuine content loss in
+  them was the registry line's precision, which is exactly residual 1 and is restored here. The
+  runner-discipline line's "instructions v14" text was superseded by the v15 line, not lost.
+- **The §8 amend is the parenthetical and the appended note ONLY** (§6). The five formatting
+  bullets, the contamination bullet's ruling content, and all of §9 are untouched. **The two
+  original strings are reproduced nowhere** — not in this entry, the queue, BUILD-STATE, or the
+  commit message — and a repo-wide check confirms they no longer appear anywhere under `docs/`.
+- **Standing caveat worth recording:** the amend removes the strings from the working tree, not
+  from git history. Prior commits of `form-engine.md` still contain them. The repo is private and
+  no action was taken; flagged for Michael rather than resolved by Code.
+- **§6 honored in full:** nothing built, CD-1 slice not begun, FE-8–FE-12 untouched and still open,
+  no slice named or authorized, #53/#54 and the #49 batch's 08-12 stamps untouched, no
+  Michael's-hand item resolved, `src/`/`db/`/schema/migrations untouched.
+- **§7 merge:** unchanged from #54's set — CD-1 build (GL-1 floor item 1), gates 1 and 9, CRIM
+  DEFENSE project setup, SK-v2 re-upload, picker pair, KICK-1, H4, P15 runner-copy deletion,
+  telemetry posture, email-workflow doc, IN-series naming caveat, probate's unruled project home.
+  **FE-3 is no longer among them.** FE-8–FE-12, IN-4, IN-5, WF-1, IN-2's extraction half stay open.
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#55) — FE-3 CLOSED: form-engine.md §8 read in full; example strings in the
+contamination bullet GENERALIZED by ruling; §8 otherwise ships as written. BUILD-STATE
+residuals from the sixteenth-invocation review (design session, Fable 5, typed, Cowork)
+
+Same design session as the #54 packet, continuing past midnight Central (DT-1: this entry
+stamps 2026-08-12; the ruling landed at the midnight boundary, clock-checked).
+
+- FE-3 CLOSED (RULED, Michael, 2026-08-12 Central): §8's design-session read is complete —
+  performed on the FULL section text, pasted by Michael from the P1 checkout at `ecbd9ea`
+  after project-knowledge retrieval repeatedly surfaced only the section's first five bullets.
+  The read confirmed FE-3's premise: the five formatting bullets are structural and clean,
+  and the contamination bullet's ruling content (never served; formatting skeleton only; text
+  authority is the §9 masters) is load-bearing and stands — but the bullet's EXAMPLE
+  parenthetical carried two real prior-case identifying strings predating the packet rules
+  (same class as the Domser flag in the 2026-08-07 batch). RULED: generalize the two strings
+  to generic descriptions; everything else in §8 ships exactly as written. Reason: the
+  strings serve no ongoing function in the spec — the leftover-sweep list lives in the edit
+  script per §12.5, and per §12.12 the served finals have superseded that working form as
+  the shell. The identifying strings survive where they belong: in Michael's own files.
+  In-place amend with a dated note per the never-silent-rewrite pattern; this entry is the
+  ruling's record. The strings are deliberately NOT quoted here.
+- Conversational note (chat-only, corrected in-conversation, no correction entry owed):
+  Fable 5 design-side, working from partial retrieval, gave a preliminary read that §8
+  "looked scrubbed/structural" and FE-3's premise "may no longer hold" — the full text
+  disproved this within the hour; the un-retrieved sixth bullet was FE-3's exact target.
+  Same lesson as the queue's standing retrieval caveats: RAG absence is not evidence of
+  absence. FE-3's own "on screen before ruling" requirement is what caught it.
+- BUILD-STATE residual 1 (registry precision, design-side review of the sixteenth
+  invocation): the compressed registry line's "CPRC ch. 17" overstates — only §§ 17.024,
+  17.044, 17.062 are verified entries — and TTCA's § 101.106 and TRCP 194's expanded-wording
+  verification dropped out. Restored to section-level cites this batch (§4.3). Registry
+  DOCS remain twenty entries verified; nothing re-verified, wording precision only.
+- BUILD-STATE residual 2: the sixteenth invocation's close-out reported landing at 151 and
+  cutting one line to make the 150 cap without naming the line. This batch's runner names
+  the cut (from the `2508b1c`→`ecbd9ea` diff) and records whether its content reached the
+  anti-resurrection ledger or was content-neutral (§4.4).
+  *[Runner's finding, 2026-08-12: there was no cut to name. The close-out's claim was
+  inaccurate — the diff is net +1 and the file shipped at 151, one over the cap. Nothing was
+  dropped, so nothing was owed to the ledger; the cap violation is fixed in this batch's
+  rewrite. See the seventeenth runner line.]*
+
+Staged for Code: this entry; the §8 parenthetical amend; FE-3 queue closure; BUILD-STATE
+registry restore + displaced-line disposition.
+Awaiting/Returned from Code, unreviewed: this packet's routing. The sixteenth-invocation
+batch is REVIEWED (design-side post-sync verification, this session). Carried items per
+#49/#50/#52/#53/#54: KICK-1, H4, P15 runner-copy deletion, telemetry posture, email-workflow
+doc, IN-series naming caveat — verify against the entries that staged them; do not copy
+forward cleared items.
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; SIXTEENTH invocation)
 
 One packet, one close-out — the fourth of the same evening. **§5 was NONE**: two log entries, one
