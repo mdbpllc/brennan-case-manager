@@ -12,6 +12,154 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTIETH invocation)
+
+One packet, one close-out, **docs only — §5 was NONE and nothing was built.** Runner **v6** read from
+`docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2. QR-3 checkout gate PASSED: clean, on master,
+HEAD == `origin/master` at `3a4db71` — the exact sync the packet assumed, so no staleness delta.
+Clock check before stamping: 18:43 CDT, 2026-08-12.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_req-capture-reconciliations-4-and-5_2026-08-12`. Filename-date and mtime orders
+  identical; manifest §3 date matches. **No conflict rule fired** — one packet cannot disagree with
+  itself, and the two captures inside it travel with addenda recording their true sequence (the
+  deficiency capture was authored 2026-08-11 but carried and reconciled *after* the UIM capture on
+  2026-08-12; QR-4's ordering note anticipated exactly this and it caused no ambiguity).
+- **#58 was free** (log top = nineteenth runner line + #57); no renumbering.
+- **Both REQ-CAPTUREs are genuine deltas** — neither canonical path existed at HEAD. Copied
+  **verbatim**, byte-identical to the packet (diff-verified), per the preserved-in-full precedent.
+- **Registry placement deviated from the fold-in's first branch, and the deviation is stated, not
+  buried.** §4.4 said fold the deficiency batch into
+  `legal-rule-registry-discovery-and-carrier-duties.md` **if its title honestly covers it.** The
+  title does — **its status header does not.** That file is headed *"ALL TWENTY PROPOSITIONS
+  VERIFIED"*, and folding twenty-two UNVERIFIED propositions into it would break the header. That
+  is the same structural collision recorded in that file's own §7 as the reason it exists rather
+  than folding into the medical-billing registry — so the rule was followed by taking its second
+  branch: **new honestly-titled file, `legal-rule-registry-discovery-enforcement-and-pleading.md`,
+  ALL TWENTY-SEVEN ENTRIES UNVERIFIED.** The five UIM/pleading entries travel with it rather than
+  opening a third file for five entries; the title widened accordingly. **Michael's to confirm or
+  redirect.**
+- **Dedupe applied to FIVE propositions, not the four the fold-in named.** TRCP 190.4 and 194 (UIM
+  batch) and TRCP 193.3, 193.5, and 192.3(f) (deficiency batch) all already had VERIFIED entries in
+  the sibling file, so each took a **second observation** there under one-proposition-one-home (the
+  193.7 precedent) instead of a duplicate. 193.5 and 192.3(f) were **not** on the fold-in's dedupe
+  list; they were caught by checking every cite against HEAD, which is what the instruction to
+  "verify against the registry docs at HEAD" is for. **Three of the four the fold-in did name —
+  the 193.2 family, 196.2(b), and 215.1(c) — had no existing entry and enter as new.**
+- **196.2(b) is a NEW entry on a rule number that already has one, deliberately.** The existing
+  VERIFIED 196.2 entry is the 30-day response period; the capture's 196.2(b) is the four permitted
+  RFP response forms — a different proposition on the same rule. Entered separately, matching the
+  sibling file's own precedent of splitting the three 30-day rules into distinct cites, and
+  **flagged for Michael** in case he wants them consolidated. Same treatment, same reasoning, for
+  197.2(c) beside the verified 197.2(a) and 198.1 beside the verified 198.2.
+- **Three wording expansions FLAGGED, none adopted.** The captures state TRCP 193.3, 192.3(f), and
+  194 more expansively than the verified wordings. **Verification attaches to wording**, so each is
+  recorded as an observation on the existing entry and explicitly marked not verified — including
+  the 194.1–.4 span question the packet raised. **Nothing in either registry file was re-verified,
+  re-worded, or set to verified by this session.**
+- **A SIXTH WL/slip cite was found and flagged.** The packet named five for reporter-cite check
+  (Volt Power, Sting Soccer, Ochoa, Redman, Collins). *De Anda v. Jason C. Webster, P.C.*, 2018 WL
+  3580579, carries the same defect and was flagged in the registry file. **No cite was corrected —
+  upgrading a slip cite is Michael's verification act** (§6, honored).
+- **§6 honored in full:** nothing built; §5 was NONE; the CD-1 slice, its scope doc, and
+  `contact-directory.md` untouched; case-type tree and ladder untouched (PR-3 execution still HELD);
+  Q-6 / CourtListener posture untouched; **no gating annotation added to FE-13–FE-17** — the
+  gating question is recorded as its own OPEN item instead; no §7 item resolved; `src/`, `db/`,
+  schema, and migrations untouched; no client detail carried anywhere.
+- **One routed item was NOT executed, and it is named rather than dropped:** the deficiency
+  capture's REQ-10 (placeholder inventory + fill checklist) was dispositioned "content route into
+  the form-engine spec." **§4 carries no work order for `form-engine.md`, and that file is
+  spec-canonical — read-only in a Code session.** So nothing was written to it. The requirement is
+  preserved in the capture at `docs/specs/` and noted here; **the edit is the design side's to
+  make.** Same reasoning kept the four distillation candidates out of FE-7's §13.4 table — they are
+  registered in the queue as Michael's adoption call instead.
+- **§7 merge:** all five open-item rows carried into `attorney-review-queue.md` with **full question
+  text per QR-1** — the new **FE-gating** question (do FE-13–FE-17 take the #54 treatment?), the
+  four **distillation candidates**, the **registry verification backlog** (27 entries, both flagged
+  reads named), and the **DE/IN series-naming caveat** (recorded in the DE heading, mirroring IN's).
+  Carried unchanged: CD-1 build session (Michael fires; GL-1 floor item 1), gates 1 and 9, SK-v2
+  re-upload, picker pair, KICK-1, H4, P15 runner-copy deletion, telemetry, email-workflow doc, O5,
+  IN-4/IN-5/WF-1 scoping, PL-1–PL-4.
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#58) — REQ-CAPTUREs 4 & 5 reconciled and GROUP-RULED: UIM-UDJA transform + deficiency-handling; DE series ruled into existence; CL-3, CD-3, FE-13–FE-17, IN-6/IN-7 issued (design session, Fable 5, Cowork)
+
+Design-side. **Nothing entered the build queue.** v16 VERIFIED in force design-side at session
+start — first fresh session on v16 (the #54 precedent for v15); this entry is that record.
+
+**UIM-UDJA petition-transform capture (CIVIL LIT, 2026-08-12) — fourth REQ-1 capture,
+reconciled against `3a4db71`/#57 before staging, GROUP-RULED by Michael 2026-08-12** (the
+roster-capture group-ruling precedent). Durable IDs: REQ-01→**CL-3** (follow-on matter link
+with role-transform payload and selective inheritance — the "separate, explicit ruling" CL-1's
+non-cascading spec anticipated, scoped to the follow-on type); REQ-02→no ID (CD-1 evidence —
+the ruled directory already provides cross-matter role history; §4.2's worked example IS the
+UIM at-fault driver); REQ-03→**FE-13** (instrument transform as a named operation, exemplar-E-
+for-structure + matter-A-for-facts, attorney-confirmed field mapping; cross-links FE-7/FE-12/
+FE-8); REQ-04→**extend FE-11** (sweep covers headers/footers/footnotes — live evidence: three
+insurer identities in one exemplar; one home per question, CL2-AC-1); REQ-05→**extend FE-10**
+(numbering lint: gapless, duplicate-free visible numbering; continuous logical numbering, no
+hard-coded restarts); REQ-06→**CD-3** (insurer entity subtype county-mutual/foreign/domestic;
+defendant-slot-change flag; flag-only per registry discipline); REQ-07→no ID (CD-1/CD-2
+evidence with roster REQ-19 — registered agent as entity-level data, verify-before-service
+state + staleness date, never prose); REQ-08→**FE-14** (relief bracket as per-matter picklist
+among fixed statutory options; gated on the TRCP 47(b)–(c) entry, UNVERIFIED); REQ-09→no ID
+(routes onto registry–CourtListener design; slip-cite→reporter-cite upgrade flag; Q-6 posture
+UNTOUCHED); REQ-10→**FE-15** (posture original/amended/supplemental as a render parameter
+driving title + certificate-of-service inclusion + footer together; IN-4 cross-link — an
+original petition is served with citation, no certificate).
+
+**Cross-cite resolved live, same session.** The UIM capture's REQ-09 cited "the citation-bank
+requirement from the deficiency-handling packet" — no such packet on this project's record at
+reconciliation time; flagged as the attorney-edit-REQ-12 failure class. Michael confirmed the
+packet exists in CIVIL LIT and carried it over within the hour. Distinct from the REQ-12
+class: the cite resolved to a real, then-uncarried packet. Lineage annotation applied in the
+UIM addendum (REQ-09 extends FE-16).
+
+**Deficiency-handling capture (CIVIL LIT, authored 2026-08-11, carried 2026-08-12) — fifth
+REQ-1 capture, reconciled against the same basis, GROUP-RULED by Michael 2026-08-12.** Prior
+design-side relative reconciled as CONFIRMATION, not collision: the parked discovery-
+deficiency engine (heartbeat walkthrough Part 6, Bright treatise) — the packet's CLE treatise
+IS that paper, and REQ-02's taxonomy is the closed list made data. The parked buildout now has
+a durable home. **DE series RULED into existence** (anchor item fits neither FE nor IN — the
+WF-1 structural precedent; WF-2 offered and declined; the #48 series-naming caveat applies to
+DE as to IN). Durable IDs: REQ-01→**IN-6** (response-set ingestion into structured items;
+substrate for IN-1); REQ-02→**DE-1** (deficiency taxonomy BP/STO/OO/EV/CONTRA/PRIV/RFP-form as
+first-class data; absorbs REQ-04 one-store-many-renderers and REQ-08 Bates evidence_refs;
+FE-6 and IN-2 cross-links); REQ-03→**IN-7** (cross-document contradiction flags, manual
+structured links first, Phase-1b-adjacent, flags only); REQ-05→**extend FE-12** (render-time
+enforcement of provenance tiers per instrument — live evidence: house letterhead format
+authority, treatise content model, prior-firm exemplar language-only with header forbidden);
+REQ-06→**DE-2** (conferral/escalation timeline letter→cure→motion→hearing→compliance as
+PROPOSALS integrated with DCO deadlines; MANUAL triggers per Q-6 posture); REQ-07→**FE-16**
+(citation blocks with verification state persisting across drafts, registry-backed; the
+delete-before-service banner is the interim practice; UIM REQ-09 annotates as its extension);
+REQ-09→**FE-17** (hard internal/outbound flag enforced at the renderer/schema level, never
+convention; §5 Q4 asks whether the same mechanism serves the privilege firewall's
+genericization gate — bigger than deficiency work); REQ-10→content route (placeholder
+inventory + fill checklist into the form-engine spec); REQ-11→CD-1/CD-2 evidence annotation
+with full text (verification-officer tracking, someday, K-6/K-7 cheap insurance).
+
+**Registry.** UIM capture: TRCP 190.4 and TRCP 194 dedupe onto the entries VERIFIED
+2026-08-11 as second observations (the 193.7 precedent; the 194.1–.4 span vs. the expanded
+four-category wording is flagged for Michael's read); five enter UNVERIFIED (CPRC § 37.001
+et seq.; § 37.009; § 15.002(a)(1); TRCP 47(b)–(c); Allstate Ins. Co. v. Irwin, 627 S.W.3d 263
+(Tex. 2021) — playbook prose in pi-case-playbooks A9 is not the registry; the capture's
+docket-source corroboration is a flag, never verification). Deficiency capture: ~26
+propositions enter UNVERIFIED — the largest batch since trucking — with a dedupe instruction
+against the Bright closed-list authorities (193.2 family, 193.3, 196.2(b), 215.1(c)); five
+WL/slip cites flagged for reporter-cite check at verification (FE-16's mechanism, by hand
+until built). Only Michael verifies.
+
+**Micro-notes carried per the overnight capture:** v16 verification recorded above;
+BUILD-STATE's launch-path line updated v15 → v16.
+
+Staged for Code: this entry; both REQ-CAPTURE files → docs/specs/; queue updates (new DE
+heading; CL-3, CD-3, FE-13–FE-17, IN-6, IN-7 with full question text per QR-1; FE-10/FE-11/
+FE-12 amendments; CD annotations); registry additions with dedupe instructions; BUILD-STATE
+launch-path micro-edit.
+Awaiting/Returned from Code, unreviewed: none new. (Do not copy forward items cleared in
+earlier entries — verify against the entry that cleared them.)
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; NINETEENTH invocation)
 
 One packet, one close-out. **§5 was NONE**: one log entry and BUILD-STATE — **the queue register

@@ -4,6 +4,8 @@
 
 **Second batch, 2026-08-12 (queue-runner, eleventh invocation).** Seven new entries (parties, substituted and statutory service, governmental and federal sovereign postures, ad litem practice), interleaved by subject per this file's existing precedent and tagged *(2026-08-12 batch item n)*. They are relied on **for roster structure only** — none asserted to any court or counsel. The file's subject line above widened accordingly. One entry from that batch created NO new record: TRCP 193.7 already existed here, so it took a second observation instead (one proposition, one home).
 
+**Third pass, 2026-08-12 (queue-runner, twentieth invocation) — SECOND OBSERVATIONS ONLY; no entry added, none removed, no status changed.** The two REQ-CAPTUREs reconciled that day relied on five propositions already living here — TRCP 190.4, 194, 193.3, 193.5, and 192.3(f) — so each took a second observation under the one-proposition-one-home rule instead of a duplicate entry. **Three wording questions are FLAGGED for Michael and deliberately left unresolved** (the 194 span; 193.3's more expansive statement; 192.3(f)'s "entitled to a copy"): verification attaches to WORDING, so an expanded restatement is an observation, never an extension of verified status. The **twenty-six new UNVERIFIED propositions from those captures are NOT in this file** — mixing them in would have broken the all-verified status header above, the same structural reason recorded below for why this file exists at all. They are at `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md`. **Michael's to confirm or redirect.**
+
 **Filed 2026-08-11 (queue-runner, tenth invocation). Why this file exists — a routing deviation, stated rather than buried.** The fold-in directed these entries into `docs/specs/legal-rule-registry-*`, interleaved by subject. That glob matches exactly one existing file — `legal-rule-registry-draft-entries-medical-billing.md`, which is scoped to *medical damages, billing, liens and related* and headed **"ALL ENTRIES UNVERIFIED."** Folding VERIFIED discovery-procedure and FMCSR propositions into it would have broken both its subject scope and its status header, so this second file was opened in the same naming family instead. **Michael's to confirm or redirect.**
 
 **Structure.** Entries are headed by CITE, ordered by subject, and deliberately carry **no section headings** — per the 2026-08-11 ruling the FMCSR entries are interleaved with the carrier-duty material and do **not** get their own section. Cite headings (rather than ENTRY *n*) also avoid a numbering collision with the medical-billing registry file. Bracketed *batch item n* tags preserve the mapping back to the fold-in's numbering (fifteen numbered lines, thirteen propositions — the three 30-day rules were one captured line, split here because each is a distinct registry cite).
@@ -25,6 +27,7 @@
 **Rule.** Level 3 discovery applies only on court order; absent an order, Level 2 constraints govern drafting.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
 **Load-bearing for:** FE-5 (configurable cap by discovery level).
+**Second observation added 2026-08-12** (UIM-UDJA capture §4, queue-runner twentieth invocation): Level 3 was pleaded in the drafted UIM/UDJA original petition's discovery-level paragraph. **No second entry — one proposition, one home** (the TRCP 193.7 precedent). Status unchanged; nothing re-verified.
 
 ## TRCP 197.2(a) — interrogatory response period *(batch item 3)*
 
@@ -52,6 +55,7 @@
 **Cite:** Tex. R. Civ. P. 193.3.
 **Rule.** Privilege assertion / withholding-statement mechanics.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
+**Second observation added 2026-08-12** (deficiency-handling capture §4, queue-runner twentieth invocation): relied on from the enforcement side — privilege asserted without the required withholding procedure is the PRIV category of the DE-1 deficiency taxonomy. **No second entry — one proposition, one home** (the TRCP 193.7 precedent). **Wording note for Michael, FLAGGED NOT ADOPTED:** the capture states the rule more expansively than the verified wording above — *"exclusive privilege-assertion procedure; withholding statement and identification on request."* Verification attaches to WORDING, so the expansion is recorded here as an observation only and is **not** verified. Michael's read at verification time.
 **Cited in:** the house template's Definition ¶8. Cross-reference: `docs/templates/discovery/template_definitions-instructions_requests.md`.
 
 ## TRCP 193.5 — duty to supplement *(batch item 7)*
@@ -59,6 +63,7 @@
 **Cite:** Tex. R. Civ. P. 193.5.
 **Rule.** Duty to supplement discovery responses.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
+**Second observation added 2026-08-12** (deficiency-handling capture §4, queue-runner twentieth invocation): relied on from the enforcement side — the supplementation duty is what a deficiency letter invokes when a response was complete when made and has since gone stale. **No second entry — one proposition, one home** (the TRCP 193.7 precedent). Status unchanged.
 **Cited in:** the template preamble (continuing-in-nature paragraph). Cross-reference: `docs/templates/discovery/template_definitions-instructions_requests.md`.
 
 ## TRCP 193.7 — production authenticates *(batch item 8)*
@@ -80,6 +85,7 @@
 **Cite:** Tex. R. Civ. P. 192.3(f).
 **Rule.** Insurance agreements are discoverable.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
+**Second observation added 2026-08-12** (deficiency-handling capture §4, queue-runner twentieth invocation): relied on from the enforcement side, against a responder who objected to producing the agreements. **No second entry — one proposition, one home** (the TRCP 193.7 precedent). **Wording note for Michael, FLAGGED NOT ADOPTED:** the capture adds *"entitled to a copy"* to the verified wording above. Verification attaches to WORDING; the addition is an observation only and is **not** verified.
 
 ## TRCP 194 — initial disclosures (post-2021), EXPANDED wording *(2026-08-12 batch item 2)*
 
@@ -88,6 +94,7 @@
 **Status:** VERIFIED — Michael, 2026-08-12.
 **Wording note (same-session supersession, later ruling governs).** Michael EXPANDED this entry at his own direction during verification, from the narrower roster-read wording verified earlier in the same session to the four-category working list above. **Verification attaches to this expanded wording.**
 **Relied on for:** (a) reading disclosure documents as carriers of roster data (roster-mining capture); (b) the legal substrate of the four-category disclosure-mining practice recorded at **IN-5** (Michael's direct statement, design session 2026-08-12).
+**Second observation added 2026-08-12** (UIM-UDJA capture §4, queue-runner twentieth invocation): initial-disclosure obligations were pleaded in the drafted UIM/UDJA original petition's disclosure section. **No second entry — one proposition, one home** (the TRCP 193.7 precedent). **SPAN QUESTION FLAGGED FOR MICHAEL, NOT RESOLVED:** the capture cites the span **"TRCP 194.1–194.4"**, while the entry above is headed **"TRCP 194"** and carries the EXPANDED four-category wording Michael adopted at verification on 2026-08-12. Whether the verified entry's scope is the whole rule or the enumerated span is **his read at the next verification pass** — Code changed neither the heading nor the wording, and verification remains attached to the wording above.
 
 ## TRCP 152 — substitution on a defendant's death; scire facias practice *(2026-08-12 batch item 1)*
 
