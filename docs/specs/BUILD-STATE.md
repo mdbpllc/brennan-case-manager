@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 2508b1c  |  Branch: master  |  Generated: 2026-08-11 Central (forty-seventh refresh)
+Commit: 504671e  |  Branch: master  |  Generated: 2026-08-12 Central (forty-eighth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -37,7 +37,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   **sm_120**, **outside the repo** at `~/phase0` — `phase0-environment-standup-2026-08-09.md`.
   **Stage 1 SCORING IS HELD, NO SCORECARD EXISTS**; Stage 2 untouched; **T4 unauthorized**. Weights
   fit but that **does NOT retire sequential loading**. The 13 pilot transcripts are
-  `src/routing/__tests__/pilot/` fixtures; Stage 1 owes the full-precision compare against them
+  `src/routing/__tests__/pilot/` fixtures; Stage 1 owes the full-precision compare
 - **The one RED preflight row is AUDIO** — no real speech has ever run on this stack; **no
   substitute audio** (08-09 exception). **His hand (H4): stage the 13 recordings into `..\data`** —
   **re-checked this refresh: `C:\Users\Brennan\data` DOES NOT EXIST here.** **AND THE KICKOFF DOC IS
@@ -48,8 +48,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **Sign-in gate — Supabase mode only.** Magic link, no password. Demo mode deliberately ungated
 - /cases — case list; compact statute-worklist card (the de facto dashboard); /cases/:id — case detail, tabs URL-driven (/cases/:id/{parties,medical,calendar,transcripts})
 - /cases/new — new-case form (types, auto file numbers); /cases/new/oaa — OAA order upload → draft review → Create Matter, charges as child records
-- /inbox — transcript staging: upload/import, routing suggestions, confirm-to-file (auto-file OFF, D1)
-- /notes — office notes, per-transcript detail w/ participants/tags; /parties — directory + new/edit forms, masked phones, combobox pickers; /benchmarks — Medicare PFS CSV import
+- /inbox — transcript staging: upload/import, routing suggestions, confirm-to-file (auto-file OFF, D1); /notes — office notes, per-transcript detail w/ participants/tags; /parties — directory + new/edit forms, masked phones, combobox pickers; /benchmarks — Medicare PFS CSV import
 - /diagnostics — database + RLS probe (Supabase only), evidence not gospel; /rules — Legal Rule Registry: entries, attorney-only verify, review log, watch flags, worklist card
 - /statutes — cite box, browse, keyword search; chapter viewer, Mark-verified pins, refresh-and-diff (A4); /bills — watch targets, tracked bills with B3 lifecycle, statute-ref matcher
 
@@ -70,8 +69,8 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   files click as before** (D-CL2-7): no selector, limitations **writes THROUGH**; two+ → read-only
 - Medicare/Medicaid live on the client; occurrence flags (trucking, product, government defendant,
   death, **minor/incapacitated**) stay FILE-level **by ruling — do not "fix" minor/incapacitated to
-  the client.** **No client-role party = FLAGGED, never guessed** (`case_client_flags`), orphaned
-  limitations date **PRESERVED on the flag**. **D-CL2-3: BILLING RATE IS PER CLIENT** — no schema
+  the client.** **No client-role party = FLAGGED** (`case_client_flags`), orphaned limitations date
+  **PRESERVED on the flag**. **D-CL2-3: BILLING RATE IS PER CLIENT** — no schema
 
 ## Data layer
 - Adapters: local (localStorage demo) AND supabase; the UI talks only to the DataAdapter interface — every feature works in both modes. Seeds fictional; **store v10**, v9→v10 migrates **FORWARD in place**
@@ -111,8 +110,8 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   subpart detection, passive worst-case count, warning only at the cap crossing · packaging as a
   render-time choice with definitions REPEATED in full · the §13.4 distillation queue, three
   candidates, all **queued**). FE-1 SUPERSEDED by CD-1; **FE-2 RE-PARKED to the INTAKE PIPELINE**;
-  **FE-3 + FE-8–FE-12 stay OPEN but NON-GATING by ruling (#54)** — FE-8–FE-12 get ruled at the
-  engine's slice-scoping session (the CD-1-scoping pattern), FE-3 rides its own track
+  **FE-3 CLOSED 08-12** (§8 read in full; its example strings generalized, ruling content intact);
+  **FE-8–FE-12 stay OPEN but NON-GATING (#54)**, ruled at the engine's slice-scoping session
 - `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** — **now v2** (landed
   08-11, authored design-side under the upgrade protocol; **Code must still never edit it**)
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only
@@ -120,7 +119,8 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
 - **REGISTRY — read both halves.** **DOCS: TWENTY entries VERIFIED** (Michael) in
   `legal-rule-registry-discovery-and-carrier-duties.md` (TRCP discovery + Lab. Code § 406.033 + four
-  FMCSR; TRCP 152/194, CPRC ch. 17, TTCA, FTCA, Prop. Code ch. 142). **`/rules` SEED ALL UNVERIFIED**
+  FMCSR; TRCP 152, TRCP 194 expanded, CPRC §§ 17.024/.044/.062, TTCA § 101.106, FTCA, Prop. Code
+  ch. 142). **`/rules` SEED ALL UNVERIFIED**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
@@ -136,10 +136,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   hand-upload item was consolidated INTO SK-v2 per QR-1 — one home, text moved not deleted) · **the
   two sync-picker clicks**, `docs/skills/` (Q-3) and `docs/templates/` · **naming the form-engine
   slice** once the CD-1 build lands. **Both REQ-1 captures are filed and SPENT** as CD-1 input
-- **STILL OPEN in the queue (all non-gating):** **FE-3** · **FE-8** as-generated retention · **FE-9**
-  family drift · **FE-10** format lint · **FE-11** caption-body integrity · **FE-12** provenance ·
-  **IN-4** (**block-finalized rides it**) · **IN-5** · **WF-1** · **IN-2's EXTRACTION HALF**,
-  Phase-1b gated. **FE-8's cite** resolves to nothing — **NOT reconstructed**. **K-5 is CLOSED**
+- **STILL OPEN in the queue (all non-gating):** **FE-8** as-generated retention · **FE-9** family
+  drift · **FE-10** format lint · **FE-11** caption-body integrity · **FE-12** provenance · **IN-4**
+  (**block-finalized rides it**) · **IN-5** · **WF-1** · **IN-2's EXTRACTION HALF**, Phase-1b gated.
+  **FE-8's cite** resolves to nothing — **NOT reconstructed**. **K-5 and FE-3 are CLOSED**
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
   privileged-audio machine (**smoke test RUN 08-09**, tone only). **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
@@ -147,5 +147,4 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#54's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
   through #54. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
-  `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10
-- FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed
+  `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed
