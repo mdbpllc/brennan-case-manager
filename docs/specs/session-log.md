@@ -12,6 +12,121 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; SIXTEENTH invocation)
+
+One packet, one close-out — the fourth of the same evening. **§5 was NONE**: two log entries, one
+queue closure, six queue annotations, BUILD-STATE. **No new files; no spec files touched.** Runner
+**v6** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2. QR-3 checkout gate PASSED: clean,
+on master, HEAD == `origin/master` at `0cdb2b4`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_must-carry-54_2026-08-11`. Filename-date and pure-mtime order identical; the packet
+  arrived after the fifteenth invocation's close-out. Manifest §3 date matches. No conflict rule
+  fired — one packet.
+- **All four §1 reconcile points were checked, and every one held.** Log top was the fifteenth
+  runner line + #53, so **#54 was free — no renumbering**. The 2026-07-23 dictation entry (OAA
+  intake / Outlook sync / email intake) carries **no capture pointer**, so the micro-entry's append
+  condition was satisfied and it was appended rather than skipped. **K-5 was still ⬜** with exactly
+  the quoted text — closed once, not double-closed. BUILD-STATE at `0cdb2b4` did carry the
+  both-facts line, which was **re-anchored to #54, not rewritten**.
+- **The correction is #54's own work, and Code changed nothing to effect it.** #53 stands as
+  written and was not edited (§6). The tension it created — FE-3 and FE-8–FE-12 open while the spec
+  was called free of gating questions — is **resolved by Michael's ruling, not by an edit**: those
+  items do NOT gate the engine's slice naming.
+- **The six FE rows stay OPEN.** Only their gating status is annotated; none was closed, resolved,
+  or renumbered, and no slice was named or authorized (§6). FE-3's line omits the FE-8–FE-12 clause,
+  as the work order specified.
+- **No C2 row was added to the queue** — the MM-1-batch precedent applies and #54 is its record.
+  **No `claude/` path was created**: both capture references are project-knowledge filenames, and
+  the repo has no `claude/` directory (verified this run).
+- **§6 honored in full:** nothing built — including the authorized CD-1 slice, which stays a
+  separate session Michael fires; the #49 batch's 08-12 stamps untouched; no Michael's-hand item
+  resolved; `src/`, `db/`, schema and migrations untouched.
+- **§7 merge:** **CD-1 build** (GL-1 floor item 1, Michael fires) · **gates 1 and 9** (his clicks) ·
+  **CRIM DEFENSE project setup** — create, paste v1 instructions, upload the Uvalde worksheet
+  instructions, one file at a time, fresh chat after (his hand; the v15 paste is separately
+  verified design-side) · **SK-v2 re-upload** · **picker pair** · **KICK-1** · carried: H4, P15
+  runner-copy deletion, telemetry posture, email-workflow doc, IN-series naming caveat ·
+  **probate's practice-project home is UNRULED** — probate drafting happens in no project until it
+  is ruled. **K-5 is no longer carried anywhere — it is closed.**
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+- **DT-1 in force and agreeing:** this entry stamps 2026-08-11, Michael's Central date and this
+  machine's local date. The packet's own clock check (23:37 CDT, container reading 08-12) is the
+  same convention working on the design side.
+
+## 2026-08-11 (#54) — CORRECTION of #53 + FE-GATING RULED; CRIM DEFENSE PRACTICE PROJECT
+RULED (instructions v15, trigger #3 fifth same-date firing); K-5 CLOSED; C2 CLOSED
+(design session, Fable 5, typed, Cowork)
+
+Must-carry batch from the 2026-08-11 CD-1 schema session (dialogue trail:
+`claude_CD1_Schema_Session_Capture_2026-08-11.md`, project knowledge under the `claude_` prefix
+— not a repo path). All rulings Michael's, 2026-08-11 Central.
+
+**CORRECTION ENTRY (required fields per the 2026-07-27 ruling):**
+- **What was asserted** (#53): the form-engine spec has "no open design questions gating its
+  build-slice naming."
+- **What is true instead:** FE-4–FE-7 are closed, but FE-3 and FE-8–FE-12 remained OPEN queue
+  items, and whether they gate naming was UNRULED at #53's authoring — the sentence decided it
+  silently. Evidence: the attorney-review-queue rows themselves; caught by the fifteenth runner
+  invocation, which correctly recorded both facts in BUILD-STATE rather than the claim alone
+  (no Code-side error).
+- **Which entry it corrects:** #53, which stands as written.
+- **Actor:** Fable 5 (design-side).
+- **Failure class:** design-side overstatement of spec state, caught by Code-side verification —
+  sibling of the #48-era session-number-collision pattern.
+- **What changed as a result:** resolved by ruling, not by edit. **RULED (Michael, 2026-08-11
+  Central): FE-3 and FE-8–FE-12 do NOT gate the form engine's slice naming.** FE-8–FE-12 are
+  capability requirements the engine's slice-scoping session rules as it pins scope — the same
+  pattern as the CD-1 build's scoping; FE-3 stays independent on its own track. The engine
+  remains nameable once the CD-1 build lands, with FE-8–FE-12 ruled at scoping. BUILD-STATE's
+  both-facts line now anchors to this ruling; nothing in #53 was edited.
+
+**CRIM DEFENSE PRACTICE PROJECT RULED into existence (Michael, 2026-08-11 Central):** all
+criminal-side practice work — live-case drafting (motions, notices, responses, plea paperwork),
+ex parte matters (habeas, expunction, occupational driver's license), docket worksheets, and
+appointed-work/OAA paperwork. REQ-1's practice-project channel extends to it; its REQ-CAPTURE
+format is defined in its own instructions (v1 drafted 2026-08-11, Michael's paste). Reason: the
+criminal side needed the same privileged-work home CIVIL LIT gives the civil side; probate
+still has NO ruled home and until one is ruled probate drafting happens in no project.
+Instructions trigger #3 fired (FIFTH time this date) → **v15 drafted same evening and PASTED —
+verified design-side 2026-08-11 (this session reads v15).** Project creation, v1 paste, and the
+Uvalde upload are Michael's hand (§7).
+
+**K-5 CLOSED (RULED):** the Uvalde docket-worksheet instructions' home is CRIM DEFENSE project
+knowledge, uploaded by Michael's hand — never the repo. Queue row annotated this batch.
+
+**C2 CLOSED (verified design-side 2026-08-11):** the repo's
+`docs/specs/criminal-appointment-intake-and-docket-enhancements.md` IS the v2 with §1a/§1b
+field maps ("REVISED 2026-07-23 — field map completed from sample OAAs"). C2 lived only in the
+2026-07-23 retro-capture's open-items table (project knowledge), never in the repo queue; per
+the MM-1-batch precedent no queue row is added just to close it — this entry is the record.
+
+**Conversational correction, chat-only (no correction entry owed, noted for completeness):**
+Fable 5 design-side understated criminal build state in-chat 2026-08-11 ("charges + posture is
+the extent of it"); in fact OAA intake Tier 1 was BUILT 2026-07-25 (engine `6b9d242`, UI
+`bb3cc0c`, verified in demo). Corrected in-conversation same hour.
+
+**DT-1 process note:** authored 2026-08-11 Central by pre-stamp clock check (23:37 CDT);
+container UTC read 08-12. The convention working as designed; no artifact mis-stamped.
+
+Staged for Code: this entry; the retro-capture pointer micro-entry; K-5 queue closure; FE-3 +
+FE-8–FE-12 gating annotations; BUILD-STATE deltas per the close-out.
+Awaiting/Returned from Code, unreviewed: this packet's routing. Carried items per
+#49/#50/#52/#53: KICK-1, H4, P15 runner-copy deletion, telemetry posture, email-workflow doc,
+IN-series naming caveat — verify against the entries that staged them; do not copy forward
+cleared items.
+
+## 2026-08-11 (micro-entry) — RETROSPECTIVE CAPTURE POINTER for the 2026-07-23 session
+
+The 2026-07-23 voice session (OAA intake / Outlook integration; specs committed same-day
+through `bf89eca`; Tier 1 built 2026-07-25) received a retrospective capture, packaged
+2026-08-11 at Michael's request and filed in the BUILD project's knowledge as
+`claude_Criminal_OAA_Intake_and_Outlook_Integration_Capture_20260811.md` (project-knowledge
+filename under the `claude_` prefix — NOT a repo path; there is no `claude/` directory in the
+repo). The 2026-07-23 log entries stand as written; this pointer exists because they carry no
+capture reference. Its C-series open items: C2 closed (see #54); the rest stand as recorded
+in the capture.
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; FIFTEENTH invocation)
 
 One packet, one close-out — the third and last of the same evening. **§5 was NONE**: one spec
