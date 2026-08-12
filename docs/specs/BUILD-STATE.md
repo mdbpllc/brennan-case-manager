@@ -1,9 +1,9 @@
 # BUILD STATE — brennan-case-manager
-Commit: 102384f  |  Branch: master  |  Generated: 2026-08-12 Central (fiftieth refresh)
+Commit: f86d7ae  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-first refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
-— 08-09 built a GPU environment OUTSIDE the repo; 08-10 and 08-11 routed docs only. `archive-project-history-by-day.md`
+— 08-09 built a GPU environment OUTSIDE the repo; 08-10 through 08-12 routed docs only. `archive-project-history-by-day.md`
 
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed, withdrawn, and
   deliberately-not-built items. **Check it before rebuilding anything absent. Never drop this line**
@@ -12,10 +12,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **GO-LIVE MEANS: real case / party / client / SOL data hand-entered into the core app — NOTHING
   MORE.** Floor, in order: **(1) the CD-1 build landed and exercised · (2) gate 1 Supabase Pro ·
   (3) gate 9 production SMTP · (4) gate 3 RLS tested INCLUDING the slice's new tables · (5) gates
-  re-check session + instructions v15.** Then real matters enter. Full text: `Go_Live_Gates.md`
-- **Gates 7 and 8 do NOT block the floor** (their own triggers are the first real EOB / first real
-  AnalysisRun) — **so billing analysis on real data stays DEFERRED past go-live.** **The form engine
-  is EXCLUDED from the floor** — drafting continues via the skill; the engine upgrades a live system
+  re-check session + instructions v16.** Then real matters enter. Full text: `Go_Live_Gates.md`
+- **Gates 7 and 8 do NOT block the floor** (their triggers are the first real EOB / AnalysisRun) —
+  **billing analysis on real data stays DEFERRED past go-live.** **The form engine is EXCLUDED from
+  the floor** — drafting continues via the skill; the engine upgrades a live system
 - **GATE 2 READS AS MULTI-USER ONLY** (ruled 08-11, clarified by appended note, original text
   untouched): the security review gates the multi-user phase. **Solo live use proceeds without it**
 - **THE NEXT BUILD SLICE IS NAMED AND AUTHORIZED: the CD-1 directory build** —
@@ -38,11 +38,11 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   **Stage 1 SCORING IS HELD, NO SCORECARD EXISTS**; Stage 2 untouched; **T4 unauthorized**. Weights
   fit but that **does NOT retire sequential loading**. The 13 pilot transcripts are
   `src/routing/__tests__/pilot/` fixtures; Stage 1 owes the full-precision compare
-- **The one RED preflight row is AUDIO** — no real speech has ever run on this stack; **no
-  substitute audio** (08-09 exception). **His hand (H4): stage the 13 recordings into `..\data`** —
-  **re-checked this refresh: `C:\Users\Brennan\data` DOES NOT EXIST here.** **AND THE KICKOFF DOC IS
-  GONE (KICK-1)**, never git-tracked, and it is that authorization's **authoritative text**: **until
-  Michael locates it or re-issues, T3 WORK IS UNAUTHORIZED**
+- **The one RED preflight row is AUDIO** — no real speech has ever run on this stack; **no substitute
+  audio** (08-09 exception). **His hand (H4): stage the 13 recordings into `..\data`** — **re-checked
+  this refresh: `C:\Users\Brennan\data` DOES NOT EXIST here.** **AND THE KICKOFF DOC IS GONE
+  (KICK-1)**, never git-tracked, and it is that authorization's **authoritative text**: **until he
+  locates it or re-issues, T3 WORK IS UNAUTHORIZED**
 
 ## Screens live (what Michael can click)
 - **Sign-in gate — Supabase mode only.** Magic link, no password. Demo mode deliberately ungated
@@ -76,10 +76,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - Adapters: local (localStorage demo) AND supabase; the UI talks only to the DataAdapter interface — every feature works in both modes. Seeds fictional; **store v10**, v9→v10 migrates **FORWARD in place**
 - **`npm run dev:demo`** runs demo mode past a real `.env`; **demo state does NOT travel**
 - **`db/schema.sql` EXECUTED live 2026-07-28**, then the CL-2 migration that night. **34 tables**
-- **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing by
-  design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration. **The CD-1 slice's new tables inherit this — it is why RLS+grants are IN from birth**
+- **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing by design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration. **The CD-1 slice's new tables inherit this — it is why RLS+grants are IN from birth**
 - **No case-event/CE table, no time_entries, no claims, no `case_links`, and no contact-directory
-  table beyond `parties` itself.** Health **re-run this refresh: 232 tests pass, build + lint clean**
+  table beyond `parties` itself. Nothing exists for the DE series** — no response-set, response-item,
+  or escalation-timeline table. Health **re-run this refresh: 232 tests pass, build + lint clean**
 
 ## RLS, exercised — the distinction matters
 - **ACTUALLY CONSULTED:** authenticated SELECT on all API tables; INSERT+DELETE on `parties`,
@@ -94,57 +94,44 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - legiscan-poller + statute-fetch edge functions written, **NOT deployed**. Called auth-blocked, but
   **that diagnosis is incomplete — `service_role` was never granted either**; start there.
   **/statutes in demo mode never touches Supabase** — fixture chapters only
-- **Benchmarks import reads `..\data\pfs\` — NOT present on the machine that ran this refresh**
-  (re-checked `C:\Users\Brennan\data`; it lives on the other machine). **Outlook push WORKS as of
-  2026-07-26 but ONLY event CREATION is exercised** — edit/cancel unverified; demo events only
-- Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual.
-  Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage. **Hand-keying itemized
-  bills is a VIABILITY issue** (Michael). Playbook engine NOT built; generated docs and code mappings
-  do NOT survive a reseed. **"Mark disbursed" shows on criminal files — KNOWN, NOT fixed**
+- **Benchmarks import reads `..\data\pfs\` — NOT present on the machine that ran this refresh** (re-checked `C:\Users\Brennan\data`; it lives on the other machine). **Outlook push WORKS as of 2026-07-26 but ONLY event CREATION is exercised** — edit/cancel unverified; demo events only
+- Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual. Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage. **Hand-keying itemized bills is a VIABILITY issue** (Michael). Playbook engine NOT built; generated docs and code mappings do NOT survive a reseed. **"Mark disbursed" shows on criminal files — KNOWN, NOT fixed**
 - **PROBATE: the only furniture is a `Probate companion` case type MIS-PARENTED under Personal
   Injury with a knowingly wrong ladder (`_piDefault`).** PR-3 direction CONFIRMED, **EXECUTION HELD**
   until the ladder pass names the destination. **Do not touch the case-type tree or ladder.** No
   probate tables or roles. **NO MONEY MACHINERY:** no settlement ledger, trust/IOLTA, liens
 - **FORM ENGINE: specified-not-built, NOT named, NOT authorized — and NOTHING GATES ITS NAMING.**
-  **FE-4–FE-7 RULED 08-11 at `form-engine.md` §13** (versioned definitions · facial subpart
-  detection · packaging with definitions repeated in full · §13.4 distillation queue, three
-  candidates **queued**). FE-1 SUPERSEDED by CD-1; **FE-2 RE-PARKED to the INTAKE PIPELINE**;
-  **FE-3 CLOSED 08-12** (§8 read in full; its example strings generalized, ruling content intact);
-  **FE-8–FE-12 stay OPEN but NON-GATING (#54)**, ruled at the engine's slice-scoping session
+  **FE-4–FE-7 RULED 08-11 at `form-engine.md` §13** (versioned definitions · facial subpart detection
+  · packaging with definitions repeated in full · §13.4 distillation queue, three candidates
+  **queued** — **four MORE were flagged 08-12 and are NOT in that table**; entering them is his call).
+  FE-1 SUPERSEDED by CD-1; **FE-2 RE-PARKED to the INTAKE PIPELINE**; **FE-3 CLOSED 08-12**;
+  **FE-8–FE-12 OPEN but NON-GATING (#54)**. **FE-13–FE-17 are NEW 08-12 and their gating is UNRULED**
+  — #54 predates them, so no gating annotation was written; the question is its own queue item
 - `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** — **now v2** (landed 08-11, authored design-side under the upgrade protocol; **Code must still never edit it**)
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only
   (captures e+f NOT folded; register H1–H83). **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
-- **REGISTRY — read both halves.** **DOCS: TWENTY entries VERIFIED** (Michael) in
-  `legal-rule-registry-discovery-and-carrier-duties.md` (TRCP discovery + Lab. Code § 406.033 + four
-  FMCSR; TRCP 152, TRCP 194 expanded, CPRC §§ 17.024/.044/.062, TTCA § 101.106, FTCA, Prop. Code
-  ch. 142). **`/rules` SEED ALL UNVERIFIED**
+- **REGISTRY — read BOTH files.** **TWENTY VERIFIED** (Michael) in `legal-rule-registry-discovery-and-carrier-duties.md`; five took **second observations** 08-12, and **three wording expansions there are FLAGGED, NOT ADOPTED** (TRCP 194's span, 193.3, 192.3(f)) — verification attaches to wording. **TWENTY-SEVEN UNVERIFIED** in the new `legal-rule-registry-discovery-enforcement-and-pleading.md` (discovery enforcement + UDJA/venue/pleading; **six WL/slip cites flagged for reporter-cite check, none corrected**). A new file, not a fold-in, because the verified file's status header would have broken — **his to confirm or redirect**. **`/rules` SEED ALL UNVERIFIED**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **DT-1 IS IN FORCE; instructions v15 pasted 08-11, v16 drafted 08-12 awaiting your paste.** Stamps use
-  YOUR Central wall clock. The #49 batch's **08-12** stamps stay **LEFT ALONE**; **NOT retroactive**
-- **PRACTICE-PROJECT CHANNEL IS NOW THREE: CIVIL LIT + CRIM DEFENSE + PROBATE** (probate ruled
-  08-12 — every practice area now has a privileged home; REQ-1 extended to each). New probate matters
-  are CHATS inside PROBATE; **two grandfathered matter workspaces** (generic by design, never named
-  build-side) reach the build side by ONE path: **PROBATE's client-clean REQ-CAPTUREs**. **Your hand:
-  create CRIM DEFENSE (v1 + the Uvalde instructions — K-5's home, never the repo) and PROBATE (v1 +
-  the carry snippet into each workspace); paste v16 here**
+- **DT-1 IS IN FORCE; v16 is the live instructions version** (verified in force design-side 08-12,
+  first fresh session on it). Stamps use YOUR Central wall clock. The #49 batch's **08-12** stamps
+  stay **LEFT ALONE**; **NOT retroactive**
+- **PRACTICE-PROJECT CHANNEL IS NOW THREE: CIVIL LIT + CRIM DEFENSE + PROBATE** (probate ruled 08-12; REQ-1 extended to each). New probate matters are CHATS inside PROBATE; **two grandfathered matter workspaces** (generic by design, never named build-side) reach the build side by ONE path: **PROBATE's client-clean REQ-CAPTUREs**. **Your hand: create CRIM DEFENSE (v1 + the Uvalde instructions — K-5's home, never the repo) and PROBATE (v1 + the carry snippet into each workspace)**
+- **FIVE REQ-1 CAPTURES ARE NOW FILED** at `docs/specs/REQ-CAPTURE_*`: trucking, roster-mining, attorney-edit, **UIM-UDJA transform (new 08-12)**, **deficiency-handling (new 08-12)**. The first three are SPENT as CD-1 input; the two new ones seeded the **DE series** and eleven durable IDs
 - **YOUR HAND, THE LAUNCH PATH IN ORDER: fire the CD-1 build session** (spec + slice doc on screen)
-  → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test → gates re-check + v15
-- **ALSO YOURS: re-upload SKILL.md v2** as the claude.ai skill copy (v2 is at HEAD; the #45
-  hand-upload item was consolidated INTO SK-v2 per QR-1 — one home, text moved not deleted) · **the
-  two sync-picker clicks**, `docs/skills/` (Q-3) and `docs/templates/` · **naming the form-engine
-  slice** once the CD-1 build lands. **Both REQ-1 captures are filed and SPENT** as CD-1 input
-- **STILL OPEN in the queue (all non-gating):** **FE-8** as-generated retention · **FE-9** family
-  drift · **FE-10** format lint · **FE-11** caption-body integrity · **FE-12** provenance · **IN-4**
-  (**block-finalized rides it**) · **IN-5** · **WF-1** · **IN-2's EXTRACTION HALF**, Phase-1b gated.
-  **FE-8's cite** resolves to nothing — **NOT reconstructed**. **K-5 and FE-3 are CLOSED**
+  → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test → gates re-check + v16
+- **ALSO YOURS: re-upload SKILL.md v2** (the #45 hand-upload item was consolidated INTO SK-v2 per QR-1) · **the two sync-picker clicks**, `docs/skills/` (Q-3) and `docs/templates/` · **naming the form-engine slice** once the CD-1 build lands
+- **DE SERIES EXISTS AS OF 08-12** — deficiency enforcement, ruled into existence by you (WF-1 precedent). **DE-1** taxonomy-as-data (absorbs one-store-many-renderers and Bates evidence refs) and **DE-2** the conferral/escalation timeline, MANUAL triggers per Q-6. **They are the parked heartbeat Part-6 engine's HOME, not its green light. Nothing built**
+- **ONE ROUTED ITEM WAS NOT EXECUTED, deliberately:** the deficiency capture's placeholder-discipline content route into `form-engine.md`. No §4 work order covered it and that file is spec-canonical — **read-only in a Code session. The edit is yours**; the requirement is safe in the capture
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
   privileged-audio machine (**smoke test RUN 08-09**, tone only). **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#57's own routing** — do not copy the #36 clearance forward
+- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#58's own routing** — do not copy #36's clearance (log #37) forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #57 (**probate's home never had a row there** — #57 is its record; none was created). **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through **#58**, which added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
+  **FE-gating** question, four distillation candidates, and a **27-entry registry verification
+  backlog**. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed
