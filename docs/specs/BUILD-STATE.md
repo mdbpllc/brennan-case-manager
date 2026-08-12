@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 6616834  |  Branch: master  |  Generated: 2026-08-12 Central (forty-ninth refresh)
+Commit: 102384f  |  Branch: master  |  Generated: 2026-08-12 Central (fiftieth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -106,14 +106,12 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   until the ladder pass names the destination. **Do not touch the case-type tree or ladder.** No
   probate tables or roles. **NO MONEY MACHINERY:** no settlement ledger, trust/IOLTA, liens
 - **FORM ENGINE: specified-not-built, NOT named, NOT authorized — and NOTHING GATES ITS NAMING.**
-  **FE-4–FE-7 RULED 08-11 at `form-engine.md` §13** (versioned case-level definitions · facial
-  subpart detection, passive worst-case count, warning only at the cap crossing · packaging as a
-  render-time choice with definitions REPEATED in full · the §13.4 distillation queue, three
-  candidates, all **queued**). FE-1 SUPERSEDED by CD-1; **FE-2 RE-PARKED to the INTAKE PIPELINE**;
+  **FE-4–FE-7 RULED 08-11 at `form-engine.md` §13** (versioned definitions · facial subpart
+  detection · packaging with definitions repeated in full · §13.4 distillation queue, three
+  candidates **queued**). FE-1 SUPERSEDED by CD-1; **FE-2 RE-PARKED to the INTAKE PIPELINE**;
   **FE-3 CLOSED 08-12** (§8 read in full; its example strings generalized, ruling content intact);
   **FE-8–FE-12 stay OPEN but NON-GATING (#54)**, ruled at the engine's slice-scoping session
-- `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** — **now v2** (landed
-  08-11, authored design-side under the upgrade protocol; **Code must still never edit it**)
+- `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** — **now v2** (landed 08-11, authored design-side under the upgrade protocol; **Code must still never edit it**)
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only
   (captures e+f NOT folded; register H1–H83). **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
@@ -124,12 +122,14 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **DT-1 IS IN FORCE; instructions are at v15** (pasted and verified design-side 08-11). Stamps use
+- **DT-1 IS IN FORCE; instructions v15 pasted 08-11, v16 drafted 08-12 awaiting your paste.** Stamps use
   YOUR Central wall clock. The #49 batch's **08-12** stamps stay **LEFT ALONE**; **NOT retroactive**
-- **PRACTICE-PROJECT CHANNEL IS NOW TWO: CIVIL LIT + CRIM DEFENSE** (ruled 08-11 — all criminal-side
-  practice work; REQ-1 extended to it). **PROBATE STILL HAS NO HOME** — until one is ruled, probate
-  drafting happens in no project. **Your hand: create CRIM DEFENSE, paste its v1 instructions,
-  upload the Uvalde worksheet instructions** (K-5's ruled home — never the repo)
+- **PRACTICE-PROJECT CHANNEL IS NOW THREE: CIVIL LIT + CRIM DEFENSE + PROBATE** (probate ruled
+  08-12 — every practice area now has a privileged home; REQ-1 extended to each). New probate matters
+  are CHATS inside PROBATE; **two grandfathered matter workspaces** (generic by design, never named
+  build-side) reach the build side by ONE path: **PROBATE's client-clean REQ-CAPTUREs**. **Your hand:
+  create CRIM DEFENSE (v1 + the Uvalde instructions — K-5's home, never the repo) and PROBATE (v1 +
+  the carry snippet into each workspace); paste v16 here**
 - **YOUR HAND, THE LAUNCH PATH IN ORDER: fire the CD-1 build session** (spec + slice doc on screen)
   → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test → gates re-check + v15
 - **ALSO YOURS: re-upload SKILL.md v2** as the claude.ai skill copy (v2 is at HEAD; the #45
@@ -144,7 +144,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   privileged-audio machine (**smoke test RUN 08-09**, tone only). **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#56's own routing** — do not copy the #36 clearance forward
+- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#57's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #56. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through #57 (**probate's home never had a row there** — #57 is its record; none was created). **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed
