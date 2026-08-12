@@ -12,6 +12,108 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; THIRTEENTH invocation)
+
+One packet, one close-out. **§5 was NONE** — documentation routing only: one new spec, one scaffold
+deleted, four queue annotations plus one new queue registration, one form-engine line, one log
+entry. Runner **v6**, read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2 (the command file is
+a pointer and was not relied on for text). QR-3 checkout gate PASSED: clean, on master, HEAD ==
+`origin/master` at `13e5c1e`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_cd1-schema-session_2026-08-11`. Filename date parseable; filename-date and
+  pure-mtime order identical (single item, nothing to invert). Manifest §3 date matches the
+  confirmed order.
+- **Reconcile basis was current, not stale:** the packet's stated design-side view (`13e5c1e`,
+  log through #50) was exactly HEAD. Log top was #50, so **#51 was free — no renumbering**, and the
+  packet's "expected #51" held.
+- **`docs/specs/contact-directory.md` did not exist at HEAD** (§1's stop condition did not fire);
+  landed as a new file, copied as-is. **`docs/specs/cd-1-session-prep.md` deleted in the same
+  commit**, per its own delete-or-absorb line and §4.5's never-before ordering. The three
+  `REQ-CAPTURE_*` files the spec cites were verified present.
+- **One genuine delta found in §4.3.** Annotation 5 said to annotate the queue "where the queue
+  notes the question reopens on CD-1's resolution" — **the queue had no next-slice item at all.**
+  The question has ridden in session-log §7 tables since #31 and was never registered in
+  `attorney-review-queue.md`. Rather than skip the instruction or invent a location, the item was
+  **entered with full question text per QR-1** and carries the deferral ruling. Same failure class
+  as K-6/K-7 and Q-5, caught before the text was lost. **No slice was named** (§6 bars it).
+- **The other four annotations were genuine deltas too** — CD-1, CD-2, IN-2 and the v14 paste each
+  existed and none carried a 2026-08-11 ruling; verified line by line, not assumed. IN-2's
+  **extraction half stays OPEN with its full text retained** — only the home question was ruled.
+  The v14 item is marked CLOSED **on the design side's own verification**, cited; Code verifies
+  nothing about the paste itself.
+- **The form-engine line landed after the existing 2026-08-08 FE-1-SUPERSEDED note**, verbatim from
+  §4.4. No prior 2026-08-11 CD-1 line existed there.
+- **§6 honored in full:** nothing built, no schema or migration touched, `party_type` untouched,
+  D-CL1/D-CL2-8 untouched, `/rules` seed untouched, `docs/skills/drafting-disclosures/SKILL.md`
+  untouched, the #49 batch's 08-12 stamps deliberately left alone, no capture example values
+  carried anywhere as literals.
+- **§7 merge:** the next-slice item is newly registered (above); the picker pair, IN-series naming
+  caveat, block-finalized (rides IN-4), merge tooling (spec §9, no action), and the carried set
+  (KICK-1, H4, P15 runner-copy deletion, SK-v2, drafting-disclosures hand-upload, telemetry,
+  email-workflow doc) were verified already present with full text.
+- **DT-1 in force, and it agrees here:** this runner entry stamps 2026-08-11, which is both
+  Michael's Central date and this machine's local date.
+
+## 2026-08-11 (#51) — CD-1 SCHEMA SESSION: every CD-1 question RULED —
+the fork (parties IS the directory; separate tables with links, as built), scope, identity
+model, CD-2 roster + relationship layers, selector contract, IN-2's home, five FE-1 mechanics
+adopted; next-slice naming DEFERRED; spec staged at docs/specs/contact-directory.md
+(design session, Fable 5, typed)
+
+The typed schema session ruled fireable by #49's gate ran this evening; Michael ruled every part
+with the recommendation, one by one. Canonical detail lives in the staged spec; rulings in brief,
+each with its reason:
+
+- FORK (§1): `parties` IS the contact directory; case_parties stays the roster link;
+  case_clients stays parallel — D-CL2-8 UNTOUCHED. Reason: a second identity table = two
+  identity sources, the wrong-level defect class; views would reopen D-CL2-8 on no evidence.
+- SCOPE (§2): non-parties with roles in from day one (REQ-15 — parties-only misses who drafting
+  revolves around); attorneys in the SAME directory, attorney is a role, representation is an
+  edge (the interpleader suing a law firm proves counsel must be party-capable); probate
+  reserves only the PI-proven estate-adjacent pattern, rest deferred until real probate
+  documents (design from evidence, not plausibility).
+- IDENTITY (§3): capacity on the roster link — one directory row per human, entry =
+  contact × capacity × role, pseudonymization per entry, deceased a directory-level fact; typed
+  alias sets with multi-match flags (one trade name mapped to TWO corporations in one caption —
+  d/b/a-as-text is dead); NO resolution machinery at CD-1, merge-contacts a named future need;
+  party_type SUPERSEDED by multi-valued role tags (migration build-side, unauthorized).
+- ROSTER (§4): slot definitions as data on the case-type tree with inheritance and expectancy
+  tiers, never auto-creating records; the roster entry decomposes into role / caption alignment
+  (per case-type side set — REQ-14 satisfied by construction; "Plaintiff" is an alignment, not
+  a role) / party status / firm perspective (the existing side column's true meaning); entries
+  are history, not snapshot (joined-by + active state — FE-8/IN-4 need roster-as-of).
+- EDGES (§5): directional typed edges with optional case scope (null = world fact); one-home
+  rule — capacity references never auto-create edges; controlled extensible vocabulary seeded
+  from REQ-11; the CL-1 FIREWALL named: contact edges and case_links never merge.
+- FORM-ENGINE INTERFACE (§6): the selector surface is an enumerated READ-ONLY contract (role,
+  alignment, status, kind, capacity, role tags, edges); service story on the roster entry —
+  mode + target-as-directory-contact (pointer) + statutory basis as a REGISTRY REFERENCE (the
+  seven 08-11 verified entries are the substrate; the picker cites, never asserts currency).
+- IN-2 HOME (§7): attribution on the case-scoped fact table; no sidecar (FE-1c posture
+  preserved); identity-class facts promote to the directory ONLY by attorney verification;
+  confidence never auto-verifies — automation flags, only Michael verifies. Block-finalized
+  rides IN-4, deliberately unruled here.
+- FE-1 MECHANICS (§8): all four carried mechanics adopted as RULED for the global directory,
+  PLUS silent trust adopted explicitly as a fifth (it was never on the 08-08 carried list yet
+  did load-bearing work in the IN-2 reasoning — surfaced and ruled rather than assumed).
+- NEXT SLICE: naming DEFERRED by ruling — decided in a later session citing the spec at HEAD.
+  The queue question stays open; the form engine is nameable.
+
+Process notes: DT-1's first in-force application caught its target failure class LIVE — chat
+confirmations stamped 08-12 from container UTC until the pre-authoring clock check (2026-08-11
+21:38 CDT); no artifact mis-stamped; the actor was Fable 5, same class as #50/QR-4/#47(2).
+Verified design-side at session start: v14 PASTED (DT-1 in force), sync current at 13e5c1e,
+picker-pair evidence for BOTH docs/skills/ and docs/templates/ (Michael's click still closes
+Q-3/pair). No usage reading stated. 4b/4c were held for discussion then ruled (confusion, not
+disagreement — capture has the detail). Session ran in Cowork, which CAN write project
+knowledge (capture filed there in-session); the repo remains read-only design-side.
+
+Staged for Code: this entry; contact-directory.md (NEW); queue annotations; form-engine
+annotation; cd-1-session-prep.md deletion.
+Awaiting/Returned from Code, unreviewed: this packet's routing; carried items per #49/#50
+(verify against the entries that staged them; do not copy forward items their entries cleared).
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; TWELFTH invocation)
 
 One packet, one close-out, back-to-back with the eleventh invocation in the same Code session.

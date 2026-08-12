@@ -243,6 +243,8 @@ A leftover-sweep assertion (a list of shell-origin strings that must NOT survive
 
 **2026-08-08:** FE-1 SUPERSEDED by CD-1 — the form engine's identity source is a global CONTACT directory (provider = role), per the contact-directory reframe. FE-1's mechanics survive as PROPOSED inputs to the CD-1 design session. See `rulings-capture-2026-08-08.md` and `attorney-review-queue.md` CD-1. The provider-directory build (Slice A) was withdrawn unbuilt.
 
+**2026-08-11: CD-1 RULED — the identity source is the global contact directory per `docs/specs/contact-directory.md` (parties IS the directory; selector contract in its §6). FE-4–FE-7 unblock for spec completion. Build still unauthorized.**
+
 ---
 
 *Folded 2026-08-10 drafting-session learnings (§§12.7–12.13): first live run of `docs/skills/drafting-disclosures/SKILL.md` v1. Client-clean by design — method only, no case-identifying content. Per the ruled upgrade protocol, the spec fold-in comes FIRST; the skill's own v2 revision cites this spec at HEAD and is a later design-session deliverable.*
