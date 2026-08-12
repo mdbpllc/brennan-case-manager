@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 9db9048  |  Branch: master  |  Generated: 2026-08-11 Central (forty-third refresh)
+Commit: 9f96115  |  Branch: master  |  Generated: 2026-08-11 Central (forty-fourth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -8,24 +8,33 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed, withdrawn, and
   deliberately-not-built items. **Check it before rebuilding anything absent. Never drop this line**
 
-## NEXT SLICE IS OPEN; the CD-1 GATE IS NOW MET (read this first)
-- **"Next build slice" is OPEN.** Slice A (the provider-directory build) was **WITHDRAWN, not
-  paused**, 2026-08-08. **The form engine cannot be named as the next slice until CD-1 resolves**
-- **CD-1'S GATE IS MET (log #49).** #48's bounded evidence pass is COMPLETE: the roster-mining pass produced its capture (85 documents, both banks), and it plus the attorney-edit capture are reconciled and ruled item by item.
-  **The typed schema session — schema on screen, views-vs-linked-tables fork — is FIREABLE AT YOUR
-  CHOOSING; Code will not prep or trigger it.** Scaffold: `cd-1-session-prep.md`
+## CD-1 IS RULED AND SPEC'D — AND STILL NOT BUILT (read this first)
+- **`docs/specs/contact-directory.md` LANDED 2026-08-11** — the CD-1 living spec, every question
+  ruled item by item. **THE FORK RESOLVED TO THE SHAPE ALREADY BUILT:** `parties` **IS** the
+  directory, `case_parties` stays the roster link, `case_clients` stays parallel, **D-CL2-8
+  UNTOUCHED**; no new identity table, no views. **NOT ONE LINE IS AUTHORIZED TO BUILD** — no table,
+  no migration, no UI, **no `party_type` migration** (role tags supersede it on paper only)
+- Also ruled there: **scope** (non-parties in, attorney-is-a-role, probate reserves only the
+  PI-proven estate pattern) · **identity** (capacity on the roster link, typed alias sets w/
+  multi-match flags, NO resolution machinery) · **CD-2's two layers** (roster slots as case-type data
+  w/ tiers; directional typed edges) · **the CL-1 firewall** · **the §6 selector contract** ·
+  **IN-2's home** (case-scoped fact table; promotion ONLY by attorney verification)
+- **`cd-1-session-prep.md` is GONE** — absorbed and deleted the same commit. Don't look for it
+- **"Next build slice" is STILL OPEN, and naming it is DEFERRED BY RULING** to a later design
+  session citing the spec at HEAD. **The form engine is now NAMEABLE** (FE-4–FE-7 unblock for spec
+  completion; FE-2's parked build home can be raced) — nameable is not named. Slice A stays WITHDRAWN
 - **PHASE 0 + T3 (authorized 2026-08-07): PARTLY SPENT 2026-08-09 on the P1.** Environment STOOD UP
   (WSL2, torch cu128, NeMo 3.0.0, both checkpoints, CUDA on **sm_120**), **outside the repo** at
-  `~/phase0`. **Stage 1 SCORING IS HELD, NO SCORECARD EXISTS**; Stage 2 untouched; **T4 unauthorized**.
-  Record: `phase0-environment-standup-2026-08-09.md`. Weights fit (2924 of 8151 MiB) but that **does
-  NOT retire sequential loading**. Fixture rider ALREADY SPENT — the 13 pilot transcripts are
-  `src/routing/__tests__/pilot/` fixtures; Stage 1 owes the full-precision comparison
+  `~/phase0` — `phase0-environment-standup-2026-08-09.md`. **Stage 1 SCORING IS HELD, NO SCORECARD
+  EXISTS**; Stage 2 untouched; **T4 unauthorized**. Weights fit but that **does NOT retire sequential
+  loading**. Fixture rider SPENT — the 13 pilot transcripts are `src/routing/__tests__/pilot/`
+  fixtures; Stage 1 owes the full-precision comparison
 - **The one RED preflight row is AUDIO** — no real speech has ever run on this stack. **NARROW
   EXCEPTION ruled 08-09**: environment proceeds, scoring holds, **no substitute audio**, row stays
-  RED, preflight NOT passed. **His hand (H4): stage the 13 recordings into `..\data`**, outside the
-  repo. **BUT THE KICKOFF DOC IS GONE (KICK-1)** — never git-tracked, so the loss cannot be dated,
-  and it is that authorization's **authoritative text**: **until Michael locates it or re-issues,
-  FURTHER T3 WORK IS UNAUTHORIZED.** Not a packet
+  RED. **His hand (H4): stage the 13 recordings into `..\data`** — **checked this refresh:
+  `C:\Users\Brennan\data` DOES NOT EXIST on the machine that ran it.** **AND THE KICKOFF DOC IS GONE
+  (KICK-1)** — never git-tracked, so the loss cannot be dated, and it is that authorization's
+  **authoritative text**: **until Michael locates it or re-issues, T3 WORK IS UNAUTHORIZED**
 
 ## Screens live (what Michael can click)
 - **Sign-in gate — Supabase mode only.** Magic link, no password. Demo mode deliberately ungated
@@ -33,7 +42,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - /cases/new — new-case form (types, auto file numbers); /cases/new/oaa — OAA order upload → draft review → Create Matter, charges as child records
 - /cases/:id — case detail; tabs URL-driven (/cases/:id/{parties,medical,calendar,transcripts})
 - /inbox — transcript staging: upload/import, routing suggestions, confirm-to-file (auto-file OFF, D1)
-- /notes — office notes, per-transcript detail w/ participants/tags; /parties — directory + new/edit forms, masked phones, combobox pickers; /benchmarks — Medicare PFS CSV import (sources in ..\data\pfs\, outside the repo)
+- /notes — office notes, per-transcript detail w/ participants/tags; /parties — directory + new/edit forms, masked phones, combobox pickers; /benchmarks — Medicare PFS CSV import
 - /diagnostics — database + RLS probe (Supabase only), output is evidence not gospel
 - /rules — Legal Rule Registry: entries, attorney-only verify, review log, watch flags, worklist card
 - /statutes — cite box, browse, keyword search; chapter viewer, Mark-verified pins, refresh-and-diff (A4); /bills — watch targets, tracked bills with B3 lifecycle, statute-ref matcher
@@ -57,25 +66,23 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - Medicare/Medicaid live on the client; occurrence flags (trucking, product, government defendant,
   death, **minor/incapacitated**) stay FILE-level **by ruling — do not "fix" minor/incapacitated to
   the client.** `posture` admits `'mixed'`. **No client-role party = FLAGGED, never guessed**
-  (`case_client_flags`), orphaned limitations date **PRESERVED on the flag**. **D-CL2-3: the BILLING
-  RATE IS PER CLIENT**, effective-dated, prospective — **no schema exists**; tracker unbuilt
+  (`case_client_flags`), orphaned limitations date **PRESERVED on the flag**. **D-CL2-3: BILLING RATE
+  IS PER CLIENT**, effective-dated — **no schema exists**; tracker unbuilt
 
 ## Data layer
-- Adapters: local (localStorage demo) AND supabase; the UI talks only to the DataAdapter
-  interface — every feature works in both modes. Seeds are fictional; **store version v10**,
-  and v9→v10 migrates **FORWARD in place** (a reseed wipes what the backfill derives from).
-  **`npm run dev:demo`** runs demo mode while a real `.env` exists; **demo state does NOT travel**
+- Adapters: local (localStorage demo) AND supabase; the UI talks only to the DataAdapter interface —
+  every feature works in both modes. Seeds fictional; **store v10**, and v9→v10 migrates **FORWARD in
+  place**. **`npm run dev:demo`** runs demo mode past a real `.env`; **demo state does NOT travel**
 - **`db/schema.sql` EXECUTED live 2026-07-28**, then the CL-2 migration that night. **34 tables**
-- **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing
-  by design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is
-  NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration
-- **No case-event/CE table, no time_entries, no claims, no `case_links`, and no directory table of
-  any kind — provider, contact, or otherwise.** Health: **232 tests, build + lint clean (re-verified)**
+- **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing by
+  design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration
+- **No case-event/CE table, no time_entries, no claims, no `case_links`, and no contact-directory
+  table beyond `parties` itself.** Health **re-run this refresh: 232 tests pass, build + lint clean**
 
 ## RLS, exercised — the distinction matters
 - **ACTUALLY CONSULTED:** authenticated SELECT on all API tables; INSERT+DELETE on `parties`,
-  `legal_rules`, `glossary_terms`, `watch_targets`; the app's write path; **CL-2's live paths.**
-  **PRESENT BUT UNTESTED: every other policy-bearing table's write path** — an inference, not coverage
+  `legal_rules`, `glossary_terms`, `watch_targets`; the app's write path; **CL-2's live paths. PRESENT
+  BUT UNTESTED: every other policy-bearing write path** — an inference, not coverage
 - **`file_counters` is protected at the PRIVILEGE layer, not by RLS** — its 403 is NOT an RLS
   result. Probe covers **34** tables; **keep it in step with the schema** or a missing GRANT hides
 
@@ -86,64 +93,58 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - legiscan-poller + statute-fetch edge functions written, **NOT deployed**. Called auth-blocked, but
   **that diagnosis is incomplete — `service_role` was never granted either**; start there.
   **/statutes in demo mode never touches Supabase** — fixture chapters only
+- **Benchmarks import reads `..\data\pfs\` — NOT present on the machine that ran this refresh**
+  (checked `C:\Users\Brennan\data`; it lives on the other machine)
 - **Outlook push WORKS as of 2026-07-26**, but **ONLY event CREATION is exercised** — edit/cancel
   unverified; **fictional demo events only** until Go_Live_Gates clears
 - Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual.
   Medical has NO PDF/bill ingestion (Phase 1b GPU-gated); no document storage. **Hand-keying
   itemized bills is a VIABILITY issue** (Michael). Playbook engine NOT built; generated docs and code
-  mappings do NOT survive a reseed. **"Mark disbursed" shows on criminal files — KNOWN CONSEQUENCE
-  of the profiles carve-out, deliberately NOT fixed**
+  mappings do NOT survive a reseed. **"Mark disbursed" shows on criminal files — KNOWN, NOT fixed**
 - **PROBATE: the only furniture is a `Probate companion` case type MIS-PARENTED under Personal
   Injury with a knowingly wrong ladder (`_piDefault`).** PR-3 direction CONFIRMED, **EXECUTION
   HELD** until the ladder pass names the destination. **Do not touch the case-type tree or ladder.**
   No probate tables or roles. **NO MONEY MACHINERY:** no settlement ledger, trust/IOLTA, liens
-- **FORM ENGINE: specified-not-built.** **FE-1 SUPERSEDED by CD-1** (global CONTACT directory;
-  provider is a role, not a table), mechanics surviving **as PROPOSED CD-1 inputs**; FE-2 CLOSED,
-  build home PARKED; FE-3 open. **FE-4–FE-12 spec-only, gated behind CD-1. Nothing authorized: no
-  table, migration, UI.** `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code**;
-  §12 gained §§12.7–12.13 from its first live run. **v2 is SK-v2, a design task — Code must not edit it**
+- **FORM ENGINE: specified-not-built**; CD-1 landing changes only its SPEC status. FE-1 stays
+  SUPERSEDED (its five mechanics now RULED in the contact-directory spec §8); FE-2 CLOSED, build home
+  PARKED; FE-3 open; **FE-4–FE-12 spec-only. Nothing authorized.**
+  `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** (§12 gained §§12.7–12.13
+  from its first live run). **v2 is SK-v2, a design task — Code must not edit it**
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only;
   captures e+f NOT folded; register H1–H83. **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
 - **REGISTRY — read both halves.** **DOCS: TWENTY entries VERIFIED** (Michael) in
   `legal-rule-registry-discovery-and-carrier-duties.md` — thirteen (TRCP discovery, Lab. Code
-  § 406.033, four FMCSR) plus **seven** (TRCP 152/scire facias, TRCP 194 **expanded to your
-  four-category list**, CPRC §§ 17.044/17.062, § 17.024, TTCA incl. § 101.106, FTCA, Prop. Code
-  ch. 142 / TRCP 44 & 173). TITLE widened to cover parties/service — **you CONFIRMED it (#50); flag
-  closed**; 193.7 took an observation, not a duplicate. **THE APP's `/rules` SEED IS UNTOUCHED AND
-  ALL UNVERIFIED**: verified propositions live in docs only
+  § 406.033, four FMCSR) plus **seven** (TRCP 152, TRCP 194 expanded, CPRC §§ 17.044/17.062/17.024,
+  TTCA incl. § 101.106, FTCA, Prop. Code ch. 142 / TRCP 44 & 173) — **the seven are the substrate the
+  spec's §6 service picker CITES.** **THE APP's `/rules` SEED IS UNTOUCHED AND ALL UNVERIFIED**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **DT-1 RULED, NOT YET IN FORCE (#50): date stamps use YOUR Central wall clock, never container
-  UTC** (rolls 19:00 Central daylight / 18:00 standard). **Binds when you paste v14 — your hand.**
-  Why: the #49 batch stamped **08-12** on rulings you made **08-11 Central**. Those stamps are
-  **DELIBERATELY LEFT ALONE** by your ruling; #50 records the truth. **NOT retroactive**
-- **TWO SYNC-PICKER RE-CHECKS, ONE CLICK EACH, BOTH YOURS:** `docs/skills/` (Q-3 — evidence says it
-  IS syncing, since the skill ran design-side from HEAD; you close it) and `docs/templates/`
-  (08-11, the first house template). **If the picker excludes new nested dirs, neither reaches you**
-- **BOTH REQ-1 CAPTURES ARE NOW FILED IN THE REPO**, addenda included, and are CD-1 session input: `REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md`, `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`.
-  **CD-1 stays UNRULED and NOT AUTHORIZED** — only its gate is met. **CD-2** holds the roster
-  evidence; distinct from CL-1 (`case_links` links cases)
-- **QUEUE ENTRIES ADDED IN #49, all substance OPEN:** **FE-8** as-generated retention + edit diffing
-  · **FE-9** family drift · **FE-10** render-time format lint · **FE-11** caption-body integrity ·
-  **FE-12** template provenance · **IN-4** instrument lifecycle w/ service-bound certificate dates ·
-  **IN-5** disclosure-mining · **WF-1** under a **NEW WF series**. **IN-2 EXTENDED IN PLACE, not
-  duplicated.** **FE-8's cite** ("a prior packet's REQ-12") resolves to nothing — recorded, **NOT
-  reconstructed** per K-6/K-7
+- **DT-1 IS NOW IN FORCE** — v14 pasted, verified design-side 2026-08-11; the queue item is CLOSED on
+  that verification. Stamps use YOUR Central wall clock. The #49 batch's **08-12** stamps stay
+  **DELIBERATELY LEFT ALONE**; #50 records the truth. **NOT retroactive**
+- **TWO SYNC-PICKER RE-CHECKS, ONE CLICK EACH, BOTH YOURS:** `docs/skills/` (Q-3) and
+  `docs/templates/`. **If the picker excludes new nested dirs, neither reaches you**
+- **BOTH REQ-1 CAPTURES ARE FILED AND NOW SPENT** as CD-1 input:
+  `REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md`, `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`
+- **QUEUE ENTRIES FROM #49, all substance still OPEN:** **FE-8** as-generated retention · **FE-9**
+  family drift · **FE-10** format lint · **FE-11** caption-body integrity · **FE-12** template
+  provenance · **IN-4** lifecycle (**block-finalized now rides it**) · **IN-5** · **WF-1**. **IN-2's
+  EXTRACTION HALF stays OPEN, Phase-1b gated. FE-8's cite** resolves to nothing — **NOT reconstructed**
+- **NEWLY REGISTERED 2026-08-11: the next-build-slice question** — it rode session-log tables since
+  #31 and was **never in the queue**; entered with full text (QR-1) before it could be lost
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
-  machine that will process privileged audio; **smoke test RULED AND RUN 08-09** (tone only). **The
-  capabilities memo is NOT in the repo** — route it. **CL2-AC-1 is DIRECTION-CONFIRMED, not closed**
+  privileged-audio machine; **smoke test RULED AND RUN 08-09** (tone only). **The capabilities memo is
+  NOT in the repo** — route it. **CL2-AC-1 is DIRECTION-CONFIRMED, not closed**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**.
   **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT).
-  instr. **v10 in force, v14 drafted awaiting your paste**. **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still
-  UNREVIEWED**, as is **#37–#50's own routing** — do not copy the #36 clearance forward
+  Instructions **v14 IN FORCE**. **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
+- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#51's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #50. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
-  `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`; `cd-1-session-prep.md`** (a
-  scaffold — delete it when the CD-1 spec exists). Client-model detail: design doc §10 (**D-CL2-3a**,
-  **CL2-CHECK-1** open there)
+  through #51. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10
+  (**D-CL2-3a**, **CL2-CHECK-1**)
 - FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: Supabase Pro (gate 1), security review (gate 2), **gate 3 RLS PARTLY**, no canonical law-change ledger, Outlook unreviewed
