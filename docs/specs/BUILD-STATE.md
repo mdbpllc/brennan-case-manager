@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 9f96115  |  Branch: master  |  Generated: 2026-08-11 Central (forty-fourth refresh)
+Commit: 8df938e  |  Branch: master  |  Generated: 2026-08-11 Central (forty-fifth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -8,21 +8,21 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **Anti-resurrection ledger: `docs/specs/anti-resurrection-ledger.md`** — closed, withdrawn, and
   deliberately-not-built items. **Check it before rebuilding anything absent. Never drop this line**
 
-## CD-1 IS RULED AND SPEC'D — AND STILL NOT BUILT (read this first)
-- **`docs/specs/contact-directory.md` LANDED 2026-08-11** — the CD-1 living spec, every question
-  ruled item by item. **THE FORK RESOLVED TO THE SHAPE ALREADY BUILT:** `parties` **IS** the
-  directory, `case_parties` stays the roster link, `case_clients` stays parallel, **D-CL2-8
-  UNTOUCHED**; no new identity table, no views. **NOT ONE LINE IS AUTHORIZED TO BUILD** — no table,
-  no migration, no UI, **no `party_type` migration** (role tags supersede it on paper only)
-- Also ruled there: **scope** (non-parties in, attorney-is-a-role, probate reserves only the
-  PI-proven estate pattern) · **identity** (capacity on the roster link, typed alias sets w/
-  multi-match flags, NO resolution machinery) · **CD-2's two layers** (roster slots as case-type data
-  w/ tiers; directional typed edges) · **the CL-1 firewall** · **the §6 selector contract** ·
-  **IN-2's home** (case-scoped fact table; promotion ONLY by attorney verification)
-- **`cd-1-session-prep.md` is GONE** — absorbed and deleted the same commit. Don't look for it
-- **"Next build slice" is STILL OPEN, and naming it is DEFERRED BY RULING** to a later design
-  session citing the spec at HEAD. **The form engine is now NAMEABLE** (FE-4–FE-7 unblock for spec
-  completion; FE-2's parked build home can be raced) — nameable is not named. Slice A stays WITHDRAWN
+## CD-1: AUTHORIZED 2026-08-11 — AND NOT ONE LINE OF IT IS BUILT (read this first)
+- **THE NEXT BUILD SLICE IS NAMED AND AUTHORIZED: the CD-1 directory build.** Scope, OUTs, and
+  Michael's authorization: **`docs/specs/cd1-build-slice.md`**. **The build has NOT started** — it is
+  a separate, deliberate Code session; the queue runner was barred from beginning it
+- **Design authority stays `docs/specs/contact-directory.md`** (LIVING SPEC, landed 08-11, every
+  question ruled). **THE FORK RESOLVED TO THE SHAPE ALREADY BUILT:** `parties` **IS** the directory,
+  `case_parties` stays the roster link, `case_clients` stays parallel, **D-CL2-8 UNTOUCHED**
+- **IN (7):** parties evolution (role tags retiring `party_type`, typed aliases, deceased) ·
+  `case_parties` evolution (capacity + 4 attributes + history, **backfill FLAGS, never guesses**) ·
+  roster definitions as data, **seeded only for bank-evidenced case types** · contact-edges table
+  (CL-1 firewall) · directory UI incl. the scope-label edit surface · **RLS + probe from birth** ·
+  **live migration by Michael's hand** (CL-2 precedent)
+- **OUT, explicitly:** form engine · IN-2 fact table · merge tooling · **service-story fields**
+  (wait for the first instrument consumer) · probate beyond the reserved pattern · `/rules` seed.
+  **Outside that scope NOTHING is authorized.** Slice A stays WITHDRAWN — this is not its return
 - **PHASE 0 + T3 (authorized 2026-08-07): PARTLY SPENT 2026-08-09 on the P1.** Environment STOOD UP
   (WSL2, torch cu128, NeMo 3.0.0, both checkpoints, CUDA on **sm_120**), **outside the repo** at
   `~/phase0` — `phase0-environment-standup-2026-08-09.md`. **Stage 1 SCORING IS HELD, NO SCORECARD
@@ -31,7 +31,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   fixtures; Stage 1 owes the full-precision comparison
 - **The one RED preflight row is AUDIO** — no real speech has ever run on this stack. **NARROW
   EXCEPTION ruled 08-09**: environment proceeds, scoring holds, **no substitute audio**, row stays
-  RED. **His hand (H4): stage the 13 recordings into `..\data`** — **checked this refresh:
+  RED. **His hand (H4): stage the 13 recordings into `..\data`** — **re-checked this refresh:
   `C:\Users\Brennan\data` DOES NOT EXIST on the machine that ran it.** **AND THE KICKOFF DOC IS GONE
   (KICK-1)** — never git-tracked, so the loss cannot be dated, and it is that authorization's
   **authoritative text**: **until Michael locates it or re-issues, T3 WORK IS UNAUTHORIZED**
@@ -75,7 +75,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   place**. **`npm run dev:demo`** runs demo mode past a real `.env`; **demo state does NOT travel**
 - **`db/schema.sql` EXECUTED live 2026-07-28**, then the CL-2 migration that night. **34 tables**
 - **GRANTS ARE PART OF THE SCHEMA — load-bearing.** `authenticated` ONLY, **`anon` gets nothing by
-  design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration
+  design** (`db/migrations/2026-07-28-api-role-grants.sql`). **`ALTER DEFAULT PRIVILEGES` is NOT set: every new table must carry its own GRANT or it is unreachable** — copy CL-2's migration. **The CD-1 slice's new tables inherit this — it is why RLS+grants are IN from birth**
 - **No case-event/CE table, no time_entries, no claims, no `case_links`, and no contact-directory
   table beyond `parties` itself.** Health **re-run this refresh: 232 tests pass, build + lint clean**
 
@@ -94,7 +94,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   **that diagnosis is incomplete — `service_role` was never granted either**; start there.
   **/statutes in demo mode never touches Supabase** — fixture chapters only
 - **Benchmarks import reads `..\data\pfs\` — NOT present on the machine that ran this refresh**
-  (checked `C:\Users\Brennan\data`; it lives on the other machine)
+  (re-checked `C:\Users\Brennan\data`; it lives on the other machine)
 - **Outlook push WORKS as of 2026-07-26**, but **ONLY event CREATION is exercised** — edit/cancel
   unverified; **fictional demo events only** until Go_Live_Gates clears
 - Inbox has NO auto ingestion (T3 unbuilt); OAA parses digital Uvalde orders only, scans → manual.
@@ -105,11 +105,11 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   Injury with a knowingly wrong ladder (`_piDefault`).** PR-3 direction CONFIRMED, **EXECUTION
   HELD** until the ladder pass names the destination. **Do not touch the case-type tree or ladder.**
   No probate tables or roles. **NO MONEY MACHINERY:** no settlement ledger, trust/IOLTA, liens
-- **FORM ENGINE: specified-not-built**; CD-1 landing changes only its SPEC status. FE-1 stays
-  SUPERSEDED (its five mechanics now RULED in the contact-directory spec §8); FE-2 CLOSED, build home
-  PARKED; FE-3 open; **FE-4–FE-12 spec-only. Nothing authorized.**
-  `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** (§12 gained §§12.7–12.13
-  from its first live run). **v2 is SK-v2, a design task — Code must not edit it**
+- **FORM ENGINE: specified-not-built, and it is NOT the authorized slice.** FE-1 SUPERSEDED by CD-1;
+  **FE-2's build home RE-PARKED 08-11 to the INTAKE PIPELINE** (the CD-1 slice ingests no documents;
+  the 08-07 ruling itself untouched); FE-3 open; **FE-4–FE-12 spec-only. Nothing authorized**
+- `docs/skills/drafting-disclosures/SKILL.md` is **a DOCUMENT, not code** — **now v2** (landed
+  08-11, authored design-side under the upgrade protocol; **Code must still never edit it**)
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only;
   captures e+f NOT folded; register H1–H83. **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
@@ -122,19 +122,19 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md;
   **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
-- **DT-1 IS NOW IN FORCE** — v14 pasted, verified design-side 2026-08-11; the queue item is CLOSED on
-  that verification. Stamps use YOUR Central wall clock. The #49 batch's **08-12** stamps stay
-  **DELIBERATELY LEFT ALONE**; #50 records the truth. **NOT retroactive**
+- **DT-1 IS NOW IN FORCE** — v14 pasted, verified design-side 2026-08-11. Stamps use YOUR Central
+  wall clock. The #49 batch's **08-12** stamps stay **DELIBERATELY LEFT ALONE**; **NOT retroactive**
 - **TWO SYNC-PICKER RE-CHECKS, ONE CLICK EACH, BOTH YOURS:** `docs/skills/` (Q-3) and
   `docs/templates/`. **If the picker excludes new nested dirs, neither reaches you**
+- **YOUR HAND, NEWLY ACTIONABLE: re-upload SKILL.md v2 as the claude.ai skill copy** (v2 is at HEAD;
+  the #45 hand-upload item was consolidated INTO SK-v2 per QR-1 — one home, text moved not deleted)
+- **AND YOURS: fire the CD-1 build session** — spec + slice doc on screen. Nothing else authorizes it
 - **BOTH REQ-1 CAPTURES ARE FILED AND NOW SPENT** as CD-1 input:
   `REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md`, `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`
 - **QUEUE ENTRIES FROM #49, all substance still OPEN:** **FE-8** as-generated retention · **FE-9**
   family drift · **FE-10** format lint · **FE-11** caption-body integrity · **FE-12** template
   provenance · **IN-4** lifecycle (**block-finalized now rides it**) · **IN-5** · **WF-1**. **IN-2's
   EXTRACTION HALF stays OPEN, Phase-1b gated. FE-8's cite** resolves to nothing — **NOT reconstructed**
-- **NEWLY REGISTERED 2026-08-11: the next-build-slice question** — it rode session-log tables since
-  #31 and was **never in the queue**; entered with full text (QR-1) before it could be lost
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
   privileged-audio machine; **smoke test RULED AND RUN 08-09** (tone only). **The capabilities memo is
   NOT in the repo** — route it. **CL2-AC-1 is DIRECTION-CONFIRMED, not closed**
@@ -142,9 +142,9 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT).
   Instructions **v14 IN FORCE**. **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#51's own routing** — do not copy the #36 clearance forward
+- **#36's routing is CLEARED design-side (log #37).** The carried **#31–#33 material is still UNREVIEWED**, as is **#37–#52's own routing** — do not copy the #36 clearance forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through #51. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through #52. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10
   (**D-CL2-3a**, **CL2-CHECK-1**)
 - FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: Supabase Pro (gate 1), security review (gate 2), **gate 3 RLS PARTLY**, no canonical law-change ledger, Outlook unreviewed
