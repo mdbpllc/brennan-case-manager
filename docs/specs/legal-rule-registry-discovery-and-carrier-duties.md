@@ -1,6 +1,8 @@
-# Legal Rule Registry — Discovery Procedure, Nonsubscriber, and Carrier Duties
+# Legal Rule Registry — Discovery Procedure, Nonsubscriber, Carrier Duties, Parties and Service
 
-**Status: ALL THIRTEEN PROPOSITIONS VERIFIED — Michael Brennan, 2026-08-11** (ruling 3, design session #48). Verification attaches to the proposition WORDING below, as relied on in the 2026-08-11 trucking first-sets drafting (`REQ-CAPTURE_trucking-multidefendant-first-sets_2026-08-11.md` §4). **Only Michael verifies; this batch was his ruling, not a model assertion** — Code transcribed a ruling it was handed and set nothing itself.
+**Status: ALL TWENTY PROPOSITIONS VERIFIED — Michael Brennan** (thirteen on 2026-08-11, ruling 3, design session #48; seven more on 2026-08-12, ruled entry by entry with each wording on screen). Verification attaches to the proposition WORDING below, as relied on in the 2026-08-11 trucking first-sets drafting (`REQ-CAPTURE_trucking-multidefendant-first-sets_2026-08-11.md` §4) and the 2026-08-11 roster-mining pass (`REQ-CAPTURE_roster-mining-pass_2026-08-11.md` §4). **Only Michael verifies; both batches were his rulings, not model assertions** — Code transcribed rulings it was handed and set nothing itself.
+
+**Second batch, 2026-08-12 (queue-runner, eleventh invocation).** Seven new entries (parties, substituted and statutory service, governmental and federal sovereign postures, ad litem practice), interleaved by subject per this file's existing precedent and tagged *(2026-08-12 batch item n)*. They are relied on **for roster structure only** — none asserted to any court or counsel. The file's subject line above widened accordingly. One entry from that batch created NO new record: TRCP 193.7 already existed here, so it took a second observation instead (one proposition, one home).
 
 **Filed 2026-08-11 (queue-runner, tenth invocation). Why this file exists — a routing deviation, stated rather than buried.** The fold-in directed these entries into `docs/specs/legal-rule-registry-*`, interleaved by subject. That glob matches exactly one existing file — `legal-rule-registry-draft-entries-medical-billing.md`, which is scoped to *medical damages, billing, liens and related* and headed **"ALL ENTRIES UNVERIFIED."** Folding VERIFIED discovery-procedure and FMCSR propositions into it would have broken both its subject scope and its status header, so this second file was opened in the same naming family instead. **Michael's to confirm or redirect.**
 
@@ -64,6 +66,7 @@
 **Cite:** Tex. R. Civ. P. 193.7.
 **Rule.** Production of a document authenticates it for use against the producing party.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
+**Second observation added 2026-08-12** (roster-mining capture §4, Michael's ruling): the self-authentication NOTICE language appears as recurring petition boilerplate across both document banks, treated only as a recurring petition component. Ruled explicitly: **one proposition, one home — no second 193.7 entry.**
 
 ## TRCP 196.4 — electronically stored information *(batch item 9)*
 
@@ -77,6 +80,57 @@
 **Cite:** Tex. R. Civ. P. 192.3(f).
 **Rule.** Insurance agreements are discoverable.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
+
+## TRCP 194 — initial disclosures (post-2021), EXPANDED wording *(2026-08-12 batch item 2)*
+
+**Cite:** Tex. R. Civ. P. 194.
+**Rule.** Initial disclosures are required without awaiting a discovery request. Required content includes: correct names of the parties; name, address, and phone of persons with knowledge of relevant facts, and of potential parties; the identity of persons who may be designated as responsible third parties; insuring agreements under which an insurer may be liable for part or all of a judgment; and identification/production of the documents the disclosing party may use to support its claims or defenses.
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Wording note (same-session supersession, later ruling governs).** Michael EXPANDED this entry at his own direction during verification, from the narrower roster-read wording verified earlier in the same session to the four-category working list above. **Verification attaches to this expanded wording.**
+**Relied on for:** (a) reading disclosure documents as carriers of roster data (roster-mining capture); (b) the legal substrate of the four-category disclosure-mining practice recorded at **IN-5** (Michael's direct statement, design session 2026-08-12).
+
+## TRCP 152 — substitution on a defendant's death; scire facias practice *(2026-08-12 batch item 1)*
+
+**Cite:** Tex. R. Civ. P. 152 (with related scire facias practice).
+**Rule.** When a defendant dies during the pendency of a suit, substitution of the estate's representative or heirs is effected by scire facias — the clerk issues the writ (in the name of The State of Texas, with an officer's-return block) requiring the administrator, executor, or heir to appear and defend, and the suit proceeds against them.
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Relied on for:** explaining the deceased-defendant instrument cluster (suggestion of death → scire facias → petition against representative), roster capture REQ-10.
+
+## Tex. Prop. Code ch. 142 / ad litem practice under TRCP 44 & 173 *(2026-08-12 batch item 7)*
+
+**Cite:** Tex. Prop. Code ch. 142; Tex. R. Civ. P. 44, 173.
+**Rule.** A minor plaintiff sues through a next friend (TRCP 44); where the next friend's and minor's interests may conflict — minor-settlement approval being the standard occasion — the court appoints a guardian ad litem (TRCP 173), and Property Code ch. 142 governs management of the minor's recovery.
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Relied on for:** explaining the observed guardian-ad-litem application and the roster-grows-by-court-action pattern (REQ-14), plus next-friend capacity slots (REQ-12).
+
+## CPRC §§ 17.044 and 17.062 — substituted service agents *(2026-08-12 batch item 3)*
+
+**Cite:** Tex. Civ. Prac. & Rem. Code §§ 17.044, 17.062. *(One entry, as captured.)*
+**Rule.** The Secretary of State (§ 17.044) and the chair of the Texas Transportation Commission (§ 17.062) are statutory agents for substituted service in the circumstances those sections define — the two substituted-service modes observed in the commercial-vehicle exemplars (nonresident or unlocatable defendants; nonresident motor carriers).
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Relied on for:** role-specific service-path attributes on trucking rosters (roster capture REQ-03, REQ-19).
+
+## CPRC § 17.024 — service on governmental units *(2026-08-12 batch item 4)*
+
+**Cite:** Tex. Civ. Prac. & Rem. Code § 17.024.
+**Rule.** Suits against governmental units are served through the officers the statute names per unit type — observed paths: city manager (municipality), superintendent (school district), executive director (state agency), with the county exemplar answered through the district attorney's office.
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Relied on for:** the governmental-unit party kind whose service path is an attribute of the role (roster capture REQ-07).
+
+## CPRC § 101.001 et seq. (TTCA), incl. § 101.106 election of remedies *(2026-08-12 batch item 5)*
+
+**Cite:** Tex. Civ. Prac. & Rem. Code § 101.001 et seq., incl. § 101.106.
+**Rule.** Tort suits against Texas governmental units proceed under the TTCA's limited waiver, and § 101.106 makes the choice between the governmental unit and its individual employees an election with preclusive consequences — why the exemplar joining a unit WITH its employees is a distinct and legally consequential constellation.
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Scope limit (stated, not implied):** relied on ONLY to explain that observed roster shape — **not** for any waiver or damages analysis.
+**Practice note of record (Michael, 2026-08-12):** the practice files against the governmental body alone in nearly all TTCA cases; employee joinder is deliberate and exceptional. *(Also CD-2 roster-default evidence.)*
+
+## FTCA — 28 U.S.C. §§ 1346(b), 2671 et seq. *(2026-08-12 batch item 6)*
+
+**Cite:** 28 U.S.C. §§ 1346(b), 2671 et seq.
+**Rule.** In a tort suit under the FTCA, the United States is the sole proper defendant — not the federal agency or the individual employee — which is why the observed federal complaint captions the United States alone; role-specific service path observed alongside (U.S. Attorney General + U.S. Attorney).
+**Status:** VERIFIED — Michael, 2026-08-12.
+**Relied on for:** explaining the federal-sovereign roster shape (roster capture REQ-07).
 
 ## Tex. Lab. Code § 406.033 — nonsubscriber defense forfeiture *(batch item 11)*
 

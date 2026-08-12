@@ -12,6 +12,111 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; ELEVENTH invocation)
+
+One packet, one close-out. **§5 was NONE — nothing was built, nothing authorized.** Runner **v6**
+read from `docs/prompts/QUEUE-RUNNER.md` at HEAD via the pointer command (QR-2). QR-3 checkout gate
+PASSED: clean, on master, HEAD == `origin/master` at `58bd3a4`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_req-capture-reconciliations_2026-08-12`. **QR-4 ordering was trivially
+  unambiguous** — one packet, filename date parseable, filename-date order and pure-mtime order
+  identical; both were computed and printed anyway.
+- **Date-forward packet, recorded not corrected:** the packet filename and its design session are
+  dated **2026-08-12**; the machine running this batch reports **2026-08-11**. The packet's own
+  dates are carried through verbatim into every doc this batch touched (registry verification lines
+  read "Michael, 2026-08-12" exactly as ruled). Flagged for Michael as an observation only — Code
+  does not restamp an attorney's ruling date.
+- **Reconciliation was clean; nothing was skipped as already built.** Both capture paths were
+  genuinely absent. No ID collision: the FE series ended at FE-7, IN at IN-3, and no WF heading
+  existed. The design-side view (`157e792`) lagged HEAD by exactly one commit — a BUILD-STATE
+  refresh, no substantive drift. Log top was #48, so the packet's "expected #49" held.
+- **Nothing superseded across packets** (a single-packet batch has no conflict rule to apply). The
+  one supersession INSIDE the packet — TRCP 194's narrow wording replaced by Michael's expanded
+  four-category wording, same session — is recorded at the registry entry itself, later ruling
+  governing, per the packet's own RR-1 note.
+- **Registry routing deviation, continued deliberately.** The seven new VERIFIED entries went into
+  `legal-rule-registry-discovery-and-carrier-duties.md` — the file opened in the tenth invocation
+  for exactly this reason (the other `legal-rule-registry-*` file is scoped to medical billing and
+  headed "ALL ENTRIES UNVERIFIED"). Parties, service, and sovereign-posture material widens that
+  file's subject beyond its original title, so the **title and header were widened to say so**
+  rather than letting the scope drift silently. Entries are tagged *(2026-08-12 batch item n)* to
+  keep them distinguishable from the 08-11 batch's items 1–15. **Michael's to confirm or redirect.**
+- **§7 open items — nothing new to merge.** Every carried item (Q-3 pair, KICK-1, H4, P15
+  runner-copy deletion, SK-v2, hand-upload) was already registered in
+  `docs/specs/attorney-review-queue.md` with full question text per QR-1; verified line by line
+  rather than assumed. The packet's own new items (FE-8–FE-12, IN-4, IN-5, WF-1) entered the
+  register this batch with full text. CD-1's gate-met status is annotated on CD-1's own entry.
+- **Verification discipline held:** Code set nothing to verified. Seven propositions carry
+  Michael's 2026-08-12 sign-off because he ruled them one by one with each wording on screen; Code
+  transcribed rulings it was handed.
+
+## 2026-08-12 (#49) — BOTH PENDING REQ-1 CAPTURES RECONCILED:
+attorney-edit roundtrip → FE-8/FE-9/FE-10, IN-2 extended, IN-4, WF-1 (new series); roster-mining →
+evidence-routed to CD-1/CD-2, FE-11, FE-12; seven registry propositions VERIFIED; IN-5 captured
+mid-session; CD-1 GATE MET (design session, Fable 5)
+
+Second and third uses of the REQ-1 channel, both reconciled against BUILD-STATE (157e792) and log
+#48 BEFORE staging. Michael ruled item by item. Nothing built; nothing authorized. The roster
+capture had sat unreconciled since the morning of 08-11; flagged and taken up in the same session
+at Michael's ruling.
+
+- ATTORNEY-EDIT CAPTURE (six items, all CONFIRMED): REQ-01 → FE-8 (as-generated retention +
+  attorney-edit diff; reason: the diff is both the finalization worklist and a house-conventions
+  signal). REQ-02 → FE-9 (family drift detection over FE-6's item model; cross-linked, not merged —
+  packaging and drift are different questions). REQ-03 → FE-10 (format profiles + render lint;
+  extends form-engine §§12.7–12.13 from method to enforcement). REQ-04 → EXTEND IN-2, no new ID
+  (one home per question, the CL2-AC-1 dedup principle; source-fact pinning is the generalization
+  of IN-2's source-attribution question). REQ-05 → IN-4 (full instrument lifecycle + certificate
+  date bound to the service event; IN-3 cross-linked, stands separate). REQ-06 → WF-1 under a NEW
+  workflow-channels heading (reason: fits neither FE nor IN; an ID with full text is cheap
+  insurance against the K-6/K-7 death).
+- FE-8 LINEAGE DEFECT, recorded not repaired: the capture's REQ-01 cites "a prior packet's REQ-12
+  (artifact provenance)." The cite resolves to NOTHING on record — design side searched 2026-08-12
+  (trucking ran REQ-01–10; roster REQ-12 is capacity multiplicity; the email-workflow doc has no
+  numbered REQs), and Michael searched CIVIL LIT the same day and could not find it ("It may not
+  exist."). Recorded as a probable citation defect in the capture; capture text stands as written;
+  NOTHING reconstructed, per the K-6/K-7 standing rule — FE-8's text is complete on its own, which
+  is exactly the mechanism that rule prescribes. If the packet ever surfaces, FE-8 gets a lineage
+  annotation. Failure class: dangling cross-reference; actor: the CIVIL LIT authoring session
+  (model not inferred).
+- ROSTER-MINING CAPTURE (19 items, all CONFIRMED): the capture was COMMISSIONED as CD-1 session
+  input (#48 ruling 4), so the reconciliation deliberately minted few IDs — 19 near-duplicates
+  would recreate the dedup class CL2-AC-1 killed. REQ-01–13, 15, 17, 19 → evidence routes, no new
+  IDs (capture doc preserved in full at docs/specs/; CD-2 annotated with the pointer; REQ-17 noted
+  as form-engine §3 evidence; REQ-19 cross-linked to IN-4). REQ-14 → named design-constraint line
+  inside CD-1's entry (sides are a property of the case type; any two-sided model fails on filed
+  documents). REQ-16 → FE-11 (caption-body integrity; §5.4's hard-vs-lint fork rides). REQ-18 →
+  FE-12 (template provenance attribute; §5.6 rides). Michael's standing two-bank instruction
+  recorded as an attorney instruction of record, not a proposal: current-practice bank is format
+  authority; prior-firm bank is content-only.
+- REGISTRY (ruled one by one, wording on screen): entries 1 (TRCP 152/scire facias), 4 (CPRC
+  §§ 17.044/17.062), 5 (§ 17.024), 6 (TTCA incl. § 101.106), 7 (FTCA), 8 (Prop. Code ch. 142 /
+  TRCP 44 & 173) VERIFIED — Michael, 2026-08-12. Entry 3 (TRCP 194) EXPANDED at Michael's direction
+  to his four-category working list (RTPs, persons with knowledge, insuring agreements,
+  intended-use documents) and VERIFIED as expanded — verification attaches to the expanded wording.
+  Entry 2 (TRCP 193.7): NO second entry — the existing entry VERIFIED 2026-08-11 gains this
+  capture's petition-boilerplate context as a second observation (one proposition, one home).
+  Entry 6 carries a practice note: the practice files against the governmental body alone in
+  nearly all TTCA cases; employee joinder is deliberate and exceptional (also CD-2 roster-default
+  evidence).
+- IN-5 CAPTURED MID-SESSION from Michael's direct statement (disclosure-mining: alleged RTPs,
+  witnesses/persons with knowledge, insuring agreements, intended-use documents — what he reads
+  opposing disclosures for). Entered with full text; sibling of IN-1; substrate is the expanded
+  TRCP 194 entry.
+- CD-1 GATE MET: with the roster capture reconciled, the bounded evidence pass of #48 ruling 4 is
+  complete. The CD-1 schema session (typed, schema on screen, views-vs-linked-tables fork) is
+  fireable at Michael's choosing. cd-1-session-prep.md updated accordingly.
+- Process notes: reconciliation basis was the possibly-stale design-side view (157e792/#48),
+  marked as such throughout. RR-1 sweep ran clean — all packet docs were authored AFTER the
+  rulings they encode; the one same-session supersession (entry 3 narrow → expanded verification)
+  is recorded in the addendum, later ruling governing.
+
+Staged for Code: this entry; both reconciled captures (new docs/specs/ files); queue fold-in;
+registry fold-in; cd-1-session-prep update.
+Awaiting/Returned from Code, unreviewed: this packet's routing; carried returned material per #48
+(verify against the entries that staged them; do not copy forward items cleared in #13/#22/#23/#24).
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; TENTH invocation)
 
 Two packets, one close-out. **§5 was NONE in both — nothing was built, nothing authorized.** Runner

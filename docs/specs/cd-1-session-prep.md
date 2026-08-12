@@ -19,9 +19,16 @@ practice serendipity alone:
    stay with live capture. Prompt for this pass: `PROMPT_pi-discovery-roster-mining.md` (this
    packet; travels by Michael's hand to PI DISCOVERY — NOT a repo doc, listed here only so the
    session knows to expect its output).
+   **COMPLETE 2026-08-12** — the capture was produced (85 documents mined across both banks),
+   reconciled, and ruled item by item by Michael. It lives at
+   `docs/specs/REQ-CAPTURE_roster-mining-pass_2026-08-11.md`.
 3. **The CD-1 schema session fires when that capture lands.** Typed, not voice. The core fork —
    views over one directory vs. separate tables with links — is decided THERE, deliberately;
    evidence has diminishing returns on an architecture fork.
+
+**GATE MET 2026-08-12.** With item 2 complete, the bounded evidence pass of ruling 4 is finished.
+**The CD-1 schema session is fireable at Michael's choosing** — it is his to fire; nothing here
+prepares or triggers it.
 
 ## Open the session with these on screen
 
@@ -33,7 +40,15 @@ practice serendipity alone:
 - `docs/specs/attorney-review-queue.md` §7 — CD-1 full text; **CD-2** (rosters + typed contact
   relationships, framing RULED 2026-08-11); **IN-2**'s source-attribution question
   (CD-1-adjacent).
-- The roster-mining REQ-CAPTURE (item 2 above), once it exists.
+- `docs/specs/REQ-CAPTURE_roster-mining-pass_2026-08-11.md` — the roster-mining capture (item 2
+  above), reconciled and ruled 2026-08-12. Its §5 questions 1, 2, 3, 5 are session questions;
+  its §2 REQ-14/REQ-15 are the design constraint and the gate finding.
+- `docs/specs/REQ-CAPTURE_attorney-edit-roundtrip_2026-08-11.md` — the attorney-edit capture,
+  reconciled and ruled the same day.
+- New queue entries from both captures, all CD-1-adjacent: **FE-8–FE-12** (as-generated retention
+  and diffing; family drift; render-time format lint; caption-body integrity; template provenance)
+  and **IN-4 / IN-5** (instrument lifecycle with service-bound certificate dates; disclosure-mining
+  of the four TRCP 194 categories).
 - **By Michael's hand:** the accumulated drafting-disclosures provider-data blocks — CD-1's
   evidence channel since 2026-08-10; the skill never writes them to the repo.
 
