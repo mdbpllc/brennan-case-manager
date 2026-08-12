@@ -12,6 +12,75 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; EIGHTEENTH invocation)
+
+One packet, one close-out — the smallest of the night. **§5 was NONE**: one log entry, one new
+queue row, one appended gates note. **No new files; no BUILD-STATE content delta beyond the
+standard rewrite** (per §2, GH-1's homes are the queue and the gates doc, not build state). Runner
+**v6** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2. QR-3 checkout gate PASSED: clean,
+on master, HEAD == `origin/master` at `cfa1692`. Clock check before stamping: 00:17 CDT, 2026-08-12.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_gh1-history-acceptance_2026-08-12`. Filename-date and mtime order identical;
+  manifest §3 date matches. No conflict rule fired.
+- **All three §1 reconcile points held.** #56 was free (log top = seventeenth runner line + #55).
+  **GH-1 is genuinely collision-free** — a repo-wide search returned **zero** GH-series
+  occurrences in `attorney-review-queue.md` and the session log, so the packet's ID was used
+  rather than a next-free one being minted (K-6/K-7 rule satisfied by verification, not
+  assumption). Gate 2 carried the 08-11 clarification and no GH-1 pointer.
+- **This closes the loop the seventeenth invocation opened.** That runner flagged the git-history
+  survival without acting and routed it to Michael; GH-1 is his answer: **ACCEPT, do not rewrite,
+  with a standing tripwire.** The flag was a disposition question, and it now has a decision — the
+  difference between an accepted risk and an unnoticed one.
+- **No history was touched.** No rewrite, no filter-repo, no force-push, no ref of any kind moved
+  except the ordinary fast-forward of this batch's own commits (§6). The tripwire is a record.
+- **Placement call, stated because §4.1 left it to judgment:** GH-1 went into "Process, tooling,
+  and housekeeping" beside the QR/MM-1 governance cluster — not into the FE series, which is
+  design questions about the engine. The gates note is append-only beneath gate 2's own text AND
+  beneath the 08-11 clarification; neither was edited.
+- **The two original strings are stated nowhere** in this batch — not in the entry, the queue row,
+  the gates note, or the commit message.
+- **§6 honored in full:** nothing built, CD-1 slice not begun, no BUILD-STATE line spent on GH-1,
+  #53/#54/#55 and the #49 batch's 08-12 stamps untouched, no Michael's-hand item resolved,
+  `src/`/`db/`/schema/migrations untouched.
+- **§7 merge:** unchanged from #55's set — CD-1 build (GL-1 floor item 1), gates 1 and 9, CRIM
+  DEFENSE project setup, SK-v2 re-upload, picker pair, KICK-1, H4, P15 runner-copy deletion,
+  telemetry posture, email-workflow doc, IN-series naming caveat, probate's unruled project home;
+  FE-8–FE-12, IN-4, IN-5, WF-1, IN-2's extraction half stay open in the queue. **GH-1 is closed on
+  arrival — it enters the register already ruled, carrying a tripwire rather than a question.**
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#56) — GH-1 RULED: identifying strings in git history ACCEPTED, with a
+visibility tripwire; gate-2 pointer ruled in (design session, Fable 5, typed, Cowork)
+
+Same design session as #54/#55, closing out its last ruling. Dialogue trail:
+`claude_GH1_History_Acceptance_Capture_2026-08-12.md` (project knowledge, `claude_` prefix —
+not a repo path).
+
+- ORIGIN: the seventeenth invocation flagged, without acting, that the two prior-case
+  identifying strings generalized out of form-engine.md §8 (#55) survive in git history —
+  prior commits of the file. Private repo; disposition correctly routed to Michael.
+- GH-1 RULED (Michael, 2026-08-12 Central): ACCEPT — history is NOT rewritten — with a
+  TRIPWIRE: revisit before the repo's visibility ever widens (the multi-user phase /
+  instructions trigger 2 / gate 2, any outside collaborator, or the repo going non-private).
+  Reason (load-bearing): a history rewrite changes every commit sha, invalidating the dozens
+  of shas this log cites as record; both machines re-clone; the design-side sync re-syncs;
+  MM-1 coordination throughout. Against that: private repo, strings of modest sensitivity,
+  already absent from the working tree at cfa1692 (runner-verified). Recording the acceptance
+  makes it a decision, not an oversight.
+- GATE-2 POINTER RULED (Michael, 2026-08-12 Central): a one-line appended note rides adjacent
+  to gate 2 in Go_Live_Gates.md so the tripwire fires at the visibility-widening gate itself,
+  not only in the queue. Append-style, never a silent rewrite; gate 2's text untouched.
+- GH-1 is a NEW ID (no GH series existed; collision-checked at reconciliation per the
+  K-6/K-7 rule). The strings are deliberately not quoted anywhere in this batch.
+
+Staged for Code: this entry; the GH-1 queue row; the gate-2 pointer note.
+Awaiting/Returned from Code, unreviewed: this packet's routing. The #54/sixteenth and
+#55/seventeenth batches are both REVIEWED (design-side post-sync verification, this session).
+Carried items per #49/#50/#52/#53/#54: KICK-1, H4, P15 runner-copy deletion, telemetry
+posture, email-workflow doc, IN-series naming caveat — verify against the entries that staged
+them; do not copy forward cleared items.
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; SEVENTEENTH invocation)
 
 One packet, one close-out. **§5 was NONE**: one surgical spec amend, one queue closure, one log

@@ -19,6 +19,8 @@
 
    *Clarification (RULED by Michael, 2026-08-11): the professional security review gates the MULTI-USER phase — instructions trigger 2 governs. Solo live use by Michael proceeds without it. Gate 2's phrase "multi-user / live use" reads as multi-user use; the gate's text above stands as written per the append-don't-rewrite rule.*
 
+   *(GH-1 tripwire, added 2026-08-12: before the multi-user phase or ANY widening of this repo's visibility — outside collaborator, non-private — revisit GH-1 in attorney-review-queue.md: identifying strings from a prior case survive in git history, accepted 2026-08-12 while the repo is private and solo. See session log #56.)*
+
 3. **RLS policies written and tested** for every exposed table (project was provisioned 2026-07-25 with automatic RLS on + auto-expose off; default-deny until policies exist). *See gate 6 — policies cannot be meaningfully tested until a sign-in flow exists.*
 4. **LegiScan API key** in Supabase edge-function secrets (`LEGISCAN_API_KEY`), never in the repo; rotate after any chat-transcript exposure.
 5. **No real client data in the repo or demo fixtures** (existing binding rule — fixtures stay fictional; statute text is the public-domain exception).
