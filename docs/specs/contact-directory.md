@@ -5,6 +5,9 @@
 session of **2026-08-11 Central** (design session, typed, Fable 5; schema on screen per the ruled
 session spec). **NOTHING IN THIS FILE AUTHORIZES A BUILD** — no table, no migration, no UI. All
 build-facing consequences wait for an explicit authorization packet.
+**2026-08-11: the CD-1 BUILD SLICE is AUTHORIZED within the scope of
+`docs/specs/cd1-build-slice.md`. This spec remains the design authority; everything outside that
+slice's scope remains unauthorized.**
 **Absorbs:** `docs/specs/cd-1-session-prep.md` (per that file's own delete-or-absorb line).
 **Reconcile basis:** design-side sync at `13e5c1e`, log through #50 — possibly stale; the queue
 runner verifies at HEAD.

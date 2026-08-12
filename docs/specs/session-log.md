@@ -12,6 +12,112 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; FOURTEENTH invocation)
+
+One packet, one close-out. **§5 was NONE in this run** — documentation routing only: one new spec
+doc, one skill file replaced (v1 → v2), four queue annotations, one contact-directory guard-line
+qualification, one form-engine line, one log entry. But the batch LANDS an authorization: **the
+CD-1 directory build slice is authorized**, and the build itself is a separate Code session that
+did not happen here (§6's first line bars it). Runner **v6**, read from
+`docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2; the command file is a pointer and was not relied
+on for text. QR-3 checkout gate PASSED: clean, on master, HEAD == `origin/master` at `13f736a`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_cd1-build-authorization-and-sk-v2_2026-08-11`. Filename date parseable;
+  filename-date and pure-mtime order identical (single item — nothing to invert). Manifest §3
+  date matches the confirmed order. No conflict rule fired: one packet, nothing superseded
+  between packets.
+- **Reconcile basis was current, not stale:** the packet's stated design-side view (`13f736a`,
+  log through #51 + the thirteenth runner line) was exactly HEAD. Log top was #51, so **#52 was
+  free — no renumbering**, and the packet's "expected #52" held.
+- **Both §1 stop conditions were checked and neither fired.** `docs/specs/cd1-build-slice.md` did
+  not exist at HEAD (landed as a new file, copied as-is). `docs/skills/drafting-disclosures/SKILL.md`
+  was at **v1, 2026-08-06** — not already v2, so nothing was regressed; replaced wholesale, not
+  merged or "improved" (§6). Version line verified reading **v2** and the HEAD cite reading
+  **`13f736a`** before the commit, per §4.2.
+- **The skill replacement is routing, not editing.** The standing bar (Code must not edit the
+  skill — 08-10 packet §6) bars Code from AUTHORING skill changes; this file was authored by the
+  design session under the ruled upgrade protocol, spec fold-in first. The bar stands unchanged.
+- **All four §4.3 annotations were genuine deltas**, verified line by line: the next-slice item
+  existed and carried the deferral (now CLOSED with the ruling and the anti-resurrection check on
+  the record); the CD-1 entry carried no authorization line; FE-2 still read "whichever comes
+  first"; SK-v2 still read as awaiting a design session.
+- **What was superseded, stated rather than dropped:** FE-2's parked build home
+  ("CD-1 build or the intake pipeline, whichever comes first") is superseded by the explicit
+  intake-pipeline re-park. **The 2026-08-07 FE-2 ruling itself is untouched** — the home moved,
+  the ruling did not reopen (§6). The `contact-directory.md` header's "NOTHING IN THIS FILE
+  AUTHORIZES A BUILD" sentence was **qualified, not deleted or softened**, per §4.4.
+- **QR-1 consolidation performed, one home:** the standalone "hand-upload of `drafting-disclosures`
+  as a claude.ai skill" item (carried from #45) was absorbed into the SK-v2 entry, which is the
+  live home now that the re-upload target is v2 at HEAD. **Text moved, not deleted** — the
+  packaging note from #45 survives verbatim inside the SK-v2 entry, and SK-v2 stays OPEN because
+  the upload is Michael's hand and now actionable.
+- **§6 honored in full:** the CD-1 build was NOT begun; nothing in the slice's Scope-OUT list was
+  touched (no fact table, no merge tooling, no service-story fields); `/rules` seed, CE1,
+  Q-6/CourtListener and everything T3/T4 untouched (KICK-1 governs); no open item of Michael's
+  resolved; the #49 batch's 08-12 stamps left alone; no schema, migration, or `src/` change of
+  any kind in this batch.
+- **§7 merge:** **CD-1 build — Michael fires the build session** (authorized; separate Code
+  session, spec + slice doc on screen). **Skill re-upload — Michael's hand, now actionable**
+  (consolidated into SK-v2 above). **Picker pair** (`docs/skills/` + `docs/templates/` in the sync
+  picker — evidence recorded for both; Michael's click). **IN-series name** — #48's caveat, and the
+  veto window narrows further once the build starts consuming IDs. **Carried:** KICK-1, H4, P15
+  runner-copy deletion, telemetry, email-workflow doc — verified present with full text; the
+  drafting-disclosures hand-upload is no longer listed separately for the reason stated above.
+- **BUILD-STATE displacement was mandatory, not optional** — the file sat at exactly 150 and this
+  batch required changes. Detail was cut to make room; no sections were added; the
+  anti-resurrection-ledger pointer line is preserved.
+- **DT-1 in force, and it agrees here:** this runner entry stamps 2026-08-11, which is both
+  Michael's Central date and this machine's local date.
+
+## 2026-08-11 (#52) — SAME-EVENING CONTINUATION of #51: next slice NAMED
+(the CD-1 directory build), SCOPED, and AUTHORIZED (guard lines lifted by packet); FE-2
+RE-PARKED to the intake pipeline; SK-v2 AUTHORED citing the spec at HEAD 13f736a
+(design session, Fable 5, typed)
+
+After the thirteenth invocation landed the CD-1 spec and the design side verified the sync, the
+deferral ruling's own condition (cite the spec at HEAD) was satisfied same-evening, and Michael
+ruled forward:
+
+- NEXT SLICE NAMED (RULED): the CD-1 directory build. Reason: substrate first — the form engine
+  consumes the directory and its own spec is incomplete (FE-4–FE-7 are spec-completion work).
+  Anti-resurrection check on the record: NOT Slice A returning — that was the provider-level
+  framing, withdrawn for baking the wrong level; this builds the ruled level.
+- SCOPE (RULED): seven IN items (parties evolution: role tags/aliases/deceased; case_parties
+  evolution: capacity + four attributes + history states, backfill flags-never-guesses per the
+  CL-2 pattern; roster definitions as data seeded ONLY for bank-evidenced case types; the edges
+  table; directory UI incl. the scope-label edit surface; RLS + probe extension from birth;
+  live migration by Michael's hand per CL-2 precedent). Explicit OUTs: form engine, IN-2 fact
+  table, merge tooling, SERVICE-STORY FIELDS (deferred to the first instrument consumer as the
+  living spec's first revisit), probate beyond the reserved pattern, /rules seed. Full text:
+  docs/specs/cd1-build-slice.md.
+- AUTHORIZED (RULED): the CD-1 build slice, as scoped, is authorized for build. The guard lines
+  lift by this packet: contact-directory.md's header qualified, BUILD-STATE's CD-1 language
+  updated, the queue's CD-1 entry annotated. The build is a SEPARATE Code session working from
+  the spec + slice doc at HEAD; this batch routes docs only.
+- FE-2 RE-PARKED (RULED, one-line supersession): FE-2 lands with the INTAKE PIPELINE, not this
+  slice. Reason: the sweep needs document-name columns and nothing in this slice ingests
+  documents — the "whichever comes first" premise fails here. The 08-07 FE-2 ruling stands.
+- SK-v2 AUTHORED: docs/skills/drafting-disclosures/SKILL.md revised v1 → v2 by this design
+  session, citing form-engine.md §§12.7–12.13 at HEAD 13f736a per the ruled upgrade protocol.
+  Folds: §12.7 attribution verification + the imaging-entity question; §12.8 operator-local
+  service dates (DT-1's sibling in document content); §12.9 style-by-role assertion with step-1
+  style harvest; §12.10 caption label style; §12.11 block keep-together in the ship gate;
+  §12.12 served-final-as-next-shell. Provider-data block's purpose line updated: FE-1 scout →
+  contact-directory seed evidence (FE-1 superseded by CD-1; the block's job unchanged, its
+  consumer now named). Michael's claude.ai re-upload of the skill copy remains HIS HAND, open,
+  actionable once v2 is at HEAD.
+- Process note: the #51 entry's "next-slice naming DEFERRED" stands as written — it was true
+  when written; the deferral's cite-at-HEAD condition was satisfied the same evening and the
+  naming followed. The project-knowledge capture for this session was updated with a
+  same-evening addendum (design side's hand; not a repo artifact).
+
+Staged for Code: this entry; cd1-build-slice.md (NEW); SKILL.md v2 (REPLACE); queue annotations;
+contact-directory.md guard-line qualification; form-engine.md FE-2 line.
+Awaiting/Returned from Code, unreviewed: this packet's routing; the #51/thirteenth-invocation
+batch is REVIEWED (design-side post-sync verification, this session); carried items per #49/#50
+(verify against the entries that staged them; do not copy forward items their entries cleared).
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; THIRTEENTH invocation)
 
 One packet, one close-out. **§5 was NONE** — documentation routing only: one new spec, one scaffold
