@@ -12,6 +12,80 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; TWELFTH invocation)
+
+One packet, one close-out, back-to-back with the eleventh invocation in the same Code session.
+**§5 was NONE — a log append plus the standard close-out is the entire substantive change.** Runner
+**v6**; the file was re-verified byte-identical at HEAD rather than re-read from memory (QR-2).
+QR-3 checkout gate PASSED: clean, on master, HEAD == `origin/master` at `40bdd42`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_correction-dt1_2026-08-11`. Filename date parseable; filename-date and pure-mtime
+  order identical — **and this is DT-1's first application, so that agreement is the convention
+  working, not luck.**
+- **The reconcile basis was NOT stale for once:** the packet's stated design-side view (`40bdd42`)
+  was exactly HEAD, because it was authored after the eleventh invocation's verified push. Log top
+  was #49; #50 was free; no renumbering.
+- **This packet closes the runner's own flag from an hour earlier.** The eleventh invocation
+  reported the 08-12/08-11 date disagreement and carried the packet's dates verbatim rather than
+  restamping. The design side ruled that behavior correct and supplied the cause (container UTC).
+  **Nothing in the #49 batch was touched** — §6 barred it and the disposition is "deliberately left
+  alone."
+- **Registry-widening flag CLOSED.** The eleventh invocation widened
+  `legal-rule-registry-discovery-and-carrier-duties.md`'s title and header to cover parties and
+  service rather than let the scope drift silently, and routed that as Michael's call. **He
+  confirmed it.** One registry file, honestly titled; a split stays available if volume warrants.
+- **§7 merge:** the **v14 paste** is new and was registered in
+  `docs/specs/attorney-review-queue.md` with full text per QR-1 — the packet is deleted after
+  processing, so the register is the only place it survives. CD-1 and the carried items (Q-3 pair,
+  KICK-1, H4, P15 runner-copy deletion, SK-v2, hand-upload) were already there with full text;
+  verified line by line, not assumed.
+- **DT-1 is recorded, not applied retroactively** (§6). This runner entry stamps 2026-08-11 —
+  which is both the Central date and this machine's local date, so the two agree here.
+
+## 2026-08-11 (#50) — CORRECTION: the #49 batch's 2026-08-12
+date stamps are UTC artifacts; the session and all rulings occurred 2026-08-11 Central —
+deliberately left alone by Michael's ruling; DT-1 ruled (Central date stamps, binding);
+registry widening CONFIRMED (design session, Fable 5)
+
+CORRECTION ENTRY, required fields:
+
+- WHAT WAS ASSERTED: the #49 batch — log entry #49, both REQ-CAPTURE reconciliation addenda, every
+  queue "Entered 2026-08-12" line, every registry "VERIFIED — Michael, 2026-08-12" line, and the
+  cd-1-session-prep update — dates the design session and Michael's rulings 2026-08-12.
+- WHAT IS TRUE INSTEAD: the design session ran the EVENING OF 2026-08-11 CENTRAL and every ruling
+  in it — all six attorney-edit dispositions, all roster-capture dispositions, all seven registry
+  verifications, IN-5's capture, and DT-1 itself — happened 2026-08-11, Michael's wall clock.
+  Evidence: the packet's mtime (Aug 11 20:41, printed in #49's own order table); the P1's local
+  date of 2026-08-11 at processing, flagged by the runner; a live clock check in the design
+  session (2026-08-12 01:58 UTC = 2026-08-11 20:58 CDT). The 08-12 stamps are the cloud
+  container's UTC date — the mechanism QR-4's rationale already documents.
+- WHICH ENTRY IT CORRECTS: #49 and the docs its batch landed. #49 stands as written.
+- ACTOR: Fable 5 (design session). The runner (same date) carried the dates verbatim and flagged
+  the discrepancy rather than restamping — correct behavior, no error on the Code side.
+- FAILURE CLASS: container-UTC date substituted for operator-local wall-clock date. Prior
+  instances on the record: QR-4's filename-date/mtime inversions (ruled 2026-08-10) and #47
+  learning (2) (certificate-of-service dates stamped tomorrow's date by the UTC clock until
+  corrected). This instance is the same cause on a new surface: ruling and verification dates.
+- WHAT CHANGED AS A RESULT: DELIBERATELY LEFT ALONE (Michael's ruling, 2026-08-11 Central) — the
+  08-12 stamps are internally consistent across everything that landed and stand as written; the
+  true date is recorded here. PLUS a new binding convention: **DT-1 (ruled 2026-08-11, Central):
+  every date a design-side session stamps — session dates, ruling and verification dates,
+  "Entered" lines, filename dates on packets and captures — uses Michael's wall-clock Central
+  date, never the container's UTC date. The container rolls to the next date at 19:00 Central
+  (daylight) / 18:00 (standard); sessions running past that hour check before stamping. QR-4
+  handles the symptom in packet ordering; DT-1 removes the cause.** Instructions trigger #3 fired
+  (fourth time this date); the v14 draft was handed to Michael the same evening — his paste.
+
+ALSO RECORDED — REGISTRY WIDENING CONFIRMED: Michael confirmed (2026-08-11 Central) the eleventh
+runner invocation's widening of `docs/specs/legal-rule-registry-discovery-and-carrier-duties.md`'s
+title and header to cover the #49 batch's parties/service/sovereign entries. One registry file,
+honestly titled; a split remains available later if volume warrants. The runner's flag is closed.
+
+Staged for Code: this entry.
+Awaiting/Returned from Code, unreviewed: carried per #49; plus Michael's v14 instructions paste
+(his hand — Code verifies nothing about it).
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; ELEVENTH invocation)
 
 One packet, one close-out. **§5 was NONE — nothing was built, nothing authorized.** Runner **v6**
