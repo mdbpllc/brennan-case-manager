@@ -283,3 +283,82 @@ The returned, operator-edited, served version supersedes the drafted version as 
 - The three §12.5 ship gates held through three revision cycles (parts-diff stayed at word/document.xml only; leftover sweep caught nothing after setup; render inspection caught all three style-by-role defects).
 - The verification list functioned as the review interface as designed: the operator answered its flags directly (addresses supplied, entities removed, attributions corrected) without re-deriving the draft.
 - The provider-data block (FE-1 scout) was emitted and routed to the operator's own files by hand.
+
+## 13. FE-4–FE-7 rulings (RULED by Michael, 2026-08-11 Central; design session, Fable 5)
+
+Spec rulings only — the engine remains specified-not-built; nothing here is authorized until the
+form engine is named and authorized as a build slice (currently behind the CD-1 build per
+`docs/specs/cd1-build-slice.md`). Identity data per `docs/specs/contact-directory.md`.
+
+### 13.1 Definitions as case-level versioned objects (FE-4)
+
+- A **definitions set** is a case-level object: an ordered list of definition items, each with
+  text (merge fields allowed), a kind (**standard** from the format-authoritative template bank /
+  **case-specific slot** / **conditional block**), and an inclusion condition (e.g., ESI
+  applicable). Composed at the first wave from the template bank plus case data; the party-set
+  definition renders from the roster, instrumentality definitions (vehicles by VIN) from IN-2
+  fact rows.
+- **Versioning is the house pattern — immutable versions, stamped by consumers.** A material
+  edit creates a new version; every rendered instrument stamps the definitions-set version it
+  used (parallel to `template_version`, FE-8 as-generated retention, and registry-version
+  stamping). Amendment propagation is prospective: new renders use the latest version; served
+  documents are history via their .docx.
+- **The "You/Your" addressee definition is NOT versioned content** — it is a render-time
+  per-target substitution (a merge field), so one wave carries one definitions version across
+  all targets rather than a phantom version per defendant. (Evidence: six documents, one list,
+  only You/Your varying — the trucking capture; exemplar ¶2 of
+  `docs/templates/discovery/template_definitions-instructions_requests.md`.)
+
+### 13.2 Interrogatory count budget and subpart detection (FE-5)
+
+- Live count per set against a configurable cap by discovery level;
+  document-identification-only interrogatories excluded (TRCP 190.3(b)(3), 190.4 — VERIFIED
+  2026-08-11; counts display as facts).
+- **Subpart detection is always-on, purely facial** (multiple sentences, enumerated clauses —
+  no semantic judgment), and its result displays **passively**: a worst-case count beside the
+  numbered count ("21 numbered / up to 24 if subparts count").
+- **It escalates to a warning ONLY when the worst-case count crosses the cap while the numbered
+  count does not** — the boundary where recharacterization risk is real. This is the ruled
+  middle path between the two queue poles, honoring the recorded warning-fatigue risk. The
+  severability judgment is always the attorney's; the engine computes arithmetic, never
+  characterizes.
+- Document-ID exclusion applies to both figures.
+
+### 13.3 Instrument packaging modes (FE-6)
+
+- One item model (item = id, text, scope common|role:<tag>|entity-specific, instrument type;
+  set = ordered filtered list); **packaging is a render-time choice** — combined or separate —
+  with content entered once. Both modes stamp the same definitions-set version.
+- **Each standalone instrument repeats the definitions block in full — no incorporation by
+  reference.** Reasons of record: (1) every served document self-proves — incorporation invites
+  disputes about what was incorporated; (2) FE-4's versioning removes repetition's historical
+  drift cost — the copies are identical by construction; (3) no per-instrument judgment call at
+  serve time.
+- **Separate-mode layout derives from the evidenced combined layout**: caption → per-instrument
+  title → TO → the preamble paragraphs relevant to that instrument type → definitions (full) →
+  the instrument's items with its prompt labels (ANSWER: / RESPONSE: / ADMIT OR DENY:) →
+  signature → certificate of service, **one COS per document**; the defendant Verification page
+  rides only the interrogatories instrument. Page-break structure per the house template.
+
+### 13.4 Template distillation queue (FE-7)
+
+Guardrails from birth (in the queue text, restated as binding here): distillation output is
+**client-clean BY CONSTRUCTION** — the no-real-client-data rule is why distillation is a
+deliberate separate step, never "save as template" — and distilled templates are **PROPOSED
+until Michael adopts them**.
+
+- **Route (REQ-1 respected):** marking a produced document "distill this" happens in practice
+  space; the candidate travels to design space by Michael's hand; the distillation itself is a
+  design-session act producing a client-clean template into `docs/templates/<category>/`.
+- **Adoption is Michael's explicit ruling, recorded in this queue and the log — and adoption is
+  what flips the template's FE-12 provenance to format-authoritative** (house standard). Until
+  then it carries distilled-PROPOSED provenance and nothing drafts from it as authority.
+- Engine-era: this table becomes a first-class queue with identical states.
+
+**The pre-engine distillation queue (live table; append rows, update statuses in place):**
+
+| Candidate | Source (client-clean) | Marked | Status |
+|---|---|---|---|
+| Entity trucking set | Trucking PI, entity-defendant combined discovery set | 2026-08-11 | queued |
+| Driver set | Trucking PI, individual-driver combined discovery set | 2026-08-11 | queued |
+| Nonsubscriber battery | Workers'-comp nonsubscriber posture, tailored discovery block | 2026-08-11 | queued |

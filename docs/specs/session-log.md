@@ -12,6 +12,94 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-11 — QUEUE-RUNNER batch (runner line; FIFTEENTH invocation)
+
+One packet, one close-out — the third and last of the same evening. **§5 was NONE**: one spec
+append (`form-engine.md` §13), four queue annotations, two Go_Live_Gates fold-ins, one log entry.
+Runner **v6**, read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2 (verified unchanged since
+the ninth invocation; the command file is a pointer and was not relied on for text). QR-3 checkout
+gate PASSED: clean, on master, HEAD == `origin/master` at `2365bf4`.
+
+- **Order confirmed by Michael before execution:** the single packet
+  `push-to-code_fe4-7-and-gl1_2026-08-11`. Filename-date and pure-mtime order identical; the
+  packet arrived AFTER the fourteenth invocation's close-out, so nothing about the earlier batch
+  was disturbed. Manifest §3 date matches. No conflict rule fired — one packet.
+- **Reconcile basis was current, not stale:** the packet's stated view (`2365bf4`, log through #52
+  + the fourteenth runner line) was exactly HEAD. Log top was #52, so **#53 was free**.
+- **Both §1 stop conditions were checked and neither fired.** `form-engine.md` ended at §12.13 with
+  no §13; `Go_Live_Gates.md` carried no GL-1 section and no gate-2 clarification.
+- **§13 appended, §§1–12 untouched** — no renumber, no reflow, not merged into §12 (§6). The §13.4
+  distillation table landed as a LIVE table: three candidates, all **queued**, none distilled, none
+  format-authoritative — which is exactly what §6 required.
+- **Gate 2's original text was NOT edited.** The clarification is an appended italic note beneath
+  it, indented so the numbered gate list keeps its numbering. GL-1 landed as a new section after
+  gate 9, keeping the gates contiguous ahead of the account-facts sections.
+- **The four FE annotations retain their full question text** and each names its §13 subsection;
+  every one of them repeats that the build stays gated on the form engine being named and
+  authorized as a slice, after the CD-1 build. **No slice was named here** (§6).
+- **§6 honored in full:** nothing built; the form-engine slice neither named nor authorized; the
+  CD-1 authorization from the #52 batch left exactly as it was — still the only live one; no
+  Michael item resolved; the #49 batch's 08-12 stamps left alone; no `src/`, schema, or migration
+  change of any kind.
+- **§7 merge:** **CD-1 build** — Michael fires it; it is now item 1 of the GL-1 floor. **GL-1
+  clicks** — gate 1 Supabase Pro and gate 9 production SMTP, his hand, on the launch path.
+  **Engine naming** — nameable once the CD-1 build lands; his call, in a session with BUILD-STATE
+  fresh. **Skill re-upload** (SKILL.md v2 → the claude.ai copy) and the **picker pair** carry from
+  #52 unchanged. **Carried:** KICK-1, H4, P15 runner-copy deletion, telemetry, email-workflow doc,
+  the IN-series naming caveat — verified present with full text.
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch; run because
+  the standing convention requires it, not because code moved).
+- **DT-1 in force, and it agrees here:** this entry stamps 2026-08-11, both Michael's Central date
+  and this machine's local date.
+
+## 2026-08-11 (#53) — THIRD BATCH of the 2026-08-11 session: FE-4–FE-7
+RULED (definitions versioning; subpart-detection middle path; repeat-definitions packaging;
+distillation queue); GL-1 GO-LIVE FLOOR RULED; gate-2 reading RULED and clarified
+(design session, Fable 5, typed)
+
+Continuing the same evening after #52's batch landed and synced. Michael ruled each item with
+the recommendation:
+
+- FE-4 RULED: definitions are case-level versioned objects — immutable versions, every rendered
+  instrument stamps the version used (the house stamping pattern); prospective propagation;
+  the You/Your addressee definition is render-time per-target substitution, NOT versioned
+  content (one wave, one version, all targets). Full design: form-engine.md §13.1.
+- FE-5 RULED: subpart detection always-on and purely facial; worst-case count displays
+  passively beside the numbered count; escalates to a warning ONLY when worst-case crosses the
+  cap while the numbered count does not. The ruled middle path between the queue's two poles,
+  honoring the recorded warning-fatigue risk. §13.2.
+- FE-6 RULED: packaging is a render-time choice from one item model; each standalone instrument
+  REPEATS the definitions block in full (no incorporation by reference — served documents
+  self-prove; FE-4's versioning removes repetition's drift cost); separate-mode layout derived
+  from the evidenced combined layout, one COS per document, verification rides interrogatories
+  only. §13.3.
+- FE-7 RULED: pre-engine distillation queue is a live table in form-engine.md §13.4, seeded
+  with the three named candidates; candidates travel from practice space by Michael's hand per
+  REQ-1; distilled output is client-clean by construction and PROPOSED until adopted; ADOPTION
+  is Michael's ruling and is what flips FE-12 provenance to format-authoritative. §13.4.
+- GL-1 RULED (earlier this evening; recorded first in the project-knowledge capture per
+  Michael's carry choice; THIS entry and the Go_Live_Gates fold-in are its repo record, so the
+  carry is now fulfilled): the go-live floor is real case/party/client/SOL data entered by hand
+  into the core app — nothing more. Checklist: (1) CD-1 build landed and exercised; (2) gate 1
+  Supabase Pro (Michael's hand); (3) gate 9 production SMTP (Michael's hand); (4) gate 3 RLS
+  tested including the slice's new tables; (5) gates re-check session + instructions v15 per
+  trigger 1 — then real matters enter. Gates 7 and 8 do NOT block the floor by their own
+  trigger language (they gate the first real EOB / first real AnalysisRun); billing-analysis
+  use on real data is DEFERRED until they pass. The form engine is EXCLUDED from the floor —
+  drafting continues via the skill; the engine upgrades a live system.
+- GATE-2 READING RULED: the professional security review gates the MULTI-USER phase only
+  (instructions trigger 2 governs); solo live use proceeds without it. Gate 2's wording is
+  clarified by appended note (never silent rewrite) so the ambiguity cannot re-trip a session.
+- Spec-state consequence, stated: with FE-4–FE-7 ruled, the form-engine spec has NO open
+  design questions gating its build-slice naming — the engine becomes nameable the moment the
+  CD-1 build lands. Naming remains Michael's, in a session with BUILD-STATE fresh.
+
+Staged for Code: this entry; form-engine §13 append; four queue annotations; Go_Live_Gates
+GL-1 section + gate-2 note.
+Awaiting/Returned from Code, unreviewed: this packet's routing; the #52/fourteenth-invocation
+batch is REVIEWED (design-side post-sync verification, this session); carried items per
+#49/#50/#52 (verify against the entries that staged them).
+
 ## 2026-08-11 — QUEUE-RUNNER batch (runner line; FOURTEENTH invocation)
 
 One packet, one close-out. **§5 was NONE in this run** — documentation routing only: one new spec

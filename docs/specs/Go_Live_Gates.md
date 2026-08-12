@@ -16,6 +16,9 @@
 
 1. **Upgrade Supabase to Pro ($25/mo) — LOCKED IN per Michael, 2026-07-25.** The free tier has no automatic backups and pauses after inactivity; neither is acceptable once real case data exists. Trigger: *before* the first real client record enters the database — not after. Pro brings daily backups, no pausing, 8 GB database. Claude: raise this explicitly and unprompted in any session where live mode / real-data migration is being wired.
 2. **Professional security review** before multi-user / live use (existing binding rule, CLAUDE.md — Claude is not a substitute for it).
+
+   *Clarification (RULED by Michael, 2026-08-11): the professional security review gates the MULTI-USER phase — instructions trigger 2 governs. Solo live use by Michael proceeds without it. Gate 2's phrase "multi-user / live use" reads as multi-user use; the gate's text above stands as written per the append-don't-rewrite rule.*
+
 3. **RLS policies written and tested** for every exposed table (project was provisioned 2026-07-25 with automatic RLS on + auto-expose off; default-deny until policies exist). *See gate 6 — policies cannot be meaningfully tested until a sign-in flow exists.*
 4. **LegiScan API key** in Supabase edge-function secrets (`LEGISCAN_API_KEY`), never in the repo; rotate after any chat-transcript exposure.
 5. **No real client data in the repo or demo fixtures** (existing binding rule — fixtures stay fictional; statute text is the public-domain exception).
@@ -66,6 +69,19 @@ production. A custom SMTP sender on the firm's own domain must be configured bef
 Trigger: before the app is relied on for real work — not merely before real data, since being
 locked out is an availability problem rather than a confidentiality one. No SMTP work was done in
 the 2026-07-28 auth session; this is a gate note only.
+
+## GL-1 — The go-live floor (RULED by Michael, 2026-08-11)
+
+Go-live means real case, party, client, and SOL data entered by hand into the core app —
+nothing more. The floor: (1) the CD-1 directory build landed and exercised
+(`docs/specs/cd1-build-slice.md`); (2) gate 1 (Supabase Pro); (3) gate 9 (production SMTP);
+(4) gate 3 (RLS tested, including the CD-1 slice's new tables); (5) the gates re-check session
+and instructions v15 per trigger 1. Gates 7 and 8 do not block this floor — by their own
+trigger language they gate the first real EOB and the first real AnalysisRun; billing-analysis
+use on real data is deferred until they pass. The form engine is excluded from the floor:
+drafting continues via the drafting-disclosures skill, and the engine arrives as an upgrade to
+a live system. First recorded 2026-08-11 in the design session's project-knowledge capture;
+canonical here and in session-log #53.
 
 ## Supabase account facts (for future sessions)
 
