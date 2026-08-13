@@ -316,6 +316,41 @@ appears in no table.
 - ⬜ **M-3** — Medchron fictional-content check. ⬜ **M-4** — **LegiScan key rotation after the T3 build (firm).**
 - 🟡 **GPU telemetry posture — RULED 2026-08-12 (#63), open only for your confirmation. The question was:** NeMo pulled `wandb`, `sentry-sdk`, and OneLogger onto the machine that will process **privileged audio** (smoke test run 08-09, tone only) — what is the posture? **RULED: OFFLINE LOCKDOWN.** The packages stay installed but are **forced offline machine-wide BEFORE any privileged audio is processed.** Recipe and verification steps: `docs/gpu-telemetry-offline.md`. **The variables get set on the GPU machine by your hand — never from a Code session** — and this **closes fully only when you report verification 3 passed.** *(Registered here 2026-08-12 (#63). **FINDING: this item had NO ROW in this file** — it lived only in BUILD-STATE's design-side section, so the packet's "annotate the telemetry row" instruction had no row to annotate. Same class as the REQ-10 finding at #60: an item tracked in BUILD-STATE but never registered in the register. Recorded with full question text per QR-1 so it cannot die the K-6/K-7 death.)*
 - ⬜ **Registry verification backlog — NEW 2026-08-12 (#58), WIDENED 27 → 33 on 2026-08-12 (#62).** **The six added entries are criminal**, in a third registry file, `docs/specs/legal-rule-registry-criminal-plea-and-costs.md` (ALL UNVERIFIED), opened because no existing file's subject honestly covers criminal offence classification, plea procedure, and costs — the #50/#58 placement reasoning. **Two of those six carry NO CITE AT ALL**: the capture stated them bare (degree-of-offence/punishment correspondence, and per-cause non-concurrent court costs), and **supplying a cite is a verification act, so it is Michael's, not Code's** — they were copied exactly as stated and nothing was researched or filled in. **These six hard-gate CR-10**, the plea-paperwork signing checklist: no computed check runs until they are verified. Original twenty-seven below. **Twenty-seven entries went into the registry UNVERIFIED in the #58 batch and await Michael's verification, one by one or batched at his direction.** Home: `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md` (all entries UNVERIFIED, by construction; the file states why it is a new file rather than a fold-in). **PLACEMENT FLAG CLOSED — CONFIRMED by Michael 2026-08-12** (post-run review of the twentieth invocation; see #60): the new-file deviation stands, for the honest-status-header reason, split later if volume warrants. **That closes the placement question only — the twenty-seven entries themselves remain UNVERIFIED and are still your homework.** *(Note on where this closed: no standalone placement row ever existed in this file — the flag lived in the registry file's header, in BUILD-STATE, and in the twentieth invocation's handback. It is annotated here rather than given a row of its own, since the row would exist only to be closed; the #57 disposition.)* Composition: **twenty-two from the deficiency-handling capture** — the largest single batch since trucking — covering discovery scope, response completeness, objection specificity and waiver, permitted RFP response forms, contention discovery, sanctions and expenses, the conference requirement, and nine supporting case propositions; and **five from the UIM-UDJA capture** — CPRC § 37.001 et seq., § 37.009, § 15.002(a)(1), TRCP 47(b)–(c), and *Allstate Ins. Co. v. Irwin*, 627 S.W.3d 263 (Tex. 2021). *(Count note: the packet estimated "~26 propositions" for the deficiency batch; the capture's §4 carries 24 bullet lines, of which 3 deduped onto existing VERIFIED entries and one line split into two distinct cites — 22 entries. The estimate and the count are both right about different things.)* **Two reads specifically flagged for Michael:** (a) the existing VERIFIED TRCP 194 entry's expanded four-category wording versus the UIM capture's narrower "194.1–194.4" span — same entry, two wordings, and verification attaches to wording; (b) **six** WL/slip cites in the deficiency batch flagged for reporter-cite check at verification time (the packet named five — Volt Power, Sting Soccer, Ochoa, Redman, Collins — and *De Anda v. Jason C. Webster, P.C.*, 2018 WL 3580579, is a sixth carrying the same defect; flagged, not corrected). **Correcting a slip cite to a reporter cite is Michael's verification act, not Code's** — nothing was changed. Blocks **FE-14**, whose picklist wording cannot be encoded until TRCP 47(b)–(c) is verified.
+  - **Cite-check memo filed 2026-08-13 (#65)** at `docs/specs/registry-cite-check-2026-08-13.md` —
+    the six slip-cite checks and the two cite-less criminal entries each reduced to one look; see
+    the memo's §3 priority list. Research support only; every verification act remains Michael's.
+- ⬜ **V-2 — NEW 2026-08-13 (#65). The cite-check memo's one-look list — six looks, in priority
+  order.** The question: **for each item below, does the flagged check close, and with what text?**
+  (1) **Ochoa** — pull 2004 WL 1192444 on Westlaw; the header shows the S.W.3d parallel cite if one
+  exists, and the opinion's **"(PUBLISH)" notation says it plausibly does** — the single
+  highest-value look of the six. (2) **Collins v. Kappa Sigma Fraternity, 2017 WL 218286** —
+  retrieve it (not in FLP, not on the public web); **beware the 2010 sibling appeal**,
+  No. 02-09-00305-CV, same litigation. (3) **Sting Soccer** — confirm the Nov. 30, 2017 opinion's
+  designation (memorandum vs. published). (4) **Volt Power / Redman / De Anda** — confirm each WL
+  number maps to the substantive opinion named in the memo; then **the "no reporter cite exists or
+  will exist" closure is yours to record**; for Volt Power and Redman also decide whether the
+  dismissed-as-moot subsequent history merits a parenthetical, and for De Anda confirm "pet.
+  denied." (5) **Criminal entry 3** — verify Penal Code §§ 12.34/12.35 plus *Mizell v. State*,
+  119 S.W.3d 804, 806 (Tex. Crim. App. 2003), as the cite set. (6) **Criminal entry 4** — **rule on
+  the wording split under Tex. Code Crim. Proc. art. 102.073 BEFORE any cite is supplied**: the
+  statute's verbatim text cuts against the carried "per cause, non-concurrent" proposition for
+  causes disposed in a **single criminal action**, where each cost is assessed only once at the
+  highest offense category; read *LaPorte* / *Hurlburt* if wanted. Evidence staged at
+  `docs/specs/registry-cite-check-2026-08-13.md`. **Nothing in that memo is verified and no
+  registry entry was touched** — supplying or upgrading a cite is your verification act alone.
+- ⬜ **V-1 — NEW 2026-08-13 (#65). Instructions question arising from the Descrybe ruling.** The
+  question: **record the Descrybe exclusion as session-level tool routing only, or bump the
+  instructions to v17 now — folding in the two already-queued touch-ups** (the "BS-1 provenance"
+  phrase; the pre-Cowork "Claude cannot write project docs" line)? Michael ruled 2026-08-13, in his
+  own words, that **Descrybe is not used in this project at all until further notice** (revisit at
+  go-live if still useful); FLP/CourtListener plus named public sources is the case-retrieval path.
+  **His call, one word.** Code must not draft the revision.
+- ⬜ **V-3 — NEW 2026-08-13 (#65). PROBATE practice-project creation + CRIM DEFENSE paste-state.**
+  The question: **are both now done — the PROBATE practice project created (v1 instructions + the
+  carry snippet into each of the two grandfathered matter workspaces), and the Uvalde instructions
+  plus v1 confirmed pasted into CRIM DEFENSE?** Both were reported done on 2026-08-12 by his own
+  statement, but **neither is visible to Code**, so the record cannot close itself. **One word in
+  any session records both CONFIRMED.**
 - ⬜ **KICK-1 — NEW 2026-08-09. LOCATE `KICKOFF-phase0-t3-p1-session_2026-08-08.md`.** Absent from
   the P1 inbox; **never tracked by git** (`git log --all -- 'inbox/*'` returns zero commits, and
   `inbox/` is gitignored), so **the loss cannot be dated or recovered from history**. #42 recorded

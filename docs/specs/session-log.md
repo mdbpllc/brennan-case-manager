@@ -12,6 +12,45 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-FOURTH invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2 (the command file is a
+pointer; no cached text used). QR-3 gate PASSED: clean, on master, HEAD == `origin/master` ==
+`f72de66`. Clock check before stamping: 17:05 CDT. Order confirmed by Michael (single packet;
+filename order and mtime order agreed). **#65 was free** (top entry was #64), so no renumber.
+Nothing superseded — one packet, no conflicts. Nothing skipped as already built.
+
+- **THE CORRECTION WAS INDEPENDENTLY RE-MEASURED, not taken on the packet's word.** The packet
+  asserts the repo test count is **278, not 274**, derived design-side from static call-site
+  counting. Rather than propagate a number by assertion — the very failure class the correction
+  documents — the suite was RUN here: `npm test` → **23 test files, 278 tests passed, exit 0.**
+  The packet's figure is right and BUILD-STATE's "274" was wrong; the health line is corrected on
+  a measurement, not on a claim. Build and lint also re-run clean this batch.
+- **§1 STOP checks all cleared before writing:** (a) `docs/specs/registry-cite-check-2026-08-13.md`
+  did not exist — created, no duplicate; (b) #65 free; (c) BUILD-STATE's health line still read
+  274, so the correction is a real delta, not a record-only note.
+- **The memo was copied byte-identical**, confirmed by matching SHA-256 (`A477A308…D54292`,
+  10,583 bytes) — not merely "copied". No registry file was touched, no cite added or upgraded,
+  no status changed: §6's registry prohibition is absolute and was honored literally.
+- **Queue annotation is ADD-ONLY**: the registry-backlog row gained the memo pointer sentence and
+  nothing else — its status, its 27 → 33 count, and every other row are untouched.
+- **§6 honored in full:** nothing built (§5 is NONE); FE-D1 not started (the runner is barred from
+  it); no CR item started; #61's entry text untouched; exactly one correction entry exists (the
+  §3 one below); the art. 102.073 analysis carried through as a FLAG, unruled; §7 items left open
+  and no instructions revision drafted; the session capture NOT routed to the repo (reference
+  only, per §2 row 5); `docs/skills/drafting-disclosures/SKILL.md` untouched.
+- **§7 OPEN ITEMS ARE MICHAEL'S AND ARE NOW REGISTERED** in `attorney-review-queue.md` with their
+  **full question text** per QR-1, not ID + label: **V-1** (Descrybe ruling → record as
+  session-level tool routing only, or bump instructions to v17 now, folding the two queued
+  touch-ups?) · **V-2** (the memo's six-look list — Ochoa first, Collins retrieval, Sting
+  designation, three WL-number confirms, entry-3 cite set, entry-4 wording split) · **V-3**
+  (PROBATE created + CRIM DEFENSE paste-state — reported done 08-12, invisible to Code, one word
+  records both). The packet's carried row is unchanged and already has its rows.
+- **BUILD-STATE rewritten in full** with the three §4.4 fixes: health line → 278; the stale
+  "name the form-engine slice — now unblocked" ask DELETED (it contradicted the FE-D1 line in the
+  same file); design-side verification status recorded as VERIFIED full-text for the #62/#63 and
+  #64 batches. Anti-resurrection-ledger pointer preserved; 150-line cap respected.
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-THIRD invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2, verified unchanged by diff.
@@ -53,6 +92,78 @@ and `docs/reference/` did not exist, so nothing was reconciled against.
   the demographic question left open; nothing renamed — the #62 citation convention governs, and in
   these two docs **"CR-3" means the CRASH REPORT**, never CR-3 the criminal requirement.
 - **Health re-run this refresh: 278 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-13 (#65) — #62/#63 AND #64 BATCHES VERIFIED DESIGN-SIDE, FULL-TEXT (device-bridge
+checkout at HEAD f72de66 — not RAG); CORRECTION: repo test count is 278, NOT 274 (corrects #61;
+BUILD-STATE fixed this batch); stale BUILD-STATE ask cleared; DESCRYBE RULED OUT until further
+notice; registry cite-check memo FILED (PROPOSED); meter reading stated
+(design session, Fable 5, Cowork, typed)
+
+All rulings Michael's, 2026-08-13 Central; DT-1 clock-checked before every stamp.
+
+- VERIFICATION METHOD (new capability, Michael's grant): the mdb-pllc repo checkout was connected
+  read-only via the Cowork device bridge (his widget choice over RAG-only, honoring the #55
+  RAG-absence lesson by construction). Basis verified before use: HEAD == origin/master ==
+  `f72de66` (reflog shows the twenty-third invocation's commit + BUILD-STATE refresh), working
+  tree clean modulo CRLF, the CR-3 PDF byte-identical to the committed blob.
+- #62/#63 BATCH VERIFIED (commit diff 059dc94→96da850): `form-engine.md` +18/−0 — §14 and the four
+  §13.4 rows, the append/add-only claim EXACT; Uvalde addendum +65/−0, original untouched;
+  `cd1-build-slice.md` +20/−0 dated qualification; the criminal registry file verbatim as
+  described (six entries ALL UNVERIFIED, entries 3 and 4 cite-less and flagged inline); queue
+  rows confirmed in place with full text — CR-1–CR-11, the B&W CR-CONSTRAINT, the collision note
+  and citation convention, WF-2–WF-8 with gates, FE-§11.1/.2/.4, the telemetry row; the four new
+  #63 docs match their rulings.
+- #64 BATCH VERIFIED (commit diff 96da850→f72de66): map landed verbatim; the PDF hygiene check was
+  INDEPENDENTLY RE-RUN design-side (valid 2-page PDF, zero AcroForm fields, zero hits on
+  SSN/phone patterns, opens as the blank code sheet); IN-2's #64 annotation carries the
+  versioned-code-table requirement and both pointers; CD vocabulary annotation PROPOSED-only;
+  demographic row WIDENED, not resolved. **The 22nd and 23rd handbacks' "design-unverified"
+  flags CLEAR with this entry.**
+- CORRECTION. **What was asserted:** #61's close-out reported "274 tests pass (42 new)," and
+  BUILD-STATE has carried "274 tests pass" through the fifty-fourth, fifty-fifth, and fifty-sixth
+  refreshes. **What is true instead:** the count from the CD-1 build forward is **278** (46 new).
+  Evidence: static test-call-site count is 232 at `c6184a1` and 278 at `059dc94` and at HEAD
+  `f72de66`; zero `.each`, zero skips, zero dynamically generated tests; the method validates by
+  exact match to the long "232 tests pass" era. The twenty-second and twenty-third runner lines'
+  "278 tests pass" measurements were CORRECT and BUILD-STATE contradicted the runner lines above
+  it in the same record. **Which entry it corrects:** #61 (2026-08-12), which stands as written.
+  **Actor:** Code (Opus, the CD-1 build session; the two subsequent close-outs measured correctly
+  but left BUILD-STATE's stale figure standing). **Failure class:** Code own-report count error —
+  prior instances: the sixteenth invocation's cap-count claim (corrected by the seventeenth) and
+  the twentieth invocation's "twenty-six" registry count (corrected at #60). **What changed as a
+  result:** BUILD-STATE's health line is corrected to 278 in this batch's rewrite; nothing else
+  touched.
+- BUILD-STATE STALE ASK CLEARED: "name the form-engine slice — now unblocked" entered at the
+  fifty-fourth refresh (accurate then) and survived two rewrites past #63's FE-D1 naming,
+  contradicting the FE-D1 line in the same file. Removed in this batch's rewrite. R-3
+  copy-forward class; no correction entry — BUILD-STATE is overwrite-in-full, not append-only.
+- DESCRYBE RULED OUT (Michael, direct words, mid-session): "We are not using Descrybe in this
+  project at all until further notice" — revisit at go-live if still useful. Occasioned by an
+  expired-auth failure mid-cite-check. FLP/CourtListener (plus public sources, each named per
+  item) is the case-retrieval path. Whether this warrants an instructions revision rides §7.
+- REGISTRY CITE-CHECK MEMO FILED (NEW, `docs/specs/registry-cite-check-2026-08-13.md`, PROPOSED
+  design input — research support; NOTHING verified; no registry file touched). Six flagged slip
+  cites resolved: Volt Power, Redman, De Anda CONFIRMED memorandum opinions (WL cite permanent —
+  no reporter cite exists or will; checks close on Michael's confirmation); Sting Soccer located
+  (Nov. 30, 2017, designation unconfirmed); **Ochoa carries a "(PUBLISH)" notation — the one
+  entry where a reporter cite plausibly EXISTS** (his highest-value Westlaw look); Collins not in
+  FLP (retrieval; beware the 2010 sibling appeal). Criminal entry 3 candidates: Penal Code
+  §§ 12.34/12.35 (verbatim text confirmed) + Mizell v. State, 119 S.W.3d 804, 806 (Tex. Crim.
+  App. 2003) (passage read in full, majority opinion). Criminal entry 4 **FLAG**: art. 102.073's
+  verbatim text cuts AGAINST the "per cause" proposition for single-criminal-action consolidated
+  pleas (costs assessed only once, at the highest category) — a wording split is likely needed
+  before CR-10's cost check can consume the entry; Michael's verification-and-wording act.
+  Bonus noted twice: In re Park Cities Bank, 409 S.W.3d 859 (reported) states the Volt Power
+  proposition at 876 and the Redman proposition at 868 (UNVERIFIED candidates).
+- Model-usage: meter READING STATED (Michael, screenshot, session start): Fable 58% used,
+  all-models 33%, reset Tuesday 3:59 PM Central. Fable on track to partially expire unused (light
+  use expected Fri–Sat) → deliberately spent here on verification + cite-check prep per the
+  standing allocation rule; FE-D1 and CD-1 item 7 stay Opus-default.
+
+Staged for Code: this entry; registry-cite-check-2026-08-13.md (NEW); queue annotation
+(registry-backlog row → memo pointer); BUILD-STATE rewrite (278 fix, stale-ask deletion,
+verification status).
+Awaiting/Returned from Code, unreviewed: this batch's handback.
 
 ## 2026-08-12 (#64) — CR-3 CODE SHEET (2023+) filed as reference; field-code map filed as
 PROPOSED design input for IN-2/intake; versioned-code-table finding recorded
