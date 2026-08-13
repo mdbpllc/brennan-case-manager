@@ -62,12 +62,27 @@ create table if not exists cases (
 -- Party identity entered ONCE; typed fields live in JSONB driven by the
 -- front-end party-type registry (src/domain/partyRegistry.ts). Promote hot
 -- fields to real columns later if reporting needs them.
+-- CD-1 (2026-08-12): `parties` IS the contact directory (contact-directory.md
+-- §1). There is deliberately no second identity table — a second one recreates
+-- the wrong-level defect class CL-2 was built to kill.
 create table if not exists parties (
   id uuid primary key default gen_random_uuid(),
+  -- RETAINED, not dropped, by CD-1: role_tags supersedes it as the thing the
+  -- app filters on, but this still drives which fields the registry renders.
+  -- role_tags[1] is kept equal to it.
   party_type text not null,               -- registry key: client, adjuster, attorney, ...
   kind text not null check (kind in ('individual','organization')),
   display_name text not null,
   fields jsonb not null default '{}',
+  -- CD-1 §3.4 — multi-valued directory role tags.
+  role_tags text[] not null default '{}',
+  -- CD-1 §3.2 — typed alias set: [{kind:'dba'|'fka'|'suffix-variant', name, note?}].
+  -- One trade name may front two distinct corporations; the app FLAGS that
+  -- rather than resolving it (§3.2, mined-caption evidence).
+  aliases jsonb not null default '[]',
+  -- CD-1 §3.1 — a fact of the PERSON, true on every case at once.
+  deceased boolean not null default false,
+  deceased_date date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -75,8 +90,13 @@ create table if not exists parties (
 create index if not exists parties_type_idx on parties (party_type);
 create index if not exists parties_name_idx on parties (display_name);
 create index if not exists parties_fields_idx on parties using gin (fields);
+create index if not exists parties_role_tags_idx on parties using gin (role_tags);
+create index if not exists parties_aliases_idx on parties using gin (aliases);
 
 -- ============ CASE <-> PARTY LINKS (roles) ============
+-- CD-1 §4: the roster link decomposes into four SEPARABLE attributes. The UIM
+-- at-fault driver is why all four are needed at once: driver role, no caption
+-- alignment, non-party status, unmistakably opposing.
 create table if not exists case_parties (
   id uuid primary key default gen_random_uuid(),
   case_id uuid not null references cases (id) on delete cascade,
@@ -84,12 +104,89 @@ create table if not exists case_parties (
   role text not null,                     -- Plaintiff, Defendant, Witness, ...
   side text,                              -- Ours / Opposing / Neutral
   note text,
+  -- ── CD-1 §4.2, attributes 1–3. `side` above ALREADY IS attribute 4 (firm
+  -- perspective) and is deliberately not renamed or migrated away.
+  story_role text,
+  -- NULL means NON-PARTY — a value, not an absence. "Not yet decided" is
+  -- carried by case_roster_flags below, never by writing a guess here. Sides
+  -- are a property of the CASE TYPE, not a constant (REQ-14), so this column
+  -- is deliberately unconstrained: the legal set differs per case type and
+  -- lives in src/domain/roster.ts SIDE_SETS.
+  caption_alignment text,
+  party_status text
+    check (party_status is null or party_status in
+      ('caption-party','non-party-actor','court-appointed','intervenor','unnamed-reserved')),
+  -- ── CD-1 §3.1: capacity is a property of the LINK, never the directory.
+  capacity_kind text
+    check (capacity_kind is null or capacity_kind in
+      ('individually','next-friend-of','representative-of-estate-of','dba')),
+  -- restrict, not cascade: deleting a contact must not silently erase the fact
+  -- that someone appeared on their behalf.
+  capacity_points_at_party_id uuid references parties (id) on delete restrict,
+  -- ── CD-1 §4.3: entries are HISTORY, not snapshot (FE-8 and IN-4 both need
+  -- "who was in this case when this instrument went out").
+  joined_by text
+    check (joined_by is null or joined_by in
+      ('intake-slot','amendment','court-action','substitution')),
+  active_state text
+    check (active_state is null or active_state in ('active','withdrawn','substituted-out')),
+  slot_role text,
   created_at timestamptz not null default now(),
   unique (case_id, party_id, role)
 );
 
 create index if not exists case_parties_case_idx on case_parties (case_id);
 create index if not exists case_parties_party_idx on case_parties (party_id);
+create index if not exists case_parties_capacity_points_idx
+  on case_parties (capacity_points_at_party_id);
+
+-- Roster facts the CD-1 backfill could not derive. NEVER guessed, never
+-- placeholdered — the `case_client_flags` precedent applied to the roster. A
+-- flag is an ADDITION, not an abort: the link still gets what was derivable.
+create table if not exists case_roster_flags (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  case_party_id uuid not null references case_parties (id) on delete cascade,
+  reason text not null,
+  unmapped_value text,                    -- preserved verbatim; nothing is lost
+  resolved_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique (case_party_id)
+);
+
+create index if not exists case_roster_flags_case_idx on case_roster_flags (case_id);
+
+-- CD-1 §5 — one directional typed edge structure with OPTIONAL case scope.
+-- No case_id = a WORLD FACT (employer-of, spouse). A case_id = true for that
+-- case (attorney-of-record-for, insurer of the adverse party here).
+--
+-- THE CL-1 FIREWALL (§5.3): this links CONTACTS to CONTACTS. It never holds a
+-- case-to-case link, and `case_links` (CL-1, unruled, not built) never holds
+-- one of these. They never merge and never share a structure.
+create table if not exists contact_edges (
+  id uuid primary key default gen_random_uuid(),
+  from_contact_id uuid not null references parties (id) on delete cascade,
+  to_contact_id uuid not null references parties (id) on delete cascade,
+  -- Controlled and extensible; adding a type is a SPEC-LEVEL act. Enforced so
+  -- free text cannot yield "employer", "Employer", and "works for" as three
+  -- relationships. Keep in step with src/domain/contactEdges.ts.
+  edge_type text not null check (edge_type in (
+    'employer-of','owner-entrustor-of','lessor-of','parent-of','affiliate-of',
+    'insurer-of','insurer-of-adverse-party','principal-of','registered-agent-of',
+    'heir-of','representative-of-estate-of','next-of-kin-of','spouse-of',
+    'contractor-for','manufacturer-of-goods-sold-by','platform-for','attorney-for',
+    'bailee-of','joint-enterprise-with'
+  )),
+  case_id uuid references cases (id) on delete cascade,   -- NULL = world fact
+  note text,
+  created_at timestamptz not null default now(),
+  constraint contact_edges_not_self check (from_contact_id <> to_contact_id),
+  unique nulls not distinct (from_contact_id, to_contact_id, edge_type, case_id)
+);
+
+create index if not exists contact_edges_from_idx on contact_edges (from_contact_id);
+create index if not exists contact_edges_to_idx on contact_edges (to_contact_id);
+create index if not exists contact_edges_case_idx on contact_edges (case_id);
 
 -- ============ CLIENT DIMENSION (CL-2) ============
 -- The case owns the occurrence and liability; the CLIENT owns the damages.
@@ -183,6 +280,17 @@ alter table case_client_flags enable row level security;
 create policy "authenticated full access case_clients" on case_clients
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access case_client_flags" on case_client_flags
+  for all to authenticated using (true) with check (true);
+
+-- CD-1 (2026-08-12) — RLS from birth for the two new tables, per slice item 6.
+-- This is the #28/CL-2 lesson applied PROACTIVELY rather than caught at defect
+-- time. Note that RLS alone is not enough: the GRANT block at the end of this
+-- file is what makes them reachable at all.
+alter table case_roster_flags enable row level security;
+alter table contact_edges enable row level security;
+create policy "authenticated full access case_roster_flags" on case_roster_flags
+  for all to authenticated using (true) with check (true);
+create policy "authenticated full access contact_edges" on contact_edges
   for all to authenticated using (true) with check (true);
 
 -- ============================================================

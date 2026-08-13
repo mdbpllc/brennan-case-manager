@@ -35,11 +35,20 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 34 schema tables with one policy-less exception', () => {
-    // 32 + the two CL-2 tables (case_clients, case_client_flags). A table the
-    // probe does not list is a table whose missing GRANT nothing would catch.
-    expect(SCHEMA_TABLES).toHaveLength(34);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(33);
+  it('covers all 36 schema tables with one policy-less exception', () => {
+    // 32 + the two CL-2 tables (case_clients, case_client_flags) + the two CD-1
+    // tables (case_roster_flags, contact_edges). A table the probe does not
+    // list is a table whose missing GRANT nothing would catch.
+    expect(SCHEMA_TABLES).toHaveLength(36);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(35);
+  });
+
+  it('lists the CD-1 tables, so their grants are probed from birth', () => {
+    // Slice item 6: the #28 lesson applied proactively. These went into the
+    // probe in the same commit as the tables, not after a defect.
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('contact_edges');
+    expect(names).toContain('case_roster_flags');
   });
 
   it('lists the CL-2 tables, so their grants are actually probed', () => {
