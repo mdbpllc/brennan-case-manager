@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: e317bf5  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-fifth refresh)
+Commit: f9e30c8  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-sixth refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **CD-1 IS BUILT IN CODE 08-12 —
@@ -127,9 +127,10 @@ SIX OF SEVEN SLICE ITEMS, FIXTURE DATA ONLY; THE LIVE MIGRATION IS UNRUN AND IS 
 - **TELEMETRY RULED 08-12 (#63): OFFLINE LOCKDOWN.** `wandb`/`sentry-sdk`/OneLogger stay installed but are forced offline **machine-wide BEFORE any privileged audio is processed** — recipe at `docs/gpu-telemetry-offline.md`. **Your hand, on the GPU machine; closes when you report verification 3 passed.** **EMAIL-WORKFLOW DOC ADOPTED** (#63) at `docs/specs/email-workflow-requirements.md` — seven pipelines take **WF-2–WF-8**, every one gated (WF-5 doubly: money machinery unruled); that long-standing carry CLOSES. **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#63's own routing** — do not copy #36's clearance (log #37) forward. **#58 was VERIFIED design-side post-Sync, line by line**
+- **NEW: `docs/reference/` EXISTS AND HOLDS A BINARY — the first in `docs/`.** `CR3-code-sheet-2023.pdf` (Form CR-3CS 4/1/2023, blank public TxDOT code list; verified client-clean by ToUnicode decode + a zero-hit scan for SSNs/dates/phones/VINs/cause numbers/addresses before it was committed). Synthesis at `docs/specs/cr3-field-code-map.md`, **PROPOSED input for IN-2/intake — nothing built.** Its load-bearing requirement: crash-report code tables are **VERSIONED external vocabularies**, so extraction must store **(code, decoded label, code-sheet version)**. **YOUR CLICK: exclude `docs/reference/` at the sync picker** — `docs/` syncs wholesale, and raw source in the working set is what that policy exists to prevent (ruled 08-12)
+- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#64's own routing** — do not copy #36's clearance (log #37) forward. **#58 was VERIFIED design-side post-Sync, line by line**
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through **#63** (build entry #61 is Code's own). #58 added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
+  through **#64** (build entry #61 is Code's own). #58 added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
   **FE-gating** question, four distillation candidates, and a **27-entry registry verification
   backlog**; #59 added the Uvalde capture's row at §5; **#60 closed the placement flag and gave the
   REQ-10 carry the row it never had.** **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
