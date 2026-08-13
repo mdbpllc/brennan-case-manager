@@ -1,6 +1,12 @@
 import { type SupabaseClient } from '@supabase/supabase-js';
-import { assertPartyPatchKeys, type DataAdapter } from './adapter';
-import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import {
+  assertPartyPatchKeys, type DataAdapter, type PartyCreate, type PartyPatch,
+} from './adapter';
+import type {
+  CaseRecord, PartyRecord, CasePartyLink, RosterBackfillFlag,
+} from '../domain/types';
+import { withDirectoryDefaults } from '../domain/directory';
+import { validateEdge, type ContactEdge } from '../domain/contactEdges';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -46,11 +52,36 @@ interface CaseRow {
 interface PartyRow {
   id: string; party_type: string; kind: string; display_name: string;
   fields: Record<string, unknown>; created_at: string; updated_at: string;
+  // CD-1 §3. Optional on the row type so a pre-migration database still reads.
+  role_tags?: string[] | null;
+  aliases?: unknown[] | null;
+  deceased?: boolean | null;
+  deceased_date?: string | null;
 }
 
 interface LinkRow {
   id: string; case_id: string; party_id: string; role: string; side: string | null;
   note: string | null; created_at: string;
+  // CD-1 §4. Same reasoning: optional so a pre-migration database still reads.
+  story_role?: string | null;
+  /** Tri-state — see linkFromRow. */
+  caption_alignment?: string | null;
+  party_status?: string | null;
+  capacity_kind?: string | null;
+  capacity_points_at_party_id?: string | null;
+  joined_by?: string | null;
+  active_state?: string | null;
+  slot_role?: string | null;
+}
+
+interface ContactEdgeRow {
+  id: string; from_contact_id: string; to_contact_id: string; edge_type: string;
+  case_id: string | null; note: string | null; created_at: string;
+}
+
+interface RosterFlagRow {
+  id: string; case_id: string; case_party_id: string; reason: string;
+  unmapped_value: string | null; resolved_at: string | null; created_at: string;
 }
 
 function caseFromRow(r: CaseRow): CaseRecord {
@@ -96,11 +127,18 @@ function caseToRow(c: Partial<CaseRecord>): Partial<CaseRow> {
 }
 
 function partyFromRow(r: PartyRow): PartyRecord {
-  return {
+  // withDirectoryDefaults covers a row read BEFORE the CD-1 migration has been
+  // applied to that database — the app stays readable either way, and the
+  // roleTags[0] = partyType contract is the same one the migration writes.
+  return withDirectoryDefaults({
     id: r.id, partyType: r.party_type, kind: r.kind as PartyRecord['kind'],
     displayName: r.display_name, fields: r.fields ?? {},
+    roleTags: r.role_tags ?? undefined,
+    aliases: (r.aliases ?? undefined) as PartyRecord['aliases'] | undefined,
+    deceased: r.deceased ?? undefined,
+    deceasedDate: r.deceased_date ?? undefined,
     createdAt: r.created_at, updatedAt: r.updated_at,
-  };
+  });
 }
 
 function linkFromRow(r: LinkRow): CasePartyLink {
@@ -108,6 +146,41 @@ function linkFromRow(r: LinkRow): CasePartyLink {
     id: r.id, caseId: r.case_id, partyId: r.party_id,
     role: r.role as CasePartyLink['role'], side: (r.side ?? undefined) as CasePartyLink['side'],
     note: r.note ?? undefined, createdAt: r.created_at,
+    // CD-1 §4.2/§4.3. `caption_alignment` is tri-state on purpose: a JSON null
+    // means "non-party" and an absent column means "not yet set" — collapsing
+    // them would lose the distinction the whole attribute exists to carry.
+    storyRole: r.story_role ?? undefined,
+    captionAlignment: r.caption_alignment === undefined ? undefined : r.caption_alignment,
+    partyStatus: (r.party_status ?? undefined) as CasePartyLink['partyStatus'],
+    capacityKind: (r.capacity_kind ?? undefined) as CasePartyLink['capacityKind'],
+    capacityPointsAtPartyId: r.capacity_points_at_party_id ?? undefined,
+    joinedBy: (r.joined_by ?? undefined) as CasePartyLink['joinedBy'],
+    activeState: (r.active_state ?? undefined) as CasePartyLink['activeState'],
+    slotRole: r.slot_role ?? undefined,
+  };
+}
+
+function contactEdgeFromRow(r: ContactEdgeRow): ContactEdge {
+  return {
+    id: r.id,
+    fromContactId: r.from_contact_id,
+    toContactId: r.to_contact_id,
+    edgeType: r.edge_type as ContactEdge['edgeType'],
+    caseId: r.case_id ?? undefined,
+    note: r.note ?? undefined,
+    createdAt: r.created_at,
+  };
+}
+
+function rosterFlagFromRow(r: RosterFlagRow): RosterBackfillFlag {
+  return {
+    id: r.id,
+    caseId: r.case_id,
+    casePartyId: r.case_party_id,
+    reason: r.reason,
+    unmappedValue: r.unmapped_value ?? undefined,
+    resolvedAt: r.resolved_at ?? undefined,
+    createdAt: r.created_at,
   };
 }
 
@@ -223,22 +296,75 @@ export class SupabaseAdapter implements DataAdapter {
     return SupabaseAdapter.unwrap(res as never as { data: PartyRow[] | null; error: { message: string } | null }).map(partyFromRow);
   }
 
-  async createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord> {
+  async createParty(data: PartyCreate): Promise<PartyRecord> {
+    const full = withDirectoryDefaults(data);
     const res = await this.sb.from('parties')
-      .insert({ party_type: data.partyType, kind: data.kind, display_name: data.displayName, fields: data.fields })
+      .insert({
+        party_type: full.partyType, kind: full.kind, display_name: full.displayName,
+        fields: full.fields,
+        role_tags: full.roleTags, aliases: full.aliases,
+        deceased: full.deceased, deceased_date: full.deceasedDate ?? null,
+      })
       .select().single();
     if (res.error) throw new Error(res.error.message);
     return partyFromRow(res.data as PartyRow);
   }
 
-  async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
+  async updateParty(id: string, patch: PartyPatch): Promise<PartyRecord> {
     assertPartyPatchKeys(patch);
     const row: Record<string, unknown> = {};
     if (patch.displayName !== undefined) row.display_name = patch.displayName;
     if (patch.fields !== undefined) row.fields = patch.fields;
+    if (patch.roleTags !== undefined) row.role_tags = patch.roleTags;
+    if (patch.aliases !== undefined) row.aliases = patch.aliases;
+    if (patch.deceased !== undefined) row.deceased = patch.deceased;
+    if ('deceasedDate' in patch) row.deceased_date = patch.deceasedDate ?? null;
     const res = await this.sb.from('parties').update(row).eq('id', id).select().single();
     if (res.error) throw new Error(res.error.message);
     return partyFromRow(res.data as PartyRow);
+  }
+
+  // ---- CD-1 contact directory ----
+
+  async listContactEdges(): Promise<ContactEdge[]> {
+    const res = await this.sb.from('contact_edges').select('*');
+    return SupabaseAdapter.unwrap(res as never as { data: ContactEdgeRow[] | null; error: { message: string } | null }).map(contactEdgeFromRow);
+  }
+
+  async listContactEdgesForContact(contactId: string): Promise<ContactEdge[]> {
+    const res = await this.sb.from('contact_edges').select('*')
+      .or(`from_contact_id.eq.${contactId},to_contact_id.eq.${contactId}`);
+    return SupabaseAdapter.unwrap(res as never as { data: ContactEdgeRow[] | null; error: { message: string } | null }).map(contactEdgeFromRow);
+  }
+
+  async createContactEdge(data: Omit<ContactEdge, 'id' | 'createdAt'>): Promise<ContactEdge> {
+    const problem = validateEdge(data);
+    if (problem) throw new Error(problem);
+    const res = await this.sb.from('contact_edges')
+      .insert({
+        from_contact_id: data.fromContactId, to_contact_id: data.toContactId,
+        edge_type: data.edgeType, case_id: data.caseId ?? null, note: data.note ?? null,
+      })
+      .select().single();
+    if (res.error) throw new Error(res.error.message);
+    return contactEdgeFromRow(res.data as ContactEdgeRow);
+  }
+
+  async deleteContactEdge(id: string): Promise<void> {
+    const res = await this.sb.from('contact_edges').delete().eq('id', id);
+    if (res.error) throw new Error(res.error.message);
+  }
+
+  async listRosterFlags(): Promise<RosterBackfillFlag[]> {
+    const res = await this.sb.from('case_roster_flags').select('*').is('resolved_at', null);
+    return SupabaseAdapter.unwrap(res as never as { data: RosterFlagRow[] | null; error: { message: string } | null }).map(rosterFlagFromRow);
+  }
+
+  async resolveRosterFlag(id: string): Promise<RosterBackfillFlag> {
+    const res = await this.sb.from('case_roster_flags')
+      .update({ resolved_at: new Date().toISOString() }).eq('id', id).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return rosterFlagFromRow(res.data as RosterFlagRow);
   }
 
   async listLinksForCase(caseId: string): Promise<CasePartyLink[]> {
@@ -253,7 +379,20 @@ export class SupabaseAdapter implements DataAdapter {
 
   async createLink(data: Omit<CasePartyLink, 'id' | 'createdAt'>): Promise<CasePartyLink> {
     const res = await this.sb.from('case_parties')
-      .insert({ case_id: data.caseId, party_id: data.partyId, role: data.role, side: data.side ?? null, note: data.note ?? null })
+      .insert({
+        case_id: data.caseId, party_id: data.partyId, role: data.role,
+        side: data.side ?? null, note: data.note ?? null,
+        // CD-1 §4.2/§4.3. `caption_alignment` passes null through as a VALUE
+        // (non-party) and only omits when genuinely unset.
+        story_role: data.storyRole ?? data.role,
+        caption_alignment: data.captionAlignment === undefined ? null : data.captionAlignment,
+        party_status: data.partyStatus ?? null,
+        capacity_kind: data.capacityKind ?? null,
+        capacity_points_at_party_id: data.capacityPointsAtPartyId ?? null,
+        joined_by: data.joinedBy ?? 'intake-slot',
+        active_state: data.activeState ?? 'active',
+        slot_role: data.slotRole ?? null,
+      })
       .select().single();
     if (res.error) throw new Error(res.error.message);
     return linkFromRow(res.data as LinkRow);

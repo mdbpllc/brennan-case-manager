@@ -1,5 +1,13 @@
-import { assertPartyPatchKeys, type DataAdapter } from './adapter';
-import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import {
+  assertPartyPatchKeys, type DataAdapter, type PartyCreate, type PartyPatch,
+} from './adapter';
+import { validateEdge } from '../domain/contactEdges';
+import type {
+  CaseRecord, PartyRecord, CasePartyLink, RosterBackfillFlag,
+} from '../domain/types';
+import type { ContactEdge } from '../domain/contactEdges';
+import { withDirectoryDefaults } from '../domain/directory';
+import { backfillRosterAttributes, summarizeBackfill } from '../domain/rosterBackfill';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -24,14 +32,19 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-const STORE_VERSION = 10; // v10: CL-2 client dimension (case_clients, backfill
-// flags, client_id on bills and runs, case-level SOL retired)
+export const STORE_VERSION = 11; // v11: CD-1 contact directory (role tags, typed
+// aliases, deceased fact; roster four-attribute links with capacity and
+// history; roster backfill flags; contact edges). v10 was CL-2.
 
 interface Store {
   version: number;
   cases: CaseRecord[];
   parties: PartyRecord[];
   links: CasePartyLink[];
+  /** CD-1 §5 — contact-to-contact edges. NEVER case-to-case (the CL-1 firewall). */
+  contactEdges: ContactEdge[];
+  /** CD-1 — roster facts the backfill could not derive. Never guessed. */
+  rosterFlags: RosterBackfillFlag[];
   clients: CaseClient[];
   clientFlags: ClientBackfillFlag[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
@@ -187,7 +200,11 @@ export function migrateV9ToV10(old: Store, raw: string): Store {
 
   const migrated: Store = {
     ...(old as Store),
-    version: STORE_VERSION,
+    // Literal 10, NOT STORE_VERSION: this function produces a v10 store and
+    // nothing more. When STORE_VERSION moved to 11 it briefly stamped 11 here
+    // while doing no CD-1 work — the chain in load() hid it. A migration step
+    // must name the version it actually produces.
+    version: 10,
     clients,
     clientFlags,
     reviewLog,
@@ -202,7 +219,7 @@ export function migrateV9ToV10(old: Store, raw: string): Store {
   };
 
   const summary =
-    `Store migrated v9→v${STORE_VERSION} (CL-2 client dimension). Derived `
+    `Store migrated v9→v10 (CL-2 client dimension). Derived `
     + `${clients.length} client record(s); flagged ${clientFlags.length} case(s) with no `
     + `client-role party; stamped client_id on bills and runs for single-client cases. `
     + `Case-level statute of limitations retired. Full pre-migration backup at `
@@ -211,6 +228,75 @@ export function migrateV9ToV10(old: Store, raw: string): Store {
     id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
     user: 'system (CL-2 migration)', timestamp: stamp, reason: summary,
   });
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
+/** v10 → v11: the CD-1 directory and roster evolution, FORWARD IN PLACE.
+ *
+ *  Nothing is dropped and nothing is guessed. Contacts gain their directory
+ *  fields from `withDirectoryDefaults` (roleTags[0] = partyType). Links gain the
+ *  four attributes from `backfillRosterAttributes`, which derives an alignment
+ *  only where the derivation is mechanical and FLAGS the rest — the CL-2
+ *  `case_client_flags` precedent, applied to the roster. The existing `side`
+ *  column is left exactly as it is: it already IS firm perspective.
+ *
+ *  A full pre-migration backup is written before anything changes, same as the
+ *  CL-2 migration, because the flag list is only useful if the original is
+ *  still readable. */
+export function migrateV10ToV11(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v10`, raw);
+
+  const cases = (old.cases ?? []) as CaseRecord[];
+  const caseById = new Map(cases.map((c) => [c.id, c]));
+
+  const parties = (old.parties ?? []).map((p) => withDirectoryDefaults(p as PartyRecord));
+
+  const rosterFlags: RosterBackfillFlag[] = [];
+  const results: ReturnType<typeof backfillRosterAttributes>[] = [];
+  const links = (old.links ?? []).map((l) => {
+    const c = caseById.get(l.caseId);
+    // A link whose case is gone cannot have its side set resolved; leave it
+    // untouched rather than invent one.
+    if (!c) return l;
+    const result = backfillRosterAttributes(l, c);
+    results.push(result);
+    if (result.flag) {
+      rosterFlags.push({
+        id: uid(),
+        caseId: l.caseId,
+        casePartyId: l.id,
+        reason: result.flag.reason,
+        unmappedValue: result.flag.unmappedValue,
+        createdAt: stamp,
+      });
+    }
+    return { ...l, ...result.patch };
+  });
+
+  const migrated: Store = {
+    ...(old as Store),
+    version: STORE_VERSION,
+    parties,
+    links,
+    rosterFlags,
+    contactEdges: old.contactEdges ?? [],
+  };
+
+  const s = summarizeBackfill(results);
+  const summary =
+    `Store migrated v10→v${STORE_VERSION} (CD-1 contact directory). `
+    + `Tagged ${parties.length} contact(s) from their existing party type; processed `
+    + `${s.linksProcessed} roster link(s): ${s.alignmentsDerived} caption alignment(s) derived `
+    + `mechanically, ${s.nonPartiesDerived} marked non-party, ${s.flagged} FLAGGED for attorney `
+    + `review (nothing guessed). Firm perspective (side) untouched. Full pre-migration backup at `
+    + `localStorage key "${KEY}-backup-v10".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (CD-1 migration)', timestamp: stamp, reason: summary,
+  }];
   console.warn(summary);
   localStorage.setItem(KEY, JSON.stringify(migrated));
   return migrated;
@@ -225,7 +311,15 @@ function load(): Store {
       if (parsed.version === STORE_VERSION) return parsed;
       // v9 can be migrated forward without losing anything — do that instead
       // of reseeding. Older stores fall through to the reseed path below.
-      if (parsed.version === 9) return migrateV9ToV10(parsed, raw);
+      if (parsed.version === 10) return migrateV10ToV11(parsed, raw);
+      // v9 chains forward through v10 rather than reseeding — a v9 store that
+      // reached CL-2's migration must not lose it to CD-1's bump. The v10
+      // store is re-serialized for the second step's backup so that
+      // `-backup-v10` really holds v10 data, not the v9 text.
+      if (parsed.version === 9) {
+        const v10 = migrateV9ToV10(parsed, raw);
+        return migrateV10ToV11(v10, JSON.stringify(v10));
+      }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
       old = parsed;
@@ -236,7 +330,7 @@ function load(): Store {
   const seeded: Store = {
     version: STORE_VERSION,
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
-    oaaIntakes: [],
+    oaaIntakes: [], contactEdges: [], rosterFlags: [],
     statuteChapters: [], statuteSections: [], verificationSnapshots: [], watchFlags: [],
     trackedBills: [], billRefs: [],
     ...seedData(),
@@ -340,15 +434,17 @@ export class LocalAdapter implements DataAdapter {
     return load().parties.filter((p) => wanted.has(p.id));
   }
 
-  async createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord> {
+  async createParty(data: PartyCreate): Promise<PartyRecord> {
     const store = load();
-    const rec: PartyRecord = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    const rec: PartyRecord = {
+      ...withDirectoryDefaults(data), id: uid(), createdAt: now(), updatedAt: now(),
+    };
     store.parties.push(rec);
     save(store);
     return rec;
   }
 
-  async updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord> {
+  async updateParty(id: string, patch: PartyPatch): Promise<PartyRecord> {
     assertPartyPatchKeys(patch);
     const store = load();
     const idx = store.parties.findIndex((p) => p.id === id);
@@ -356,6 +452,47 @@ export class LocalAdapter implements DataAdapter {
     store.parties[idx] = { ...store.parties[idx], ...patch, id, updatedAt: now() };
     save(store);
     return store.parties[idx];
+  }
+
+  // ---- CD-1 contact directory ----
+
+  async listContactEdges(): Promise<ContactEdge[]> {
+    return load().contactEdges;
+  }
+
+  async listContactEdgesForContact(contactId: string): Promise<ContactEdge[]> {
+    return load().contactEdges.filter(
+      (e) => e.fromContactId === contactId || e.toContactId === contactId,
+    );
+  }
+
+  async createContactEdge(data: Omit<ContactEdge, 'id' | 'createdAt'>): Promise<ContactEdge> {
+    const problem = validateEdge(data);
+    if (problem) throw new Error(problem);
+    const store = load();
+    const rec: ContactEdge = { ...data, id: uid(), createdAt: now() };
+    store.contactEdges.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async deleteContactEdge(id: string): Promise<void> {
+    const store = load();
+    store.contactEdges = store.contactEdges.filter((e) => e.id !== id);
+    save(store);
+  }
+
+  async listRosterFlags(): Promise<RosterBackfillFlag[]> {
+    return load().rosterFlags.filter((f) => !f.resolvedAt);
+  }
+
+  async resolveRosterFlag(id: string): Promise<RosterBackfillFlag> {
+    const store = load();
+    const idx = store.rosterFlags.findIndex((f) => f.id === id);
+    if (idx === -1) throw new Error('Roster flag not found');
+    store.rosterFlags[idx] = { ...store.rosterFlags[idx], resolvedAt: now() };
+    save(store);
+    return store.rosterFlags[idx];
   }
 
   async listLinksForCase(caseId: string): Promise<CasePartyLink[]> {

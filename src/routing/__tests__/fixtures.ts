@@ -6,6 +6,7 @@
 // (added 2026-07-25 when Michael handed over the bundle); these synthetic
 // cases stay because they exercise edge cases the pilot set doesn't.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../../domain/types';
+import { withDirectoryDefaults } from '../../domain/directory';
 import type { TagTemplate } from '../../domain/transcripts';
 import { SEED_TAG_TEMPLATES } from '../templates';
 
@@ -32,7 +33,7 @@ export const CASES: CaseRecord[] = [
   },
 ];
 
-export const PARTIES: PartyRecord[] = [
+export const PARTIES: PartyRecord[] = ([
   {
     id: 'p-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
     fields: { phone: '2545550143' }, createdAt: t, updatedAt: t,
@@ -54,7 +55,7 @@ export const PARTIES: PartyRecord[] = [
     id: 'p-caldwell', partyType: 'person', kind: 'individual', displayName: 'Ray Caldwell',
     fields: { phone: '2545550199' }, createdAt: t, updatedAt: t,
   },
-];
+] as Omit<PartyRecord, 'roleTags' | 'aliases' | 'deceased'>[]).map(withDirectoryDefaults);
 
 export const LINKS: CasePartyLink[] = [
   { id: 'l1', caseId: 'c-garcia', partyId: 'p-garcia', role: 'Client', createdAt: t },

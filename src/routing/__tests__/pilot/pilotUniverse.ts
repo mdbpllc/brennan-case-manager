@@ -3,6 +3,7 @@
 // the batch1 MANIFEST. All names, matters, and numbers are fictional; the
 // audio + findings docs live outside the repo at ..\data\pilot-recordings\.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../../../domain/types';
+import { withDirectoryDefaults } from '../../../domain/directory';
 import type { TagTemplate } from '../../../domain/transcripts';
 import type { RoutingContext } from '../../engine';
 import { SEED_TAG_TEMPLATES } from '../../templates';
@@ -24,7 +25,9 @@ export const PILOT_CASES: CaseRecord[] = [
 ];
 
 function party(id: string, partyType: string, kind: 'individual' | 'organization', displayName: string, fields: Record<string, unknown> = {}): PartyRecord {
-  return { id, partyType, kind, displayName, fields, createdAt: t, updatedAt: t };
+  // CD-1 directory fields come from the shared default helper, so these
+  // fixtures keep matching what a migrated contact actually looks like.
+  return withDirectoryDefaults({ id, partyType, kind, displayName, fields, createdAt: t, updatedAt: t });
 }
 
 export const PILOT_PARTIES: PartyRecord[] = [

@@ -1,6 +1,11 @@
 // Demo seed data so the slice is clickable out of the box.
 // Entirely fictional. Wiped whenever you clear the browser's site data.
 import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import { withDirectoryDefaults } from '../domain/directory';
+import type { DirectoryFields } from '../domain/directory';
+
+/** A contact as it looks BEFORE the CD-1 directory fields exist. */
+type PartyDraft = Omit<PartyRecord, keyof DirectoryFields> & Partial<DirectoryFields>;
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import type { CalendarEvent } from '../domain/calendar';
 import type { Charge } from '../domain/oaa';
@@ -21,7 +26,11 @@ export function seedData(): {
   events: CalendarEvent[];
   charges: Charge[];
 } & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> & ReturnType<typeof billsSeedData> {
-  const parties: PartyRecord[] = [
+  // CD-1: the seed writes contacts the way a pre-migration record looks, and
+  // `withDirectoryDefaults` fills roleTags/aliases/deceased — the same helper
+  // both adapters use. That keeps the seed honest about the backfill contract
+  // rather than hand-writing tags that a real migrated row would derive.
+  const parties: PartyRecord[] = ([
     {
       id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
       fields: {
@@ -135,7 +144,7 @@ export function seedData(): {
       },
       createdAt: t, updatedAt: t,
     },
-  ];
+  ] as PartyDraft[]).map(withDirectoryDefaults);
 
   const cases: CaseRecord[] = [
     {

@@ -1,4 +1,21 @@
-import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type {
+  CaseRecord, PartyRecord, CasePartyLink, RosterBackfillFlag,
+} from '../domain/types';
+import type { ContactEdge } from '../domain/contactEdges';
+import type { DirectoryFields } from '../domain/directory';
+
+/** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
+ *  defaulted by the adapters (`withDirectoryDefaults`), so callers that predate
+ *  the directory keep working and the `roleTags[0] === partyType` contract is
+ *  enforced in one place rather than at every call site. */
+export type PartyCreate =
+  Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt' | keyof DirectoryFields>
+  & Partial<DirectoryFields>;
+
+/** What may be edited on an existing contact. Party type and kind stay frozen. */
+export type PartyPatch = Partial<
+  Pick<PartyRecord, 'displayName' | 'fields' | 'roleTags' | 'aliases' | 'deceased' | 'deceasedDate'>
+>;
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import type { CalendarEvent } from '../domain/calendar';
 import type {
@@ -21,10 +38,17 @@ import type {
  *  outside the mutable set instead of one applying it and the other silently
  *  dropping it (2026-07-21 audit item 9 — divergent adapter behaviour defeats
  *  the point of the seam). */
+const MUTABLE_PARTY_KEYS = new Set([
+  'displayName', 'fields',
+  // CD-1 directory fields. `partyType` and `kind` stay OUT deliberately: the
+  // type drives which fields the registry renders, and roleTags[0] mirrors it.
+  'roleTags', 'aliases', 'deceased', 'deceasedDate',
+]);
+
 export function assertPartyPatchKeys(patch: Record<string, unknown>): void {
-  const extra = Object.keys(patch).filter((k) => k !== 'displayName' && k !== 'fields');
+  const extra = Object.keys(patch).filter((k) => !MUTABLE_PARTY_KEYS.has(k));
   if (extra.length > 0) {
-    throw new Error(`updateParty: unsupported patch key(s) ${extra.join(', ')} — only displayName and fields are mutable (party type/kind are frozen at creation)`);
+    throw new Error(`updateParty: unsupported patch key(s) ${extra.join(', ')} — only ${[...MUTABLE_PARTY_KEYS].join(', ')} are mutable (party type/kind are frozen at creation)`);
   }
 }
 
@@ -46,9 +70,21 @@ export interface DataAdapter {
   getParty(id: string): Promise<PartyRecord | null>;
   /** Bulk fetch — avoids per-row round-trips when resolving link tables. */
   getParties(ids: string[]): Promise<PartyRecord[]>;
-  createParty(data: Omit<PartyRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<PartyRecord>;
-  /** Only displayName and fields are mutable — party type/kind are frozen at creation. */
-  updateParty(id: string, patch: Partial<Pick<PartyRecord, 'displayName' | 'fields'>>): Promise<PartyRecord>;
+  createParty(data: PartyCreate): Promise<PartyRecord>;
+  /** displayName, fields, and the CD-1 directory fields are mutable — party
+   *  type/kind stay frozen at creation. */
+  updateParty(id: string, patch: PartyPatch): Promise<PartyRecord>;
+
+  // ---- CD-1 contact directory (docs/specs/contact-directory.md) ----
+  /** §5 contact-to-contact edges. NEVER case-to-case — the CL-1 firewall (§5.3):
+   *  these two never merge and neither ever holds the other's kind of link. */
+  listContactEdges(): Promise<ContactEdge[]>;
+  listContactEdgesForContact(contactId: string): Promise<ContactEdge[]>;
+  createContactEdge(data: Omit<ContactEdge, 'id' | 'createdAt'>): Promise<ContactEdge>;
+  deleteContactEdge(id: string): Promise<void>;
+  /** Roster facts the CD-1 backfill could not derive. Advisory; never blocks. */
+  listRosterFlags(): Promise<RosterBackfillFlag[]>;
+  resolveRosterFlag(id: string): Promise<RosterBackfillFlag>;
 
   // ---- Client dimension (CL-2, claimant-dimension-and-case-links-design.md) ----
   /** Parallel to case_parties, NOT a promotion of it (D-CL2-8): links stay

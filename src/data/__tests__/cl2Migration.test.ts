@@ -15,7 +15,7 @@ const mem = new Map<string, string>();
   clear: () => mem.clear(),
 };
 
-const { migrateV9ToV10 } = await import('../localAdapter');
+const { migrateV9ToV10, migrateV10ToV11, STORE_VERSION } = await import('../localAdapter');
 
 const t = '2026-07-01T00:00:00.000Z';
 
@@ -166,8 +166,29 @@ describe('CL-2 demo-store migration (v9 → v10)', () => {
     expect(flagEntry.reason).toContain('FLAGGED FOR MICHAEL');
   });
 
-  it('lands on the current store version', () => {
+  it('lands on v10 — the version this step actually produces', () => {
+    // Deliberately a literal, and deliberately 10 rather than STORE_VERSION:
+    // this function's whole job is v9→v10. It briefly stamped STORE_VERSION,
+    // which meant it claimed v11 while doing no CD-1 work — caught when CD-1
+    // bumped the store. A migration step names the version it produces; the
+    // chain to current is a separate concern, tested below.
     expect(run().version).toBe(10);
+  });
+
+  it('chains v9 → v10 → v11 so a CL-2 store is not reseeded by CD-1', () => {
+    const v10 = run();
+    const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
+
+    expect(v11.version).toBe(STORE_VERSION);
+    // CL-2's derived work survived the second step...
+    expect(v11.clients.length).toBe(v10.clients.length);
+    expect(v11.clients.length).toBeGreaterThan(0);
+    expect(v11.clientFlags.length).toBe(v10.clientFlags.length);
+    // ...and CD-1's ran on top of it.
+    expect(v11.parties.every((p) => p.roleTags.length > 0)).toBe(true);
+    expect(Array.isArray(v11.contactEdges)).toBe(true);
+    // The backup written by step two holds v10 data, not the v9 text.
+    expect(JSON.parse(mem.get('brennan-case-manager-v1-backup-v10')!).version).toBe(10);
   });
 });
 

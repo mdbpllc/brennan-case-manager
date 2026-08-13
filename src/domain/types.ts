@@ -56,16 +56,34 @@ export interface CaseRecord {
   updatedAt: string;
 }
 
+import type { DirectoryAlias } from './directory';
+import type {
+  CaptionAlignment, PartyStatus, CapacityKind, JoinedBy, RosterActiveState,
+} from './roster';
+
 /** What a party IS (identity) — separate from what it DOES on a case (role). */
 export type PartyKind = 'individual' | 'organization';
 
 export interface PartyRecord {
   id: string;
+  /** RETAINED, NOT DROPPED (CD-1 §3.4). `roleTags` supersedes it as the thing
+   *  the app reads and filters on, but the column stays: it drives the
+   *  registry's field definitions (which fields a form renders), and dropping
+   *  it would mean rebuilding form rendering inside this slice. `roleTags[0]`
+   *  is kept equal to it by the backfill contract. */
   partyType: string; // key into the party-type registry
   kind: PartyKind;
   displayName: string; // computed convenience field for lists/search
   /** Field values keyed by field key from the registry. Repeating fields hold arrays of objects. */
   fields: Record<string, unknown>;
+  /** CD-1 §3.4 — multi-valued directory role tags. Position 0 mirrors
+   *  `partyType`. See domain/directory.ts. */
+  roleTags: string[];
+  /** CD-1 §3.2 — typed alias set (d/b/a, f/k/a, entity-suffix variants). */
+  aliases: DirectoryAlias[];
+  /** CD-1 §3.1 — living/deceased is a directory-level fact of the person. */
+  deceased: boolean;
+  deceasedDate?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -100,8 +118,50 @@ export interface CasePartyLink {
   id: string;
   caseId: string;
   partyId: string;
+  /** The legacy role list. RETAINED — existing links, pickers, and the medical
+   *  module all read it. CD-1 adds `storyRole` beside it for the open
+   *  vocabulary the roster capture evidences; neither replaces the other in
+   *  this slice, and nothing was silently re-pointed. */
   role: CaseRole;
+  /** CD-1 §4.2 attribute 4 — firm perspective. This column's TRUE meaning,
+   *  ruled: it survives as-is and is NOT migrated away. */
   side?: Side;
   note?: string;
+
+  // ── CD-1 §4.2: the four separable attributes ──────────────────────────────
+  /** Attribute 1 — what they are in the story. Open vocabulary; falls back to
+   *  `role` when a link predates the roster layer. */
+  storyRole?: string;
+  /** Attribute 2 — drawn from the case type's DEFINED side set. `null` means
+   *  non-party, which is different from "not yet set" (undefined). */
+  captionAlignment?: CaptionAlignment;
+  /** Attribute 3 — procedural kind of participant. */
+  partyStatus?: PartyStatus;
+
+  // ── CD-1 §3.1: capacity lives on the LINK, never the directory ────────────
+  capacityKind?: CapacityKind;
+  /** The minor, the decedent — a directory id, never a copied name. */
+  capacityPointsAtPartyId?: string;
+
+  // ── CD-1 §4.3: roster entries are history, not snapshot ───────────────────
+  joinedBy?: JoinedBy;
+  activeState?: RosterActiveState;
+  /** Which seeded slot created this entry, when one did. */
+  slotRole?: string;
+
+  createdAt: string;
+}
+
+/** A roster fact the CD-1 backfill could not derive mechanically. Never guessed
+ *  and never placeholdered — the `case_client_flags` precedent from CL-2,
+ *  applied to the roster. Holds what it could not map so nothing is lost. */
+export interface RosterBackfillFlag {
+  id: string;
+  caseId: string;
+  casePartyId: string;
+  reason: string;
+  /** The value that could not be mapped, preserved verbatim. */
+  unmappedValue?: string;
+  resolvedAt?: string;
   createdAt: string;
 }
