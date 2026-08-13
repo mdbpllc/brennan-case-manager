@@ -68,6 +68,13 @@ Clock check before stamping: 20:33 CDT.
   expansions, and six slip-cite checks; FE-gating and the four distillation candidates; SK-v2;
   the sync-picker pair; KICK-1; H4; P15 runner-copy deletion; telemetry posture; email-workflow doc;
   IN-series naming caveat.
+- **BUILD-STATE at exactly 150 of 150** (fifty-third refresh, stated at `981b370`). §4.5 said to
+  preserve "BS-1 provenance and the anti-resurrection-ledger pointer line" — **checked, and the two
+  are one thing**: BS-1 is the ruling that split the ledger out and raised the cap 120→150, and per
+  CLAUDE.md its standing product is that pointer line, which is intact. **The literal string "BS-1"
+  has not appeared in BUILD-STATE since before this session** (verified absent at `3a4db71`, i.e.
+  before the twentieth invocation's rewrite), so nothing was dropped, and nothing was added at cap
+  to manufacture a "preservation." Stated rather than silently ignored.
 - **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
 
 ## 2026-08-12 (#60) — TWENTIETH-INVOCATION FLAGS RESOLVED: registry placement

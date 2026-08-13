@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 81a1a72  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-second refresh)
+Commit: 981b370  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-third refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -20,7 +20,10 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   untouched): the security review gates the multi-user phase. **Solo live use proceeds without it**
 - **THE NEXT BUILD SLICE IS NAMED AND AUTHORIZED: the CD-1 directory build** —
   **`docs/specs/cd1-build-slice.md`** (scope, OUTs, Michael's authorization). **NOT STARTED.** It is
-  a separate, deliberate Code session; the queue runner is barred from beginning it
+  a separate, deliberate Code session; the queue runner is barred from beginning it. **Kickoff prompt
+  now exists: `docs/prompts/PROMPT-cd1-build-session.md`** (routed 08-12, POINTER-style — it directs
+  the session to the spec + slice doc at HEAD and adds session mechanics only, duplicating no scope).
+  **Michael fires it; Opus default per standing routing**
 - **Design authority stays `docs/specs/contact-directory.md`** (LIVING SPEC, 08-11, every question
   ruled). **THE FORK RESOLVED TO THE SHAPE ALREADY BUILT:** `parties` **IS** the directory,
   `case_parties` stays the roster link, `case_clients` stays parallel, **D-CL2-8 UNTOUCHED**
@@ -111,7 +114,7 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - Time tracker: draft only. Servpro deadline engine: DESIGN ONLY. Heartbeat: design docs only
   (captures e+f NOT folded; register H1–H83). **CE1 still NOT AUTHORIZED** (D-CL2-9) — must be
   **CLIENT-AWARE from the start**. CourtListener: design doc only, integration UNAUTHORIZED (Q-6)
-- **REGISTRY — read BOTH files.** **TWENTY VERIFIED** (Michael) in `legal-rule-registry-discovery-and-carrier-duties.md`; five took **second observations** 08-12, and **three wording expansions there are FLAGGED, NOT ADOPTED** (TRCP 194's span, 193.3, 192.3(f)) — verification attaches to wording. **TWENTY-SEVEN UNVERIFIED** in the new `legal-rule-registry-discovery-enforcement-and-pleading.md` (discovery enforcement + UDJA/venue/pleading; **six WL/slip cites flagged for reporter-cite check, none corrected**). A new file, not a fold-in, because the verified file's status header would have broken — **his to confirm or redirect**. **`/rules` SEED ALL UNVERIFIED**
+- **REGISTRY — read BOTH files.** **TWENTY VERIFIED** (Michael) in `legal-rule-registry-discovery-and-carrier-duties.md`; five took **second observations** 08-12, and **three wording expansions there are FLAGGED, NOT ADOPTED** (TRCP 194's span, 193.3, 192.3(f)) — verification attaches to wording. **TWENTY-SEVEN UNVERIFIED** in `legal-rule-registry-discovery-enforcement-and-pleading.md` (discovery enforcement + UDJA/venue/pleading; **six WL/slip cites flagged for reporter-cite check, none corrected**). A new file, not a fold-in, because the verified file's status header would have broken — **PLACEMENT CONFIRMED by Michael 08-12; that flag is CLOSED.** **Count reconciled at HEAD 08-12 on commission: 27 entries = 22 deficiency + 5 UIM, one proposition each** (3 entries cite two cases, so 30 authorities). The sibling's third-pass note read "twenty-six" — **Code's own wrong figure, corrected in place with a dated note.** **`/rules` SEED ALL UNVERIFIED**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
@@ -133,14 +136,15 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test → gates re-check + v16
 - **ALSO YOURS: re-upload SKILL.md v2** (the #45 hand-upload item was consolidated INTO SK-v2 per QR-1) · **the two sync-picker clicks**, `docs/skills/` (Q-3) and `docs/templates/` · **naming the form-engine slice** once the CD-1 build lands
 - **DE SERIES EXISTS AS OF 08-12** — deficiency enforcement, ruled into existence by you (WF-1 precedent). **DE-1** taxonomy-as-data (absorbs one-store-many-renderers and Bates evidence refs) and **DE-2** the conferral/escalation timeline, MANUAL triggers per Q-6. **They are the parked heartbeat Part-6 engine's HOME, not its green light. Nothing built**
-- **ONE ROUTED ITEM WAS NOT EXECUTED, deliberately:** the deficiency capture's placeholder-discipline content route into `form-engine.md`. No §4 work order covered it and that file is spec-canonical — **read-only in a Code session. The edit is yours**; the requirement is safe in the capture
+- **REQ-10 placeholder discipline: CONFIRMED AS CARRY 08-12** — the content route into `form-engine.md` rides whichever session next amends that spec (likely the engine's slice-scoping session). **Nothing owed now; the edit is design's, never Code's.** It now has the queue row it lacked
 - **ONE MICHAEL CALL OPEN — telemetry posture:** NeMo pulled `wandb`/`sentry-sdk`/OneLogger onto the
   privileged-audio machine (**smoke test RUN 08-09**, tone only). **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#59's own routing** — do not copy #36's clearance (log #37) forward
+- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#60's own routing** — do not copy #36's clearance (log #37) forward. **#58 was VERIFIED design-side post-Sync, line by line**
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through **#59**. #58 added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
+  through **#60**. #58 added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
   **FE-gating** question, four distillation candidates, and a **27-entry registry verification
-  backlog**; **#59 added the Uvalde capture's row at §5, one row and not fifteen.** **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  backlog**; #59 added the Uvalde capture's row at §5; **#60 closed the placement flag and gave the
+  REQ-10 carry the row it never had.** **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed
