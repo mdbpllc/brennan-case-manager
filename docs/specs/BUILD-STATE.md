@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: f86d7ae  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-first refresh)
+Commit: 81a1a72  |  Branch: master  |  Generated: 2026-08-12 Central (fifty-second refresh)
 
 **Practice areas: PI / civil litigation / criminal defense / probate.** **CL-2 IS BUILT, MIGRATED
 LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUILT IN THE APP SINCE**
@@ -118,8 +118,17 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
 - **DT-1 IS IN FORCE; v16 is the live instructions version** (verified in force design-side 08-12,
   first fresh session on it). Stamps use YOUR Central wall clock. The #49 batch's **08-12** stamps
   stay **LEFT ALONE**; **NOT retroactive**
-- **PRACTICE-PROJECT CHANNEL IS NOW THREE: CIVIL LIT + CRIM DEFENSE + PROBATE** (probate ruled 08-12; REQ-1 extended to each). New probate matters are CHATS inside PROBATE; **two grandfathered matter workspaces** (generic by design, never named build-side) reach the build side by ONE path: **PROBATE's client-clean REQ-CAPTUREs**. **Your hand: create CRIM DEFENSE (v1 + the Uvalde instructions — K-5's home, never the repo) and PROBATE (v1 + the carry snippet into each workspace)**
-- **FIVE REQ-1 CAPTURES ARE NOW FILED** at `docs/specs/REQ-CAPTURE_*`: trucking, roster-mining, attorney-edit, **UIM-UDJA transform (new 08-12)**, **deficiency-handling (new 08-12)**. The first three are SPENT as CD-1 input; the two new ones seeded the **DE series** and eleven durable IDs
+- **PRACTICE-PROJECT CHANNEL IS NOW THREE: CIVIL LIT + CRIM DEFENSE + PROBATE** (probate ruled 08-12; REQ-1 extended to each). New probate matters are CHATS inside PROBATE; **two grandfathered matter workspaces** (generic by design, never named build-side) reach the build side by ONE path: **PROBATE's client-clean REQ-CAPTUREs**. **CRIM DEFENSE EVIDENTLY EXISTS** — the 08-12 Uvalde capture originates there. Whether v1 + the Uvalde instructions (K-5's home, never the repo) were pasted into it is **not visible to Code**, so that half stays open. **Your hand: confirm CRIM DEFENSE's paste-state; create PROBATE (v1 + the carry snippet into each workspace)**
+- **SIX REQ-1 CAPTURES ARE NOW FILED** at `docs/specs/REQ-CAPTURE_*`: trucking, roster-mining, attorney-edit, **UIM-UDJA transform**, **deficiency-handling**, **Uvalde docket-worksheet** (last three new 08-12). First three SPENT as CD-1 input; UIM + deficiency seeded the **DE series** and eleven durable IDs
+- **THE UVALDE CAPTURE IS FILED UNRECONCILED — the odd one out, and the difference is preserved.**
+  First capture from **CRIM DEFENSE**; it reached the repo by his hand, not in a packet, so it has
+  **no addendum and no durable IDs. Code assigned NONE, routed nothing to a series, and opened NO
+  registry entry** for its six UNVERIFIED propositions (Penal Code § 31.07 · H&S § 481.115(b) ·
+  degree/punishment correspondence · non-concurrent court costs · CCP arts. 42.0197, 27.18) —
+  they are **candidates, not entries.** **Its REQ-13 plea-paperwork audit presumes computed legal
+  outcomes, which rule 1 forbids while those are unverified** — its own §5 Q6 asks which registry
+  the checks run against. **Your reconciliation pass is what it waits on**; nearest existing home
+  is `criminal-appointment-intake-and-docket-enhancements.md` §3
 - **YOUR HAND, THE LAUNCH PATH IN ORDER: fire the CD-1 build session** (spec + slice doc on screen)
   → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test → gates re-check + v16
 - **ALSO YOURS: re-upload SKILL.md v2** (the #45 hand-upload item was consolidated INTO SK-v2 per QR-1) · **the two sync-picker clicks**, `docs/skills/` (Q-3) and `docs/templates/` · **naming the form-engine slice** once the CD-1 build lands
@@ -129,9 +138,9 @@ LIVE, AND WALKED (2026-07-28)**; auth (§5A) landed the same day. **NOTHING BUIL
   privileged-audio machine (**smoke test RUN 08-09**, tone only). **CL2-AC-1 is DIRECTION-CONFIRMED**
 - **The probate corpus is NOT in the repo and never has been** — `Probate Corpus.zip` sits untouched in the **P15's** gitignored `inbox/`, not this machine's; CORPUS-HOME closed to ARCHIVE, **your hand**. **LADDER PASS DEFERRED** pending Domser; **PL-1..PL-4 UNRULED**
 - **RUNNER DISCIPLINE — QR-1..QR-4 + MM-1 CLOSED; runner v6** (`docs/prompts/QUEUE-RUNNER.md`, the **ONLY full copy**). **Your hand: the P15 user-level copy deletion** (P1 ABSENT). **H-series (log #44) + SAT-1 / two-sweep open; H IDs COLLIDE with heartbeat H1–H83**
-- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#58's own routing** — do not copy #36's clearance (log #37) forward
+- **The carried #31–#33 material is still UNREVIEWED**, as is **#37–#59's own routing** — do not copy #36's clearance (log #37) forward
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through **#58**, which added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
+  through **#59**. #58 added the DE heading, **CL-3 · CD-3 · FE-13–FE-17 · IN-6 · IN-7**, the
   **FE-gating** question, four distillation candidates, and a **27-entry registry verification
-  backlog**. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  backlog**; **#59 added the Uvalde capture's row at §5, one row and not fifteen.** **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `model-routing-plan.md`; `future-modules-capture-2026-07-28.md`.** Client model: design doc §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger, Outlook unreviewed

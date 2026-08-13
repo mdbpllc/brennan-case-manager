@@ -15,7 +15,7 @@ Purpose: a dated, running record of what happened session to session in this pro
 ## 2026-08-12 (#59) — Uvalde docket-worksheet REQ-CAPTURE filed UNRECONCILED (Code session, immediately after the twentieth runner batch)
 
 **Not a queue-runner batch — no packet.** Michael handed the file to a Code session directly,
-by path, minutes after the twentieth invocation closed. Clock check before stamping: 19:05 CDT.
+by path, shortly after the twentieth invocation closed. Clock check before stamping: 19:50 CDT.
 
 - **`REQ-CAPTURE_uvalde-docket-worksheet_2026-08-12.md` filed verbatim** (diff-verified) at
   `docs/specs/`. **Sixth REQ-1 capture and the FIRST from CRIM DEFENSE** — that practice project
