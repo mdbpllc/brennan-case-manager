@@ -12,6 +12,114 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-FIRST invocation)
+
+One packet, docs only, **§5 was NONE and the CD-1 build was NOT begun** (§5/§6 bar it; BUILD-STATE
+bars it independently). Runner **v6** read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2 —
+**verified unchanged since the twentieth invocation read it** (`git diff 3a4db71..HEAD` on that path
+is empty). QR-3 gate PASSED: clean, on master, HEAD == `origin/master` == `ls-remote` at `c77add0`.
+Clock check before stamping: 20:33 CDT.
+
+- **Order confirmed by Michael before execution.** Single packet
+  `push-to-code_must-carry-58-postrun-and-cd1-kickoff_2026-08-12`; filename-date and mtime agree.
+- **#59 WAS TAKEN, so this packet's entry is #60.** The packet expected #59 free and its §1 said to
+  renumber forward and say so if not — this is that. What took it: the Uvalde docket-worksheet
+  capture, filed by Michael's hand between the packet's authoring and its run. **The packet's §1 also
+  reported its design-side view as `aeb84c5`, which predates that filing**, so the collision was
+  structural, not an error by either side. Nothing was renumbered but this packet's own entry;
+  history untouched.
+- **§4.3 count reconciliation — COMMISSIONED, PERFORMED, AND ONE FIGURE WAS WRONG.** Counted at HEAD:
+  the new registry file carries **27 entry headings, 22 deficiency + 5 UIM, each stating one
+  proposition.** The file's own header (27) and BUILD-STATE (27) are correct. **The sibling file's
+  third-pass note saying "twenty-six" was wrong — and it was Code's own figure**, written in the
+  twentieth invocation. Corrected in place to twenty-seven with a dated parenthetical naming this
+  invocation and stating the old reading, per the correct-own-report precedent. The "~26" in the
+  originating packet counted the capture's §4 bullet lines before dedupe and before one line split
+  into two cites; three entries cite two cases each, so 27 propositions rest on 30 authorities.
+  **No entry, status, wording, or cite was touched by the count check.**
+- **Registry-placement flag CLOSED** as confirmed by Michael. Recorded in three places: the queue row,
+  BUILD-STATE, and — **by Michael's explicit answer this session, since no work order covered it** —
+  the new registry file's own header sentence, which until now still read "Michael's to confirm or
+  redirect" and would otherwise have kept asking for a ruling he had already given. **Provenance
+  sentence only; no entry changed.** §6's bar on registry edits was read as aimed at entry content,
+  and the question was put to him rather than resolved silently.
+- **§4.4's second item rested on a premise that did not hold, and the conditional handled it.** It
+  said to verify the REQ-10 row "already carries the carry-disposition (the twentieth invocation
+  registered it)" and to annotate only if absent. **It was absent from this file** — the twentieth
+  registered the carry in the session log and BUILD-STATE but never gave it a queue row. Added now,
+  with full text and the confirmed-as-carry disposition. Reconciled, not duplicated.
+- **CD-1 kickoff prompt routed verbatim** to `docs/prompts/PROMPT-cd1-build-session.md` (diff-verified;
+  no prior CD-1 prompt existed at that path — `docs/prompts/` held only QUEUE-RUNNER and the CL2
+  protocol). **Not enriched with scope**, per §4.2 — it is a pointer by design. One stale reference
+  noted and deliberately NOT edited: its Step 1 tells the build session to reconcile if "a log entry
+  above #59 records CD-1 work already done." #59 and #60 both now exist and neither is CD-1 work, so
+  the instruction still functions; fixing it would have meant editing a file the packet said to copy
+  verbatim.
+- **§6 honored in full:** CD-1 build NOT begun; nothing built; no registry status, wording, or cite
+  altered; `form-engine.md` untouched; SKILL.md untouched; no Michael's-hand item resolved; the
+  ownership note treated as a note, **no correction entry created**; no second prompt file; no
+  existing log entry renumbered or rewritten.
+- **Ownership note received and NOT acted on, as instructed.** The design side disclosed that the #58
+  packet's "five WL/slip cites" undercounted by one. The landed record was already correct — the
+  runner caught De Anda independently and flagged all six — and the wrong count lived only in the
+  deleted packet, never in the log. **No correction is owed and none was made.**
+- **§7 merge:** all seven rows carried. **CD-1 is his to fire next**, prompt now at its canonical path.
+  Carried unchanged: gates 1 and 9; the 27-entry registry backlog plus span reads, three held wording
+  expansions, and six slip-cite checks; FE-gating and the four distillation candidates; SK-v2;
+  the sync-picker pair; KICK-1; H4; P15 runner-copy deletion; telemetry posture; email-workflow doc;
+  IN-series naming caveat.
+- **Health re-run this refresh: 232 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#60) — TWENTIETH-INVOCATION FLAGS RESOLVED: registry placement
+CONFIRMED (flag closed); REQ-10 fold-in CONFIRMED as CARRY; De Anda undercount ownership note
+(Fable 5); #58 batch design-side VERIFIED post-Sync; registry count reconciliation commissioned;
+CD-1 kickoff prompt routed to docs/prompts/ (design session, Fable 5, Cowork, typed)
+
+*(Entered as #60, not #59 as the packet expected: #59 was taken by the Uvalde capture filed between
+this packet's authoring and its run. Renumbered forward per the packet's own §1. Text otherwise
+verbatim.)*
+
+Post-run rulings from the twentieth invocation's design-side review (all Michael, 2026-08-12, by
+widget; recorded in the post-run capture pending this packet, per QR-1):
+
+- REGISTRY PLACEMENT CONFIRMED: the runner's deviation to a new file
+  `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md` (all entries UNVERIFIED)
+  is confirmed; the twentieth invocation's open flag CLOSES. Reason: honest status headers — folding
+  unverified propositions into a file headed "ALL TWENTY PROPOSITIONS VERIFIED" would falsify it;
+  same structural collision as the #50 precedent. Split later if volume warrants.
+- REQ-10 FOLD-IN CONFIRMED AS CARRY: the placeholder-discipline content route into `form-engine.md`
+  (placeholder inventory + fill checklist as documented method) rides whichever future session next
+  amends the form-engine spec — likely the engine's slice-scoping session. Registered in the filed
+  deficiency capture and the queue; nothing further owed now. The edit is design's, never Code's.
+- OWNERSHIP NOTE (Fable 5, design-side, disclosed in the handback review): the #58 packet's §4.4
+  asserted "five WL/slip cites" where the deficiency capture's §4 carries six — De Anda v. Jason C.
+  Webster, P.C., 2018 WL 3580579 was missed in the design-side count. The runner caught and flagged
+  all six; the landed record is already correct. NO correction entry owed (the wrong count lived only
+  in the deleted packet, never the log) unless Michael directs one. Failure class: design-side
+  enumeration undercount in a packet instruction — the roster-count class.
+- #58 BATCH VERIFIED DESIGN-SIDE (post-Sync, line by line against the landed docs): the new registry
+  file present at HEAD with honest header, stated placement reasoning, and the six-cite reporter-check
+  flag including De Anda; the sibling registry's third pass is second-observations only with the three
+  wording expansions FLAGGED, NOT ADOPTED; both REQ-CAPTUREs at their canonical
+  `docs/specs/REQ-CAPTURE_*` paths; BUILD-STATE (fifty-second refresh) consistent with the batch,
+  launch-path line already reads v16 — the carried v15→v16 micro-note is DONE, nothing to re-stage.
+- ONE DISCREPANCY COMMISSIONED FOR COUNT, not asserted as error: the sibling registry's third-pass
+  note says "twenty-six new UNVERIFIED propositions"; the new file's header and BUILD-STATE say
+  twenty-seven entries (22 deficiency + 5 UIM). Design-side cannot count entries from retrieval
+  (RAG partial-retrieval lesson, #55), so the runner counts at HEAD and reconciles — work order §4.3.
+- CD-1 KICKOFF PROMPT ROUTED (Michael, 2026-08-12, by widget: prompt drafted; packet-first
+  sequencing; P1 the queue machine): `docs/prompts/PROMPT-cd1-build-session.md`, pointer-style per
+  the QR-2 principle — it directs the build session to the spec + slice doc at HEAD and adds session
+  mechanics only; it duplicates no scope. The CD-1 build fires AFTER this batch, separate session.
+- DT-1: clock-checked 20:24 CDT; container reads 08-13 UTC; all stamps 2026-08-12 Central.
+- Model-usage note: design session ran on Fable 5; no meter reading was stated this session. The
+  CD-1 build session defaults to Opus per the standing routing.
+
+Staged for Code: this entry; PROMPT-cd1-build-session.md (NEW → docs/prompts/); §4.3 count
+reconciliation; queue annotations; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: the twenty-first invocation's handback (count
+reconciliation result; #59 landing).
+
 ## 2026-08-12 (#59) — Uvalde docket-worksheet REQ-CAPTURE filed UNRECONCILED (Code session, immediately after the twentieth runner batch)
 
 **Not a queue-runner batch — no packet.** Michael handed the file to a Code session directly,
