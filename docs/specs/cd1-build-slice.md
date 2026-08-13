@@ -88,3 +88,23 @@ the model: TS migration + SQL, regression tests, RLS probe extended to the new t
 rewritten (150-line cap — **currently at exactly 150; displace before adding**), exercised by
 clicking, defects recorded. Spec problems found during the build go to `docs/spec-feedback.md`,
 never fixed silently in the spec.
+
+## Dated qualification — slice item 1, `party_type` (added 2026-08-12, #62)
+
+**The original scope text above stands and is not rewritten.** This note records a build deviation
+that was disclosed and then ruled on, so the slice doc and the built code agree without either
+being quietly edited.
+
+Item 1 reads "multi-valued role tags **retiring** `party_type`." The CD-1 build **retained the
+column** and disclosed the deviation in its handback (log #61). **Michael CONFIRMED the retention
+2026-08-12** (log #62). The reasoning, on the record:
+
+- `party_type` drives **which fields the party registry renders** on the contact form. Dropping it
+  meant rebuilding form rendering, which is nowhere in this slice's scope.
+- **Role tags supersede it where it counted** — they are what the app filters and selects on.
+- The tag **vocabulary is derived from the party-type registry**, so the two lists cannot drift.
+- **`role_tags[0]` mirrors `party_type`**, which is the backfill contract, making the migration
+  mechanical, lossless, and reversible.
+
+Retiring the column remains available later, as its own change, with form rendering re-pointed
+first. Nothing about this note authorizes that.

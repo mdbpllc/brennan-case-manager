@@ -226,3 +226,68 @@ appear because REQ-13 presumes the software can encode rules of this kind.
 7. When handwritten court notes are transcribed and routed to matters after court
    (REQ-09), what marks the resulting record as attorney-reviewed rather than raw OCR, so
    downstream worksheets don't print unverified transcription as fact?
+
+---
+
+## RECONCILIATION ADDENDUM — 2026-08-12 (design session, Fable 5, Cowork; GROUP RULING by Michael, 2026-08-12 Central, by widget, on the presented disposition table — the roster-capture precedent)
+
+Sixth REQ-1 capture reconciled; the only one that reached the repo before reconciliation (filed
+unreconciled by #59, the difference preserved there). Reconciled against BUILD-STATE (fifty-fourth
+refresh) and the session log through #61 — i.e., AFTER the CD-1 build, so the CD-substrate
+dispositions below cite built structure, not planned structure. Client-clean status was verified by
+the filing session (#59) and is not re-litigated here. Packet-local REQ-nn IDs are retired here;
+durable IDs assigned below. **The CR series is CREATED by this ruling** (criminal-side
+requirements; the WF-1/DE precedent) — the runner verifies the letters are unclaimed at HEAD, and
+the one-word veto stays open until CR IDs get load-bearing (the IN-series precedent). DT-1 clock
+check before stamping: 2026-08-12 21:49 CDT.
+
+## Durable ID assignments (RULED 2026-08-12, as a group)
+
+| Packet-local | Durable | Disposition |
+|---|---|---|
+| REQ-01 | *(no new ID)* | Evidence/confirmation of OAA intake Tier 1, BUILT 2026-07-25 (engine `6b9d242`, UI `bb3cc0c`, verified in demo) + the intake spec's existing DeWitt OCR tier (C2's v2 §1a/§1b field maps). Annotation onto `criminal-appointment-intake-and-docket-enhancements.md`; the handwritten feature list is the validating evidence. Priority as captured: now. |
+| REQ-02 | **CR-1** | Hearing-date extraction with attorney confirmation at matter creation. Dedupe at HEAD against the intake spec; if covered, records as a second observation on the covering section instead. Priority: now. |
+| REQ-03 | *(no new ID)* | Evidence onto `criminal-appointment-intake-and-docket-enhancements.md` §3 (docket cross-referencing), its named nearest home. The manual "Recent Appointments — Cross-Checked Against This Docket" table that caught two matters is the validating evidence. §5 Q2 (authoritative source list + look-back window; manual practice was "every notice since the prior docket call") rides in the annotation. Priority: now. |
+| REQ-04 | **CR-2** | Per-cause prosecutor assignment + by-prosecutor grouping of the day's docket + county prosecutor roster with collision-safe short codes. The roster is CD-1 directory substrate (contacts with roles) — evidence annotation to the CD queue entries as well. §5 Q1 (cause level vs. docket-entry level; live evidence: one defendant's causes split between two prosecutors on one docket, and printed assignments wrong on roughly three of eight defendants) rides in the question text. Priority: now. |
+| REQ-05 | **CR-3** | At-court correction capture (prosecutor, attorney-of-record, setting type) persisting to the matter, reconciling against the next published docket, with a court-confirmed flag distinguishing observed fact from imported data. Cross-links CR-2. Priority: soon. |
+| REQ-06 | **CR-4** | Front-page expected-disposition marker (plea / contest / status) + per-setting appearance outcome (appeared, no-show, in custody elsewhere) feeding the follow-up list and next-worksheet banners. Priority: soon. |
+| REQ-07 | *(no new ID)* | CD-1 evidence BY CONSTRUCTION — contacts with roles attaching to the matter at capture is the built directory + roster link (log #61, items 1–2). The print-forward half rides CR-9. Priority as captured: now. |
+| REQ-08 | **CR-5** | Custody status per client (facility, county/state, source and date of information) including out-of-state facilities, + bench-warrant/writ status, both surfaced in the client-page banner. Priority: soon. |
+| REQ-09 | **CR-6** | Designated scratch and quick-intake blocks on the worksheet + a post-court reconciliation step routing captured notes to the correct matters and creating new matters from intake blocks. §5 Q7 (what marks a transcribed record as attorney-reviewed rather than raw OCR, so downstream worksheets don't print unverified transcription as fact) rides in the question text. Priority: soon. |
+| REQ-10 | **CR-7** | Three-way number mapping: defense cause number ↔ docket entry number ↔ DA file/incident number; stored per cause, printed on the worksheet, optional import from the DA charge-table document. §5 Q5 (manual entry vs. OCR-assisted import vs. both; front-page column without crowding handwriting space) rides in the question text. Priority: now. |
+| REQ-11 | **CR-8** | Offer lifecycle: offer versions as first-class records (date, source, full terms, option sets); worksheet renders history, changed/unchanged flag, and option sets. Live evidence: one offer tracked through three versions; a probation option disappearing and returning. The email-workflow doc's criminal plea-offer observation is its unruled relative — cross-referenced, never merged (that doc stays PROPOSED). Priority: now. |
+| REQ-12 | **CR-9** | Notes attach to the MATTER, not the worksheet, and print forward automatically — including transcribed handwritten notes from CR-6's reconciliation step; absorbs REQ-07's print-forward half. Priority: now. |
+| REQ-13 | **CR-10** | Plea-paperwork audit rendered as a signing checklist: degree of offense vs. charged statute, jail-credit presence for in-custody/bench-warrant defendants, completeness of required certifications, non-concurrent cost totals. The capture's own highest-value item. **HARD GATE, restated from CLAUDE.md rule 1: no computed check runs while the underlying propositions are UNVERIFIED.** The six §4 propositions enter `legal-rule-registry-criminal-plea-and-costs.md` (NEW file, all UNVERIFIED, confirmed by Michael 2026-08-12) and CR-10 is gated on their verification. §5 Q6 (can the checks be encoded as rules against drafted judgments, and which verified-authority registry do they check against — ANSWERED IN PART by this ruling: that registry file, once verified) rides in the question text. Priority as captured: soon — but highest-value. |
+| REQ-14 | **CR-11** | Rule-generated shaded banners from matter state (prior FTA, bench-warrant history, clerk data error, new appointment, changed offer) + a "FOLLOW-UPS — not on tomorrow's docket" closing page fed by open tasks + quick task capture from court notes. Priority: soon. |
+| REQ-15 | *(no new ID — binding design constraint)* | All worksheet semantics must survive black-and-white printing: borders, shading density, weight, icons — never color-coded meaning. Governs ALL worksheet rendering, including every CR item above. Recorded as a constraint, not a feature; the ad hoc highlighting observed was expressly not a feature request. §5 Q4 (which B&W-safe typographic conventions carry banner semantics) rides with it. FE-10's format profiles are noted as the civil-side sibling — cross-referenced, never merged. Priority: now (governing). |
+
+## §3 disposition
+
+The data-model and template implications route as evidence annotations: the per-cause/matter field
+list and the worksheet-as-generated-document shape (keyed to court × docket date, front page as the
+at-court command surface, generous whitespace load-bearing, consolidated multi-cause treatment)
+annotate `criminal-appointment-intake-and-docket-enhancements.md` as CR-series evidence. No schema
+proposal is adopted by this reconciliation; CD-3's insurer-subtype precedent governs if any
+directory vocabulary addition surfaces later (spec-level act on the living spec).
+
+## §5 question routing (full texts ride in the CR question texts named above)
+
+Q1 → CR-2 · Q2 → the REQ-03 annotation · Q3 → the intake spec's OCR tier annotation (the
+read-the-handwriting-first practice rule: flag handwritten margin content for attorney review
+before any typed content is trusted) · Q4 → the REQ-15 constraint · Q5 → CR-7 · Q6 → CR-10 ·
+Q7 → CR-6. All seven remain OPEN questions for Michael except Q6's registry half, answered by the
+registry ruling above.
+
+## Registry disposition
+
+Six §4 candidates ENTERED as UNVERIFIED in `legal-rule-registry-criminal-plea-and-costs.md` (NEW
+file, ruled 2026-08-12) — entries 3 and 4 carry NO cite (the capture stated them bare; cite supply
+is a verification act, Michael's). The attorney verification backlog widens 27 → 33.
+
+## Count note (ownership: Fable 5, design-side, disclosed same session)
+
+The ruling widget's summary line said "ten new durable IDs"; the presented and adopted table
+carries ELEVEN (CR-1 through CR-11). The table governs — it is what was presented and adopted with
+each row's full text on screen. Failure class: design-side enumeration miscount (roster-count
+class, De Anda's sibling); caught in-session before staging; the wrong figure never reached any
+artifact.

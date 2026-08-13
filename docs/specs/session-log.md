@@ -12,6 +12,191 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-SECOND invocation)
+
+**Two packets, one close-out, docs only — §5 was NONE in both and nothing was built.** Runner **v6**
+read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per QR-2, verified unchanged by diff since the
+twenty-first invocation read it. QR-3 gate PASSED: clean, on master, HEAD == `origin/master` ==
+`ls-remote` at `059dc94`. Clock check before stamping: 22:27 CDT.
+
+- **Order confirmed by Michael before execution:** (1) `uvalde-reconciliation-and-61-review` → #62,
+  then (2) `fe-d1-scoping-and-session-rulings` → #63. Filename dates tie at 2026-08-12; mtime breaks
+  it 21:52 then 22:14; **packet 2's own §0 independently says run packet 1 first.** Both orderings
+  agreed, so no ambiguity had to be resolved.
+- **#62 and #63 were both free**; no renumbering. All of packet 1's other §1 STOP checks cleared:
+  the new registry file, both FE-D1 files, the email-workflow doc, and the telemetry note were
+  all genuinely absent; the Uvalde capture had **no** prior addendum (so no design/Code race);
+  `form-engine.md` had no §14 and none of the four distillation rows.
+- **CR-SERIES COLLISION: FLAGGED, PUT TO MICHAEL, NOT RENAMED.** The packet made collision a STOP
+  and forbade auto-renaming. The literal test — "no existing ID **series** uses CR" — **passed**.
+  But **`CR-3` already means the Texas crash-report form**, at IN-2 in the queue and at
+  `contact-directory.md` §7, so the string now carries two meanings inside the same file. That is a
+  form designation rather than an ID series, which is why the STOP did not fire on its own terms.
+  **Michael was asked before any CR row landed and chose to proceed as CR with the clash flagged**
+  — the H-series disposition. The CR heading carries the collision note and a citation convention
+  ("CR-3 (criminal requirement)" vs. "the CR-3 crash report"), and CR-3's own row repeats it.
+  **Renaming an attorney's ID series is not Code's call.**
+- **Packet 1 executed in full:** Uvalde addendum APPENDED to the capture (HTML routing comment
+  stripped; the capture's original text untouched, per the standing pattern) — **this ends the only
+  unreconciled capture in the repo**; `legal-rule-registry-criminal-plea-and-costs.md` filed
+  verbatim, **six entries, ALL UNVERIFIED, and the two cite-less ones left exactly as stated**
+  (supplying a cite is a verification act, so it is Michael's); the Uvalde queue row replaced by
+  **CR-1–CR-11 plus the binding black-and-white print constraint**, each with full text per QR-1;
+  registry backlog **27 → 33**; CD-1/CD entries annotated; `cd1-build-slice.md` given a **dated
+  qualification** on `party_type` with the original slice text left standing.
+- **`party_type` RETENTION CONFIRMED.** The one deviation the #61 CD-1 handback disclosed is ruled
+  correct: dropping the column meant rebuilding registry field rendering, outside slice scope; role
+  tags supersede it as the filter; the vocabulary is derived so the two cannot drift; `role_tags[0]`
+  mirrors it. Recorded in the slice doc and the queue — never a silent rewrite.
+- **Packet 2 executed in full:** `fe-d1-build-slice.md`, `PROMPT-fe-d1-build-session.md`,
+  `email-workflow-requirements.md`, and `docs/gpu-telemetry-offline.md` all filed **verbatim**
+  (diff-verified); `form-engine.md` amended **append/add-only** — new §14 (the REQ-10 fold, which
+  closes that carry) and four rows added to the §13.4 table in its existing column format.
+  **Nothing existing in that file was reworded and §9 was not touched.**
+- **§4.6's commissioned §11-vs-queue check found three items with NO queue home** — §11.1 the
+  Bates/document-production module, §11.2 the remaining template conversions, §11.4 the editor UX
+  pass. All three registered with full text and honest status (banked / later slices / later item).
+  §11.3 needed no row: it rides FE-D1 in-slice. The one "Bates" string already in the queue was
+  DE-1's `evidence_refs[]`, **a different thing** — item-level pins, not a stamping pipeline.
+- **§4.7's telemetry instruction rested on a premise that did not hold, and the conditional pattern
+  handled it.** It said to annotate "the telemetry row"; **there was no telemetry row.** The item
+  lived only in BUILD-STATE's design-side section. Registered now, with its full question text and
+  the offline-lockdown ruling. **Same class as the REQ-10 finding at #60** — an item tracked in
+  BUILD-STATE but never in the register that exists to hold it.
+- **§6 honored across both packets, cumulatively:** no CR item begun (registration is not
+  authorization); **the FE-D1 build NOT begun** (barred — Michael fires it as its own session, the
+  CD-1 pattern); no registry entry verified, re-worded, or given a cite; the CD-1 item-7 migration
+  untouched; `SKILL.md` untouched; §9 untouched; **no correction entry created** for either the
+  REQ-10 premise error or the ten-vs-eleven count — both are ownership notes by ruling and neither
+  ever reached the log; no telemetry variables set from here; no existing entry renumbered.
+- **§7 merge across both packets:** CD-1 item 7 (the live migration, his hand, completes GL-1 floor
+  item 1) · **FE-D1 build session, now authorized and his to fire** · telemetry variables + his
+  "verification 3 passed" report · gates 1 and 9, then gate 3 incl. the two new tables · registry
+  backlog **33** plus span reads, three held wordings, six slip-cite checks · CRIM DEFENSE
+  paste-state confirmation · carried: SK-v2 re-upload, picker pair, KICK-1, H4, P15 runner-copy
+  deletion, **IN/DE/CR naming caveat**.
+- **Health re-run this refresh: 278 tests pass, build + lint clean** (docs-only batch; the app was
+  not touched).
+
+## 2026-08-12 (#63) — FE-D1 DISCLOSURES SLICE NAMED, SCOPED, AUTHORIZED (group ruling);
+FE-GATING RULED (FE-13–FE-17 take the #54 treatment, closing the queue item); FE-8–FE-17
+dispositioned; REQ-10 fold EXECUTED (form-engine §14); four distillation candidates ENTER §13.4;
+email-workflow doc ADOPTED with WF-2–WF-8; telemetry posture RULED (offline lockdown)
+(design session, Fable 5, Cowork, typed — same session as #62's packet)
+
+All rulings Michael's, 2026-08-12 Central, by widget; DT-1 clock-checked before every stamp.
+
+- FE-GATING RULED (closes the open queue item): FE-13–FE-17 take the #54 treatment — ruled at
+  the slice-scoping session exactly as FE-8–FE-12 were. All ten open FE items dispositioned
+  this session; full table in docs/specs/fe-d1-build-slice.md.
+- FE-D1 NAMED (RULED): the next form-engine build slice is the DISCLOSURES ENGINE, end-to-end —
+  §§1–6 wizard + §10 substrate + §11.3 skeleton extraction. NOT "FE-1" (retired scout,
+  anti-resurrection ledger bars reuse; check run deliberately). The spec's two generations
+  (disclosures wizard vs. §13 item-model discovery engine) fork RULED: disclosures first —
+  substrate arrives with its first consumer (the CD-1 no-unconsumed-structure logic), richest
+  evidence base, §11.3 names its own first task. Discovery engine is slice 2 on the same
+  substrate.
+- FE-D1 SCOPED (group ruling on the presented table) and the MINIMAL TEMPLATE EDITOR ruled IN
+  as its own item (edit → new template_version, no styling UI; §1's Michael-owns-wording
+  principle requires SOME editor; §11.4's UX pass stays open). IN: §11.3 skeleton · §10
+  substrate complete (write-backs only where targets exist, FLAGGED never guessed) · skeleton
+  renderer (never regeneration) · the wizard §§2–6 (gates never write into the document —
+  binding invariant) · §9 seeded verbatim · FE-10 from birth (incl. numbering pass) · FE-12
+  from birth · FE-8 retention half (the §10 generated-document record IS the retention design;
+  diff deferred) · FE-15 scoped to disclosures posture · minimal editor · RLS + probe from
+  birth. OUT with homes: FE-9, FE-11 (discovery slice; FE-D1's lint does NOT absorb FE-11),
+  FE-13, FE-14 (TRCP 47 gate), FE-16, FE-17 (BINDING from-birth annotation: rides whichever
+  slice creates the item table), FE-2 (parked at intake), §11.1 Bates (banked), §11.2
+  conversions, §11.5 (Michael's CONFIRM gate), the §13 item model itself.
+- FE-D1 AUTHORIZED (RULED, the #52 pattern): authorization rides this packet; the build is a
+  SEPARATE Code session Michael fires from docs/prompts/PROMPT-fe-d1-build-session.md (Opus
+  default, meter first). BUILD-STATE's form-engine language updates accordingly.
+- REQ-10 FOLD EXECUTED (the carry confirmed 08-12 closes): placeholder discipline enters
+  form-engine.md as new §14 — documented method now, FE-10 lint automates later.
+- DISTILLATION (RULED): all four candidates ENTER §13.4 — UDJA/UIM petition, deficiency letter,
+  motion to compel, deficiency grid. Entering ≠ adopting; FE-7 guardrails hold.
+- EMAIL-WORKFLOW DOC ADOPTED (RULED): ships verbatim to docs/specs/email-workflow-requirements.md
+  with an adoption addendum; the seven pipelines take WF-2–WF-8 with gates named (T3/KICK-1 for
+  everything inbox-facing; WF-5 explicitly behind the unruled money-machinery question; WF-6
+  cross-linked to the CR series so it never duplicates it; WF-8 is evidence FOR the deferred
+  service-story revisit). Cross-cutting constraints recorded, including: client emails get human
+  routing, never templated automation. The long-standing "email-workflow doc un-packetized"
+  carry CLOSES.
+- TELEMETRY RULED (closes the open item): offline lockdown — wandb/sentry-sdk/OneLogger stay
+  installed, forced offline machine-wide BEFORE any privileged audio is processed. Recipe +
+  verification steps at docs/gpu-telemetry-offline.md; the item fully closes when Michael
+  reports verification 3 passed.
+- Model-usage note: design session on Fable 5; NO meter reading was stated this session
+  (flagged at the FE-scoping start, proceeded on standing routing). The FE-D1 and CD-1 build
+  sessions default to Opus.
+
+Staged for Code: this entry; fe-d1-build-slice.md (NEW); PROMPT-fe-d1-build-session.md (NEW);
+email-workflow-requirements.md (NEW); gpu-telemetry-offline.md (NEW); form-engine.md amendments
+A and B; §11-vs-queue verification; queue updates; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: the twenty-second invocation's handback (both packets).
+
+## 2026-08-12 (#62) — UVALDE REQ-CAPTURE RECONCILED (group ruling): CR SERIES CREATED,
+CR-1–CR-11 issued; six criminal registry propositions ENTERED UNVERIFIED (new file);
+#61 party_type retention CONFIRMED; carried rulings recorded (REQ-10 ownership note;
+BS-1 phrase); #60 batch verified design-side (design session, Fable 5, Cowork, typed)
+
+All rulings Michael's, 2026-08-12 Central, by widget; DT-1 clock-checked before every stamp.
+
+- UVALDE RECONCILIATION (GROUP RULING on the presented disposition table, the roster-capture
+  precedent): the sixth REQ-1 capture — the only one filed before reconciliation (#59, the
+  difference preserved) — is reconciled against BUILD-STATE (fifty-fourth refresh) and the log
+  through #61, i.e. AFTER the CD-1 build, so its CD-substrate dispositions cite built structure.
+  Full disposition table in the capture's appended addendum. Shape: eleven new durable IDs
+  (CR-1–CR-11), three no-new-ID evidence routings (REQ-01 → built OAA Tier 1; REQ-03 → intake
+  spec §3; REQ-07 → CD-1 by construction), one binding design constraint (REQ-15, B&W print,
+  governs all worksheet rendering), all seven §5 questions riding in the named CR question texts.
+- CR SERIES CREATED (RULED): criminal-side requirements, the WF-1/DE precedent. Reason: criminal
+  practice items fit neither FE nor IN nor DE, and IDs with full text are the cheap insurance
+  against the K-6/K-7 death. Collision check is the runner's at HEAD; one-word veto standing.
+- REGISTRY (RULED): six §4 candidates ENTER as UNVERIFIED in NEW
+  `legal-rule-registry-criminal-plea-and-costs.md` — no existing file's subject honestly covers
+  criminal classification/plea/costs (the #50/#58 placement reasoning). Entries 3 and 4 carry NO
+  cite (the capture stated them bare; cite supply is a verification act, Michael's). Verification
+  backlog widens 27 → 33. CR-10 (plea-paperwork signing checklist, the capture's highest-value
+  item) stays HARD-GATED on their verification per CLAUDE.md rule 1.
+- #61 REVIEWED DESIGN-SIDE (on the handback's own account; landed-doc line-by-line rode this
+  session's synced view): six of seven items verified as reported; RLS-probe-from-birth and
+  flags-never-guesses honored; fixture-only confirmed. THE ONE DISCLOSED DEVIATION IS CONFIRMED
+  (RULED): party_type RETAINED where the slice said "retiring" — dropping it meant rebuilding
+  form rendering out of slice scope; role tags supersede it as the filter; the vocabulary is
+  DERIVED from the party-type registry so the two cannot drift; first tag mirrors it. The slice
+  doc takes a dated qualification note (never a silent rewrite). Item 7, the live migration,
+  remains Michael's and UNRUN.
+- CARRIED RULING 1 (from the twenty-first post-run review, by widget): REQ-10 premise error —
+  OWNERSHIP NOTE ONLY, De Anda precedent. The twentieth post-run capture (Fable 5, design-side)
+  said the REQ-10 carry was "registered in the filed deficiency capture and the queue"; the queue
+  half was wrong (log + BUILD-STATE only, fixed by the twenty-first invocation's conditional).
+  Attribution ambiguous between the capture's paraphrase and the twentieth handback's account,
+  NOT to be chased. Never reached the log; no correction entry owed. Failure class: design-side
+  capture misstatement of registration location (the #53/De Anda class).
+- CARRIED RULING 2 (same review, by widget): the instructions-v16 phrase "BS-1 provenance" names
+  a string absent from BUILD-STATE since before `3a4db71` (verified Code-side, twenty-first
+  invocation); BS-1's standing product is the ledger-pointer line, intact. RULED a touch-up for
+  the NEXT instructions revision alongside the pre-Cowork "Claude cannot write project docs"
+  line — not a trigger #3 firing (no convention changed). Until then the phrase reads: preserve
+  the anti-resurrection-ledger pointer line.
+- #60 BATCH VERIFIED DESIGN-SIDE (post-Sync, line by line): entry text landed verbatim with the
+  renumber parenthetical; count correction (27/27/30) recorded with the "~26" explained; flag
+  closed in three places; REQ-10 row added; prompt at its canonical path with the stale-line
+  disclosure. The twenty-first invocation's verdict stands: correct behavior, no drift.
+- COUNT NOTE (ownership: Fable 5, design-side, caught in-session before staging): the ruling
+  widget's summary said "ten new durable IDs"; the presented and adopted table carries ELEVEN.
+  The table governs — it was adopted with full text on screen. Roster-count class; the wrong
+  figure never reached any artifact.
+- Model-usage note: design session on Fable 5; no meter reading stated. The #61 build ran on
+  Opus per the standing routing and stands without Fable re-review.
+
+Staged for Code: this entry; the Uvalde reconciliation addendum (APPEND to the capture);
+legal-rule-registry-criminal-plea-and-costs.md (NEW); queue restructure (Uvalde row → CR rows);
+cd1-build-slice.md dated qualification; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: the twenty-second invocation's handback; the #61
+landed code itself (design reads BUILD-STATE, not src — standing posture).
+
 ## 2026-08-12 (#61) — CD-1 DIRECTORY BUILD: six of seven slice items built and exercised; the live migration is Michael's and has NOT been run (Code session, Opus)
 
 **The first schema-touching build since CL-2.** Fired by Michael from

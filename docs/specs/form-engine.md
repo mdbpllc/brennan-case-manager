@@ -362,3 +362,21 @@ until Michael adopts them**.
 | Entity trucking set | Trucking PI, entity-defendant combined discovery set | 2026-08-11 | queued |
 | Driver set | Trucking PI, individual-driver combined discovery set | 2026-08-11 | queued |
 | Nonsubscriber battery | Workers'-comp nonsubscriber posture, tailored discovery block | 2026-08-11 | queued |
+| `template_petition_udja-uim-carrier.md` | UIM/UDJA petition transform capture, 2026-08-12 | 2026-08-12 | queued |
+| `template_deficiency-letter_written-discovery.md` | Deficiency-handling capture, 2026-08-12 | 2026-08-12 | queued |
+| `template_motion-to-compel_written-discovery.md` | Deficiency-handling capture, 2026-08-12 | 2026-08-12 | queued |
+| `template_deficiency-grid_columns.md` | Deficiency-handling capture, 2026-08-12 | 2026-08-12 | queued |
+
+## 14. Placeholder discipline (documented method — REQ-10 fold, confirmed as carry 2026-08-12, executed by #63)
+
+House practice in both practice-project drafting sessions, now written down as method:
+
+- **Placeholder inventory per document:** every draft carries an explicit inventory of its
+  unfilled merge tokens, bracketed blanks, and to-be-supplied values — maintained with the draft,
+  not reconstructed at the end.
+- **Fill checklist at delivery:** the ship gate includes walking that inventory — every
+  placeholder either filled or expressly listed as deliberately open, with its owner named.
+  A document ships with zero unaccounted placeholders.
+- **Automation path:** FE-10's render lint automates detection (unfilled-token scan) when built;
+  until then this is the documented manual method, and the SK-v2 skill's ship gates remain its
+  operating implementation.
