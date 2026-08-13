@@ -12,6 +12,47 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 (#59) — Uvalde docket-worksheet REQ-CAPTURE filed UNRECONCILED (Code session, immediately after the twentieth runner batch)
+
+**Not a queue-runner batch — no packet.** Michael handed the file to a Code session directly,
+by path, minutes after the twentieth invocation closed. Clock check before stamping: 19:05 CDT.
+
+- **`REQ-CAPTURE_uvalde-docket-worksheet_2026-08-12.md` filed verbatim** (diff-verified) at
+  `docs/specs/`. **Sixth REQ-1 capture and the FIRST from CRIM DEFENSE** — that practice project
+  evidently exists now, since the capture originates there; whether v1 and the Uvalde instructions
+  were pasted into it is not something a Code session can see, so that ask stays narrowed rather
+  than cleared.
+- **NOTHING WAS RULED, AND THAT IS THE POINT.** The capture carries **no reconciliation addendum
+  and no durable IDs**; its own §2 says durable IDs are assigned at design-side reconciliation
+  "never here," and its §5 is addressed to the design side. So: **no durable IDs assigned, no
+  requirement routed to a series (FE/IN/CD/DE/CL), no registry entry opened, nothing folded into
+  `criminal-appointment-intake-and-docket-enhancements.md`.** The other five captures reached the
+  repo through packets carrying Michael's group rulings; this one did not, and the difference is
+  preserved rather than papered over.
+- **§4's six propositions are registry CANDIDATES, not entries** — Penal Code § 31.07 and Health &
+  Safety Code § 481.115(b) as state jail felonies; degree-of-offense/punishment correspondence;
+  per-cause non-concurrent court costs; CCP arts. 42.0197 and 27.18. **All UNVERIFIED. None was
+  opened**, because no fold-in instruction accompanied the capture and opening entries is a
+  reconciliation act. They live in the capture until Michael's pass.
+- **REQ-13 is the item that needs his eye.** The capture calls the plea-paperwork audit its
+  highest-value requirement, and it presumes the software can encode rules of the kind in §4 —
+  degree of offense vs. charged statute, jail-credit presence, certification completeness, cost
+  totals. **CLAUDE.md rule 1 forbids exactly that while the propositions are unverified**, which is
+  why its own §5 Q6 asks which verified-authority registry those rules check against. Flagged in
+  the queue with that clause bolded.
+- **Client-clean, checked rather than assumed:** no names, no cause numbers, no case-identifying
+  facts. It names the Uvalde 38th District Court and two docket-call dates, and DeWitt County as
+  an OCR-difficulty example — Uvalde is already named openly in CLAUDE.md and BUILD-STATE, and
+  court calendars identify no client.
+- **Queue:** one row at §5 (project documents awaiting review), carrying the lead question in full
+  plus all six remaining §5 questions and the six registry candidates, per QR-1. **One row, not
+  fifteen** — durable IDs are not Code's to issue.
+- Health unchanged from the batch an hour earlier: **232 tests pass, build + lint clean** (docs only).
+
+Staged for Code: nothing further.
+Awaiting/Returned from Code, unreviewed: **this capture's reconciliation pass** — the first REQ-1
+capture to reach the repo before the design side has ruled on it.
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTIETH invocation)
 
 One packet, one close-out, **docs only — §5 was NONE and nothing was built.** Runner **v6** read from
