@@ -12,6 +12,89 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 (#61) — CD-1 DIRECTORY BUILD: six of seven slice items built and exercised; the live migration is Michael's and has NOT been run (Code session, Opus)
+
+**The first schema-touching build since CL-2.** Fired by Michael from
+`docs/prompts/PROMPT-cd1-build-session.md` immediately after the twenty-first runner batch.
+Step 0 gate PASSED: clean, on master, HEAD == `origin/master` == `ls-remote` at `c6184a1`,
+`inbox/` empty. Authorization: `docs/specs/cd1-build-slice.md`. Design authority:
+`docs/specs/contact-directory.md`. Anti-resurrection check run: **this is NOT Slice A
+returning** — Slice A was the provider-level framing, withdrawn 08-08; this builds the ruled
+level. **Fixture data only. No real client data anywhere.** Clock check: 21:18 CDT.
+
+**BUILT (slice items 1–6), in four commits:**
+- **Item 1, `parties` evolution.** Multi-valued **role tags** whose vocabulary is DERIVED from
+  the party-type registry so the two cannot drift; **typed alias set** (d/b/a, f/k/a,
+  suffix-variant); **deceased** as a directory-level fact. `party_type` is **RETAINED, not
+  dropped** — it drives which fields the registry renders, and dropping it would have meant
+  rebuilding form rendering inside this slice. `role_tags[1]` mirrors it instead.
+- **Item 2, `case_parties` evolution.** The four separable attributes (story role · caption
+  alignment · party status · firm perspective), **capacity on the LINK** with a
+  restrict-not-cascade pointer at the minor/decedent, and **history** (joined-by, active
+  state, slot role). The existing `side` column is untouched: it already IS attribute four.
+- **Item 3, roster definitions as data.** Slot definitions with expectancy tiers and side sets
+  per case type, so **REQ-14 is satisfied by construction** — sides are a property of the case
+  type, and the criminal caption really does resolve to State/Accused while the ex parte
+  relief types resolve to a petitioner with no adversary. Seeded ONLY from bank-evidenced
+  constellations; **every slot cites the capture requirement that evidences it.**
+- **Item 4, contact edges.** One directional typed structure, optional case scope, vocabulary
+  seeded from REQ-11 and enforced as a check constraint. **The CL-1 firewall and the one-home
+  rule are written into the module itself**, not left in the spec.
+- **Item 5, UI.** Directory with role-tag filtering, alias display and the multi-match flag;
+  case-side intake roster panel with tiers and sources; roster-flag card; the four attributes
+  shown separately; **firm-wide edit scope stated with a linked-case count** (labelling, not a
+  confirm click).
+- **Item 6, RLS + probe FROM BIRTH.** Policies, explicit GRANTs, and both new tables added to
+  the RLS probe **in the same commit as the tables** — the #28 lesson applied before a defect
+  rather than after one. The probe's own count guard caught the change, as designed.
+
+**NOT DONE — item 7, and it is Michael's by ruling.** `db/migrations/2026-08-12-cd1-contact-directory.sql`
+is written, guarded, re-runnable, and mirrors `src/domain/rosterBackfill.ts` step for step so a
+defect is a defect in both modes. **This session did not run it against anything.** It ends with
+five verification checks to answer IN WORDS, one of which **expects a HIGH flag count — a low
+number would mean something had been guessed.**
+
+**Backfill discipline held, and the honest result is a lot of flags.** Plaintiff/Defendant map
+mechanically, but **only where the case type's side set actually defines that alignment** (a
+'Defendant' link on a felony does not, and is flagged rather than forced to 'Accused').
+Function roles — witness, treating provider, judge, counsel — derive to **null, meaning
+non-party**, which is a value rather than an absence. **'Client' is FLAGGED**, deliberately: our
+client is the Plaintiff on a civil caption and the Accused on a criminal one, and
+`representationType` is criminal-only, so nothing in the record decides it. That flags most
+existing cases. **That is the correct outcome, not a defect.**
+
+**Three defects found and fixed while building, all mine:**
+1. `migrateV9ToV10` stamped `STORE_VERSION` rather than the version it produces, so it claimed
+   v11 while doing no CD-1 work. Now stamps a literal 10.
+2. The chained v9 path would have written v9 text into the `-backup-v10` key.
+3. **A freshly SEEDED store never ran the backfill** — demo mode showed no roster attributes
+   and no flags, so the feature was invisible in the mode Michael actually uses. The seed now
+   runs the same backfill the migration does. Writing alignments into the seed by hand would
+   have made demo mode look better than reality.
+
+**Exercised in the browser** (seeded trucking MVA): slots resolve with the overlay layered on
+the case type; 5 flags across 3 cases; flag resolution drops 3 → 2; the slot action opens the
+add form scoped to its slot. **NOT verified by clicking: completing a slot-fill link** — the
+browser pane is not displayed in this environment, so screenshots and real mouse clicks were
+unavailable and the combobox ignores synthetic events. Stated rather than glossed.
+
+**Two spec-vs-code gaps recorded in `docs/spec-feedback.md`, built around under stated
+assumptions rather than fixed silently in the spec:** there is **no case-type tree to inherit
+on** (`CASE_TYPE_DEFS` is flat, so inheritance runs practice area → case type), and **two of the
+seven named seeds — trucking and UIM/UM — are PI overlay FLAGS, not case types**, with PR-3
+holding the tree shut. They seed as flag-keyed overlays. Slots are data; reversing this is cheap.
+
+**Scope-OUT honored:** no form engine, no IN-2 fact table, no merge tooling, **no service-story
+columns**, no probate beyond the reserved pattern, no `/rules` seed touched. No registry change
+of any kind. SKILL.md untouched. CE1 still unauthorized. No CourtListener. Nothing T3/T4.
+**`case_links` still does not exist** — the CL-1 firewall holds.
+
+**Health: 274 tests pass (42 new), build + lint clean.** Store v10 → v11, forward in place.
+
+Staged for design side: this entry; the spec-feedback items; BUILD-STATE.
+Awaiting/Returned from Code, unreviewed: **the CD-1 build itself** — six items landed, the live
+migration awaits Michael's hand, and the form-engine slice becomes nameable per the #54 ruling.
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-FIRST invocation)
 
 One packet, docs only, **§5 was NONE and the CD-1 build was NOT begun** (§5/§6 bar it; BUILD-STATE
