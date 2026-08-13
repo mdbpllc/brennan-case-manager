@@ -5,6 +5,43 @@ reveals get noted here instead. Each item needs a decision or a spec update
 in the Claude.ai Project space, after which a refreshed snapshot comes back
 to `docs/specs/`.
 
+## Medical tab scope, 2026-08-12 — half built, half BLOCKED on PR-3
+
+**Michael's ruling, 2026-08-12:** *"the only cases that should have a medical tab
+should be the personal injury or 1983 civil rights cases."* Prompted by a Servpro
+mechanic's lien matter, which has no medical damages to work up and where the tab
+invited a workflow that does not exist on that line.
+
+**BUILT:** `showsMedicalTab()` in `src/domain/caseTypes.ts` — one enforcement
+point, the `showsClientLayer()` pattern, so the rule cannot drift between the tab
+strip and the router. Personal Injury only. Verified live: the tab is present on
+the PI matter and gone from the Servpro and criminal matters.
+
+**BLOCKED, and this is the item for the design side: §1983 civil-rights matters
+have NO CASE TYPE.** `CASE_TYPE_DEFS` carries Personal Injury, General Civil
+Litigation (debt, DTPA, mechanic's lien, Servpro mechanic's lien, bailment,
+breach of contract), and Criminal. There is no civil-rights type anywhere, so
+half of the ruling **cannot be expressed in code today**. Adding one touches the
+**case-type tree, which PR-3 holds shut** (direction confirmed 2026-08-07,
+EXECUTION HELD until the probate-ladder pass names its destination). Rather than
+add a type under a hold, the §1983 half is recorded here.
+**Questions this raises for the design side:**
+- Does a §1983 civil-rights line belong under Personal Injury, under General
+  Civil Litigation, or as its own practice area? It carries medical damages like
+  PI but a wholly different liability theory, fee statute, and defendant class.
+- Does it wait for PR-3's hold to lift, or is it a separate, narrower change?
+
+**Safety valve built in, stated because it is a judgment call and not in the
+ruling:** a matter that already HAS medical bills keeps its Medical tab whatever
+its practice area. Hiding a tab must never make attorney-entered data
+unreachable, so the rule narrows what is *offered*, never what is *reachable*.
+If Michael would rather the rule be absolute, it is a one-line change.
+
+**Also deferred by Michael the same day:** the Servpro mechanic's lien line gets
+a fuller build-out **after a meeting with the Servpro people and another attorney
+who handles these matters regularly.** Nothing on that line should be designed or
+built from inference before that meeting.
+
 ## CD-1 build, 2026-08-12 — two spec-vs-code gaps, built around under stated assumptions
 
 Raised by the CD-1 directory build (`docs/specs/cd1-build-slice.md`). Neither

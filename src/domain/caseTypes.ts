@@ -130,6 +130,27 @@ export function statusesFor(practiceArea: PracticeArea, caseType: string): strin
   return STATUSES[def.ladder];
 }
 
+/** Which matters surface the Medical tab.
+ *
+ *  RULED by Michael 2026-08-12: "the only cases that should have a medical tab
+ *  should be the personal injury or 1983 civil rights cases." A Servpro
+ *  mechanic's lien matter has no medical damages to work up, and the tab
+ *  invited a workflow that does not exist on that line.
+ *
+ *  ONE enforcement point, deliberately — the same pattern as
+ *  `showsClientLayer()` in domain/client.ts — so the rule cannot drift between
+ *  the tab strip, the router, and any later consumer.
+ *
+ *  **§1983 IS NOT YET IMPLEMENTABLE.** There is no civil-rights case type in
+ *  `CASE_TYPE_DEFS`, and adding one touches the case-type tree, which **PR-3
+ *  holds shut** (direction confirmed, EXECUTION HELD until the ladder pass
+ *  names the destination). So this returns true for Personal Injury only, and
+ *  the §1983 half of the ruling is recorded in docs/spec-feedback.md rather
+ *  than half-built. When the type exists, add it here and nowhere else. */
+export function showsMedicalTab(practiceArea: PracticeArea): boolean {
+  return practiceArea === 'Personal Injury';
+}
+
 /** Terminal status. Single source of truth so list filters don't string-match ad hoc. */
 export const CLOSED_STATUS = 'Closed';
 export function isClosedStatus(status: string): boolean {

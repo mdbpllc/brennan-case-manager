@@ -7,7 +7,7 @@ import { CASE_ROLES, SIDES } from '../domain/types';
 import type { CaseClient } from '../domain/client';
 import { earliestLimitations, isResolved } from '../domain/client';
 import ClientsCard from './ClientsCard';
-import { CASE_TYPES, PI_FLAGS, statusesFor } from '../domain/caseTypes';
+import { CASE_TYPES, PI_FLAGS, statusesFor, showsMedicalTab } from '../domain/caseTypes';
 import { ATTORNEY_USER } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { db } from '../data';
@@ -31,11 +31,17 @@ export default function CaseDetailPage() {
     : path.endsWith('/transcripts') ? 'transcripts'
     : 'overview';
 
+  /** Safety valve on the Medical-tab rule: a matter that already HAS bills keeps
+   *  its tab whatever its practice area, so hiding a tab can never make
+   *  attorney-entered data unreachable. Hidden data is worse than an extra tab. */
+  const [hasBills, setHasBills] = useState(false);
+
   useEffect(() => {
     if (!id) return;
     db.getCase(id)
       .then((c) => { setRec(c); setLoadState(c ? 'ready' : 'notfound'); })
       .catch(() => setLoadState('error'));
+    db.listBillsForCase(id).then((bs) => setHasBills(bs.length > 0)).catch(() => { /* tab rule falls back to practice area */ });
   }, [id]);
 
   if (loadState === 'notfound') {
@@ -45,6 +51,8 @@ export default function CaseDetailPage() {
     return <div className="notice">Couldn't load this case. Check the database connection and refresh.</div>;
   }
   if (!rec) return <div className="muted">Loading…</div>;
+
+  const medicalVisible = showsMedicalTab(rec.practiceArea) || hasBills;
 
   return (
     <div>
@@ -65,7 +73,9 @@ export default function CaseDetailPage() {
       <div className="tabs">
         <button className={tab === 'overview' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}`)}>Overview</button>
         <button className={tab === 'parties' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/parties`)}>Parties</button>
-        <button className={tab === 'medical' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/medical`)}>Medical</button>
+        {medicalVisible && (
+          <button className={tab === 'medical' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/medical`)}>Medical</button>
+        )}
         <button className={tab === 'calendar' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/calendar`)}>Calendar</button>
         <button className={tab === 'transcripts' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/transcripts`)}>Transcripts</button>
       </div>
@@ -77,7 +87,15 @@ export default function CaseDetailPage() {
         </>
       )}
       {tab === 'parties' && <PartiesTab caseRec={rec} />}
-      {tab === 'medical' && <MedicalTab caseRec={rec} />}
+      {tab === 'medical' && (medicalVisible
+        ? <MedicalTab caseRec={rec} />
+        : (
+          <div className="notice">
+            <strong>No medical workup on this matter.</strong> The Medical tab is for personal-injury
+            files (ruled 2026-08-12). Nothing was deleted — this case has no medical bills.{' '}
+            <button className="btn-link" onClick={() => nav(`/cases/${rec.id}`)}>Back to overview</button>
+          </div>
+        ))}
       {tab === 'calendar' && <CalendarTab caseRec={rec} />}
       {tab === 'transcripts' && <TranscriptsTab caseRec={rec} />}
     </div>
