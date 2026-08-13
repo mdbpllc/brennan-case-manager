@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType, RosterBackfillFlag } from '../domain/types';
 import { RosterSlotsCard, RosterFlagsCard, RosterAttributes } from './RosterPanel';
@@ -473,6 +473,28 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
   const [rosterFlags, setRosterFlags] = useState<RosterBackfillFlag[]>([]);
   /** Set when the add form was opened by clicking a roster slot. */
   const [pendingSlot, setPendingSlot] = useState('');
+  const addFormRef = useRef<HTMLDivElement>(null);
+
+  /** DEFECT FIX (Michael, 2026-08-12): clicking "Link a contact" on a roster slot
+   *  looked like it did nothing. It was working — it opened the picker in the
+   *  Roster card BELOW the slots list, which on a trucking matter (12 slots)
+   *  renders several hundred pixels off-screen. An action whose only feedback is
+   *  outside the viewport is indistinguishable from a dead button, so the form
+   *  now scrolls itself into view and takes focus. */
+  useEffect(() => {
+    if (!adding) return;
+    const form = addFormRef.current;
+    if (!form) return;
+    //  `behavior: 'smooth'` was tried first and DOES NOT RUN reliably here — it
+    //  left the page at its original offset while reporting no error, which is
+    //  the same dead-button symptom this fix exists to remove. Instant scroll is
+    //  deterministic, and being taken to the form is the point.
+    form.scrollIntoView({ behavior: 'auto', block: 'center' });
+    //  Focus SYNCHRONOUSLY, not in a rAF: deferring it let the browser's own
+    //  post-click focus land on the slot button instead, so the caret never
+    //  reached the picker.
+    form.querySelector('input')?.focus({ preventScroll: true });
+  }, [adding, pendingSlot]);
 
   const refresh = useCallback(async () => {
     const ls = await db.listLinksForCase(caseId);
@@ -543,7 +565,7 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
         </div>
 
         {adding && (
-          <div className="filters" style={{ marginTop: 8, padding: 10, background: '#f7f8fa', borderRadius: 6 }}>
+          <div ref={addFormRef} className="filters" style={{ marginTop: 8, padding: 10, background: '#f7f8fa', borderRadius: 6 }}>
             {pendingSlot && (
               <div className="sub" style={{ width: '100%' }}>
                 Filling the <strong>{pendingSlot}</strong> slot.{' '}
