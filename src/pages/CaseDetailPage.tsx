@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType } from '../domain/types';
+import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType, RosterBackfillFlag } from '../domain/types';
+import { RosterSlotsCard, RosterFlagsCard, RosterAttributes } from './RosterPanel';
 import type { Charge } from '../domain/oaa';
 import { CASE_ROLES, SIDES } from '../domain/types';
 import type { CaseClient } from '../domain/client';
@@ -451,6 +452,9 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
   const [selParty, setSelParty] = useState('');
   const [selRole, setSelRole] = useState<CaseRole>('Client');
   const [selSide, setSelSide] = useState<Side | ''>('');
+  const [rosterFlags, setRosterFlags] = useState<RosterBackfillFlag[]>([]);
+  /** Set when the add form was opened by clicking a roster slot. */
+  const [pendingSlot, setPendingSlot] = useState('');
 
   const refresh = useCallback(async () => {
     const ls = await db.listLinksForCase(caseId);
@@ -458,15 +462,30 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
     const ps = await db.getParties(ls.map((l) => l.partyId));
     setParties(Object.fromEntries(ps.map((p) => [p.id, p])));
     setAllParties(await db.listParties());
+    // CD-1: the backfill's refusals for THIS case.
+    const flags = await db.listRosterFlags();
+    setRosterFlags(flags.filter((f) => f.caseId === caseId));
   }, [caseId]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
   const addLink = async () => {
     if (!selParty) return;
-    await db.createLink({ caseId, partyId: selParty, role: selRole, side: selSide || undefined });
+    await db.createLink({
+      caseId, partyId: selParty, role: selRole, side: selSide || undefined,
+      // CD-1: a link created from a slot records which slot made it (§4.3
+      // joined-by defaults come from the adapter).
+      storyRole: pendingSlot || undefined,
+      slotRole: pendingSlot || undefined,
+    });
     setAdding(false);
     setSelParty('');
+    setPendingSlot('');
+    refresh();
+  };
+
+  const resolveFlag = async (id: string) => {
+    await db.resolveRosterFlag(id);
     refresh();
   };
 
@@ -477,9 +496,26 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
 
   return (
     <div>
+      <RosterFlagsCard
+        flags={rosterFlags}
+        links={links}
+        parties={parties}
+        onResolve={resolveFlag}
+      />
+
+      <RosterSlotsCard
+        caseRec={caseRec}
+        links={links}
+        parties={parties}
+        onFillSlot={(slotRole) => {
+          setPendingSlot(slotRole);
+          setAdding(true);
+        }}
+      />
+
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <h3>Linked parties</h3>
+          <h3>Roster</h3>
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="btn small secondary" onClick={() => setAdding((a) => !a)}>
               {adding ? 'Cancel' : '+ Link existing party'}
@@ -490,6 +526,12 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
 
         {adding && (
           <div className="filters" style={{ marginTop: 8, padding: 10, background: '#f7f8fa', borderRadius: 6 }}>
+            {pendingSlot && (
+              <div className="sub" style={{ width: '100%' }}>
+                Filling the <strong>{pendingSlot}</strong> slot.{' '}
+                <button className="btn-link" onClick={() => setPendingSlot('')}>Not a slot</button>
+              </div>
+            )}
             <Combobox
               options={allParties.map((p) => ({
                 value: p.id,
@@ -513,23 +555,32 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
 
         <table className="list" style={{ marginTop: 10 }}>
           <thead>
-            <tr><th>Party</th><th>Type</th><th>Role on this case</th><th>Side</th><th></th></tr>
+            <tr>
+              <th>Contact</th><th>Role tags</th><th>Role on this case</th>
+              <th>Caption / status</th><th>Perspective</th><th></th>
+            </tr>
           </thead>
           <tbody>
             {links.map((l) => {
               const p = parties[l.partyId];
               return (
                 <tr key={l.id}>
-                  <td>{p ? <Link to={`/parties/${p.id}`}><strong>{p.displayName}</strong></Link> : '…'}</td>
-                  <td className="muted">{p ? PARTY_TYPE_MAP[p.partyType]?.label ?? p.partyType : ''}</td>
-                  <td><span className="badge role">{l.role}</span></td>
+                  <td>
+                    {p ? <Link to={`/parties/${p.id}`}><strong>{p.displayName}</strong></Link> : '…'}
+                    {p?.deceased && <span className="muted"> — deceased</span>}
+                  </td>
+                  <td className="muted">
+                    {p ? (p.roleTags.map((t) => PARTY_TYPE_MAP[t]?.label ?? t).join(', ') || '—') : ''}
+                  </td>
+                  <td><span className="badge role">{l.storyRole ?? l.role}</span></td>
+                  <td><RosterAttributes link={l} /></td>
                   <td>{l.side ? <span className={`badge side-${l.side}`}>{l.side}</span> : <span className="muted">—</span>}</td>
                   <td><button className="btn small danger" onClick={() => unlink(l.id)}>Unlink</button></td>
                 </tr>
               );
             })}
             {links.length === 0 && (
-              <tr><td colSpan={5} className="muted">No parties linked yet. Link an existing party or create a new one.</td></tr>
+              <tr><td colSpan={6} className="muted">No contacts linked yet. Link an existing contact or create a new one.</td></tr>
             )}
           </tbody>
         </table>
@@ -538,8 +589,11 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
       <ClientsCard caseRec={caseRec} onChanged={refresh} />
 
       <div className="notice">
-        Enter a party once, link it to as many cases as needed — roles (what a party <em>does</em> here) sit on top of
-        identity (what it <em>is</em>). Open any party to see its full cross-case history.
+        Enter a contact once, link it to as many cases as needed — the roster records what a contact
+        <em> does here</em> (role, caption alignment, party status, and whose side they are on from our
+        chair), on top of identity, which is what it <em>is</em>.{' '}
+        <strong>Editing a contact edits it firm-wide</strong>, on every case it is linked to — open any
+        contact to see that count before changing it.
       </div>
     </div>
   );

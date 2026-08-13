@@ -1,8 +1,12 @@
 // Demo seed data so the slice is clickable out of the box.
 // Entirely fictional. Wiped whenever you clear the browser's site data.
-import type { CaseRecord, PartyRecord, CasePartyLink } from '../domain/types';
+import type {
+  CaseRecord, PartyRecord, CasePartyLink, RosterBackfillFlag,
+} from '../domain/types';
 import { withDirectoryDefaults } from '../domain/directory';
 import type { DirectoryFields } from '../domain/directory';
+import type { ContactEdge } from '../domain/contactEdges';
+import { backfillRosterAttributes } from '../domain/rosterBackfill';
 
 /** A contact as it looks BEFORE the CD-1 directory fields exist. */
 type PartyDraft = Omit<PartyRecord, keyof DirectoryFields> & Partial<DirectoryFields>;
@@ -22,6 +26,8 @@ export function seedData(): {
   links: CasePartyLink[];
   clients: CaseClient[];
   clientFlags: ClientBackfillFlag[];
+  rosterFlags: RosterBackfillFlag[];
+  contactEdges: ContactEdge[];
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
   charges: Charge[];
@@ -260,10 +266,31 @@ export function seedData(): {
     },
   ];
 
+  // CD-1: run the seeded links through the SAME backfill the migration uses, so
+  // demo mode shows exactly what a migrated database shows — including the
+  // flags. Writing alignments by hand into the seed would have made demo mode
+  // look better than reality and hidden the honest flag count, which is the one
+  // number that proves nothing was guessed.
+  const caseById = new Map(cases.map((c) => [c.id, c]));
+  const rosterFlags: RosterBackfillFlag[] = [];
+  const backfilledLinks = links.map((l) => {
+    const c = caseById.get(l.caseId);
+    if (!c) return l;
+    const result = backfillRosterAttributes(l, c);
+    if (result.flag) {
+      rosterFlags.push({
+        id: `rf-${l.id}`, caseId: l.caseId, casePartyId: l.id,
+        reason: result.flag.reason, unmappedValue: result.flag.unmappedValue, createdAt: t,
+      });
+    }
+    return { ...l, ...result.patch };
+  });
+
   return {
-    cases, parties, links, clients, clientFlags, fileCounters: { [yy]: 3 }, events, charges,
+    cases, parties, links: backfilledLinks, clients, clientFlags, rosterFlags,
+    contactEdges: [], fileCounters: { [yy]: 3 }, events, charges,
     ...billingSeedData(),
-    ...transcriptSeedData({ cases, parties, links }),
+    ...transcriptSeedData({ cases, parties, links: backfilledLinks }),
     ...billsSeedData(),
   };
 }

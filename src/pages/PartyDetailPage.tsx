@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import type { PartyRecord, CasePartyLink, CaseRecord } from '../domain/types';
 import type { ProviderBillingProfile } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
+import { ALIAS_KIND_LABELS } from '../domain/directory';
 import { FieldDisplay } from '../components/fieldWidgets';
 import { db } from '../data';
 
@@ -52,10 +53,33 @@ export default function PartyDetailPage() {
     <div>
       <div className="page-head">
         <div>
-          <h2>{party.displayName}</h2>
-          <div className="sub">{def?.label ?? party.partyType} · {party.kind}</div>
+          <h2>
+            {party.displayName}
+            {party.deceased && <span className="muted"> — deceased{party.deceasedDate ? ` ${party.deceasedDate}` : ''}</span>}
+          </h2>
+          <div className="sub">
+            {party.roleTags.length > 0
+              ? party.roleTags.map((t) => PARTY_TYPE_MAP[t]?.label ?? t).join(' · ')
+              : (def?.label ?? party.partyType)}
+            {' · '}{party.kind}
+          </div>
+          {party.aliases.length > 0 && (
+            <div className="sub">
+              {party.aliases.map((a) => `${ALIAS_KIND_LABELS[a.kind]} ${a.name}`).join(' · ')}
+            </div>
+          )}
         </div>
-        <Link className="btn secondary" to={`/parties/${party.id}/edit`}>Edit</Link>
+        <div style={{ textAlign: 'right' }}>
+          <Link className="btn secondary" to={`/parties/${party.id}/edit`}>Edit</Link>
+          {/* CD-1 §8 adopted mechanic 3: the edit surface STATES firm-wide scope
+              with a linked-case count. Labelling, not a confirm click —
+              Michael's own load-bearing requirement, and it only works because
+              case records point at this row rather than copying it. */}
+          <div className="muted" style={{ fontSize: '0.85em', marginTop: '0.25rem', maxWidth: '18rem' }}>
+            Edits here apply firm-wide — this contact is linked to{' '}
+            <strong>{links.length}</strong> {links.length === 1 ? 'case' : 'cases'}.
+          </div>
+        </div>
       </div>
 
       <div className="card">

@@ -330,7 +330,9 @@ function load(): Store {
   const seeded: Store = {
     version: STORE_VERSION,
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
-    oaaIntakes: [], contactEdges: [], rosterFlags: [],
+    // contactEdges and rosterFlags come from seedData() — the seed runs the
+    // real backfill so demo mode shows what a migrated database shows.
+    oaaIntakes: [],
     statuteChapters: [], statuteSections: [], verificationSnapshots: [], watchFlags: [],
     trackedBills: [], billRefs: [],
     ...seedData(),

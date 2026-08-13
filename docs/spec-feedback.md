@@ -5,6 +5,48 @@ reveals get noted here instead. Each item needs a decision or a spec update
 in the Claude.ai Project space, after which a refreshed snapshot comes back
 to `docs/specs/`.
 
+## CD-1 build, 2026-08-12 — two spec-vs-code gaps, built around under stated assumptions
+
+Raised by the CD-1 directory build (`docs/specs/cd1-build-slice.md`). Neither
+blocked the slice; both were worked around in a way that is cheap to reverse,
+because roster slots are DATA. **Michael's to redirect.**
+
+1. **There is no case-type tree to inherit on.** `contact-directory.md` §4.1 says
+   roster definitions attach "to the case-type tree, with inheritance — a child
+   case type inherits its parent's slots and adds its own (MVA baseline pair
+   under trucking's carrier/lessor/... extensions)." The code's
+   `CASE_TYPE_DEFS` is **flat**: practice area → case type, one level, no
+   parent/child relation between case types. There is no node for a child to
+   inherit from.
+   **Built as:** inheritance runs **practice area → case type**, which is the
+   only real parent in the structure. Criminal's client-as-defendant slot lives
+   at the practice-area level and is inherited by Misdemeanor, Felony, and the
+   ex parte relief types; the State-as-adverse slot is added only by the
+   adversarial types. That is a genuine, evidenced use of inheritance — it just
+   is not the axis the spec assumed.
+
+2. **Two of the seven seeds the authorization names are not case types.** The
+   slice says to seed "MVA, trucking, premises, UIM/UM, TTCA-type, criminal,
+   insurance/DTPA." **Trucking and UIM/UM are PI overlay FLAGS** (`PI_FLAGS`),
+   not entries in the case-type tree — and **PR-3 holds the tree shut**
+   ("do not touch the case-type tree or ladder"), so they could not be added
+   as types.
+   **Built as:** flag-keyed **overlay slot sets** layered on top of the case
+   type's slots. A trucking MVA resolves the MVA baseline pair plus the
+   seven-role trucking defendant side; a UIM MVA gets the first-party insurer
+   and the non-party at-fault driver. Verified in the browser on the seeded
+   trucking case: 4 expected slots, correctly sourced and labelled.
+   **The question for the design side:** are overlays the right shape, or should
+   trucking and UIM/UM become case types when PR-3's hold lifts? The answer
+   changes nothing structurally today — `resolveRosterSlots()` takes the flags
+   as an argument and the seeds are a literal.
+
+3. **Smaller, noted not worked around:** §6.2's service-story fields are
+   Scope-OUT for this slice, so slot definitions carry a `servicePathHint`
+   string that **nothing consumes yet.** It is a label awaiting its first
+   instrument consumer, as the spec intends — flagged so it is not mistaken for
+   a half-built feature.
+
 ## Open items (as of 2026-07-21)
 
 1. **Probate companion has no status ladder of its own.** The code gives every
