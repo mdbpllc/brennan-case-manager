@@ -12,6 +12,80 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-THIRD invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2, verified unchanged by diff.
+QR-3 gate PASSED: clean, on master, HEAD == `origin/master` == `ls-remote` at `96da850`. Clock check
+before stamping: 22:52 CDT. Order confirmed by Michael; #64 was free; neither target file existed
+and `docs/reference/` did not exist, so nothing was reconciled against.
+
+- **THE PDF WAS VERIFIED BEFORE IT ENTERED THE REPO, not taken on the packet's word.** At 268 KB it
+  is ~13× the largest packet this queue has carried, and it is **the first binary in `docs/`**, a
+  markdown-only tree until now. The data-hygiene rule is absolute, so: the file is a valid 2-page
+  PDF; its **AcroForm carries ZERO filled values and zero field names** (nothing was ever typed into
+  it); plain text extraction returned nothing because the text is hex-encoded against subset fonts,
+  so it was **decoded through the `/ToUnicode` CMaps** — 15,833 characters recovered, opening
+  *"Texas Peace Officer's Crash Report - Code Sheet … Law Enforcement and TxDOT Use ONLY. Form
+  CR-3CS 4/1/2023"*, both page markers present. A scan of the full decoded text for SSNs, dates,
+  phone numbers, VINs, cause numbers, and street addresses returned **zero hits on every pattern**.
+  **It is the blank public code list it claims to be.** Copied byte-identical, confirmed by matching
+  SHA-256 and byte size — not merely "copied".
+- **A WORKING-SET CONSEQUENCE WAS RAISED WITH MICHAEL BEFORE COMMITTING, and he ruled.** The
+  working-set policy's whole point is that raw source lives in the repo so it is OUT of project
+  knowledge — but **`docs/` is carried wholesale by the design-side sync**, so filing the PDF under
+  `docs/` would pull the raw source straight back into the working set the policy exists to keep
+  lean. Options put to him: exclude at the picker, keep the PDF outside the repo beside the MRF
+  fixture, or sync it anyway. **RULED: `docs/reference/` with a sync-picker exclusion** — repo keeps
+  the archive, project knowledge keeps only the synthesis. **His click; it folds into the standing
+  picker-pair item.**
+- **Routing executed as ordered:** `cr3-field-code-map.md` → `docs/specs/` verbatim; the code sheet →
+  `docs/reference/` (directory created); IN-2 annotated with the map pointer and the
+  **versioned-code-table requirement** (store code + decoded label + code-sheet version, tables
+  carry effective dates — otherwise a 2022 wreck decodes against 2023 meanings with nothing to
+  signal it); the CD evidence entry annotated with the carrier-ID and financial-responsibility
+  vocabulary candidates as **PROPOSED only** (adding directory vocabulary is a spec-level act).
+- **The demographic question was WIDENED, not resolved.** The CR-3 carries ethnicity and sex fields,
+  raising the identical question the 2026-07-25 OAA entry already put to Michael. Its existing queue
+  row now records that **one answer should govern both intake paths**, so they cannot drift into two
+  different defaults. **Nothing decided — it is his.**
+- **§6 honored:** no extraction built, no lookup table seeded, IN-2's status untouched; no directory
+  vocabulary added; **no registry entry opened** (the code sheet contains no legal propositions);
+  the demographic question left open; nothing renamed — the #62 citation convention governs, and in
+  these two docs **"CR-3" means the CRASH REPORT**, never CR-3 the criminal requirement.
+- **Health re-run this refresh: 278 tests pass, build + lint clean** (docs-only batch).
+
+## 2026-08-12 (#64) — CR-3 CODE SHEET (2023+) filed as reference; field-code map filed as
+PROPOSED design input for IN-2/intake; versioned-code-table finding recorded
+(design session, Fable 5, Cowork, typed — same session as #62/#63)
+
+- Michael supplied the Texas Peace Officer's Crash Report CODE SHEET (Form CR-3CS 4/1/2023,
+  two pages, 46 code lists; governs wrecks 2023-forward). Routed per the working-set policy:
+  the RAW SOURCE to docs/reference/CR3-code-sheet-2023.pdf; the SYNTHESIS to
+  docs/specs/cr3-field-code-map.md as PROPOSED design input. Public TxDOT form documentation;
+  no client data.
+- THE LOAD-BEARING FINDING: crash-report code tables are VERSIONED external vocabularies —
+  the 2023+ sheet supersedes earlier sheets, so CR-3 extraction must store (code, decoded
+  label, code-sheet version) and the tables carry effective dates. The house versioning
+  pattern applied to an external vocabulary; recorded as a requirement for whenever IN-2 or
+  the intake pipeline is designed. Nothing built; IN-2 stays queued.
+- Mappings (all PROPOSED, full table in the map doc): unit/person codes → CD-1 roster-seeding
+  evidence for MVA/trucking; carrier-ID and financial-responsibility types → CD directory
+  vocabulary candidates (CD-3 pattern, spec-level acts, Michael's ruling); the commercial
+  block → trucking/FMCSR-applicability FLAGS (flag-only, registry discipline); factors/
+  sequence/damage-rating/injury codes → liability and damages extraction targets feeding the
+  FE consumers; autonomy fields (2023+) → products-liability signal.
+- Demographic fields (ethnicity, sex) exist on the form; whether the software captures them AT
+  ALL is the already-open 2026-07-25 spec-feedback question (asked for the OAA path) — the map
+  cross-references it so ONE answer governs both intake paths. Nothing resolved here.
+- Naming: "CR-3" in these two docs is the CRASH REPORT per the #62 citation convention —
+  never CR-3 (criminal requirement).
+
+Staged for Code: this entry; cr3-field-code-map.md (NEW); CR3-code-sheet-2023.pdf (NEW,
+docs/reference/); queue annotations; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback; the #62/#63 batch remains
+design-unverified pending Michael's Sync click (review of the twenty-second handback was
+against its own account).
+
 ## 2026-08-12 — QUEUE-RUNNER batch (runner line; TWENTY-SECOND invocation)
 
 **Two packets, one close-out, docs only — §5 was NONE in both and nothing was built.** Runner **v6**
