@@ -1,5 +1,7 @@
 # BUILD STATE — brennan-case-manager
 Commit: 7c7973a  |  Branch: master  |  Generated: 2026-08-14 Central (sixty-third refresh)
+*`7c7973a` is the batch commit this snapshot DESCRIBES; the refresh itself rides the commits after
+it, so the pushed SHA you are told is expected to be higher. Nothing here is stale on that account.*
 *Line counts in this record are NON-BLANK lines (ruled 08-13, #67; now also stated in CLAUDE.md);
 raw counts are labeled "raw". This file's 150-line cap is a non-blank cap.*
 
