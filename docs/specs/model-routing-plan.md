@@ -16,6 +16,8 @@ closing the item. Reconciled to the packet's framing on filing — the memo is o
 **Canonical repo path:** `docs/specs/model-routing-plan.md` — filed unruled, same footing as
 `cl2-authorization-brief.md`.
 
+*(Status note, 2026-08-13, #68: **Q-5 was RESOLVED 2026-08-13 (#66)** — the §7.2 clause was adopted into project-instructions v17's MODEL USAGE section, economics refreshed to the observed Max-plan terms; routing now binds through the instructions, not through this memo. The header above stands as written — the memo never closed Q-5; Michael's ruling did. Effort levels remain unset. See the queue's Q-5 row and session-log #66/#67.)*
+
 **Bias disclosure:** written by Claude Opus 5, which is one of the two models being allocated, and which
 recommends that its own week of output be audited by the other. Read §5 with that in mind.
 

@@ -567,7 +567,7 @@ then the unread Kostura sections; then the consolidated registry-candidate table
 | **H19** | Does a stalled retrieval vendor ever escalate to direct-to-provider contact, or does the thread stay on the vendor? (§8.6) | Asked, unanswered |
 | **H20** | Is the five-day post-demand check-in universal on every demand, or are there demands that skip it? (§8.8) | Asked, unanswered |
 | **H21** | Service-diligence rule — needs its own registry entry with a **case-law** cite; deliberately not drafted from the TRCP (§8.10) | Flagged, undrafted |
-| **H22** | Registry queue arithmetic — entries 1–10, plus nine from the fee-basis draft, plus the TRCP skeleton candidates, plus H24. Queue behind, or interleave by build urgency? | Carried, undecided |
+| **H22** | Registry queue arithmetic — entries 1–10, plus nine from the fee-basis draft, plus the TRCP skeleton candidates, plus H24. Queue behind, or interleave by build urgency? | Carried, undecided **→ RULED 2026-08-13 (#66): INTERLEAVE BY BUILD URGENCY — whatever a ruled slice needs is verified first, regardless of series. Annotated 2026-08-13 (#68).** |
 | **H23** | Limitations as cross-cutting master clock — computed from intake, modulates service-chase urgency; wire into §8.1 AND §8.10; explicit note for Code's system run-through (§8.10) | CONFIRMED design, for Code run-through |
 | **H24** | Hard rule: file ≥ 6 months before limitations — unconditional buffer (§8.10) | CONFIRMED; registry candidate (cite needed, attorney sign-off) |
 | **H25** | Acceptance → citation: separate armed threads, or one thread with checkpoints? (§8.10) | Asked, unanswered |

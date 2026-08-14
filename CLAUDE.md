@@ -100,7 +100,10 @@ coding sessions. The spec documents committed under `docs/specs/` are
   transcript-workflows.md Phase 1. DESIGN-COMPLETE pending Michael's review
   of its §10 decision list (D1 auto-file posture, O2–O4). T1 (data model +
   inbox UI) and T2 (routing engine) are the hardware-free build slices; T3
-  (Python/NeMo pipeline service) is gated on the P1 GPU machine
+  (Python/NeMo pipeline service) is gated on the P1 GPU machine.
+  *(Update 2026-08-13, #68: D1 CONFIRMED and O1/O3 RULED 2026-08-13 (#66);
+  O2 closed 2026-08-07; only O4 — the phone→PC sync channel — remains open
+  of the §10 list.)*
 - `statute-text-and-bill-tracking-design.md` — Statute Text & Legislative
   Tracking design pass (2026-07-25): Module A (current statute text from
   statutes.capitol.texas.gov — cache-on-demand, cite parser, viewer, hash
@@ -155,7 +158,11 @@ coding sessions. The spec documents committed under `docs/specs/` are
   decisions plus CIV-1 (civil-litigation damages unspecified), PROB-1
   (probate profile unwritten), and PA-1. Sequencing note: **CE1 must be
   client-aware** if ever authorized, or the retrofit hits the shared
-  substrate under both the heartbeat and the time tracker
+  substrate under both the heartbeat and the time tracker.
+  *(Update 2026-08-13, #68: the CL-2 slice EXECUTED 2026-07-28 — built,
+  migrated live, walked; `cases.statute_of_limitations` is dropped;
+  `case_clients` and `posture` exist. BUILD-STATE is the authority; the
+  guard language above is historical. Status-drift finding #9.)*
 - `model-routing-plan.md` — **DECISION MEMO — UNRULED; authorizes nothing.** How
   work should route across Fable 5 / Opus 5 / Sonnet 5 and across effort
   levels, argued from documented model strengths and from cost rather than
@@ -167,6 +174,10 @@ coding sessions. The spec documents committed under `docs/specs/` are
   and deleted); and that the largest body of unexercised work is the
   registry, which no routing decision touches. **Do not adopt any part of
   it, set an effort level, or change model configuration from it**
+  *(Update 2026-08-13, #68: Q-5 RESOLVED 2026-08-13 (#66) — the §7.2 clause
+  is ADOPTED into project-instructions v17 MODEL USAGE and binds from there;
+  the "do not adopt any part of it" sentence is superseded to that extent.
+  The memo still authorizes nothing on its own; effort levels remain unset.)*
 - `cl2-authorization-brief.md` — **DECISION MEMO, not an authorization.** The
   CL-2 slice put to a decision: the six pieces, the three carve-outs, the
   honest risk (piece 3 repoints the foreign key under the built-and-walked
@@ -190,7 +201,9 @@ coding sessions. The spec documents committed under `docs/specs/` are
   file manually was never the mechanism). Hard rules: **150-line cap** (cut
   detail, never add sections) — the cap exists for READABILITY, not token
   cost, so the file gets read rather than skimmed. *Raised 120 → 150 by
-  Michael's ruling 2026-07-27 (BS-1); the cap stands.* **The
+  Michael's ruling 2026-07-27 (BS-1); the cap stands.* **The cap counts
+  NON-BLANK lines (convention ruled 2026-08-13, #67); a raw newline count is
+  used only when labeled "raw."** **The
   anti-resurrection ledger lives at `docs/specs/anti-resurrection-ledger.md`
   (split out 2026-07-27, BS-1). BUILD-STATE carries a pointer line to it;
   every full rewrite of BUILD-STATE must preserve that pointer. The

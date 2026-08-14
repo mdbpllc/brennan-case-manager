@@ -123,14 +123,14 @@ Consent (Tex. Penal Code §16.02 [CONFIRM]), witness-statement discoverability (
 ## 10. Decisions and open items
 
 **Defaults set this pass (Michael can veto any):**
-- **D1 — Confirm-only in v1; auto-file deferred** until the decision log shows real precision. *(Michael's explicit answer pending — this was the unanswered question.)*
+- **D1 — Confirm-only in v1; auto-file deferred** until the decision log shows real precision. *(Michael's explicit answer pending — this was the unanswered question.)* **CONFIRMED 2026-08-13 (#66, via O1): confirm-only STANDS for v1; auto-file stays deferred. Annotated 2026-08-13 (#68).**
 - **D2 — Interim capture = manual attach from phone** (Michael's call, 2026-07-25); watched folders arrive with the Tascam/P1.
 - **D3 — Two-pass boosting** (global-vocabulary pass pre-routing; optional per-case re-decode post-confirmation).
 - **D4 — Engine default Parakeet-TDT-0.6b-v3** full precision; Canary-1B-v2 drop-in alternate (memo §2).
 - **D5 — Consent + out-of-state questions move to confirm time** for after-the-fact uploads (recording-time prompts arrive with the capture UX later).
 
 **Open for Michael:**
-- **O1 —** Confirm or veto D1 (auto-file posture).
+- **O1 —** Confirm or veto D1 (auto-file posture). **RULED 2026-08-13 (#66): D1 CONFIRMED — ruled without waiting for the Phase 0 scorecard. (#68)**
 - **O2 — CLOSED 2026-08-07 (Michael: "windows only"): Windows host, WSL2 runtime.** Native
   Ubuntu and dual-boot rejected: the P1 is already the provisioned second Claude Code machine
   on Windows; the ingest design is OneDrive-based and OneDrive has no official Linux client;
@@ -138,7 +138,7 @@ Consent (Tex. Penal Code §16.02 [CONFIRM]), witness-statement discoverability (
   which defeats hands-off ingestion. NeMo has no native Windows support, so WSL2 (CUDA
   passthrough) is the runtime inside the Windows-only ruling. Future escape hatch on record:
   a dedicated headless native-Ubuntu box if volume outgrows the laptop.
-- **O3 —** Where do not-case-related recordings go (personal store vs. discard-with-log)?
+- **O3 —** Where do not-case-related recordings go (personal store vs. discard-with-log)? **RULED 2026-08-13 (#66): PERSONAL STORE; nothing is destroyed — the discard half is rejected. (#68)**
 - **O4 —** Phone→PC sync channel at go-live (OneDrive Shortcut vs. iCloud folder vs. stay-manual) — deferred by D2.
 
 ## 11. Build plan (vertical slices for the Code session)

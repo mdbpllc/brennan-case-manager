@@ -12,6 +12,94 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-SEVENTH invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v7** — the ahead-stop clause this runner added last
+batch was in force for its own gate this time. **QR-3 v7 gate PASSED: clean, on master, HEAD ==
+`origin/master` == `9ac12c8`, and NOT AHEAD** — the new condition checked and satisfied, not
+assumed. Clock check before stamping: 21:4x CDT. #68 was free. Nothing superseded; nothing skipped.
+
+- **EVERY ONE OF THE SIXTEEN EDITS LANDED ON A VERIFIED ANCHOR.** The packet quoted an anchor for
+  each edit from `9ac12c8` and required checking it at HEAD before writing; **all sixteen anchors
+  were found, none already carried an equivalent note, so nothing was skipped and nothing was
+  double-annotated.** The CRLF caveat the packet raised from the bridge VM did not materialize
+  here — the Windows checkout read genuinely clean at gate time.
+- **THE CLAUDE.md CAP CLAUSE CLOSES A LOOP THIS RUNNER OPENED.** The twenty-sixth invocation
+  flagged that `CLAUDE.md` stated the 150-line cap without saying whether it counted blank lines,
+  and explicitly left it as design's call rather than editing it. Michael ruled it; the clause is
+  now in the file. **The flag, the ruling, and the fix are three separate acts by three different
+  hands — that is the loop working, not a formality.**
+- **FINDING #9 IS THE ONE WORTH READING TWICE.** `CLAUDE.md` had said the CL-2 slice was "QUEUED
+  BEHIND the auth slice" with `case_clients`, `posture`, and the `statute_of_limitations` drop all
+  guarded as unauthorized — **while BUILD-STATE has said CL-2 IS BUILT, MIGRATED LIVE, AND WALKED
+  since 2026-07-28.** Two governing documents contradicted each other for ~17 days and neither
+  flagged it. Now annotated as historical, with BUILD-STATE named as the authority. **Ruled: no
+  correction entry owed** — the stale text lived only in CLAUDE.md and was never asserted in the
+  log — so #68 is the record.
+- **Both standing sweeps CLOSE.** Duplication: **no duplicate** across 171 ID-bearing rows; the
+  three glyph-bearing pointer rows (PR-3, RE-1, registry 1–10 sign-off) were the only two-status
+  states and their glyphs are stripped by ruling. Status-drift: **closed as a pass** at findings
+  #2–#9 — explicitly a pass, not a standing guarantee. **OBS-1 entered** as the one thing the
+  duplication sweep surfaced that is not queue duplication.
+- **§6 honored:** nothing built; every edit an append except the three ruled glyph-strip
+  replacements, quoted verbatim; **no existing ruling, question, or status text reworded**; no
+  registry file touched; no capture, mining pass, or REQ-CAPTURE edited; OBS-1 and O4 left
+  unresolved; no correction entry for finding #9; the session capture NOT routed to the repo; no
+  heartbeat H-ID renumbered (H22 annotated only); project instructions untouched.
+
+## 2026-08-13 (#68) — SWEEPS RULED AND RUN: duplication (no duplicate; three pointer glyphs)
+and status-drift (findings #2–#9, fixes authorized); four rulings by widget; CLAUDE.md
+non-blank cap sentence (design session, Fable 5, Cowork, typed; rulings Michael's, 2026-08-13
+Central, by widget; DT-1 clock-checked 21:15 CDT — the container read 08-14 UTC)
+
+- SESSION-START VERIFICATION (#54 precedent): the #67 batch is LANDED (twenty-sixth runner
+  line + #67 at `9ac12c8`, gate passed cleanly) and the REVISED v17 is IN FORCE — this session
+  loaded it with the QR-3 ahead-stop paragraph and the non-blank line-count convention present.
+  The 2026-08-13 ruling day is fully in force.
+- METHOD: Michael connected the mdb-pllc checkout via the device bridge (read-only use — second
+  application of the #65 method). HEAD == origin/master == `9ac12c8` verified. The ~200-file
+  "modified" status from the bridge VM is a CRLF mount artifact (every diff 1:1); tree
+  effectively clean.
+- FOUR RULINGS (Michael, by widget): (1) CLAUDE.md's 150-line BUILD-STATE cap sentence gains
+  the NON-BLANK clause — closes the drift risk the twenty-sixth runner flagged as design's
+  call. (2) Session scope = run the two sweeps — this ruling is what moved both rows from
+  PROPOSED to run; they had been "PROPOSED, unruled. Michael's." since 2026-08-08. (3) The
+  three glyph-bearing pointer rows (PR-3, RE-1, registry 1–10 sign-off) lose their glyphs —
+  converted to italic cross-reference lines, the CL2-AC-1 consolidation precedent; a pointer
+  with its own checkbox is a two-status state, the R-3 mechanism. (4) ALL drift fixes
+  authorized — add-only annotations across four design docs, the model-routing header, and
+  three CLAUDE.md paragraphs.
+- SWEEP A (queue-wide duplication) — CLOSED: NO DUPLICATE. Full-text pass over all 171
+  ID-bearing rows; no question lives as two full rows. The three glyph-bearing pointers were
+  the only two-home states (ruled, above). Cross-register observation, NOT queue duplication:
+  the "Itemized-bill ingest" capture row overlaps billing Phase 1b's scope in the synthesis
+  spec — OBS-1 in §7, Michael's call whether it needs a fold-or-annotate row.
+- SWEEP B (cross-document status-drift) — CLOSED AS A PASS: findings #2–#9, continuing from
+  finding #1 (the Go_Live_Gates paste-ask, #66). #2 claimant-dimension §10 D-CL2-3a "OPEN"
+  (ruled #66). #3 time-tracker §5 + §8, D-CL2-3a "OPEN/unruled… no export design changes until
+  ruled" (ruled #66, exactly as the doc's recorded lean). #4 heartbeat-design H22 "Carried,
+  undecided" (ruled #66: interleave by build urgency). #5 transcript-sort §10 D1 "answer
+  pending" / O1 "confirm or veto" / O3 open (D1 confirmed, O1/O3 ruled #66; O4 correctly still
+  open). #6 model-routing-plan status header "UNRULED… does not close Q-5" (Q-5 resolved #66
+  via the v17 adoption). #7 CLAUDE.md's model-routing paragraph, same lag. #8 CLAUDE.md's
+  transcript-sort paragraph "pending §10 (D1, O2–O4)" — only O4 remains. #9 CLAUDE.md's
+  claimant-dimension parenthetical: "QUEUED BEHIND the auth slice" — BUILD-STATE has said
+  CL-2 IS BUILT, MIGRATED, WALKED since 2026-07-28 and `cases.statute_of_limitations` IS
+  DROPPED; CLAUDE.md contradicted BUILD-STATE ~17 days, never logged. R-3 copy-forward class.
+  NO CORRECTION ENTRY OWED: the stale text lived in CLAUDE.md, never asserted in the log; this
+  entry is the record (ruled disposition, part of ruling 4).
+- SCOPED OUT deliberately: walkthrough captures, mining passes, rulings captures, REQ-CAPTUREs
+  (dated snapshots lag by design) and all registry files (registry discipline — no wording
+  touched). BUILD-STATE checked clean — the fifty-eighth refresh was current on every item
+  tested.
+- METER: not restated this session (requested; not stated). Next session should open with a
+  reading — 58%-Fable was the 08-13-morning figure and both 08-13 sessions were heavy Fable.
+
+Staged for Code: this entry; queue closures (both sweep rows) + three glyph strips + OBS-1;
+six design-doc annotations; four CLAUDE.md annotations (incl. the non-blank cap clause);
+BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback (the twenty-seventh invocation).
+
 ## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-SIXTH invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2 — **and amended to v7 by
