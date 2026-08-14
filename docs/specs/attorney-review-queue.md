@@ -1,6 +1,6 @@
 # ATTORNEY REVIEW QUEUE — everything awaiting Michael's personal read or ruling
 
-**Status:** WORKING CHECKLIST. Compiled 2026-07-26 in the design space, then updated the same day as items closed. **Reconciled to session-log #28 on 2026-07-28 (BS-1a item 10)** — §7 was added in that pass, and `BUILD-STATE.md` now points here instead of carrying its own roster. **Reconciled again to session-log #34 on 2026-08-07** (rulings batch: FE-1, FE-2, PR-3, QR-1, RR-1, D-CL2-3, CL2-AC-1; the FE series was absent from this file entirely and was added). **Reconciled again to session-log #38 on 2026-08-08** (contact-directory reframe: CD series added and CD-1 issued, FE-1 annotated superseded, FE-2 build home parked, CL2-AC-1 to direction-confirmed, CORPUS-HOME closed). **Reconciled again to session-log #39 on 2026-08-08** (QR-2 CLOSED; CL2-AC-1's two locations consolidated into the ID-bearing entry; two sweep items entered). **Reconciled again to session-log #44 on 2026-08-09** (queue-runner batch, eighth invocation: the T3/Phase 0 advisory H series added with full question text per QR-1, its H1–H6 collision with the heartbeat register flagged rather than renumbered; the P15/P1 runner-copy item narrowed to P15 only). **Reconciled again to session-log #46 on 2026-08-10** (queue-runner batch, ninth invocation: QR-4 entered with full text and CLOSED the same day it was proposed; the Q-3 `docs/skills/` sync-picker re-check entered with full text, having never been registered here; FE-1 annotated with the provider-data evidence channel, which now feeds CD-1). **Reconciled again to session-log #48 on 2026-08-11** (first REQ-1 REQ-CAPTURE: CD-2 framing ruled, FE-4–FE-7 and new IN series entered, §4 registry batch VERIFIED, templates home ruled, CD-1 path ruled as bounded-evidence-pass-then-session). **Reconciled again to session-log #58 on 2026-08-12** (queue-runner batch, twentieth invocation: REQ-CAPTUREs 4 and 5 — the **DE series added**, ruled into existence by Michael; CL-3, CD-3, FE-13–FE-17, IN-6, IN-7 entered with full question text per QR-1; FE-10, FE-11, FE-12 amended in place; CD-2 annotated; the FE-13–FE-17 gating question and the registry-verification backlog entered). **Reconciled again to session-log #59 on 2026-08-12** (the Uvalde docket-worksheet capture filed UNRECONCILED at §5 — sixth REQ-1 capture, first from CRIM DEFENSE, no durable IDs assigned and no registry entries opened, because it arrived by Michael's hand rather than through a packet). **Reconciled again to session-log #60 on 2026-08-12** (queue-runner batch, twenty-first invocation: the registry-placement flag CLOSED as confirmed, the REQ-10 placeholder-discipline carry given the queue row it never had, and the registry count reconciled at 27). **Reconciled again to session-log #62–#63 on 2026-08-12** (queue-runner batch, twenty-second invocation, two packets: the Uvalde capture RECONCILED and its row replaced by the new **CR series** CR-1–CR-11 plus the binding B&W constraint; registry backlog 27 → **33**; `party_type` retention CONFIRMED; **FE-gating CLOSED** and FE-8–FE-17 each annotated with its FE-D1 disposition; distillation candidates CLOSED into §13.4; **WF-2–WF-8** entered with gates; three form-engine §11 items registered that had no home; the GPU-telemetry item registered and ruled). **Reconciled again to session-log #65 on 2026-08-13** (queue-runner batch, twenty-fourth invocation: the cite-check memo pointer added add-only to the registry-backlog row; V-1, V-2, V-3 entered with full question text per QR-1). **Reconciled again to session-log #66 on 2026-08-13** (queue-runner batch, twenty-fifth invocation, the RULING RUN: ~20 rows closed or annotated in one pass — V-1, V-3, O1, O3, O5, Q-5, SAT-1, H22, D-CL2-3a, DL-INPUT, the demographics/OAA question, and the Go_Live_Gates paste-ask all CLOSED; O4, CL2-CHECK-1, the IME/204.1 row, and four heartbeat questions (H40, H50, H60, H77) annotated with their rulings while their rows stay open; **the T3/Phase 0 advisory series RE-LETTERED H → HK** by ruling, ending its collision with the heartbeat H1–H83 register; registry backlog **33 → 34** on the entry-4 split). **Reconciled again to session-log #68 on 2026-08-13** (both sweeps ruled and run: duplication CLOSED no-duplicate with three pointer glyphs stripped; status-drift CLOSED as a pass at findings #2–#9 with all fixes annotated; OBS-1 entered). **This file is the single register of what awaits Michael's ruling; keep it current or the pointer lies.**
+**Status:** WORKING CHECKLIST. Compiled 2026-07-26 in the design space, then updated the same day as items closed. **Reconciled to session-log #28 on 2026-07-28 (BS-1a item 10)** — §7 was added in that pass, and `BUILD-STATE.md` now points here instead of carrying its own roster. **Reconciled again to session-log #34 on 2026-08-07** (rulings batch: FE-1, FE-2, PR-3, QR-1, RR-1, D-CL2-3, CL2-AC-1; the FE series was absent from this file entirely and was added). **Reconciled again to session-log #38 on 2026-08-08** (contact-directory reframe: CD series added and CD-1 issued, FE-1 annotated superseded, FE-2 build home parked, CL2-AC-1 to direction-confirmed, CORPUS-HOME closed). **Reconciled again to session-log #39 on 2026-08-08** (QR-2 CLOSED; CL2-AC-1's two locations consolidated into the ID-bearing entry; two sweep items entered). **Reconciled again to session-log #44 on 2026-08-09** (queue-runner batch, eighth invocation: the T3/Phase 0 advisory H series added with full question text per QR-1, its H1–H6 collision with the heartbeat register flagged rather than renumbered; the P15/P1 runner-copy item narrowed to P15 only). **Reconciled again to session-log #46 on 2026-08-10** (queue-runner batch, ninth invocation: QR-4 entered with full text and CLOSED the same day it was proposed; the Q-3 `docs/skills/` sync-picker re-check entered with full text, having never been registered here; FE-1 annotated with the provider-data evidence channel, which now feeds CD-1). **Reconciled again to session-log #48 on 2026-08-11** (first REQ-1 REQ-CAPTURE: CD-2 framing ruled, FE-4–FE-7 and new IN series entered, §4 registry batch VERIFIED, templates home ruled, CD-1 path ruled as bounded-evidence-pass-then-session). **Reconciled again to session-log #58 on 2026-08-12** (queue-runner batch, twentieth invocation: REQ-CAPTUREs 4 and 5 — the **DE series added**, ruled into existence by Michael; CL-3, CD-3, FE-13–FE-17, IN-6, IN-7 entered with full question text per QR-1; FE-10, FE-11, FE-12 amended in place; CD-2 annotated; the FE-13–FE-17 gating question and the registry-verification backlog entered). **Reconciled again to session-log #59 on 2026-08-12** (the Uvalde docket-worksheet capture filed UNRECONCILED at §5 — sixth REQ-1 capture, first from CRIM DEFENSE, no durable IDs assigned and no registry entries opened, because it arrived by Michael's hand rather than through a packet). **Reconciled again to session-log #60 on 2026-08-12** (queue-runner batch, twenty-first invocation: the registry-placement flag CLOSED as confirmed, the REQ-10 placeholder-discipline carry given the queue row it never had, and the registry count reconciled at 27). **Reconciled again to session-log #62–#63 on 2026-08-12** (queue-runner batch, twenty-second invocation, two packets: the Uvalde capture RECONCILED and its row replaced by the new **CR series** CR-1–CR-11 plus the binding B&W constraint; registry backlog 27 → **33**; `party_type` retention CONFIRMED; **FE-gating CLOSED** and FE-8–FE-17 each annotated with its FE-D1 disposition; distillation candidates CLOSED into §13.4; **WF-2–WF-8** entered with gates; three form-engine §11 items registered that had no home; the GPU-telemetry item registered and ruled). **Reconciled again to session-log #65 on 2026-08-13** (queue-runner batch, twenty-fourth invocation: the cite-check memo pointer added add-only to the registry-backlog row; V-1, V-2, V-3 entered with full question text per QR-1). **Reconciled again to session-log #66 on 2026-08-13** (queue-runner batch, twenty-fifth invocation, the RULING RUN: ~20 rows closed or annotated in one pass — V-1, V-3, O1, O3, O5, Q-5, SAT-1, H22, D-CL2-3a, DL-INPUT, the demographics/OAA question, and the Go_Live_Gates paste-ask all CLOSED; O4, CL2-CHECK-1, the IME/204.1 row, and four heartbeat questions (H40, H50, H60, H77) annotated with their rulings while their rows stay open; **the T3/Phase 0 advisory series RE-LETTERED H → HK** by ruling, ending its collision with the heartbeat H1–H83 register; registry backlog **33 → 34** on the entry-4 split). **Reconciled again to session-log #68 on 2026-08-13** (both sweeps ruled and run: duplication CLOSED no-duplicate with three pointer glyphs stripped; status-drift CLOSED as a pass at findings #2–#9 with all fixes annotated; OBS-1 entered). **Reconciled again to session-log #72 on 2026-08-13** (queue-runner batch, twenty-eighth invocation: the registry workbook + citator pass filed as PROPOSED design input; **V-2 annotated add-only and NOT closed**; **V-4–V-8 entered with full question text per QR-1**; the packet's un-numbered `HK-*` device-bridge ask given the ID **HK-7** after collision-check). **This file is the single register of what awaits Michael's ruling; keep it current or the pointer lies.**
 
 **Canonical repo path:** `docs/specs/attorney-review-queue.md` — filed 2026-07-26. Duplicate-routing check run at filing: no equivalent review-queue document existed; the only prior partial is `trcp-deadline-skeleton-2026-03-01.md` §9 (TRCP entries only), which now points here and remains the TRCP-priority detail.
 
@@ -354,6 +354,21 @@ table.
   highest offense category; read *LaPorte* / *Hurlburt* if wanted. Evidence staged at
   `docs/specs/registry-cite-check-2026-08-13.md`. **Nothing in that memo is verified and no
   registry entry was touched** — supplying or upgrading a cite is your verification act alone.
+  - **ANNOTATED 2026-08-13 (#72), ADD-ONLY — V-2 IS NOT CLOSED AND NOT ALTERED; all six looks
+    remain yours.** Two new research-support files reduce each backlog entry to one look:
+    `docs/specs/registry-verification-workbook-2026-08-13.md` (one row per backlog entry —
+    proposition as written, cite as written, retrieval, resolves Y/N, reporter-cite candidate,
+    the ONE concrete look) and `docs/specs/registry-citator-pass-2026-08-13.md` (majority
+    resolution, citing-cases picture, treatment flags, why-look/no-look per case). **Both are
+    PROPOSED design input; nothing in either is verified and no registry file was touched.**
+    **Item 4 becomes a confirmation rather than a search:** the citator supplies FLP opinion
+    **9385744** (*Volt Power*, the April 5 2023 substantive opinion) and **9890720** (*Redman*,
+    the October 11 2023 substantive opinion), found via the *Park Cities Bank* citation graph —
+    each WL number now has a specific opinion id to map to. Net of both files: **five entries
+    need a look** (Ochoa, Collins, Irwin, Alford, Castillo), **five need none for cite or
+    majority** (Able Supply, Peeples, Dillard, Park Cities Bank, Mizell — *each still needs a
+    commercial-citator currency check before any filing; FLP is not a citator*), **three are
+    confirmation-only** per item 4, **one needs its designation first** (Sting Soccer).
 - ✅ **V-1 — RULED 2026-08-13 (#66): BUMP TO v17 NOW, and it was drafted and delivered the same
   session** (trigger #3, same-day). v17 carries: the Descrybe-out tooling convention; **SAT-1**; the
   **§7.2 model-routing clause** folded into MODEL USAGE with economics refreshed to the observed
@@ -375,6 +390,57 @@ table.
   practice project created (v1 + the carry snippet into each of the two grandfathered matter
   workspaces), and the Uvalde instructions plus v1 confirmed pasted into CRIM DEFENSE? Neither was
   visible to Code, so the record could not close itself.)*
+- ⬜ **V-4 — NEW 2026-08-13 (#72). RFP response-form consolidation.** The sibling registry file
+  carries a VERIFIED **TRCP 196.2** entry for the 30-day response period; the enforcement file
+  carries a separate UNVERIFIED **TRCP 196.2(b)** entry for the four permitted response forms.
+  **The question: do you want 196.2 and 196.2(b) consolidated into one entry, or kept as two
+  propositions on one rule number?** The same question rides on **197.2(a) beside 197.2(c)** and
+  **198.2 beside 198.1**. One answer should govern all three pairs so they cannot drift apart.
+  Source: `registry-verification-workbook-2026-08-13.md` §5 Q1.
+- ⬜ **V-5 — NEW 2026-08-13 (#72). Two-case entries.** Three entries cite two cases each for one
+  proposition (Castillo/Able Supply; Alford/Collins; Redman/Peeples). The registry file keeps them
+  joint because the originating capture relied on them jointly, and offers to split on your word.
+  **The question: split each into one entry per case, or keep them joint?** Practical consequence
+  discovered this session: in the Castillo/Able Supply entry the joint framing makes it impossible
+  to tell from the registry alone which case supplies which half — and *Castillo* has a
+  concurrence (opinion 9513076, Wainwright, J.), so a verifier cannot confirm the attribution
+  without reading both opinions. Source: workbook §5 Q2.
+- ⬜ **V-6 — NEW 2026-08-13 (#72). Do criminal entries for art. 42.0197 and art. 27.18 state legal
+  rules at all?** Both are recorded as *observations that a plea-paperwork instrument family
+  exists* (affirmative criminal-street-gang finding; plea by videoconference with written consent)
+  rather than as propositions with an operative legal test. **The question: should these remain
+  registry entries, or should CR-10's completeness check reference an instrument list directly and
+  these two come out of the registry?** Raised because verification of a non-proposition is an odd
+  act, and because both currently sit inside CR-10's hard gate — meaning CR-10 stays blocked on
+  verifying something that may not need verifying. Source: workbook §5 Q3.
+- ⬜ **V-7 — NEW 2026-08-13 (#72). Entry 23's shape.** CPRC § 37.001 et seq. is cited for the
+  proposition that "the UDJA is available as the vehicle for establishing an insured's UIM-coverage
+  prerequisites against the insured's own carrier." That availability holding is *Allstate v.
+  Irwin*'s (entry 24), not the statute's text. **The question: narrow entry 23 to what § 37.001 et
+  seq. actually provides and let the Irwin entry carry the availability holding, or restate entry
+  23 as a joint statute-plus-case proposition?** This is a wording act, and verification attaches
+  to wording. Source: workbook §5 Q4.
+- ⬜ **V-8 — NEW 2026-08-13 (#72). The FLP duplicate-record class, beyond one entry.** *Alford
+  Chevrolet-Geo* has two FLP clusters on one reporter cite (2419858, filed 1999-08-26, and 5269700
+  "In re Chevroletgeo", filed 1999-06-10, same docket 97-1171); *Irwin* has two clusters with no
+  reporter cite at all and no opinion typing, so the majority-opinion rule's method has nothing to
+  work from; and citing counts disagree across three FLP surfaces (Alford: 187 search index / 207
+  clusters API / 168 `cites:` query, same case, same session). All are retrieval hazards of the
+  same family as the majority-opinion rule, and all were found in a sample of ten cases. **The
+  question: should `registry-courtlistener-integration-design.md` §0.1 record a duplicate-cluster
+  hazard and a "citing counts are not precise" rule alongside the existing cluster-vs-sub-opinion
+  hazard?** Design input only; **Q-6 still bars wiring the API into the app**, so nothing is built
+  either way. Source: workbook §5 Q5 and `registry-citator-pass-2026-08-13.md` §1, §2.3, §4.
+- ⬜ **HK-7 — NEW 2026-08-13 (#72). Connect the repo checkout via the device bridge for the rest of
+  the CHAT-DISPATCH chain.** Requested in the 2026-08-13 design session; **did not land** (no
+  folder was connected), so that session's two deliverables are sourced to RAG rather than to HEAD
+  and say so throughout. **The question: will you connect the checkout for the remaining chain?**
+  Tasks 5 (Supabase permissions matrix), 17 (session-log TOC), and 18 (go-live runbook) each need
+  full-file reads that RAG cannot reliably supply. **Michael's hand — Code cannot connect it.**
+  *(ID assigned by the runner: the packet carried this as `HK-*` with no number. HK-1..HK-6 are
+  taken by the re-lettered T3/Phase 0 advisory series (#66), so this is **HK-7**, the next free
+  number. Collision-checked against this file. **K-6/K-7 remain RETIRED and are not reused** — the
+  K and HK series are distinct.)*
 - ⬜ **KICK-1 — NEW 2026-08-09. LOCATE `KICKOFF-phase0-t3-p1-session_2026-08-08.md`.** Absent from
   the P1 inbox; **never tracked by git** (`git log --all -- 'inbox/*'` returns zero commits, and
   `inbox/` is gitignored), so **the loss cannot be dated or recovered from history**. #42 recorded

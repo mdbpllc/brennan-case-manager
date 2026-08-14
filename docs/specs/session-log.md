@@ -12,6 +12,121 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-EIGHTH invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v7**, read from `docs/prompts/QUEUE-RUNNER.md` at HEAD
+per the QR-2 pointer form. **QR-3 v7 gate PASSED: clean, on master, HEAD == `origin/master` ==
+`9efa254`, and NOT AHEAD.** Packet: `push-to-code_registry-workbook-and-citator_2026-08-13.zip`.
+Single packet, so the filename-date and pure-mtime orders agree trivially; order confirmed by
+Michael before anything was unzipped. Nothing superseded — no other packet to conflict with.
+
+- **THE PACKET'S NUMBER ASSUMPTION WAS STALE, AND ITS OWN INSTRUCTION HANDLED IT.** §1 said the
+  newest design-side entry was **#68** and numbered its entry **#69**. At HEAD the log already
+  carried **#69, #70, and #71** — three Code-session entries filed after the design side last saw
+  the repo. Per §3's standing instruction ("renumber if taken, touching no existing entry" — the
+  #60 precedent), the entry landed as **#72**. **No existing entry was touched.** The §1 dependency
+  also cleared: **#67 had landed** (twenty-fifth invocation), so the numbering premise held even
+  though the number did not.
+- **BOTH NEW FILES LANDED VERBATIM, BYTE-FOR-BYTE** — copied, not retyped:
+  `docs/specs/registry-verification-workbook-2026-08-13.md` (29,012 bytes) and
+  `docs/specs/registry-citator-pass-2026-08-13.md` (19,056 bytes). Neither path existed;
+  no reconcile was needed. `registry-cite-check-2026-08-13.md` was **not touched**, per §6, and
+  neither new file was folded into it.
+- **NO REGISTRY FILE WAS ALTERED, NO STATUS SET, NO CITE SUPPLIED OR UPGRADED, BACKLOG STAYS 34.**
+  The whole §6 DO-NOT list was honored, including the one that is easiest to violate by helpfulness:
+  the `RETRIEVAL: NOT RUN` rows for the 20 rule/statute entries were **left as they are**. They are a
+  stated design-side scope limit, not a Code gap to fill.
+- **V-2 ANNOTATED ADD-ONLY AND NOT CLOSED** — its six looks remain Michael's, untouched. **V-4–V-8
+  entered with FULL question text per QR-1**, since the packet is deleted and the queue row is now
+  the only place those questions live.
+- **ONE ID ASSIGNED BY THE RUNNER, COLLISION-CHECKED.** The packet carried its device-bridge ask as
+  bare `HK-*` with no number. **HK-6 was already taken** (formerly H6, the raw-capture adoption);
+  the ask landed as **HK-7**. Recorded because the collision was found by checking rather than by
+  assuming the packet's placeholder was safe.
+- **§5 was NONE and nothing was built.** No code, no schema, no migration, no integration wiring —
+  Q-6 still bars the CourtListener API from the app, and the three FLP hazard classes are design
+  input for `registry-courtlistener-integration-design.md`, routed to **V-8** for Michael's ruling
+  rather than written into that doc by Code.
+
+## 2026-08-13 (#72) — REGISTRY VERIFICATION WORKBOOK + CITATOR PASS filed as PROPOSED design input;
+three FLP retrieval-hazard classes found; NOTHING verified
+(design session, Opus 5, Cowork, CHAT-DISPATCH Tasks 1+2, the ATOMIC PAIR)
+
+*(Filed by the twenty-eighth queue-runner invocation. **Authored as #69; renumbered to #72** — the
+design side's newest visible entry was #68, and #69–#71 had landed from Code sessions in the
+interim. No existing entry was touched; the #60 precedent.)*
+
+- TWO NEW FILES, both PROPOSED design input, research support only, NOTHING VERIFIED, no registry file
+  touched: `docs/specs/registry-verification-workbook-2026-08-13.md` (one row per backlog entry:
+  proposition as written, cite as written, retrieval, resolves Y/N, reporter-cite candidate, the ONE
+  concrete look) and `docs/specs/registry-citator-pass-2026-08-13.md` (majority resolution, citing-cases
+  picture, treatment flags, why-look/no-look per case). The pair is atomic: the citator consumes the
+  workbook's §4 case table.
+- COVERAGE: **34 of 34 backlog entries retrieved verbatim** (27 discovery-enforcement + 7 criminal).
+  ONE partial: TRCP 47(b)–(c)'s Rule text was truncated in retrieval and is marked TEXT PARTIAL rather
+  than guessed. Sourced to RAG, NOT to HEAD — the device-bridge full-text read was requested and did not
+  land (no folder connected). Marked as an assumption throughout.
+- SCOPE LIMIT, STATED NOT BURIED: rule- and statute-text retrieval was **NOT RUN** for the 20 rule/statute
+  entries (FLP throttles at 5 req/min; session context was spent on the case half, which is what the
+  citator consumes). Those rows read `RETRIEVAL: NOT RUN` — never `resolves N`, never silently omitted.
+  Each still names its one look. **Case-entry retrieval WAS run in full.**
+- COUNT: the dispatch said "~33"; the record says **34** (Michael's #66 split of criminal entry 4 into
+  4a/4b). Workbook built to 34. No correction entry owed — no landed artifact states 33 as current; the
+  stale figure lived only in the dispatch prompt.
+- THREE FLP RETRIEVAL-HAZARD CLASSES, all found in a sample of ten cases, all NEW:
+  (a) **DUPLICATE CLUSTER ON ONE REPORTER CITE** — *In re Alford Chevrolet-Geo*: clusters 2419858
+  (1999-08-26, citation_count 207) and 5269700 "In re Chevroletgeo" (1999-06-10, count 3) both carry
+  997 S.W.2d 173, same docket 97-1171. A retrieval landing on the wrong record reports a dead authority.
+  (b) **NO REPORTER CITE, NO OPINION TYPE, TWO CLUSTERS** — *Allstate Ins. Co. v. Irwin*: a citation
+  search for 627 S.W.3d 263 returns **ZERO hits**; the case is present twice (4885466, 4885465), each a
+  single untyped `010combined` with no author and an empty citations array. **The majority-opinion rule's
+  method has nothing to work from** — positive identification is impossible from FLP's structured data.
+  The registry entry anticipated the rule would apply; it could not anticipate that the data would not
+  support it. citeCount 0 on both is an artifact of the missing cite, not evidence the case is uncited.
+  (c) **CITING COUNTS DISAGREE ACROSS FLP SURFACES** — *Alford*: 187 (search index) / 207 (clusters API) /
+  168 (`cites:` query), same case, same session. *Castillo*: 219 at cluster level vs 38 on the lead
+  opinion id, because citations link to sub-opinions. **A citing count must never be displayed as a
+  precise figure or used as a currency signal.** Design input for
+  `registry-courtlistener-integration-design.md` §0.1; Q-6 untouched, nothing built.
+- MAJORITY-OPINION RULE HONORED THROUGHOUT; separate opinions named as the rule requires. *Ford Motor v.
+  Castillo* — majority is opinion **9513075** (`020lead`, Johnson, J.); **a CONCURRENCE exists** (9513076,
+  Wainwright, J.). *Mizell v. State* — majority is **9730203** (`020lead`, Cochran, J.); **a DISSENT
+  exists** (9730204, Johnson, J.); **#65's read is CONFIRMED by a second method** (opinion type, where #65
+  used authoring language — the two agree). *Dillard Dep't Stores v. Hall* is **PER CURIAM**, which the
+  registry entry does not record — a live H77 `precedential_status` exhibit. *Peeples*, *Able Supply*,
+  *Park Cities Bank* — single opinions, clean.
+- **#65 CONFIRMED FROM THE OPPOSITE DIRECTION, and two opinion IDs recovered.** *In re Park Cities Bank*'s
+  citing list contains both ***In re Volt Power*** (Tyler, 2023-04-05, **FLP opinion 9385744**) and
+  ***In re Redman*** (Tyler, 2023-10-11, **FLP opinion 9890720**). The memo established the relationship by
+  reading the opinions; the citation graph confirms it without re-reading either — and supplies the FLP
+  IDs the memo did not record, which pin the substantive opinions V-2 item 4 asks Michael to confirm.
+  **RR-1 carried both IDs back into the workbook's rows 15 and 21**, which were authored before the
+  citator found them.
+- *Park Cities Bank* is REPORTED, single-opinion, and still cited by four Texas courts of appeals across
+  2023–2025 — the reporter-cited companion wherever a permanent-WL memorandum cite is unsatisfying.
+  UNVERIFIED, offered as a candidate only.
+- WHERE THE LOOKS ARE, net of both documents — **five need a look** (Ochoa, the one plausible reporter-cite
+  UPGRADE and the highest-value look in the backlog; Collins, still unlocated; Irwin, now a bigger look
+  than the registry anticipated; Alford, a records look; Castillo, an attribution look given the
+  concurrence). **Five need no look for cite or majority** (Able Supply, Peeples, Dillard, Park Cities
+  Bank, Mizell) — *each still needs a commercial-citator currency check before any filing; FLP is not a
+  citator and the pass says so in its own §1.* **Three are confirmation-only** per V-2(4). **One needs its
+  designation first** (Sting Soccer).
+- FIVE NEW OPEN QUESTIONS for Michael, full text in the workbook §5 and in the queue rows below:
+  RFP response-form consolidation (196.2/196.2(b), and the parallel 197.2 and 198 pairs); whether the three
+  two-case entries split; whether criminal entries 33 and 34 state legal rules at all (both sit inside
+  CR-10's hard gate); entry 23's shape (§ 37.001 et seq. cited for what is actually *Irwin*'s holding);
+  and whether the duplicate-cluster hazard joins the CourtListener design doc.
+- OPERATIONAL: **FLP free tier throttles at 5 requests/minute** — it paces every case-law task in the
+  chain. Recorded so the next session budgets for it rather than rediscovering it.
+- CHAT-DISPATCH STATUS: Tasks 1+2 COMPLETE. **Tasks 3–19 NOT STARTED.** Resume at Task 3.
+
+Staged for Code: this entry; registry-verification-workbook-2026-08-13.md (NEW);
+registry-citator-pass-2026-08-13.md (NEW); queue annotation (V-2 pointer + V-4…V-8);
+BUILD-STATE rewrite. **ALL EXECUTED by the twenty-eighth invocation** — the queue rows landed as
+V-4–V-8 plus **HK-7** (the packet's un-numbered `HK-*`, renumbered after a collision check).
+Awaiting/Returned from Code, unreviewed: this batch's handback.
+
 ## 2026-08-13 (#71) — OUTLOOK EDIT/CANCEL EXERCISED LIVE: cancel works, edit works EXCEPT the
 first edit after a connect push, which DUPLICATES the event in Outlook (Code session, Opus;
 Michael's hand on every click)
