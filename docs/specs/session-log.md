@@ -12,6 +12,57 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 (#73) — RULING RUN, V-4 THROUGH V-8, ONE AT A TIME: all five ruled the same session
+they were entered; V-9 opened; NOTHING EXECUTED (Code session, Opus; Michael ruled every one)
+
+**Immediately after the twenty-eighth queue-runner batch, in the same session.** Michael asked for
+the five new registry-shape questions one at a time and ruled each. **No registry file, no design
+doc, and no instructions file was touched — every ruling is EXECUTION-PENDING DESIGN-SIDE**, because
+specs are read-only in Code sessions and every one of these is a wording act. **Nothing verified,
+nothing built, backlog still 34 as filed.**
+
+- **V-4 — KEEP AS TWO, CROSS-REFERENCED**, governing all three pairs (196.2/196.2(b),
+  197.2(a)/197.2(c), 198.2/198.1). **The decisive point was not in the packet:** each pair has a
+  VERIFIED half in `legal-rule-registry-discovery-and-carrier-duties.md` and an UNVERIFIED half in
+  the enforcement file, so consolidating would have merged across a status line — and since
+  verification attaches to wording, the merged text is new wording and **all three banked
+  verifications would have dropped back to UNVERIFIED.**
+- **V-5 — SPLIT ALL THREE two-case entries**, one entry per case. **BACKLOG 34 → 37 WHEN EXECUTED;
+  it is 34 in the files today.** The workbook's argument was the attribution defect; **the argument
+  that actually decided it came out of the citator pass — a joint entry verifies at the speed of its
+  slowest case.** *Alford*, a 1999 Texas Supreme Court authority, was hostage to *Collins*, a 2017
+  memorandum opinion that is not in FLP, not on the public web, and may never be retrieved. Splitting
+  frees **Able Supply, Alford, and Peeples** to verify now. Cost accepted knowingly: three more rows
+  on the queue that H22 already calls the project's bottleneck.
+- **V-6 — BOTH STAY, REWORDED to state their operative tests.** Criminal file stays at 7. Two things
+  recorded so the ruling is not misread later: **removing them would NOT have unblocked CR-10** —
+  entries 30 and 31 still carry no cite and 32 is partial, so the gate narrows to five and does not
+  open — and **rewording means both entries verify against the NEW text, not the old.** Kept in the
+  registry so the instrument list keeps a cite, a status, and a re-verification trigger, on a
+  checklist whose whole job is catching errors before a judge signs.
+- **V-7 — NARROW ENTRY 23** to what CPRC § 37.001 et seq. actually provides; the availability
+  holding lives on the *Irwin* entry, cross-referenced. **Consistent with V-4 and V-5 within the
+  same hour** — separate entries, cross-referenced, never a joint-authority entry. **Cost stated and
+  accepted:** the availability proposition now waits on the least verifiable entry in the backlog.
+- **V-8 — RECORD ALL THREE HAZARDS** in `registry-courtlistener-integration-design.md` §0.1:
+  duplicate-cluster, the *Irwin* no-cite/no-typing class, and **a standing rule that a citing count
+  is never shown as precise and never read as currency.** §0.1 is **UNEDITED** — that edit is
+  design's. **Q-6 untouched; nothing built.**
+- **V-9 OPENED, and it is the one to read twice.** The *Irwin* class is not merely a retrieval
+  hazard — **it is a case where CLAUDE.md's BINDING majority-opinion rule cannot run.** The rule
+  prescribes positive identification by opinion-type marker and authoring language; *Irwin* offers
+  neither, and a probe of the stored text for "delivered the opinion of the Court" returned zero
+  matches, so even the fallback does not fire. **The rule has no stated answer for that state.** It
+  was deliberately NOT folded into the V-8 design-doc note and NOT written into CLAUDE.md: amending
+  a binding rule is Michael's act. **The question: refuse to characterize, fall back to the
+  reporter, or something else — and does it belong in rule 5?**
+- **PATTERN WORTH NAMING: three of the five rulings went the same direction** — one proposition per
+  entry, authorities cross-referenced rather than merged. V-4, V-5, and V-7 are now mutually
+  consistent, which they would not have been had they been ruled on different days.
+
+Staged for Code: nothing — the executions are design's. Awaiting/Returned from Code, unreviewed:
+this entry, the twenty-eighth batch's handback, and the two new research files it filed.
+
 ## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-EIGHTH invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v7**, read from `docs/prompts/QUEUE-RUNNER.md` at HEAD

@@ -1,5 +1,5 @@
 # BUILD STATE — brennan-case-manager
-Commit: 9efa254  |  Branch: master  |  Generated: 2026-08-13 Central (sixty-first refresh)
+Commit: 4415f33  |  Branch: master  |  Generated: 2026-08-13 Central (sixty-second refresh)
 *Line counts in this record are NON-BLANK lines (ruled 08-13, #67; now also stated in CLAUDE.md);
 raw counts are labeled "raw". This file's 150-line cap is a non-blank cap.*
 
@@ -123,14 +123,10 @@ SIX OF SEVEN SLICE ITEMS, FIXTURE DATA ONLY; THE LIVE MIGRATION IS UNRUN AND IS 
   memoranda whose WL cite is PERMANENT; **Ochoa plausibly HAS a reporter cite ("(PUBLISH)")**;
   Collins needs retrieval) · **NEW #72:** `registry-verification-workbook-2026-08-13.md` — **all 34 entries, one row each, each reduced to ONE look** — and `registry-citator-pass-2026-08-13.md` (majority resolution + citing picture).
   **Net: 5 need a look** (Ochoa, Collins, Irwin, Alford, Castillo), **5 need none for cite or majority** (Able Supply, Peeples, Dillard, Park Cities Bank, Mizell — *each still needs a commercial citator before filing; FLP is not one*), 3 confirmation-only, 1 needs its designation.
-  **RAG-sourced, not HEAD**; the 20 rule/statute rows read `RETRIEVAL: NOT RUN` **by design — not a
-  Code gap.** Queued as **V-2 (annotated, NOT closed) + V-4–V-8**
-- **THREE FLP RETRIEVAL HAZARDS, from a ten-case sample, DESIGN INPUT ONLY:** a **duplicate cluster
-  on one reporter cite** (*Alford*: 2419858 vs 5269700, counts 207 vs 3); ***Irwin*** **twice, with
-  no reporter cite and no opinion typing — the majority-opinion rule has nothing to work from**; and
-  **citing counts disagreeing across three FLP surfaces** (187/207/168, same case, same session) —
-  **never show a citing count as precise or read it as currency.** Routed to **V-8**;
-  `registry-courtlistener-integration-design.md` §0.1 **UNEDITED**, **Q-6 still bars the API**
+  **RAG-sourced, not HEAD**; the 20 rule/statute rows read `RETRIEVAL: NOT RUN` **by design — not a Code gap.** Queued as **V-2 (annotated, NOT closed) + V-4–V-8**
+- **THREE FLP RETRIEVAL HAZARDS, from a ten-case sample, DESIGN INPUT ONLY:** a **duplicate cluster on one reporter cite** (*Alford*: 2419858 vs 5269700, counts 207 vs 3); ***Irwin*** **twice, with no reporter cite and no opinion typing**; and **citing counts disagreeing across three FLP surfaces** (187/207/168, same case, same session) — **never show a citing count as precise or read it as currency.** Ruled INTO §0.1 at V-8, but `registry-courtlistener-integration-design.md` is **UNEDITED** and **Q-6 still bars the API**
+- **V-4–V-8 ALL RULED 08-13 (#73), ONE AT A TIME — AND NONE OF IT IS EXECUTED. No registry file, no design doc, no CLAUDE.md was touched; specs are read-only here and every one of these is a wording act.** V-4 **keep as two, cross-referenced** (consolidating would have merged across a status line and dropped three banked verifications); V-5 **split all three two-case entries** — **BACKLOG BECOMES 37 WHEN EXECUTED; it is 34 in the files today** — because a joint entry verifies at the speed of its slowest case and *Alford* was hostage to the unlocated *Collins*; V-6 **both criminal entries stay, reworded to state operative tests** (removing them would NOT have unblocked CR-10, still gated on 30/31's missing cites and 32); V-7 **narrow entry 23**, *Irwin* carries the availability holding; V-8 **record all three hazards**
+- **V-9 OPENED (#73), and it is the sharp one: the *Irwin* class is a state in which CLAUDE.md's BINDING majority-opinion rule CANNOT RUN** — no opinion typing, no author, and a probe of the stored text for "delivered the opinion of the Court" returns nothing, so the authoring-language fallback does not fire either. **The rule states no answer for that state.** Deliberately NOT written into CLAUDE.md — **amending a binding rule is YOURS**
 
 ## For design side
 - SYNC: selective — docs/, db/, supabase/, CLAUDE.md, README.md, BUILD-SESSION-NOTES.md; **src/ EXCLUDED**, which makes this doc the SOLE authority on what is built
@@ -143,7 +139,7 @@ SIX OF SEVEN SLICE ITEMS, FIXTURE DATA ONLY; THE LIVE MIGRATION IS UNRUN AND IS 
 - **SIX REQ-1 CAPTURES ARE FILED** at `docs/specs/REQ-CAPTURE_*`: trucking, roster-mining, attorney-edit, **UIM-UDJA transform**, **deficiency-handling**, **Uvalde docket-worksheet**. First three SPENT as CD-1 input; UIM + deficiency seeded the **DE series** and eleven durable IDs. **No capture in the repo is unreconciled**
 - **CR SERIES CR-1–CR-11** plus a **binding black-and-white print constraint** governing all worksheet rendering. **CR-10 is HARD-GATED** on the criminal registry entries. **COLLISION FLAGGED, NOT RENAMED:** `CR-3` also means the Texas crash-report form at IN-2 — cite as "CR-3 (criminal requirement)" vs "the CR-3 crash report"
 - **YOUR HAND, THE LAUNCH PATH IN ORDER: run the CD-1 migration** (`db/migrations/2026-08-12-cd1-contact-directory.sql`; back up, paste alone, answer its five checks in words) → **gate 1 Supabase Pro** → **gate 9 production SMTP** → gate 3 RLS test **including the two new tables** → gates re-check + v17
-- **ALSO YOURS: paste the revised v17** · **re-upload SKILL.md v2** (SK-v2) · **the sync-picker clicks** — `docs/skills/` (Q-3), `docs/templates/`, and the `docs/reference/` exclusion · **telemetry lockdown on the P1** (confirmed NOT set) · **HK-6: locate the T3 kickoff-day capture** (adoption RULED; execution gated on you supplying the file) · **HK-7: connect the checkout** · **V-2, the one-look list, Ochoa first** · **V-4–V-8, the five new registry-shape questions** · **OBS-1** · **a fresh meter reading — requested at #68 and still not stated**
+- **ALSO YOURS: paste the revised v17** · **re-upload SKILL.md v2** (SK-v2) · **the sync-picker clicks** — `docs/skills/` (Q-3), `docs/templates/`, and the `docs/reference/` exclusion · **telemetry lockdown on the P1** (confirmed NOT set) · **HK-6: locate the T3 kickoff-day capture** (adoption RULED; execution gated on you supplying the file) · **HK-7: connect the checkout** · **V-2, the one-look list, Ochoa first** · **V-9, the binding-rule gap** · **OBS-1** · **a fresh meter reading — requested at #68 and still not stated**. **V-4–V-8 are OFF this list — ruled 08-13; what they now need is EXECUTION design-side, not a ruling**
 - **DE SERIES** — deficiency enforcement (WF-1 precedent). **DE-1** taxonomy-as-data and **DE-2** the conferral/escalation timeline, MANUAL triggers per Q-6. **They are the parked heartbeat Part-6 engine's HOME, not its green light. Nothing built**
 - **REQ-10 placeholder discipline: CONFIRMED AS CARRY** — the content route into `form-engine.md` rides whichever session next amends that spec. **Nothing owed now; the edit is design's, never Code's**
 - **EMAIL-WORKFLOW DOC ADOPTED** (#63) at `docs/specs/email-workflow-requirements.md` — seven pipelines take **WF-2–WF-8**, every one gated (WF-5 doubly: money machinery unruled). **CL2-AC-1 is DIRECTION-CONFIRMED**
@@ -153,7 +149,7 @@ SIX OF SEVEN SLICE ITEMS, FIXTURE DATA ONLY; THE LIVE MIGRATION IS UNRUN AND IS 
 - **`docs/reference/` HOLDS A BINARY — the first in `docs/`.** `CR3-code-sheet-2023.pdf` (blank public TxDOT code list; verified client-clean before it was committed). Synthesis at `docs/specs/cr3-field-code-map.md`, **PROPOSED input for IN-2 — nothing built.** Its requirement: crash-report code tables are **VERSIONED external vocabularies**, so extraction must store **(code, decoded label, code-sheet version)**
 - **VERIFICATION STATUS: the #62/#63 and #64 batches were VERIFIED design-side FULL-TEXT on 08-13 (#65)**; **#67 was verified landed at the top of #68.** Still UNREVIEWED: the carried **#31–#33** material and **#37–#61's own routing** — do not copy #36's clearance forward. **#58 was VERIFIED post-Sync, line by line**
 - **Everything awaiting your ruling is in `docs/specs/attorney-review-queue.md`** — reconciled
-  through **#72**. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
+  through **#73**. **K-6/K-7 RETIRED — reconstruct NOTHING.** **UNRULED, adopt nothing:
   `future-modules-capture-2026-07-28.md`** (`model-routing-plan.md`'s §7.2 clause is adopted via
   v17; the rest of that memo stays unruled, and its header now says so). Client model: design doc
   §10. FOLD PENDING: captures e+f into case-heartbeat-design.md §8. Carried: no law-change ledger,
