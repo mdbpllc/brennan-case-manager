@@ -12,6 +12,142 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-14 — QUEUE-RUNNER batch (runner line; TWENTY-NINTH invocation)
+
+**One packet, docs only, §5 NONE, nothing built.** Runner **v7**, read from
+`docs/prompts/QUEUE-RUNNER.md` at HEAD per the QR-2 pointer form — no cached copy relied on.
+**QR-3 v7 gate PASSED natively on Windows: clean, on master, `HEAD == origin/master == aa033dc`
+after a real `git fetch`, 0 ahead / 0 behind.** Packet:
+`push-to-code_cd2-role-mining_2026-08-13.zip`. Single packet, so the filename-date and pure-mtime
+orders agree trivially and both were computed and printed anyway; **order confirmed by Michael
+before anything was unzipped.** Nothing superseded — one packet has nothing to disagree with.
+Nothing skipped as already built.
+
+- **DATE SPLIT, STAMPED DELIBERATELY RATHER THAN COLLAPSED.** Clock-checked **09:51 CDT** before
+  stamping. **This runner line is 2026-08-14; the packet's own entry stays 2026-08-13**, which is
+  correct for its authoring session (the design session clock-checked 23:15 CDT under DT-1). The
+  two dates are not a drift to reconcile — the packet sat in the inbox overnight.
+- **THE PACKET'S NUMBER ASSUMPTION HELD, for once.** §1 numbered its entry **#74** and said the
+  premise was firmer than usual because **#73 was read at HEAD this session, not inferred**. At
+  HEAD the log's high-water mark was in fact **#73**, so **#74 was free and no renumber fired.**
+  Worth recording: this is the first packet in the chain whose numbering premise was sourced to a
+  real read rather than to RAG, and it is also the first one that did not need renumbering.
+- **THE STAGED FILE LANDED VERBATIM, BYTE-FOR-BYTE** — copied with `cp` and `cmp`-verified, not
+  retyped: `docs/specs/cd2-role-mining-pass-2026-08-13.md`, 440 lines / **350 non-blank**, which
+  matches the packet's own stated count exactly. The path did not exist at `aa033dc` and did not
+  exist at execution, so the §1 stop-condition (a parallel session having created it) did not
+  fire. The em-dash-with-spaces SQL literals (`Expert — ours`, `Expert — opposing`) survive
+  unreformatted, as §4.1 required.
+- **TEN PACKET-LOCAL IDs GIVEN DURABLE ONES, COLLISION-CHECKED FIRST.** The packet carried its open
+  questions as **Q1–Q10** and **explicitly declined to mint a series**, leaving assignment to the
+  runner. A repo-wide grep found the CD series at **CD-1, CD-2, CD-3 and nothing higher**, so
+  Q1–Q10 became **CD-4 – CD-13** — a continuation of the existing series, not a new one, which is
+  what §7 named as the natural home. The Q→CD mapping is written into the queue so the packet's
+  numbering stays traceable after deletion. **Full question text carried per QR-1.**
+- **HK-7 ANNOTATED SATISFIED-FOR-ONE-SESSION AND DELIBERATELY LEFT OPEN.** The grant is
+  session-scoped; §6 says in terms not to mark it closed. **Two new device-bridge findings were
+  written into that row because they change how QR-3 must be run**, not merely as trivia: through
+  the bridge `git status` reads 199 modified files (37,271 insertions / 37,271 deletions) while
+  `git diff --ignore-cr-at-eol` is empty — pure CRLF — so a Step 0 gate run through `device_bash`
+  **stops the session on a false DIRTY**; and `git fetch` fails through the bridge (`HTTP 403 from
+  proxy`) because the device VM has no network, so **QR-3's fetch-and-compare cannot run through
+  the bridge at all and must stay native.** #68 recorded the CRLF caveat as not materializing —
+  that runner ran natively, which is exactly why it did not see it. **This invocation ran natively
+  and the gate was a real fetch.**
+- **§5 WAS NONE AND NOTHING WAS BUILT.** No table, no migration, no constraint, no edge type, no
+  vocabulary. The §6 DO-NOT list was honored in full, including the two easiest to violate by
+  helpfulness: **`case_parties.role` was left free text** (that is CD-6, Michael's), and
+  **`src/domain/partyRegistry.ts` and `src/domain/roster.ts` were NOT opened.** A Code session may
+  read `src/` freely, and running the comparison would have resolved ~60 `TAG-CHECK: NOT RUN` rows
+  in one pass — but doing so changes a design-side artifact's evidentiary basis, and **CD-4 offers
+  that exact act as an option Michael has not yet chosen.** Left undone on purpose.
+- **NOTHING VERIFIED, NOTHING RULED, NO SPEC TOUCHED.** `contact-directory.md` §4/§5/§6 are
+  unchanged; the mining pass proposes *to* that spec and writes nothing into it. The three
+  related-but-distinct files §4.1 names — `REQ-CAPTURE_roster-mining-pass_2026-08-11.md`,
+  `contact-directory.md`, `cd1-build-slice.md` — were not touched or folded into.
+
+## 2026-08-13 (#74) — CD-2 ROLE MINING PASS filed as PROPOSED data prep; the reconcile-first finding
+is that CD-2 WAS ALREADY RULED AND PARTLY BUILT; the authoritative role vocabulary was NOT read, on
+purpose (design session, Opus 5, Cowork, CHAT-DISPATCH Task 3)
+
+- ONE NEW FILE, PROPOSED design input, data prep only, nothing verified, no spec touched:
+  `docs/specs/cd2-role-mining-pass-2026-08-13.md` (350 non-blank lines). Candidate party/contact role
+  taxonomy across all four practice areas, every row marked BUILT / RULED-NOT-BUILT / CANDIDATE / DECLINE.
+- SOURCED TO HEAD, NOT RAG — a first for the chain. **Michael granted the checkout folder via the device
+  bridge**, so all 96 synced files were read full-text at `aa033dc`. **HK-7 is SATISFIED FOR THIS SESSION,
+  NOT CLOSED** — the grant is session-scoped and the dispatch's own resume rule says re-grant each session.
+  Recorded precisely so the status line does not propagate as closed.
+- THE RECONCILE-FIRST FINDING, and it reframes the task: **CD-2 IS NOT AN OPEN DESIGN QUESTION.** Framing
+  RULED at #48; BOTH layers RULED at #51 into `contact-directory.md` §4/§5, where the queue row became a
+  pointer; the structure BUILT at #61. The dispatch commissioned Task 3 as a "candidate taxonomy," which
+  reads greenfield. **The document was rebuilt as a coverage audit of a ruled taxonomy** against every role
+  the record evidences. More useful, not less — but the framing correction is the session's real output.
+- THE ONE HONEST GAP, STATED NOT BURIED: **the authoritative role-tag vocabulary was NOT read, deliberately.**
+  It lives in `src/domain/partyRegistry.ts` and `src/domain/roster.ts`; `db/schema.sql` names only
+  `client, adjuster, attorney, ...` in a comment with an ellipsis, and `role_tags` has **no enum, no CHECK,
+  no lookup table** — enforcement is entirely TypeScript. **The files were physically reachable through the
+  bridge this session and were not opened**, because the project instructions bar design sessions from
+  reading `src/` and name pasting as the escape hatch. Every CANDIDATE row carries `TAG-CHECK: NOT RUN`.
+  Roughly 60 rows turn on it. **Q1 asks for the two files, or for a Code session to run the comparison.**
+- SCOPE OF THE PASS: 8 clusters, 96 files, ~420 raw role mentions consolidated. Deliverable sections:
+  the six ruled axes any role row must respect; the built-vocabulary dedupe baseline; the taxonomy by
+  practice area; a DECLINE list; the family analysis; ten open questions.
+- THE DECLINE LIST IS DELIBERATE OUTPUT, not omission — roles a naive miner would create and shouldn't:
+  anonymous tipster (no identity to store, by definition); "minor" as an enhancement trigger (an age
+  attribute); dispatcher/CAD (a records system); grand jury (indictment metadata); **trafficking victim
+  under §411.0728 (the DEFENDANT'S OWN status, not a third party)**; ANAB (reference data); trade name
+  (dead by ruling — an alias with a multi-match flag); statutory service targets (blocked — service-story
+  fields are Scope-OUT, identified by TITLE not name); intervening purchaser (a time-ordered class).
+- STRUCTURAL FINDINGS worth the record: **roles defined by the ABSENCE of another role** appeared
+  independently in two practice areas — probate's "interested person" (excludes creditors and claimants,
+  §352.052(c)) and property law's "derivative claimant" ("a claimant other than an original contractor",
+  §53.056) — which argues the shape is structural, not incidental, and nothing built expresses it.
+  **`case_parties.role` is the only one of the six ruled axes with no DB constraint.** **Only one direction
+  of each asymmetric edge is built** (`lessor-of` without `lessee-of`; `bailee-of` without `bailor-of`).
+  **`parent-of` is overloaded** across corporate and human parentage. **`family-of` was named in roster
+  REQ-11 and did not make it into the built 19.**
+- THE FAMILY QUESTION resolves into two populations that look alike and behave differently. Soft ties
+  (emergency contact; "client's mother" written by hand on a docket worksheet and lost between worksheets;
+  household passenger co-plaintiff; §146 "other responsible person") generalize correctly. **Statutory
+  classes do not:** CPRC ch. 71 wrongful-death beneficiaries lose exclusivity (the class is closed),
+  contestability (common-law marriage drives the set), time-indexing (§71.010(b) divides among those alive
+  at verdict), a collective veto (§71.004(c) requires enumerating the class exhaustively), and — for the
+  surviving spouse alone — **§71.005, a per-role EVIDENTIARY rule** a contact attribute cannot carry.
+  Heirship is adjudicated, not asserted. The homestead co-signing spouse (§53.254(c)) is an ELEMENT of lien
+  validity, retrospective and uncurable. **Collision named: in family-violence matters the complainant is,
+  by the charge's own elements, in a family relationship with the client — a family tie and the adverse
+  party at once.** FAM-1 still binds: a family EDGE vocabulary is permitted; a family role or case type is not.
+- PRECISE ABSENCES, reported rather than padded: the criminal cluster tracks the supervision relationship in
+  full detail (interlock conditions, discharge date, forward-condition clock, compliance log) **with no
+  counterparty record** — neither "probation officer" nor a supervision department appears in any of the
+  five criminal files. Probate names nowhere: ward, guardian (non-ad-litem), trustee, surety, title company,
+  **probate court as a court level** (the master spec's list is district / county court at law / JP, while
+  §352.003(b) gives the COUNTY court jurisdiction over independent-executor compensation).
+- TWO BRIDGE FINDINGS BEARING ON THE QUEUE RUNNER, both new: (a) **through the bridge mount `git status`
+  reports 199 modified files — 37,271 insertions against 37,271 deletions — while `git diff
+  --ignore-cr-at-eol` is EMPTY. Pure CRLF, zero content difference.** A QR-3 Step 0 gate run through
+  `device_bash` would read DIRTY and stop the session on a false alarm. #68 recorded the CRLF caveat as not
+  materializing — **that runner ran natively on Windows; through the bridge it materializes every time.**
+  (b) **`git fetch` fails through the bridge (`HTTP 403 from proxy`)** — the device VM has no network, so
+  **QR-3's fetch-and-compare cannot run through the bridge at all** and must stay native. Local refs read
+  `HEAD == origin/master == aa033dc`, 0/0 — but that is an unfetched ref and is NOT a QR-3 pass.
+- TEN OPEN QUESTIONS for Michael, full text in the staged doc §5 and in the queue rows below. Headline
+  three: **Q1** the two source files (or route the comparison to Code); **Q2** whether roles defined by
+  exclusion are expressible in the ruled roster model at all; **Q3** whether `case_parties.role` should stay
+  free text when every other ruled axis is DB-enforced.
+- NOTHING RULED THIS SESSION. Michael made no rulings; everything produced is PROPOSED.
+
+Staged for Code: this entry; `cd2-role-mining-pass-2026-08-13.md` (NEW); queue merge of Q1–Q10 with full
+text and durable IDs; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback; the #72–#73 batch handback still unreviewed
+design-side.
+
+*(Runner note, added at execution 2026-08-14 — the entry above is the packet's §3 text as written, and
+the log is append-only, so this rides as a bracketed note rather than an edit: **the ten questions
+became CD-4 – CD-13** in `attorney-review-queue.md` after a repo-wide collision check found the CD
+series at CD-3. Q1→CD-4, Q2→CD-5, Q3→CD-6, Q4→CD-7, Q5→CD-8, Q6→CD-9, Q7→CD-10, Q8→CD-11, Q9→CD-12,
+Q10→CD-13. The "Q1/Q2/Q3" references in the bullets above are the packet's own numbering, preserved.)*
+
 ## 2026-08-13 (#73) — RULING RUN, V-4 THROUGH V-8, ONE AT A TIME: all five ruled the same session
 they were entered; V-9 opened; NOTHING EXECUTED (Code session, Opus; Michael ruled every one)
 
