@@ -3,12 +3,12 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v6, 2026-08-10 (QR-4). STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v7, 2026-08-13. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
      2026-08-08 (MM-1, v5); Step 1 ordering amended by Michael's ruling 2026-08-10
-     (QR-4, v6). -->
+     (QR-4, v6); ahead-stop added by Michael's ruling 2026-08-13 (QR-3 amendment, v7). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -26,6 +26,10 @@ this file or any packet.** `git fetch origin`, then compare HEAD to
 - Behind but clean, on master, and fast-forwardable → fast-forward and continue.
 - Dirty, diverged, or not on master → STOP and tell Michael before touching
   anything.
+- **If HEAD is AHEAD of `origin/master` (unpushed local commits): STOP and tell Michael — a
+  prior close-out's push did not land, and the design side has not seen those commits. Proceed
+  only on his word; never build on an unpushed tree silently. (v7, ruled 2026-08-13 after the
+  twenty-fifth invocation demonstrated the gap.)**
 
 A stale checkout serves stale runner text with no warning (demonstrated
 2026-08-08: v1 read as current from a tree 14 commits behind). Never run the

@@ -12,6 +12,74 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-SIXTH invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2 — **and amended to v7 by
+this batch**, so the next invocation reads the stricter gate. Clock check before stamping: 19:5x
+CDT. **QR-3 gate PASSED CLEANLY for the first time in three invocations: clean, on master, HEAD ==
+`origin/master` == `6e04eaf`** — the twenty-fourth invocation's stranded commits reached origin at
+the end of the twenty-fifth. #67 was free. Nothing superseded; nothing skipped as already built.
+
+- **THE LINE-COUNT SPLIT WAS MEASURED, NOT ACCEPTED — and the packet is exactly right.**
+  `Go_Live_Gates.md`: **raw 106, non-blank 84.** Both numbers describe the same unchanged file;
+  the #66 finding reported the raw count and the twenty-fifth invocation reported the non-blank
+  count, and neither was wrong about the file. `BUILD-STATE.md` at the fifty-eighth refresh:
+  **raw 143, non-blank 132.** The runner's line counts have been non-blank throughout (the
+  measurement used skips empty lines), which means **the 150-line cap has been applied as the new
+  convention defines it all along** — nothing to re-cut retroactively.
+- **THE GAP THIS RUNNER REPORTED IS NOW CLOSED IN THE TEXT, not just acknowledged.**
+  `docs/prompts/QUEUE-RUNNER.md` Step 0 gains the ahead-stop clause verbatim and the header goes
+  **v6 → v7**. Nothing else in the runner changed (§6). The next invocation that finds unpushed
+  commits will stop and say so instead of building on them silently.
+- **A PLACE THE NEW CONVENTION COULD STILL DRIFT, flagged not fixed:** `CLAUDE.md` states the
+  **150-line cap** for BUILD-STATE but does **not** say whether it counts blank lines, and this
+  packet's routing table does not touch `CLAUDE.md`. The convention now lives in the log, in
+  BUILD-STATE, and in the unpasted v17. **Design's call whether the CLAUDE.md sentence should say
+  it too** — Code did not edit it.
+- **§6 honored:** nothing built; the runner changed only by the §4.2 add-only clause and version
+  note; #66 and the twenty-fifth runner line both left standing as written; **no correction entry
+  created** for either the gate assertion or the line counts — #67's ownership note and
+  reconciliation are the record, by the packet's own rulings; v17 not routed to the repo; §7 items
+  left open.
+
+## 2026-08-13 (#67) — QR-3 AMENDED TO v7 (ahead-stop) after the twenty-fifth invocation
+demonstrated the gap; LINE-COUNT CONVENTION RULED (non-blank); ownership note (Fable 5,
+design-side) on the prior packet's gate assertion; 106-vs-84 reconciled as convention, not
+error (design session, Fable 5, Cowork, typed; rulings Michael's, 2026-08-13 Central, by
+widget; DT-1 clock-checked)
+
+- QR-3 v7 RULED: the Step 0 checkout gate ALSO STOPS when HEAD is AHEAD of origin/master
+  (unpushed local commits) — tell Michael; proceed only on his word; a stranded push is never
+  silently built on. Reason: the twenty-fifth invocation showed ahead sails through a gate
+  that stops only on behind/dirty/diverged/off-master, so the one state meaning "the record's
+  audience hasn't seen these commits" was the one state with no guard. Runner text amended
+  this batch; the clause was folded into the unpasted v17 the same evening.
+- LINE-COUNT CONVENTION RULED: "N lines" in this record means NON-BLANK lines; a raw newline
+  count is used only when labeled "raw". Settles two same-day splits, both convention
+  mismatches rather than errors: BUILD-STATE "135" (non-blank; raw 146) and Go_Live_Gates —
+  the #66 finding's "106" was the RAW count and the twenty-fifth invocation's "84" the
+  non-blank count of the same file, verified 2026-08-13; the #66 entry and the runner's
+  bracketed note both stand as written, with this entry as the reconciliation.
+- OWNERSHIP NOTE (Fable 5, design-side): the twenty-fifth invocation's packet asserted in its
+  §1 that "the QR-3 gate will stop this packet anyway" if the push had not happened — wrong,
+  as the runner demonstrated and reported. The claim lived in the deleted packet and reached
+  the record only through the runner's account; no correction entry owed. Failure class:
+  design-side assertion about runner/repo behavior made from memory instead of reading the
+  text at HEAD — the same class the FE-3/#55 lesson names for content. The fix is the v7
+  amendment above.
+- v17 REVISED before pasting (same version, same day): the QR-3 v7 clause and the line-count
+  convention folded in. Michael pastes the REVISED file; the earlier same-day download is
+  superseded.
+
+Staged for Code: this entry; the QR-3 v7 runner amendment; queue annotations; BUILD-STATE
+rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback. v17 paste (revised file)
+pending Michael; next fresh design session verifies it in force.
+
+[Code note appended at execution, 2026-08-13, twenty-sixth invocation — the entry above stands
+as written. Both line-count claims were re-measured in the repo and are EXACT: Go_Live_Gates is
+raw 106 / non-blank 84. BUILD-STATE's fifty-eighth refresh measures raw 143 / non-blank 132.]
+
 ## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-FIFTH invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2. Clock check before
