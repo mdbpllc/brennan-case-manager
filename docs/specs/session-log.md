@@ -12,6 +12,57 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 (#71) — OUTLOOK EDIT/CANCEL EXERCISED LIVE: cancel works, edit works EXCEPT the
+first edit after a connect push, which DUPLICATES the event in Outlook (Code session, Opus;
+Michael's hand on every click)
+
+**CODE-DISPATCH chain task 4 of 4 — the interactive one.** Exercise-and-verify, **no build, no code
+changed.** Demo mode, localStorage, **fictional seed data only** — no real matter, client, or
+hearing touched. Michael supplied `.env`; it is gitignored (`.gitignore:19`) and was **not
+committed**. It carries the Entra **client and tenant ids only — no secret**, which is correct for
+the SPA/PKCE flow.
+
+- **THE STATUS LINE THAT HAS READ "creation only — edit/cancel unverified" SINCE 2026-07-26 IS NOW
+  RETIRED, replaced by what was OBSERVED, not by what the code promises.** Full record:
+  `docs/specs/outlook-edit-cancel-exercise-2026-08-13.md`.
+- **CANCEL ✓** — deleting the tracked event removed it from MDBP Cases **immediately**.
+- **EDIT ✓, WITH ONE EXCEPTION THAT IS THE FINDING.** A second edit of an already-edited event
+  patched cleanly (2:00 PM → 3:00 PM, same entry moved, no new copy). **But the FIRST edit of an
+  event pushed by the connect/"Sync now" path DUPLICATED it** — the original stayed at its old
+  values and a second entry appeared with the new ones.
+- **REPRODUCED ON A CLEAN CONTROL, which is what makes it a finding rather than an anecdote.** The
+  second seeded event had been pushed at connect and never touched; its first edit duplicated the
+  same way. **Systematic, not one-off.** Blast radius: **every** event drained by a connect with a
+  queued backlog is orphaned by its first edit, and **the orphans are permanent** — the app no
+  longer holds their Outlook ids, so it can neither update nor cancel them. On a real docket that is
+  a stale hearing time sitting beside the correct one with nothing in the app showing it exists.
+- **CAUSE UNDETERMINED, AND DELIBERATELY NOT GUESSED.** Every layer was read at HEAD and each is
+  correct in isolation — the connect handler awaits `syncAllPending` then refreshes; the edit form
+  passes the **returned** record to `syncEvent`, not the stale React one; `localAdapter.updateEvent`
+  merges so `outlookEventId` survives; `syncEvent` persists the id after every push. **Static
+  reading does not explain the observed behavior, so no mechanism is claimed and NO FIX IS
+  PROPOSED** — the two surviving hypotheses (id never persists vs. Graph 404s the PATCH and the
+  "deleted in Outlook" fallback fires on a live event) need **different fixes in different files**,
+  and both produce identical symptoms. Choosing between them without evidence is this project's own
+  named failure class.
+- **The two pieces of evidence that would settle it are written down for the next session**, and
+  the first is one edit with the Network tab open: `POST 201` alone vs. `PATCH 404` then `POST 201`;
+  and the sync badge immediately after connect ("Queued" vs "✓ In Outlook").
+- **An earlier hypothesis of mine was wrong and is recorded as wrong:** the clean second edit
+  disproved the unencoded-event-id-in-the-URL theory. The control test was run precisely because
+  one clean result is not evidence of a one-off.
+- **BUILD-STATE: two status lines edited, not a full rewrite** — the work order scoped this to "the
+  propagation status line," and re-authoring 130+ currently-accurate lines to change two would
+  invite drift. **Nothing appended; 134 non-blank against the 150 cap; ledger pointer intact.**
+- **MICHAEL'S HAND, LEFT UNDONE:** the in-app browser pane could not be clicked into, so the whole
+  exercise ran in his own browser (MSAL tokens and demo state are both per-browser). **Two
+  fictional test orphans are sitting in MDBP Cases now and will not clear themselves** — the 9:00 AM
+  status conference and the original "Discovery responses due" entry. **Delete by hand in Outlook.**
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** the duplicate-on-first-edit
+CANDIDATE — needs the Network-tab evidence, then a fix ruling. **The dev server on `:5173` was left
+running and `.env` remains installed at the repo root.**
+
 ## 2026-08-13 (#70) — TELEMETRY: the record authorizes Code to do NOTHING, so nothing was done;
 one flag raised — the lockdown recipe targets Windows, the stack runs in WSL2 (Code session, Opus)
 
