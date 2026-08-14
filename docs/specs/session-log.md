@@ -12,6 +12,53 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 (#70) — TELEMETRY: the record authorizes Code to do NOTHING, so nothing was done;
+one flag raised — the lockdown recipe targets Windows, the stack runs in WSL2 (Code session, Opus)
+
+**CODE-DISPATCH chain task 3 of 4.** The task was to complete **only** what the record authorizes
+on the telemetry item, restate that authorization first, and stop if it was ambiguous. **It was not
+ambiguous — it is unambiguously nothing for a Code session**, so the restatement was the work and
+the execution was empty by design.
+
+- **WHAT THE RECORD AUTHORIZES, restated from four places that agree:** the posture was **RULED
+  2026-08-12 (#63) — offline lockdown**, packages stay installed and are forced offline machine-wide
+  **before any privileged audio is processed**. The remaining acts are **the two variables and the
+  verification-3 report, both Michael's hand on the GPU machine.**
+  `attorney-review-queue.md:321` states the bar in terms that leave no room:
+  **"The variables get set on the GPU machine by your hand — never from a Code session."**
+  `BUILD-STATE.md:53`, `gpu-telemetry-offline.md`, and #63/#66 in this log say the same.
+  **Code's authorized share of this item is zero.** The twenty-second runner recorded honoring the
+  same bar in the same words ("no telemetry variables set from here").
+- **STATUS IS NOT-DONE, NOT UNKNOWN.** #66 (2026-08-13): Michael ran the design-supplied self-check
+  and **both machine-scope variables came back EMPTY** (screenshot). The lockdown is **not in
+  place**; the hard rule stands — **no privileged audio until verification 3 passes.**
+- **NOTHING WAS EXECUTED. No variable was set, read, or written from this session, on this machine
+  or any other; the GPU environment was not touched; no status was advanced.**
+- **ONE THING DISCOVERED, FLAGGED NOT DONE — and it is the kind that closes an item falsely.**
+  `docs/gpu-telemetry-offline.md` gives the lockdown as **Windows** machine-scope variables
+  (System Properties + a PowerShell `'Machine'` one-liner) and contains **no WSL, `WSLENV`,
+  `.bashrc`, or venv-activate instruction anywhere** — checked at HEAD. **The stack runs entirely
+  inside WSL2** (`phase0-environment-standup-2026-08-09.md` §2: "all inside the WSL filesystem";
+  Ubuntu 24.04.4 on WSL 2; run path `wsl -d Ubuntu-24.04` → `~/phase0` → `./venv/bin/python`).
+  **Windows machine-scope variables do not propagate into a WSL2 distro** without `WSLENV` or a
+  shell-profile/activate export — so **the Windows self-check can read SET while the Python process
+  that loads `wandb` still sees NOTHING**, and a "verification 3 passed" report resting on the
+  Windows half alone would close the item **with the lockdown not in force where the audio is
+  processed.**
+- **THE REPO COPY LAGS THE GUIDANCE ON EXACTLY THAT POINT.** #66 records the recipe as
+  "re-supplied with **the WSL2 half emphasized**" on 2026-08-13; **that half is not in the repo
+  doc**, which was filed verbatim 2026-08-12 (#63) and never refreshed.
+- **Filed to `docs/spec-feedback.md`** (CLAUDE.md's designated channel), **not fixed**: the note is
+  a design-side deliverable filed verbatim, the ruling is Michael's, and the recipe is his hand —
+  Code editing it would be rewriting a spec. **A refreshed snapshot carrying the WSL2 half is the
+  fix.**
+- **No BUILD-STATE rewrite:** `:53` is already accurate ("NOT IN PLACE — CONFIRMED NOT SET 08-13")
+  and nothing built changed. The queue row at `attorney-review-queue.md:321` is accurate as 🟡.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** the WSL2 recipe gap in
+`spec-feedback.md`. **Unchanged and still Michael's:** the two variables (WSL2 side included) and
+the "verification 3 passed" report that closes the item.
+
 ## 2026-08-13 (#69) — DOCS LINT SWEEP: read-only, one candidate report, zero edits to existing
 files; two live docs found contradicting each other on the GL-1 floor (Code session, Opus)
 

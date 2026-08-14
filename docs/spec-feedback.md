@@ -5,6 +5,45 @@ reveals get noted here instead. Each item needs a decision or a spec update
 in the Claude.ai Project space, after which a refreshed snapshot comes back
 to `docs/specs/`.
 
+## Telemetry lockdown recipe, 2026-08-13 — the recipe targets Windows; the stack runs in WSL2
+
+**Nothing was executed and nothing was changed. This is a flag.** Raised by a Code session
+(chain task 3) that was asked to complete only what the record authorizes on the telemetry item,
+and found that **the record authorizes a Code session to do nothing** — the variables are
+Michael's hand on the GPU machine, "never from a Code session"
+(`attorney-review-queue.md:321`). While restating that, the gap below surfaced.
+
+**The gap:** `docs/gpu-telemetry-offline.md` gives the lockdown as **Windows** machine-scope
+environment variables — System Properties, plus a PowerShell
+`[Environment]::SetEnvironmentVariable(...,'Machine')` one-liner. It contains **no WSL, Linux,
+`.bashrc`, `WSLENV`, or venv-activate instruction anywhere** (checked at HEAD). But the
+transcription stack runs **entirely inside WSL2**: `phase0-environment-standup-2026-08-09.md`
+§2 records "all inside the WSL filesystem, per the WSL2 I/O rule," Ubuntu 24.04.4 LTS on WSL 2,
+with the run command `wsl -d Ubuntu-24.04` → `cd ~/phase0` → `./venv/bin/python`.
+
+**Why it matters, concretely:** Windows `Machine`-scope variables **do not propagate into a WSL2
+distro** unless they are exported through `WSLENV` or set in the distro's shell profile or the
+venv activation script. So the two checks can disagree in the dangerous direction — the Windows
+self-check can come back **set**, and the Python process that actually loads `wandb` can still
+see **nothing**. The doc's one hedge ("or the activation script of the Python environment the
+stack runs in — set them in BOTH if unsure") gestures at this but names no WSL path, and the
+self-check Michael ran on 2026-08-13 (#66) was the **machine-scope** one — which is also how
+BUILD-STATE frames the finding ("both machine-scope variables came back EMPTY").
+
+**The consequence worth the design side's attention:** a "verification 3 passed" report resting
+on the Windows half alone would close the item **without the lockdown being in force where the
+audio is processed** — and the standing rule gated on that report is *no privileged audio until
+verification 3 passes*.
+
+**Corroborating detail:** session-log #66 records the recipe as "re-supplied with **the WSL2 half
+emphasized**" on 2026-08-13. **That WSL2 half is not in the repo copy of the doc** — the note was
+filed verbatim 2026-08-12 (#63) and has not been refreshed since. So the repo snapshot lags the
+design-side guidance on exactly the point that decides whether the lockdown works.
+
+**Not fixed here on purpose:** `docs/gpu-telemetry-offline.md` is a design-side deliverable filed
+verbatim, the ruling is Michael's, and the recipe is his hand — a Code session editing it would
+be rewriting a spec. **A refreshed snapshot carrying the WSL2 half is the fix.**
+
 ## Medical tab scope, 2026-08-12 — half built, half BLOCKED on PR-3
 
 **Michael's ruling, 2026-08-12:** *"the only cases that should have a medical tab
