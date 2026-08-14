@@ -12,6 +12,56 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 (#69) — DOCS LINT SWEEP: read-only, one candidate report, zero edits to existing
+files; two live docs found contradicting each other on the GL-1 floor (Code session, Opus)
+
+**CODE-DISPATCH chain task 2 of 4.** Task 1 was a **no-op and is deliberately unlogged as a runner
+line: `inbox/` was EMPTY**, so no batch ran and no invocation number was consumed. The QR-3 **v7**
+gate was still run in full and PASSED — clean, on master, `HEAD == origin/master == b3e8c1e`, **and
+NOT AHEAD**. The expected #67 packet was already processed by the twenty-sixth invocation at
+`9ac12c8`; the record was unambiguous, so the chain continued rather than stopping. DT-1 clock check
+before stamping: **21:51 CDT** — the container read 08-14 UTC, the stamp is 08-13.
+
+- **DELIVERABLE: `docs/specs/docs-lint-sweep-2026-08-13.md` — a CANDIDATE report and nothing else.**
+  **No fix was applied and none was drafted.** It is the only file the sweep wrote; **zero existing
+  files were edited**, including the ones it names.
+- **THE FINDING WORTH READING FIRST — two live governing docs disagree about the go-live floor.**
+  `Go_Live_Gates.md:81` states GL-1 floor item (5) as "instructions **v15**"; `BUILD-STATE.md:18`
+  states the same item as "**v17**" *and names `Go_Live_Gates.md` as the full-text authority for it*.
+  **BUILD-STATE defers to the doc carrying the lower number.** Instructions are v17 at HEAD.
+  Unresolvable in Code: whether GL-1 means literally v15 or "current at the re-check" is Michael's
+  ruling, made 2026-08-11. **Flagged, not touched.**
+- **SECOND: the repo's front door denies a feature that shipped.** `README.md:64–66` still reads
+  "the app has no sign-in screen yet — so Supabase mode will connect but every query will be
+  refused." Auth landed **2026-07-28**; `BUILD-STATE.md:56` describes the built magic-link gate.
+  README is what a new machine or a new reader hits first. Same class as drift finding #9 (#68),
+  different file — **and this one was found by sweep rather than by accident.**
+- **THREE HUNTS CAME BACK CLEAN, and the report says so explicitly rather than staying silent.**
+  (1) **K-6/K-7:** 30+ mentions across 12 files, **every one a citation of the retirement rule** —
+  no file re-raises either ID, none reconstructs text. The ledger's bar is holding. (2) **Runner
+  version:** `QUEUE-RUNNER.md` v7, the `.claude/commands` pointer carries no version to go stale,
+  BUILD-STATE says v7 — consistent; every other version mention sits inside a dated or closed entry.
+  (3) **`CLAUDE.md`:** every path it cites resolves; no stale version, no `claude/` cite.
+- **The `claude/` cite class is effectively dead.** Four instances survive: three are the annotation
+  of the error class itself, and the fourth (`session-log.md:6137`) was **deliberately left by the
+  2026-07-26 sweep** as append-only history. Listed, with that disposition quoted, so a future sweep
+  does not re-open a closed call.
+- **Three references to files absent at HEAD — all three self-annotate their own absence** (the
+  session-1 heartbeat voice capture, the absorbed-and-deleted `cd-1-session-prep.md`, and HK-6's
+  gated adoption target). **None is a defect**; recorded so the next sweep does not re-raise them.
+- **Method is written into the report** — 2,931 backticked tokens, 276 path-shaped, resolved against
+  `git ls-files` by full path then basename, every non-resolving cite read in context before being
+  called a candidate. **Most did not survive that read**, which is why the clean list is longer than
+  the candidate list. A later sweep can be compared against this one.
+- **No BUILD-STATE rewrite this entry, on purpose.** The sweep changed nothing about what is built
+  and contradicted nothing in BUILD-STATE — the stale claim is in `README.md`, which the
+  project-knowledge sync does not carry. BUILD-STATE was checked in passing and is within its rules:
+  **134 non-blank lines** against the 150 cap (145 raw), ledger pointer present at line 11.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** the twelve candidates in
+`docs-lint-sweep-2026-08-13.md` — items 1 (GL-1 floor version contradiction) and 2 (README auth
+claim) want a ruling; the rest are low or already-dispositioned. Nothing acted on.
+
 ## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-SEVENTH invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v7** — the ahead-stop clause this runner added last
