@@ -257,6 +257,8 @@ because roster slots are DATA. **Michael's to redirect.**
 
 **Status:** 1, 3-parser, and structural detection are implemented; 2 and the cause-pending reminder pattern need Michael's ruling / a design pass.
 
+**RULED 2026-08-13 (#66):** capture BOTH sex and race/ethnicity, on both intake paths (OAA + CR-3), one answer governing both; cause-number-pending reminder YES (flag until filled). Question closed. *(Add-only annotation; the original text above stands as written. Item 2 — which appointee names are "mine" — is NOT covered by this ruling and remains open.)*
+
 ### 2026-07-25 — Statute-tracking design §2 source facts: the .gov site is now a client-side app
 
 **Where:** statute-text-and-bill-tracking-design.md §2 ("Chapter files at `https://statutes.capitol.texas.gov/docs/{CD}/{fmt}/{CD}.{ch}.{ext}` … static between effective dates") and A2's fetch design.
@@ -641,6 +643,13 @@ Also worth folding into the memo when it is next revised: NeMo's `[cu12]` extra 
 `torch==2.12.0+cu126`, and **CUDA 12.6 has no sm_120 kernels** — on Blackwell it
 installs a stack that imports cleanly and fails at device time. The working pairing
 is plain `nemo_toolkit[asr]` over a pinned cu128 torch.
+
+## 2026-08-13 — npm advisories on fresh install (filed by ruling, #66; HK-1, formerly H1)
+
+npm advisories on fresh install (P1, 2026-08-08): 5 advisories (1 moderate, 4 high), all in
+dev-dependency chains of a lockfile green at 232 tests on 07-28. Triage as a routed task on a
+machine that can test the result — NOT auto-fixed via `npm audit fix`, which can silently desync
+the machine from the tested lockfile. Filed by ruling 2026-08-13 (#66).
 
 ## Resolved
 

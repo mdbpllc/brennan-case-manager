@@ -12,6 +12,139 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-FIFTH invocation)
+
+**One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2. Clock check before
+stamping: 18:5x CDT. #66 was free. Nothing superseded; nothing skipped as already built.
+
+- **A DELIBERATE DEVIATION FROM THE PACKET'S ORDER, ON MICHAEL'S WORD.** The packet's §1 makes
+  sequencing load-bearing and puts the push FIRST: the twenty-fourth invocation's two commits were
+  to reach origin before this packet ran. **They had not** — `origin/master` was still `f72de66`
+  with HEAD at `598da4e`, ahead 2 — and **the runner cannot push in this environment** (the
+  permission classifier denied `git push` in both invocations). Michael was shown the state and
+  **ruled: execute now, push after.** Recorded because the deviation is his, not the runner's.
+- **THE PACKET'S SAFETY ASSUMPTION WAS WRONG, AND THAT MATTERS BEYOND THIS BATCH.** §1 says "the
+  QR-3 gate will stop this packet anyway if he hasn't [pushed]." **It does not.** QR-3 stops on
+  *behind*, *dirty*, *diverged*, or *not on master* — **being AHEAD is none of those**, so the gate
+  passes an unpushed tree without a word. A packet that leans on the gate to enforce push-ordering
+  is leaning on something that isn't there. **Flagged for the design side, not fixed here** — the
+  runner text is canonical and read-only to Code.
+- **The already-processed verification zip was deleted** (§1 step 2) on Michael's word — its
+  content is durably committed at `089715c`, so the deletion removes a double-processing hazard and
+  loses nothing. This packet's zip was the only other one in `inbox/`.
+- **TWO PACKET CLAIMS WERE CHECKED RATHER THAN COPIED.** (a) The Go_Live_Gates paste-ask: verified
+  stale **in the repo** — gates 1–5 verbatim, 6–8, 9, GL-1, and both amendments are all present, so
+  the row closes as already-done. But the finding put the file at **106 lines; it is 84** — the
+  completeness claim is right, the count is not, and the queue row records the correction. (b) The
+  registry file's own header said **"ALL SIX ENTRIES UNVERIFIED"** and would have been left stating
+  six after a split that makes seven; corrected to SEVEN with the split noted, since a stale count
+  in a status header is exactly the failure class this project keeps catching.
+- **§7 OPEN ITEMS MERGED into `attorney-review-queue.md`** per QR-1. Only one was genuinely
+  unregistered — **the v17 instructions paste**, now a row with its full contents and the standing
+  caveat that until Michael pastes it, none of what it carries (Descrybe-out, SAT-1, the §7.2
+  clause, HK-5) is in force for future design sessions. The rest already had homes and were
+  annotated in place: **V-2** (memo one-look list), **HK-6** (locate and supply the kickoff
+  capture), telemetry (now known not-set), **O4**, the IME row, and both sweeps. **His ordering
+  item — push, delete the old zip, run, then Sync — is executed except for the push.**
+- **§6 honored:** nothing built; no registry entry touched except the ruled 4a/4b split, and 4b's
+  public-source text was NOT treated as verification; no heartbeat H-ID renamed (the HK
+  re-lettering touched only the log-#44 housekeeping series); the heartbeat rulings left in the
+  queue and log, NOT folded into the heartbeat design docs; neither the v17 file nor the capture
+  routed to the repo; the telemetry item left OPEN; V-2 untouched; `SKILL.md` untouched.
+
+## 2026-08-13 (#66) — RULING RUN: ~20 open queue items ruled one by one (design session,
+Fable 5, Cowork, typed; all rulings Michael's, 2026-08-13 Central, by widget or direct words;
+DT-1 clock-checked before every stamp). v17 DRAFTED AND DELIVERED (Descrybe-out + SAT-1 +
+§7.2 routing clause + H5 + the two queued touch-ups). Registry entry-4 SPLIT ruled. HK
+re-lettering ruled. Telemetry checked: NOT SET.
+
+- V-1 RULED: v17 drafted and delivered same session (trigger #3, same-day). Contents:
+  the Descrybe-out tooling convention; SAT-1; the §7.2 model-routing clause folded into MODEL
+  USAGE with economics refreshed to the observed 2026-08-13 Max terms (separate Fable bar +
+  all-models bar, reset Tue 3:59 PM Central) — closing the Q-5 queue remnant AND H2; the H5
+  rule; the "BS-1 provenance" phrase corrected to the ledger-pointer line; the pre-Cowork
+  read-only wording updated (tracked content read-only design-side; project knowledge,
+  checkout reads, and inbox saves are within design-side reach when granted). Paste is
+  Michael's hand; the next fresh design session verifies v17 in force (#54 precedent).
+- V-3 CONFIRMED (both): PROBATE created with v1 + carry snippets placed; CRIM DEFENSE carries
+  v1 + the Uvalde worksheet instructions. Both hand-items CLOSE.
+- TELEMETRY CHECKED, NOT SET: Michael ran the design-supplied self-check — both machine-scope
+  variables returned EMPTY (screenshot, 2026-08-13). The lockdown is NOT in place; recipe
+  re-supplied with the WSL2 half emphasized. Item stays OPEN as not-yet-done (no longer
+  status-unknown). The hard rule stands: no privileged audio until verification 3 passes.
+- DEMOGRAPHICS RULED (closes the 2026-07-25 spec-feedback question, both halves): the
+  software CAPTURES BOTH sex and race/ethnicity on both intake paths (OAA and CR-3
+  extraction) — one answer governs both so defaults cannot drift (#64's cross-reference
+  satisfied). Cause-number-pending reminder RULED YES: a visible flag on matters created
+  without a cause number, cleared on entry.
+- TRANSCRIPT SORT & ROUTE: O1 RULED — D1 confirm-only STANDS for v1; auto-file stays
+  deferred. O3 RULED — non-case recordings go to a PERSONAL STORE; nothing destroyed.
+  O4 DEFERRED — the phone→PC channel stays open.
+- H22 RULED: registry verification interleaves BY BUILD URGENCY — whatever a ruled slice
+  needs is verified first, regardless of series.
+- HK RE-LETTERING RULED (ends the H-string collision): the log-#44 housekeeping series
+  re-letters H→HK, numerals preserved (H1→HK-1, H2→HK-2, H4→HK-4, H5→HK-5, H6→HK-6);
+  heartbeat H1–H83 untouched; queue rows carry "(formerly Hn)" once; BUILD-STATE references
+  update; the append-only log keeps old IDs in old entries.
+- SAT-1 RULED: ADOPTED, BOTH PARTS (criteria + one-ruling-space). Rides v17. The
+  satellite-inventory instructions update fires at the first non-Domser satellite.
+- HK-1 (formerly H1) RULED: the npm-advisories spec-feedback item is FILED as drafted
+  (executed this batch); triage as a routed task on a machine that can test; never blind
+  `npm audit fix`.
+- HK-2 (formerly H2) CLOSED via the v17 economics refresh.
+- HK-5 (formerly H5) RULED WITH CAVEAT: preflight rows and questions about Michael-supplied
+  material are answered by Michael FIRST — never by sweeping his machine unprompted
+  (filenames alone can carry client information). When Michael cannot recall, he MAY DIRECT
+  a search, per instance; the search is his call, never a session's default. Homes:
+  CLAUDE.md (this batch) + v17.
+- HK-6 (formerly H6) RULED: the T3 kickoff-day capture IS ADOPTED into the repo — EXECUTION
+  GATED: the file is absent from current project knowledge (searched 2026-08-13); Michael
+  locates it (ARCHIVE project or Downloads) and supplies it; it ships in a later packet.
+- O5 RULED: BOTH fee-profile attributes confirmed on substance — `direction` as its own axis;
+  `conditionalDowngrade` as a conditions predicate over structured facts (never a boolean).
+  Wording sign-off, V10 citator pass, V13 stay open.
+- Q-5 REMNANT RESOLVED: the §7.2 routing clause is ADOPTED into v17 alongside the 07-27
+  economics ruling. The queue row closes; the 07-27 closure-by-replacement stands.
+- REGISTRY ENTRY-4 SPLIT RULED (wording act, Michael's): former criminal entry 4 becomes
+  4a (separate criminal actions: per-cause costs; concurrent sentences do not merge costs)
+  and 4b (single criminal action: each cost once, highest category — art. 102.073(a)–(b),
+  fine-only actions excluded by (c)). BOTH UNVERIFIED; cite supply remains verification.
+  Backlog count 33 → 34 (one proposition became two). CR-10's cost check must ask
+  same-action-or-separate before totaling.
+- HEARTBEAT RULINGS (recorded in queue + log; design-doc fold rides the heartbeat pass with
+  the pending e+f folds): H40 — deposition threads are STAGED (notice → calendared → taken →
+  transcript; dies at transcript-in-file). H50 — supplementation opt-out is DORMANT WITH WAKE
+  EVENTS, never a hard kill (automatic-exclusion penalty). H60 — payer threads ARM AT INTAKE
+  off the coverage inventory (traditional / Advantage / supplemental captured as arming
+  data). H77 — the registry GETS a `precedential_status` field separate from verification
+  status (plurality/dicta/memorandum as data; flag-only; two live exhibits: Gregory v.
+  Chohan; the Allstate dicta at Entry 2(j)).
+- IME HOOK: DEFERRED WITH SHAPE — trigger and task content get ruled TOGETHER at the
+  heartbeat/deadline pass; the H64 designation-acts framing (your own designation creates
+  the 204.1 exposure) rides the row as the leading candidate.
+- CL2-CHECK-1 RULED: KEEP PARKED (deferred-do-not-build stands; revisit after CD-1's flags
+  prove out).
+- D-CL2-3a RULED: the fee affidavit carries the rate of the CLIENT WHOSE CLAIM CARRIES THE
+  FEE DEMAND; multi-client demands get per-client exhibits.
+- DL-INPUT RULED: the deadline model is PER-(CASE, PARTY) — each party's response clock
+  computes from its own service date. The deadline-engine pass builds on this.
+- STATUS-DRIFT SWEEP, FINDING #1: the queue's Go_Live_Gates paste-ask ("gates 1–5 verbatim
+  so the repo copy stops being a stub") is STALE — the file has been complete since
+  2026-07-26 (106 lines; gates 1–9, GL-1, both amendments verified on screen 2026-08-13).
+  Row closes as already-done. The full duplication and status-drift sweeps STAY OPEN.
+- Model-usage note: design session on Fable 5, continuing the stated-meter allocation
+  (Fable 58% at session start; deliberate spend). No new reading taken mid-session.
+
+Staged for Code: this entry; registry entry-4 split; spec-feedback H1 filing + OAA
+annotation; CLAUDE.md H5 line; queue edits incl. HK re-lettering; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback. v17 paste pending Michael;
+next fresh design session verifies it in force.
+
+[Code note appended at execution, 2026-08-13, twenty-fifth invocation — the entry above stands
+as written: the Go_Live_Gates file is **84 lines, not 106**. Completeness verified in the repo
+(gates 1–5 verbatim, 6–8, 9, GL-1, both amendments), so finding #1 holds and the row closed;
+only the line count was off.]
+
 ## 2026-08-13 — QUEUE-RUNNER batch (runner line; TWENTY-FOURTH invocation)
 
 **One packet, docs only, §5 NONE.** Runner **v6** read at HEAD per QR-2 (the command file is a

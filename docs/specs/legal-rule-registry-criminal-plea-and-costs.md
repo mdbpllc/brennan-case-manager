@@ -1,12 +1,14 @@
 # Legal Rule Registry — Criminal Offense Classification, Plea Procedure and Costs
 
-**Status: ALL SIX ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under
+**Status: ALL SEVEN ENTRIES UNVERIFIED** (six as filed; **former entry 4 was SPLIT into 4a and 4b
+by Michael's ruling 2026-08-13, #66** — one proposition became two, so the registry backlog moves
+33 → 34). Nothing in this file has attorney sign-off. Under
 CLAUDE.md's registry discipline these propositions may exist here and drive warnings or
 placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael
 verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
 
 **Filed 2026-08-12 (design-side reconciliation of the Uvalde docket-worksheet REQ-CAPTURE; file
-creation confirmed by Michael the same date, by widget).** All six entries come from
+creation confirmed by Michael the same date, by widget).** All entries come from
 `REQ-CAPTURE_uvalde-docket-worksheet_2026-08-12.md` §4, carried at the capture's own stated status;
 that status is carried, not re-derived. They exist because **CR-10** (the plea-paperwork signing
 checklist, the capture's highest-value item) presumes rules of this kind can be encoded — and
@@ -19,9 +21,11 @@ scoped. Folding criminal propositions into any of them would break subject hones
 structural collision recorded in both sibling files' own placement notes (#50 and #58 precedents).
 Split later if volume warrants. **Michael confirmed this placement 2026-08-12.**
 
-**TWO ENTRIES CARRY NO CITE (entries 3 and 4).** The capture states the propositions without
-statutory cites, and supplying a cite is part of the verification act — it is Michael's, not a
-drafting session's. Both are flagged inline.
+**TWO ENTRIES CARRY NO CITE (entry 3 and entry 4a).** The capture states those propositions
+without statutory cites, and supplying a cite is part of the verification act — it is Michael's,
+not a drafting session's. Both are flagged inline. **Entry 4b carries a statutory cite (art.
+102.073) that is itself PENDING VERIFICATION** — its text was read from a public source, which is
+not verification.
 
 **Structure.** Entries are headed by CITE (or its absence, flagged) and ordered as the capture
 orders them — the convention of the sibling registry files.
@@ -54,14 +58,33 @@ offense and the punishment assessed must correspond.
 **Relied on for:** CR-10's core consistency check (the capture's live exhibit: third-degree felony
 printed on judgments assessing state-jail terms for state-jail offenses, caught on paper).
 
-## [NO CITE CARRIED] — court costs assessed per cause, non-concurrent
+## Court costs across causes — SPLIT 2026-08-13 (#66, Michael's ruling) from former entry 4
 
-**Cite:** NONE carried in the capture — supplied at verification (Michael's act).
-**Rule.** Court costs are assessed per cause and do not run concurrently even when the sentences
-run concurrently.
+### 4a — [NO CITE CARRIED] — separate criminal actions: costs per cause, non-concurrent
+
+**Cite:** NONE carried — supplied at verification (Michael's act). Candidate authorities
+(per docs/specs/registry-cite-check-2026-08-13.md; LaPorte and Hurlburt are UNREAD
+candidates): negative implication of Tex. Code Crim. Proc. art. 102.073; LaPorte v. State,
+840 S.W.2d 412 (Tex. Crim. App. 1992); Hurlburt v. State, 506 S.W.3d 199 (Tex. App.—Waco
+2016).
+**Rule.** Where causes are prosecuted as separate criminal actions, court costs are assessed
+in each cause; sentences running concurrently does not merge or offset the costs.
 **Status:** UNVERIFIED — and cite-less until verified.
-**Relied on for:** CR-10's cost-total check (live exhibit: the worksheet computed the true
-non-concurrent total for a multi-cause consolidated plea).
+**Relied on for:** CR-10's cost-total check, which must FIRST determine whether the causes
+were disposed in a single criminal action or separate ones.
+
+### 4b — Tex. Code Crim. Proc. art. 102.073 — single criminal action: each cost once, highest category
+
+**Cite:** Tex. Code Crim. Proc. art. 102.073 (text read verbatim 2026-08-13 from a public
+source; verification against official text is Michael's act).
+**Rule.** Where a defendant is convicted of two or more offenses, or of multiple counts of
+the same offense, in a single criminal action, each court cost or fee may be assessed only
+once, using the highest category of offense among the convictions; single criminal actions
+alleging only fine-only offenses are excluded.
+**Status:** UNVERIFIED.
+**Relied on for:** CR-10's cost-total check on consolidated pleas — the capture's live
+exhibit was a multi-cause consolidated plea; if that was a single criminal action, an
+unqualified per-cause total is forbidden by (a).
 
 ## Tex. Code Crim. Proc. art. 42.0197 — affirmative criminal-street-gang finding
 

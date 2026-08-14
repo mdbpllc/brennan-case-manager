@@ -328,6 +328,10 @@ standing gates that survive any status change:
   ADOPTED by Michael 2026-07-26 (Q-1). `docs/prompts/` is the canonical
   home for cross-interface prompts (prompts meant to be executed by
   Code sessions) — ruled 2026-07-26 (Q-2).
+- Preflight rows and questions about Michael-supplied material are answered by Michael
+  first — never by sweeping his machine unprompted; filenames alone can carry client
+  information. If Michael cannot recall, he may direct a search, per instance (ruled
+  2026-08-13, #66).
 - Decisions with legal, cost, data-model, or scope implications go to
   Michael — don't resolve them silently in code.
 - Preserve the data-adapter architecture: everything must keep working in
