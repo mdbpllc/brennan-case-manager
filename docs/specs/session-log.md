@@ -12,6 +12,149 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTY-FIRST invocation) — a packet that asked to be checked in six places, and the sixth was a live defect it told us not to touch
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
+per QR-2 (unchanged; the `/queue-runner` command is a QR-2 pointer and was followed as one).
+**QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master == 9eb6317`, 0 ahead /
+0 behind** — ahead-check included. Packet:
+`push-to-code_pr3-reparenting-migration-proposal_2026-08-15.zip` (CHAT-DISPATCH **Task 12**, design
+session, Opus 5, Cowork; **Michael did not participate and made no rulings**). Confirmed by Michael
+before execution. **Nothing superseded; nothing skipped as already built.** Entry **#86** below.
+
+- **The staged proposal landed VERBATIM and matches its stated counts exactly — 379 non-blank / 478
+  raw**, byte-identical at 35,699 bytes. Head intact; the tail matched too, and the manifest's
+  quoted tail is simply the first half of a wrapped closing line (`*Filed 2026-08-15 Central.
+  CHAT-DISPATCH Task 12. Repo read at HEAD 9eb6317 through the device / bridge. Everything above is
+  PROPOSED until Michael rules.*`) — **no shortfall, nothing reconstructed.**
+- **All six §1 reconcile checks re-verified natively at `9eb6317`, and all six held.** Target path
+  free (and no prior PR-3 / re-parenting / probate-migration doc exists in `docs/specs/`);
+  `Q-PR3-` and `PR3-LOOK-` returned **ZERO** word-bounded repo-wide; `(#86)` free in `docs/`;
+  `attorney-review-queue.md:69` still ⬜ **PR-3** and `:282–285` still ⬜ **PL-1..PL-4**; the
+  `practice_area|case_type` sweep across `db/` + `supabase/` returned **exactly five**, at the five
+  paths the packet named (`supabase/` returns none of them). **`Q-PR3-*` and `PR3-LOOK-1`
+  deliberately NOT minted** — `PR` is a live durable series and minting into it is Michael's act.
+  **ID-DL-1 now governs a SEVENTH packet.**
+- **CHECK 6 IS THE ONE THAT MATTERED, AND IT CONFIRMED A DEFECT THE PACKET FORBIDS REPAIRING.**
+  `src/domain/roster.ts:195–202` reads exactly as reported: the `'Criminal'` branch is exhaustive,
+  and **every other practice area falls through to `SIDE_SETS['plaintiff-defendant']`** — under a
+  file header (`:7`) claiming REQ-14 ("sides are a property of the case type, not a constant") is
+  satisfied **by construction**. The construction is exhaustive over the three practice areas that
+  exist, not over the union, so a fourth fails open. **Confirmed at HEAD and CHANGED NOWHERE** —
+  it is `Q-PR3-2`, Michael's, per §6.
+- **A QR-3 pass was NOT recorded from the design side's bridge read** (§6's last line): `git fetch`
+  cannot run through the bridge (`HTTP 403 from proxy`), so the packet's `9eb6317` view was never
+  compared to origin design-side. The gate above is the native one, run here.
+- **§7 open items merged into `attorney-review-queue.md` with FULL question text per QR-1** —
+  `Q-PR3-1..7` and `PR3-LOOK-1` (packet-local IDs, recorded as such), **PR-3 annotated add-only and
+  left ⬜** (a proposal is not a closure; execution stays HELD), and **PL-1..PL-4, D-CL1-3, ID-DL-1,
+  HK-7 and OPEN-4 re-annotated without re-glyphing.** Michael's, not Code's, all of them.
+- **Nothing built, nothing verified, no registry entry touched, no durable ID minted, nothing
+  re-parented, no schema file edited, no superseded passage annotated** (annotating them would
+  answer `Q-PR3-5`). Registry backlog unchanged at **34**. Packet deleted after execution per
+  Step 4.5; this entry and #86 are the record.
+
+## 2026-08-15 (#86) — CHAT-DISPATCH TASK 12: the PR-3 re-parenting migration proposal — the hierarchy is not a hierarchy and is not in the database, and two opposite defaults guard the same question (design session, Opus 5, Cowork)
+
+Design session, Opus 5, Cowork, 2026-08-15 Central (DT-1 clock-checked 17:20 CDT; container read
+22:20 UTC, Central date agreed). Repo read full-text at HEAD through the device bridge (`9eb6317`).
+**Michael did not participate and made no rulings. Everything staged is PROPOSED.**
+
+- **ONE staged file: `docs/specs/pr-3-reparenting-migration-proposal-2026-08-15.md`** — 379
+  non-blank / 478 raw. Seven open questions with full text, packet-local `Q-PR3-1..7`; one named
+  look, `PR3-LOOK-1`. **No registry file touched, no proposition entered or verified, no durable ID
+  minted, no row closed, no existing repo file edited, nothing re-parented.**
+
+- **THE GATE RESOLVED A THIRD WAY, AND THIS CHAIN HAS NOW SEEN ALL THREE.** Task 8's specs
+  elaborated rulings while the build was gated; Tasks 9–11 mapped design space with no ruling to
+  elaborate. **Task 12 is neither: the DIRECTION is ruled and the DESTINATION is not.** V17
+  (2026-08-07) settled own-practice-area / own-ladder / companion-concept-gone; the gating ladder
+  pass is DEFERRED pending the Domser letters-issued arc capture and **PL-1..PL-4 are all ⬜**. So
+  the document's target-state section (§3) is **deliberately a question** — a migration doc that
+  invented a destination ladder would commit the exact error PR-3 exists to correct, and the queue
+  says so in terms at `:70`: *"a placeholder ladder is how the current wrong one happened."*
+
+- **THE STRUCTURAL FINDING: "re-parenting the case-type hierarchy" is neither a hierarchy nor a
+  migration.** `CASE_TYPE_DEFS` is a flat `Record<PracticeArea, …>` (`src/domain/caseTypes.ts:10`),
+  so there is no parent/child relation to re-parent *within* — the act is moving a string literal
+  between two arrays and adding a fourth member to a three-member union. **And the database knows
+  nothing about it:** `cases.practice_area` and `cases.case_type` are free text with **no CHECK, no
+  enum, no FK, no index and no view** (`db/schema.sql:38–39`), and a word-bounded sweep across `db/`
+  and `supabase/` returns **exactly five occurrences, listed exhaustively** in the doc's §2.2. **This
+  is a source change plus a two-column value backfill.** Good for rollback; bad for anyone assuming
+  the type system or the database will catch a mistake.
+
+- **THE HEADLINE IS A DEFECT IN A RULED CONSTRAINT, FOUND IN PASSING AND CHANGED NOWHERE
+  (`Q-PR3-2`): `sideSetFor()` falls through.** `src/domain/roster.ts:195–202` returns
+  `SIDE_SETS['plaintiff-defendant']` for **every practice area that is not `'Criminal'`** — while
+  that file's own header at `:7` states it satisfies **roster capture REQ-14, ruled 2026-08-12 —
+  *"SIDES ARE A PROPERTY OF THE CASE TYPE, NOT A CONSTANT"* — "BY CONSTRUCTION."** The construction
+  is exhaustive over the three practice areas that existed when it was written and **fails open for
+  any fourth**, so a probate matter would silently take Plaintiff/Defendant caption alignments.
+  **The defect exists today and is unreachable only because no fourth practice area exists.**
+  **The codebase therefore carries two opposite defaults for the same question:** `statusesFor()`
+  **throws** on an undeclared pair by deliberate design (`caseTypes.ts:6–9`, 2026-07-21 audit item
+  4), while `sideSetFor()` silently supplies a wrong-but-plausible answer — which is the precise
+  behaviour that audit item was written to kill. **Flagged, not fixed.**
+
+- **THE LIVE OPERATIONAL FINDING IS A SEQUENCING CONFLICT WITH THE UNRUN CD-1 MIGRATION
+  (`Q-PR3-3`).** `db/migrations/2026-08-12-cd1-contact-directory.sql:100` derives caption alignment
+  only `where c.practice_area in ('Personal Injury','General Civil Litigation')` — a literal
+  two-value IN list, in a migration that is **still unrun and still Michael's hand**. **PR-3 first**
+  → re-keyed probate rows fall outside the list and get **flagged** by the `case_roster_flags`
+  insert at `:135–146`, which is the migration working as designed. **CD-1 first** (the current
+  launch-path order) → probate rows are still PI at that moment, take the plaintiff-defendant
+  derivation, and **nothing later revisits it**. The quieter ordering is the one currently
+  scheduled, and nothing on the record noted that the order has a consequence. **Coupled to
+  `Q-PR3-2`:** even with the right order, the `sideSetFor()` fall-through re-supplies
+  Plaintiff/Defendant at the UI layer for every probate matter created afterward — **the migration
+  order and the code default have to be answered together or the fix leaks.**
+
+- **TREATMENT OF EXISTING RECORDS RESTS ON AN UNKNOWN THAT COSTS ONE QUERY (`PR3-LOOK-1`).** No
+  fixture uses the type — `src/data/seed.ts` defines three cases (`:157`, `:168`, `:176`), and a
+  case-insensitive `probate` sweep of `src/data/` returns nothing — but whether any **fictional live
+  row** carries `case_type = 'Probate companion'` is unknown design-side. **If the answer is zero,
+  the whole data-backfill half of PR-3 drops out and the act becomes source-only** — a materially
+  smaller authorization. Also recorded: the un-backfilled state is **benign and self-announcing** —
+  `CaseDetailPage.tsx:107–110` catches the throw and shows *"Unknown case type."* at `:231`; no
+  crash. And a re-parented matter **loses the Medical tab only if it has no bills**, since
+  `:55` reads `showsMedicalTab(rec.practiceArea) || hasBills`.
+
+- **ROLLBACK IS CHEAP AND ITS CHEAPNESS DECAYS.** No DDL in the base case, free-text columns, slots
+  are DATA, the demo store backs up at each step — so a revert plus an inverted update undoes it.
+  **The exception: status values written under a probate ladder do not un-write.** Once a probate
+  matter is actually worked in the app, reverting `caseTypes.ts` strands that string in
+  `cases.status`. **Reversibility therefore decays at first probate use** (`Q-PR3-4`), and the
+  DDL-free property itself is **shape-dependent** — PL-1's proceeding-attribute branch would need a
+  `cases` column that does not exist.
+
+- **THREE SUPERSEDED PASSAGES ARE STILL WRITTEN AS OPEN, AND NONE WAS EDITED (`Q-PR3-5`, the
+  `Q-IN2-2` class).** `docs/spec-feedback.md:171` still poses extends-vs-supersedes as a live design
+  decision; `docs/specs/pi-case-playbooks.md:951` still asks whether to build a companion case type;
+  `docs/specs/case-management-project-instructions.md:94` still carries the companion type as
+  SETTLED. **V17 closed all three on 2026-08-07. Annotating them is a ruling, so nothing was
+  annotated.**
+
+- **`Q-PR3-1` IS ABOUT THIS SESSION'S OWN METHOD AND IS RAISED AGAINST ITSELF.** The working-set
+  policy says design sessions do not read source (`BUILD-STATE.md:142`); that sentence predates the
+  device bridge, and CHAT-DISPATCH's session-start line asks for the checkout precisely for
+  full-text HEAD reads. **This session read `src/domain/{caseTypes,types,roster}.ts` and the pages,
+  and every Class-A/B/C finding above is undrivable without them** — while #74 recorded *not*
+  reading `roster.ts` as *"the honest gap"* leaving ~60 CD-2 rows `TAG-CHECK: NOT RUN`
+  (`BUILD-STATE.md:147`). **Nothing from `src/` entered project knowledge and no source file was
+  edited**, but whether the read was sanctioned is Michael's, and if it was not, the document's
+  §2.3, §2.4 and §8 should be treated as irregularly obtained.
+
+- **HK-7 satisfied for one session an EIGHTH time — NOT closed.** Session-scoped grant, requested
+  and granted at session start (`C:\Users\Brennan\brennan-case-manager`). **Bridge datum: the stale
+  `.git/index.lock` was ABSENT again**, making the pattern **three-for-five**; the CRLF false-DIRTY
+  reproduced as always (200 files, EOL-only). No scratch was written into the connected folder.
+
+**Staged for Code:** this entry; `pr-3-reparenting-migration-proposal-2026-08-15.md` (NEW); queue
+merges (`Q-PR3-1..7` + `PR3-LOOK-1` full text, PR-3 annotated add-only and left ⬜, ID-DL-1, HK-7,
+OPEN-4); BUILD-STATE rewrite.
+**Awaiting/Returned from Code, unreviewed:** the fortieth invocation's handback.
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTIETH invocation) — the packet predicted a lock that was not there, and said "verify" often enough that verifying paid
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
