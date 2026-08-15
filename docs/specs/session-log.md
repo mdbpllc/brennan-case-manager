@@ -12,6 +12,115 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-14 — QUEUE-RUNNER batch (runner line; THIRTY-FIRST invocation)
+
+**One packet, docs only, §5 NONE, nothing built — and NO STAGED FILE AT ALL**, which is a first for
+this chain: the packet's only deliverable is the v18 instruction text, which is Michael's to paste
+and **never enters the repo**. Runner **v7**, re-read from `docs/prompts/QUEUE-RUNNER.md` at HEAD per
+the QR-2 pointer form. **QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master ==
+02aec08` after a real `git fetch`, 0 ahead / 0 behind** — the fifth pass on its own terms (#68, #72,
+#74, #76, this one). Packet: `push-to-code_qstat1-and-v18_2026-08-14.zip`. Single packet, so the
+filename-date and pure-mtime orders agree trivially; both were computed and printed anyway, and
+**Michael confirmed before the zip was opened.** Nothing superseded, nothing skipped as already built.
+
+- **THE CORRECTION LANDS AGAINST A LINE THIS RUNNER WROTE FORWARD SIX HOURS EARLIER, and that is
+  worth stating plainly.** The sixty-fourth BUILD-STATE refresh (thirtieth invocation, commit
+  `5af47a1`/`02aec08`) carried "v17 IS DRAFTED, DELIVERED, REVISED, AND **NOT YET PASTED**" forward
+  intact. **It was pasted**, and had been in force for every 2026-08-14 design session. The packet's
+  §1 asked whether a parallel session had already fixed it; **it had not — the stale line was still
+  at BUILD-STATE line 140 at execution**, so the correction was applied here rather than skipped as
+  duplicate. **Failure class: copy-forward of a round-trip state line**, the R-3 class. **Structural,
+  not careless: a running design session can read its own instructions and a Code session cannot**,
+  so this line can only ever be corrected from the design side — which is exactly what happened.
+- **Q-STAT-1 CLOSED in `attorney-review-queue.md`** with the ruling recorded as **ADOPT AS DRAFTED**
+  and pointing at v18 for the text. **Q-STAT-2 through Q-STAT-6 left OPEN with their full question
+  text intact**, per the packet's §6, which forbids closing them.
+- **THE ROUTE-(c) QUESTION GOT THE QUEUE ROW IT DID NOT HAVE.** Route (c) — a session drafting
+  PROPOSED replacement wording for materially divergent registry propositions — was ruled 08-14 as a
+  **one-off** and deliberately kept OUT of v18 as standing law. The queue had no row for it; it has
+  one now, held for the Fable review pass. **Not elevated anywhere** — not in CLAUDE.md, not in
+  BUILD-STATE, not in the spec, per the packet's §6, which names writing it as law "the easiest error
+  in this packet."
+- **NO v18 TEXT ENTERED THE REPO, and `docs/specs/case-management-project-instructions.md` was not
+  touched.** The name collision is the trap the packet flags: that file is the **build spec**, a
+  different document from the Claude-project instructions. Nothing was created for v18 either.
+- **BUILD-STATE: three lines changed as §4.1 directs** — the v17 line replaced (revised v17 landed and
+  was in force; **v18 supersedes it and is Michael's hand to paste**), a one-line SOURCING entry added
+  to the binding-conventions picture with **Q-STAT-1 marked closed**, and the your-hand list updated —
+  "paste the revised v17" **off**, "paste v18" **on**. The convention is NOT restated in full there;
+  it lives in v18 and, for the artifact-handling half, in `statute-pass-registry-retrieval-2026-08-14.md` §3.
+- **DT-1 applied at the runner: clock-checked 23:57 CDT**, container reading 2026-08-15 UTC. **This
+  runner line and #77 stamp 2026-08-14 Central**, matching the packet's own 23:45 CDT check.
+- **No registry file of any kind was altered** — all four untouched, as at #76 — **no verification
+  status was set, and no §9 replacement wording was adopted.**
+
+Staged for Code: none — `inbox/` is empty again.
+Awaiting/Returned from Code, unreviewed: #75, #76, #77 and the two runner lines; the #72–#73 and #74
+handbacks still unreviewed design-side.
+
+---
+
+## 2026-08-14 (#77) — Q-STAT-1 RULED: the SOURCING convention is binding, v18 drafted and delivered; and a correction — the revised v17 WAS pasted, contrary to what BUILD-STATE has said since 08-13 (design session, Opus 5, Cowork)
+
+- **Q-STAT-1 RULED — ADOPT AS DRAFTED (Michael, 2026-08-14).** The SOURCING convention for statutes,
+  rules and regulations is now **binding**, and sits under Binding conventions beneath TOOLING, which
+  it parallels for non-case law. Six sub-clauses: **Texas statutes** from the official bulk corpus in
+  `Documents\Knowledge Repo\Statutes <download-date>\`, cited by code and chapter with the corpus
+  download date, `/Docs/<CODE>/htm/<CODE>.<CHAPTER>.htm` as the named fallback and `?link=<CODE>`
+  never used; **Texas rules** from the clean-authority PDFs in the same repo, cited with the PDF's own
+  effective date; **federal regulations** from the eCFR API with the request date and the title's
+  `up_to_date_as_of` recorded per item, named "eCFR via official API"; **currency never inferred from
+  a document** — it comes from the source's own statement, and per-chapter presence of recent material
+  is corroboration only; **extraction artifacts characterized, not guessed**, transforming only
+  characterized contexts and REPORTING the rest, with every quotation spot-checked against raw
+  extraction; and **retrieval is not verification**. **Each source named per item**, as TOOLING
+  requires for case law. **Q-STAT-1 CLOSES.**
+- **TRIGGER #3 FIRED AND WAS RESOLVED THE SAME DAY. v18 is drafted and delivered — Michael's hand to
+  paste.** It carries the SOURCING convention, two device-bridge operational notes, and the
+  correction below. **Verified against v17 before delivery: all 49 marker phrases survive, no section
+  dropped; 429 non-blank lines.**
+- **SCOPE HELD NARROW ON PURPOSE, at Michael's direction** ("choose the safest option and we can
+  review it later with Fable 5"). **Route (c) on divergence handling — a session drafts PROPOSED
+  replacement wording for materially divergent registry propositions — was ruled 08-14 as a ONE-OFF
+  and was deliberately NOT elevated to standing law in v18**, because a standing rule licensing
+  sessions to draft registry wording pushes against the discipline that wording acts are Michael's
+  alone. **Recorded as a choice, not an omission. It is the first item for the Fable review pass.**
+- **CORRECTION ENTRY — what was asserted:** BUILD-STATE has carried, since 2026-08-13 and across
+  multiple refreshes, the line "**v17 IS DRAFTED, DELIVERED, REVISED, AND NOT YET PASTED — YOUR HAND.
+  PASTE THE REVISED FILE.**"
+  **What is true instead: the revised v17 WAS pasted, and was in force for every 2026-08-14 session.**
+  **Evidence:** the project instructions governing this session are headed `v17 — 2026-08-13` and
+  carry **both** of the revision's marker items — the **QR-3 v7 ahead-stop** and the **non-blank
+  line-count convention** — which is what the revision was made to fold in. A session can read its own
+  instructions; **a Code session structurally cannot**, which is precisely why the stale line survived.
+  **Which entry it corrects:** no single entry — a carried BUILD-STATE line, first written 08-13.
+  Earlier entries stand as written. **Actor: unknown/structural**, not a model error in the ordinary
+  sense: design-side #68 reported the revised v17 "loaded in force" and simultaneously noted "the paste
+  itself is not visible to Code," and the not-yet-pasted line was carried forward anyway. **Failure
+  class: copy-forward of a round-trip state line — the same class as R-3 (session log #13), where a
+  cleared item propagated across roughly a dozen entries on both sides before anyone checked.** The
+  instructions warn about exactly this at Start-of-session item 5. **What changed: corrected in place
+  in BUILD-STATE this refresh, and "paste the revised v17" comes OFF the your-hand list, replaced by
+  "paste v18."** Instructions trigger #6 also fired and is recorded in v18's own header.
+- **NOTHING BUILT, NOTHING VERIFIED, NO SPEC TOUCHED, NO REGISTRY FILE TOUCHED.** No file is staged in
+  this packet; v18 is not repo content and must not be written into
+  `docs/specs/case-management-project-instructions.md`, which is the build spec and a different
+  document.
+
+Staged for Code: this entry; the BUILD-STATE correction and SOURCING fold-in; the Q-STAT-1 queue
+closure. No file artifact.
+
+Awaiting/Returned from Code, unreviewed: none.
+
+*[Runner note, 2026-08-14, thirty-first invocation: entry landed as **#77** as written — #76 was
+still the high-water mark at HEAD, so no renumber fired. **The stale v17 line was verified still
+present at BUILD-STATE line 140 before the correction was written**, so it was applied once, not
+twice. **The route-(c)-as-standing-law question was NOT already in the queue and was added** with
+full text per QR-1. `case-management-project-instructions.md` was not opened or edited, and no file
+was created for the v18 text.]*
+
+---
+
 ## 2026-08-14 — QUEUE-RUNNER batch (runner line; THIRTIETH invocation)
 
 **Two packets, docs only, §5 NONE in BOTH, nothing built.** Runner **v7**, read from
