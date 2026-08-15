@@ -12,6 +12,260 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-14 — QUEUE-RUNNER batch (runner line; THIRTIETH invocation)
+
+**Two packets, docs only, §5 NONE in BOTH, nothing built.** Runner **v7**, read from
+`docs/prompts/QUEUE-RUNNER.md` at HEAD per the QR-2 pointer form — no cached copy relied on.
+**QR-3 v7 gate PASSED natively on Windows: clean, on master, `HEAD == origin/master == 4830f86`
+after a real `git fetch`, 0 ahead / 0 behind** — the fourth consecutive pass on its own terms
+(#68, #72, #74, this one). Packets, in confirmed order:
+`push-to-code_deadline-engine-memo_2026-08-14.zip` → `push-to-code_statute-pass_2026-08-14.zip`.
+
+- **QR-4 ORDERING: THE FILENAME DATES TIED and mtime broke it, exactly as the second packet
+  predicted.** Both packets carry the filename date 2026-08-14, so the filename-date order is
+  indeterminate on its own; the pure-mtime order (deadline-engine 21:54, statute-pass 23:14) is
+  the tiebreak. **Both orders were computed and printed; they do not disagree** — the filename
+  order is a tie the mtime order resolves, not a competing sequence. **Order confirmed by Michael
+  before any zip was unzipped.**
+- **NOTHING SUPERSEDED, and the conflict rule never fired.** The two packets share no canonical
+  path except the three files every packet touches (session log, queue, BUILD-STATE) and share no
+  design question: one is TRCP deadline research, the other statute/rule text retrieval. Both §6
+  DO-NOT lists were honored **cumulatively**, the earlier one still binding while the later packet
+  ran. **Nothing skipped as already built** — neither staged path existed at `4830f86` or at
+  execution, so neither §1 stop-condition (a parallel session having created the file) fired.
+- **BOTH NUMBERING PREMISES HELD; no renumber fired.** High-water at HEAD was **#74**, so **#75**
+  went to the deadline memo and **#76** to the statute pass, which is what each packet asked for.
+  The statute packet had stated its premise conditionally *because* it depended on the other
+  packet running first — that dependency resolved as written.
+- **BOTH STAGED FILES LANDED VERBATIM, BYTE-FOR-BYTE** — `cp` then `cmp`-verified, not retyped:
+  `docs/specs/deadline-engine-service-and-response-2026-08-14.md` (376 raw / **298 non-blank**;
+  the packet stated no count) and `docs/specs/statute-pass-registry-retrieval-2026-08-14.md`
+  (721 raw / **574 non-blank**, which **matches the packet's stated 574 exactly**). Quoted rule
+  and statute text, the spaced em-dashes inside quotations, and the `AA` artifact discussion all
+  survive unreformatted; no punctuation was normalized.
+- **THE ONE JUDGMENT CALL, STATED RATHER THAN BURIED — the deadline memo's Q1–Q5 got NO durable
+  IDs, and that is a departure from the #74 precedent.** The packet asked for durable IDs after a
+  collision check **and** forbade minting a series, and the collision check found no series that
+  can take them without one or the other: **DL** holds only `DL-INPUT` and the packet's §6 says in
+  terms that minting `DL-1` would be an unruled act; **V-10…V-14 would collide** with the
+  unhyphenated residual V10–V17 already live in queue §§1–2; **DE** exists but is the *deficiency*
+  series (DE-1, DE-2), a different subject. So the five are filed under **packet-local IDs,
+  namespaced to the memo**, with full question text per QR-1, and **the durable-ID assignment is
+  itself a queue row for Michael.** Precedent for filing without durable IDs: **#59**, the Uvalde
+  capture. **The statute packet's `Q-STAT-1…Q-STAT-6` were carried as given** — a repo-wide
+  collision check found no `Q-STAT` anywhere.
+- **THE SKELETON WAS NOT TOUCHED, and that is the deliverable.** The deadline memo contradicts
+  `trcp-deadline-skeleton-2026-03-01.md` §5 on the 50-day structure; per the packet's §6 the
+  contradiction is left visible for Michael's verification act rather than resolved in Code. **No
+  registry file of any kind was altered by either packet** — not wording, not a cite, not a status,
+  not a count, not a header — including the ready-to-paste §9 replacement wording in the statute
+  pass, which is drafted for Michael and adopted for nothing.
+- **DT-1 APPLIED AT THE RUNNER, NOT JUST IN THE PACKETS.** Clock-checked **23:17 CDT**; the
+  container reads **2026-08-15 UTC**, past the rollover. **This runner line and both packet entries
+  stamp 2026-08-14 Central**, which is also each packet's own authoring date — no date split this
+  time, unlike #74.
+- Two count corrections ride the statute entry and are **reported, not applied**: `RETRIEVAL: NOT
+  RUN` is **21 rows, not 20**, and the registry is **four files, not three**. **BACKLOG STAYS 34.**
+  Both figures changed **only in BUILD-STATE**, as that packet's §4.2 directs; nothing else moved.
+
+Staged for Code: none — the queue is empty after this batch.
+Awaiting/Returned from Code, unreviewed: this batch's handback (#75, #76, and this runner line);
+the #72–#73 and #74 batch handbacks still unreviewed design-side.
+
+---
+
+## 2026-08-14 (#76) — STATUTE PASS: all 21 `RETRIEVAL: NOT RUN` rows retrieved from the official corpus; eighteen of twenty-one propositions diverge from the operative text, four of them materially; the published A-for-space normalizer is CORRECTED (design session, Opus 5, Cowork)
+
+- ONE NEW FILE, PROPOSED design input, retrieval only, nothing verified, no registry file touched:
+  `docs/specs/statute-pass-registry-retrieval-2026-08-14.md` (574 non-blank lines).
+- SOURCED TO HEAD AND TO THE OFFICIAL CORPUS, not RAG. Both folder grants were live; **HK-7 SATISFIED
+  FOR THIS SESSION, NOT CLOSED** — session-scoped, as always. Texas statutes from
+  `Knowledge Repo\Statutes 26-08-14\` (official bulk download, Michael's hand); TRCP from the July 2026
+  clean-authority PDF in `Knowledge Repo\Civil\`. Chapters read: CP.15, CP.37, CP.71, CR.27, CR.42,
+  CR.102, PE.31, HS.481, IN.541, IN.542, IN.542a.
+- **THE GAP IS CLOSED, AND THE FIGURE WAS WRONG.** BUILD-STATE and the verification workbook both say
+  **20** rows read `RETRIEVAL: NOT RUN`. Counted at HEAD: **21** — entries 1–13, 23, 25, 26, 27, 28, 29,
+  33, 34. Entry 32 additionally read PARTIAL and its official-source read was also run, so **22 looks
+  were owed and 22 were run.** Not a correction entry: the "20" lived only in design-side research
+  support and in the BUILD-STATE line describing it, and nothing was decided on it.
+- **EIGHTEEN OF TWENTY-ONE PROPOSITIONS DIVERGE from the operative text. FOUR CHANGE WHAT THE ENTRY
+  MEANS**, and each is quoted against the rule in the staged file: **TRCP 193.2(e)** — the registry's
+  waiver limb is **stated backwards** (the rule waives an objection *obscured by* numerous unfounded
+  objections; the entry describes an objection that *obscures a responsive answer*), and this is the
+  entry named the linchpin of DE-1; **TRCP 196.2(b)** — the third permitted response as filed
+  ("production will be permitted except as specifically objected to") **does not exist in the rule**,
+  and is close to the very response the entry was written to attack; **TRCP 215.1(d)** — the rule is
+  **"shall… unless," not "may,"** so fee-shifting on a granted motion to compel is the default, and the
+  rule carries a **reciprocal against a denied movant** the entry omits entirely; **TRCP 47(b)–(c)** —
+  the "all other relief" half is **47(d)**, 47(b) is cited but never stated, "(c)(5) only non-monetary
+  relief" is not a monetary bracket, and the clause **barring discovery until a non-complying pleading
+  is amended** was absent.
+- **ENTRY 27 IS NO LONGER TEXT PARTIAL. Its full text is retrieved, which unblocks FE-14's picklist** —
+  five enumerable options, not "fixed brackets" — and surfaces a separable requirement the form engine
+  did not know about: non-compliance with 47(c) **bars discovery** until amendment. **Nothing built,
+  nothing authorized.**
+- **MICHAEL'S ONE RULING THIS SESSION: route (c) on divergence handling** — PROPOSED replacement wording
+  drafted for the four material entries only, the other fourteen left as flags he resolves at
+  verification. **Reason: those four are the ones where a verifier reading only the entry would verify
+  something the rule does not say.** The drafts are §9 of the staged file. **NONE IS ADOPTED. No
+  registry file was read-modified and none was altered.**
+- **TOOLING CORRECTION — the A-for-space normalizer published in the 2026-08-14 authority-corpus capture
+  is WRONG, in both directions, silently.** Its lookbehind accepts any letter, so it eats real A's inside
+  all-caps headings (`CIVIL PR CTICE`, `CH PTER 37. DECL R TORY JUDGMENTS`), while its lookahead misses
+  the commonest artifact form (`(1)AAto` survives). A second version written and discarded this session
+  broke three-A runs (`(b)AAAn offense` → `(b) n offense`) — **a three-A run is never a three-A artifact;
+  it is the two-A artifact plus a real word-initial A.** The artifact was then characterized empirically
+  across all eleven chapters: **always exactly two A's**, after `)` `.` `:` `"` `,` or between lowercase
+  letters, **plus** a single A between a period and a digit (`Sec.A37.001`). Corrected normalizer and the
+  design rule that matters more than it — **transform only what is characterized; REPORT anything else,
+  never guess** — are in the staged file §3. Residual glued `AA` after correction, across all eleven
+  chapters: **none**. **Actor: Opus 5. Failure class: a heuristic reported as tested when the test was
+  not read closely — same family as the over-broad-absence-claim corrections, but worse in one respect,
+  because this one degrades verbatim quotation of primary law.** The earlier capture is knowledge-bound
+  and RAW; it was **not** rewritten, and whether to annotate it is Michael's (queue item Q-STAT-3).
+- **THE INSURANCE-CODE ABSENCE IS CONFIRMED BY FULL-TEXT READ**, closing a flag the 2026-08-14 capture
+  left open as agent-sourced: **zero** occurrences of "Insurance Code", "Tex. Ins.", "Chapter 541",
+  "Chapter 542" or "prompt pay" across **all four** `legal-rule-registry-*` files at HEAD. "Carrier
+  duties" in that filename means **motor** carrier.
+- **A FOURTH REGISTRY FILE EXISTS AND SITS OUTSIDE THE BACKLOG OF 34.**
+  `docs/specs/legal-rule-registry-draft-entries-medical-billing.md` is headed **"ALL ENTRIES
+  UNVERIFIED"** and its entries are not in the 34, while BUILD-STATE §122 says the registry is **three**
+  files. May be deliberate — it is styled *Draft Entries* with its own `[READ]/[STATUTE]/[EXT]` source
+  flags rather than the registry status scheme. **Flagged, not resolved** (Q-STAT-2). **No count was
+  changed on either side.**
+- **INSURANCE SWEEP: 20 CANDIDATES (C-1…C-20) across chs. 541–542, NONE RULED**, and three corrections
+  to the working assumption recorded in the capture: **§542.058's 60 days is a residual default**, not
+  the rule (it applies only where other applicable statutes specify no period); **§542.057's
+  5-business-day payment clock** was missing from the earlier summary; and **§542.060 carries two damages
+  measures** — 18%/yr generally, but Finance Code §304.003 rate **+5%** in a ch. 542A action.
+  **C-19 (61-day pre-suit notice) and C-20 (two-year limitations, extendable 180 days) are deadline
+  material with a build consequence independent of the registry. Nothing built, nothing authorized.**
+- **TWO RULE-COMMENT FINDS, CANDIDATES ONLY.** TRCP 193 **cmt. 6** states that "the party seeking to
+  avoid discovery has the burden of proving the objection or privilege" — registry entries 14, 20 and 21
+  currently rest that on case law alone. TRCP 193 **cmt. 2** cuts the other way and is anticipated
+  counter-authority in entry 22's posture, naming *Loftin v. Martin*, 776 S.W.2d 145 (Tex. 1989) and
+  *National Union Fire Ins. Co. v. Valdez*, 863 S.W.2d 458 (Tex. 1993) — **both as printed in the rule
+  comment, neither citator-checked.**
+- **CORPUS CURRENCY CORROBORATED PER CHAPTER, AND CORROBORATION IS ALL IT IS.** 89th-Leg. (2025) material
+  is physically present in CP.15, CR.102, CR.27, CR.42, HS.481, PE.31. Insurance chs. 541/542 carry none,
+  which means those chapters were not amended in 2025 — **not** that the download is stale. **Currency
+  still comes from Michael's statement of the site's own figure (89th 2nd C.S., 2025), never inferred
+  from a chapter.**
+- **SELF-CHECK RUN AND REPORTED: 78 of 78 quotations in the staged file confirmed against the RAW
+  pdftotext output** of their source PDFs — not against the normalized text the file was written from —
+  by canonical-form match with the artifact stripped from the raw side. The test can produce a false miss
+  and cannot produce a false pass. **A transcription check, not a legal one.**
+- **NOT RUN, named rather than omitted:** entries 30 and 31 (cite-less by construction; their looks are
+  case reads, not statute reads), and entry 30's candidate statutes **Penal Code §§ 12.34 / 12.35**.
+  Chapter 542A, chapter 1952, and the UIM case-law layer were out of scope by design.
+- **H5 HONORED:** no directory listing of `Knowledge Repo\Civil\` or `\Criminal\` was run. The TRCP PDF
+  was staged by its known path from the prior capture, not discovered by sweeping the folder.
+- **OPERATIONAL, and it will recur:** `device_stage_files` **times out on the larger corpus zips** —
+  `IN.pdf.zip` (51 MB) landed on retry 2; **`HS.pdf.zip` (56 MB) failed four times and never landed.**
+  Workaround that worked and generalizes: `device_bash` unzip a single chapter on the device, then stage
+  the small PDF. **The extracted file was left at `Knowledge Repo\Statutes 26-08-14\_claude_extract\` and
+  CANNOT be deleted from a session — `device_bash` has no `rm`. Michael's hand to delete that folder.**
+
+**Staged for Code:** `docs/specs/statute-pass-registry-retrieval-2026-08-14.md` (new file, PROPOSED,
+retrieval only, nothing verified).
+
+**Awaiting/Returned from Code, unreviewed:** none.
+
+*[Runner note, 2026-08-14, thirtieth invocation: entry landed as **#76** as written — the high-water
+mark at HEAD was #74 and the deadline-engine packet took #75 ahead of it, exactly as this packet's
+conditional premise anticipated. No renumber. `Q-STAT-1…Q-STAT-6` entered in
+`attorney-review-queue.md` with full question text taken from the staged file's §8 per QR-1; the
+collision check found no `Q-STAT` ID anywhere in `docs/`. The two count corrections were applied to
+BUILD-STATE only and to no other file. `_claude_extract\` deletion is registered in the queue as
+Michael's hand.]*
+
+---
+
+## 2026-08-14 (#75) — DEADLINE-ENGINE MEMO filed as PROPOSED design input; RULE TEXT SOURCED TO CLEAN AUTHORITY FOR THE FIRST TIME; the 50-day discovery cushion turns out to be FAMILY-CODE-ONLY, which the TRCP skeleton has backwards (design session, Opus 5, Cowork, CHAT-DISPATCH Task 6)
+
+- ONE NEW FILE, PROPOSED design input, research support only, NOTHING VERIFIED, no registry file and no
+  skeleton touched: `docs/specs/deadline-engine-service-and-response-2026-08-14.md`. Seven registry-style
+  propositions (P-1..P-7), a per-defendant computation model, service-method effects, Level 1/2/3
+  interactions, an inputs/outputs sketch, and five open questions.
+- **RULE TEXT IS NO LONGER RAG OR REDLINE.** Michael connected `Documents\Knowledge Repo` mid-session; every
+  rule quotation is from `Civil\texas-rules-of-civil-procedure July 2026.pdf`, read locally. The preceding
+  web pass could not reach clean text — txcourts.gov's consolidated PDF **truncates on fetch around Rule
+  21**, so Rules 99 and 190–198 were reachable only as amendment-order redlines whose text layer merges
+  struck and inserted words (`$50,000250,000`, `six20 hours`, `194.2(f)195.5(a)`), and 190.4, 190.5 and
+  198.2(c) had to be taken from the **1998** adopting order. That pass named four items needing clean-text
+  confirmation. **All four are resolved, and two came out differently than the redline suggested.**
+- **THE HEADLINE, AND IT IS A PRACTICE ITEM BEFORE IT IS A DESIGN ITEM.** On the July 2026 text the 50-day
+  discovery-response extension is limited to defendants **in suits governed by the Family Code** — four
+  provisions carry that limitation (196.2(a), 196.7(c)(1), 197.2(a), 198.2(a)), and the **unqualified**
+  50-day rule appears exactly once, at **194a.3(a)**, inside the Family-Code-only rule where it needs no
+  qualifier. `trcp-deadline-skeleton-2026-03-01.md` §5 states the opposite relationship — 30/50 as the
+  general structure with 194a as the Family Code parallel. **On this reading a PI or civil-litigation
+  defendant served with discovery before its answer is due has a FLAT 30 DAYS**, and Rule 198.2(c) makes
+  the consequence automatic: *"If a response is not timely served, the request is considered admitted
+  without the necessity of a court order."* **UNVERIFIED; Michael verifies. Q1.**
+- **NO VERIFIED REGISTRY ENTRY IS CONTRADICTED.** The three verified entries (196.2, 197.2(a), 198.2) state
+  the 30-day period and the deemed-admission consequence and carry no 50-day proposition. **The verified set
+  stands untouched.** What conflicts is an UNVERIFIED skeleton candidate. **No correction entry is owed** —
+  the skeleton's own header marks its contents UNVERIFIED candidates, so no landed assertion is corrected.
+  The skeleton edit is Michael's act.
+- SECOND CLEAN-TEXT CORRECTION: **Rule 195.2 has NO "later of … 30 days after the request is served" floor**
+  in the July 2026 text — it states expert designation as fixed dates, 90 days (party seeking affirmative
+  relief) and 60 days (all others) before the end of the discovery period. The 2021 redline carried the
+  floor. **A designation function built on the 2021 formulation computes a later date than the rule now
+  allows.** Q4.
+- THIRD: **Rule 190.4(b)(2) now permits a Level 3 plan to set a period in which either all discovery must be
+  CONDUCTED or all discovery requests must be SENT, for the entire case or an appropriate phase** — neither
+  the send-by alternative nor phase scoping appears in the 1998 text. A different computation SHAPE, not
+  merely a different date. Q5.
+- THE MODEL, answering what DL-INPUT left open: **the chain is per-defendant at both ends and case-wide in
+  the middle.** PER-DEFENDANT: answer date (99(b), from that defendant's own service date); written-discovery
+  response (196.2/197.2/198.2, from service on that party); mail's three added days (21a(c), per party AND
+  per method). CASE-WIDE: initial disclosures (194.2(a), anchored on the FIRST answer or general appearance)
+  and the discovery period (190.3(b)(1)(A), anchored on when the first disclosures are due). PER-SIDE on a
+  case-wide anchor: expert designation. **194.2(a)'s carve-out keys to SERVICE OR JOINDER timing, not answer
+  timing** — a defendant served early that answers late gets no fresh 30 days.
+- **ONLY MAIL MOVES A DEADLINE.** 21a(c) adds three days for mail and names no other method; electronic
+  service gets none. Rule 4 independently: *"extending other periods by three days when service is made by
+  mail."* Completion is a separate axis (21a(b)): mail and commercial delivery complete on deposit; fax
+  completes on receipt with an **after-5:00-p.m.-recipient-local-time** roll — the only hour-dependent rule
+  in the memo; electronic completes on transmission to the SERVING party's provider. **Commercial delivery
+  is deposit-complete but uncushioned.**
+- **NEW TENSION FOUND IN RULE 99(c), evidence for V2 and not a resolution of it:** the citation notice now
+  tells the defendant that disclosures *"generally must be made no later than 30 days after **you file your
+  answer**,"* while 194.2(a) sets the deadline at 30 days after **the first** answer or general appearance.
+  **For any defendant other than the first to answer, the citation the defendant receives and the rule that
+  governs give different dates.** Q2.
+- **NO REGISTRY ENTRY FOR TRCP 21a EXISTS ANYWHERE IN THE REPO** — no proposition, no ruling, no queue item —
+  though its added-days provision is load-bearing for every response clock. A genuine gap, not a duplicate. Q3.
+- **NO CASE-LAW RETRIEVAL WAS RUN, DELIBERATELY.** Service diligence already lives on the record as an
+  UNADOPTED draft (*Tanner*, open item **V6**), and the rules set no deadline for obtaining service — the
+  skeleton says twice that this belongs in the registry as its own entry with a case cite. Re-deriving it
+  would duplicate V6 and pre-empt Michael's routing. Everything this memo needed was rule text.
+- DT-1 WORKED, AND ITS CAUSE FIRED: clock-checked **21:50 CDT**, container read 2026-08-15 UTC. A
+  sub-retrieval in the same session had already stamped "retrieved 2026-08-15" from the container clock
+  before the check ran; **corrected to 2026-08-14 throughout the memo**, with the correction stated in the
+  memo's own header rather than silently applied.
+- NOTHING RULED THIS SESSION. Michael made no rulings; everything is PROPOSED. **Ruled ≠ authorized still
+  holds — no deadline engine is in the build queue.**
+
+Staged for Code: this entry; `deadline-engine-service-and-response-2026-08-14.md` (NEW); queue merge of
+Q1–Q5 with full text and durable IDs; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: this batch's handback; the #72–#73 batch handback still unreviewed
+design-side.
+
+*[Runner note, 2026-08-14, thirtieth invocation: entry landed as **#75** as written — high-water at HEAD
+was #74, so no renumber fired. The staged memo landed verbatim (`cmp`-verified) at 376 raw / 298 non-blank
+lines; the packet stated no count. **`trcp-deadline-skeleton-2026-03-01.md` was NOT edited** and the 50-day
+contradiction is left visible, per the packet's §6. **Q1–Q5 were entered in `attorney-review-queue.md` with
+full question text per QR-1 but WITHOUT durable IDs**, contrary to the routing table's expectation: the
+collision check found no series able to take them without either minting (`DL-1`, which the packet's §6
+forbids by name) or a live collision (`V-10…V-14` against the unhyphenated V10–V17 residuals already in the
+queue; `DE` is the deficiency series). They are filed under packet-local IDs namespaced to this memo, and
+the durable-ID assignment is itself a queue row for Michael. #59's Uvalde capture is the precedent for
+filing without durable IDs.]*
+
+---
+
 ## 2026-08-14 — QUEUE-RUNNER batch (runner line; TWENTY-NINTH invocation)
 
 **One packet, docs only, §5 NONE, nothing built.** Runner **v7**, read from
