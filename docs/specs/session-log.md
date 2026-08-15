@@ -12,6 +12,133 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-FIFTH invocation)
+
+**One packet, one staged doc, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD per
+QR-2. **QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master == 251675e`, 0 ahead /
+0 behind** — the ninth pass on its own terms. Packet:
+`push-to-code_bexar-local-rules-and-efiling_2026-08-15.zip`. Single packet, both orders computed and
+printed, **order confirmed by Michael before the zip was opened.** Nothing superseded; nothing skipped
+as already built.
+
+- **THE PACKET'S DESIGN-SIDE VIEW WAS RIGHT AND UNVERIFIABLE FROM ITS OWN SIDE.** Its §1 recorded
+  `251675e` as an **unfetched** bridge read that could not be confirmed against origin, and reported the
+  familiar CRLF false-DIRTY (199 files, 37,271/37,271). **Run natively here, `251675e` IS `origin/master`
+  and the tree is genuinely clean** — the bridge caveat was correct to state and is now discharged for
+  this batch.
+- **THE STAGED MEMO LANDED VERBATIM, `cmp`-verified: `docs/specs/bexar-local-rules-and-efiling-2026-08-15.md`,
+  782 raw / **641 non-blank, matching the packet's stated count exactly**. **The TIER A / TIER B markers
+  survived intact** (19 and 13 occurrences) along with all six `LR-LOOK` labels — §6 calls them the memo's
+  honesty mechanism rather than formatting, and nothing was normalized, stripped, or reflowed.
+- **THE ID COLLISION CHECK WAS RE-RUN INDEPENDENTLY AND AGREES WITH THE PACKET: `LR-<n>`, `EF-<n>` and
+  `BX-<n>` each return ZERO** across `docs/`, `db/`, `supabase/`, `CLAUDE.md`, `README.md` and
+  `BUILD-SESSION-NOTES.md`. **The namespaces were free and were still NOT minted** — §6 bars it, and
+  `ID-DL-1` now governs two packets' worth of packet-local questions rather than one.
+- **#79 was the high-water mark, so #80 was free and no renumber fired.**
+- **THE HEADLINE IS FILED AS A CANDIDATE, NOT A CONCLUSION, WHICH IS WHAT THE PACKET INSISTS ON.** TRCP
+  21(f)(5) and Statewide Criminal E-Filing R. 2.3(a) fix filing at transmission to the filer's EFSP —
+  **TIER A, read locally**; the Bexar county-court sentence that appears to fix it at clerk acceptance is
+  **TIER B, reached through a summarizing fetch layer that garbled a different sentence in the same
+  document.** **LR-LOOK-1 is the named look. Nothing in BUILD-STATE states it as settled** — §6 warns
+  against exactly that reading.
+- **THE LIVE PRACTICE ITEM IS NOT A DESIGN ITEM: Bexar Civil LR 3.O.1 requires an A.I. certificate on ALL
+  pleadings**, on the Presiding Court's approved form. **Q2 asks whether Michael's current Bexar filings
+  carry it** — the fastest-moving item in the packet, and registry discipline written into a court's own
+  local rules.
+- **SIX QUESTIONS MERGED WITH FULL TEXT COPIED VERBATIM FROM THE MEMO'S §11, per QR-1, and NO DURABLE IDs
+  MINTED** — packet-local Q1–Q6, namespaced to this memo exactly as #75's five were. **H43 was entered in
+  the queue for the first time**: the packet carries it as an open item, but a repo-wide check found **no
+  H43 row in `attorney-review-queue.md` at all** (it lives in the heartbeat register), so it now has one,
+  cross-linked rather than renamed. **HK-7 annotated satisfied-for-one-session a third time and again not
+  closed.**
+- **NOTHING WAS EDITED THAT THE MEMO POINTS AT.** It reconciles against six existing repo items and edits
+  none: `trcp-deadline-skeleton-2026-03-01.md`, `apil-2025-course-book-mining-pass1.md`,
+  `feature-intake-2026-07-24.md`, the heartbeat capture and design docs, `email-workflow-requirements.md`,
+  `pi-case-playbooks.md`. **Three carry candidate edits and every one is Michael's act (Q4, Q5).** The
+  garbled county-court sentence was **reported, not repaired** — Q-STAT-1 requires that, and route (c) is
+  a one-off.
+- **THE AUDIT'S POINTERS WERE LEFT EXACTLY AS THEY ARE.** §8 says so in terms: the `AUD-n` markers stand,
+  **OPEN-5 is unruled and this packet does not touch it.** No flagged figure was recomputed.
+- **DT-1: clock-checked 13:57 CDT; this runner line and #80 stamp 2026-08-15 Central**, matching the
+  packet's 13:34 check.
+
+Staged for Code: none — `inbox/` is empty again.
+Awaiting/Returned from Code, unreviewed: #75 through #80 and the six runner lines.
+
+---
+
+## 2026-08-15 (#80) — CHAT-DISPATCH TASK 7: Bexar local rules + eFileTexas — the filing moment is contested, and the A.I. certificate is a live filing requirement (design session, Opus 5, Cowork)
+
+- **ONE STAGED DOC, PROPOSED, NOTHING VERIFIED:** `docs/specs/bexar-local-rules-and-efiling-2026-08-15.md`,
+  782 raw / 641 non-blank. Eleven packet-local propositions (LR-1..LR-5, EF-1..EF-6), six open questions
+  with full text, two named concrete looks. **No registry file touched, no cite supplied, no status moved,
+  nothing built.**
+- **THE FILING MOMENT IS CONTESTED, AND THAT IS THE HEADLINE.** TRCP 21(f)(5) and Statewide Criminal
+  E-Filing R. 2.3(a) both fix filing at **transmission to the filer's EFSP** — TIER A, read from Michael's
+  Knowledge Repo copies. Part 2 of the Bexar statutory county courts at law local rules appears to state
+  that documents *"are considered filed when marked accepted and file marked by the Bexar County Clerk"* —
+  **TIER B.** TRCP 3a(b) provides that a local rule must not be inconsistent with a Supreme Court rule and
+  that the requirement *"extends to any time period provided by these rules."* **The exposure is a filing
+  transmitted late on a limitations date and accepted two days later.** The memo states this as a
+  CANDIDATE with a named look (LR-LOOK-1), **not as a conclusion**, because the string is second-hand.
+- **THE SECOND FINDING IS NOT A DESIGN ITEM AT ALL: Bexar Civil District Court Local Rule 3.O.1 requires
+  an A.I. certificate on ALL pleadings**, on the Presiding Court's approved form, attesting that
+  generative-A.I.-produced language, citations, arguments and analyses will be verified before submission
+  by a Texas-licensed lawyer through non-A.I. sources. **That is registry discipline written into a court's
+  local rules**, and whether Michael's current Bexar filings carry it is the fastest-moving item in the
+  packet (Q2).
+- **A PROVENANCE CONVENTION WAS INTRODUCED AND MUST SURVIVE ROUTING: TIER A vs. TIER B.** Tier A =
+  clean-authority PDFs staged from `Documents\Knowledge Repo` and read locally (`Civil\texas-rules-of-civil-
+  procedure July 2026.pdf`; `Criminal\statewide-rules-governing-electronic-filing-in-criminal-cases.pdf`).
+  Tier B = anything through the summarizing web-fetch layer. **All 26 Tier A quotations were re-matched
+  against the raw extraction after drafting; all 26 matched.** The A-for-space artifact characterized at
+  `statute-pass-registry-retrieval-2026-08-14.md` §3 is **absent from both PDFs** (zero `[a-z]A[a-z]`
+  matches across 17,396 lines) — nothing was normalized because nothing needed it.
+- **ONE GARBLED STRING REPORTED, NOT REPAIRED, PER Q-STAT-1.** Two fetches of the same Bexar county-court
+  PDF disagreed about its section scheme, and one produced a sentence that says the OPPOSITE of the
+  statewide rule it tracks (dropping a *"not"*). **No corrected wording is proposed anywhere** — the
+  characterization sits in the memo's §6.3, and it is also the reason the §2 headline carries a look.
+- **THE VARIANCE IS THE FINDING, NOT A CAVEAT.** The 225th and 285th District Courts **have elected out of
+  the Presiding and Monitoring Court dockets** — two scheduling regimes inside one county, so a
+  court-profile keyed to COUNTY is wrong for Bexar civil on its face. Conferral is discretionary-strike
+  under LR 4.E, three-documented-attempts in the 225th, and an absolute bar on setting in the 285th.
+  Justice courts count every day (500.4) and give **email service a 5:00 p.m. rule that district practice
+  does not** (501.4(a)(4)) — qualifying the Task 6 memo's §5 finding that fax is the only hour-dependent
+  clock. Technical-failure relief is **mandatory civil-side, discretionary criminal-side**.
+- **CURRENCY IS NOW A DIFFERENT CHECK THAN feature-intake item F SPECIFIED.** TRCP 3a(c) makes **OCA
+  publication a condition of effectiveness** and the 2023 amendment removed Supreme Court approval; the
+  Bexar county-court rules carry **no calendar date** and take effect *"upon their publication."* The
+  county site hosts several vintages simultaneously. **TOPICs could not be searched through this session's
+  fetch layer, so what is published for Bexar was NOT established** — LR-LOOK-2.
+- **API ANSWER, AND IT IS A SCOPING ANSWER: filing THROUGH the app means becoming or contracting with an
+  OCA-certified EFSP.** The EFM speaks OASIS LegalXML ECF v4/v5 over SOAP; certification is the gate;
+  no public certification process and no public API docs. **Same class of decision as Q-6.** Q6 asks for a
+  standing constraint. **Nothing proposes doing it.**
+- **NO CASE-LAW RETRIEVAL WAS RUN, DELIBERATELY.** *Whitelock* and *Verhalen* already sit at
+  `pi-case-playbooks.md` T9 with the engine requirement they generated; re-retrieving would duplicate filed
+  work and characterizing either from less than a full read is barred. **§2 needed rule text, and rule text
+  is Tier A.**
+- **DT-1: clock-checked 13:34 CDT before any stamp**; container read 2026-08-15 UTC and Central agreed.
+- **HK-7 SATISFIED FOR ONE SESSION AGAIN — the repo checkout and `Documents\Knowledge Repo` were both
+  granted at session start. NOT CLOSED.** Remaining chain tasks needing full-file reads (17 and 18 among
+  them) need them re-granted.
+
+Staged for Code: this packet — the memo to `docs/specs/`, the log entry, six queue merges (Q1–Q6, full text
+per QR-1) pending durable IDs under ID-DL-1.
+Awaiting/Returned from Code, unreviewed: #75, #76, #77, #78, #79 and the five runner lines (carried); this
+packet's own routing once pushed.
+
+*[Runner note, 2026-08-15, thirty-fifth invocation: entry landed as **#80** as written — #79 was the
+high-water mark, so no renumber fired. The memo landed verbatim at **641 non-blank, matching the stated
+count**, with all TIER A / TIER B markers and `LR-LOOK` labels intact. **The `LR-`, `EF-` and `BX-`
+namespaces were independently re-checked and are free — and were still not minted**, per §6; Q1–Q6 are
+filed packet-local under `ID-DL-1`, which now governs two packets. **H43 had no row in this queue at all
+and was given one** (it lives in the heartbeat register H1–H83; cross-linked, not renamed). **None of the
+six repo items the memo reconciles against was edited**, and the garbled county-court sentence was
+reported rather than repaired. **The audit's `AUD-n` pointers and OPEN-5 were left untouched.**]*
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-FOURTH invocation) — the audit lands, and it lands on this runner's own work
 
 **One packet, one staged doc, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD per
