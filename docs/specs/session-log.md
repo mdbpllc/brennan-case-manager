@@ -12,6 +12,121 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-FOURTH invocation) — the audit lands, and it lands on this runner's own work
+
+**One packet, one staged doc, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD per
+QR-2. **QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master == 2756d91`, 0 ahead /
+0 behind** — **the EIGHTH pass on its own terms**, which is itself one of the audit's findings (AUD-5;
+BUILD-STATE still says "four times" and **was deliberately not corrected — see below**). Packet:
+`push-to-code_record-integrity-audit_2026-08-15.zip`. Single packet, both orders computed and printed,
+**order confirmed by Michael before the zip was opened.** Nothing superseded; nothing skipped as
+already built.
+
+- **THE STAGED DOC LANDED VERBATIM, `cmp`-verified: `docs/specs/record-integrity-audit-2026-08-15.md`,
+  422 raw / 379 non-blank.** No duplicate existed at the canonical path, so the §1 stop-condition did
+  not fire. **#78 was the high-water mark, so #79 was free and no renumber fired.**
+- **THE §1 RE-RUN CONDITION DID NOT FIRE, BUT THE CHECKS WERE RE-RUN ANYWAY, AND EVERY ONE HELD.**
+  BUILD-STATE had not been refreshed past the sixty-seventh since the audit's read — its read commit
+  `2756d91` **is** HEAD — so AUD-5..9 needed no re-derivation. They were re-run regardless, because the
+  findings are against this runner's own text: **all four frozen strings confirmed present verbatim**
+  ("passed on its own terms four times", "the two refreshes since", "Still UNREVIEWED … #72–#76",
+  "reconciled through #76"), and **`statute-pass-registry-retrieval-2026-08-14.md` is 583 non-blank at
+  HEAD against the recorded 574** — a gap **this runner opened at #78**, when the in-place Insurance
+  correction lengthened the file and the line describing it was not recomputed.
+- **AUD-3 INDEPENDENTLY CORROBORATED, and it is the confirmed-false one.**
+  `legal-rule-registry-discovery-and-carrier-duties.md` carries **22 per-entry `**Status:** VERIFIED`
+  lines** (23 VERIFIED-not-UNVERIFIED lines, less the header line itself) beneath a header reading
+  **"ALL TWENTY PROPOSITIONS VERIFIED … (thirteen … seven more)"**. The file's own §Structure line
+  states the mechanism in terms — *"fifteen numbered lines, thirteen propositions — the three 30-day
+  rules were one captured line, split here"* — so the unit mismatch is bullets-vs-entries, exactly as
+  the audit describes. **Nothing was touched: not the registry file, not the header count, not a
+  status.** The count question is **OPEN-2, Michael's.**
+- **NOTHING WAS FIXED, DELIBERATELY, AND THIS IS THE POINT OF THE PACKET.** §6 bars applying any
+  disposition — *"they look like typo fixes; they are Michael's call (OPEN-5) because applying auditor
+  findings without a ruling converts the auditor into an editor."* **So every stale figure the audit
+  names is carried forward in BUILD-STATE UNCHANGED, each now with a one-line pointer to the audit
+  doc** — the branch §6 expressly offers instead of silent carry-forward. **The runner knows these
+  figures are wrong and left them wrong on instruction**, which is recorded here so the next reader
+  does not mistake it for the same copy-forward the audit is about.
+- **AUD-1 IS EXHIBIT B ONE VERSION LATER, AND A CODE SESSION CANNOT CLOSE IT: v18 IS IN FORCE.** The
+  auditing session read its own governing instructions, headed **v18 — 2026-08-14**, while BUILD-STATE
+  and the #77 queue row still say "paste v18, your hand." **Same shape as the v17 correction at #77 —
+  a design-side-only fact that Code structurally cannot verify** — so per §6 **the paste-v18 row stays
+  OPEN**, annotated with AUD-1 rather than closed. **Michael or the next design session clears it.**
+- **OPEN-1 through OPEN-5 merged into the queue with FULL question text copied verbatim from the audit
+  doc's §7, per QR-1. Collision check run repo-wide first: ZERO `OPEN-<n>` IDs existed anywhere in
+  `docs/`**, so the packet's own series was carried as given rather than reassigned.
+- **BOTH ADJUDICATIONS ARE RECOMMENDATIONS AND WERE FILED AS SUCH — neither is ruled.** Route (c):
+  the audit recommends **keeping it a one-off**. Q-STAT-3: it recommends **annotating** the capture.
+  **Both existing queue rows were annotated add-only and NEITHER was closed.**
+- **DT-1: clock-checked 13:3x CDT; this runner line and #79 stamp 2026-08-15 Central**, matching the
+  packet's 13:06 check.
+
+Staged for Code: none — `inbox/` is empty again.
+Awaiting/Returned from Code, unreviewed: #75, #76, #77, #78, #79 and the five runner lines.
+
+---
+
+## 2026-08-15 (#79) — RECORD-INTEGRITY AUDIT (chartered): 65 claims across BUILD-STATE and the queue's status layer — 46 SOUND, 6 STALE, 1 CONFIRMED-FALSE, 1 CONTRADICTED, 11 checkable only by a named other. NOTHING APPLIED — every disposition PROPOSED (design session, Fable 5, Cowork)
+
+- **THE RECORD IS SUBSTANTIALLY SOUND, sized before the flags:** 46 claims re-run or traced and
+  held, including every absence claim (all re-run at HEAD with scopes and patterns stated in the
+  doc, per the #78 method note). Full findings: `docs/specs/record-integrity-audit-2026-08-15.md`,
+  PROPOSED design input, nothing verified, nothing ruled, no file altered by the audit.
+- **THE FLAGSHIP IS EXHIBIT B RECURRING ONE VERSION LATER (AUD-1): v18 IS IN FORCE** — the auditing
+  session read its own governing instructions, headed v18 — 2026-08-14 with all v18 markers — while
+  BUILD-STATE L140/L148 and the #77 queue row still carry "paste v18, your hand." Only a running
+  design session can see this; one did. Failure class: R-3 copy-forward of a design-side-only fact,
+  prior instances #13 (R-3) and #77 (v17). The paste is not dated; the line may have been true at
+  the 10:24 refresh. Clearing the row is Michael's or the next design session's, sourced to AUD-1.
+- **ONE CONFIRMED-FALSE COUNT (AUD-3): "TWENTY VERIFIED" is 22 on disk.** The carrier-duties file
+  carries 22 VERIFIED entry headings and 22 status lines (15 dated 08-11, 7 dated 08-12) against a
+  header arithmetic of 13+7: at #48 Michael verified THIRTEEN capture bullets, one bullet carried
+  three rules, and the file was born (tenth invocation) with 15 entries under a "THIRTEEN" header.
+  Substance traces for all 22; the count is false and the bullet-to-entries wording-attachment
+  question is Michael's (OPEN-2). Failure class: unit mismatch (bullets/entries/propositions) —
+  prior instances the twenty-first-invocation "~26 vs 27" correction and V-5's two-case entries.
+- **ONE CONTRADICTED (AUD-2), ON THE LAUNCH PATH: GL-1 item 5 names "instructions v15" in
+  Go_Live_Gates.md and "v17" in BUILD-STATE, and v18 is in force.** Not adjudicated — the gates doc
+  is canonical-and-append-only, BUILD-STATE is later but silently modernized. Michael's wording
+  act (OPEN-1).
+- **FIVE STALE LINES, ONE SHAPE (AUD-5..9): BUILD-STATE's full rewrite is not re-deriving
+  self-referential lines.** The v7-gate count ("four times", now seven), "the two refreshes since"
+  (frozen across four refreshes; the docs-only conclusion itself survives), "Still UNREVIEWED
+  #72–#76" (runner's own line says #75–#78), "reconciled through #76" (queue header says #78), and
+  the statute-pass "574 non-blank" (583 at HEAD after the same batch's own #78 edit). All froze at
+  or near the 64th refresh — git-shown verbatim-identical at 02aec08, e3c459c, HEAD. Proposed
+  fixes are OPEN-5; none applied here.
+- **CHECKABLE-ONLY-BY, the notable one (AUD-4):** "Probate Corpus.zip sits untouched in the P15's
+  inbox/" cannot be squared with this machine's EMPTY inbox unless mdb-pllc is not the P15 — one
+  word from Michael (OPEN-3), plus a flagged hazard: a non-packet zip parked where "the runner
+  collects zips" is adversarially parked.
+- **BOTH CHARTERED ADJUDICATIONS RECOMMENDED, NOT RULED:** route (c) — keep it a one-off (the
+  audit's own AUD-3 shows wording drifting at the transcription layer with no drafting license;
+  widening the licensed surface is the wrong direction, and no flag-rot evidence exists yet).
+  Q-STAT-3 — ANNOTATE the capture's §2 (and its §3 Insurance observation) as superseded, original
+  text preserved beneath, banner text proposed in the doc §6; the corrected-in-place branch already
+  governs non-log documents and the silent-normalizer failure mode is live in this project.
+- **AUDIT SELF-APPLICATION:** every finding names its files and patterns; QR-3 was not run through
+  the bridge (per #74) and the HEAD used is recorded as unfetched; queue §§2–6 row-by-row marks
+  were NOT exhaustively audited and the doc's §0 says exactly where it stopped.
+
+Staged for Code: this packet — the audit doc to `docs/specs/`, the log entry, five queue merges
+(OPEN-1..5, full text per QR-1).
+Awaiting/Returned from Code, unreviewed: #75, #76, #77, #78 and the four runner lines (carried);
+this audit's own routing once pushed.
+
+*[Runner note, 2026-08-15, thirty-fourth invocation: entry landed as **#79** as written — #78 was the
+high-water mark, so no renumber fired. **The audit's read commit `2756d91` was still HEAD at
+execution**, so §1's "re-run AUD-5..9 if BUILD-STATE moved past the sixty-seventh" condition did not
+fire; the five checks were re-run anyway and **all five held**, including the 583-vs-574 gap this
+runner opened at #78. **AUD-3 was independently corroborated at 22 status lines.** **No disposition
+was applied** — every stale figure is carried in BUILD-STATE unchanged with a pointer to this doc,
+per §6, and the paste-v18 row stays open. **OPEN-1..OPEN-5 entered with full verbatim text after a
+repo-wide collision check found no `OPEN-<n>` ID anywhere.**]*
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-THIRD invocation)
 
 **One packet, docs only, §5 NONE, nothing built, no staged file** — a correction to material already
