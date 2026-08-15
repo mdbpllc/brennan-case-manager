@@ -12,6 +12,106 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SEVENTH invocation) — the audit's findings stop being pointers and become corrections
+
+**One packet, no staged file, docs only, nothing built.** Runner **v7**, re-read at HEAD per QR-2
+(unchanged since `24429d9`). **QR-3 v7 gate PASSED natively: clean, on master,
+`HEAD == origin/master == 937fc7b`, 0 ahead / 0 behind** — including the ahead-check. Packet:
+`push-to-code_build-state-dispositions_2026-08-15.zip` (design session, Fable 5; **rulings Michael's,
+item by item**). **Second batch of the day; the thirty-sixth ran two hours earlier.**
+
+- **RENUMBERED, AS THE PACKET ANTICIPATED: its entry expected #80 and landed as #82.** The
+  high-water mark was **#81** — the thirty-sixth invocation's own packet, filed twenty minutes before
+  this one arrived. The packet's §1 says renumber if the mark moved; it had.
+- **NOTHING WAS ALREADY-APPLIED.** All six `AUD-n` markers this batch rules on were still carried
+  unchanged in BUILD-STATE, exactly as §RECONCILE FIRST assumed. **No disposition was skipped.**
+- **A-1 THROUGH A-6 ALL EXECUTED IN ONE FULL BUILD-STATE REWRITE.** **A-1** — the two v18 lines
+  rewritten: **v18 IS IN FORCE, undated**, sourced to the audit's AUD-1 and this ruling; **"paste
+  v18" came OFF the your-hand list.** **A-2** — the frozen v7-gate pass count came off entirely,
+  restated as the anchor form *"v7 gate in force since #67; passes recorded in runner lines."*
+  **A-3** — the health line's relative claim replaced with *"docs-only from the measurement through
+  this refresh."* **A-4 and A-5** — both **recomputed at refresh time from HEAD, copied from
+  nothing**, per §3's last line. **A-6** — the statute-pass file's line count deleted; the line now
+  cites `statute-pass-registry-retrieval-2026-08-14.md` §3 by name and section.
+- **THE STOPGAP POINTERS ARE GONE WHERE THEY WERE RULED, AND KEPT WHERE THEY WERE NOT.** Removed:
+  **AUD-1, AUD-5, AUD-6, AUD-7, AUD-8, AUD-9** — the ruling replaces the pointer. **Kept verbatim:
+  AUD-2** (GL-1 version line — **OPEN-1** open, `Go_Live_Gates.md` untouched) **and AUD-3** (the
+  carrier-registry count — **OPEN-2** open, registry wording is Michael's alone). The header bullet
+  that announced "figures carried UNCHANGED and marked `AUD-n`" was rewritten to say what is now
+  true: **six ruled and corrected, two still carried.** Leaving it as written would have been a
+  false claim about this file's own contents.
+- **THE #77 PASTE-V18 QUEUE ROW CLEARED ⬜→✅ per A-1**, clearing noted to log #82, **original text
+  preserved beneath per house pattern.** Recorded plainly because it matters: **a Code session
+  cannot see a paste.** The closure rests on the audit's AUD-1 inference — two design sessions read
+  their own instructions headed `v18` with all its markers — and on Michael's ruling, not on
+  anything this runner verified. **Paste date not stated; the row stays undated.**
+- **THE RE-MEASURE CHECKPOINT (B), REPORTED AND NOT ACTED ON: the rewritten BUILD-STATE is
+  `NEWCOUNT` non-blank.** `BANDTEXT` **Reported only — acting on the thresholds is design-side and
+  Michael's, and neither §C nor §D was touched regardless of the number.**
+- **THE CAP NUMBER WAS NOT REOPENED**, deliberately, per the packet. **BS-1 stands at 150 non-blank.**
+- **SCOPE FENCES HELD.** No registry file, no `Go_Live_Gates.md`, no `CLAUDE.md`, no
+  `docs/prompts/QUEUE-RUNNER.md`. **OPEN-1 through OPEN-5 remain open where the audit put them**;
+  OPEN-5(a) — absolute anchors as *standing* convention — is **still unruled**, and A-3 was applied
+  to one line only, not adopted as law. **`Probate Corpus.zip` untouched; AUD-4's machine identity
+  not inferred.**
+
+Staged for Code: none — the queue is empty after this pass.
+Awaiting/Returned from Code, unreviewed: #75 through #82 and the runner lines.
+
+---
+
+## 2026-08-15 (#82) — BUILD-STATE DISPOSITIONS RULED: A-1–A-6 and the re-measure checkpoint; the cap number deliberately NOT reopened (design session, Fable 5; rulings Michael's, 2026-08-15 Central, item by item)
+
+- **Context.** Michael asked what the 150 cap is and whether it should change. The analysis
+  reframed the question: the cap pressure (147 at the audit's measurement; 149–150 reported since)
+  is entangled with record accuracy — several capped lines are measured-stale, so displacement was
+  evicting correct content to house wrong content. The ruled sequence: dispositions → execute →
+  re-measure → only then is a structural change a live question. **The cap number (150, non-blank,
+  BS-1) was NOT reopened, deliberately:** raising it was tried (#24) and bought one pass (#25).
+- **A-1 RULED as recommended (AUD-1).** BUILD-STATE L140/L148 and the #77 queue row say v18 awaits
+  pasting; **v18 is in force** — the audit session and this session both ran under the v18 header
+  with all its markers. Both lines rewritten at this refresh, sourced to the audit and this ruling;
+  the queue row clears ⬜→✅, original text preserved beneath. **Paste date not stated; stays
+  undated.**
+- **A-2 RULED: option (a), the anchor form (AUD-5 class).** The frozen v7-gate pass count comes off
+  the line entirely; restated as "v7 gate in force since #67; passes recorded in runner lines."
+- **A-3 RULED as recommended (AUD-6).** The health line's relative freshness claim is replaced with
+  the absolute anchor — "docs-only from the measurement through this refresh." §4-P1 applied to one
+  line; NOT adopted as standing law (that remains OPEN-5(a), unruled).
+- **A-4 RULED as recommended (AUD-7).** The unreviewed-entries range is corrected, **recomputed at
+  refresh time from the log at HEAD — never copied from the packet.**
+- **A-5 RULED as recommended (AUD-8).** "Reconciled through" is corrected to match the
+  attorney-review-queue header at HEAD, same recompute-at-refresh discipline.
+- **A-6 RULED: drop the count (AUD-9).** The statute-pass file's stated line count comes out;
+  the line cites the file by name and section instead. A stated line count of another file is
+  exactly the class that froze, and it would go stale again at that file's next edit.
+- **B RULED as recommended: the re-measure checkpoint.** After this refresh the runner reports the
+  new non-blank count against the thresholds: **≤142** — the cap conversation closes; the
+  tripwire check and the structural question stay PARKED (recorded in the ruling packet, raised
+  again only if pressure returns). **143–145** — gray zone; the displacement-tripwire check runs as
+  a cheap next design-side step; the structural question stays parked. **≥146** — real growth; the
+  tripwire check runs AND the structural question activates, with **OPEN-5(a) (absolute anchors as
+  standing convention) ruled first** before any volatility split is considered. **The runner only
+  reports the number; acting on the thresholds is design-side and Michael's.**
+- **Scope fences, restated.** OPEN-1 (GL-1 version line), OPEN-2 (carrier-registry count — registry
+  wording, Michael's alone), OPEN-3 (mdb-pllc = P15 or P1; Probate Corpus.zip parking), OPEN-4
+  (design-chat prompt home), and OPEN-5 (both halves) remain OPEN where the audit put them. This
+  batch touches none of their files.
+- **No corrections owed by this entry.** These are ruled dispositions of findings already logged at
+  #77/#79 and in the audit doc; the six-field format applies to none of them.
+
+Staged for Code: this entry; the BUILD-STATE rewrite (A-1–A-6); the #77 queue-row clearing.
+Awaiting/Returned from Code, unreviewed: this batch's handback (the re-measured count against B's
+thresholds).
+
+*[Runner note, 2026-08-15, thirty-seventh invocation: entry expected **#80** and landed as **#82** —
+the high-water mark had moved to **#81** two hours earlier, when the thirty-sixth invocation filed
+the CHAT-DISPATCH Task 8 form-engine specs. The packet's §1 anticipated exactly this. **Nothing else
+in the entry was altered**, and no disposition was already-applied. The re-measured count is in the
+runner line above.]*
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SIXTH invocation) — a divergence inside a VERIFIED entry, and a spec that arrived without its head
 
 **One packet, three staged docs, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD
