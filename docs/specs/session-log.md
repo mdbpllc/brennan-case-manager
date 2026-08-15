@@ -12,6 +12,159 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-EIGHTH invocation) — two specs whose whole job is to hand the question back
+
+**One packet, two staged files, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
+per QR-2 (unchanged). **QR-3 v7 gate PASSED natively: clean, on master,
+`HEAD == origin/master == 220f361`, 0 ahead / 0 behind** — including the ahead-check. Packet:
+`push-to-code_in1-in3-specs_2026-08-15.zip` (CHAT-DISPATCH **Task 9**, design session, Opus 5,
+Cowork; **Michael did not participate and made no rulings**). Confirmed by Michael before execution.
+**Nothing superseded; nothing skipped as already built** — no IN item has any code, table, or column
+anywhere. Entry **#83** below.
+
+- **Both staged specs landed VERBATIM and both match their stated line counts exactly** — IN-1 at
+  **328 non-blank / 423 raw**, IN-3 at **324 non-blank / 416 raw**. Paths were re-verified free at
+  `220f361` (`ls docs/specs/ | grep -iE "^in-"` returned nothing), and `Q-IN1-`, `Q-IN3-`,
+  `IN1-LOOK-`, `IN3-LOOK-` were re-checked repo-wide and returned **ZERO** outside `inbox/`.
+  **Deliberately not minted** — `IN-` is a live durable series and minting into it is Michael's act.
+- **Eighteen questions merged with FULL VERBATIM TEXT per QR-1**, under packet-local IDs only.
+  **ID-DL-1 now governs FOUR packets** (Tasks 6, 7, 8, 9) and was annotated with a second edge the
+  earlier three did not carry: **Q-IN1-8 asks whether the `IN` series stands at all**, so a rename
+  would land on the very namespace ID-DL-1 is deciding how to join. Not resolved — it is Michael's.
+- **The IN-1 and IN-3 rows were annotated and both stay ⬜.** A spec is not a closure, and — unlike
+  Task 8's FE-4/FE-5/FE-6, which elaborated rulings while the *build* was gated — **neither IN item
+  has a ruling to elaborate.** Both specs map the design space and hand the question back; both say
+  so on their face. Recorded here so a later build session cannot read either as a design.
+- **RUNNER-CONFIRMED, and it changes a QR-3 caveat: the stale `.git/index.lock` was really there,
+  and the CRLF false-DIRTY was NOT.** The packet's §1.2 reported a 0-byte `.git/index.lock` left by
+  the device bridge (which emits `unable to unlink … Operation not permitted` on every git command);
+  **it was present natively at session start — 0 bytes, no git process running — and native `unlink`
+  removed it cleanly.** That is the **second** occurrence after a bridge session (the thirty-seventh
+  invocation found the first), which strengthens the bridge hypothesis without proving it. **But the
+  same packet's §1.1 re-reported the CRLF false-DIRTY signature — 200 porcelain lines, 199 files /
+  37,271 insertions / 37,271 deletions — and that did NOT reproduce natively:** `git status
+  --porcelain` returned **zero lines** before anything was written. Consistent with the CRLF artifact
+  being bridge-only, as HK-7's finding (a) already suspected. Both observations annotated onto HK-7.
+- **HK-7 annotated satisfied-for-one-session a FIFTH time and again NOT closed** (session-scoped
+  grant; the packet's §6 says in terms not to close it). **OPEN-4 annotated a SEVENTH time** — Task 9
+  ran off the same clipboard copy, resume point is **Task 10**, and **ten tasks (10–19) still ride on
+  a clipboard**.
+- **Every §6 DO-NOT honored.** Nothing built; no registry file opened (the five IN-1 §2.3 entries
+  already exist, all UNVERIFIED, and no status moved, no cite supplied); no reporter-cite flag
+  "fixed" on *Sting Soccer* or *Ochoa* (*Ochoa* is V-2, first, and Michael's); no `AUD-n` figure
+  recomputed (OPEN-5 unruled); the FE-5 head defect from #81 left alone; no service-story column
+  added (Q-IN3-3 unruled, the CD-1 deferral stands); and **none of `form-engine.md`,
+  `cd1-build-slice.md`, `fe-d1-build-slice.md`, `contact-directory.md`,
+  `email-workflow-requirements.md`, `deadline-engine-service-and-response-2026-08-14.md`,
+  `db/schema.sql` or any migration was edited.** The bridge's unfetched `HEAD == origin/master` was
+  **not** reported as a gate pass; the native v7 gate above is the pass.
+
+---
+
+## 2026-08-15 (#83) — CHAT-DISPATCH TASK 9: IN-1 and IN-3 spec drafts — two items open because the DESIGN question is unanswered, not because the build is gated (design session, Opus 5, Cowork)
+
+- **TWO STAGED DOCS, BOTH PROPOSED, NOTHING VERIFIED, NOTHING BUILT:**
+  `docs/specs/in-1-answer-mining-spec-2026-08-15.md` (423 raw / **328 non-blank**),
+  `docs/specs/in-3-held-sets-service-triggers-spec-2026-08-15.md` (416 raw / **324 non-blank**).
+  **Eighteen open questions with full text, packet-local IDs only. No registry file touched, no
+  cite supplied, no proposition asserted, no status moved, no existing repo file edited.**
+- **THE GATE RESOLVED, AND IT RESOLVED THE OPPOSITE WAY FROM TASK 8'S.** Both items carry **⬜** in
+  `attorney-review-queue.md` (lines 238 and 240) and the `anti-resurrection-ledger.md` carries **no
+  IN- row of any kind**. But FE-4/FE-5/FE-6 were open because the **BUILD** was gated while the
+  design was RULED at `form-engine.md` §13. **IN-1 and IN-3 have no ruling to elaborate** — the
+  queue asks each design question in terms and nothing on the record answers it. **Both specs
+  therefore MAP the design space and hand the question back; each says so on its face.** A build
+  session must not read either as a design to implement.
+- **IN-1 HAS NO DESIGN-DOC HOME AT ALL.** Word-bounded repo-wide at HEAD, `IN-1` appears **16 times
+  across 6 files** — BUILD-STATE, the queue, the log, and three REQ-CAPTUREs. **It appears in no
+  design document**: not `form-engine.md`, not `fe-d1-build-slice.md`, not `cd1-build-slice.md`,
+  not `contact-directory.md`, not `email-workflow-requirements.md`, not the schema or any
+  migration. **IN-3 has exactly one design-doc mention** — `email-workflow-requirements.md`'s WF-8
+  row (`IN-3` = 15 occurrences across 7 files).
+- **A COUNT THIS SESSION GOT WRONG AND CORRECTED AGAINST ITSELF.** The first pass used an unbounded
+  `IN-1` pattern, which **also matches `MIN-1`** and added four unrelated files. **The error was
+  caught before either figure entered a document**; both counts above are the word-bounded ones,
+  and the correction is recorded inside both specs rather than silently replaced. **Actor: Opus 5,
+  this session.** Same failure class as #81's self-correction — asserting a measurement before
+  running it cleanly.
+- **THE FOUR IN-1 BEHAVIOUR DEFAULTS ARE RULED FOR FE-2 AND *PROPOSED* FOR IN-1, AND THE
+  DISTINCTION IS LOAD-BEARING.** `form-engine.md` line 236 is the **only** canonical statement of
+  *"flags for Michael … never an auto-add … dismissal is one click and dismissals are remembered
+  per case"* — and it rules that for **FE-2's document-name sweep in a disclosures draft**, not for
+  mining a filed pleading. The queue carries them to IN-1 in the word **PROPOSED**. Two
+  restatements on the record are lossy and should not be quoted in place of line 236:
+  `cd1-build-slice.md` line 62 drops *"one click."*
+- **A CLAIM IN THE RECORD THAT CANNOT BE RECONCILED, REPORTED NOT RESOLVED (Q-IN1-3).** The
+  deficiency REQ-CAPTURE calls IN-6 *"the substrate IN-1's answer-mining runs on,"* but IN-6 parses
+  *"a served **response set**"* — a discovery response — while IN-1's input is *"a defendant's filed
+  **answer**"* — a pleading. **Different documents, different kinds, different procedural
+  moments.** The economical reading is that *answer* is doing two jobs (a `response_item`'s
+  `answer_text` versus the responsive pleading). **Stated as a reading, not as an error** — both
+  sources are append-only and stand as written. Consequence, and why it could not be left implicit:
+  **IN-1 cannot silently inherit IN-6's parser or entity shape.**
+- **THE ELICITATION CAVEAT FIRES NOW (Q-IN1-8).** The queue's IN-heading note says renaming the IN
+  series is *"a one-word veto before these IDs get load-bearing."* **A spec is the thing that makes
+  an ID load-bearing**, and these are the first two. One word today; a rename across a schema later.
+- **IN-3 MAY BE THE EVENT CD-1 DELIBERATELY WAITED FOR, AND THE RECORD DOES NOT SAY (Q-IN3-3).**
+  `cd1-build-slice.md` Scope-OUT and the CD-1 migration's own header both defer the service-story
+  columns to *"the first instrument consumer, as the living spec's first planned revisit."* **The
+  shape itself is RULED** at `contact-directory.md` §6.2 — only the columns were deferred. **Who
+  that first consumer is has never been named; IN-3 and IN-4 are both candidates.** Whichever is
+  named, CD-1's living-spec revisit opens on that ruling.
+- **HOLD CANNOT BE EXPRESSED ON A DOCUMENT TODAY, AND ITS TRIGGER HAS NO SOURCE.**
+  `generated_documents` has **no status column of any kind**, its `doc_type` CHECK admits one value,
+  and it has **no set/parent grouping column** — so the "set" in "held set" has no structural
+  existence either. The token `held` exists twice in the schema (`staging_items.status`,
+  `routing_decisions.action`), both on the **transcript inbox**, neither on a document and neither
+  carrying a trigger. And **nothing can fire the trigger**: no case-event table, no docket table,
+  no `appearance` column, `case_parties.joined_by` has no `'answer'`/`'appearance'` value, and
+  `calendar_events.event_type` has none either. **The two trigger facts WERE already observed at
+  party level** — the origin capture's entity-level merge fields carry `{{answer_filed_date}}` and
+  `{{appeared}}` (bool), which is evidence that the trigger state belongs on the roster entry next to
+  the service story §6.2 already puts there. **Evidence, not a decision (Q-IN3-5).**
+- **A NAMING COLLISION CAUGHT BEFORE IT IS CHEAP TO FIX (Q-IN3-9).** `service_date`,
+  `service_start` and `service_end` **already exist** on `medical_bills` / `bill_line_items`, where
+  they mean **medical dates of service**. A service-of-process column named `service_date` reads
+  correctly to a lawyer and wrongly to a schema reader. **PROPOSED: `served_on` /
+  `service_of_process_*` from birth.**
+- **IN-3 POINTS AT THE TASK 6 DEADLINE MEMO RATHER THAN DUPLICATING IT**, as the dispatch requires.
+  Its §4 references `deadline-engine-service-and-response-2026-08-14.md` (#75) **by proposition ID
+  only** — P-1 through P-7, all UNVERIFIED — and adds none. Three findings bear on IN-3: the
+  release event is **where a per-(instrument, party) service date comes into existence** (the
+  memo's §7 input row names it and ties it to IN-4's service-event binding); a release is therefore
+  **a cascade trigger, not a note** (§7's recompute list), so building release as a private status
+  flip forecloses a deadline engine cheaply and invisibly; and **P-1 — the memo's own
+  highest-priority verification — governs exactly the population a held set aims at**, a defendant
+  whose answer is not yet due. **P-1 stays UNVERIFIED and nothing here treats it as settled.**
+- **THE CAPACITY-DENIAL FLAG HAS A HOME AND A CONSTRAINT PROBLEM.** `case_parties.capacity_kind`
+  admits four values, **none of them a denied or contested state**. `case_roster_flags` is the
+  established do-not-guess shape and the natural home — **but it carries `unique (case_party_id)`,
+  one flag per roster entry**, which an answer raising two hooks against the same party exceeds as
+  written. Stated so no slice discovers it mid-build.
+- **THE SUGGEST → DISMISS → REMEMBER PATTERN EXISTS AND IS KEYED WRONGLY FOR IN-1.**
+  `staging_items.suggestions` + `routing_decisions` are the house tuning-log pattern, described in
+  the schema as *"the evidence base for ever enabling auto-file (D1)"* — **D1, auto-file
+  deliberately OFF, is the standing in-repo precedent for never-auto-add.** But `routing_decisions`
+  is keyed to `staging_item_id`, **not** `case_id`, and IN-1's remembered dismissals are per case.
+- **LEGAL SUBSTRATE: FIVE EXISTING REGISTRY ENTRIES, DEDUPED, NOTHING ADDED.** IN-1's
+  contention-discovery substrate is already on file, all UNVERIFIED, all in
+  `legal-rule-registry-discovery-enforcement-and-pleading.md`: **TRCP 192.3(j), 197.1, 197.2(c),
+  *In re Sting Soccer Group*, and *In re Ochoa*** (the last two carrying reporter-cite-check flags;
+  *Ochoa* is already **V-2, first**). **No case-law retrieval was run, deliberately** — re-deriving
+  would duplicate V-2. Descrybe not used (TOOLING); Q-6 untouched.
+- **OPERATIONAL, AND NEW: the device bridge is the probable source of the stale `.git/index.lock`
+  the thirty-seventh invocation found.** Every bridge git command emits `unable to unlink
+  '.git/index.lock': Operation not permitted`, and a 0-byte lock is in the tree now, stamped to the
+  minute a read-only `git status` ran. **Hypothesis with its evidence, not a settled cause.** The
+  lock is present at this writing; native `unlink` works, so a Code session can clear it.
+- **HK-7 SATISFIED FOR ONE SESSION A FIFTH TIME — NOT CLOSED.** The grant is session-scoped.
+  **OPEN-4 unchanged: a seventh clipboard session; Tasks 10–19 still ride on it.**
+
+Staged for Code: the two specs above; this entry; the queue merge of eighteen questions; the BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: #75 through #83 and the runner lines.
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SEVENTH invocation) — the audit's findings stop being pointers and become corrections
 
 **One packet, no staged file, docs only, nothing built.** Runner **v7**, re-read at HEAD per QR-2
