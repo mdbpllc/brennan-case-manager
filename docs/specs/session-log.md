@@ -12,6 +12,181 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-NINTH invocation) — the first spec in this chain whose gate resolves both ways
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
+per QR-2 (unchanged). **QR-3 v7 gate PASSED natively: clean, on master,
+`HEAD == origin/master == 74b8532`, 0 ahead / 0 behind** — including the ahead-check. Packet:
+`push-to-code_in2-crash-report-spec_2026-08-15.zip` (CHAT-DISPATCH **Task 10**, design session,
+Opus 5, Cowork; **Michael did not participate and made no rulings**). Confirmed by Michael before
+execution. **Nothing superseded; nothing skipped as already built** — no IN item has any code,
+table, or column anywhere. Entry **#84** below.
+
+- **The staged spec landed VERBATIM and matches its stated counts exactly — 520 non-blank / 642
+  raw.** Head and tail both intact (no repeat of the #81 FE-5 head defect). All four §1 reconcile
+  checks re-verified natively at `74b8532`: the path was free, `Q-IN2-` and `IN2-LOOK-` returned
+  **ZERO** repo-wide outside `inbox/`, the IN-2 row was still ⬜, and `#84` was free.
+  **Deliberately not minted** — `IN-` is a live durable series and minting into it is Michael's act.
+- **Nine questions merged with FULL VERBATIM TEXT per QR-1**, under packet-local IDs only.
+  **ID-DL-1 now governs FIVE packets** (Tasks 6, 7, 8, 9, 10) and was annotated with the reason this
+  one sharpens **Q-IN1-8** rather than ID-DL-1 itself: IN-2 is the third spec building on an `IN`
+  name and the one the others reach into — FE-4 renders from "IN-2 fact rows," Q-IN1-4 asks whether
+  IN-1's hooks land there — so a rename's blast radius grew again. Not resolved; Michael's.
+- **The IN-2 row was annotated and stays ⬜**, and it is the first row in this chain where that
+  needed saying twice: **its HOME half is RULED** (`contact-directory.md` §7) and the spec
+  *elaborates* it, while **its EXTRACTION half is unruled** and the spec only *maps* it. The spec's
+  §1.1 draws that line paragraph by paragraph. Recorded here so a build session cannot read a mapped
+  paragraph as a ruled one — a spec is still not a closure.
+- **TWO CORRECTIONS RODE IN AND NEITHER WAS APPLIED, exactly as §6 required.**
+  `cr3-field-code-map.md` line 34's *"(79 codes)"* for CR-3 list 38 is wrong — raw text extraction
+  shows **70** enumerated values (1–4, 14–71, 73–79, 98), 79 being the highest code number rather
+  than the count — and the same file's demographic line was **superseded by #66**. **Neither file
+  was edited:** both corrections live only in the staged spec and in #84 below, and **whether to
+  annotate the file in place is Q-IN2-2, Michael's.** Verified independently by the runner:
+  `grep -rn "79 codes"` at HEAD returns exactly one hit, that line — neither the queue nor
+  BUILD-STATE repeats it, so the blast radius claim holds.
+- **HK-7 annotated satisfied-for-one-session a SIXTH time and again NOT closed** (session-scoped
+  grant; the packet's §6 says in terms not to close it). **OPEN-4 annotated an EIGHTH time** — Task
+  10 ran off the same clipboard copy, which Michael re-pasted mid-session and which matched the
+  preserved knowledge copy verbatim; resume point is **Task 11**, and **nine tasks (11–19) still
+  ride on a clipboard**.
+- **THE LOCK HYPOTHESIS IS NOW THREE-FOR-THREE, AND THE CRLF CAVEAT AGAIN DID NOT REPRODUCE.** A
+  0-byte `.git/index.lock` was present natively at session start, stamped to the minute the packet
+  landed, with no git process running; native `unlink` cleared it. That is the **third** consecutive
+  occurrence following a bridge session. The packet's §1 again carried the bridge's CRLF
+  false-DIRTY signature (199 porcelain lines, equal insertions and deletions) and again it did
+  **not** reproduce natively — `git status --porcelain` returned zero lines. Both annotated onto
+  HK-7. The bridge's unfetched `HEAD == origin/master` was **not** treated as a gate pass.
+- **Every §6 DO-NOT honored.** Nothing built (§5 NONE); the IN-2 row not flipped; no column added
+  anywhere — not `cases.incident_time`, not a VIN field, not the #66 demographic fields; no registry
+  entry opened, moved, or cited; no durable ID minted and no question renumbered; Q-FE4-3 and IN-4's
+  block-finalized question left unanswered; the FE-5 head defect from #81 left alone; no `AUD-n`
+  figure recomputed (OPEN-5 unruled) and no other file's line count re-measured into BUILD-STATE
+  (A-6); nothing reconstructed; and **none of `cr3-field-code-map.md`, `contact-directory.md`,
+  `spec-feedback.md`, `form-engine.md`, `cd1-build-slice.md`,
+  `fe-4-definitions-sets-spec-2026-08-15.md`, `db/schema.sql` or any migration was edited.**
+
+---
+
+## 2026-08-15 (#84) — CHAT-DISPATCH TASK 10: the IN-2 spec, and the first gate in this chain that resolves BOTH ways at once (design session, Opus 5, Cowork)
+
+- **ONE STAGED DOC, PROPOSED, NOTHING VERIFIED, NOTHING BUILT:**
+  `docs/specs/in-2-crash-report-extraction-spec-2026-08-15.md` (642 raw / **520 non-blank** —
+  larger than its Task 8 and Task 9 siblings because it does two jobs, below). **Nine open
+  questions with full text, packet-local IDs only. No registry file touched, no cite supplied, no
+  proposition asserted, no status moved, no existing repo file edited.**
+- **THE GATE RESOLVED BOTH WAYS, WHICH IS NEW IN THIS CHAIN.** Task 8's FE specs elaborated
+  rulings while the BUILD was gated; Task 9's IN specs had **no ruling to elaborate** and mapped
+  instead. **IN-2 is both at once:** its HOME half is RULED at `contact-directory.md` §7
+  (2026-08-11) and its EXTRACTION half is unruled, exactly as the queue row says in terms
+  (*"STILL OPEN: the EXTRACTION half"*). The spec's §1.1 names, paragraph by paragraph, which
+  sections elaborate and which only map, so a build session cannot read a mapped paragraph as a
+  ruled one. **The row stays ⬜ regardless: a spec is not a closure.**
+- **A FIGURE IN A DESIGN INPUT IS WRONG, CORRECTED HERE AND NOT IN THE FILE.**
+  `cr3-field-code-map.md` line 34 describes CR-3 code list **38 Factors and Conditions** as
+  **"(79 codes)."** Raw text extraction from `docs/reference/CR3-code-sheet-2023.pdf` shows
+  **70 enumerated values** — 1–4, 14–71, 73–79, 98. **79 is the highest non-catch-all code
+  number, not the count.** Codes 5–13 are absent from the list and **code 72 appears nowhere in
+  the document.** **Corrects the file filed at #64; #64 stands as written and the file was NOT
+  edited.** **Actor: Fable 5** (#64's own header: *"design session, Fable 5, Cowork, typed"*), not
+  inferred from session type. **Failure class: asserting a measurement without running it** —
+  the class of #81's and #83's self-corrections; the specific shape here is **reading a range's
+  endpoint as its cardinality**, invisible precisely because the code space is sparse. **Blast
+  radius one line, one file:** `grep -rn "79 codes"` at HEAD returns only that line; neither the
+  queue nor BUILD-STATE repeats it. **Whether to annotate the file in place is Q-IN2-2, Michael's.**
+- **THE SPARSENESS IS THE POINT, NOT THE ARITHMETIC.** TxDOT retires codes in place rather than
+  renumbering, so a live sheet carries holes. Three consequences the record did not hold: **range
+  validation is wrong** (`BETWEEN 1 AND 79` admits ten codes that do not exist); **an unknown code
+  is EVIDENCE, not an error** — a strong version-mismatch signal, and the `case_roster_flags`
+  *"preserved verbatim; nothing is lost"* discipline applied to a vocabulary; and **per-list
+  cardinality is a per-version fact that must be measured.** The spec states **one** measured
+  cardinality and **deliberately states no others** — the sheet's multi-column layout interleaves
+  unrelated lists on the same text rows, so the other 45 counts are seed-data work with a
+  verification step, **reported as not taken rather than estimated.**
+- **A SECOND LINE IN THE SAME FILE IS STALE, AND THE RULING THAT SUPERSEDED IT NAMES IN-2.**
+  `cr3-field-code-map.md` calls the capture of fields 17 Ethnicity / 18 Sex *"already an OPEN
+  question."* **It was true on 08-12 and was ruled the next day: #66 — the software CAPTURES BOTH
+  sex and race/ethnicity on both intake paths, "(OAA and CR-3 extraction)," one answer governing
+  both.** **Not a correction — a supersession**, and it lands on IN-2 by name: those two fields
+  are the only ones in the whole spec whose in-scope status is **ruled** rather than proposed.
+  Noted for whoever builds it: **no such column exists today**, and the ruling named no home.
+- **THE STRUCTURAL FINDING: IN-2's FIVE NAMED TARGETS ARE THREE DIFFERENT EXTRACTION PROBLEMS,
+  AND THE #64 REQUIREMENT GOVERNS ONLY ONE.** Class **A, coded** (license class, carrier ID type)
+  — the versioned-code-table requirement. Class **B, identifier** (VINs, the DOT number) — **no
+  code list exists for either**; the discipline is format validation, a VIN check digit, not
+  vocabulary versioning. Class **C, free-text identity** (carrier identity, owner/lessee) —
+  §7.2's promotion gate. **Three of the five named targets are B or C.** A build that implements
+  #64 and calls IN-2's extraction discipline satisfied ships with **no validation on VINs or DOT
+  numbers and no promotion gate on carrier and owner identity**, and both gaps are silent because
+  a class-B or class-C field never touches a code table and so never trips a version check.
+- **VERSION SELECTION IS CIRCULAR AND NOBODY HAD NAMED IT.** The obvious selector — the version in
+  effect on the crash date — keys the vocabulary to a fact the vocabulary is being used to
+  establish, and **the crash datum is one of the two live discrepancies on the record.** PROPOSED,
+  three independent signals, any disagreement flags, nothing auto-resolves: **the document
+  declares its own vocabulary** (the sheet prints **"Form CR-3CS 4/1/2023"** on both pages —
+  verified in raw extraction), crash date is a **cross-check not the selector**, and an unknown
+  code is a **third signal**. Also proposed and previously unstated: **a code without its list
+  number is not a fact** — `3` is *Pedalcyclist* in list 5, *Insurance Binder* in list 28, and
+  *ICC/MC* in list 31.
+- **AN EXTRACTION-WITH-PROVENANCE PRECEDENT EXISTS IN THE BUILT SCHEMA, AND THE RECORD HAD NEVER
+  CONNECTED IT TO IN-2.** `db/schema.sql` line 770, on `oaa_intakes`: *"what it extracted
+  (**fields_json carries value/confidence/provenance per field**)."* **Strong as precedent** — the
+  house has already shipped value + confidence + provenance per field against a fixed government
+  form, on the criminal OAA path. **Wrong as substrate, and quietly so:** `fields_json` is `text`
+  not `jsonb`, keyed to one intake **event** not a case, carries **no `verified_by_attorney`** so
+  §7.3's promotion gate has nowhere to land, and holds one source's view so **two sources cannot
+  disagree inside it** — which is the exact shape §7.1 ruled the flag falls out of. **A build
+  reaching for `oaa_intakes` would satisfy the word "provenance" and lose the ruling.** Q-IN2-6.
+- **THE RECORD'S OWN FIRST EXAMPLE OF A DISCREPANCY HAS NO COLUMN TO CONFLICT WITH.**
+  `cases.date_of_incident` is a **`date`** (line 45) and cannot hold the CR-3's time of crash, so
+  *"two real conflicts — incident time"* cannot be expressed against the case record as built. The
+  tempting fix is argued against **four lines below in the schema's own comment**, where
+  `statute_of_limitations` was removed: *"a writable column meant to mirror derived data stops
+  mirroring it silently."* PROPOSED: fact rows hold both assertions and `cases.date_of_incident`
+  is not extended. **Q-IN2-3 puts the display half to Michael rather than adopting it.**
+- **VEHICLE IDENTITY HAS NO HOME, AND §7.2's PROMOTION TARGET DOES NOT EXIST FOR A THING.** CD-1
+  ruled identity lives in `parties`; `parties.kind` admits only `'individual'` and
+  `'organization'`; §7.2's promotion examples are **both organizations**. **A VIN is an
+  identity-class fact about a thing with no row anywhere** — so for IN-2's most-named target the
+  promotion half of the ruling has no destination. **Searched word-bounded at HEAD across
+  `db/schema.sql` and all three migrations: `vin`, `vehicle`, `instrumentality` return ZERO.**
+  Three shapes named, **none picked** (Q-IN2-4) — and one of them, a separate instrumentality
+  entity, is *"the wrong-level defect class CL-2 was built to kill"* per the schema's own comment
+  above `parties`.
+- **TWO EXISTING STRUCTURES A BUILD WILL REACH FOR AND SHOULD NOT**, both recorded at #83 for
+  IN-1 and both landing differently here: `case_roster_flags` carries `unique (case_party_id)` and
+  one CR-3 can contradict the petition on owner, lessee and DOT number for **one** party at once —
+  but §7.1 put the flag on the **fact table**, so it is a *don't-reach-for-it* note, **not a
+  defect in it, unlike IN-1's**; and `staging_items.suggestions` + `routing_decisions` is the
+  house suggest→dismiss→remember pattern **keyed to `staging_item_id`**, while IN-2's
+  discrepancies are per case and per fact.
+- **TWO SELF-CORRECTIONS INSIDE THIS SESSION, RECORDED NOT SILENTLY FIXED.** (1) The code sheet
+  was first read **as rendered page images**; that pass mis-transcribed code 69 (*"Oncoming Side"*
+  for the text layer's **"Wrong Side - Approach or Intersection"**) and numbered the tail of list
+  38 one position low, which would have produced a 71-value count and **invented the code 72 the
+  same document reports as absent.** (2) The §6.4 no-vehicle-identity claim was first searched
+  **unbounded**, and `-i` substring matching returned **seven hits across three files, every one
+  a false positive inside** *resolving, moving, having, living*; **word-bounded the count is
+  zero**, which is what the spec now states and how it states it. **Both caught before either
+  figure entered the document. Actor: Opus 5, this session.** The second is precisely #83's
+  `IN-1`/`MIN-1` failure — **three occurrences in three consecutive sessions; the pattern is the
+  tooling, not the model.**
+- **NO LEGAL PROPOSITION, NO REGISTRY ENTRY, NO CASE-LAW RETRIEVAL — deliberately.** This spec
+  relies on no rule or case authority; the FMCSR substrate the commercial block points at is
+  already on the registry and this document neither cites nor moves it. Descrybe not used
+  (TOOLING); CourtListener untouched (Q-6). **The SOURCING convention's primary-law layer was not
+  engaged** — nothing here is primary law — **but its extraction discipline was applied to this
+  session's own reading of the code-sheet binary**, which is what produced both corrections.
+- **HK-7 SATISFIED FOR ONE SESSION A SIXTH TIME — NOT CLOSED.** The grant is session-scoped.
+  **OPEN-4 unchanged: an EIGHTH clipboard session.** Michael re-pasted CHAT-DISPATCH mid-session
+  and it matched the preserved knowledge copy verbatim. **Resume point: TASK 11. Nine tasks
+  (11–19) still ride on a clipboard.**
+
+Staged for Code: the IN-2 spec above; this entry; the queue annotation and the merge of nine questions; the BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: #75 through #84 and the runner lines.
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-EIGHTH invocation) — two specs whose whole job is to hand the question back
 
 **One packet, two staged files, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
