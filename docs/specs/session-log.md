@@ -12,6 +12,41 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SECOND invocation) — DELTA ONLY, a re-issued packet
+
+**A REVISED RE-ISSUE OF A PACKET ALREADY PROCESSED, and it was NOT re-run whole.**
+`push-to-code_qstat1-and-v18_2026-08-14.zip` reappeared in `inbox/` at 00:05 Central with **the same
+filename as the packet executed at #77 an hour earlier** but a different size (7,281 bytes vs 6,323).
+**Diffed before anything was executed:** identical except for three additions, all carrying the meter
+reading. **Michael ruled DELTA ONLY** — re-running it whole would have duplicated #77's Q-STAT-1
+closure, v17 correction and SOURCING fold-in. **The re-issue therefore has NO log entry of its own;
+#77 stands as the packet's entry, and this line plus the bracketed addendum below it are the record
+of the delta.** Runner **v7** re-read at HEAD per QR-2. **QR-3 v7 gate PASSED natively: clean, on
+master, `HEAD == origin/master == 4645933`, 0 ahead / 0 behind** — the sixth pass on its own terms.
+
+- **DATE SPLIT, STAMPED DELIBERATELY: this runner line is 2026-08-15 Central; the packet keeps its
+  2026-08-14 authoring date, and #77 is unchanged.** Clock-checked **00:08 CDT** — the Central date
+  rolled over between the thirty-first invocation and this one, and the meter reading itself was
+  stated at **00:02 Central on 2026-08-15**. Not a drift to reconcile.
+- **THE METER READING IS STATED AND THE REQUEST CLOSES** — open since #68 and named on every
+  your-hand list since. Recorded **as a timestamped snapshot, never as a standing figure**: a
+  percentage goes stale continuously, and a stale one in BUILD-STATE would be worse than none.
+- **THE ALLOCATION READ IS DESIGN INPUT, NOT A RULING, and no allocation is ordered anywhere.**
+  **Fable is SCARCE, not idle** — roughly 22% across 88 hours, realistically one substantial session
+  — so the ration-it branch of the ruled economics clause applies this week, not spend-it-before-it-
+  expires. All-models at 51% over the same window is comfortable, so **Opus and Sonnet work is
+  unconstrained.**
+- **ONE MINUTE, FLAGGED AND NOT CORRECTED:** the meter displays the reset as **4:00 PM Central** where
+  the 2026-08-13 observation recorded **3:59 PM**. **Not corrected anywhere, and not grounds for a
+  version bump** — v18 carries the older figure and stays as delivered.
+- **NOTHING ELSE MOVED.** No registry file, no spec, no build, no verification status; **#77's pushed
+  bullets were not rewritten** (append-only), and the packet's other work was not re-executed.
+
+Staged for Code: none — `inbox/` is empty again.
+Awaiting/Returned from Code, unreviewed: #75, #76, #77 and the three runner lines.
+
+---
+
 ## 2026-08-14 — QUEUE-RUNNER batch (runner line; THIRTY-FIRST invocation)
 
 **One packet, docs only, §5 NONE, nothing built — and NO STAGED FILE AT ALL**, which is a first for
@@ -118,6 +153,22 @@ present at BUILD-STATE line 140 before the correction was written**, so it was a
 twice. **The route-(c)-as-standing-law question was NOT already in the queue and was added** with
 full text per QR-1. `case-management-project-instructions.md` was not opened or edited, and no file
 was created for the v18 text.]*
+
+*[Second runner note, added 2026-08-15 (thirty-second invocation), append-only — **this entry's
+bullets above are unchanged**. The packet was re-issued after #77 was pushed, adding one §3 bullet
+that this entry therefore does not carry. It is recorded here rather than inserted above: **THE METER
+READING IS STATED, closing a request open since #68.** Michael stated it **2026-08-15 at 00:02
+Central: all-models 51% used, Fable 78% used**, both resetting **Tue 2026-08-18 4:00 PM Central**;
+current session 9%. **A timestamped snapshot, not a standing figure.** The allocation consequence,
+since the ruled economics clause cuts both ways: **Fable is SCARCE here, not idle** — roughly 22% left
+across 88 hours, realistically one substantial session — **so the spend-it-before-it-expires branch
+does NOT apply this week; the ration-it branch does.** All-models at 51% is comfortable, so Opus and
+Sonnet work is unconstrained. Per §7.2 the strongest claims on the remainder are the **gates re-check**
+(GL-1 item 5, audit-shaped and on the launch path), an **adversarial audit of the record** (that
+session alone found two carried falsehoods), and **V-9** (open design pass, no prior art). **Chain
+execution, FE-D1, the CD-1 migration and packet assembly all stay OFF Fable.** **Design input, not a
+ruling — no allocation is ordered here.** Also observed: the meter shows the reset as **4:00 PM** where
+the 2026-08-13 observation recorded **3:59 PM Central. Flagged, not corrected; not a version bump.**]*
 
 ---
 
