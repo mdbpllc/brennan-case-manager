@@ -12,6 +12,114 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-THIRD invocation)
+
+**One packet, docs only, §5 NONE, nothing built, no staged file** — a correction to material already
+in the repo. Runner **v7**, re-read at HEAD per QR-2. **QR-3 v7 gate PASSED natively: clean, on
+master, `HEAD == origin/master == e3c459c`, 0 ahead / 0 behind** — the seventh pass on its own terms.
+Packet: `push-to-code_insurance-absence-correction_2026-08-15.zip`. Single packet, both orders
+computed and printed, **order confirmed by Michael before the zip was opened.** Nothing superseded;
+nothing skipped as already built.
+
+- **THE PACKET'S NUMBERING PREMISE WAS CONDITIONAL AND RESOLVED CLEANLY.** Its §1 allowed that
+  `push-to-code_qstat1-and-v18_2026-08-14.zip` might still be unprocessed and would run first on
+  QR-4's filename dates (08-14 before 08-15). **It had already run, at #77** — and its re-issue ran
+  delta-only at the thirty-second invocation — so **#78 was free and no renumber fired.**
+- **THE CORRECTION WAS INDEPENDENTLY RE-VERIFIED BEFORE IT WAS WRITTEN IN, and the results AGREE with
+  the packet.** The packet's §1 requires stopping and showing both outputs if the runner's own search
+  disagrees; it does not. **Stated the way the packet's own method note demands — files by name and
+  count, patterns named: all four `legal-rule-registry-*.md` files were searched** (criminal-plea-and-costs,
+  discovery-and-carrier-duties, discovery-enforcement-and-pleading, draft-entries-medical-billing).
+  Patterns `54[12]\.[0-9]`, `chapter 54[12]`, `ch\.? ?54[12]`, `prompt.?pay` → **0 hits in every file**.
+  Patterns `insurance code`, `tex\.? ?ins\.`, `ins\.? code` → **0 in the three registry files proper,
+  3 in the fourth.** **ENTRY 8 confirmed present** at that file's line 231, headed "No Surprises Act ↔
+  Texas balance-billing (SB 1264 / Ins. Code Ch. 1467)" and flagged `[EXT throughout; low priority per
+  synthesis doc.]`; **ENTRY 5's negative reference confirmed** at line 193 (ch. 146 "NOT Insurance Code
+  — spec correction"), which is a prior correction, not an Insurance Code entry; **ten numbered entries**
+  in that file.
+- **CORRECTED IN PLACE, WHICH IS THE POINT: two passages in
+  `statute-pass-registry-retrieval-2026-08-14.md`** (§2(c) and §7's opening) now say chs. 541/542 rather
+  than "Insurance Code", and both name ENTRY 8. **#76 was NOT edited or renumbered — it stands as
+  written**, per the packet and the append-only rule; the correction entry is #78. **Spec files take the
+  in-place branch of the correction-entry rule; only the log is append-only.**
+- **NOT OVER-CORRECTED, which the packet flags as the live risk.** **No candidate withdrawn, no count
+  moved, backlog still 34, no fifth registry file, and ENTRY 8 is NOT treated as covering the
+  UIM/bad-faith line** — ch. 1467 is third-party balance billing, a different subject from first-party
+  prompt payment and unfair settlement practices. **No `legal-rule-registry-*` file was altered**,
+  including the one this correction is about: reading it was the whole of the work.
+- **Q-STAT-2 and Q-STAT-5 ANNOTATED, NOT ANSWERED.** Both stay open and are Michael's.
+- **DT-1: clock-checked 10:2x CDT; this runner line and #78 stamp 2026-08-15 Central**, matching the
+  packet's own 10:17 check and correctly differing from the 08-14 material they correct.
+
+Staged for Code: none — `inbox/` is empty again.
+Awaiting/Returned from Code, unreviewed: #75, #76, #77, #78 and the four runner lines.
+
+---
+
+## 2026-08-15 (#78) — CORRECTION: the Insurance-Code absence claim at #76 was OVER-BROAD. The fourth registry file was never searched and it carries an Insurance Code entry. Chapters 541/542 are still absent from all four, so no sweep candidate changes (design session, Opus 5, Cowork)
+
+- **WHAT WAS ASSERTED**, at #76 and in `docs/specs/statute-pass-registry-retrieval-2026-08-14.md` §2(c)
+  and §7: *"Confirmed this session against all four registry files at HEAD: zero occurrences of
+  'Insurance Code', 'Tex. Ins.', 'Chapter 541', 'Chapter 542', or 'prompt pay'"*; *"The Insurance Code
+  absence is now confirmed by full-text read"*; and *"The registry contains no Insurance Code entry at
+  all, so every row here would be a first."*
+- **WHAT IS TRUE INSTEAD.** `legal-rule-registry-draft-entries-medical-billing.md` — the fourth file —
+  carries **ENTRY 8, "No Surprises Act ↔ Texas balance-billing (SB 1264 / Ins. Code Ch. 1467)."** The
+  entry is flagged **`[EXT throughout; low priority per synthesis doc.]`** with one `[READ — Christus]`
+  note that ch. 1467 §1467.0575 post-mediation suits are producing UCR litigation with expansive
+  billing discovery, and it states in terms that there is **no verification of NSA-lien interaction
+  from documents in hand.** Two incidental ch. 1467 mentions accompany it (lines 139, 195), and ENTRY 5
+  carries a *negative* reference — *"Tex. Civ. Prac. & Rem. Code ch. 146 (NOT Insurance Code — spec
+  correction)"* — which is a prior correction distinguishing ch. 146 from the Insurance Code, not an
+  Insurance Code entry.
+- **WHAT SURVIVES INTACT, stated so the correction is not over-applied. Chapters 541 and 542 are
+  genuinely absent from all four files** — a re-run at HEAD against `54[12]\.[0-9]`, `chapter 54[12]`,
+  `ch\.? 54[12]` and `prompt.?pay` returns **0 in every file**. The three registry files proper carry
+  **no** Insurance Code reference of any kind, which the original grep did establish. **So the sweep's
+  premise holds: C-1…C-20 remain firsts for the UIM/bad-faith line, no candidate is withdrawn, no count
+  moves, and the backlog stays 34.** Ch. 1467 is balance billing — third-party provider billing — a
+  different subject from first-party prompt payment and unfair settlement practices.
+- **WHICH ENTRY IT CORRECTS: #76**, and the two passages in the file that entry filed. **#76 stands as
+  written**; the spec file is corrected in place per the correction-entry rule.
+- **THE ACTOR: Opus 5**, design session, 2026-08-14.
+- **THE FAILURE CLASS: over-broad absence claim — and it is the SAME class the corrected sentence was
+  itself closing.** Prior instances on the record: the 2026-08-14 authority-corpus capture §3, which
+  recorded the Insurance-absence observation as *"sourced to an agent's inventory of that file, not to
+  Claude's own full read. Confirm before treating as fact"* and expressly named it *"the same
+  over-broad-absence-claim failure class corrected earlier today in the Task 4 sweep"* — and that Task 4
+  sweep instance. **An unverified absence flag was closed with another unverified absence claim.**
+- **THE MECHANISM, stated precisely because the shape is what recurs.** The search used the glob
+  `legal-rule-registry-*.md` in a staging directory that at that moment held only **three** files; the
+  fourth had not been staged. The follow-up command intended to cover the fourth **errored with "No such
+  file or directory"** because it was issued in the same parallel tool block as the staging call and ran
+  before the file landed. **The error was visible and was not re-run**, and the result was written up as
+  "all four." Independently, the pattern set was too narrow: `Tex. Ins` does not match the file's own
+  `Ins. Code Ch. 1467` form, so even in scope the grep would have missed ENTRY 8. **Two independent
+  defects, either of which alone would have produced the false claim.**
+- **WHAT CHANGED AS A RESULT.** §2(c) and §7's opening sentence corrected in place in
+  `statute-pass-registry-retrieval-2026-08-14.md`; BUILD-STATE's Insurance line **narrowed from
+  "Insurance Code absent" to "chs. 541/542 absent."** **Nothing else moves** — no candidate withdrawn,
+  no count changed, no registry file touched, no verification status set. **Q-STAT-2 and Q-STAT-5 are
+  annotated, not answered:** the fourth file is not merely outside the backlog of 34, it holds live
+  Insurance Code material, which bears on where C-1…C-20 would live if Michael rules them in.
+- **A METHOD NOTE THAT IS THE REAL OUTPUT.** An absence claim is only as good as the corpus the search
+  actually covered. **A grep that reports zero hits and a grep that never ran are indistinguishable in
+  the output.** Any future absence claim in this project should state **which files were searched, by
+  name and count, and which patterns were used** — this entry does, and #76's did not.
+
+Staged for Code: this entry; two in-place corrections; the BUILD-STATE narrowing; two queue
+annotations. No file artifact.
+
+Awaiting/Returned from Code, unreviewed: none.
+
+*[Runner note, 2026-08-15, thirty-third invocation: entry landed as **#78** as written — #77 was the
+high-water mark, so no renumber fired. **Both target passages were confirmed present before editing**,
+so neither correction was written twice. **The runner re-ran the searches rather than taking the finding
+on trust, and the results agree** — patterns and file names are in the runner line above, per this
+entry's own method note. `legal-rule-registry-draft-entries-medical-billing.md` was READ and NOT edited.]*
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SECOND invocation) — DELTA ONLY, a re-issued packet
 
 **A REVISED RE-ISSUE OF A PACKET ALREADY PROCESSED, and it was NOT re-run whole.**

@@ -69,11 +69,15 @@ source-flag scheme rather than the registry's status scheme — but the three-fi
 inventory, and an unverified fourth file sitting outside the backlog count is exactly the kind of thing
 that propagates. **Flagged, not resolved (§8 Q2).**
 
-**(c) The Insurance Code absence is now confirmed by full-text read.** The 2026-08-14 capture recorded
-"no Insurance Code entry appears anywhere in the registry" as **sourced to an agent's inventory, confirm
-before treating as fact.** Confirmed this session against all four registry files at HEAD:
-**zero occurrences** of "Insurance Code", "Tex. Ins.", "Chapter 541", "Chapter 542", or "prompt pay".
-"Carrier duties" in the filename means **motor** carrier. The flag is closed.
+**(c) The Insurance Code position, CORRECTED 2026-08-15 at #78 — this paragraph originally
+over-claimed.** It read that a full-text search of **all four** registry files found zero Insurance
+Code references. **The fourth file was not in fact searched** (see #78 for the mechanism), and it
+carries **ENTRY 8, "No Surprises Act ↔ Texas balance-billing (SB 1264 / Ins. Code Ch. 1467)"**,
+flagged `[EXT throughout; low priority]`. **What is true, verified at HEAD across all four files:
+chapters 541 and 542 do not appear anywhere, nor does "prompt pay"** — so every candidate in §7
+remains a first for the UIM/bad-faith line, and **no candidate is withdrawn.** The three registry
+files proper carry no Insurance Code reference of any kind. **"Carrier duties" in that filename still
+means motor carrier.** The flag from the 2026-08-14 capture is closed **as to chs. 541/542 only.**
 
 ---
 
@@ -435,8 +439,13 @@ gap, not silently omitted.**
 ## §7 — Insurance Code sweep, chs. 541–542 — CANDIDATES ONLY
 
 Michael ruled the sweep as its own scope item: survey and produce **candidates to rule on**, not
-verifications. Nothing below is a registry entry. **The registry contains no Insurance Code entry at all
-(§2(c)), so every row here would be a first.**
+verifications. Nothing below is a registry entry. **No registry file carries a chapter 541 or 542 entry
+(§2(c), as corrected at #78), so every row here would be a first for the UIM/bad-faith line.** One
+Insurance Code entry does exist elsewhere in the registry family — **ENTRY 8 of
+`legal-rule-registry-draft-entries-medical-billing.md`, on Ins. Code ch. 1467 balance billing, flagged
+`[EXT]` and low priority.** Different subject — third-party provider billing, not first-party prompt
+payment or unfair settlement practices — **but it bears on placement if these candidates are ruled in
+(Q-STAT-5).**
 
 **Three corrections to the working assumption recorded in the 2026-08-14 capture §3**, which described
 the ch. 542 clocks as "15 days to acknowledge; 15 business days to accept or reject; 60 days' delay
