@@ -12,6 +12,191 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-SIXTH invocation) — a divergence inside a VERIFIED entry, and a spec that arrived without its head
+
+**One packet, three staged docs, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD
+per QR-2. **QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master == 3146df2`,
+0 ahead / 0 behind** — including the v7 ahead-check. Packet:
+`push-to-code_form-engine-fe4-fe5-fe6_2026-08-15.zip` (CHAT-DISPATCH Task 8, design session, Opus 5,
+Cowork). **One packet, so no ordering question; filename order and mtime order agreed. Michael
+confirmed the order before execution per Step 1.**
+
+- **RECONCILIATION RAN AND FOUND NO DELTAS.** All three canonical paths **FREE** at `3146df2`, as the
+  packet predicted. **ID collision re-check run independently: `Q-FE4-`, `Q-FE5-`, `Q-FE6-` and
+  `FE5-LOOK-` returned ZERO repo-wide** — free, and **deliberately not minted**, per §6. The packet's
+  design-side view was accurate in every particular this runner could check.
+- **THE THREE SPECS LANDED VERBATIM AND `cmp`-CLEAN**, at the packet's stated counts to the line:
+  FE-4 **197 non-blank / 257 raw**, FE-5 **311 / 389**, FE-6 **199 / 257**.
+- **TWENTY-TWO QUESTIONS AND THREE LOOKS MERGED INTO `attorney-review-queue.md` WITH FULL VERBATIM
+  TEXT PER QR-1**, copied from FE-4 §6, FE-5 §7 and FE-6 §6 — the packet is deleted, so those rows
+  are now the only place the questions live. **No durable IDs minted; ID-DL-1 now governs THREE
+  packets** and was annotated accordingly.
+- **THE HEADLINE IS CARRIED, NOT ACTED ON: Q-FE5-9.** A **VERIFIED** registry entry — TRCP
+  190.3(b)(3), verified by Michael 2026-08-11 and annotated *"Load-bearing for: FE-5"* — states
+  *"each party"* where the operative rule states *"any other party."* **Different budgets, and the
+  gap scales with the number of opposing parties.** **No `legal-rule-registry-*` file was opened for
+  writing, no wording drafted, no count moved, no status touched** — §6 bars it and route (c) is a
+  ruled one-off. The **route-(c) row was annotated with this as evidence the restraint held under the
+  hardest case yet**, not as an argument either way.
+- **RUNNER-FOUND DEFECT, REPORTED AND NOT REPAIRED: `fe-5-…md` IS MISSING ITS HEAD.** The staged file
+  **begins at line 1 with `## 2. Legal substrate`** — no title, **no `Status: PROPOSED` line**, no
+  canonical-path line, no §1 RECONCILE FIRST. FE-4 and FE-6 carry all four. **This contradicts the
+  packet's own §5** (*"Every one of these three specs states on its first line that it is PROPOSED"*),
+  which is true of two of three. **Not a transmission truncation:** the packet's stated counts match
+  the head-less file exactly, so it was authored and counted that way. **Nothing was reconstructed** —
+  §4.2 says verbatim, and inventing a status line into a spec is the K-6/K-7 fabrication class.
+  **Landed as-is, flagged, and given its own queue row. Michael's, or the next design session's.**
+- **NOTHING FROM THE THREE SPECS WAS APPLIED ANYWHERE ELSE.** `form-engine.md` untouched (§§13.1–13.3
+  are the rulings and stand). `fe-d1-build-slice.md` untouched — **no FE-4/5/6/7 disposition added**;
+  whether the four ruled items get explicit ones is Michael's (Q-FE4-2 / Q-FE5-2 / Q-FE6-1). The
+  `972-928` pin cite **not "fixed."** No `AUD-n` figure recomputed — **OPEN-5 unruled, #79's
+  instruction stands.** No registry entry created for any of the twelve propositions.
+- **THE FE ROWS STAY OPEN.** FE-4, FE-5 and FE-6 each annotated with its spec and each left **⬜** —
+  a spec is not a closure, and §6 says so in terms. **The `anti-resurrection-ledger.md` carries no
+  FE- row of any kind**, re-checked; nothing here is a resurrection.
+- **CARRIED ROWS ANNOTATED, NONE CLOSED:** HK-7 (satisfied for one session a **fourth** time — the
+  Knowledge Repo grant is what put the TRCP PDF in TIER A and made the divergence findable at all),
+  OPEN-4 (**a sixth clipboard session; Tasks 9–19 still ride on it**), Q-STAT-5 (**reached again** by
+  Q-FE5-7's twelve propositions — two research passes now stack behind one placement ruling), and the
+  route-(c) row.
+- **Backlog unchanged at 34.** No proposition entered any registry file. **Nothing verified — only
+  Michael verifies.**
+
+Staged for Code: none — the queue is empty after this pass.
+Awaiting/Returned from Code, unreviewed: #75 through #81 and the runner lines.
+
+---
+
+## 2026-08-15 (#81) — CHAT-DISPATCH TASK 8: form-engine specs FE-4, FE-5, FE-6 — and a VERIFIED registry entry that does not match the rule it cites (design session, Opus 5, Cowork)
+
+- **THREE STAGED DOCS, ALL PROPOSED, NOTHING VERIFIED, NOTHING BUILT:**
+  `docs/specs/fe-4-definitions-sets-spec-2026-08-15.md` (257 raw / **197 non-blank**),
+  `docs/specs/fe-5-interrogatory-budget-spec-2026-08-15.md` (389 raw / **311 non-blank**),
+  `docs/specs/fe-6-instrument-packaging-spec-2026-08-15.md` (257 raw / **199 non-blank**).
+  **Twenty-two open questions with full text, packet-local IDs only. No registry file touched, no
+  cite supplied, no status moved, no existing repo file edited.**
+- **THE GATE RESOLVED CLEANLY AND ALL THREE ARE OPEN.** Task 8 required confirming each item still
+  open and skipping any closed. All three carry **⬜** in `attorney-review-queue.md`; the
+  `anti-resurrection-ledger.md` carries **no FE- row of any kind**. They are open because the
+  **BUILD** is gated, not because the design question is unanswered — each was **RULED 2026-08-11**
+  at `form-engine.md` §13.1/§13.2/§13.3, and line 247 of that file names the owed work in terms:
+  *"FE-4–FE-7 unblock for spec completion. Build still unauthorized."* **The three specs elaborate
+  the ruled designs and adjudicate nothing;** each states that where it differs from §13, §13 governs.
+- **THE HEADLINE IS A DIVERGENCE INSIDE A VERIFIED ENTRY, AND IT IS FLAGGED, NOT REWORDED.** The
+  `TRCP 190.3(b)(3)` entry in `legal-rule-registry-discovery-and-carrier-duties.md` — **VERIFIED by
+  Michael 2026-08-11**, and annotated *"Load-bearing for: FE-5"* — reads *"Level 2 discovery limits
+  **each party** to 25 interrogatories."* The operative July 2026 text reads *"Any party may serve on
+  **any other party** no more than 25 written interrogatories."* **Those are different budgets
+  and the gap scales with the number of opposing parties** — 25 total versus 25 per defendant, i.e.
+  25 versus 125 in the five-defendant trucking posture the originating capture describes. **An
+  engine built to the entry's wording would refuse discovery the rule permits, silently.** This is
+  the divergence class the 08-14 statute pass found in eighteen of twenty-one propositions — **but
+  this one sits in a VERIFIED entry**, which none of those did, and **verification attaches to
+  wording**. **No replacement wording is proposed anywhere** (route (c) is a ruled ONE-OFF, not
+  standing law). **Q-FE5-9.**
+- **THE CAP IS PAIRWISE AND CUMULATIVE — a scope consequence §13.2 does not state.** Every cap in
+  Rule 190 is worded *"Any party may serve on any other party no more than N,"* so the budget keys
+  on the **(propounding party, responding party)** pair, not the document, the wave, or the case —
+  and it is **cumulative across waves**, so a second wave must know what the first spent.
+- **LEVEL 1 CAPS RFPs AND RFAs TOO, AND FE-5 AS RULED DOES NOT COUNT THEM.** TRCP 190.2(b)(4) and
+  (b)(5) cap requests for production and requests for admission at **15 each**, *each with the
+  identical discrete-subpart sentence*; **190.3(b) caps neither in Level 2.** A Level 1 case served
+  a combined document is therefore running **three** budgets at once, two of which the ruled design
+  does not track. **Q-FE5-1.**
+- **LEVEL 3 HAS NO CAP TO LOOK UP.** Under 190.4(b) the Level 2 (or Level 1) limits apply *"unless
+  specifically changed in the discovery control plan ordered by the court,"* and the plan **must
+  include** *"appropriate limits on the amount of discovery"* — so the Level 3 cap is an **order
+  value, not a level constant**, and 190.4(b)(2) permits phase scoping. **A `cap = f(level)` lookup
+  is correct for Levels 1 and 2 and structurally wrong for Level 3.**
+- **AND THE DISCOVERY LEVEL IS NOT STORED ANYWHERE.** `cases` has no discovery-level column and a
+  repo-wide grep across `db/` for `discovery_level` / `discovery_control` / `190.3` returns
+  nothing. **FE-5's hard prerequisite is a field on the case, not a form-engine table.** TRCP 190.1
+  gives it an intake moment; Comment 1 qualifies it — the pleaded level *"does not bind the court
+  or other parties"* — so pleaded and operative levels can differ. **Q-FE5-5.**
+- **CASE LAW: TWO OPINIONS, BOTH NEW TO THE RECORD, MAJORITY-OPINION RULE RUN ON BOTH BEFORE EITHER
+  WAS CHARACTERIZED.** *Braden v. Downey*, 811 S.W.2d 922, 927–28 (Tex. 1991) — cluster 1682126,
+  **one** sub-opinion, Hecht — read in full at the star-paginated pages; it construes **former Rule
+  168's thirty-answer limit**, not Rule 190, and holds the limit *"not susceptible of precise
+  definition."* *In re Swepi L.P.*, 103 S.W.3d 578, 589 (Tex. App.—San Antonio 2003, orig.
+  proceeding) — cluster 1464879, **one** sub-opinion, Green/Duncan/Angelini. **Neither appears
+  anywhere in `docs/` before this packet.** FLP/CourtListener per TOOLING; Descrybe not used; Q-6
+  posture untouched.
+- ***SWEPI* IS THE ONLY EMPIRICAL DATUM ON THE RECORD ABOUT FACIAL-VS-LEGAL SUBPART COUNTS, AND IT
+  CUTS AT THE RULED THRESHOLD.** Nineteen numbered interrogatories drew an objection asserting
+  **ninety-eight** on a subpart count — **5.2× facial inflation** — and the **Fourth Court of
+  Appeals**, Bexar County's own, held that **none** of the nineteen had multiple discrete subparts.
+  Run §13.2's escalation rule against those facts (98 > 25 while 19 ≤ 25) and **the engine warns**,
+  wrongly on the holding. **Recorded as evidence about firing frequency against the recorded
+  warning-fatigue risk — NOT as an argument that the ruling is wrong**, and the passive display
+  would have been correct throughout. **Q-FE5-3, Michael's.**
+- **THE RULED DESIGN IS THE RIGHT SHAPE AGAINST THE AUTHORITY, AND THE SPEC SAYS WHY.** Cmt. 3
+  defines a discrete subpart by *logical or factual relatedness* — a **semantic** test; §13.2
+  computes a **facial** one. A facial pass splits what the legal test keeps together and never the
+  reverse, so **the facial count is an upper bound** — which is exactly what makes "worst-case" the
+  honest label. *Braden* supplies the direction of the error.
+- **TWO SOURCE DEFECTS REPORTED, NEITHER REPAIRED, PER Q-STAT-1.** (1) **TRCP 190 cmt. 5 (1999) is
+  half-stale**: it says RFAs/RFPs *"are not restricted in Levels 1 and 2,"* which the operative
+  190.2(b)(4)–(5) contradicts as to Level 1 — resolved **from the record, not by guesswork**, by
+  the 2013 comment in the same document (*"imposes a fifteen limit maximum on interrogatories,
+  requests for production, and requests for admission"*). Still accurate as to Level 2.
+  (2) **The PDF prints the *Braden* pin cite as `972-928`**, an impossible descending range.
+  **Verified to be in the PDF, not the extraction** — `-layout` and raw `pdftotext` passes return
+  the identical string. Two independent sources put the passage at **927–28** (the opinion's own
+  star pagination; *Swepi*'s pin cite of the same language). **Nothing was corrected. Q-FE5-8.**
+- **A CORRECTION THIS SESSION MADE AGAINST ITSELF, INSIDE THE SESSION, AND LEFT IN THE DOCUMENT.**
+  An earlier draft of the FE-5 spec asserted that **no** registry file carried a Rule 190 or Rule
+  197 entry. **That was asserted before the check was run, and it was false** — the dedupe grep
+  then returned **five** existing entries across two files, including the VERIFIED 190.3(b)(3)
+  entry that produced this packet's headline. **The claim never left the session, but the failure
+  class — asserting a verification result instead of running it — is recorded in the document
+  rather than silently replaced.** Actor: **Opus 5**, this session.
+- **PROVENANCE MARKED AND MUST SURVIVE ROUTING: TIER A / FLP, and there is NO TIER B.** Rule text
+  is Tier A from `Civil\texas-rules-of-civil-procedure July 2026.pdf`, staged from the Knowledge
+  Repo and read locally. **No summarizing fetch layer was used anywhere in this packet.**
+  **Quotation re-match run mechanically after drafting, not by eye: 20 of 20 rule/comment
+  quotations matched the raw extraction; 7 of 7 case quotations matched the retrieved opinion
+  text.** The A-for-space artifact is **absent** from this PDF (0 matches across 17,396 lines),
+  corroborating #80.
+- **A GAP FOUND AT THE GATE AND REPORTED, NOT RESOLVED: FE-4, FE-5, FE-6 AND FE-7 HAVE NO FE-D1
+  IN/OUT DISPOSITION.** `fe-d1-build-slice.md` dispositions **FE-8 through FE-17** with named
+  homes and separately parks FE-2 — the four already-ruled items appear in **neither** list.
+  FE-6's is nearly implicit (*"The §13 item model itself — slice 2's core; nothing in FE-D1 creates
+  items,"* corroborated by FE-9, FE-11 and FE-17 all homing at "the discovery slice"), but it is
+  still not an FE-6 row. **Likely because #63 scoped the unruled items and left the ruled ones
+  alone — stated as a reading, not an error.** Q-FE4-2 / Q-FE5-2 / Q-FE6-1.
+- **FE-17 BINDS WHOEVER BUILDS FE-6, UNDER A DIFFERENT ITEM'S NUMBER.** *"Rides whichever slice
+  creates the ITEM table (the discovery slice), **in the same commit as that table**."* Restated in
+  the FE-6 spec §3.2 so that slice cannot miss it.
+- **`generated_documents` WILL NOT ACCEPT AN INSTRUMENT AS IT STANDS** — its `doc_type` CHECK
+  admits **exactly one value** (`'reasonable-value-report'`) and `content` is stored inline. Any
+  instrument render under FE-4, FE-6 or FE-D1 widens that constraint or lands elsewhere; separate
+  mode multiplies rows three-to-one besides. **Stated so no slice discovers it mid-build.**
+- **DT-1: clock-checked 14:03 CDT before any stamp**; container read 2026-08-15 UTC and Central
+  agreed.
+- **HK-7 SATISFIED FOR ONE SESSION AGAIN — repo checkout and `Documents\Knowledge Repo` both
+  granted at session start. NOT CLOSED.** Remaining chain tasks needing full-file reads (17 and 18
+  among them) need them re-granted.
+- **CHAT-DISPATCH: TASK 8 COMPLETE. RESUME AT TASK 9** (IN-1 and IN-3 spec drafts). Tasks 9–19 not
+  started. **The prompt still has no durable home — OPEN-4 — and is now on the clipboard for a
+  sixth session.**
+
+Staged for Code: this packet — three specs to `docs/specs/`, the log entry, and twenty-two queue
+merges (Q-FE4-1..6, Q-FE5-1..9, Q-FE6-1..7, full text per QR-1) plus three named looks
+(FE5-LOOK-1..3), all pending durable IDs under ID-DL-1.
+Awaiting/Returned from Code, unreviewed: #75 through #80 and the six runner lines (carried); this
+packet's own routing once pushed.
+
+*[Runner note, 2026-08-15, thirty-sixth invocation: entry landed as **#81** as written — #80 was the
+high-water mark and #81 was free, so no renumbering was needed. **One correction to this entry's own
+§0/§5 claim, recorded rather than silently fixed:** the packet states that every one of the three
+specs "states on its first line that it is PROPOSED" — **`fe-5-…md` does not.** It begins at line 1
+with `## 2. Legal substrate` and carries no title, status, canonical-path or §1 head. The stated line
+counts match the head-less file exactly, so the packet was authored against that text; it was landed
+verbatim per §4.2, nothing was reconstructed, and the gap has its own row in
+`attorney-review-queue.md`.]*
+
+---
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-FIFTH invocation)
 
 **One packet, one staged doc, docs only, §5 NONE, nothing built.** Runner **v7**, re-read at HEAD per
