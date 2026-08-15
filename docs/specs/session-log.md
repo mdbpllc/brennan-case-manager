@@ -45,8 +45,17 @@ item by item**). **Second batch of the day; the thirty-sixth ran two hours earli
   cannot see a paste.** The closure rests on the audit's AUD-1 inference — two design sessions read
   their own instructions headed `v18` with all its markers — and on Michael's ruling, not on
   anything this runner verified. **Paste date not stated; the row stays undated.**
-- **THE RE-MEASURE CHECKPOINT (B), REPORTED AND NOT ACTED ON: the rewritten BUILD-STATE is
-  `NEWCOUNT` non-blank.** `BANDTEXT` **Reported only — acting on the thresholds is design-side and
+- **THE RE-MEASURE CHECKPOINT (B), REPORTED AND NOT ACTED ON: the rewritten BUILD-STATE is 149
+  non-blank — band ≥146, "REAL GROWTH."** Measured with the packet's own formula
+  (`grep -cv '^[[:space:]]*$'`), cross-checked, ledger pointer present, **within the 150 cap.**
+  **The honest shape of that number, because it will read as a surprise: it went UP, not down.**
+  The seventieth refresh measured **147** two hours earlier; applying A-1–A-6 took it to **151** —
+  **over cap** — and it came back to **149** only after displacing the #75 and #80 memo entries from
+  four lines to two. **The dispositions did not free space; they cost it.** The ruled corrections are
+  wordier than the one-line `AUD-n` pointers they replaced, because each now carries its ruling and
+  its recompute discipline, and the same refresh had to house the #81 form-engine material that
+  landed the same afternoon. **On B's terms that activates the tripwire check AND the structural
+  question, with OPEN-5(a) ruled first. Reported only — acting on the thresholds is design-side and
   Michael's, and neither §C nor §D was touched regardless of the number.**
 - **THE CAP NUMBER WAS NOT REOPENED**, deliberately, per the packet. **BS-1 stands at 150 non-blank.**
 - **SCOPE FENCES HELD.** No registry file, no `Go_Live_Gates.md`, no `CLAUDE.md`, no
