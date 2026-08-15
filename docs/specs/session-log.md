@@ -12,6 +12,213 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTIETH invocation) — the packet predicted a lock that was not there, and said "verify" often enough that verifying paid
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
+per QR-2 (unchanged). **QR-3 v7 gate PASSED natively: clean, on master,
+`HEAD == origin/master == 013e746`, 0 ahead / 0 behind** — ahead-check included. Packet:
+`push-to-code_wf2-wf8-email-workflow-spec_2026-08-15.zip` (CHAT-DISPATCH **Task 11**, design session,
+Opus 5, Cowork; **Michael did not participate and made no rulings**). Confirmed by Michael before
+execution. **Nothing superseded; nothing skipped as already built.** Entry **#85** below.
+
+- **The staged spec landed VERBATIM and matches its stated counts exactly — 758 non-blank / 953
+  raw**, byte-identical at 64,426 bytes. Head and tail both intact (no repeat of the #81 FE-5 head
+  defect). All five §1 reconcile checks re-verified natively at `013e746`: the target path was free,
+  `Q-WF-` and `WF-LOOK-` returned **ZERO** repo-wide, `(#85)` was free, WF-2–WF-8 were all still ⬜,
+  and the thirteen word-bounded substrate probes returned **0** across `db/schema.sql` and all three
+  migrations. **`Q-WF-` and `WF-LOOK-` deliberately not minted** — `WF` is a live durable series and
+  minting into it is Michael's act.
+- **THE ONE PACKET CLAIM THIS RUNNER CHECKED INDEPENDENTLY HELD, AND THE CHECK FOUND SOMETHING
+  ELSE.** The spec's WF-3 finding — that `generated_documents` is a precedent for a *column* but
+  cannot be WF-3's home — is exact: `doc_type`'s CHECK admits **one** value
+  (`'reasonable-value-report'`), and the table has no status and no set/parent column
+  (`db/schema.sql:515–527`). **Found in passing and NOT fixed: the two `privilege_tier` vocabularies
+  disagree.** `generated_documents` allows `('attorney-client','work-product','non-privileged')`
+  while `transcripts` allows `('privileged','work-product','non-privileged')` — yet the comment
+  above `generated_documents` says the vocabulary *"is the shared system-wide set."* **A schema
+  edit is outside this packet entirely (§6 bars adding or altering columns) and no WF row depends
+  on it; flagged here for Michael, changed nowhere.**
+- **Ten questions merged with FULL VERBATIM TEXT per QR-1**, plus both named looks, under
+  packet-local IDs only. **ID-DL-1 now governs SIX packets** (Tasks 6–11) and was annotated with what
+  is new rather than only the increment: this packet raises a **second** naming question of the same
+  class — **Q-WF-2**, the `T3` collision — so the record now holds **two open naming rulings at
+  once**, one about where packet-local questions land and one about a collision that gates five WF
+  rows either open or shut.
+- **All seven WF rows annotated add-only and ALL SEVEN STAY ⬜**, each with a pointer to the new spec
+  and its own gate re-verified. **Q-WF-10's pointer annotations were NOT added** — whether the rows
+  should cite the five treatments elsewhere in the repo is the question itself, and answering it by
+  doing it would have been the runner ruling on Michael's item. **The BAA/compliance review was NOT
+  added as an eighth gate** (§6: adding a gate to a ruled gate table is a ruling), **the `T` series
+  was NOT re-lettered**, and neither `email-workflow-requirements.md` nor `outlook-email-intake.md`
+  was edited.
+- **HK-7 annotated satisfied-for-one-session a SEVENTH time and again NOT closed** (session-scoped
+  grant; the packet's §6 says in terms not to close it). **OPEN-4 annotated a NINTH time** — resume
+  point is **Task 12**, and **eight tasks (12–19) still ride on a clipboard**.
+- **THE LOCK HYPOTHESIS BREAKS ITS STREAK, AND THAT IS RECORDED AS CAREFULLY AS THE CONFIRMATIONS
+  WERE.** The packet's §1 predicted a stale 0-byte `.git/index.lock` and told the runner to clear it;
+  **there was none** — after a bridge session of the same shape as the three that produced one. The
+  count is **three-for-four**: the hypothesis survives as a tendency, not a rule. The CRLF
+  false-DIRTY again did **not** reproduce natively (`git status --porcelain` returned zero lines).
+  Both annotated onto HK-7. The bridge's `HEAD == origin/master` was **not** treated as a gate pass.
+- **Every §6 DO-NOT honored.** Nothing built (§5 NONE); no WF row flipped; no table, column, or
+  migration added; no registry file opened or cited; no durable ID minted; WF-8 not nominated as
+  CD-1's first instrument consumer; the Entra registration, `.env`, `docs/outlook-setup.md` and every
+  Graph scope untouched; the §4.2 do-not-annotate list (`Q-IN1-7`, `Q-IN3-3`, `Q-IN2-9`, `Q-STAT-5`,
+  `LR-LOOK-1`, the route-(c) row) left alone — **they are cross-referenced inside this packet's own
+  rows, which is not annotation of theirs.**
+
+## 2026-08-15 (#85) — CHAT-DISPATCH TASK 11: the WF-2–WF-8 email-workflow spec — an ADOPTED document is not an adopted design, and the auth surface is a harder gate than any gate on the record (design session, Opus 5, Cowork)
+
+Design session, Opus 5, Cowork, 2026-08-15 Central (DT-1 clock-checked 16:43 CDT; container read
+21:43 UTC, Central date agreed). Repo read at HEAD through the device bridge (`013e746`).
+**Michael did not participate and made no rulings. Everything staged is PROPOSED.**
+
+- **ONE staged file: `docs/specs/wf-2-wf-8-email-workflow-spec-2026-08-15.md`** — 758 non-blank /
+  953 raw. Ten open questions with full text, packet-local `Q-WF-1..10`; two named looks,
+  `WF-LOOK-1..2`. **No registry file touched, no proposition entered or verified, no durable ID
+  minted, no row closed, no existing repo file edited.**
+
+- **THE GATE RESOLVED AS TASK 9's, NOT TASK 8's — and #84 predicted the opposite.** The Task 10
+  capture reasoned that because the underlying doc was ADOPTED by ruling, Task 11's risk would be
+  *"the ruling's scope is wider than the doc's text supports."* **The premise is wrong: the ruling
+  was explicitly narrowed in its own words, three times in three places** — *"it builds, schedules,
+  and authorizes nothing"* (addendum, and again at `attorney-review-queue.md:259`), and three rows
+  say **"Module design UNRULED"** in terms. **An ADOPTED document is not an adopted design.** What
+  #63 adopted is a 60-day mailbox survey (a catalog of observations) plus a gating structure plus
+  four cross-cutting constraints with rule force. **The spec therefore MAPS**, and its §1.1 draws
+  the elaborate-vs-map line section by section so a build session cannot read a mapped paragraph as
+  a ruled one.
+
+- **THE RISK IS REAL BUT DIFFERENTLY SHAPED, AND IT IS Q-WF-1:** all the "PROPOSED at the module
+  level" language lives in the adoption addendum and the queue, while the seven pipeline paragraphs
+  in the adopted document's own body are written in a survey's confident register (*"Module
+  implications: envelope-state tracking, returned-filing deadline alerts, service-failure
+  detection"*) with **no marking of their own**. A build session reading the file top-down meets
+  seven module descriptions before it meets any statement that none is ruled. **The document was
+  adopted VERBATIM, so adding an in-place marker is a wording act — Michael's, not a session's.**
+
+- **SEVEN OF SEVEN GATED; ZERO SATISFIED.** Checked row by row against BUILD-STATE at HEAD: WF-2
+  (T3, unauthorized under KICK-1) · WF-3 (T3 **+** document-storage model, which does not exist) ·
+  WF-4 (medical treatment records not built **+** an approval-queue design pass never run) · WF-5
+  (money machinery UNRULED — doubly gated) · WF-6 (T3, on the auto-intake residue only) · WF-7
+  (module design unruled **+** the money cross-link) · WF-8 (T3 **+** CD-1's service-story fields,
+  whose "first instrument consumer" #83 found has **never been named**). **No WF item is buildable
+  today, and none becomes buildable by a design pass** — every gate is either Michael's ruling or
+  another module's construction.
+
+- **`T3` IS AN UNFLAGGED NAMESPACE COLLISION, AND THE TWO MEANINGS GATE OPPOSITELY (Q-WF-2).**
+  Two independent `T1`–`T4` tiers exist in `docs/specs/`: `transcript-sort-and-route-design.md:148`
+  — *"Pipeline service (Python/NeMo/FastAPI): gated on P1 hardware"* — **UNAUTHORIZED under
+  KICK-1**; and `statute-text-and-bill-tracking-design.md:107` — *"LegiScan poller + matcher +
+  watch flags"* — **substantially BUILT** (`session-log.md:7718`, pinned to the statute series by
+  its own next sentence naming the `getSessionList` fixture; BUILD-STATE's live `/statutes` and
+  `/bills` screens; only the poller edge function undeployed). **Five WF gates say "gated on T3"
+  without naming which series** — one reading blocks the series, the other reads it as unblocked,
+  and **both are literally supported by a repo doc.** BUILD-STATE's naming caveat covers
+  *"IN / DE / CR / HK"* and does not mention `T`. **FLAGGED, NOT RENAMED** — the H → HK precedent
+  (#66) makes re-lettering Michael's act.
+
+- **THE HARDEST GATE IS NOT ON THE RECORD AT ALL (Q-WF-4).** The single auth surface is established
+  precisely by `docs/outlook-setup.md` and `outlook-edit-cancel-exercise-2026-08-13.md`: a
+  **single-tenant** (*"Accounts in this organizational directory only"*) **public-client browser
+  SPA** on MSAL/PKCE, **one delegated scope — `Calendars.ReadWrite`**, **per-browser tokens**
+  (*"MSAL tokens are per-browser"*), a `localhost:5173` redirect, and **no secret** (*"correct for
+  the SPA/PKCE flow"*). **Every WF pipeline is a background watcher measured in days and weeks**
+  (*"stuck for weeks," "weeks-long stalls," "10+ days"*). Graph webhooks need a publicly reachable
+  HTTPS endpoint answering a handshake in **10 s** and notifications in **3 s**; delta polling
+  removes the endpoint problem but not the background-execution one; background means **app-only
+  credentials**, i.e. a secret or certificate this registration deliberately lacks, **tenant-wide by
+  default** absent Exchange Application RBAC. And no mail scope exists — adding one is **a new
+  consent act on Michael's registration, his hand.** **PROPOSED: the WF series' true first gate is
+  "does this application acquire a server-side identity, and of what shape." That question is in no
+  queue row and no WF gate names it.**
+
+- **THE HIPAA CONSTRAINT WAS ALREADY ON THE RECORD AND THE ADOPTING RULING DID NOT CARRY IT
+  (Q-WF-5).** `docs/specs/outlook-email-intake.md` (captured **2026-07-23**, phone dictation,
+  Michael) states as a *"first-class design constraint"* that *"the entire pipeline — transport,
+  storage, indexing, any AI processing of email content — must be HIPAA compliant by design, not
+  retrofitted,"* and that *"any third-party processing of email content (including AI services)
+  needs BAA/compliance review before it touches real mail."* **That document is cited by neither
+  `email-workflow-requirements.md` nor the queue's WF rows nor #63** — verified by grepping every
+  file that references it. **So the BAA/compliance review is not among the seven named gates**,
+  eighteen days after it was captured as first-class, while
+  `criminal-appointment-intake-and-docket-enhancements.md:84` already points at that same doc for
+  what is now WF-6's residue. **Two specs on one subject, not pointing at each other — the K-6/K-7
+  death arriving through a different door. FLAGGED; neither file edited.**
+
+- **AND THE CONSTRAINT HAS NO AUTHORITY BEHIND IT ANYWHERE (Q-WF-6).** Registry dedupe run at HEAD
+  across **all four** `legal-rule-registry-*` files for HIPAA / PHI / business associate / 45 CFR /
+  ch. 181 / breach notification: **two hits, both the same unrelated entry** — Tex. Health & Safety
+  Code § 481.115(b), a POCS offense, matched on the code name alone. **There is not one privacy
+  proposition in a 34-entry backlog**, behind a constraint `CLAUDE.md` enforces as a hard rule.
+
+- **SOURCING — REPORTED, NOT PAPERED OVER (Q-WF-7).** No verbatim primary-law text was obtained.
+  The eCFR **official API** path returned **ROBOTS_DISALLOWED**; the eCFR reader URL returned **429**
+  twice then **paraphrase rather than quotation**; the SOURCING-sanctioned targeted fetch
+  `statutes.capitol.texas.gov/Docs/HS/htm/HS.181.htm` returned **the site's navigation shell twice
+  with no statutory text** (`?link=` never used). The Knowledge Repo corpus was **not reached** —
+  per **H5** a session does not sweep Michael's machine unprompted. **The only currency figure
+  recorded is the source's own: Title 45 `up_to_date_as_of` 2026-08-12, request date 2026-08-15
+  Central.** Everything in the spec's §6.5 is **TIER B**, and the Texas half is **unretrieved**.
+  **Three propositions drafted registry-style, ALL UNVERIFIED, NONE ENTERED.**
+
+- **THE DIVERGENCE, NAMED AND NOT RESOLVED (`WF-LOOK-1`).** HIPAA's "covered entity" reaches health
+  plans, clearinghouses, and providers — **not law firms** — and "business associate" is defined
+  *with respect to a covered entity*, which at least raises whether a plaintiff's firm obtaining
+  records under its own client's authorization is acting on a provider's behalf at all; while Tex.
+  Health & Safety Code ch. 181's "covered entity" is understood to be far broader. **If both hold,
+  the constraint as captured is aimed at the wrong statute** — not wrong about the obligation,
+  wrong about its source. **This session asserts none of it.** Same failure class as the *"79
+  codes"* figure at #84 and *"each party"* vs *"any other party"* at #81, and the same act: **flag
+  it, name the look, change nothing.** The cheapest first move is a fact question about the firm,
+  not a research task — **whether any BAA has been signed with any provider or vendor.**
+
+- **The architecture is NOT blocked on that answer, and the spec says so.** §6.4's seven handling
+  requirements follow from `CLAUDE.md:272–275` (*"PHI-touching AI processing … runs **locally** on
+  Michael's GPU machine … Do not introduce cloud AI processing of case documents without an
+  explicit decision from Michael"*) and hold whichever way the authority resolves. **PROPOSED, and
+  it is Q-WF-3: that rule is probably what "gated on T3" actually MEANS for this series** — a
+  PHI-processing-locality gate, not a speech-model gate. **Q-IN1-7 asks the identical question of
+  IN-1 and reaches the same dependency.**
+
+- **NO SUBSTRATE EXISTS — not a thin one, none.** Every WF pipeline would create its first table.
+  Two precedent shapes named with their caveats: `calendar_events` (`outlook_event_id`,
+  `sync_status`, `sync_error`, `last_sync_at`) is the right **column** shape for a Graph mirror —
+  **but it is also the table the unfixed duplicate-on-first-edit defect lives against**, so it is
+  no precedent for a sync strategy; and `generated_documents.privilege_tier` is a precedent for
+  classifying stored content by privilege — **but that table cannot serve WF-3**, since its
+  `doc_type` CHECK admits exactly one value and it has no status and no set/parent column.
+  Any WF table carries its own GRANT from birth (`ALTER DEFAULT PRIVILEGES` is not set) and the RLS
+  probe moves with it.
+
+- **FIVE ROWS HAVE SUBSTANTIVE TREATMENT ELSEWHERE THAT THE ROW DOES NOT CITE (Q-WF-10)** — WF-2's
+  contested filing moment and EFSP exposure at `bexar-local-rules-and-efiling-2026-08-15.md` (#80,
+  `LR-LOOK-1` already open); WF-6's residue at
+  `criminal-appointment-intake-and-docket-enhancements.md:84`; WF-3's storage precedent at
+  form-engine §10; WF-4's client dimension at CL-2; WF-8's at CD-1's deferral. **Recorded so none
+  is re-derived. Whether the rows get pointer annotations is Michael's.**
+
+- **ID-DL-1 NOW GOVERNS SIX PACKETS** (Tasks 6, 7, 8, 9, 10, 11). `Q-WF-` and `WF-LOOK-` were
+  re-checked repo-wide, both free, **both deliberately not minted** — `WF` is a live durable series.
+
+- **HK-7: satisfied for one session a SEVENTH time — NOT closed.** Session-scoped grant of
+  `C:\Users\Brennan\brennan-case-manager`. **The CRLF false-DIRTY and the `.git/index.lock` pattern
+  are again consistent with #83/#84** and again not claimed as a gate pass.
+
+- **Model-usage note:** Opus 5 per §7.2 (chain execution stays off Fable). **No meter reading was
+  stated this session** — the last recorded snapshot is #84's, and it is a timestamped snapshot,
+  not a standing figure.
+
+Staged for Code: this entry; `wf-2-wf-8-email-workflow-spec-2026-08-15.md` (NEW); queue
+annotations for WF-2–WF-8 plus ten questions with full text; BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: the fortieth invocation's handback.
+
+*(Runner note, fortieth invocation, added at execution and not part of the design session's entry:
+the `.git/index.lock` predicted by this packet's §1 was **NOT present** natively — the first
+bridge session in four that did not leave one, so the pattern this bullet calls "consistent with
+#83/#84" is three-for-four rather than four-for-four. Recorded here because the entry above states
+the expectation and the record should not carry an unmet prediction as if it were met.)*
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; THIRTY-NINTH invocation) — the first spec in this chain whose gate resolves both ways
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
