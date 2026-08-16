@@ -12,6 +12,121 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-FOURTH invocation) — the Step 1 report was right and its evidence was not, and a packet that tells you its own §7 is a trap
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 15** —
+the communications-log ingest research memo. Runner re-read at HEAD per QR-2 (the `/queue-runner`
+command is a pointer and was followed as one); **v8 read and v8 followed.**
+
+- **THE GATE PASSED, AND THE SECOND PASS IS WHY THAT SENTENCE IS TRUSTWORTHY.** `git fetch origin`
+  then clean, on master, `HEAD == origin/master == ab3a61d`, 0 ahead / 0 behind — and re-grounded on
+  a live **`git ls-remote origin master`**, which returned `ab3a61d`. **The first Step 0 report cited
+  `git rev-parse origin/master`, which reads the LOCAL tracking ref and is only as fresh as the last
+  fetch** — it cannot tell "origin is here" from "origin was here when we last looked." Right answer,
+  insufficient evidence. **That is the QR-5 blind spot reappearing one invocation later, in the
+  verification rather than in the close-out.**
+- **THE FORTY-THIRD INVOCATION CLOSED COMPLETELY — SAID WITH ITS EVIDENCE, NOT AS A BARE NEGATIVE.**
+  `ab3a61d` is at `origin/master` on `git ls-remote`, and `inbox/` re-listed holds only this batch's
+  zip: **`push-to-code_re-1-referral-engine-inputs_2026-08-16.zip` is gone**, as is the forty-second's
+  QBO zip. **No QR-5 failure carries into this line.** Recorded this way deliberately — the
+  forty-second's stranded push was invisible until the ahead-stop fired, and *"nothing carries
+  forward"* asserted flatly is the same shape of unchecked claim QR-5 was ruled to kill.
+- **MM-1 CONFIRMED BY MICHAEL IN-SESSION.** No other machine was running the queue. **It is not
+  verifiable from the repo and was not treated as if it were** — it was asked before Step 2.
+- **THE STEP 1 REPORT WAS AUDITED BEFORE IT WAS ACTED ON, AND TWO OF ITS FIVE CLAIMS WERE RIGHT FOR
+  THE WRONG REASON.** Five independent read-only auditors — carry-forward, routing table, literal
+  step compliance, an adversarial pass tasked with **refuting** the absence claim, and a completeness
+  critic — returned 65 findings, 23 non-confirmed. **The go/no-go conclusion survived unchanged; the
+  evidence for it did not.** Besides the gate above: **the already-executed check had rested partly on
+  `git log --grep`, which searches COMMIT MESSAGES, not paths** — a command that returns empty whether
+  or not the file was ever committed. Re-grounded on all-history path scans, dangling-commit checks and
+  verbatim content greps, then **positively corroborated** — the log lists Task 15 as the next
+  unstarted task. **Both failures share one shape: a check that cannot produce a disconfirmation.**
+  Full findings and six proposed `QR-6(a)`–`(f)` conventions:
+  **`docs/specs/queue-runner-step1-audit-2026-08-16.md`** (PROPOSED, nothing ruled).
+- **THE PACKET TOLD US ITS OWN §7 WAS A TRAP, AND IT WAS RIGHT.** §7's table does **not** carry the
+  full question text QR-1 demands — it says so in terms: *"The full text of each is in the memo's §11
+  and §12; carry it, not the label."* **A runner merging §7 verbatim would have destroyed twenty-one
+  questions — the precise failure that retired K-6/K-7.** The merge was sourced from the memo's **§11,
+  §12 and §9.1** instead. **And the count in the packet's own §0 and §3 is short: *"twelve questions
+  and four looks"* is sixteen, but row 17 collapses `P-COM-1..5` into one label, so the real merge is
+  TWENTY-ONE.** A defect in the packet's summary of the memo, not in the memo.
+- **THREE PACKET DEFECTS REPORTED AND CHANGED NOWHERE (§6 item 14, the K-6/K-7 rule).** (1) **§4.1's
+  "Source file in packet" names a path that does not exist** — it reads
+  `docs/specs/communications-log-ingest-research-2026-08-16.md`, but the zip is **flat**; a scripted
+  copy from it fails. Copied from the real flat path; **the manifest was not corrected.** (2) The
+  sixteen-vs-twenty-one count above. (3) **The memo's five `session-log.md:` line cites were accurate
+  at `ab3a61d` and go stale the instant this entry is prepended to that same file** — true when
+  written, false when committed, **structurally identical to the QR-5 defect.** Proven rather than
+  asserted: #88 cites `session-log.md:7170` for "out-of-area matters" and the phrase now sits at
+  **7404**, off by exactly the 234 lines #88's own commit added. **Reported, not repaired.**
+- **THE MEMO LANDED BYTE-EXACT.** 60913 bytes / 936 raw / 753 non-blank — all three match §4.1's
+  stated size — with its `PROPOSED — RESEARCH ONLY` status line and every `[A]`/`[B]`/`[C]`/`R`
+  provenance mark intact. **`[C]` was NOT promoted to `[B]`.** No reformatting, no renumbering.
+- **`(#89)` RE-VERIFIED FREE repo-wide before use**, per §1 item 3.
+- **THE QUEUE MERGE IS TWO ACTS AND THE SECOND ONE IS IN NO CHECKLIST.**
+  `attorney-review-queue.md`'s Status header carries a per-batch *"Reconciled again to session-log
+  #NN"* sentence and closes *"keep it current or the pointer lies"* — and **neither runner Step 4
+  item 2 nor the packet's §8 names it.** The omission has already happened once and is recorded
+  **inside that same header** (#84's sentence went missing while its rows landed normally). Both acts
+  ran this batch; naming the second one is `QR-6(b)`.
+- **A PACKET-ADDED ACT INSIDE `.git/`, AUTHORIZED IN-SESSION RATHER THAN PERFORMED SILENTLY.** §8.1
+  asked for deletion of `.git/index.lock.claude-stale-2026-08-16`, which appears in **no routing-table
+  row and no Step 4 item.** It was **inert** — no literal `.git/index.lock` existed and `.git/index`
+  had an mtime four minutes after the rename, so index-modifying commands were already running — so it
+  was disclosed as cosmetic, not as unblocking. **Michael authorized it; it was deleted and the
+  absence verified.** **§8.1's mechanism hypothesis was NOT adopted and is NOT proposed as a
+  BUILD-STATE amendment**, exactly as the packet asked; only the tally moved.
+- **THE §6 DO-NOT LIST WAS HONORED IN FULL, INCLUDING THE THREE THAT BITE.**
+  `future-modules-capture-2026-07-28.md` **not annotated** (annotating it answers `Q-COM-1`),
+  `transcript-workflows.md` **not edited** (its §1.3 prose and the built `privilege_tier` default
+  contradict each other and **reconciling them is a ruling, not a repair**), and **`db/schema.sql` and
+  every migration untouched** — four live CHECK constraints and two defaults are reported as defects
+  and **none was fixed.** No registry file opened; **`P-COM-1..5` stay UNVERIFIED and the backlog
+  stays 34.** No durable IDs minted.
+- **`ID-DL-1` NOW GOVERNS A TENTH PACKET.** `Q-COM-`, `COM-LOOK-` and `P-COM-` re-checked repo-wide at
+  HEAD: **ZERO**. **`HK-7` annotated satisfied-for-one-session an ELEVENTH time and again NOT closed.**
+  **`OPEN-4` annotated a THIRTEENTH time**, resume point **Task 16**, four tasks still on a clipboard.
+- **HEALTH CHECK NOT RUN, AND SAID SO RATHER THAN SKIPPED SILENTLY.** §5 is NONE and no `src/` or
+  build-tooling path was routed, so `npm test` / `build` / `lint` would prove nothing about this batch.
+  Stating it is `QR-6(f)`.
+- **THIS RUNNER LINE IS WRITTEN UNDER QR-5 LIMB (a): it asserts nothing about its own push or its own
+  deletion**, both of which happen after it is committed. #88's Awaiting line asked whether the
+  `Bash(rm -f inbox/*)` matcher suppresses the prompt; **that answer goes to Michael in-session and,
+  if it fails, rides into the NEXT runner line** — it cannot truthfully be written here. **The
+  deletion ran by EXPLICIT FILENAME rather than the glob**, because Step 1's STOP is an open window in
+  which a packet can land and one was in fact swapped mid-STOP an invocation ago; the packet's identity
+  was pinned first (37,195 bytes, mtime `2026-08-16 14:38:58`, sha256 `eb0e2981…`). That is `QR-6(c)`.
+
+## 2026-08-16 (#89) — CHAT-DISPATCH TASK 15: the communications-log ingest memo — the dispatch called two constraints "ruled" and the record says in terms that no ruling was made, the one SMS surface on the committed stack cannot be read at all, and a NOT-NULL default has been asserting privilege on every row since the table shipped (design session, Opus 5, Cowork)
+
+**One staged file, docs only, nothing built (§5 NONE).** `docs/specs/communications-log-ingest-research-2026-08-16.md` — 753 non-blank / 936 raw, 60913 bytes. **PROPOSED — RESEARCH ONLY.** Michael did not participate and made no rulings. Twelve questions (`Q-COM-1..12`) and four looks (`COM-LOOK-1..4`), packet-local; five propositions (`P-COM-1..5`), ALL UNVERIFIED, **no registry file opened**. Repo read full-text at HEAD, `ab3a61d`; **both bridge folders granted at session start**, which is what made §9 possible.
+
+- **THE GATE RESOLVED A FIFTH WAY, AND IT IS THE SHARPEST YET: THE DISPATCH'S OWN WORD IS CONTRADICTED IN TERMS.** Task 8 elaborated rulings (#81); Tasks 9–11 mapped with none to elaborate (#83–#85); Task 12 had the direction ruled and the destination not (#86); Task 13 was told "staged constraints govern" when they were a proposal (#87). **Task 15 was told "RULED constraints govern," and `session-log.md:4947` says *"No ruling was made on Slack, Teams, or Claude Tag adoption; nothing entered the build queue,"* while `:4812` records the whole exchange as *"Claude recommendations, unruled."*** Both named constraints trace to one paragraph of `future-modules-capture-2026-07-28.md` §3 — the same file `BUILD-STATE.md` still lists as **"UNRULED, adopt nothing,"** and the same gate as `Q-QBO-1`, now firing a second time.
+- **AND THE TWO CONSTRAINTS RESOLVE DIFFERENTLY, WHICH IS THE FINDING.** The **scope exclusion** (Claude-in-shared-channel out, paralegal hire the decision point) is **HONORED and costs nothing** — declining to evaluate forecloses no future choice, and the memo says so in terms. The **architectural commitment** (platform-agnostic chat-source ingest) is **NOT** treated as governing; it is tested as a hypothesis and **priced for the first time** (`Q-COM-1`). **The three Claude Tag gates stay ID-LESS**, as #44 deliberately left them.
+- **PLATFORM-AGNOSTICISM HAS A PRICE AND NOBODY HAD PAID IT.** Relative to mail, a Teams chat path costs **a second public HTTPS endpoint** (`lifecycleNotificationUrl` is mandatory past one hour), **private-key custody** (content-bearing notifications require an encryption certificate), **an outside vendor's discretionary approval**, and **an unestablished metering position** — for a channel **the firm does not currently use**. Not an argument against it; the first statement of its cost.
+- **A NEW GATE CLASS ON THIS RECORD (`Q-COM-5`).** #85 established that every WF gate is *"either Michael's ruling or another module's construction."* The Teams **protected-API** process is **neither** — *"complete the following request form,"* reviewed *"every Wednesday"* with approvals deployed *"every Friday or Monday."* It cannot be ruled open and cannot be built around. **RESEARCH HONESTY: the list of WHICH APIs are protected did NOT render across two fetch attempts** — the only enumerated datum recovered is a negative (*"Send message is not a protected API"*), so whether the chat-read surfaces are on it is **NOT established** (`COM-LOOK-1`). Same class as #87's four unreadable Intuit fetches.
+- **THE SMS HEADLINE, AND IT LANDS ON THE STACK #43 PREFERRED.** Teams SMS now exists (US/CA), and it needs **three licences plus A2P Brand *and* Campaign approval before any number sends — expressly including businesses that send individual, non-marketing messages.** It is **1:1 only with no MMS and no attachments**, so in a PI practice **it cannot receive the scene photo, the insurance card, or the bill** — the thing clients actually send. **And it is apparently not exposed to Graph at all**, which would mean the one SMS surface on the already-committed M365 stack **cannot be read by this application**. **THAT ANSWER IS THE WEAKEST SOURCE IN THE MEMO** — a Microsoft Q&A moderator's accepted answer, marked **`[C]`, a provenance tier this memo INTRODUCES and flags rather than folding into `[B]`** (`Q-COM-9`); the vendor's own SMS page is **silent** on Graph, retention and eDiscovery, and silence is not a documented no (`COM-LOOK-3`).
+- **THE DISPATCH'S PHRASE JOINS TWO UNLIKE THINGS.** "SMS/voice sources per the planned capture kit" — but the capture kit (`transcript-workflows.md` §9) is **entirely a voice kit** (Tascam DR-05XP, Rode SmartLav+, 48 kHz 32-bit float). **There is no SMS half.** And `COM-LOOK-4` is a one-line fact question only Michael can answer — **is client texting happening today, and on what number** — because the firm's number on the record is a **cell**, and if it is, the largest real gap is **the one channel with no API of any kind.**
+- **THE ONLY MICROSOFT-NATIVE PATH TO CALL CONTENT INVERTS A RULING (`Q-COM-8`).** Teams compliance recording is **policy-based and always-on** — *"users might not be able to disable the recording"* — while ruling **8.3 chose OPT-IN per call**, deliberately. Independently, **the media goes to the partner's storage**, converting **8.1's** architectural guarantee (*"never leaves hardware he controls … satisfied by architecture rather than by contract"*) back into a contractual one. **Opposite defaults, not a configuration difference. FLAGGED, NOT DESIGNED AROUND.**
+- **THE ONE IDEA WORTH ITS OWN LINE, PROPOSED:** a communications **log** and a communications **archive** are different products, and **only the archive needs content.** `callRecords` gives who/when/how-long with **no audio and no transcript** — so **no privilege, consent, or PHI problem attaches, because nothing was captured.** Limits stated: **30-day retention** (so a runner is still needed) and tenant-only visibility (today, nothing).
+- **Q-WF-4 NOW HAS A THIRD CONSUMER, AND IT IS THE MOST DEMANDING (`Q-COM-4`).** #85 recorded two; #88 declined to add a third because referral acts are attorney-initiated and synchronous. **A communications log wants everything, continuously** — even the metadata-only version needs a scheduled runner to beat a 30-day window. **Recorded as a fact about that question; Q-WF-4 was NOT amended.**
+- **THE SCHEMA FINDING, AND IT IS LIVE RATHER THAN PROSPECTIVE.** `transcripts.source` and `staging_items.source` **both** admit exactly `('recorder','phone','manual')` — no chat, no mail, no SMS value — and **`staging_items` is the table an ingest pipeline would land in.** All eleven `context_type` values are audio or meeting contexts. **A written-channel communication has nowhere to be** (`Q-COM-2`). **And identity resolution has no substrate at all:** `email` **0**, `phone_number` **0**, `mobile` **0**, `address` **0**, `handle` **0**, `upn` **0**, `external_id` **0** word-bounded across `db/schema.sql` and all three migrations — `parties` carries only `display_name`, `role_tags`, `aliases jsonb` and free-form `fields jsonb`. **CD-1 built typed aliases and a multi-match FLAG for NAMES and nothing for addresses** (`Q-COM-3`).
+- **A FIFTH INSTANCE OF THE `Q-RE-8` ABSENCE PATTERN — AND THE FIRST THAT IS ALREADY LOAD-BEARING IN SHIPPED CODE.** Across all four registry files at HEAD: **`192.5` 0 · `503` 0 · `work product` 1 · `work-product` 1.** Seven `privilege` hits, **every one about assertion mechanics** (193.3's withholding statement, boilerplate objections, burden). **The registry knows how to ASSERT a privilege and contains no statement of what work product IS or what the privilege COVERS** — while `db/schema.sql` carries **two live `not null` `privilege_tier` columns**. The other four absences were about things not built. **This one has been writing rows.**
+- **THE DEFAULT IS ITSELF A LEGAL CONCLUSION, AND FOR TWO CONTEXT TYPES IT IS CONTRARY TO THE RULE (`Q-COM-11`).** Both columns read `default 'work-product'`. **TRCP 192.5(d) `[A]`: *"an assertion that material or information is work product is an assertion of privilege."*** But **192.5(c)(1) `[A]`** excepts witness statements, and **192.3(h) `[A]`** makes *"any substantially verbatim transcription"* of a recording of a witness's oral statement **a witness statement** — while *"Notes taken during a conversation or interview with a witness are not a witness statement."* **So `'witness_interview'` and `'deposition'` rows default to a characterization the rule excludes** — and `transcript-workflows.md` §1.3 **already says the opposite in prose** (*"presumptively discoverable at creation"*). **FLAGGED, NOT FIXED; no schema file touched, `transcript-workflows.md` not edited.**
+- **AND THE PIPELINE ITSELF SITS ON THAT LINE (`Q-COM-12`).** Canary outputs *"punctuated, capitalized, timestamped text"* — **a substantially verbatim transcription.** So the decision to transcribe can convert what would have been an attorney's notes into an **excepted, discoverable witness statement**, and a log that transcribes by default **makes that conversion at scale with no decision point.** The record knew the first half (*"Covert capture does not change discoverability"*) as a property of witness interviews; this frames it as a property of **the pipeline**.
+- **THE TWO PRIVILEGE VOCABULARIES STILL DISAGREE AND A LOG WOULD BE THE THIRD CONSUMER (`Q-COM-10`).** `generated_documents` allows `('attorney-client','work-product','non-privileged')`; `transcripts` allows `('privileged','work-product','non-privileged')`; `db/schema.sql:514` calls the first *"the shared system-wide set."* **They do not map cleanly either way** — narrowing may be wrong, widening loses which privilege. **#85 flagged it; nothing has moved; choosing silently would settle it by implementation.**
+- **SOURCING, HONORED AND REPORTED.** `[A]` = clean-authority PDFs read locally (TRCP **July 2026**; TRE **"Effective July 2, 2026"** on its face — **each PDF's own currency statement, never inferred from content**). **EVERY `[A]` QUOTATION WAS SPOT-CHECKED MECHANICALLY AGAINST RAW EXTRACTION: 8 fragments, 8 PASS, 0 FAIL**, with the two 3-occurrence TRE counts **reported rather than smoothed over** (the definitional formula recurs across the Article V rules; the quoted text is 503(a)(5), read in place). **CHARACTERIZATION, NOT A GUESS: the Legislature's doubled-literal-`A` artifact does NOT appear in the Supreme Court's rules PDFs — `AA` count in raw TRCP extraction is 0. Do NOT carry the statute normalizer to these files.** **A SECOND VENDOR DATE CONFLICT, FLAGGED NOT RESOLVED:** one Microsoft page says Teams API metering ended 2025-08-25, says it *"will be removed in June 2026,"* is **still published on 2026-08-16**, and still carries a rate card — so the metering position is **UNESTABLISHED**, not "free" (`Q-COM-6`, `COM-LOOK-2`). Same shape as #87's two Intuit conflicts.
+- **`ID-DL-1` NOW GOVERNS A TENTH PACKET.** `Q-COM-`, `COM-LOOK-` and `P-COM-` were collision-checked repo-wide at HEAD and returned **ZERO**; they stay **packet-local and were deliberately NOT minted** — minting is Michael's act, per the `Q-PR3-` / `Q-QBO-` / `Q-RE-` precedent.
+- **THE #88 BRIDGE LESSON WAS APPLIED RATHER THAN RE-LEARNED.** `git rev-parse origin/master` and `git rev-list --left-right --count origin/master...HEAD` were **both run** (0/0, `inbox/` empty) — and the memo states in terms that this is **not** a QR-3 pass and reasons accordingly. **No scratch was written into a connected folder:** corpus extraction ran in the device VM's own `/tmp` per the 2026-08-16 method note.
+- **Nothing built. No registry file opened. No schema file touched. No existing repo document edited or annotated** — not `future-modules-capture-2026-07-28.md` (annotating it answers `Q-COM-1`), not `transcript-workflows.md`, not `attorney-review-queue.md`. **No `src/` read** — `Q-PR3-1` stays open and unassumed.
+
+**Next:** CHAT-DISPATCH **Tasks 16–19** — 16 (T3 pilot-recording protocol), 17 (session-log TOC, Sonnet-eligible), 18 (go-live runbook), 19 (INTERACTIVE, registry sign-off, Michael live). **RESUME AT TASK 16.** Four tasks now ride on the clipboard.
+
+**Staged for Code:** `docs/specs/communications-log-ingest-research-2026-08-16.md` (this packet).
+
+**Awaiting/Returned from Code, unreviewed:** per the current top entry — carry forward unchanged, plus this entry. **#75 through #89 remain design-unverified** — recomputed from the log at HEAD this batch (A-4), not copied from the packet. *(Runner addition, forty-fourth invocation: also unreviewed — `docs/specs/queue-runner-step1-audit-2026-08-16.md`, whose `QR-6(a)`–`(f)` are PROPOSED conventions awaiting Michael.)*
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-THIRD invocation) — the ahead-stop fires on a real stranded push, and the fix for a false sentence is executed by the batch it binds
 
 **One packet, one staged file, docs only, nothing built (§5 NONE)** — plus **`QR-5`, a ruled
