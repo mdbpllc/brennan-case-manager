@@ -12,6 +12,172 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTY-SECOND invocation) — six checks, six passes, and a memo whose headline is an absence in the vendor's own scope list
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
+per QR-2 (unchanged; the `/queue-runner` command is a QR-2 pointer and was followed as one).
+**QR-3 v7 gate PASSED natively: clean, on master, `HEAD == origin/master == 4146a4c`, 0 ahead /
+0 behind** — ahead-check included. Packet:
+`push-to-code_qbo-integration-research-memo_2026-08-15.zip` (CHAT-DISPATCH **Task 13**, design
+session, Opus 5, Cowork; **Michael did not participate and made no rulings**). Confirmed by Michael
+before execution. **Nothing superseded; nothing skipped as already built.** Entry **#87** below.
+
+- **The staged memo landed VERBATIM and matches its stated counts exactly — 580 non-blank / 721
+  raw**, 51,316 bytes, copied byte-for-byte rather than retyped. Head intact (title, `STATUS:
+  PROPOSED — RESEARCH ONLY` line, canonical-path line); tail intact. **No shortfall, nothing
+  reconstructed.** The `[V-1]` / `[V-3]` tier marks were left exactly as written per §6.7 — **10 and
+  3 occurrences respectively, and no `[V-2]`-bracketed mark exists in the file**, which is the
+  source's own choice and was not "corrected."
+- **All six §1 reconcile checks re-verified natively at `4146a4c`, and all six held.** (1) Target
+  path free — no QBO-named file existed under `docs/specs/`, so a new file was written rather than a
+  reconcile. (2) `Q-QBO-[0-9]+` and `QBO-LOOK-[0-9]+` returned **ZERO** word-bounded repo-wide, and
+  **both were deliberately NOT minted** — there is no `QBO` durable series and minting is Michael's
+  act (**ID-DL-1 now governs an EIGHTH packet**). (3) `(#87)` free in `docs/`; the highest live entry
+  number is #86. (4) `BUILD-STATE.md:117` still reads **"UNRULED, adopt nothing:
+  `future-modules-capture-2026-07-28.md`"** and no session-log entry has ruled the QBO proposal — the
+  only QBO material in the log is #29/#30 (2026-07-28), which records it as PROPOSED and unruled, so
+  the memo's frame holds. (5) The registry-absence sweep re-ran across **all four**
+  `legal-rule-registry-*` files: `iolta` **0**, `trust` **0**, `safekeeping` **0**, `commingl` **0**,
+  `client funds` **0**, `escrow` **0**, `disciplinary` **1** — and that one hit is
+  `legal-rule-registry-draft-entries-medical-billing.md:213`, the Ins. Code §146.004
+  no-disciplinary-action clause inside an unrelated health-benefit-plan definition, exactly as
+  reported. (6) The schema sweep re-ran across `db/schema.sql` and **all three** migrations:
+  `external_id`, `external_ref`, `source_id`, `qb_`, `quickbooks`, `third_party`, `integration` —
+  **zero each**, and `db/schema.sql` carries **36** `create table` statements. **The memo's §3.1 and
+  §9 both rest on results that reproduce.**
+- **THE HEADLINE IS AN EVIDENCED ABSENCE IN THE VENDOR'S OWN SCOPE LIST, and it is Michael's to
+  rule.** Three independent scope lists show a single accounting scope granting **full read/write**
+  with **no read-only variant**, so "read-only first" can be a property of the code but **never of
+  the grant** — the token authorized against the firm's live books is read/write whatever the
+  integration does with it. **The runner did not re-fetch or re-verify any Intuit fact** (§6.10 bars
+  it, and the memo's §2.1 already records that the canonical `developer.intuit.com` reference was
+  **unreadable — four fetches, four navigation shells**).
+- **§7 open items merged into `attorney-review-queue.md` with FULL question text per QR-1** —
+  `Q-QBO-1..8` and `QBO-LOOK-1..4` (packet-local, recorded as such), plus **`Q-WF-4` annotated with
+  a second consumer**, **`Q-WF-6` and `Q-STAT-5` annotated with a third registry absence of the same
+  shape**, and **ID-DL-1, HK-7 and OPEN-4 re-annotated without re-glyphing.** Nothing closed.
+- **Nothing built, nothing verified, no durable ID minted, and every file the packet fenced off was
+  left untouched** — `future-modules-capture-2026-07-28.md` (annotating it answers `Q-QBO-1`),
+  `Go_Live_Gates.md` (appending a gate answers `Q-QBO-4`), all four `legal-rule-registry-*` files,
+  `db/schema.sql` and all three migrations. The Reports-API date conflict (**2026-08-31** first-party
+  vs. **2026-06-30** third-party) was **flagged, not resolved** per §6.9. Registry backlog unchanged
+  at **34**. Packet deleted after execution per Step 4.5; this entry and #87 are the record.
+
+## 2026-08-15 (#87) — CHAT-DISPATCH TASK 13: the QBO integration research memo — no read-only scope exists, reads are the metered half, and a client secret lands the question on Q-WF-4 (design session, Opus 5, Cowork)
+
+Design session, Opus 5, Cowork, 2026-08-15 Central (DT-1 clock-checked 17:46 CDT; container read
+22:46 UTC, Central date agreed). Repo read full-text at HEAD through the device bridge (`4146a4c`);
+**`git fetch` cannot run there, so no QR-3 pass was recorded design-side.** **Michael did not
+participate and made no rulings. Everything staged is PROPOSED.**
+
+**One staged file:** `docs/specs/qbo-integration-research-memo-2026-08-15.md` — 580 non-blank / 721
+raw. **Eight open questions with full text (`Q-QBO-1..8`) and four named looks (`QBO-LOOK-1..4`), all
+packet-local IDs, none minted.** Nothing built, no registry file touched, no proposition entered or
+verified, no row closed, no existing repo file edited, no schema file touched. Registry backlog
+unchanged at **34**.
+
+- **THE GATE RESOLVED A FOURTH WAY, AND IT IS PROPOSED AS AN EXTENSION OF #86'S FRAMING, NOT A
+  CORRECTION OF IT.** Task 8 elaborated rulings; Tasks 9–11 mapped with no ruling to elaborate; Task 12
+  had the direction ruled and the destination not. **Task 13 was told that "staged constraints govern"
+  — and the staged constraints are not rulings.** `future-modules-capture-2026-07-28.md` says on its
+  face that everything in it is PROPOSED and unruled; `BUILD-STATE.md:117` lists it as **"UNRULED, adopt
+  nothing"**; and "QBO ruling" sits on the *not-covered* list in both `rulings-capture-2026-08-07.md:192`
+  and `rulings-capture-2026-08-08.md:156`. The memo follows the instruction and names the constraints
+  STAGED and PROPOSED at every use, **so that a research pass following a proposal does not become the
+  proposal being adopted by repetition.** That is `Q-QBO-1`.
+- **HEADLINE 1 — THERE IS NO READ-ONLY OAUTH SCOPE, so "read-only first" can never be a grant.** Three
+  independent scope lists — Intuit's own published `oauth-jsclient` README, an independent scope
+  catalogue, and a 2026 developer guide — show a single accounting scope, `com.intuit.quickbooks.accounting`,
+  granting **full read/write**, with no read-only variant in any of them. **The staged bullet's
+  low-risk framing is true of the traffic and false of the credential:** the token authorized against
+  the firm's live books is read/write whatever the integration does with it. Evidenced absence, not a
+  first-party denial — the same shape as #85's privacy sweep. `Q-QBO-2`.
+- **HEADLINE 2 — THE ECONOMICS ARE INVERTED FROM WHAT THE 2026-07-28 CAPTURE ASSUMED, and it could not
+  have known.** Intuit's **App Partner Program launched 2025-07-28**, after the capture was written.
+  In Intuit's own words, **data-IN calls ("Core") are unmetered and uncharged**, while **data-OUT calls
+  ("CorePlus") — *"reading accounts, querying company information, and fetching reports"* — are metered.**
+  The free Builder tier carries **500,000 CorePlus credits/month and BLOCKS above the cap rather than
+  billing.** Read-only staging still works as risk-staging; it is simply the only stage that consumes
+  anything. Not a ceiling for a solo practice — filed as a fact, `Q-QBO-8`.
+- **HEADLINE 3 — QBO LANDS ON `Q-WF-4`, FROM A DIFFERENT DIRECTION AND HARDER.** The QuickBooks token
+  exchange **requires a client secret**, and the refresh token **rotates** (the previous value dies 24
+  hours after a new one issues) — so custody needs a confidential client **and a durable, writable home
+  for a value that changes.** `BUILD-STATE.md:69`: the app is a *"single-tenant public-client browser
+  SPA … per-browser tokens … **no secret**."* **The gate-4 LegiScan comparator the staged bullet reaches
+  for does not transfer:** gate 4's model is a **static** key rotated by hand. **One thing is better
+  than the WF case and is said so the question is not over-costed:** QBO's read path can be
+  user-initiated, so no daemon, no webhook endpoint and no app-only credential are strictly required —
+  what is irreducible is the confidential-client exchange and the rotating-token home. The substrate's
+  *shape* exists (`supabase/functions/{legiscan-poller,statute-fetch}/index.ts`) and is **unproven** —
+  `BUILD-STATE.md:68`: written, **NOT deployed**, and `service_role` never granted. `Q-QBO-3`.
+- **THE CONSTRAINT WITH LEGAL TEETH IS THE ONE THE PLATFORM HELPS WITH LEAST.** QuickBooks records
+  trust/operating separation as a **naming convention** — a Bank account with detail type "Trust
+  account", an Other Current Liability parent "Trust Accounts - Liabilities", one sub-account per
+  client or matter — and **enforces nothing**: the cited source's own words, *"QuickBooks won't prevent
+  you from creating negative client balances or commingling funds — it simply records what you tell
+  it,"* with **no built-in three-way reconciliation** and **no automatic client/matter ledgers**. **The
+  API can read the categories but cannot receive them as facts.** A read-only integration cannot
+  misappropriate anything — but it **can display a per-matter trust figure that is wrong, with the
+  authority of a computed number.** Whether flag-don't-decide governs here, as it does at IN-2 and the
+  roster multi-match flag, is `Q-QBO-5`. **No mechanism proposed.**
+- **THE REGISTRY-ABSENCE PATTERN IS NOW THREE DEEP.** Word-bounded at HEAD across all four registry
+  files: `iolta` **0**, `trust` **0**, `safekeeping` **0**, `commingl` **0**, `client funds` **0**,
+  `escrow` **0**; `disciplinary` **1**, and that one is an unrelated Insurance Code definition matched
+  on the word alone. **A day-one design constraint whose own stated stake is a bar complaint rests on
+  an authority layer the registry does not carry** — after #85's privacy gap (`Q-WF-6`) and #78's
+  insurance narrowing. **NOTHING WAS DRAFTED**, and the reason is named rather than waved at: only the
+  repo checkout was granted this session, so the `Documents\Knowledge Repo` sources SOURCING names were
+  unreachable — and the Texas Disciplinary Rules sit in a Government Code **appendix**, so whether the
+  bulk corpus carries them at all is itself unverified. `Q-QBO-6`, `QBO-LOOK-4` (**NOT RUN**, named as
+  not-run).
+- **SOURCING FAILED AND IS REPORTED AS SUCH — and it failed at the authority, not at the margins.**
+  **Four fetches of `developer.intuit.com` / `help.developer.intuit.com`, four navigation shells**
+  (*"Compiling and pre-filling your Intuit info…"*, and a Salesforce `CSS Error`). **The canonical API
+  reference was never readable.** Every scope, entity, limit and security requirement in the memo comes
+  from Intuit's developer blog, Intuit's published client library, or third parties, tier-marked
+  throughout (**V-1** first-party / **V-2** first-party product help / **V-3** third-party through a
+  summarizing fetch layer / **R** this repo at HEAD). `blogs.intuit.com` **302s to `medium.com/intuitdev`**
+  and the posts were read there — first-party *republication*, named as such. **`QBO-LOOK-1` is the
+  remedy and nothing in the memo's §5 or §6 should be built on until it runs.**
+- **CURRENCY IS NOT INFERRED FROM A DOCUMENT, AND THE DISCIPLINE PAID IMMEDIATELY.** Intuit's own
+  client-library README shows a sample `"x_refresh_token_expires_in": 8726400` (~101 days) — the
+  familiar rolling-refresh model. **It is superseded:** Intuit's blog of **2025-11-12** states the old
+  model made tokens *"effectively permanent"* and that **"All refresh tokens will now have a maximum
+  validity period of five years,"** with a **mandatory Reconnect URL**, 30-day and 7-day customer
+  notifications, and first cohorts expiring **February 2027** and **October 2028**. **The README is a
+  document; the blog is the source's own statement — the statement governs.** For a solo firm the new
+  model reads *better*: a calendarable re-auth with two vendor warnings, not a silent fuse.
+- **TWO LIVE MIGRATIONS AND ONE UNRESOLVED DATE CONFLICT, FLAGGED NOT RESOLVED.** Intuit's own Reports
+  API post states a migration deadline of **2026-08-31**; a third-party source states the same change
+  took effect **2026-06-30**. **Today is 2026-08-15, so the difference is sixteen days out versus six
+  weeks past.** Intuit's own 2025-12-01 roundup **does not mention the Reports migration at all**, so
+  the August date rests on one undated post. Not resolved here — `QBO-LOOK-3`. Separately, **webhooks
+  move to a CloudEvents format with a production deadline of 2026-07-31** (also now past), and a webhook
+  needs a publicly reachable endpoint — **`Q-WF-4` again**, and one the read-only stage does not
+  otherwise need.
+- **IS QBO THE SAME CLASS AS Q-6? PARTLY, AND THE MEMO SAYS WHICH PART.** On the axis that *defines*
+  Q-6 — unresolved terms — **QBO is different: Intuit publishes its terms and sells access on them.**
+  What QBO has instead is a **structural** prerequisite (the confidential client) and the
+  **credential-tier** exposure the capture already named. Whether a standing Q-6-family constraint is
+  recorded for QBO is `Q-QBO-7`, asked in the same shape as the still-⬜ Task 7 memo Q6. **No wiring
+  proposed.**
+- **THE MONEY COUPLING IS INTACT AND IS NOW VISIBLE FROM BOTH ENDS.** The Task 11 spec had already
+  pointed forward at this task (`wf-2-wf-8-email-workflow-spec-2026-08-15.md:459`); this memo points
+  back at WF-5's gate. **The memo does NOT sketch what the case system computes natively versus reads
+  from QB** — that is the capture's own "first question," and answering it designs the money module
+  through the side door. Its §10 is an explicit seven-item non-goals list ending *"A build session
+  reading this document has nothing to build from it."*
+- **ONE CHEAP FACT QUESTION, THE #85 "HAS THE FIRM SIGNED A BAA" SHAPE:** class tracking — one of the
+  two per-client trust-tagging strategies — requires **QuickBooks Online Plus or Advanced**, and the
+  record does not say which subscription the firm has. `QBO-LOOK-2`, the cheapest item on the task.
+
+**Staged for Code:** the QBO integration research memo (this entry's one file), routed to
+`docs/specs/qbo-integration-research-memo-2026-08-15.md`.
+
+**Awaiting/Returned from Code, unreviewed:** none from this entry. *(Carried, per A-4's recompute
+discipline: the unreviewed range is recomputed from the log at HEAD at each refresh — do not copy a
+prior packet's range forward.)*
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTY-FIRST invocation) — a packet that asked to be checked in six places, and the sixth was a live defect it told us not to touch
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD
