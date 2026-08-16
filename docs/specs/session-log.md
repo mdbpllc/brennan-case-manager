@@ -12,6 +12,116 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-FIFTH invocation) — the allowlist entry is proven, the stale lock finally has an observed cause, and a header sentence claims an annotation that was never written
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 16** — the
+T3 pilot-recording protocol. Runner re-read at HEAD per QR-2 (the `/queue-runner` command is a
+pointer and was followed as one); **v8 read and v8 followed.** All six proposed `QR-6` conventions
+were followed as if ruled; four of them did visible work and are noted where they did it.
+
+- **QR-5(a) CARRY-FORWARD — ANSWERED BY MICHAEL IN-SESSION, AND RECORDED HERE VERBATIM BECAUSE THIS
+  IS THE ONLY BATCH IN WHICH IT CAN BE SAID TRUTHFULLY.** #88's Awaiting line asked whether the
+  `Bash(rm -f inbox/*)` matcher actually suppresses the permission prompt; the forty-fourth
+  invocation could not answer it in its own entry and routed the answer here. **His answer:
+  *"the `Bash(rm -f inbox/*)` matcher suppressed the prompt and the deletion ran unattended — the
+  allowlist entry works as ruled."*** **That is the first live confirmation of the QR-5(b) allowlist
+  precondition**, and it matters beyond tidiness: the deletion was the only Step 4 action never
+  allowlisted, so it prompted on every run and **was unanswerable from a phone.** *(Design-side
+  evidence had reached only "the entry exists and `inbox/` is empty," which is equally consistent
+  with Michael's own hand — it could not distinguish them, said so, and asked. The distinction was
+  worth asking for: presence of a matcher is not proof it fired.)*
+- **THE STEP 0 GATE PASSED, ON THE EVIDENCE QR-6(a) REQUIRES.** `git fetch origin`, then clean, on
+  master, `HEAD == origin/master == c75e163`. **MM-1 confirmed by Michael in-session** — not
+  inferred from the repo, because it cannot be.
+- **THE STALE `.git/index.lock` WAS PRESENT, AND FOR THE FIRST TIME ITS CAUSE WAS OBSERVED RATHER
+  THAN HYPOTHESIZED — five-for-nine.** The Task 16 design session ran `git status
+  --untracked-files=all` through the bridge; git emitted `warning: unable to unlink
+  '…/.git/index.lock': Operation not permitted` and **the 0-byte lock stranded. The mount DENIES
+  `unlink`, so git's own lock cleanup fails.** #89's §8.1 hypothesis now has direct evidence.
+  **Carried as EVIDENCE ONLY and expressly NOT folded into BUILD-STATE as an amendment**, per that
+  packet's request and this one's — **only the tally moved.** Verified natively rather than taken
+  from the bridge: `.git/index.lock` (0 bytes, 16:02:36) **and** `.git/.claude-probe2` (0 bytes,
+  16:03:34, design-side probe residue with no git meaning) both **PRESENT**; both **deleted and
+  re-checked gone** under **Michael's explicit in-session authorization scoped to those two paths
+  and nothing else inside `.git/`**; then `git update-index --refresh` **succeeded**, which is the
+  point that mattered — that command takes the index lock, so Step 4's `git add` was proven
+  unblocked instead of assumed. **That is `QR-6(e)` in live operation.** *(And a limit worth
+  recording in the other direction: #88 established that a bridge read is not evidence about origin.
+  **It IS evidence about local files, and this is the first occasion the distinction paid** — the
+  bridge's report of both artifacts was exactly right.)*
+- **THE STEP 1 IDENTITY PIN MATCHED THE DESIGN SIDE ON ALL THREE FIGURES**, which is what let the
+  deletion run by explicit filename (`QR-6(c)`): zip 30,957 bytes / mtime `2026-08-16 16:04:43`,
+  manifest 30,683, deliverable 45,833. The staged file's `sha256 391b4818…e407` matched §4.1
+  **before** it was copied, and the copy was re-hashed **after** and is byte-identical. **The
+  already-executed check was run against BOTH candidate paths, not just the one the packet named** —
+  `docs/specs/` (where a runner would look by habit) and `docs/` (the actual §2 target) — and
+  against three independent surfaces: the working tree, the HEAD index, and `git ls-tree
+  origin/master`. **Absent from all three, so neither committed-and-pushed nor committed-but-unpushed:
+  genuinely pending.** All four collision strings returned ZERO at HEAD.
+- **RUNNER-FOUND, AND IT IS THE INVERSE OF A DEFECT THIS RECORD ALREADY CARRIES: A HEADER SENTENCE
+  CLAIMS AN ANNOTATION THAT WAS NEVER WRITTEN.** `attorney-review-queue.md`'s #89 reconcile sentence
+  states *"HK-7 annotated satisfied-for-one-session an ELEVENTH time and again not closed"* — **but
+  the HK-7 row's annotations stop at "A TENTH TIME … (#88)."** The eleventh does not exist. **#84 was
+  the same failure mirrored** — its rows landed and its header sentence went missing, and that is
+  recorded inside this very header. **Nothing was back-written:** authoring an #89 annotation now
+  would fabricate a record of an act that did not happen, which is the K-6/K-7 rule applied to
+  annotations instead of questions. **Consequence carried explicitly: the eleventh/twelfth count is
+  unreliable from both sides, and the lock tally inside that row is STALE at three-for-seven** for
+  the same reason — #89's occurrence is recorded only in BUILD-STATE. This packet's §7 assumed the
+  twelfth; the row was annotated as the **eleventh**, with the discrepancy stated rather than picked.
+- **MICHAEL GAVE `Q-T3P-7` AN INTERIM ANSWER AND THE ROW STAYS OPEN.** His words: the placement
+  question *"is mine to rule — file it at `docs/` for now and carry the question into the queue."*
+  So `docs/t3-pilot-recording-protocol.md` sits where it does **on his direction, not on the
+  packet's proposal**, and the ruling is still owed. Recorded in the row itself because a later
+  session reading only the path would otherwise infer a closure. **A redirect to `docs/specs/` is a
+  MOVE, never a second copy** (§6 item 10).
+- **THE QUEUE MERGE WAS TWO ACTS (`QR-6(b)`), and this packet's §7 — unlike #89's — carries full
+  question text and was merged from directly.** Seven rows with verbatim text per QR-1, plus the
+  Status-header reconcile sentence. **Six carried rows annotated add-only and NONE closed:** HK-4
+  (its own wording is now the question, so re-wording it would BE the ruling), KICK-1, HK-7, OPEN-3
+  (the `get_device_info` datum, which does **not** answer the preflight row), OPEN-4 (fourteenth
+  time; resume Task 17, three tasks on a clipboard), ID-DL-1 (eleventh packet).
+- **TWO THINGS THIS RUNNER DID THAT SIT IN TENSION WITH THE PACKET'S §6, DISCLOSED RATHER THAN
+  BURIED.** (1) **`Test-Path` existence checks on three DECLARED paths** — `C:\Users\Brennan\data`,
+  `…\data\pfs\`, `…\data\pilot-recordings\` — **all three ABSENT.** BUILD-STATE's standing refresh
+  convention re-checks the first of these every time and the house rule is that a rewrite re-verifies
+  inherited filesystem claims rather than carrying them; **§6 item 2 says `..\data` is off limits.**
+  No directory was listed, nothing was enumerated, no filename was seen, and the two children were
+  necessarily absent once the parent was — but **the contradiction is flagged, not resolved: whether
+  the standing re-check survives a packet DO-NOT is Michael's.** (2) **One mechanical `<Route` count
+  against `src/App.tsx`**, against §6 item 7's bar on reading `src/` — **the result was NOT used and
+  no route count entered BUILD-STATE.** *(That DO-NOT is inherited from the design-side context where
+  `Q-PR3-1` is unruled; a Code session reading `src/` is ordinary. Reported so the bar's scope can be
+  ruled rather than assumed either way.)*
+- **THE HEALTH CHECK WAS SKIPPED EXPLICITLY, NOT SILENTLY (`QR-6(f)`).** §5 is NONE and no `src/`,
+  `db/`, `supabase/` or build-tooling path was routed — the tree is docs-only on `git status` — so
+  `npm test` / `build` / `lint` would prove nothing about this batch. The #68 measurement (278 tests,
+  23 files, build + lint clean) therefore still stands unchallenged.
+- **THIS RUNNER LINE IS WRITTEN UNDER QR-5 LIMB (a): it asserts nothing about its own push or its
+  own deletion**, both of which happen after it is committed. Results go to Michael in-session; any
+  failure rides into the NEXT runner line.
+
+## 2026-08-16 (#90) — CHAT-DISPATCH TASK 16: the T3 pilot-recording protocol — HK-4 reads as a staging act and the record says the bundle was archived, with a README, a year-quarter ago; ground truth covers five of the thirteen; and the thirteen exercise the routing layer thoroughly and the ASR stack narrowly (design session, Opus 5, Cowork)
+
+**One staged file, docs only, nothing built (§5 NONE).** `docs/t3-pilot-recording-protocol.md` — 534 non-blank / 688 raw, 45,833 bytes. **PROPOSED — PREPARATION ONLY.** Michael did not participate and made no rulings. Seven questions (`Q-T3P-1..7`), packet-local, **no durable IDs**. No legal proposition is asserted, **no registry file opened, backlog unchanged at 34.** Repo read full-text at HEAD `c75e1639`; **ONE bridge folder granted** — the repo checkout only.
+
+- **THE HEADLINE IS THAT HK-4 DESCRIBES AN ACT THAT MAY ALREADY HAVE HAPPENED.** HK-4 and BUILD-STATE both read as though the 13 recordings must be assembled and staged from nothing — *"create the directory at staging time."* The **2026-07-25 pilot-fixtures entry** says otherwise in terms: Michael supplied `phase0-test-recordings.zip` — *"13 recordings, both transcript JSONs, ground-truth scripts, scorecard, findings. All fictional (verified). Audio + docs archived at `..\data\pilot-recordings\` (provenance README; outside repo per convention)."* **The exact target directory, already created, already documented.** Inferred, not established: it is on the **P15**, since the P1 Gen 8 was still a *planned purchase* on 2026-07-25 and was not stood up until 08-09 — the same machine that holds `..\data\pfs\`, absent here for the same reason. **So HK-4 is probably a P15 → P1 TRANSFER, which is cheaper and more dangerous: a transfer can silently overwrite a provenance README no design session has ever read** (`Q-T3P-1`, `Q-T3P-2`).
+- **AND THE BUNDLE HOLDS STAGE 1'S OWN BASELINE, WHICH HK-4 DOES NOT MENTION.** The zip contained the ground-truth scripts, the scorecard and the findings alongside the audio. **HK-4 says "stage the 13 pilot recordings."** Staging the audio alone leaves the P1 with thirteen files and nothing to score five of them against (`Q-T3P-3`).
+- **THE AUTHORIZATION'S PHRASING HIDES A SPLIT MEASURE.** It says Stage 1 reruns both batches *"against the existing ground truth"* — but **ground truth exists for five of thirteen.** Batch 2 is scripted; **batch 1 is unscripted**, and its "existing" artifact is the int8/CPU-floor transcript, which is a prior OUTPUT, not a truth. **So batch 2 yields an ACCURACY measure and batch 1 a CHANGE measure, and one number across thirteen files would be reporting two different things under one heading** (`Q-T3P-4`). Not presentational: **D1 auto-file and the confidence thresholds are explicitly waiting on this scorecard.**
+- **THE COVERAGE GAP, STATED PLAINLY BECAUSE NOTHING ELSE STATES IT.** The thirteen exercise the ROUTING layer thoroughly — 43 tests green, all 13 behaving as the design predicts — and the TRANSCRIPTION layer narrowly. **No long-form audio** (the only duration on the record is ~71 s; deposition-length is the Statement Bank's actual use case and is untested, and Phase 0's own 79 MiB / 20 MiB activation figures are 3-second datapoints that must not be extrapolated). **The 4-speaker cap is untested** — maximum two voices against Sortformer's cap of four. **No Spanish** — and that is two untested things, not one: Texas/Mexican Spanish accuracy AND the flagged diarization degradation on non-English speech. **Nothing from the planned capture kit**, which is not purchased. **Word boosting has never run on any recording, anywhere.** They were assembled to prove sort-and-route, and they did; they were never assembled to characterize the ASR stack across its range.
+- **THE NAMING RULE IS CONSTRAINED FROM BOTH ENDS.** The transcript identifiers (`rec_3`–`rec_10` plus five scripted keys) are **load-bearing in shipped code** — `pilot.test.ts` asserts against them as verbatim int8-floor output — so no scheme may renumber them. Meanwhile the **original audio filenames collide by the recorder's design**: Voice Memos reuses *"New Recording N"* and *"the two pilot batches literally collided on names."* **The mapping between the two lives in the provenance README and, derivatively, in the fixtures.** *(The fixtures are under `src/` and were **NOT read** — `Q-PR3-1` is unruled. The directory listing is metadata; the per-recording characterizations come entirely from the NVIDIA memo §§10–12, which is the source Task 16 names.)* **If both indexes were lost the mapping is recoverable only by content — which is exactly the SHA-256 + recorded-at + duration identity the ingest design already specifies, and the reason the §5 manifest matters.**
+- **FORMAT: THE THIRTEEN CAN NEVER MEET THE KIT STANDARD AND MUST NOT BE MADE TO LOOK LIKE THEY DO.** All thirteen are **iPhone 14 Pro / Voice Memos / AAC ~70 kbps mono**; the kit standard (48 kHz, 32-bit float WAV, Tascam DR-05XP) governs FUTURE captures and the kit is **not purchased**. **Preserve bit-exact: no re-encode, no up-sample, no level normalization, no silence trim.** Up-converting lossy audio adds no information and produces a file that *looks* like kit-standard material to anyone reading only its header — **that mislabelling is the real hazard**, alongside the fact that a re-encoded file is no longer the same input the int8 floor was measured on.
+- **A LINE THE STAGE 1 SESSION COULD TRIP OVER ITS OWN GATE ON, RAISED NOW RATHER THAN MID-RUN (`Q-T3P-5`).** The 08-09 exception bars *"synthetic, substitute, or fixture audio"* standing in for the recordings. The ingest design **independently requires** a derived 16 kHz mono WAV working copy **and 0.5–1.0 s of head-padding** — a transformation that deliberately changes what the model hears, to address the eaten openings. The protocol reads a documented, hash-traceable derivation from a preserved original as **outside** the bar; **that reading is this session's inference, not a ruling.**
+- **TWO MULTI-SPEAKER CANDIDATES, NOT ONE.** Memo §10 holds back a two-voice recording **in batch 1** for diarization; §11 separately scores a two-person take **in batch 2** — and only the first is characterized as held back, while only the second has a known script. **Recorded because the record names one.**
+- **AND ONE FINDING A FULL-PRECISION RERUN WILL REPRODUCE AS AN "ERROR" WHEN IT IS NOT.** The batch-2 *"thirty-five vs thirty thousand"* discrepancy was **RESOLVED 2026-07-25: Michael misread the script aloud.** The model transcribed what was said, correctly.
+- **H5 HONORED, AND THE ONE INCIDENTAL OBSERVATION DISCLOSED RATHER THAN USED.** No audio file was located, listed, opened, hashed or stat-ed; no directory outside the granted repo folder was listed. `get_device_info` — the call needed to identify a folder before requesting it — returns top-level home-directory NAMES, and on `mdb-pllc` **there is no `data` directory at the home root, and no `.claude` either.** It names no file and enumerates no contents; it corroborates BUILD-STATE's own re-check and **adds nothing to it, and it does NOT answer the preflight row.** *(Candidate datum for **OPEN-3**, not a closure: an absent user-level `.claude` is consistent with mdb-pllc being the **P1**, which log #42 recorded as having no user-level runner copy while the P15's deletion remains outstanding. **One word from Michael settles OPEN-3; this does not.**)*
+- **THREE GATES ABOVE THIS DOCUMENT, NONE CLEARED BY IT.** **KICK-1** — T3 work is unauthorized until Michael locates or re-issues the kickoff doc. **Telemetry** — confirmed NOT SET 08-13, and its rule reads *"no privileged audio before then"*; **whether that reaches an attested-fictional batch is `Q-T3P-6` and is genuinely two-sided.** **HK-4** — the audio preflight row stays RED. KICK-1 and telemetry gate *running*; HK-4 gates *having something to run*.
+- **`Q-T3P-1..7` are all Michael's. Nothing built, nothing staged, no queue row re-worded, no registry file opened, no schema file touched, `src/` not read.**
+
+**Staged for Code:** `docs/t3-pilot-recording-protocol.md` (this packet).
+
+**Awaiting/Returned from Code, unreviewed:** #75 through this entry, per BUILD-STATE's recomputed range (A-4). **Carried and unchanged:** HK-4 · HK-6 · HK-7 · KICK-1 · telemetry lockdown · OPEN-1..OPEN-5 · Q-STAT-2..Q-STAT-6 · ID-DL-1 (now an ELEVENTH packet) · QR-6(a)–(f) · project-instructions v19 paste · the P15 user-level runner-copy deletion · `Knowledge Repo\Statutes 26-08-14\_claude_extract\` deletion. **Reported to Michael in-session rather than asserted here:** whether the `Bash(rm -f inbox/*)` allowlist entry is what emptied `inbox/` after the forty-fourth invocation, or his own hand — the design side cannot distinguish them (§0 item 1).
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-FOURTH invocation) — the Step 1 report was right and its evidence was not, and a packet that tells you its own §7 is a trap
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 15** —
