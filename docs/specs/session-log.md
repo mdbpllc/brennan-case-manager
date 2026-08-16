@@ -12,6 +12,240 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-THIRD invocation) — the ahead-stop fires on a real stranded push, and the fix for a false sentence is executed by the batch it binds
+
+**One packet, one staged file, docs only, nothing built (§5 NONE)** — plus **`QR-5`, a ruled
+convention amendment Michael issued in the packet's own session**, which changed how this batch
+closed out and is therefore executed *before* everything else. Runner re-read at HEAD per QR-2 (the
+`/queue-runner` command is a QR-2 pointer and was followed as one); **it read v7 and this batch took
+it to v8.**
+
+- **THE GATE STOPPED THE SESSION BEFORE IT STARTED, AND IT WAS RIGHT TO.** The first QR-3 v7 run
+  found **HEAD 1 AHEAD of `origin/master`** — clean, on master, `HEAD = 398c78c`,
+  `origin/master = 4146a4c`, 1 ahead / 0 behind, confirmed by `git ls-remote`. **This is the
+  ahead-stop's first fire on a real stranded push**, and it worked exactly as the v7 amendment
+  intended: the runner stopped and reported rather than building on an unpublished tree.
+  **The forty-second invocation's close-out had been interrupted at the push** — it committed
+  `398c78c` (the QBO memo, `#87` and its runner line, the queue merges, the seventy-sixth
+  BUILD-STATE refresh) and the push never landed, so Step 4 item 5 never ran either. **That is why a
+  zip that looked executed was still in `inbox/`** — corroborating evidence, not a second failure.
+- **MICHAEL AUTHORIZED THE RESOLUTION AND IT RAN BEFORE THIS BATCH'S GATE WAS RE-RUN.** `398c78c`
+  pushed to origin and **the remote ref verified moved** by `git ls-remote` (`origin/master` =
+  `398c78c`), the `Bash(rm -f inbox/*)` allowlist entry added first so the deletion would be its own
+  first live test, then
+  `inbox/push-to-code_qbo-integration-research-memo_2026-08-15.zip` deleted and `inbox/` re-listed to
+  confirm. **The deletion ran with NO permission prompt** — the narrow matcher works, which is the
+  answer `QR-5`'s §4.3.f asked to be tested rather than assumed. **`398c78c` was NOT amended,
+  rebased, or rewritten**; its false sentence stands as written and is corrected in `#88` below.
+- **The gate was then re-run clean** — on master, working tree clean, `HEAD == origin/master`, 0/0 —
+  and `inbox/` held exactly one zip. Packet:
+  `push-to-code_re-1-referral-engine-inputs_2026-08-16.zip` (CHAT-DISPATCH **Task 14**, design
+  session, Opus 5, Cowork; **Michael did not participate in the Task 14 work and made no rulings on
+  it**). **The zip had been REPLACED after the runner's first listing** — mtime `13:53:50 −0500`,
+  43,707 bytes against the 41,253 first seen — and Michael said so; the corrected packet is the one
+  that was read. Single packet, so filename-date and mtime orders are identical and there was no
+  ordering question. **Nothing superseded; nothing skipped as already built.** Entry **#88** below.
+- **`QR-5` EXECUTED IN FULL, FIRST, BECAUSE IT BINDS THIS BATCH.** Four surgical edits to
+  `docs/prompts/QUEUE-RUNNER.md` → **v8** (Step 0 gains item 4, the permission precondition; Step 1
+  item 3 splits so a packet whose deliverable already exists is marked **POSSIBLY ALREADY EXECUTED**,
+  distinguishing committed-and-pushed from committed-but-unpushed; Step 4 item 1 gains the
+  **no-post-commit-claims** rule; Step 4 item 5 gains **verification** and the carry-forward
+  instruction), one add-only sentence on `CLAUDE.md`'s `inbox/` bullet, and one entry in the
+  untracked machine-local `.claude/settings.local.json`. **The allowlist entry was NOT `git add`ed
+  and the file stays untracked**; `.claude/commands/queue-runner.md` was **not** touched — QR-2, it is
+  a pointer. **This runner line is itself written under limb (a): it asserts nothing about its own
+  push or its own deletion**, both of which happen after it is committed.
+- **The staged memo landed VERBATIM and matches its stated counts exactly — 751 non-blank / 925 raw,
+  63,652 bytes** — copied byte-for-byte with `cp` and confirmed byte-identical by `cmp`, not retyped.
+  Head intact (title, `STATUS: PROPOSED — INPUTS ONLY` line, canonical-path line); tail intact at §11
+  item 8. The `[A]`/`[B]` provenance marks were left exactly as written — **18 and 18** — and no
+  `[B]` proposition was promoted to quotable rule text.
+- **All six §1 reconcile checks re-verified natively at `398c78c`, and all six held.** (1) Target
+  path free — no RE-1-named file existed under `docs/specs/`, so a new file was written rather than a
+  reconcile. (2) `Q-RE-[0-9]+`, `P-RE-[0-9]+` and `RE-LOOK-[0-9]+` returned **ZERO** word-bounded
+  repo-wide, and **all three were deliberately NOT minted** (**ID-DL-1 now governs a NINTH packet**).
+  (3) `(#88)` free in `docs/`; the highest live entry number is #87. (4) The RE-1 row at
+  `attorney-review-queue.md:73` still read ⬜ with its one un-annotated sentence — **it stays ⬜ and
+  un-rewritten**, annotated add-only beneath. (5) The registry sweep re-ran across **all four**
+  `legal-rule-registry-*` files and **all thirteen terms returned zero**; the five adjacent terms
+  reproduce exactly once matched as stems rather than word-bounded — **`refer` 8 is 7 × "reference"
+  plus 1 × "refers", `conflict` 5 is 4 plus 1 × "conflicting"**, and none is a professional-conduct
+  proposition. (6) The schema sweep re-ran across `db/schema.sql` and **all three** migrations: nine
+  terms **zero**, and **word-bounded `refer` is 0 — the 50 substring hits are all the SQL
+  `REFERENCES` keyword** (49 + 1), which is why the packet specified word-bounded. `conflict` **5**
+  (four `on conflict …`, one comment) and `adverse` **4** (2 + 2 `adverse-party`) are the only hits,
+  exactly as stated.
+- **Nothing built, nothing verified, no durable ID minted, no registry file opened.**
+  `future-modules-capture-2026-07-28.md`, `Go_Live_Gates.md`, `case-management-project-instructions.md`,
+  `contact-directory.md`, `spec-feedback.md`, `db/schema.sql` and every migration were left untouched
+  — editing any of them would answer a question that is Michael's. **Registry backlog unchanged at
+  34.** SOURCING was not amended (it lives in the project instructions, not the repo).
+
+## 2026-08-16 (#88) — CHAT-DISPATCH TASK 14 + QR-5 RULED: the RE-1 inputs memo — one trigger means two different things in the record, the rules that govern referral fees are reachable by none of SOURCING's three layers, and a leftover zip turned out to be the one Step 4 action nobody ever allowlisted (design session, Opus 5, Cowork)
+
+**Two things, different in kind. Task 14: Michael did not participate and made no rulings — all
+PROPOSED. `QR-5`: Michael RULED it in this session, on evidence found in it.**
+One new file: `docs/specs/re-1-referral-engine-inputs-2026-08-16.md` (**751 non-blank / 925 raw**,
+63,652 bytes), top line **"PROPOSED — INPUTS ONLY. NOTHING RULED, NOTHING BUILT, NOTHING AUTHORIZED."**
+Plus the QR-5 edits: `docs/prompts/QUEUE-RUNNER.md` → **v8**, one add-only sentence in `CLAUDE.md`, and
+one entry in the untracked machine-local `.claude/settings.local.json`.
+Repo read **full-text at HEAD through the device bridge** at `398c78c`; `git fetch` cannot run there, so
+**this was NOT a QR-3 pass** and the packet says so. **BOTH bridge folders were granted this session** —
+the checkout and `Documents\Knowledge Repo` — which is what #87's resume note asked for and the only
+reason §6 exists rather than repeating `QBO-LOOK-4`'s wall. **HK-7 satisfied for one session a TENTH
+time; not closed.**
+
+- **THE GATE RESOLVED AS TASKS 9–11 DID, and more starkly.** RE-1 is open (`attorney-review-queue.md:73`,
+  ⬜, one sentence, **un-annotated since the day it was raised** — while PR-3, raised the same day in the
+  same file, has three annotations). Word-bounded at HEAD, `RE-1` appears **15 times across 7 files**:
+  the log, the queue, a same-day capture, BUILD-STATE's carry, a **queue mirror** inside
+  `time-tracker-fee-basis-profiles-design.md:197`, the **not-covered list** at
+  `rulings-capture-2026-08-07.md:192`, and the master spec's family-law parenthesis. **No design
+  document elaborates it.** The memo maps and asks; **a build session must not read it as a design.**
+- **THE HEADLINE IS THAT ONE OF THE THREE NAMED TRIGGERS MEANS TWO DIFFERENT THINGS IN THE RECORD, FROM
+  THE SAME SESSION.** `session-log.md:7170` and the queue row say *"out-of-area matters"*; that same
+  session's own capture at `statutes-pass-est352-cprc71-2026-07-26.md:551–552` glosses the identical
+  sentence as *"matters outside the practice areas."* **Geography and subject matter need different
+  data:** practice area and case type exist (free text, `db/schema.sql:38–39`); **`cases` has no county,
+  venue, district or jurisdiction column at all.** `Q-RE-1`. **Nothing was resolved.**
+- **AND THERE IS A FOURTH TRIGGER THE DISPATCH DOES NOT NAME — the only one with a designed mechanism.**
+  `case-management-project-instructions.md:16`, the master spec, which PRECEDENCE makes authoritative for
+  what is DESIGNED: *"The system should be able to say 'there is a family-law issue here — flag it, refer
+  it out' without ever opening a family matter. **Referral out is first-class behavior (RE-1, a future
+  design pass).**"* **Overflow, by contrast, is defined nowhere** — no capacity model, no metric, no
+  threshold anywhere on the record.
+- **THE STRUCTURAL FINDING: THREE OF THE FOUR TRIGGERS FIRE AT INTAKE, AND AT INTAKE THE BUILT SYSTEM
+  HOLDS NOTHING.** The master spec **designs** the PNC funnel and calls it SETTLED — *"PNC → then one of:
+  Client, Declined, or **Referred out**. Each outcome carries a date and a short reason/note"*
+  (`:349`) — and it **is not built**: `PNC` returns **zero** across `db/` and `supabase/`, `parties` has
+  no status column, and three places already record the missing promotion path
+  (`future-modules-capture-2026-07-28.md:61`, `spec-feedback.md:197–201`,
+  `cd2-role-mining-pass-2026-08-13.md:418`). CD-1's `contact-directory.md:100` **party status** is a
+  litigation-posture axis (`caption-party`/`non-party-actor`/…), not an intake axis — **two different
+  things wearing one word.** `Q-RE-4`.
+- **SOURCING NAMES NO SOURCE FOR THE TEXAS DISCIPLINARY RULES — TESTED, NOT ASSUMED, AND `QBO-LOOK-4` IS
+  ANSWERED AS TO THE CORPUS HALF.** `GV.pdf.zip` in `Statutes 26-08-14\` holds **494 entries, every one a
+  chapter file**; grepping the entry list for `append`/`bar`/`conduct`/`ethic`/`disciplin` returns
+  **zero**. **The bulk channel does not publish appendices, and the TDRPC live in a Government Code
+  appendix.** The Knowledge Repo's clean-authority PDFs are TRCP (July 2026), TRE (eff. 07/02/2026), TRAP
+  (02/06/2026) and the statewide criminal e-filing rules — **no disciplinary-rules PDF.** eCFR is
+  federal. **The gap is not academic: Gov't Code §82.065(b), §82.0651 and Penal Code §38.12(c) each
+  incorporate the disciplinary rules BY NAME**, so three statutes the corpus *does* carry are unreadable
+  in operative effect without a layer it does not. `Q-RE-9`; `RE-LOOK-3` is the cheapest fix and is
+  Michael's hand (**Claude cannot fetch binaries**).
+- **TWELVE PROPOSITIONS DRAFTED REGISTRY-STYLE, ALL UNVERIFIED, NO REGISTRY FILE OPENED.** `P-RE-1..12`,
+  packet-local. Provenance marked at every point of use and **must not be stripped**: **`[A]`** = corpus
+  chapter read locally (`gv.82`, `pe.38`, `oc.952`), quotable; **`[B]`** = Texas Center for Legal Ethics
+  through a summarizing fetch layer, **not quotable as rule text** (#80's rule). **EVERY `[A]` QUOTATION
+  WAS SPOT-CHECKED AGAINST RAW EXTRACTION MECHANICALLY — 22 fragments, 22 PASS, 0 FAIL.** The A-for-space
+  artifact behaved exactly as characterized at `statute-pass-registry-retrieval-2026-08-14.md` §3; three
+  further transformations (justified-column multi-space, `client ’s`/`person ’s`, curly apostrophes) are
+  **named rather than applied silently.**
+- **THE ONE THAT PAYS FOR THE SECTION: TDRPC 1.04(f)(2) IS THE FIELD LIST.** Client consent must be **in
+  writing and PRIOR to the referral**, and must carry the identity of every participating firm, the
+  division basis, and each firm's share. 1.04(g) makes the failure **economic and silent** — an
+  unconfirmed arrangement does not void the referral, it **strips the fee** (recovery limited to
+  reasonable value of services and necessary expenses). *"Prior to"* is the one limb a database can
+  actually enforce, because it is a date comparison; the aggregate-fee limb (1.04(a) unconscionability)
+  is pure attorney judgment and belongs on the flag-don't-decide side.
+- **THREE DIVERGENCES FLAGGED, NONE RESOLVED.** (1) The rule as retrieved names the *"Texas Lawyer
+  Referral Service **Quality** Act"*; the statute's own short title (`[A]`, Occ. Code §952.001) is the
+  *"…**Quality Assurance** Act."* (2) **Two State-Bar-affiliated sources disagree about Rule 7.03's
+  structure** — texasbar.com's Solicitation and Barratry page describes (a)–(e) with a different subject
+  per letter than the Texas Center for Legal Ethics' (a)–(g); **they cannot both be operative**, and the
+  likeliest explanation (one predates the 2021 Part VII restructure) **is an inference and is not
+  asserted.** (3) **NO SOURCE CONSULTED STATES THE RULES' CURRENCY** — no effective date, no "as
+  amended," no "current through"; one page carries a *"(1989) … (Vernon Supp. 1995)"* footer. Under
+  SOURCING **currency is never inferred from a document**, so **the TDRPC currency figure is
+  UNESTABLISHED** and every `[B]` proposition inherits that. `RE-LOOK-1`.
+- **THE REGISTRY-ABSENCE PATTERN IS NOW FOUR, AND AT FOUR IT IS A SHAPE.** Eighteen terms swept across
+  all four registry files: **thirteen zero**, five hits, **every hit read and none a professional-conduct
+  proposition.** After #85's privacy (`Q-WF-6`), #78's insurance narrowing and #87's client-property /
+  trust absence (`Q-QBO-6`), the honest statement is: **the registry carries the law of the firm's CASES
+  and nothing about the law of the firm's PRACTICE.** That may be the right scope — but **nobody chose
+  it**, and three of the four were found by accident while looking for something else. BUILD-STATE
+  records three passes stacked behind `Q-STAT-5`; **this makes four.** `Q-RE-8`.
+- **CONFLICTS: POINTED AT, NOT DESIGNED.** The ruling stands as written (#15, 2026-07-26): **advisory,
+  never a gate**; Michael marks it decided; *"the system encodes nothing about what his contract
+  handles."* **One thing flagged and changed nowhere:** that ruling routes the disposition to the
+  **review log**, but `review_log.action`'s CHECK admits only
+  `('suggested','confirmed','edited','rejected','created','generated')` — **no "decided"** — while every
+  flag built since (`case_roster_flags`, `case_client_flags`) clears through a nullable `resolved_at`
+  with the undecided value preserved. **Two clearing mechanisms for one shape of thing**, same class as
+  #86's two-opposite-defaults finding, though a vocabulary gap rather than a live defect. `Q-RE-6`.
+- **`Q-WF-4` DOES NOT ACQUIRE A THIRD CONSUMER — stated because #87 asked.** Every referral act on the
+  record is attorney-initiated and synchronous: no background watcher, no webhook, no app-only
+  credential. **It stays at two** (WF-2–WF-8 and QBO). Outbound referral *email* through Graph would
+  change that, and would change it by adding a mail scope — a consent act on Michael's registration.
+- **THE SESSION'S SECOND HALF: A LEFTOVER ZIP, A WRONG DIAGNOSIS, A CODE SESSION'S GATE STOP, AND
+  `QR-5` IN TWO PARTS.** The design session found
+  `inbox/push-to-code_qbo-integration-research-memo_2026-08-15.zip` still present though the
+  forty-second runner line says *"Packet deleted after execution per Step 4.5."* **It diagnosed the
+  cause as a permission prompt** — `.claude/settings.local.json` carries 21 `permissions.allow` entries
+  and **not one permits deleting a file**, so the deletion is the only Step 4 action never allowlisted,
+  it prompts on every run, and a session driven remotely from a phone cannot answer it. Michael ruled
+  part one on that finding: **"Verify + narrow rm allowlist."** **Then a Code session's own QR-3 v7
+  ahead-stop fired and the diagnosis proved wrong** (see the correction below). Michael ruled part two:
+  **"Strike the claim + carry forward."**
+- **`QR-5`, RULED 2026-08-16, runner v8, both limbs.** (a) **The session-log entry may assert NO
+  post-commit action** — it is committed at Step 4 item 3, the push is item 4 and the deletion is item
+  5, so *"packet deleted after execution"* was always a prediction wearing a report's clothes; results
+  go to Michael in-session and any failure is **carried into the NEXT batch's runner line**, where it
+  can be said truthfully. (b) The deletion is **verified** (re-list `inbox/`, never trust an unchecked
+  command), Step 1 marks a packet whose deliverable already exists in the repo as **POSSIBLY ALREADY
+  EXECUTED** — *distinguishing committed-and-pushed from committed-but-unpushed, which is what this
+  turned out to be* — and Step 0 gains the permission precondition `Bash(rm -f inbox/*)`, that narrow
+  and no wider, untracked and never committed. **`CLAUDE.md`'s mirrored `inbox/` sentence updated
+  add-only; QR-2 keeps the full text in the runner alone.**
+- **THE PERMISSION GAP IS REAL AND IS FIXED HERE, BUT IT WAS NOT THIS FAILURE'S PROVEN CAUSE — and the
+  packet says so rather than letting a fix imply a diagnosis.** A close-out interrupted at item 4 never
+  reaches item 5, so nothing establishes the deletion was attempted at all.
+
+- **CORRECTION 1 — of the forty-second invocation's runner line (required fields per the 2026-07-27
+  rules).** **What was asserted:** *"Packet deleted after execution per Step 4.5; this entry and #87 are
+  the record."* **What is true instead:** the close-out was **interrupted at the push**. `398c78c`
+  committed on `mdb-pllc` at 2026-08-16 12:58:40 −0500 (reflog `commit:`), and `origin/master` remained
+  `4146a4c` — **0 behind / 1 ahead**, confirmed natively by `git ls-remote` in a Code session and by
+  `git rev-list --left-right --count` design-side. **Neither the QBO memo nor the forty-second runner
+  line existed at `origin/master`**; both exist only at `398c78c`. Step 4 item 5 follows item 4, so the
+  deletion never ran, and the zip's survival is evidence about the **push** as much as the delete.
+  **Which entry it corrects:** the 2026-08-15-headed forty-second-invocation runner line, **which stands
+  as written.** **Actor:** Code (the forty-second invocation, driven remotely from Michael's phone).
+  **Failure class:** *a template sentence committed before the action it describes* — structural, not
+  careless: the identical boilerplate sits in the **forty-first** invocation's line, where it happened
+  to come true. Adjacent prior instances of unverified self-report: #78 (the "274 tests" figure), #60
+  (the "twenty-six" registry count). **Secondary limb:** that entry is headed **2026-08-15** while its
+  commit is **2026-08-16** — the packet's filename date carried into the header; DT-1 governs stamps
+  drifting forward off a container clock, this one drifted backward off a filename. **What changed as a
+  result:** `QR-5` ruled in two parts and executed in this batch; the boilerplate struck from the
+  template; the stranded commit pushed on Michael's word per QR-3 v7; the QBO zip deleted. **Nothing in
+  the corrected entry was edited.**
+
+- **CORRECTION 2 — of this design session's own diagnosis, recorded because the record matters more
+  than looking right.** **What was asserted:** that the QBO packet *"HAS been executed"* and that the
+  deletion had failed, most likely at a permission prompt — stated in the first draft of this packet and
+  of the staged memo's §10. **What is true instead:** the work was committed and **never pushed**, so
+  from origin's side nothing was executed; and no evidence establishes that the deletion was ever
+  attempted. **Which entry it corrects:** no session-log entry — the claim was caught before it landed,
+  by the Code session's QR-3 gate stop, and is corrected here and in the staged memo's §10 before either
+  reached the repo. **Actor:** Opus 5, this design session. **Failure class:** *inferring from one
+  consistent signal without running the cheap decisive check.* The session had the device bridge, wrote
+  in the memo that its HEAD read was **not** a QR-3 pass, and then reasoned as though HEAD were origin —
+  `git rev-parse origin/master` and `git rev-list --count` were both available and neither was run.
+  Same family as the #83 unbounded-`IN-1` pattern (a count corrected inside its own session) and the
+  #85 privacy sweep (an absence claim that needed its non-zero hits read). **What changed as a result:**
+  §1 and the memo's §10 rewritten before shipping; `QR-5` gained limb (a), which addresses the defect
+  that actually produced the false record rather than the one first suspected.
+
+**Staged for Code:** `docs/specs/re-1-referral-engine-inputs-2026-08-16.md` (NEW);
+`docs/prompts/QUEUE-RUNNER.md` (QR-5, v8 — three surgical edits); `CLAUDE.md` (one add-only sentence on
+the `inbox/` bullet); `.claude/settings.local.json` (one allowlist entry, untracked, never committed);
+this entry.
+**Awaiting/Returned from Code, unreviewed:** this batch's handback and routing; **whether the
+`Bash(rm -f inbox/*)` matcher actually suppressed the prompt — the batch's own two deletions are the
+test, and the answer belongs in the runner line.** Carried items per #87 — verify against the entries
+that staged them; do not copy forward items their entries cleared.
+
 ## 2026-08-15 — QUEUE-RUNNER batch (runner line; FORTY-SECOND invocation) — six checks, six passes, and a memo whose headline is an absence in the vendor's own scope list
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** Runner **v7**, re-read at HEAD

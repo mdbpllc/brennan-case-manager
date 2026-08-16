@@ -3,12 +3,16 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v7, 2026-08-13. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v8, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
      2026-08-08 (MM-1, v5); Step 1 ordering amended by Michael's ruling 2026-08-10
-     (QR-4, v6); ahead-stop added by Michael's ruling 2026-08-13 (QR-3 amendment, v7). -->
+     (QR-4, v6); ahead-stop added by Michael's ruling 2026-08-13 (QR-3 amendment, v7);
+     Step 0 item 4, Step 1 item 3, Step 4 item 1 and Step 4 item 5 amended by Michael's
+     ruling 2026-08-16 (QR-5, v8) — the entry may assert no post-commit action, the
+     deletion is verified and carried forward if it fails, an already-executed check is
+     added, and the deletion has a permission precondition. -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -41,6 +45,13 @@ queue from an unverified tree.
 3. Add a one-line note to CLAUDE.md under the design-side visibility
    conventions: "`inbox/` (gitignored) holds queued push-to-code packets;
    process with the QUEUE-RUNNER prompt; delete packets after execution."
+4. **Ensure the Step 4 item 5 deletion can run WITHOUT a prompt.** `.claude/settings.local.json`
+   (untracked, machine-local) must contain `Bash(rm -f inbox/*)` in its `permissions.allow`
+   array. Add it if absent; do not widen it further and do not `git add` the file.
+   **Reason (QR-5, ruled 2026-08-16): the deletion is the only Step 4 action that was never
+   allowlisted, so it prompts on every invocation. A session driven remotely — from a phone —
+   cannot answer that prompt. Scope is deliberately narrow: `rm -f` under `inbox/` only,
+   which Q-1 already rules is transient freight.**
 
 ## Step 1 — Inventory and confirm order
 1. List every `*.zip` in `inbox/`, sorted by the date embedded in the filename,
@@ -50,8 +61,15 @@ queue from an unverified tree.
    authoring order (demonstrated 2026-08-09/10; QR-4).
 2. Also compute the pure-mtime order. If the two orders disagree, print BOTH and
    name the difference — never silently pick one.
-3. Print the inferred queue order (filename + date) and STOP. Ask Michael to
-   confirm or reorder before executing anything. Do not proceed on silence.
+3. **For each packet, check whether its staged deliverable already exists in the repo at the
+   size the packet states. If it does, mark that packet "POSSIBLY ALREADY EXECUTED — verify
+   before running" and name the file and size you found.** A packet can survive its own
+   execution, so a zip in `inbox/` is NOT proof of a pending packet. **Read this together with
+   the Step 0 gate: "already executed" can mean COMMITTED BUT UNPUSHED, which is what the
+   forty-second invocation turned out to be — the deliverable was at HEAD and absent from
+   `origin/master`. Say which of the two you found.** (QR-5, ruled 2026-08-16.)
+4. Print the inferred queue order (filename + date), carrying any such marks, and STOP. Ask
+   Michael to confirm or reorder before executing anything. Do not proceed on silence.
 
 ## Step 2 — Read everything before executing anything
 1. Unzip all packets to a temp location.
@@ -88,6 +106,15 @@ For each packet, oldest first:
    up on top. Add one short runner entry above them all: which packets
    ran, in what order, what was superseded, what was skipped as already
    built.
+   **THE ENTRY MUST NOT ASSERT ANY POST-COMMIT ACTION (QR-5, ruled 2026-08-16).** It is
+   committed at item 3; the push is item 4 and the deletion is item 5, so any sentence about
+   either is a PREDICTION, not a report. **Do not write "packet deleted after execution," or
+   that the push landed, or any equivalent.** Report both to Michael in-session per items 4–6,
+   and if either failed, carry it into the NEXT batch's runner line, where it can be stated
+   truthfully. **Origin exhibit: "Packet deleted after execution per Step 4.5" was boilerplate
+   in this template, true for the forty-first invocation and FALSE for the forty-second, whose
+   close-out was interrupted at the push — and the false sentence is permanently in the record
+   because it was committed before the action it describes.**
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's — AND
    into `docs/specs/attorney-review-queue.md`, which is the standing
@@ -111,8 +138,16 @@ For each packet, oldest first:
    (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
    NEVER force-push. A rejected push means another session moved the record;
    the record wins.
-5. Delete the processed zips from `inbox/` (the session-log entries are
-   now the record).
+5. Delete the processed zips from `inbox/` (the session-log entries are now the
+   record) — **and VERIFY it, the way item 4 verifies the push: re-list `inbox/`
+   afterwards and confirm each processed zip is gone. NEVER treat an unchecked delete
+   command as a deletion.** Report the result to Michael in item 6. **If a zip
+   survives, do NOT edit this batch's entry to say so — it is already committed. Put
+   the removal on Michael's hand list and CARRY IT INTO THE NEXT BATCH'S RUNNER LINE.**
+   (QR-5, ruled 2026-08-16.) Note the ordering that makes this necessary: a close-out
+   interrupted at item 4 never reaches item 5 at all, so a surviving zip is evidence
+   about the PUSH as much as about the delete — check the Step 0 gate before concluding
+   which failed.
 6. Tell Michael in one line: "Pushed at `<sha>` — click Sync now on the
    repo in the Claude project."
 

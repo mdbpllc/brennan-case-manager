@@ -338,7 +338,10 @@ standing gates that survive any status change:
   design sessions; process the whole batch with
   docs/prompts/QUEUE-RUNNER.md; delete packets after execution — the
   session-log entries are the record. STANDING CONVENTION — ruled
-  ADOPTED by Michael 2026-07-26 (Q-1). `docs/prompts/` is the canonical
+  ADOPTED by Michael 2026-07-26 (Q-1). **The deletion is VERIFIED, and a
+  session-log entry never asserts it — the entry is committed before the
+  push and the deletion happen, so both are reported to Michael and any
+  failure is carried into the next runner line (QR-5, ruled 2026-08-16).** `docs/prompts/` is the canonical
   home for cross-interface prompts (prompts meant to be executed by
   Code sessions) — ruled 2026-07-26 (Q-2).
 - Preflight rows and questions about Michael-supplied material are answered by Michael
