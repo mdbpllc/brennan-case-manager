@@ -1,6 +1,6 @@
 # Legal Rule Registry — Discovery Enforcement, Declaratory Judgment, Venue and Pleading
 
-**Status: ALL THIRTY-THREE ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under CLAUDE.md's registry discipline these propositions may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
+**Status: MIXED — 21 of 33 entries VERIFIED, 12 UNVERIFIED.** Re-derived from this file at execution, 2026-08-17; the header no longer reads ALL-UNVERIFIED because it no longer can. **Twenty-one entries carry Michael's sign-off from the Task 19 walk of 2026-08-17** — his word recorded entry by entry in `task-19-signoff-record-2026-08-17.md` §1 (edit E-5, §3 of that record). The other twelve do not, and for them nothing changes: under CLAUDE.md's registry discipline an unverified proposition may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.** **Three of the twelve — TRCP 192.3(h) (discoverability), 215.4(b) and 191.2 — carry wording ADOPTED 2026-08-17 under ROUTE-C and are UNVERIFIED BY DESIGN: adoption is not verification, and verification attaches to the new wording at a later look (execute-then-verify, #95).**
 
 **Filed 2026-08-12 (queue-runner, twentieth invocation).** Entries come from the two REQ-CAPTUREs reconciled that day: `REQ-CAPTURE_deficiency-handling_2026-08-11.md` §4 (enforcement of propounded written discovery — twenty-two entries) and `REQ-CAPTURE_uim-udja-petition-transform_2026-08-12.md` §4 (declaratory-judgment vehicle, fees, venue, and the pleading relief bracket — five entries). Both captures state their own propositions as unverified; that status is carried, not re-derived.
 
@@ -20,22 +20,24 @@
 
 **Cite:** Tex. R. Civ. P. 192.3(a).
 **Rule.** A party may obtain discovery regarding any matter that is not privileged and is relevant to the subject matter of the pending action; it is not a ground for objection that the information sought will be inadmissible at trial, if the information appears reasonably calculated to lead to the discovery of admissible evidence.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**`Q-STAT-6` divergence flag: CURED at verification** — Michael's ruling, 2026-08-17 (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** the doctrinal preamble of the deficiency letter and motion to compel (DE-1).
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 192.3(h) — witness statements discoverable
 
 **Cite:** Tex. R. Civ. P. 192.3(h).
-**Rule.** A party may obtain discovery of the statement of any person with knowledge of relevant facts.
+**Rule.** A party may obtain discovery of the statement of any person with knowledge of relevant facts — a “witness statement” — regardless of when the statement was made.
 **Status:** UNVERIFIED.
 **Relied on for:** deficiency assertions where produced statement forms existed but were not identified in response.
+**Wording:** adopted 2026-08-17 per #98 (ROUTE-C); verification attaches to this wording.
 
 ## TRCP 192.3(h) — what a witness statement is
 
 **Cite:** Tex. R. Civ. P. 192.3(h).
 **Rule.** A witness statement is (1) a written statement signed or otherwise adopted or approved in writing by the person making it, or (2) a stenographic, mechanical, electrical, or other recording of a witness's oral statement, or any substantially verbatim transcription of such a recording. Notes taken during a conversation or interview with a witness are **not** a witness statement.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the transcription-pipeline boundary (Q-COM-12 — transcribing a recording can convert what were notes into a witness statement); the communications memo's P-COM-4.
 **Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
 **Dedupe note:** the entry immediately above carries a **different proposition on the same rule number** — 192.3(h)'s discoverability sentence. This entry carries the rule's *definition* of a witness statement, including the sentence that notes are not one. Treated the same way as the TRCP 196.2(b) entry below, whose note records the identical situation: a different proposition on the same rule number is a new entry rather than a second observation. **Placement confirmed by Michael, 2026-08-16, choosing this over folding the definition into the entry above; flagged here in case he later wants the two consolidated into one 192.3(h) entry carrying two propositions.** Ruled 2026-08-16 (#95): the two entries stay separate.
@@ -44,7 +46,7 @@
 
 **Cite:** Tex. R. Civ. P. 192.3(j).
 **Rule.** A party may obtain discovery of any other party's legal contentions and the factual bases for those contentions.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the contention-discovery line of the deficiency analysis (DE-1 taxonomy categories OO and EV).
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
@@ -52,7 +54,7 @@
 
 **Cite:** Tex. R. Civ. P. 192.5(c)(1).
 **Rule.** Even if made or prepared in anticipation of litigation or for trial, information discoverable under Rule 192.3 concerning experts, trial witnesses, witness statements, and contentions is not work product protected from discovery.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the `privilege_tier` classification questions (Q-COM-11, ruled (A) 2026-08-16; Q-COM-12); `transcript-workflows.md` §1 item 3's presumptively-discoverable posture for witness-interview transcripts; the communications memo's P-COM-3.
 **Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
 **Dedupe note:** *In re Ochoa* below carries the narrower case proposition that contention discovery is not work product. This rule entry is the authority that proposition rests on and does not displace it — rules precede the case propositions that support them, per Structure above.
@@ -62,7 +64,7 @@
 **Cite:** Tex. R. Civ. P. 192.5(d).
 **Rule.** For purposes of the rules of civil procedure, an assertion that material or information is work product is an assertion of privilege.
 **Operative text, spot-checked against raw extraction:** "For purposes of these rules, an assertion that material or information is work product is an assertion of privilege."
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** both `privilege_tier` columns (Q-COM-11, ruled (A) 2026-08-16 — no default, classify at creation, NULL meaning unclassified-must-classify); the communications memo's P-COM-2.
 **Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
 
@@ -70,14 +72,15 @@
 
 **Cite:** Tex. R. Civ. P. 193.1.
 **Rule.** A party must respond to written discovery completely, based on all information reasonably available to the responding party or its attorney at the time the response is made.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Divergence RESOLVED at verification, 2026-08-17:** the three omitted requirements (in writing / within the time for response / preceded by a request) were shown as omissions and Michael verified the proposition **as-is** (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** the EV (evasive/incomplete) category of the DE-1 taxonomy.
 
 ## TRCP 193.2(a),(b),(c),(e),(f) and comment 3 — objection specificity and waiver
 
 **Cite:** Tex. R. Civ. P. 193.2(a), (b), (c), (e), (f), with cmt. 3.
 **Rule.** An objection to written discovery must be made in writing — in the response or in a separate document — within the time for response, and must state specifically the legal or factual basis for the objection and the extent to which the party is refusing to comply with the request (193.2(a)). A party must comply with as much of the request as it has not objected to, unless it is unreasonable under the circumstances to do so before obtaining a ruling on the objection (193.2(b)). A party may object only if a good-faith factual and legal basis for the objection exists at the time the objection is made (193.2(c)). An objection that is not made within the time required, or that is obscured by numerous unfounded objections, is waived unless the court excuses the waiver for good cause shown (193.2(e)). A party should not object on the ground that the request calls for privileged material, but should instead comply with Rule 193.3; a party who does so object does not waive the privilege, but must comply with Rule 193.3 when the error is pointed out (193.2(f)). The Rule 193.3 withholding statement should not be made prophylactically, but only when specific information or materials have been withheld (cmt. 3).
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the BP (boilerplate objection) and STO (answer given "subject to" objections) categories — **the linchpin of the deficiency-enforcement theory (DE-1)**, and the same 193.2(e) waiver proposition the parked discovery-deficiency engine identified (case-heartbeat walkthrough capture, Part 6.2).
 **Dedupe note:** no existing entry for the 193.2 family was found in the sibling registry file at HEAD; this is its first entry.
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
@@ -87,7 +90,7 @@
 
 **Cite:** Tex. R. Civ. P. 196.2(b).
 **Rule.** With respect to each item or category of items, the responding party must state objections and assert privileges as required by the rules, and state, as appropriate, that: production, inspection, or other requested action will be permitted as requested; the requested items are being served on the requesting party with the response; production, inspection, or other requested action will take place at a specified time and place, if the responding party is objecting to the time and place of production; or no items have been identified — after a diligent search — that are responsive to the request.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the RFP-form category of the DE-1 taxonomy — the treatise's "anti-dribbling" rule.
 **Dedupe note:** the sibling registry file carries a VERIFIED **TRCP 196.2** entry for the **30-day response period**. That is a **different proposition on the same rule number**, so this entry is new rather than a second observation — the same treatment the sibling file gave the three 30-day rules it split into distinct cites. Flagged for Michael in case he wants them consolidated.
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
@@ -96,14 +99,16 @@
 
 **Cite:** Tex. R. Civ. P. 197.1.
 **Rule.** Interrogatories may inquire into any matter within the scope of discovery except matters covered by TRCP 195, and may ask the responding party to state the legal theories and describe in general the factual bases for its claims or defenses.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Divergence RESOLVED at verification, 2026-08-17:** the marshal-proof limit and the 30-day service limit were shown as omissions and Michael verified the proposition **as-is** (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** the contention-interrogatory deficiencies in the analysis grid.
 
 ## TRCP 197.2(c) — records-reference answers must specify the records
 
 **Cite:** Tex. R. Civ. P. 197.2(c).
 **Rule.** Where the answer to an interrogatory may be derived from records, the responding party may answer by specifying and, where appropriate, producing the records — but the records must be specified in sufficient detail that the requesting party can locate and identify them as readily as the responding party can.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Divergence RESOLVED at verification, 2026-08-17:** the substantially-same-burden precondition was shown as an omission and Michael verified the proposition **as-is** (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** deficiency assertions against unspecified record-reference answers (EV category).
 **Dedupe note:** the sibling registry file carries a VERIFIED **TRCP 197.2(a)** entry for the interrogatory **response period** — a different subsection and a different proposition.
 
@@ -111,7 +116,8 @@
 
 **Cite:** Tex. R. Civ. P. 198.1.
 **Rule.** A party may serve written requests that the other party admit the truth of any matter within the scope of discovery, including statements of opinion or of fact or of the application of law to fact.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Divergence RESOLVED at verification, 2026-08-17:** the genuineness limb and the stated-separately requirement were shown as omissions and Michael verified the proposition **as-is** (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** deficiency assertions against denials of application-of-law-to-fact admissions.
 **Dedupe note:** the sibling registry file's VERIFIED **TRCP 198.2** entry covers the response period and deemed admissions — a different proposition.
 
@@ -119,7 +125,7 @@
 
 **Cite:** Tex. R. Civ. P. 215.1(c).
 **Rule.** For purposes of a motion to compel, an evasive or incomplete answer is to be treated as a failure to answer.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the EV category and the motion to compel's central lever (DE-1, DE-2).
 **Dedupe note:** one of the Bright closed-list authorities named in the fold-in; no existing entry was found in the sibling registry file at HEAD, so it enters here rather than taking a second observation.
 
@@ -127,29 +133,31 @@
 
 **Cite:** Tex. R. Civ. P. 215.1(d).
 **Rule.** If a motion to compel is granted, the court shall, after opportunity for hearing, require the party or deponent whose conduct necessitated the motion, or the party or attorney advising that conduct, or both, to pay the moving party the reasonable expenses incurred in obtaining the order, including attorney fees — unless the court finds that the opposition to the motion was substantially justified or that other circumstances make an award of expenses unjust. If the motion is denied, the court may, after opportunity for hearing, require the moving party or the attorney advising the motion to pay the party or deponent who opposed it the reasonable expenses incurred in opposing it, including attorney fees, on the same substantially-justified standard. An award under this subdivision is subject to review on appeal from the final judgment.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the motion to compel's prayer.
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 215.4(b) — expenses of proving matters not admitted
 
 **Cite:** Tex. R. Civ. P. 215.4(b).
-**Rule.** A party that fails to admit a matter and that the requesting party later proves may be ordered to pay the reasonable expenses, including attorney's fees, incurred in making that proof.
+**Rule.** If a party fails to admit the genuineness of a document or the truth of a matter as requested under Rule 198, and the requesting party thereafter proves the genuineness of the document or the truth of the matter, the requesting party may apply for an order requiring the other party to pay the reasonable expenses incurred in making that proof, including reasonable attorney fees; the court shall make the order unless it finds that (1) the request was held objectionable under Rule 193, (2) the admission sought was of no substantial importance, (3) the party failing to admit had a reasonable ground to believe it might prevail on the matter, or (4) there was other good reason for the failure to admit.
 **Status:** UNVERIFIED.
 **Relied on for:** the enforcement posture against contradicted admission denials (IN-7's live evidence).
+**Wording:** adopted 2026-08-17 per #98 (ROUTE-C); verification attaches to this wording.
 
 ## TRCP 191.2 — discovery conference requirement and certificate
 
 **Cite:** Tex. R. Civ. P. 191.2.
-**Rule.** Parties must make a reasonable effort to resolve discovery disputes without court intervention, and a motion or response addressing a discovery dispute must contain a certificate to that effect.
+**Rule.** Parties and their attorneys are expected to cooperate in discovery and to make any agreements reasonably necessary for the efficient disposition of the case. All discovery motions or requests for hearings relating to discovery must contain a certificate by the party filing the motion or request that a reasonable effort has been made to resolve the dispute without the necessity of court intervention and the effort failed.
 **Status:** UNVERIFIED.
 **Relied on for:** the conferral fuse and the motion's conference certificate — **the legal substrate of the DE-2 escalation timeline.**
+**Wording:** adopted 2026-08-17 per #98 (ROUTE-C); verification attaches to this wording.
 
 ## In re Park Cities Bank, 409 S.W.3d 859 (Tex. App.—Tyler 2013, orig. proceeding)
 
 **Cite:** In re Park Cities Bank, 409 S.W.3d 859 (Tex. App.—Tyler 2013, orig. proceeding).
 **Proposition.** Boilerplate and prophylactic objections are prohibited; the party asserting privilege bears the burden.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the BP and PRIV categories of the DE-1 taxonomy.
 
 ## In re Volt Power, LLC, 2023 WL 2804430 (Tex. App.—Tyler 2023, orig. proceeding)
@@ -194,7 +202,7 @@
 
 **Cite:** Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995).
 **Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's claim.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the motion to compel's framing of the central deficiencies.
 **Split note:** **entry 19b**, from former joint entry 19, per #73 (V-5), executed 2026-08-16. The co-authority *Ford Motor Co. v. Castillo*, 279 S.W.3d 656 (Tex. 2009), is now **entry 19a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **ATTRIBUTION QUESTION — CARRIED.** Same as 19a: the joint entry did not record which case supplied which half.
@@ -235,7 +243,7 @@
 
 **Cite:** Peeples v. Fourth Supreme Judicial Dist., 701 S.W.2d 635 (Tex. 1985).
 **Proposition.** Merely listing a privilege proves nothing; the burden rests on the party asserting it.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the PRIV category of the DE-1 taxonomy.
 **Split note:** **entry 21b**, from former joint entry 21, per #73 (V-5), executed 2026-08-16. The co-authority *In re Redman* is now **entry 21a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **NO LOOK NEEDED to resolve cite or majority — the third entry the split frees.** FLP cluster 2436879, opinion 2436879, type `010combined`, Wallace, J., Tex. Sup. Ct. No. C-4010, filed 1985-10-16, Published, **no separate opinions** (`registry-citator-pass-2026-08-13.md` §2.4).
@@ -246,15 +254,17 @@
 
 **Cite:** Dillard Dep't Stores v. Hall, 909 S.W.2d 491 (Tex. 1995).
 **Proposition.** Overbroad, undifferentiated "fishing expedition" requests are improper — **cited by the OPPONENT** in the captured matter, and recorded here as the anticipated counter-authority, distinguishable where requests are specific.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the anticipated-response section of the motion. **Entered as opposing authority; nothing in the registry takes sides.**
+**Per curiam — no authoring justice.** (Edit E-2, Michael's word at verification, 2026-08-17.)
 
 ## Tex. Civ. Prac. & Rem. Code ch. 37 — the Uniform Declaratory Judgments Act: what the statute provides
 
 **Cite:** Tex. Civ. Prac. & Rem. Code § 37.001 et seq. (Uniform Declaratory Judgments Act).
 **Rule.** A court of record within its jurisdiction has power to declare rights, status, and other legal relations **whether or not further relief is or could be claimed**, and an action is not open to objection on the ground that a declaratory judgment is prayed for (§ 37.003(a)). A person **whose rights, status, or other legal relations are affected by a statute … or contract** may have determined any question of construction or validity arising under it and obtain a declaration of rights, status, or other legal relations thereunder (§ 37.004(a)). The chapter is **remedial**, its purpose being to settle and to afford relief from uncertainty and insecurity with respect to rights, status, and other legal relations, and **it is to be liberally construed and administered** (§ 37.002(b)).
 **Operative text, spot-checked against raw extraction:** § 37.003(a) — "A court of record within its jurisdiction has power to declare rights, status, and other legal relations whether or not further relief is or could be claimed. An action or proceeding is not open to objection on the ground that a declaratory judgment or decree is prayed for." § 37.004(a) — "A person interested under a deed, will, written contract, or other writings constituting a contract or whose rights, status, or other legal relations are affected by a statute, municipal ordinance, contract, or franchise may have determined any question of construction or validity arising under the instrument, statute, ordinance, contract, or franchise and obtain a declaration of rights, status, or other legal relations thereunder." § 37.002(b) — "This chapter is remedial; its purpose is to settle and to afford relief from uncertainty and insecurity with respect to rights, status, and other legal relations; and it is to be liberally construed and administered."
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**`Q-STAT-6` divergence flag: CURED at verification** — Michael's ruling, 2026-08-17 (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** the **statutory basis** of the cause of action in the drafted UIM/UDJA original petition, and the statutory power behind the declarations block's typed declarations (liability, damages-compensability, coverage-fit, limits, damages-by-category, offset-excess, amount-with-fees). **It does NOT carry the availability holding** — that the UDJA is a proper vehicle for a UIM-benefit determination against the insured's own carrier is *Irwin*'s, and lives on the **Allstate Ins. Co. v. Irwin** entry (entry 24) immediately below, **cross-referenced, not merged.**
 **Narrowing note:** narrowed 2026-08-16 per V-7 (#73) from the entry as filed, which read: *"The UDJA is available as the vehicle for establishing an insured's UIM-coverage prerequisites against the insured's own carrier,"* cited to "§ 37.001 et seq." **Nothing in ch. 37 addresses UIM coverage prerequisites, and § 37.001 is a definition of "person" and nothing else.** Consistent with V-4 and V-5, ruled the same hour: separate entries, cross-referenced, never a joint statute-plus-case proposition.
 **COST OF THE NARROWING, STATED AND ACCEPTED AT #73:** the availability proposition now waits on **the least verifiable entry in the backlog.** *Irwin* has **no reporter cite in FLP and two clusters**, and it is the case that opened **V-9** — the class in which CLAUDE.md's binding majority-opinion rule **cannot run**, since the record offers neither an opinion-type marker nor authoring language. Splitting the proposition off this statute entry does not make *Irwin* easier; it makes the statutory half verifiable now.
@@ -274,20 +284,21 @@
 
 **Cite:** Tex. Civ. Prac. & Rem. Code § 37.009.
 **Rule.** In a declaratory-judgment proceeding the court may award costs and reasonable and necessary attorney's fees as are equitable and just.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the petition's prayer for declaratory fees.
 
 ## Tex. Civ. Prac. & Rem. Code § 15.002(a)(1) — venue where events occurred
 
 **Cite:** Tex. Civ. Prac. & Rem. Code § 15.002(a)(1).
 **Rule.** Venue lies in the county in which all or a substantial part of the events or omissions giving rise to the claim occurred.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Divergence RESOLVED at verification, 2026-08-17:** the “except as otherwise provided” conditioning was shown as an omission and Michael verified the proposition **as-is** (Task 19 walk; `task-19-signoff-record-2026-08-17.md` §1).
 **Relied on for:** the petition's jurisdiction-and-venue paragraph.
 
-## TRCP 47(b)–(c) — the required relief-bracket statement
+## TRCP 47(b)–(d) — the required relief-bracket statement
 
 **Cite:** Tex. R. Civ. P. 47(b), (c), (d).
 **Rule.** An original pleading that sets forth a claim for relief must contain: a statement that the damages sought are within the jurisdictional limits of the court (47(b)); except in suits governed by the Family Code, a statement that the party seeks exactly one of five specified forms of relief — (1) only monetary relief of $250,000 or less, excluding interest, statutory or punitive damages and penalties, and attorney fees and costs; (2) monetary relief of $250,000 or less and non-monetary relief; (3) monetary relief over $250,000 but not more than $1,000,000; (4) monetary relief over $1,000,000; or (5) only non-monetary relief (47(c)); and a demand for judgment for all the other relief to which the party deems itself entitled (47(d)). A party that fails to comply with 47(c) may not conduct discovery until its pleading is amended to comply.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Load-bearing for:** **FE-14** (relief bracket as a per-matter picklist). **FE-14 IS GATED ON THIS ENTRY** — the bracket option list's wording is not encoded anywhere in the software until Michael verifies it. This is CLAUDE.md registry rule 1 operating exactly as written: an unverified rule may drive a placeholder, never a computed legal outcome.
 **Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
