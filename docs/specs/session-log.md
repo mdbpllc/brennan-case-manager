@@ -12,6 +12,157 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-SEVENTH invocation) — the packet's headline question is its own third recording and already has a live ID, and the entry reporting a stale version number states a version state the record expressly declines to assert
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 18** — the
+go-live runbook. Runner re-read at HEAD per QR-2 (the `/queue-runner` command is a pointer and was
+followed as one); **v8 read and v8 followed.** No conflict rule fired and nothing was superseded — a
+single packet cannot disagree with a later one — and **nothing was skipped as already built.**
+
+- **NOTHING CARRIED FORWARD, AND THE PREVIOUS LINE HAD ALREADY EARNED THAT.** The forty-sixth
+  invocation confirmed both its predecessor's limbs, and this invocation re-confirmed its own
+  inheritance natively: **`HEAD == origin/master == 6ca9794`, which IS the forty-sixth invocation's
+  own commit, so its push landed**, and `inbox/` held **only** the new Task 18 zip, the Task 17
+  packet gone, **so its deletion ran.** No open push/deletion question exists. The packet's §9 said
+  exactly this and it checks out.
+- **STEP 0 GATE PASSED ON NAMED EVIDENCE.** `git fetch origin`, then `git status --short --branch`
+  and `git rev-parse HEAD origin/master`: clean, on `master`, **0 ahead / 0 behind**. Not behind, not
+  diverged, **and not ahead** — the v7 ahead-stop had nothing to fire on. **The §1 figures were NOT
+  carried in**: the packet says in terms that `git fetch` was not run and could not be from the
+  device VM, so the gate was run natively and independently agreed with every figure it offered.
+- **THE ALREADY-EXECUTED CHECK CAME BACK GENUINELY PENDING, AND THE QR-5 DISTINCTION WAS CHECKED
+  RATHER THAN ASSUMED.** `go-live-runbook.md` was absent from the working tree by recursive search
+  **and** absent from `git ls-files`; since HEAD is exactly `origin/master`, absent-at-HEAD is also
+  absent-from-origin — **so neither committed-and-pushed nor committed-but-unpushed**, the pair that
+  trapped the forty-second invocation. The only near-name hit was `docs/specs/Go_Live_Gates.md`, a
+  different and pre-existing file. Single packet, so filename-date and mtime orders are identical;
+  **both were computed and printed, and Michael confirmed the order before the zip was opened.**
+- **THE PACKET'S HEADLINE FINDING IS NOT NEW — IT IS THE THIRD RECORDING OF ONE QUESTION, AND THE
+  SECOND ALREADY HAS A LIVE ID.** `GLR-1` asks how GL-1 floor item (5)'s "instructions v15" should be
+  read. **`docs/specs/docs-lint-sweep-2026-08-13.md` §1 item 1 asked it first** — *"does GL-1 require
+  literally v15, or 'the version current at the re-check'? Only Michael can say which"* — and **`AUD-2`
+  asked it again at `#79`, where it became `OPEN-1`, which is still ⬜ open** at
+  `attorney-review-queue.md`. **NO FOURTH ROW WAS CREATED.** `GLR-1`'s full text was annotated onto
+  the `OPEN-1` row instead, per QR-1, because the packet is deleted and that row is now the only
+  place the Task 18 wording survives. A competing row would have split one question across two IDs so
+  that a ruling on either left the other dangling — **the exact failure QR-1 exists to prevent.** Two
+  things in the Task 18 wording are genuinely new and are why it was carried rather than dropped: the
+  **literal-reading hazard** (item (5) can read as ALREADY SATISFIED, because v15 does exist — sharper
+  than a merely stale number), and that **v15 was produced by trigger 3 (CRIM DEFENSE + K-5), not
+  trigger 1**, so the number and the trigger it is bolted to do not refer to the same revision.
+- **AND THE ENTRY REPORTING A STALE VERSION NUMBER ITSELF STATES A VERSION THE RECORD DECLINES TO
+  ASSERT — flagged under the runner's hard limit, not resolved.** `#92` says *"the instructions are
+  now **v19**."* **`BUILD-STATE.md` at HEAD says v18 IS IN FORCE**, with **v19 a DRAFT** whose paste
+  is Michael's and, in its own words, *"THIS FILE ASSERTS NOTHING ABOUT WHETHER IT HAPPENED"* — and
+  `session-log.md` still carries **"project-instructions v19 paste"** as an open carried item. The
+  claim was **NOT adopted** into the queue annotation and **NOT carried into BUILD-STATE**; `#92`
+  **stands as written** per append-don't-rewrite, with the correction issued here. **The drift across
+  the three recordings is itself the best evidence for the row: v17 → v18 → v19, each recording
+  silently modernizing the number — which is precisely what `OPEN-1` asks Michael to close.**
+- **THE ARITHMETIC IN THAT HEADING DOES NOT HOLD ON EITHER PREMISE, and it changes nothing.** `#92`
+  calls v15 *"five revisions stale."* On the packet's own v19 premise, v15 → v19 is **four**; on
+  BUILD-STATE's v18, it is **three**. **`GLR-1`/`OPEN-1`'s substance is untouched** — item (5) names a
+  superseded version on any reading, and the reading question is the point, not the distance.
+- **EVERY POINTER WAS RE-VERIFIED NATIVELY, AND THE COUNT RECONCILES IN A WAY THE PACKET DID NOT
+  EXPLAIN.** The packet calls it "21 line-number pointers." The runbook table makes **15 pointer
+  citations naming 22 line-number tokens, of which 21 are DISTINCT** — `L30` is cited twice, once as
+  gate 6's own location and once as where gate 3's dependency is recorded. **All 21 check out against
+  `Go_Live_Gates.md`**: each cited start line is the gate's opening line and each cited end line its
+  closing sentence, L20 is the 2026-08-11 clarification, L22 the GH-1 tripwire, L60–62 the gate-8
+  correction note, and L96–97 the single-key rule and the rotation plan of record. **The source-file
+  figures also reproduce exactly: 106 raw / 84 non-blank**, matching the `#66`/`#67` counting
+  convention, and GL-1 item (5) is verbatim as quoted. **`GLR-3`'s four append events were verified
+  present at HEAD** (gates 6–8; gate 9; GL-1; the GH-1 tripwire).
+- **THE COPY WAS HASHED ON BOTH SIDES AND IS BYTE-IDENTICAL** — `sha256 949613f4…862a`, **9,919
+  bytes**, 106 raw / 81 non-blank, confirmed by `cmp`. **Copied, never re-typed and never
+  hand-edited.**
+- **`Go_Live_Gates.md` WAS NOT TOUCHED, which was the largest thing on the §6 list.** `git status`
+  reports it unmodified. The stale `v15`, the three traps, and the trigger-3 mismatch are **recorded
+  as questions, not repaired as typos** — the doc is binding and append-only. No status column was
+  added to the runbook, no `GLR-<n>` was resolved, and no credential value was reproduced anywhere.
+- **THE QUEUE MERGE WAS TWO ACTS.** Two new rows — **`GLR-2` and `GLR-3`, full question text per
+  QR-1** — plus the `GLR-1` annotation onto `OPEN-1`. **`GLR-<n>` was collision-checked repo-wide at
+  HEAD and returned ZERO**; the IDs are the packet's own and are **packet-local, not minted** —
+  minting is Michael's act, so **ID-DL-1 now governs a THIRTEENTH packet.** `GLR-2` is **the same
+  question as `TOC-3`**, entered one invocation earlier, and **one ruling closes both.**
+- **`TOC-5` GETS ITS SECOND FILE, AND THAT IS THE CONSEQUENCE THAT ARRIVES WITHOUT A RULING.** The
+  runbook lands in `docs/specs/`, **inside the sync selection**, so it enters project knowledge at
+  Michael's next Sync click and spends context budget against the working-set policy — the same
+  concern `TOC-5` raised about the 53 KB index one invocation ago. This one is small (9,919 bytes),
+  but it is a second such file in two batches. **Flagged, not acted on; no sync-picker change was
+  made.**
+- **THE HEALTH CHECK WAS SKIPPED EXPLICITLY, NOT SILENTLY.** §5 is NONE and no `src/`, `db/`,
+  `supabase/` or build-tooling path was routed — `git status` shows `docs/` paths only — so
+  `npm test` / `build` / `lint` would prove nothing about this batch. The `#68` measurement (278
+  tests, 23 files, build + lint clean) still stands unchallenged.
+- **THIS RUNNER LINE IS WRITTEN UNDER QR-5 LIMB (a): it asserts nothing about its own push or its
+  own deletion**, both of which happen after it is committed. Results go to Michael in-session; any
+  failure rides into the NEXT runner line.
+
+## 2026-08-16 (#92) — CHAT-DISPATCH TASK 18: the go-live runbook — three places where reading a gate ALONE gives the wrong answer, and a floor item that names an instructions version five revisions stale (design session, Opus 5, Cowork)
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 18** — a
+pointer-style checklist over `Go_Live_Gates.md`: `[gate | label | who acts | done-when evidence |
+pointer]`, plus the trigger-1 instructions row and the GL-1 floor. **It restates no gate's substance.**
+
+- **READ FULL-TEXT AT HEAD.** `Go_Live_Gates.md` at `6ca9794`, **106 raw / 84 non-blank**, read in
+  full before anything was written. That figure **independently reproduces the `#66`/`#67` line-count
+  episode's numbers** — the raw-vs-non-blank pair that was reconciled as a counting convention rather
+  than an error. The file is unchanged in that respect.
+- **NO STATUS COLUMN, DELIBERATELY.** Nothing in the runbook says whether a gate is met. BUILD-STATE
+  is the only authority on what is built, and **a status snapshot in a second file is the
+  copy-forward failure this project has already had** — `#13`'s `R-3`, where a cleared item
+  propagated across roughly a dozen entries on both sides before anyone checked. The runbook tells a
+  reader what to check and what counts as done; it routes the *status* question to BUILD-STATE.
+- **THREE TRAPS, each a place where reading a gate ALONE gives the wrong answer.** These are
+  properties of the gates doc, recorded, not corrected — the doc is append-only and every gate text
+  stands as written. **(1) Gate 2 read alone over-blocks:** its text says *"multi-user / live use,"*
+  but the 2026-08-11 clarification two lines below rules that it gates the MULTI-USER phase and that
+  solo live use proceeds without it. **(2) Gate 3 read alone is unsatisfiable-but-looks-fine:** gate
+  6 exists precisely because *"gate 3 reads as satisfiable without noticing there is currently no way
+  to authenticate anyone,"* and **the dependency is recorded at gate 6, not at gate 3** — invisible
+  from gate 3's own text. **(3) Gate 9's trigger is a different SHAPE from every other gate's:** the
+  others fire on real *data*; gate 9 fires on *reliance*, because being locked out is an availability
+  problem, not a confidentiality one. **A checklist ordered by "when does real data arrive" schedules
+  gate 9 too late.**
+- **GL-1 FLOOR ITEM (5) NAMES AN INSTRUCTIONS VERSION FIVE REVISIONS STALE.** It reads *"the gates
+  re-check session and instructions v15 per trigger 1."* GL-1 was ruled 2026-08-11 when v15 was
+  current; the instructions are now **v19**. Almost certainly it means *the trigger-1 revision against
+  whatever version is current* — **but read literally a future session could treat item (5) as
+  already satisfied, because v15 exists.** And v15 was produced by trigger **3** (CRIM DEFENSE +
+  K-5), not trigger 1 at all. **Recorded, not corrected; GL-1 stands as written.** `GLR-1` asks only
+  how it is read.
+- **EVERY POINTER MECHANICALLY VERIFIED.** All 21 line references were checked against the file
+  before packaging — each cited start line is the gate's opening and each cited end line its closing
+  sentence. **A pointer doc whose pointers are wrong is worse than no pointer doc**, so this was
+  treated as the deliverable's load-bearing property rather than a formatting detail.
+- **LINE NUMBERS ARE GIVEN HERE, AND WERE OMITTED FROM THE `#91` INDEX — the difference is
+  principled.** `Go_Live_Gates.md` **appends** (gates 6–8, gate 9, GL-1, the GH-1 tripwire), so
+  existing gates' line numbers are stable. The session log **prepends**, so its line numbers shift on
+  every entry.
+- **NO CREDENTIAL ENTERED ANYTHING.** The gates doc was credential-scanned before it was read into
+  context; the repo copy's key value is `[REDACTED]` as ruled, and the runbook points at the LegiScan
+  facts section without reproducing any value.
+- **PROPOSED, unruled:** canonical path `docs/specs/go-live-runbook.md`, stable and unversioned
+  because the gates doc appends and this file must track it. **Same question as `TOC-3`** and rulable
+  once for both. `GLR-2`, `GLR-3`.
+
+**Staged for Code:** `docs/specs/go-live-runbook.md` (new file).
+
+**Awaiting/Returned from Code, unreviewed:** none.
+
+*[Runner note, 2026-08-16, forty-seventh invocation: entry landed as **#92** as written — the
+high-water mark at HEAD was **#91**, so the packet's §3 expectation held and nothing needed
+renumbering. **Nothing else in the entry was altered**, and the two corrections against it are issued
+in the runner line above rather than edited into it, per append-don't-rewrite: (1) *"the instructions
+are now v19"* — `BUILD-STATE.md` records **v18 in force** and v19 a **DRAFT** whose paste it
+expressly declines to assert, and the v19 paste is still an open carried item; (2) *"five revisions
+stale"* is **four** on the entry's own v19 premise and **three** on v18. **`GLR-1`'s substance
+survives both corrections intact.** Also recorded there: `GLR-1` is the **third** recording of the
+question already open as **`OPEN-1` (from `AUD-2`)**, first raised by `docs-lint-sweep-2026-08-13.md`
+§1 item 1 — **no fourth queue row was created**; the Task 18 wording was annotated onto `OPEN-1`
+instead, per QR-1.]*
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-SIXTH invocation) — the fetch the packet named as its own decisive check answers it YES on both limbs, and every figure the index states about its source file survives independent re-derivation
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 17** — the
