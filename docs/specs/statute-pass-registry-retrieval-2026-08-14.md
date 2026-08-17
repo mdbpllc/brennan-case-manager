@@ -560,6 +560,10 @@ the entry would verify something the rule does not say.
 
 ## §9 — PROPOSED replacement wording, four entries (ruled route (c), 2026-08-14)
 
+**ADOPTED 2026-08-16 (#95): §9.1–9.4 were all adopted as proposed (entry 27 including the cite
+move) and executed in the registry file by the same batch. This section is now the drafting record
+of those adoptions, not a pending proposal.**
+
 **Read this section as a draft handed to the verifier, not as a change.** Nothing here is in any registry
 file. Each block gives the entry **as filed at HEAD**, then **PROPOSED** wording that tracks the operative
 text. **Verification attaches to WORDING** — so if a proposed wording is adopted, what gets verified is

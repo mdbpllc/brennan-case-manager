@@ -19,9 +19,10 @@
 ## TRCP 192.3(a) — scope of discovery
 
 **Cite:** Tex. R. Civ. P. 192.3(a).
-**Rule.** Discovery may be had into any matter that is relevant to the subject matter of the pending action, whether or not admissible, if reasonably calculated to lead to the discovery of admissible evidence.
+**Rule.** A party may obtain discovery regarding any matter that is not privileged and is relevant to the subject matter of the pending action; it is not a ground for objection that the information sought will be inadmissible at trial, if the information appears reasonably calculated to lead to the discovery of admissible evidence.
 **Status:** UNVERIFIED.
 **Relied on for:** the doctrinal preamble of the deficiency letter and motion to compel (DE-1).
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 192.3(h) — witness statements discoverable
 
@@ -37,14 +38,15 @@
 **Status:** UNVERIFIED.
 **Relied on for:** the transcription-pipeline boundary (Q-COM-12 — transcribing a recording can convert what were notes into a witness statement); the communications memo's P-COM-4.
 **Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
-**Dedupe note:** the entry immediately above carries a **different proposition on the same rule number** — 192.3(h)'s discoverability sentence. This entry carries the rule's *definition* of a witness statement, including the sentence that notes are not one. Treated the same way as the TRCP 196.2(b) entry below, whose note records the identical situation: a different proposition on the same rule number is a new entry rather than a second observation. **Placement confirmed by Michael, 2026-08-16, choosing this over folding the definition into the entry above; flagged here in case he later wants the two consolidated into one 192.3(h) entry carrying two propositions.**
+**Dedupe note:** the entry immediately above carries a **different proposition on the same rule number** — 192.3(h)'s discoverability sentence. This entry carries the rule's *definition* of a witness statement, including the sentence that notes are not one. Treated the same way as the TRCP 196.2(b) entry below, whose note records the identical situation: a different proposition on the same rule number is a new entry rather than a second observation. **Placement confirmed by Michael, 2026-08-16, choosing this over folding the definition into the entry above; flagged here in case he later wants the two consolidated into one 192.3(h) entry carrying two propositions.** Ruled 2026-08-16 (#95): the two entries stay separate.
 
 ## TRCP 192.3(j) — legal contentions and factual bases discoverable
 
 **Cite:** Tex. R. Civ. P. 192.3(j).
-**Rule.** A party may obtain discovery of the other party's legal contentions and the factual bases for them.
+**Rule.** A party may obtain discovery of any other party's legal contentions and the factual bases for those contentions.
 **Status:** UNVERIFIED.
 **Relied on for:** the contention-discovery line of the deficiency analysis (DE-1 taxonomy categories OO and EV).
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 192.5(c)(1) — witness statements excepted from work-product protection
 
@@ -74,18 +76,21 @@
 ## TRCP 193.2(a),(b),(c),(e),(f) and comment 3 — objection specificity and waiver
 
 **Cite:** Tex. R. Civ. P. 193.2(a), (b), (c), (e), (f), with cmt. 3.
-**Rule.** Objections must state specifically the legal or factual basis and the extent to which the party refuses to comply; a party must comply to the extent no objection is made; an objection must have a good-faith factual and legal basis; an objection that obscures a responsive answer waives the objection; and prophylactic privilege objections are not permitted.
+**Rule.** An objection to written discovery must be made in writing — in the response or in a separate document — within the time for response, and must state specifically the legal or factual basis for the objection and the extent to which the party is refusing to comply with the request (193.2(a)). A party must comply with as much of the request as it has not objected to, unless it is unreasonable under the circumstances to do so before obtaining a ruling on the objection (193.2(b)). A party may object only if a good-faith factual and legal basis for the objection exists at the time the objection is made (193.2(c)). An objection that is not made within the time required, or that is obscured by numerous unfounded objections, is waived unless the court excuses the waiver for good cause shown (193.2(e)). A party should not object on the ground that the request calls for privileged material, but should instead comply with Rule 193.3; a party who does so object does not waive the privilege, but must comply with Rule 193.3 when the error is pointed out (193.2(f)). The Rule 193.3 withholding statement should not be made prophylactically, but only when specific information or materials have been withheld (cmt. 3).
 **Status:** UNVERIFIED.
 **Relied on for:** the BP (boilerplate objection) and STO (answer given "subject to" objections) categories — **the linchpin of the deficiency-enforcement theory (DE-1)**, and the same 193.2(e) waiver proposition the parked discovery-deficiency engine identified (case-heartbeat walkthrough capture, Part 6.2).
 **Dedupe note:** no existing entry for the 193.2 family was found in the sibling registry file at HEAD; this is its first entry.
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
+**DE-1 note (ruled with the adoption):** the corrected waiver limb argues that the thicket itself waives the objections buried in it — a different argument from the one the prior wording implied; the letter template should say so.
 
 ## TRCP 196.2(b) — the four permitted responses to a request for production
 
 **Cite:** Tex. R. Civ. P. 196.2(b).
-**Rule.** A response to a request for production must state, for each item or category, one of the rule's permitted responses — that production will be permitted as requested; that the requested items are being served with the response; that production will be permitted except as specifically objected to; or that no items have been identified after a diligent search.
+**Rule.** With respect to each item or category of items, the responding party must state objections and assert privileges as required by the rules, and state, as appropriate, that: production, inspection, or other requested action will be permitted as requested; the requested items are being served on the requesting party with the response; production, inspection, or other requested action will take place at a specified time and place, if the responding party is objecting to the time and place of production; or no items have been identified — after a diligent search — that are responsive to the request.
 **Status:** UNVERIFIED.
 **Relied on for:** the RFP-form category of the DE-1 taxonomy — the treatise's "anti-dribbling" rule.
 **Dedupe note:** the sibling registry file carries a VERIFIED **TRCP 196.2** entry for the **30-day response period**. That is a **different proposition on the same rule number**, so this entry is new rather than a second observation — the same treatment the sibling file gave the three 30-day rules it split into distinct cites. Flagged for Michael in case he wants them consolidated.
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 197.1 — contention interrogatories authorized
 
@@ -121,9 +126,10 @@
 ## TRCP 215.1(d) — expenses on a motion to compel
 
 **Cite:** Tex. R. Civ. P. 215.1(d).
-**Rule.** Expenses and attorney's fees may be awarded on a motion to compel.
+**Rule.** If a motion to compel is granted, the court shall, after opportunity for hearing, require the party or deponent whose conduct necessitated the motion, or the party or attorney advising that conduct, or both, to pay the moving party the reasonable expenses incurred in obtaining the order, including attorney fees — unless the court finds that the opposition to the motion was substantially justified or that other circumstances make an award of expenses unjust. If the motion is denied, the court may, after opportunity for hearing, require the moving party or the attorney advising the motion to pay the party or deponent who opposed it the reasonable expenses incurred in opposing it, including attorney fees, on the same substantially-justified standard. An award under this subdivision is subject to review on appeal from the final judgment.
 **Status:** UNVERIFIED.
 **Relied on for:** the motion to compel's prayer.
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.
 
 ## TRCP 215.4(b) — expenses of proving matters not admitted
 
@@ -233,7 +239,8 @@
 
 ## TRCP 47(b)–(c) — the required relief-bracket statement
 
-**Cite:** Tex. R. Civ. P. 47(b)–(c).
-**Rule.** An original pleading stating a claim for relief must contain a statement that the party seeks monetary relief within one of the rule's fixed brackets, together with a statement that the party seeks all other relief to which the party is entitled.
+**Cite:** Tex. R. Civ. P. 47(b), (c), (d).
+**Rule.** An original pleading that sets forth a claim for relief must contain: a statement that the damages sought are within the jurisdictional limits of the court (47(b)); except in suits governed by the Family Code, a statement that the party seeks exactly one of five specified forms of relief — (1) only monetary relief of $250,000 or less, excluding interest, statutory or punitive damages and penalties, and attorney fees and costs; (2) monetary relief of $250,000 or less and non-monetary relief; (3) monetary relief over $250,000 but not more than $1,000,000; (4) monetary relief over $1,000,000; or (5) only non-monetary relief (47(c)); and a demand for judgment for all the other relief to which the party deems itself entitled (47(d)). A party that fails to comply with 47(c) may not conduct discovery until its pleading is amended to comply.
 **Status:** UNVERIFIED.
 **Load-bearing for:** **FE-14** (relief bracket as a per-matter picklist). **FE-14 IS GATED ON THIS ENTRY** — the bracket option list's wording is not encoded anywhere in the software until Michael verifies it. This is CLAUDE.md registry rule 1 operating exactly as written: an unverified rule may drive a placeholder, never a computed legal outcome.
+**Wording:** adopted 2026-08-16 per #95; verification attaches to this wording.

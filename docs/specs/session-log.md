@@ -12,6 +12,84 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FIFTIETH invocation) — the batch that executed six registry wordings under the route it was simultaneously making standing law, and found that three of the packet's four directed closures had no row to close
+
+**One packet, executed in full under runner v9 and closing as v10** (the §4.3 amendment is itself one of this batch's acts). **Packet:** `push-to-code_wording-adjudication-rulings_2026-08-16.zip`, identity pinned at Step 1 per QR-6(c) — **11,579 bytes, mtime `2026-08-16 22:32:27`, sha256 `06baf7e0…`**. Order was trivial and the filename and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.**
+
+- **Step 0 gate passed on live evidence, and this time the network worked.** `git fetch origin`, then `git status --short --branch` and `git rev-parse HEAD` against **`git ls-remote origin master`** — the live remote read QR-6(a) demands, not a tracking-ref read: on `master`, tree clean, **HEAD == `origin/master` == `607c561`**, 0 behind / 0 ahead. The packet's §1 said its own bridge read of `607c561` was local-only and possibly stale because `git fetch`/`ls-remote` return HTTP 403 from the design VM; **it was current, and this is the confirmation it asked for.** Per §1 item 4, **no `.git/index.lock` was present** — that session's deliberate avoidance of a bridge `git status` held.
+- **QR-5's already-executed check: NOT EXECUTED, on four checks each capable of disconfirming.** `Select-String '\(#95\)'` on the log returned **0**; the runner header still read **v9** with Step 4 item 5's generic opening intact; `Select-String 'ADOPTED 2026-08-16'` on the statute-pass file returned **0**; and all six registry entries still carried their **AS FILED** wording, matched verbatim against the packet's quoted text entry by entry. Neither "executed" nor "committed but unpushed." **#95 was confirmed as the right number** — high-water #94 plus the forty-ninth runner line — so no renumber was needed.
+- **FOUR THINGS WERE PUT TO MICHAEL AT THE STEP 1 STOP; HE CONFIRMED.** Three were proposals about where rulings with no row should land (below). **The fourth was a genuine binary and was deliberately NOT read into his confirmation: the TRCP 47 entry's HEADING.** §4.1(6) moves the **Cite:** to `47(b), (c), (d)` and says nothing about the heading, which still reads `## TRCP 47(b)–(c) — the required relief-bracket statement`. **The routed act was performed and the unrouted one was not** — under QR-6(e) a bare "confirmed" against a two-option question is not the express authorization an unrouted act requires, and headings are the cite-stability anchors entries are located by. **So the entry's heading and cite now disagree, deliberately and on the record.** One word closes it; it is on his hand list.
+- **SIX WORDINGS EXECUTED, ALL STAYING UNVERIFIED, each replaced only after its AS FILED text was confirmed present verbatim.** **Entry 1** (192.3(a)) restores **"not privileged"** and the objection-provision form — the defect that stopped #93, since that sentence opens every DE-1 deficiency letter. **Entry 3** (192.3(j)) takes the rule's own sentence, closing the singular-opponent divergence. **Entries 5, 6, 11 and 27** took §9.1–9.4 verbatim from `statute-pass-registry-retrieval-2026-08-14.md` at HEAD, **entry 27 including the cite move**, which was flagged as its own act and ruled with the wording. Each carries the specified `**Wording:** adopted 2026-08-16 per #95` line; entry 5 also carries the DE-1 note that **the corrected waiver limb is a different argument** — the thicket waives the objections buried in it — **and the letter template should say so.** **Six Wording lines exist in the file and six were specified.** **The 192.3(h) dedupe note records the pair staying separate.** **No entry count changed: 30 in the file, backlog 37, both re-derived rather than carried.**
+- **RUNNER-FOUND — THREE OF THE PACKET'S FOUR DIRECTED CLOSURES HAD NO ROW TO CLOSE.** §4.4 item 4 named four #93 items. Only **route (c) as standing law** had a standing row (the #77 row, CLOSED as ruled). **Task 19 sequencing** and **the entries-1/3 conforming wording** existed only inside the `V-2` block's #93 annotation, and **Reading A's scope existed nowhere in the register at all.** Nothing was invented: the first two were ruled **where the questions actually live**, as an add-only #95 annotation on that block, and Reading A was **entered as its own row, `READ-A`**, from §7 — deferred, with the conservative default (entries 1–3 only) continuing to govern. **This is the `v19` no-target shape from the forty-ninth invocation recurring one batch later**, which is an argument about the merge rule rather than about either packet: **the register is the only place a question survives its packet.**
+- **ROUTE (c) IS NOW STANDING LAW and the row that carried the question since #77 is closed.** The convention: **a divergence that changes what an entry means gets proposed conforming wording, drafted and queued for Michael's adopt/reject/edit — never adopted silently.** His reason: it matches how the mechanism actually worked at #76, #93 and #95. **The Fable audit's contrary recommendation (#79, keep it a one-off) is recorded as considered and not followed.** It fires instructions trigger #3 → **v21**, which was drafted design-side and **delivered separately; its text is in no repo file, per the packet's §6.**
+- **`QR-6(c)`'s MISSING HALF LANDED — runner v9 → v10**, the one-line completion the forty-ninth invocation found and expressly refused to invent. Step 4 item 5 now opens **"BY EXPLICIT FILENAME — never the bare glob — each name checked against the identity pinned at Step 1."** The version comment records it. **Nothing renumbered** — Step 4 still runs 1–6, Step 1 1–5, Step 3 1–5 — and **all four internal cross-references were re-checked after the edit and still hold.** QR-6(e) was satisfied in the right order: the act was authorized before any runner text was staged.
+- **QUEUE: four rows CLOSED, three ENTERED, two ANNOTATED, and the header's second act performed.** Closed: the **v17** paste row (Michael's one-word ruling, overtaken by events — spent, not wrong), the **v20** paste row (confirmed in force by observation, the #82/A-1 mechanism for the third consecutive time), the **route-(c)** row, and the **`QR-6(c)` half-landing**. Entered with full text per QR-1: **`v21-PASTE`**, **`V-EXEC`**, **`READ-A`**. Annotated add-only: **`Q-STAT-6`** (its four material entries adopted and executed; **the fourteen non-material divergences keep it open**) and the **`V-2`** block. Per QR-6(b) the **Status header's "Reconciled again to session-log #95" sentence was written** as the merge's second act. **#92 and #93 remain missing their sentences — still reported, not back-written, per the #90 precedent.**
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb.** Reason, named: **docs-only batch — §5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path was routed.** `npm test` / `npm run build` / `npm run lint` would have proven nothing about this batch; the last measured figures stand from #94 (278 tests, 23 files, build and lint clean).
+- **OPEN ITEMS carried to Michael (§7 merged into the review queue with full text):** **`v21-PASTE`** (new, his hand, delivered separately and never in the packet), **`V-EXEC`** (new — fire the next dispatch's Task A, an Opus design session drafting V-5/V-6/V-7; **Task 19 sign-off resumes only after it lands**, which is what execute-then-verify means in practice), **`READ-A`** (new, deferred), **`TASK-19`** (resume point unchanged, sequencing now ruled), **`EXTRACT`** (`_claude_extract\` deletion, still his hand), plus everything the forty-ninth left: **`MIGRATION`**, **`REGISTRY-V`**, **`OPEN-5(b)`** and the **`AUD-5..9`** one-word apply, **`Q-COM-10`**, **`Q-COM-12`**, **`Q-WF-4`**'s substance, and the 192.5 consolidation question. **New and his, one word: the TRCP 47 heading.**
+- **Nothing set to verified. No registry status moved. No entry added or removed. No CHECK vocabulary, Status line, or Relied-on-for line touched except where §4.1 stated. The §9 PROPOSED blocks were annotated as the drafting record and not edited. V-5, V-6 and V-7 were NOT executed — their drafting is design's. `Go_Live_Gates.md`, every REQ-CAPTURE, the drafting-disclosures skill, `legal-rule-registry-discovery-and-carrier-duties.md`, and the packet's session capture (routing row 2, project knowledge only) were not touched.**
+
+## 2026-08-16 (#95) — WORDING ADJUDICATION: execute-then-verify RULED for Task 19, six registry
+wordings adopted (entries 1, 3, 5, 6, 11, 27), route (c) ruled STANDING LAW firing trigger #3 into
+v21, and the QR-6(c) completion line authorized (design session, Fable 5, Cowork, device bridge —
+the second Fable adjudication session of 2026-08-16, run after the forty-ninth invocation landed)
+
+**Adjudication session per §7.2 — Fable framed, Michael ruled live, one item at a time. Nothing was
+built.** Session start: bridge granted (two folders, one dialog — HK-7's sixteenth annotation, and
+the second folder was SPENT: the TRCP PDF raw extraction below); BUILD-STATE read IN FULL at local
+HEAD `607c561` (eighty-third refresh), top log entries and runner v9 text read at HEAD; `git rev-parse`
+only through the bridge — `git status` deliberately not run there (the index.lock cause); `inbox/`
+verified EMPTY, confirming the forty-ninth invocation's batch landed before this session began.
+Meter, Michael's in-session word: meaningful Fable slack remaining against the Tue 08-18 4:00 PM
+Central reset — his live reading, superseding the #94 snapshot for this session's allocation.
+
+- **TASK 19 SEQUENCING RULED: EXECUTE-THEN-VERIFY** (was #93's finding, ruled on the framed
+  alternatives). Reason: verification attaches to wording; one sign-off pass over stable wording,
+  nothing verified twice. Consequence: sign-off resumes on Opus only after the ten wording-change
+  entries are executed — the six fully-specified ones by this batch, V-5/V-6/V-7 by a drafting
+  session (the next dispatch's first task; drafting is design's per #73's own line).
+- **READING A'S SCOPE: DEFERRED, expressly.** The conservative default continues to govern —
+  Reading A covers entries 1–3 only; other entries' divergences wait for their own test. The row is
+  annotated, not closed.
+- **ROUTE (c) RULED STANDING LAW — TRIGGER #3 FIRES → v21.** Whenever a retrieval or verification
+  pass finds a divergence that CHANGES WHAT AN ENTRY MEANS, proposed conforming wording is drafted
+  and queued for Michael's adopt/reject/edit — never adopted silently. Reason: it matches how the
+  mechanism actually worked across #76/#93/#95. v21 drafted this session and delivered separately,
+  never inside the packet; the paste is Michael's hand.
+- **SIX WORDINGS ADOPTED, each put separately, each staying UNVERIFIED** (verification attaches to
+  the NEW wording and is Michael's at Task 19): **entry 1** (TRCP 192.3(a) — restores "not
+  privileged" and the objection-provision form, resolving the #93 "whether or not admissible" flag;
+  the #93 draft, verified this session against raw pdftotext extraction of the clean-authority TRCP
+  PDF, named per SOURCING, AA count 0, normalizer correctly not applied); **entry 3** (192.3(j) —
+  the rule's own sentence verbatim, closing the singular-opponent divergence, the Q-FE5-9 shape);
+  **entries 5, 6, 11, 27** (route (c) §9.1–9.4 adopted as proposed, entry 27 INCLUDING the cite move
+  to 47(b), (c), (d), flagged as its own act and ruled with the wording). §9's quotations were
+  verified 78/78 at #76 and were not re-verified — retrieval is not verification, and neither is
+  re-retrieval.
+- **192.3(h) PAIR RULED: KEEP SEPARATE** — the file's own TRCP 196.2(b) precedent; each proposition
+  verifies independently. The dedupe note is annotated resolved.
+- **QR-6(c)'s MISSING HALF AUTHORIZED: one line into Step 4 item 5** ("delete by explicit filename,
+  never the bare glob"), the runner-found half-landing from the forty-ninth invocation. Runner
+  v9 → v10 by this batch. QR-6(e) satisfied: the act was put to Michael and authorized before any
+  runner edit was staged.
+- **v17 AND v20 PASTE ROWS BOTH CLOSED.** v17: overtaken by events, three versions stale. v20:
+  CONFIRMED IN FORCE BY OBSERVATION — this running session read its own live instructions and they
+  are v20 — 2026-08-16, QR-6(a)–(f) and CITE-STABILITY headers present — the #82/A-1 mechanism,
+  third consecutive use. The observation, not recall, is the evidence.
+- **PROCESS NOTES.** PDF extraction ran in the VM's own home (`~/tmpwork`), no scratch in any
+  connected folder; `_claude_extract\` deletion still pending, Michael's hand. DT-1 applied:
+  container read 08-17 UTC from session start; all stamps 2026-08-16 Central, clock-checked 22:28
+  CDT. Packet assembly stayed on Fable rather than moving to Opus — flagged per the skill's
+  model-usage note; the rulings were resident context and the handoff would have cost more than the
+  assembly.
+
+Staged for Code: this packet (six registry wording executions; the §9 adoption annotation; the
+QR-6(c) runner line, v9 → v10; queue closures and annotations; this entry; BUILD-STATE rewrite).
+Awaiting/Returned from Code, unreviewed: recomputed from the log at HEAD per A-4 by the fiftieth
+invocation — the carried #31–#33 material, #37–#61's own routing, and **#75 through #95** together
+with the runner lines interleaved among them — plus the v21 instructions paste (Michael's hand,
+drafted this session), the next-dispatch worklist (delivered separately, design-side artifact), and
+this batch's own handback.
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-NINTH invocation) — the batch that amended the runner under the ruling it was landing, and found that one of the six limbs landed only half while a seventh disposition had no target at all
 
 **One packet, executed in full under runner v9 mid-batch** per its own §4.1 instruction (the v6→v7 precedent at the twenty-sixth invocation). **Packet:** `push-to-code_qr6-adjudication-rulings_2026-08-16.zip`, identity pinned at Step 1 under the QR-6(c) rule this batch was about to land — 16,372 bytes, mtime `2026-08-16 21:41:35 −0500`, sha256 `9a6b698e…`. Order was trivial and the filename and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.**

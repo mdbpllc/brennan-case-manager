@@ -3,7 +3,7 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v9, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v10, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
@@ -15,7 +15,9 @@
      added, and the deletion has a permission precondition; evidence rule, merge-second-act,
      identity pinning + delete-by-name, dynamic format rule, packet-added-act authorization,
      health-check-skip recording, and the BUILD-STATE recompute rule added by Michael's ruling
-     2026-08-16 (QR-6(a)–(f) + OPEN-5(a), v9). -->
+     2026-08-16 (QR-6(a)–(f) + OPEN-5(a), v9); Step 4 item 5 completed by Michael's authorization
+     2026-08-16 (#95) — delete-by-explicit-filename, the QR-6(c) half the v9 amendment left at
+     Step 1 only (v10). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -175,7 +177,9 @@ it now and record the result. Never skip silently.**
    (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
    NEVER force-push. A rejected push means another session moved the record;
    the record wins.
-5. Delete the processed zips from `inbox/` (the session-log entries are now the
+5. Delete the processed zips from `inbox/` **BY EXPLICIT FILENAME — never the bare glob — each
+   name checked against the identity pinned at Step 1 (QR-6(c)'s other half, authorized 2026-08-16,
+   completing the forty-ninth invocation's half-landing)** (the session-log entries are now the
    record) — **and VERIFY it, the way item 4 verifies the push: re-list `inbox/`
    afterwards and confirm each processed zip is gone. NEVER treat an unchecked delete
    command as a deletion.** Report the result to Michael in item 6. **If a zip
