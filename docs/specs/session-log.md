@@ -12,6 +12,104 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-SECOND invocation) — the batch whose second multi-agent preflight found two arithmetic errors inside the staged file itself, and left both standing because the packet ordered the file written verbatim
+
+**One packet, executed in full under runner v10.** **Packet:** `push-to-code_task-19-signoff-worklist_2026-08-17.zip`, identity pinned at Step 1 per QR-6(c) — **27,073 bytes, mtime `2026-08-17 00:43:48 −0500`, sha256 `0f4ff17386b11bad50a9cd994257aa1d71666f3ac218b43c82090b0aa903669d`**. Order was trivial and the filename-date and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.**
+
+- **Step 0 gate passed on live evidence, and it answers the question this packet asked in its own §1 and DO-NOT.** `git fetch origin`, then `git status --porcelain` (empty), `git rev-parse --abbrev-ref HEAD` (`master`) and `git rev-parse HEAD` against **`git ls-remote origin master`** — the live remote read QR-6(a) demands: **HEAD == `origin/master` == `49ffe8f`**, 0 ahead / 0 behind. The packet correctly recorded its own `git rev-list ... 0 0` as a **local tracking-ref read that says nothing about origin**, and forbade asserting origin on its say-so. **This is the independent confirmation it declined to claim — `49ffe8f` is on origin.**
+- **QR-5 already-executed check: NOT EXECUTED, on three checks each capable of disconfirming — and NOT "committed but unpushed" either.** `ls` on `docs/specs/task-19-signoff-worklist-2026-08-17.md` (no such file), `git ls-files docs/specs/ | grep task-19` (exit 1, nothing in the index), and **`git cat-file -e origin/master:docs/specs/task-19-signoff-worklist-2026-08-17.md`** (fatal — absent from origin). Session-log **#96 confirmed present and highest** by `grep -o "(#[0-9]\+)"`, so the staged **#97 needed no renumber.** `inbox/` held no other packet.
+- **A MULTI-AGENT READ-ONLY PREFLIGHT RAN AGAIN BEFORE ANY FILE WAS TOUCHED — Michael's instruction mid-batch ("Run in ultracode"), the second time for this queue and the second consecutive batch.** Five independent auditors, all forbidden to write, each required to name a command capable of disconfirming: the A-4 unreviewed range, the A-5 queue header, a BUILD-STATE staleness audit, a hygiene-and-content sweep of the staged file, and a registry backlog recount. **It earned its cost a second time, and on a different failure class than #96's:** #96's preflight caught a defect in a *staged registry edit*; this one caught **two arithmetic errors inside the staged document's own prose**, which no reconcile step in the runner would have looked at. **Its findings were not taken on faith — the runner re-derived both defects itself with `sed`/`grep` before recording them.**
+- **TWO ARITHMETIC DEFECTS IN THE STAGED FILE, VERIFIED BY THE RUNNER AND DELIBERATELY LEFT STANDING (`QR-6(e)`; new queue row `Q-T19-3`).** (1) **§5 Part B's heading says "now eleven entries after the V-5 split" over a table with TWELVE data rows** — 14, 15, 16, 17, 18, 19a, 19b, 20a, 20b, 21a, 21b, 22, which is the arithmetic the file's own §1 and §2 require (9 original − 3 split + 6 = 12). **Eleven would make the backlog 39 and contradict the file's own re-derived 40.** (2) **§6 says "five of the fourteen have had their wording changed anyway" and then lists FOUR** — entry 1 at #95, entries 23, 33, 34 at #96 — **and the file's own §6 bullet three lines below states the correct figure — "four: 1, 23, 33, 34."** **Neither was fixed.** §4.1 ordered the file written **verbatim, no reformatting, no renumbering**, and a correction to packet content sits in no routing row — that is Michael's word under `QR-6(e)`, not a runner's. **The file goes into this commit exactly as staged, byte-for-byte** — `cmp` against the packet copy exits 0 and both sides sha256 to `902777307d460d524c1fea624bc4c289568ce39d35bf1390654ddba1c14f530c` at 48,222 bytes, checked immediately before the commit and stated as of that check, not as a report of the commit. **The irony is recorded rather than smoothed: the defects are stale counts inside the document whose §2 exists specifically to stop stale counts propagating.**
+- **HYGIENE AND REGISTRY-DISCIPLINE SWEEP OF THE STAGED FILE CAME BACK CLEAN, on disconfirmation-capable checks.** No client or PHI data — every proper name in it is a reported Texas appellate caption and every docket number a public appellate one; SSN/phone/clinical-identifier and email/URL patterns returned **exit 1**. **Nothing in it sets or attempts to set any entry to VERIFIED:** all eight `VERIFIED` hits are either the `grep -c` commands it used to count, or reports of the sibling file's pre-existing statuses, and the file restates "only Michael verifies" in seven independent places. No hidden or bidi characters, no BOM, no text addressed to an automated reader.
+- **BACKLOG RECOMPUTED AT HEAD, NOT CARRIED (OPEN-5(a)).** `grep -c '^\*\*Status:\*\* UNVERIFIED'` → **33** in `legal-rule-registry-discovery-enforcement-and-pleading.md` + **7** in `legal-rule-registry-criminal-plea-and-costs.md` = **40**, reproducing the packet's figure independently rather than accepting it. Cross-checked structurally: 33 headings against 33 status lines in the civil file; the criminal file's 6 `##` + 2 `###` against 7 status lines, the `#66` container shape that makes a heading count wrong. `registry-v5-v6-v7-wording-execution-2026-08-16.md`'s **9** UNVERIFIED lines are **excluded as a drafting record** — six duplicate entries now living canonically in the civil file, three unadopted proposals.
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the THIRD consecutive firing (#95, #96, now).** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path was routed** — the single routed file is under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would have proven nothing about it. The standing figures remain #94's (278 tests, 23 files, build and lint clean).
+- **QUEUE: three rows ENTERED with full question text (QR-1), and the header's second act performed (QR-6(b)).** **`Q-T19-1`** (what number the three work-product entries carry — `V5-IDS`'s other half, one answer to govern both) and **`Q-T19-2`** (whether entries 12, 13, 29 and 32's flagged divergences fire ROUTE-C) came from the packet's §7; **`Q-T19-3`** is the runner-found pair of defects above, entered on the **fe-5 precedent** that a runner-found defect takes its own row rather than an annotation. The Status header's **"Reconciled again to session-log #97"** sentence was written as the merge's second act. **TWO EXISTING ROWS WERE ANNOTATED ADD-ONLY, on the GLR-1 precedent that a second row riding on an open question must be visible from that question:** `V5-IDS` gained a pointer to `Q-T19-1` (`T19-IDS-XREF`) and `Q-STAT-6` gained one to `Q-T19-2` plus the computed ten-live list (`T19-STAT6-XREF`) — **nothing in either row was changed or removed.** **ID PROVENANCE RECORDED, which the last thirteen packets did and this one nearly omitted: `Q-T19-` was collision-checked repo-wide at HEAD (`git grep -l "Q-T19" HEAD` → nothing) and all three stay PACKET-LOCAL, deliberately NOT minted — minting is Michael's act — so `ID-DL-1` now governs a FOURTEENTH packet.** **#92 and #93 remain missing their header sentences — still reported, not back-written, per the #90 precedent.**
+- **A CARRIED BUILD-STATE COUNT WAS RE-DERIVED AND FOUND WRONG AT ITS OWN PRIOR REFRESH — the exact failure OPEN-5(a) exists to prevent, caught in the file that ruled it.** BUILD-STATE said the session-log TOC was "**STALE by NINE entries — #92–#96 and four runner lines**." **The correct figure is FOURTEEN: #91 through #97 and the forty-sixth through fifty-second runner lines.** Derivation: `session-log-toc.md`'s own basis row reads **`a5a95a97`**, and `git show a5a95a97:docs/specs/session-log.md | grep -n "^## "` shows its newest entry is the **FORTY-FIFTH** runner line — so #91 and the forty-sixth were never indexed either; `grep -ic` for `#91` and `forty-sixth` in the TOC both return **0**, confirming it from the other side. **The old figure was not merely out of date — it understated its own floor, and a blind increment would have carried the error forward a second time.** Found by the verification pass, re-derived by the runner before it was written.
+- **A CARRIED BUILD-STATE FILESYSTEM CLAIM WAS RE-CHECKED RATHER THAN INHERITED, and it does not reproduce here.** `Probate Corpus.zip sits untouched in the P15's gitignored inbox/`: at the Step 1 inventory, `ls -la inbox/` on **this** machine listed **exactly one file — this batch's own packet zip — and no `Probate Corpus.zip`.** *(Stated as of that inventory. Step 4 item 5 removes the packet zip afterwards, so a later reader should not take this as a claim about `inbox/` at any other moment.)* **Whether this machine is the P15 is not determinable from the repo**, so the claim is carried **with that annotation** rather than deleted — the same posture the `..\data\` paths already take.
+- **AN HONEST LIMIT ON THE RECOMPUTED UNREVIEWED RANGE, STATED RATHER THAN SMOOTHED.** The `#75` floor is **not** derivable from any explicit clearance: the log positively records clearances for #36 (at #37), #62/#63/#64 (at #65) and #67 (at #68), but **#65, #66 and #68–#74 were dropped out of the round-trip lines rather than cleared** — #74's and #75's own lines still read "the #72–#73 batch handback still unreviewed," and the clause simply disappears from the thirty-second invocation onward with no entry recording a review. **The floor is inherited from the log's own round-trip chain, which is what A-4/AUD-7 blessed as the derivation — but "#65, #66 and #68–#74 are reviewed" is UNDETERMINED from the files.**
+- **EVERY §6 DO-NOT HONORED, and provable.** Baseline sha256 hashes were taken before any write and re-checked after: **no registry file, no workbook, no `Go_Live_Gates.md`, no drafting record was touched.** The workbook was **not** annotated; entry 27's `TRCP 47(b)–(c)` heading was **not** reconciled to its cite; the four stale "34" figures in the queue were **not** fixed; the three work-product entries were **not** numbered (`WP-1/WP-2/WP-3` carried exactly as staged); **no conforming wording was drafted** for `Q-T19-2`'s four candidates; **`TASK-19` was not closed** and its row stays open, as do `V5-IDS`, `V5-ATTRIB`, `REGISTRY-V`, `Q-STAT-6` and `READ-A`; nothing was built; no example value from the staged file was hardcoded anywhere. **No `src/` file was read or written.**
+
+## 2026-08-17 (#97) — TASK 19 SIGN-OFF WORKLIST STAGED: the dispatch's Task A was found already
+executed and stopped on its own gate, Michael elected prep-only on Task B, and the walk's staging
+layer was built against the nine entries the workbook can no longer describe
+
+**Session:** design, Cowork, Opus 5, device bridge (repo checkout + `Documents\Knowledge Repo`,
+one dialog — HK-7's eighteenth annotation, second folder spent on nothing: no statute extraction
+was needed this session). Instructions **v21**, read from the session's own live instructions
+field — the #82/A-1 mechanism, **fifth consecutive use**. Runner **v10**. DT-1 applied: clock
+checked 00:23 CDT, container read 2026-08-17 UTC, both agree.
+
+**CHAT-DISPATCH v2 TASK A: STOPPED ON ITS OWN GATE, CORRECTLY.** The dispatch was authored at #95
+believing HEAD `607c561` with `push-to-code_wording-adjudication-rulings_2026-08-16.zip` pending.
+Two batches had landed in between: the fiftieth invocation (`260dc77`) ran that packet, and the
+fifty-first (`49ffe8f`, 00:19 Central) executed V-5, V-6 and V-7 as #96. Gate condition (3) reads
+*"If the record shows anything else already executed them, STOP."* **The session verified the
+execution in the files rather than inferring it from BUILD-STATE** — six V-5 split notes present,
+`**Wording:** adopted 2026-08-16 per #96` on the criminal 42.0197 and 27.18 entries and on the
+ch. 37 entry, `per #95` on six others — and stopped. **`inbox/` was empty at session start.**
+
+**TASK B NOT RUN — MICHAEL'S ELECTION, RECORDED AS HIS WORD.** Asked at 00:30 Central whether to
+walk the forty entries, walk a scoped slice, settle `V5-ATTRIB` first, or prepare and park, he
+chose **prepare the worklist and park the sign-off**. **NOTHING WAS VERIFIED, DECLINED OR WALKED;
+no Status line moved; no wording was adopted; no cite was supplied or upgraded.** Task 19's gate
+stays OPEN and the `TASK-19` row stays open.
+
+**STAGED: `docs/specs/task-19-signoff-worklist-2026-08-17.md`** — the walk's staging layer.
+PROPOSED, verifies nothing. One row per entry across all forty, each carrying the single concrete
+look that closes it, its flags, and whether verification attaches to newly adopted wording.
+
+**WHY IT EXISTS: THE WORKBOOK CAN NO LONGER DESCRIBE FIFTEEN OF THE FORTY ENTRIES, AND ANNOTATING
+IT IS MICHAEL'S ACT.** `registry-verification-workbook-2026-08-13.md` predates #94, #95 and #96.
+Its rows 19/20/21 still describe one proposition against two cases and there are no rows
+19a…21b; row 23 states the pre-V-7 proposition; row 27 is marked `TEXT PARTIAL` and the entry no
+longer is; rows 33/34 state the pre-V-6 propositions; rows 1/3/5/6/11 were written against wording
+that is gone; and the three #94 work-product entries have no row at all. **The workbook was NOT
+edited** — it sits in no routing row, so annotating it is a packet-added act under `QR-6(e)` and
+is his. The staleness is carried forward in the new file instead. **Its §5 Q2, Q3 and Q4 are
+answered by V-5, V-6 and V-7 respectively; Q1 and Q5 are still open and are carried.**
+
+**FINDING — THE THREE WORK-PRODUCT ENTRIES HAVE NO NUMBER IN EITHER NUMBERING SYSTEM (`Q-T19-1`).**
+The registry runs registry-wide numbering (1–27 discovery-enforcement, 28–34 criminal — the system
+every ruling uses, confirmed this session against six independent anchors: the six #95 wordings
+land on exactly entries 1, 3, 5, 6, 11 and 27 under it) and file-local numbering (the criminal
+file's own `4a`/`4b` headings and its "entry 3 and entry 4a carry no cite" prose). The TRCP
+192.5(d), 192.5(c)(1) and 192.3(h)-definition entries added at #94 were placed **in subject order**
+and carry a number in neither: numbering them by file position collides with the criminal file's
+28–34, and numbering them by order of addition puts them out of file order. **Nothing was
+invented** — they are labelled `WP-1/WP-2/WP-3`, packet-local. **This is `V5-IDS`'s other half and
+one answer should govern both.**
+
+**FINDING — FOUR ROUTE-C CANDIDATES AMONG THE TEN LIVE Q-STAT-6 FLAGS, FLAGGED AND EXPRESSLY NOT
+DECIDED (`Q-T19-2`).** Of the eighteen flagged entries, four were ruled material and fixed at #95;
+of the remaining fourteen, five have had wording changed since for other reasons (entry 1 at #95;
+23, 33, 34 at #96), leaving **ten live: 2, 4, 7, 8, 9, 12, 13, 26, 29, 32.** Four of those ten
+change what a module built on the entry would *do*: **entry 12** carries the identical
+"may"-for-"shall … unless" defect Michael already ruled meaning-changing on **entry 11**, on a rule
+the statute pass did not classify as material; **entry 13** requires the 191.2 certificate on a
+*response* where the rule does not — an overstatement against his own side — and omits "and the
+effort failed"; **entry 29** says Penalty Group 1 where the section now reads **1 or 1-B**, and
+omits "by aggregate weight, including adulterants or dilutants"; **entry 32** applies art.
+102.073's highest-category rule to every cost where it reaches only category-dependent ones.
+**No conforming wording was drafted** — drafting before the ruling inverts route (c). **Whether
+adopted wording cures a flag is his, and the runner's earlier report that Q-STAT-6's "fourteen"
+may be stale by one is here computed to reach four — annotated, not corrected.**
+
+**COUNT RE-DERIVED, NOT CARRIED:** 33 + 7 = **40**, by `grep -c '^\*\*Status:\*\* UNVERIFIED'` on
+each in-backlog file at HEAD. **The four stale "34" figures in `attorney-review-queue.md` (the
+`V-5` row, `READ-A`, `Q-FE5-7`, `Q-STAT-2`) were NOT touched** — named, still his.
+
+**Staged for Code:** `docs/specs/task-19-signoff-worklist-2026-08-17.md` (new file, this packet).
+
+**Awaiting/Returned from Code, unreviewed:** nothing new from this session. Carried unreviewed per
+BUILD-STATE's own recomputation: the #31–#33 material, #37–#61's routing, and #75 through #96 with
+the runner lines interleaved.
+
+*[Runner note, added at execution — not part of the design session's entry: the fifty-second
+invocation's preflight found two arithmetic defects inside the staged file (§5 Part B's heading
+says "eleven" over a twelve-row table; §6 says "five of the fourteen" and lists four, contradicted
+by its own §6 bullet three lines below). **Both were left standing** — §4.1 ordered the file written verbatim
+and a correction to packet content is Michael's under `QR-6(e)`. Entered as `Q-T19-3`.]*
+
 ## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FIRST invocation) — the batch that ran a multi-agent preflight before touching a file, found a rewritten citation flag inside an act ruled to be a verbatim split, and executed V-5, V-6 and V-7 under eleven separate rulings
 
 **One packet, executed in full under runner v10.** **Packet:** `push-to-code_v5-v6-v7-wording-execution_2026-08-16.zip`, identity pinned at Step 1 per QR-6(c) — **36,976 bytes, mtime `2026-08-16 23:21:43 −0500`, sha256 `095a92e5cecf79c9e0b52af8984842331b8729c60ba1a157ded7ff1a47a52335`**. Order was trivial and the filename-date and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.** **The batch opened 2026-08-16 and closed after midnight Central** — see the date note below.
