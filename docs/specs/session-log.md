@@ -12,6 +12,212 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-EIGHTH invocation) — the ahead-stop fired for the first time since it was written and was right, and an entry that cites BUILD-STATE by line number seven times is correct today and stale at the end of this batch
+
+**Two packets, one already executed, one staged file between them, docs only, nothing built (§5
+NONE in both).** CHAT-DISPATCH **Task 18** (re-run at Michael's direction) and **Task 19**
+(attempted, not completed). Runner re-read at HEAD per QR-2 — and **verified unchanged**, `git diff
+6ca9794 HEAD -- docs/prompts/QUEUE-RUNNER.md` empty, working copy clean; **v8 read and v8
+followed.** **The conflict rule found nothing to fire on: the two packets touch one common file
+(BUILD-STATE) and do not contradict each other, so nothing was superseded.**
+
+- **THE FORTY-SEVENTH INVOCATION'S CLOSE-OUT FAILED AT THE PUSH, AND THIS IS THE LINE THAT SAYS SO
+  — QR-5(a) WORKING EXACTLY AS DESIGNED.** That batch committed `2daac9c` and then **could not
+  push: the auto-mode classifier refused `git push origin master` through BOTH Bash and
+  PowerShell**, despite `Bash(git push *)` sitting in the allow list. It reported the block to
+  Michael, and **deliberately did NOT delete the Task 18 zip** — QR-5(b)'s ordering note says a
+  close-out interrupted at item 4 never legitimately reaches item 5, so the surviving zip is
+  evidence about the push. **Both halves of the carry-forward are now closed: Michael pushed by
+  hand, and `git ls-remote origin refs/heads/master` reads `2daac9c` where it read `6ca9794`
+  before** — the ref genuinely moved. **The deletion is this batch's to complete.**
+- **AND THE STEP 0 AHEAD-STOP FIRED — THE FIRST TIME IT HAS EVER FIRED.** The forty-sixth line
+  recorded that *"the v7 ahead-stop had nothing to fire on"*; this session opened with **1 ahead / 0
+  behind** at `2daac9c` against `origin/master` `6ca9794`, and the runner stopped rather than
+  building on an unpushed tree. **It was right to.** Michael pushed, the gate was re-run from the
+  top — `git fetch` **plus an independent `git ls-remote`**, not the local ref alone — and it passed
+  clean, on `master`, **0/0**. **QR-3's v7 amendment (ruled 2026-08-13 after the twenty-fifth
+  invocation demonstrated the gap) has now paid for itself.**
+- **A NOTE ON "EVERYTHING UP-TO-DATE," because it read as a failure and was not.** Michael's second
+  `git push` reported nothing to do; the ref had already moved on his first. **Diagnosed by reading
+  the remote rather than by inferring from the message** — the distinction QR-6(a) is about.
+- **PACKET 1 WAS RE-RUN BY MICHAEL'S EXPLICIT DIRECTION AT THE STEP 1 STOP, AND IS A VERIFIED
+  NO-OP.** Step 1 marked it **ALREADY EXECUTED — committed AND pushed** (`go-live-runbook.md`
+  tracked, **9,919 B exactly as the packet states**, and `git cat-file -e origin/master:…` returns
+  YES — the *other* limb of the QR-5 distinction from the one it wore an hour earlier). Offered the
+  choice, Michael chose to re-run both; **re-reading its manifest found no missed work order.** Its
+  §4.1 deliverable is byte-identical, its §3 entry is already `#92`, and its §7 items are already
+  merged — so **nothing was re-copied and, critically, `#92` was NOT appended a second time.** §4.1
+  says to **stop rather than create a second runbook** if one exists; one exists because this runner
+  created it, which is the benign case, not the case that instruction guards.
+- **THE FINDING THIS BATCH CONTRIBUTES, AND IT IS ABOUT THE ENTRY BEING FILED: `#93` CITES
+  `BUILD-STATE.md` BY LINE NUMBER SEVEN TIMES, AND THIS BATCH'S OWN REWRITE INVALIDATES ALL SEVEN.**
+  Every citation was checked. **Six of seven are EXACT against `2daac9c`, the commit the design
+  session actually read** — `:68` the DE-series absence, `:98` V-4–V-8 unexecuted, `:120` the
+  single-folder HK-7 reading, `:128` the DE series, `:131` runner discipline and the QR-3 bridge
+  limit, `:132` the QR-5(a) division of labour. **The seventh was already wrong at authoring:**
+  `:95` is cited for the retrieval-gap answer and points at *"ENTRY 27 IS NO LONGER TEXT PARTIAL"* —
+  the quoted sentence is `:93`. **So the session read carefully and the pointers still rot, because
+  `BUILD-STATE.md` is REWRITTEN IN FULL every batch by the runner's own Step 4 item 3.** **This is
+  the #91/#92 line-number question resolved a third way, and the sharpest of the three:** `#91`
+  omitted line numbers because the session log **prepends**; `#92` gave them because
+  `Go_Live_Gates.md` **appends**; **BUILD-STATE is neither — it is replaced wholesale, so a
+  line-number citation to it is stale within one batch, and a permanent append-only entry is the
+  worst possible place to put one.** **RECORDED, NOT CORRECTED** — the entry is the design session's
+  and stands as written.
+- **THE WITHDRAWN DOCUMENT IS ABSENT AND WAS CHECKED, NOT ASSUMED.** §6 bars routing
+  `registry-retrieval-completion-2026-08-16.md` anywhere. Recursive search over the working tree and
+  `git ls-files` both return **ZERO**; it never reached the repo by any path. **§1's two stated
+  sizes also reproduce byte-exactly** — the workbook at **29,012 B** and the citator pass at
+  **19,056 B** — so the packet's own reconcile figures survive independent re-derivation.
+- **THE QUEUE MERGE WAS FIVE ANNOTATIONS, ADD-ONLY, AND CLOSED NOTHING** — `V-2` (the sequencing
+  finding), the route-(c) standing-law row and `Q-STAT-6` (Reading A recorded, applied to none),
+  `HK-7`, and `OPEN-4`. **No durable ID was minted; this packet mints none by its own terms**, so
+  `ID-DL-1`'s packet count is unchanged at thirteen.
+- **TWO ANNOTATION COUNTS WERE OFF AND BOTH WERE CORRECTED AT MERGE RATHER THAN CARRIED, because
+  they have the same cause.** The packet asked for `OPEN-4`'s **fifteenth** annotation; **#91
+  already took the fifteenth, so it was entered as the SIXTEENTH.** `HK-7`'s fourteenth is right,
+  but its previous annotation on the row is **#91, not #92**. **The single cause: the forty-seventh
+  invocation annotated NEITHER row** — packet 1's §7 did not ask it to — **so `#92`'s session used
+  the clipboard and the bridge and left no mark on either row that counts those things.** It is the
+  same gap `HK-7` already carries at `#89`. **Recorded on both rows, not smoothed.**
+- **AND THE ENTRY'S OWN HEADLINE IS A WITHDRAWAL, WHICH IS WORTH SAYING PLAINLY: Task 19 produced no
+  verification, and the runner is not the actor that could change that.** No registry entry moved,
+  no registry file was opened, **the backlog stays 34**, and the sequencing finding — that ten of
+  the thirty-four carry wording already ruled to change — is filed as Michael's decision, not acted
+  on. **`OPEN-4`'s resume point did not advance for the first time in sixteen annotations.**
+- **THE HEALTH CHECK WAS SKIPPED EXPLICITLY, NOT SILENTLY (`QR-6(f)`).** Both packets are §5 NONE
+  and no `src/`, `db/`, `supabase/` or build-tooling path was routed — `git status` shows `docs/`
+  paths only. The `#68` measurement (278 tests, 23 files, build + lint clean) still stands
+  unchallenged.
+- **THIS RUNNER LINE IS WRITTEN UNDER QR-5 LIMB (a): it asserts nothing about its own push or its
+  own deletion**, both of which happen after it is committed — **including the Task 18 zip's
+  outstanding removal.** Results go to Michael in-session; any failure rides into the NEXT runner
+  line, exactly as this one carried the forty-seventh's.
+
+## 2026-08-16 (#93) — CHAT-DISPATCH TASK 19 ATTEMPTED AND NOT COMPLETED: a redundant retrieval pass withdrawn under correction, the forty-seventh invocation's close-out found interrupted at the push, and the finding that Task 19 as written would verify ten entries against wording already ruled to change (design session, Opus 5, Cowork, device bridge)
+
+**Task 19 is NOT COMPLETE and remains the resume point. NO REGISTRY ENTRY WAS VERIFIED, no registry
+file was touched, no status moved, and the backlog stays 34.** The session produced one correction,
+two findings, and one recorded test.
+
+- **CORRECTION — THE SESSION'S OWN, AND IT IS THE ENTRY'S HEADLINE.**
+  **What was asserted:** that 22 of the 34 backlog entries had no retrieval; that the workbook's
+  stated reason (FLP throttling) was dissolved by Q-STAT-1 one day later and *"nothing had re-read
+  the workbook against the later ruling until this session"*; and that entry 27's five-option
+  picklist, the Family Code carve-out and the discovery-bar clause were findings of this session. A
+  document, `registry-retrieval-completion-2026-08-16.md`, was written on that premise and delivered
+  to Michael.
+  **What is true instead:** `docs/specs/statute-pass-registry-retrieval-2026-08-14.md` (#76, filed
+  2026-08-14, the day after the workbook) had **already run exactly that pass** — §4 covers workbook
+  entries 1–13, §5 covers 23/25/26/27, §6 covers 28/29/32/33/34 — and records it better, with a
+  quotation-verification harness at §10 (**78 quotations checked against raw extraction, 78
+  confirmed**) that the new document did not have. It also goes further: **§9 carries PROPOSED
+  replacement wording for entries 5, 6, 11 and 27 under route (c), ruled 2026-08-14.** Not one
+  finding in the withdrawn document was new. Its two "smaller record notes" were also already on the
+  record — the **21-not-20** count was corrected at #76 and the **fourth registry file** is open as
+  **Q-STAT-2**. `BUILD-STATE.md` states the whole result at HEAD: *"THE RETRIEVAL GAP IS CLOSED…
+  22 looks owed, 22 run"* and *"EIGHTEEN OF THE TWENTY-ONE PROPOSITIONS DIVERGE."*
+  **Which entry it corrects:** none — nothing had landed. The error is confined to the session and
+  to the file handed to Michael, **which is WITHDRAWN and must not be routed anywhere.**
+  **Actor:** Opus 5, design session, 2026-08-16.
+  **Failure class:** incomplete session-start reads. Step 1 of the project's own procedure is *"read
+  … all of `docs/specs/BUILD-STATE.md` before asserting anything about build status."* A
+  `project_read` on BUILD-STATE failed early, the session fell back to RAG for other purposes, and
+  **never returned for the read once the bridge was granted** — while `BUILD-STATE.md:95` states the
+  answer outright. Sharper still: the session **opened the very document that had done the work**, to
+  lift its corrected normalizer from §3, and never read its headings. **Same family as the failure
+  recorded at #88 and in the operational notes** — a design session with the bridge that did not run
+  the decisive check. Prior instances of the broader own-report class: the sixteenth invocation's
+  cap-count claim, the twentieth's registry count (corrected at #60), #61's test count (corrected at
+  #74), and #76's over-broad insurance absence claim (corrected at #78).
+  **What changed as a result:** the document is withdrawn and rides nothing. **Nothing else changed,
+  because nothing was built on it.** No registry file, no queue row, no design doc.
+
+- **THE FORTY-SEVENTH INVOCATION'S CLOSE-OUT WAS INTERRUPTED AT THE PUSH — REPORTED HERE AS THE
+  QR-5(a) CARRY-FORWARD, AND EXPRESSLY NOT SETTLED.** Observed natively through the bridge at
+  authoring time: **HEAD `2daac9c`, `origin/master` `6ca9794`, 0 behind / 1 AHEAD**, and
+  `push-to-code_go-live-runbook_2026-08-16.zip` **still present in `inbox/`.** Commit `2daac9c` is
+  the forty-seventh invocation's own Task 18 batch (BUILD-STATE, attorney-review-queue,
+  go-live-runbook, session-log; +279/−13).
+  **It is a PUSH question, not a delete question, and that is established positively rather than by
+  elimination:** `.claude/settings.local.json` carries the `rm -f inbox` entry, and commit `a5a95a9`
+  records that the forty-fifth invocation **proved it live**. QR-5(b)'s ordering note reads it — a
+  close-out interrupted at item 4 never reaches item 5, so the surviving zip is evidence about the
+  push.
+  **THE LIMIT, STATED: `git fetch` and `git ls-remote` FAILED from the device VM with `HTTP 403 from
+  proxy`** — reproducing BUILD-STATE line 131 exactly. **A bridge read establishes the working tree
+  and the local tracking ref, never what is on origin.** The inference that the push did not complete
+  rests on the fact that a successful push updates `origin/master` locally and it did not. **That is
+  local evidence pointing one way, not a settled fact. Only a networked fetch settles it, and only a
+  runner can run one** — the standing division of labour BUILD-STATE line 132 records. **This entry
+  asserts nothing about whether the forty-seventh's batch is on origin.**
+  **Note the inverse of line 132's case:** that line describes local refs *agreeing* with an empty
+  `inbox/`, which is equally consistent with Michael's hand. Here they *disagree* and `inbox/` is not
+  empty — a stronger signal in the same evidentiary class, and still not a fetch.
+
+- **THE FINDING THAT ACTUALLY GOVERNS TASK 19, AND IT IS WHY NO ENTRY WAS SIGNED OFF. Verification
+  attaches to WORDING — and TEN of the thirty-four entries have wording ALREADY RULED TO CHANGE and
+  NOT YET EXECUTED.** V-4–V-8 were ruled 2026-08-13 (#73) and BUILD-STATE line 98 records that
+  **none of it is executed**: **V-5** splits all three two-case entries (**19, 20, 21** → six;
+  backlog 34 → 37 when executed), **V-6** rewords both criminal entries (**33, 34**), **V-7** narrows
+  entry **23**. Separately, route (c)'s §9 carries proposed wording for **5, 6, 11, 27**, adopted for
+  none. **Verifying any of those ten tonight would attach Michael's verification to wording already
+  ruled or drafted to be replaced — the verification would not survive its own execution.** The
+  right order is: execute the rulings already made, then verify against wording that will still be
+  there. **Recorded as a finding, not a ruling; the sequencing decision is Michael's.**
+
+- **AND THE HONEST FRAME THE SESSION OWED HIM EARLIER THAN IT GAVE IT: NOTHING GATED BY ANY OF THE
+  34 ENTRIES IS BUILT.** DE-1 (entries 1, 2, 3 and the deficiency batch) — *"Nothing exists for the
+  DE series"* (BUILD-STATE:68), *"Nothing built"* (:128). FE-14 (entry 27) — **OUT** of FE-D1.
+  CR-10 (entries 28–34) — hard-gated, not built. **So verification turns nothing on; it is
+  permission to build later, not an unblocking act.** Where the backlog *does* bite today is
+  Michael's own hand-drafting: entry 1 as filed omits **"not privileged"** from the scope preamble,
+  and that sentence is the doctrinal opener of every DE-1 deficiency letter. **Stated as the reason
+  the session stopped rather than pressed on.**
+
+- **MICHAEL'S TEST, RECORDED VERBATIM AND APPLIED TO NOTHING.** *"I honestly think that the
+  proposition should match the actual rule text."* Clarified the same session: *"To be clear, my
+  statement earlier is consistent with Reading A."* **READING A = a proposition must not MISSTATE the
+  operative text; deliberate narrowing to the clause a module relies on stays.** (Reading B — must
+  *reproduce* the text — was put and **not** taken.) **SCOPE WAS PUT AND NOT ANSWERED**, so the
+  session took the conservative option per Michael's standing instruction for delegated scope
+  decisions: **Reading A governs entries 1, 2 and 3 only, it was applied to none of them, and route
+  (c) stays the one-off it was ruled.** The general-principle and standing-law questions go to the
+  Fable review pass, where the route-(c) row already sits as its first item. **NOTHING WAS
+  REWORDED.** Conforming wording was drafted in-session for entries 1 and 3 and **deliberately not
+  carried into this packet** — Michael ruled to package the findings and skip sign-off, and staging
+  unadopted wording would make it look ruled.
+
+- **CONFIRMED RULING — Michael, in-session: package the findings, skip sign-off.** Reason, his: the
+  work turns nothing on, and he wanted the record straight rather than a rushed verification run.
+
+- **PROCESS NOTES.** **HK-7 re-granted; TWO folders this session** (the repo checkout and
+  `Documents\Knowledge Repo`) — **and the second was spent entirely on the withdrawn pass, so this
+  session is NOT evidence that a two-folder grant is needed.** If anything it strengthens the
+  single-folder reading BUILD-STATE line 120 records. **Chapter reads went to the device VM's own
+  `/tmp`, never into a connected folder** (the 2026-08-16 method), so **no new scratch was
+  created** — but `Knowledge Repo\Statutes 26-08-14\_claude_extract\` from 2026-08-14 **is still
+  there and is still Michael's hand.** The corrected §3 normalizer was applied **verbatim, no third
+  normalizer written**, residual `AA` none across seven chapters — a datum for §3's design rule, not
+  a new finding.
+
+**Staged for Code:** none — this packet stages no file.
+
+**Awaiting/Returned from Code, unreviewed:** the forty-seventh invocation's push and deletion state,
+which only a networked fetch can settle.
+
+*[Runner note, 2026-08-16, forty-eighth invocation: entry landed as **#93** as written — the
+high-water mark at HEAD was **#92**, so no renumbering was needed and no existing entry was touched.
+**The push question this entry correctly declines to settle IS now settled, in the runner line
+above: `git ls-remote` reads `2daac9c` from origin.** The forty-seventh's push was
+classifier-blocked on both shells and Michael pushed by hand; the entry's reasoning from local
+evidence was sound and its refusal to conclude was right. **One caveat on the entry's own
+citations, recorded and not corrected:** it cites `BUILD-STATE.md` by line number seven times, and
+**BUILD-STATE is rewritten in full every batch** — six of the seven were exact against `2daac9c`,
+the commit this session read (`:95` was already off by two, pointing at entry 27 rather than the
+retrieval-gap line at `:93`), and **this batch's own rewrite invalidates all of them.** Detail in
+the runner line.]*
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-SEVENTH invocation) — the packet's headline question is its own third recording and already has a live ID, and the entry reporting a stale version number states a version state the record expressly declines to assert
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 18** — the
