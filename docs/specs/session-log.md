@@ -12,6 +12,112 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-NINTH invocation) — the batch that amended the runner under the ruling it was landing, and found that one of the six limbs landed only half while a seventh disposition had no target at all
+
+**One packet, executed in full under runner v9 mid-batch** per its own §4.1 instruction (the v6→v7 precedent at the twenty-sixth invocation). **Packet:** `push-to-code_qr6-adjudication-rulings_2026-08-16.zip`, identity pinned at Step 1 under the QR-6(c) rule this batch was about to land — 16,372 bytes, mtime `2026-08-16 21:41:35 −0500`, sha256 `9a6b698e…`. Order was trivial and the filename and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.**
+
+- **Step 0 gate passed on live evidence, and settled what the packet could not.** `git fetch origin` then `git rev-parse` on both refs: on `master`, tree clean, **HEAD == `origin/master` == `212b80c`**, 0 behind / 0 ahead. The packet's §1 said its own read was "a local tracking-ref read, not a fetch; treat as possibly stale" because `git fetch`/`ls-remote` return HTTP 403 from the design VM. Its guess was right; this is the confirmation it asked for. **QR-5's already-executed check: NOT executed** — the runner was still v8, `grep -c "(#94)"` on the log returned 0, both schema columns still carried `not null default 'work-product'`, and `transcript-workflows.md` held no 2026-08-16 string.
+- **FOUR THINGS WERE PUT TO MICHAEL AT THE STEP 1 STOP AND HE RULED ALL FOUR.** (1) Execute the packet in full, §5 included. (2) **Raise the registry file's own count header 27 → 30** — §4.2 added three entries and said nothing about the header, and leaving it would have made that file's header understate its contents, which is the exact collision the file was opened to avoid. (3) **Entry C becomes a new entry with a dedupe note** rather than a second observation on the existing row — the file's own TRCP 196.2(b) precedent. (4) **Authorized deleting the stranded 0-byte `.git/index.lock`**, which is `QR-6(e)` firing on the very first batch after being ruled: the packet reported the lock, routed its deletion into no row and no Step 4 item, and it would have blocked this close-out's commit.
+- **QR-6(a)–(f) all landed in `docs/prompts/QUEUE-RUNNER.md`, v8 → v9, eight insertions at quoted anchors** — all eight verified present exactly once before editing, and the four internal cross-references ("Step 4 item 5", "the way item 4 verifies the push", "in item 6", "committed at item 3…") re-checked afterwards and still true. (f) went in as an **unnumbered** Step 4 preamble precisely so nothing renumbered. Step 1 grew to five items and Step 3 to five; Step 4 kept 1–6. **`OPEN-5(a)` rode the same amendment** into Step 4 item 3 and governed this batch's own BUILD-STATE rewrite, the first performed under it.
+- **RUNNER-FOUND #1 — `QR-6(c)` LANDED HALF.** The ruling was "delete by explicit filename **with** packet identity pinned at Step 1." The pinning half is in, at Step 1 item 4. **No insertion puts "delete by explicit filename" into Step 4 item 5**, where the deletion actually happens; that item's text is still generic, and the by-name rule survives only as the clause "the pinned identity is what Step 4 item 5 deletes against." **Not added — inventing a ninth insertion is exactly the packet-added act `QR-6(e)` reserves to Michael.** One line of runner text closes it.
+- **RUNNER-FOUND #2 — `QR-6(b)`'s own defect has happened THREE times, not the once its ruling text records.** The queue header's reconcile high-water was **#91**: **#92 and #93 are both missing their sentence while their rows landed normally.** That is the #84 shape twice more, and it strengthens the rule rather than undercutting it. **Reported, not back-written**, per the precedent already recorded in that header at #90 — writing the missing sentences now would fabricate a record of reconciles that did not happen.
+- **RUNNER-FOUND #3 — the packet's `v19` paste close had NO TARGET.** §4.3 item 5 directed that "the project-instructions v19 paste item CLOSES." **No `v19` row has ever existed** in the review queue; the chain there is v14 ✅, **v17 ⬜**, v18 ✅, and the "v19 paste" was a carried hand-item in the log, not a register row. The **v17** row was annotated overtaken-by-events — v19 is in force by the design session's own observation, so an instruction to paste v17 asks for an act two versions stale — **and deliberately NOT closed**, because the ruling names v19 and that row names v17. Closing it is a one-word ruling and is his. The **v20 paste** row was entered as the new carried item.
+- **`Q-COM-11`(A) executed on both halves that were authorized.** `db/schema.sql`: both `privilege_tier` columns lost `default 'work-product'` and `not null`, each with a comment recording why and stating that the CHECK list is deliberately untouched. `db/migrations/2026-08-16-privilege-tier-no-default.sql` **authored and deliberately NOT run** (Michael's hand, CD-1 item-7 pattern), with five verification checks in words — including one that reads the two CHECK vocabularies and says in terms that **two different lists is the correct result today**, so nobody "fixes" `Q-COM-10` while running it. No existing row re-characterized; no creation-time UI built.
+- **§5 item 3 answered by verification rather than by a change, and the boundary is reported.** A grep for `privilege` across `localAdapter.ts` and `supabaseAdapter.ts` returns **nothing** — neither adapter validates or defaults the field, the local store being JSON pass-through (`push(rec)`, `{...existing, ...patch}`). **So the demo store already accepts and round-trips a null, and no store-version bump was required** (it stays v11). What is NOT done, deliberately: the domain types still declare `privilegeTier` non-nullable, so nothing in the app can *produce* a null. Widening them breaks `tsc` at the transcript-detail privilege `<select>` and forces UI handling — which §5 item 3 expressly excludes ("No UI work"), so per §5 item 4 it is reported instead of improvised.
+- **THE REGISTRY GAINED ITS FIRST WORK-PRODUCT PROPOSITIONS — three, all UNVERIFIED, backlog 34 → 37**, and `legal-rule-registry-discovery-enforcement-and-pleading.md` 27 → 30 with its header raised to match. **Deliberate deviation, recorded rather than silent: the packet's §4.2 said "append," and the entries were placed in SUBJECT ORDER instead** — among the existing TRCP 192.x rules — because that file's own Structure paragraph orders entries by subject with rules before the cases that support them, and appending three 192.x rules after the case propositions and the UIM cluster would have broken it. Entry C carries a dedupe note; a `192.3(h)` entry already existed on the *discoverability* sentence, and the new one carries the *definition* including notes-are-not-a-statement.
+- **HEALTH CHECK RAN — this batch was NOT docs-only**, which is `QR-6(f)`'s other limb: §5 routed `db/schema.sql` and a new migration. **278 tests in 23 files all passed, `npm run build` clean (tsc -b + vite), `npm run lint` exit 0.** The chunk-size warning is pre-existing and unrelated.
+- **Also annotated add-only, none closed:** `Q-WF-4` now names all three consumers at his word "Amend the row," its substance untouched; `Q-COM-12`, partially answered from the side by the ruling's creation-time classification point but not given its transcribe/don't-transcribe gate; `Q-COM-10`, with a **runner-found** finding that the vocabulary divergence is duplicated in TypeScript — `billing.ts` and `transcripts.ts` each export a type named `PrivilegeTier` with **different members**, so the question has four homes and any ruling touches `src/` as well as `db/`; `transcript-workflows.md` §1 item 3, prose unaltered.
+- **OPEN ITEMS carried to Michael (§7 merged into the review queue with full text):** `v20-PASTE` (new, his hand, delivered separately and never in the packet), `MIGRATION` (new, run the authored migration), `REGISTRY-V` (new, verify the three TRCP entries — nobody else may), `OPEN-5(b)` and the `AUD-5..9` one-word apply (deliberately not put this session, still open), `Q-COM-10`, `Q-COM-12`, `Q-WF-4`'s substance, `EXTRACT` (`_claude_extract\` deletion, still pending — verified present and left as written), `TASK-19` (the CHAT-DISPATCH resume point, riding `OPEN-4`, verified present and left as written). **`LOCK` is resolved**: the stranded lock was removed on his in-session authorization. **Also his, one word each:** close the stale v17 row, and the `QR-6(c)` half-landing above.
+- **Nothing set to verified. No registry status changed. No CHECK vocabulary touched. The migration was not run. No UI built. `Go_Live_Gates.md`, every REQ-CAPTURE, the drafting-disclosures skill, and the session capture (routing row 6, project knowledge only) were not touched.**
+
+## 2026-08-16 (#94) — FABLE-RUN ADJUDICATION: QR-6(a)–(f) ALL RULED IN taking the runner to v9 with
+OPEN-5(a) riding, Q-COM-11 ruled (A), the registry gets its first work-product propositions, and two
+new conventions fire trigger #3 into v20 (design session, Fable 5, Cowork, device bridge)
+
+**Adjudication session per §7.2 — Fable adjudicates; Michael ruled live, one item at a time. Nothing
+was built. The session opened at a STOP:** the run prompt's baseline (origin `c75e163`, top entries
+#89 + the forty-fourth runner line, seventy-eighth refresh) was FOUR invocations stale. Bridge
+verification read — stated as such, NOT a QR-3 pass; `git fetch`/`ls-remote` 403 reproduced — found
+HEAD == local `origin/master` == `212b80c`, 0/0, on master, the CRLF false-dirty only, `inbox/`
+empty. Michael ruled PROCEED on the record at HEAD. Meter stated in-session: Fable 82% used,
+all-models comfortable.
+
+- **QR-6 RULED, ALL SIX (Michael, 2026-08-16), on the audit doc read IN FULL at HEAD plus the
+  #90–#93 followed-as-if-ruled exhibits.** (a) IN — an asserted verification names the command that
+  produced it, and a command that cannot produce a disconfirmation is not one; reason: it did the
+  decisive work at #93. (b) IN — the queue merge is two acts, rows AND the Status-header reconcile
+  sentence; reason: the #84 omission is recorded in the header itself. (c) IN — delete by explicit
+  filename with packet identity (size/mtime/sha256) pinned at Step 1; reason: the mid-STOP swap is
+  on the record and the matcher covers explicit names at zero cost, proven at the forty-third and
+  forty-fifth. (d) IN, IN DYNAMIC FORM, not as written: format comes from the runner text's own
+  Step 4 rules and is never copied from an entry authored under an earlier runner version; reason:
+  the static exemplar the audit proposed had already gone stale — six compliant lines now exist —
+  and a static pointer is itself the QR-5 shape. (e) IN — a packet-added act in no routing-table row
+  and no Step 4 item requires Michael's in-session authorization; reason: the §8.1 lock deletion was
+  inert, the next such act may not be. (f) IN — a docs-only batch records the health-check skip
+  explicitly; reason: already exercised in terms at the forty-seventh and forty-eighth.
+  **Runner v8 → v9 staged this packet. OPEN-5(a) RIDES THE SAME AMENDMENT by Michael's word
+  ("Yes — ride the v9 amendment"): the BUILD-STATE recompute rule enters the runner's Step 4 item 3.
+  OPEN-5(b) and the AUD-5..9 one-word apply were deliberately NOT put and REMAIN OPEN.**
+- **Q-COM-11 RULED (A) — NO DEFAULT; CLASSIFY AT CREATION.** Both `privilege_tier` columns lose
+  DEFAULT and NOT NULL; NULL means unclassified-must-classify; the CHECK vocabularies are NOT
+  touched (Q-COM-10 stays unruled and is not settled by implementation). Reason, Michael's ruling on
+  the framed costs: no row ever asserts a stance nobody chose — and the fix is cheap while every row
+  is fiction, becoming a re-characterization (a legal act) after go-live. The §5 work order is
+  schema + authored-not-run migration ONLY; the creation-time UI decision point is recorded as the
+  follow-on act, not built. `transcript-workflows.md` §1 item 3 already states the right posture and
+  was annotated, not amended.
+- **THE REGISTRY GETS ITS FIRST WORK-PRODUCT PROPOSITIONS — the fifth absence answered in its
+  narrowest part.** Michael ruled the three TRCP propositions (192.5(d) assertion-is-privilege;
+  192.5(c)(1) witness-statement exception; 192.3(h) substantially-verbatim definition, notes are not
+  a statement) into `legal-rule-registry-discovery-enforcement-and-pleading.md`, ALL UNVERIFIED.
+  Backlog 34 → 37 when executed. None is among the ten wording-change entries in #93's sequencing
+  finding. Source per SOURCING: the clean-authority PDF
+  `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` — with the caveat
+  recorded rather than smoothed that the PDF's opening page carries no separate effective-date line;
+  "July 2026" is the filename's designation. Quotations spot-checked against raw pdftotext
+  extraction in the device VM's own /tmp; the §3 statute normalizer NOT applied (different
+  publisher, raw TRCP AA count 0, per the standing limit).
+- **CITE-STABILITY RULED — TRIGGER #3 FIRES (second convention this session).** Line-number cites
+  are permitted only into append-only files; prepending files (the session log) and
+  wholesale-rewritten files (BUILD-STATE) are cited by heading or quoted sentence. The #91/#92/#93
+  trio is the derivation; BUILD-STATE's header note was the existing half; this makes it project-wide
+  law in v20.
+- **THE CLASSIFIER GAP RULED AN OPERATIONAL NOTE IN v20, on evidence that moved under the original
+  framing:** the forty-seventh invocation's classifier refused a BARE allowlisted `git push origin
+  master` on both shells, so "prefer bare forms" is no longer sufficiency guidance. The v20 note:
+  the auto-mode classifier may refuse even allowlisted bare commands; a remotely-driven close-out
+  can strand at the push with permissions fully in place; QR-5(a) plus the QR-3 ahead-stop is the
+  designed catch; never conclude a batch landed without `git ls-remote`.
+- **Q-WF-4's row is ANNOTATED with its three consumers** (WF-2–WF-8, Q-QBO-3, Q-COM-4 — the last
+  the most demanding), add-only, full text per QR-1. The identity question itself remains open and
+  Michael's.
+- **RECONCILE NOTES.** The run prompt's Task 3(a) — carry the rm-matcher confirmation — was found
+  ALREADY EXECUTED at the forty-fifth invocation and was NOT re-staged. The Task 15 packet's two
+  defects (§4.1 flat-zip source path; the sixteen-vs-twenty-one merge undercount) are ruled
+  DELIBERATELY LEFT ALONE: nothing false ever landed in the log, the audit's §2 is the record, and
+  the defect class is named here so packet-authoring sessions self-check it at RR-1 — a flat zip's
+  §4.1 must name the flat filename, and a §0/§3 count must be re-derived from the §7 rows, not
+  copied.
+- **v19 CONFIRMED IN FORCE BY OBSERVATION, the #82/A-1 mechanism:** this running session read its
+  own live project instructions and they are v19 — 2026-08-16, QR-5 header present. Michael's recall
+  was unsure ("No / not sure"); the observation, not the recall, is the evidence, exactly as #68
+  closed the v17 question. The carried "project-instructions v19 paste" item CLOSES; the new carried
+  item is the **v20 paste**, drafted this session and delivered separately.
+- **PROCESS NOTES.** Two folders granted (HK-7: the checkout and `Documents\Knowledge Repo`) — and
+  the second was SPENT this time (the TRCP PDF read), the counter-datum to #93's single-folder
+  reading. PDF extraction ran in the device VM's own /tmp; no scratch in any connected folder. THIS
+  session's own bridge `git status` stranded a fresh 0-byte `.git/index.lock` (the observed
+  mount-denies-unlink cause reproducing; Michael's hand or the next native session clears it —
+  reported in-session, named here). DT-1 applied: container read 08-17 UTC; all stamps 2026-08-16
+  Central. `Knowledge Repo\Statutes 26-08-14\_claude_extract\` deletion still pending, Michael's
+  hand.
+
+Staged for Code: this packet (runner v9 amendment; three registry entries; queue dispositions;
+transcript-workflows annotation; the §5 schema work order; this entry; BUILD-STATE rewrite).
+Awaiting/Returned from Code, unreviewed: recompute the range from the log at HEAD per A-4 — plus the
+v20 instructions paste (Michael's hand, drafted this session) and this batch's own handback.
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-EIGHTH invocation) — the ahead-stop fired for the first time since it was written and was right, and an entry that cites BUILD-STATE by line number seven times is correct today and stale at the end of this batch
 
 **Two packets, one already executed, one staged file between them, docs only, nothing built (§5

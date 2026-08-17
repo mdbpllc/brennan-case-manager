@@ -1,0 +1,105 @@
+-- Migration — 2026-08-16, Q-COM-11(A): privilege_tier loses its default
+--
+-- Authorization: Michael, 2026-08-16, ruling Q-COM-11 as framed with costs —
+-- "(A) No default — classify at creation". Recorded at session-log #94 and on the
+-- Q-COM-11 row of docs/specs/attorney-review-queue.md.
+--
+-- RUN BY MICHAEL'S HAND, per the CL-2/CD-1 precedent (slice item 7):
+--   1. BACK UP FIRST.
+--   2. Paste this file ALONE into an empty SQL buffer — nothing else in it.
+--   3. Answer the verification checks at the bottom IN WORDS before moving on.
+-- This file is also folded into db/schema.sql so a fresh project is correct.
+--
+-- WHY. Writing 'work-product' into a privilege_tier column is not a filing label;
+-- by TRCP 192.5(d) it is an assertion of privilege (registry entry UNVERIFIED,
+-- awaiting Michael — REGISTRY-V). A DEFAULT therefore made every row assert a
+-- stance nobody chose. For witness interviews and depositions it asserted the
+-- wrong one: transcript-workflows.md §1 item 3 flags those presumptively
+-- discoverable at creation, and TRCP 192.5(c)(1) excepts witness statements from
+-- work-product protection (also UNVERIFIED). After this migration NULL means
+-- unclassified-must-classify.
+--
+-- WHY NOW. The fix is cheap while every row is fiction. No real client data has
+-- ever entered this application. After go-live, changing a row's privilege tier
+-- stops being a data edit and becomes a re-characterization — a legal act.
+--
+-- WHAT THIS DOES NOT DO, deliberately:
+--   * It does not touch either CHECK constraint's value list. The two vocabularies
+--     disagree — generated_documents allows 'attorney-client', transcripts allows
+--     'privileged' — and reconciling them is Q-COM-10, expressly UNRULED. A NULL
+--     asserts nothing in either vocabulary, which is why the ruling chose it.
+--     Settling Q-COM-10 by implementation here is the named failure to avoid.
+--   * It does not re-characterize any existing row. Every current value is kept
+--     exactly as it stands. Backfilling NULLs over them would be the legal act
+--     described above, and it is reserved to Michael.
+--   * It does not add a creation-time classification prompt. That UI is the
+--     recorded follow-on act and was NOT authorized in this slice.
+--   * It does not add a flag table, a trigger, or a NOT VALID constraint to chase
+--     unclassified rows. Nothing was authorized beyond dropping default + not null.
+--
+-- Safe to re-run: DROP DEFAULT and DROP NOT NULL are both idempotent in Postgres.
+
+-- ============ §5.1 — GENERATED DOCUMENTS ============
+
+alter table generated_documents alter column privilege_tier drop default;
+alter table generated_documents alter column privilege_tier drop not null;
+
+-- ============ §5.1 — TRANSCRIPTS ============
+
+alter table transcripts alter column privilege_tier drop default;
+alter table transcripts alter column privilege_tier drop not null;
+
+-- ============ VERIFICATION — ANSWER THESE IN WORDS ============
+-- Run each and read the result out loud before continuing. If any answer is not
+-- what the comment says it should be, STOP and report it rather than proceeding.
+--
+-- 1. Both columns are now nullable and carry no default:
+--      select table_name, is_nullable, column_default
+--        from information_schema.columns
+--       where column_name = 'privilege_tier'
+--         and table_name in ('generated_documents','transcripts')
+--       order by table_name;
+--    EXPECT: two rows, is_nullable = 'YES' on both, column_default null on both.
+--    A column_default still reading 'work-product'::text means that statement did
+--    not run — do not proceed.
+--
+-- 2. NOTHING was re-characterized — every existing value survived intact:
+--      select privilege_tier, count(*) from generated_documents group by 1 order by 1;
+--      select privilege_tier, count(*) from transcripts group by 1 order by 1;
+--    EXPECT: the same counts you had before this migration, and ZERO nulls. This
+--    migration creates no nulls; only rows written AFTER it can be null. If a null
+--    appears here, something other than this file wrote it.
+--
+-- 3. Both CHECK vocabularies are untouched, and still disagree (this is Q-COM-10
+--    left open on purpose — do NOT "fix" it here):
+--      select rel.relname as table_name, pg_get_constraintdef(con.oid) as check_def
+--        from pg_constraint con
+--        join pg_class rel on rel.oid = con.conrelid
+--       where con.contype = 'c'
+--         and pg_get_constraintdef(con.oid) like '%privilege_tier%'
+--       order by rel.relname;
+--    EXPECT: generated_documents still lists 'attorney-client','work-product',
+--    'non-privileged'; transcripts still lists 'privileged','work-product',
+--    'non-privileged'. Two different lists is the CORRECT result today.
+--
+-- 4. A NULL is now actually accepted (the whole point). Run inside a transaction
+--    and roll it back so no fixture row is created:
+--      begin;
+--        insert into transcripts (case_ids, context_type, privilege_tier)
+--             values ('{}', 'dictation', null) returning id, privilege_tier;
+--      rollback;
+--    EXPECT: the insert succeeds and returns privilege_tier = null. If it raises
+--    a not-null violation, statement 2 above did not run.
+--    If it fails on some OTHER not-null column, that is fine and expected — this
+--    table has other required columns; what matters is that the error is not about
+--    privilege_tier. Read the error text before concluding.
+--
+-- 5. Row-level security is unaffected — no policy referenced this column:
+--      select tablename, policyname
+--        from pg_policies
+--       where schemaname = 'public'
+--         and tablename in ('generated_documents','transcripts')
+--         and (qual like '%privilege_tier%' or with_check like '%privilege_tier%');
+--    EXPECT: zero rows. Nullability cannot change a policy that never read the
+--    column. A row here means a policy DOES read it and its NULL behavior needs a
+--    look before any real data lands.

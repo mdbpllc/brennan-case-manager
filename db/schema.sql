@@ -518,7 +518,12 @@ create table if not exists generated_documents (
   run_id uuid references analysis_runs (id) on delete set null,
   doc_type text not null check (doc_type in ('reasonable-value-report')),
   audience text not null default 'internal' check (audience in ('internal','lienholder','client','opposing')),
-  privilege_tier text not null default 'work-product' check (privilege_tier in ('attorney-client','work-product','non-privileged')),
+  -- Q-COM-11 ruled (A) 2026-08-16: no default, classify at creation. NULL means
+  -- unclassified-must-classify. Writing 'work-product' is an assertion of privilege
+  -- (TRCP 192.5(d), registry UNVERIFIED), so no row asserts a stance nobody chose.
+  -- The CHECK list is deliberately unchanged: the two vocabularies disagree and
+  -- reconciling them is Q-COM-10, unruled.
+  privilege_tier text check (privilege_tier in ('attorney-client','work-product','non-privileged')),
   title text not null,
   content text not null,
   disclaimer_version text not null,
@@ -633,7 +638,13 @@ create table if not exists transcripts (
     check (consent_status in ('announced','written','one-party','unknown')),
   out_of_state_participant text not null default 'unknown'
     check (out_of_state_participant in ('yes','no','unknown')),
-  privilege_tier text not null default 'work-product'
+  -- Q-COM-11 ruled (A) 2026-08-16: no default, classify at creation. NULL means
+  -- unclassified-must-classify. §1 item 3 of transcript-workflows.md flags
+  -- witness-interview transcripts presumptively discoverable, and defaulting them
+  -- to 'work-product' contradicted that (TRCP 192.5(c)(1), registry UNVERIFIED);
+  -- that flag now drives a SUGGESTED value at the creation-time decision point,
+  -- which is a recorded follow-on act and is NOT built. CHECK list unchanged: Q-COM-10.
+  privilege_tier text
     check (privilege_tier in ('privileged','work-product','non-privileged')),
   phi_flag boolean not null default false,
   discoverable_flag boolean not null default false,

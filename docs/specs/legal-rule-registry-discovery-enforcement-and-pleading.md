@@ -1,8 +1,10 @@
 # Legal Rule Registry — Discovery Enforcement, Declaratory Judgment, Venue and Pleading
 
-**Status: ALL TWENTY-SEVEN ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under CLAUDE.md's registry discipline these propositions may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
+**Status: ALL THIRTY ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under CLAUDE.md's registry discipline these propositions may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
 
 **Filed 2026-08-12 (queue-runner, twentieth invocation).** Entries come from the two REQ-CAPTUREs reconciled that day: `REQ-CAPTURE_deficiency-handling_2026-08-11.md` §4 (enforcement of propounded written discovery — twenty-two entries) and `REQ-CAPTURE_uim-udja-petition-transform_2026-08-12.md` §4 (declaratory-judgment vehicle, fees, venue, and the pleading relief bracket — five entries). Both captures state their own propositions as unverified; that status is carried, not re-derived.
+
+**Three work-product entries added 2026-08-16 (queue-runner, forty-ninth invocation), taking the file from twenty-seven to thirty.** TRCP 192.5(d), 192.5(c)(1), and 192.3(h)'s definition of a witness statement entered on Michael's ruling of the same date (session-log #94), the first work-product propositions anywhere in the registry. They were placed **in subject order** among the existing TRCP 192.x rules rather than appended at the end — the packet said "append," the Structure paragraph below says entries are ordered by subject with rules before the cases that support them, and the file's own convention was followed. **The count header above was raised 27 → 30 at Michael's ruling in the same session;** leaving it would have made this file's header understate its contents, the exact collision recorded in the placement rule below. All three are UNVERIFIED and await his sign-off (queue item REGISTRY-V).
 
 **Why this file rather than a fold-in — the placement rule, stated rather than buried.** The fold-in directed the deficiency batch into `legal-rule-registry-discovery-and-carrier-duties.md` *if its title honestly covers it.* The title does; **its status header does not.** That file is headed **"ALL TWENTY PROPOSITIONS VERIFIED"**, and folding twenty-two unverified propositions into it would break that header — the same structural collision that caused that file to be opened rather than folded into the medical-billing registry, recorded in its own §7. So the batch lands here, in the same naming family. The five UIM/pleading entries travel with it rather than opening a third file for five entries; the subject line above widened accordingly, and the two clusters sit in subject order below. **Split later if volume warrants.** **PLACEMENT CONFIRMED — Michael, 2026-08-12** (post-run design review of the twentieth invocation; recorded at session-log #60). The reason he confirmed is the reason above: folding unverified propositions into a file headed "ALL TWENTY PROPOSITIONS VERIFIED" would falsify that header, the same structural collision as the #50 precedent. **The open flag is closed. Nothing about the entries below changed — this sentence is provenance, not status.**
 
@@ -28,12 +30,39 @@
 **Status:** UNVERIFIED.
 **Relied on for:** deficiency assertions where produced statement forms existed but were not identified in response.
 
+## TRCP 192.3(h) — what a witness statement is
+
+**Cite:** Tex. R. Civ. P. 192.3(h).
+**Rule.** A witness statement is (1) a written statement signed or otherwise adopted or approved in writing by the person making it, or (2) a stenographic, mechanical, electrical, or other recording of a witness's oral statement, or any substantially verbatim transcription of such a recording. Notes taken during a conversation or interview with a witness are **not** a witness statement.
+**Status:** UNVERIFIED.
+**Relied on for:** the transcription-pipeline boundary (Q-COM-12 — transcribing a recording can convert what were notes into a witness statement); the communications memo's P-COM-4.
+**Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
+**Dedupe note:** the entry immediately above carries a **different proposition on the same rule number** — 192.3(h)'s discoverability sentence. This entry carries the rule's *definition* of a witness statement, including the sentence that notes are not one. Treated the same way as the TRCP 196.2(b) entry below, whose note records the identical situation: a different proposition on the same rule number is a new entry rather than a second observation. **Placement confirmed by Michael, 2026-08-16, choosing this over folding the definition into the entry above; flagged here in case he later wants the two consolidated into one 192.3(h) entry carrying two propositions.**
+
 ## TRCP 192.3(j) — legal contentions and factual bases discoverable
 
 **Cite:** Tex. R. Civ. P. 192.3(j).
 **Rule.** A party may obtain discovery of the other party's legal contentions and the factual bases for them.
 **Status:** UNVERIFIED.
 **Relied on for:** the contention-discovery line of the deficiency analysis (DE-1 taxonomy categories OO and EV).
+
+## TRCP 192.5(c)(1) — witness statements excepted from work-product protection
+
+**Cite:** Tex. R. Civ. P. 192.5(c)(1).
+**Rule.** Even if made or prepared in anticipation of litigation or for trial, information discoverable under Rule 192.3 concerning experts, trial witnesses, witness statements, and contentions is not work product protected from discovery.
+**Status:** UNVERIFIED.
+**Relied on for:** the `privilege_tier` classification questions (Q-COM-11, ruled (A) 2026-08-16; Q-COM-12); `transcript-workflows.md` §1 item 3's presumptively-discoverable posture for witness-interview transcripts; the communications memo's P-COM-3.
+**Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
+**Dedupe note:** *In re Ochoa* below carries the narrower case proposition that contention discovery is not work product. This rule entry is the authority that proposition rests on and does not displace it — rules precede the case propositions that support them, per Structure above.
+
+## TRCP 192.5(d) — an assertion of work product is an assertion of privilege
+
+**Cite:** Tex. R. Civ. P. 192.5(d).
+**Rule.** For purposes of the rules of civil procedure, an assertion that material or information is work product is an assertion of privilege.
+**Operative text, spot-checked against raw extraction:** "For purposes of these rules, an assertion that material or information is work product is an assertion of privilege."
+**Status:** UNVERIFIED.
+**Relied on for:** both `privilege_tier` columns (Q-COM-11, ruled (A) 2026-08-16 — no default, classify at creation, NULL meaning unclassified-must-classify); the communications memo's P-COM-2.
+**Source:** clean-authority PDF, `Documents\Knowledge Repo\Civil\texas-rules-of-civil-procedure July 2026.pdf` ("July 2026" is the filename's designation; the PDF's opening page carries no separate effective-date line — caveat recorded per the 2026-08-16 session). Retrieval: RUN 2026-08-16, raw pdftotext in the device VM; the statute-pass §3 normalizer NOT applied (different publisher; raw TRCP `AA` count 0 — standing limit at BUILD-STATE/#89).
 
 ## TRCP 193.1 — complete response on reasonably available information
 

@@ -3,7 +3,7 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v8, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v9, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
@@ -12,7 +12,10 @@
      Step 0 item 4, Step 1 item 3, Step 4 item 1 and Step 4 item 5 amended by Michael's
      ruling 2026-08-16 (QR-5, v8) — the entry may assert no post-commit action, the
      deletion is verified and carried forward if it fails, an already-executed check is
-     added, and the deletion has a permission precondition. -->
+     added, and the deletion has a permission precondition; evidence rule, merge-second-act,
+     identity pinning + delete-by-name, dynamic format rule, packet-added-act authorization,
+     health-check-skip recording, and the BUILD-STATE recompute rule added by Michael's ruling
+     2026-08-16 (QR-6(a)–(f) + OPEN-5(a), v9). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -34,6 +37,15 @@ this file or any packet.** `git fetch origin`, then compare HEAD to
   prior close-out's push did not land, and the design side has not seen those commits. Proceed
   only on his word; never build on an unpushed tree silently. (v7, ruled 2026-08-13 after the
   twenty-fifth invocation demonstrated the gap.)**
+
+**Evidence rule, governing every step of this file (QR-6(a), ruled 2026-08-16): where a step
+states a verification, name the command that produced it — and the command must be one that
+could have produced a disconfirmation. `git rev-parse origin/master` reads the LOCAL tracking
+ref and is not evidence about origin (a live `git fetch` plus `git ls-remote` is);
+`git log --grep` searches messages, not paths, and proves no absence. A check whose output
+looks like confirmation but whose mechanism cannot fail in a way that announces itself is not
+a verification. Where a fact is genuinely unverifiable from the repo (another session's
+permission prompt, another machine's inbox), say so and ask — never assert it.**
 
 A stale checkout serves stale runner text with no warning (demonstrated
 2026-08-08: v1 read as current from a tree 14 commits behind). Never run the
@@ -68,7 +80,10 @@ queue from an unverified tree.
    the Step 0 gate: "already executed" can mean COMMITTED BUT UNPUSHED, which is what the
    forty-second invocation turned out to be — the deliverable was at HEAD and absent from
    `origin/master`. Say which of the two you found.** (QR-5, ruled 2026-08-16.)
-4. Print the inferred queue order (filename + date), carrying any such marks, and STOP. Ask
+4. **Pin each packet's identity (QR-6(c), ruled 2026-08-16): record filename, byte size, mtime,
+   and sha256 for every zip listed. The Step 1 STOP can last hours and a packet has in fact
+   been swapped mid-STOP; the pinned identity is what Step 4 item 5 deletes against.**
+5. Print the inferred queue order (filename + date), carrying any such marks, and STOP. Ask
    Michael to confirm or reorder before executing anything. Do not proceed on silence.
 
 ## Step 2 — Read everything before executing anything
@@ -98,9 +113,20 @@ For each packet, oldest first:
 3. Honor every §6 DO-NOT list cumulatively — a DO-NOT in an early packet
    still binds while processing later ones unless a later packet
    explicitly lifts it.
-4. Collect its §3 session-log entry (do not append yet).
+4. **A packet-added act that appears in NO routing-table row and NO Step 4 item requires
+   Michael's in-session authorization (QR-6(e), ruled 2026-08-16): skip it and report it unless
+   he authorizes. Exhibit: a packet's §8.1 asked for a deletion inside `.git/` — inert, and
+   authorized in-session; the next such act may not be inert.**
+5. Collect its §3 session-log entry (do not append yet).
 
 ## Step 4 — Close out ONCE for the whole batch
+
+**Health check first (QR-6(f), ruled 2026-08-16): on a docs-only batch — §5 NONE in every
+packet and no `src/`, `db/`, `supabase/` or build-tooling path routed — the CLAUDE.md health
+check (`npm test` / `npm run build` / `npm run lint`) proves nothing about the batch: SKIP IT
+AND RECORD THE SKIP EXPLICITLY in the runner line, naming the reason. On any other batch, run
+it now and record the result. Never skip silently.**
+
 1. Append all collected session-log entries to the TOP of
    docs/specs/session-log.md, ordered so the NEWEST packet's entry ends
    up on top. Add one short runner entry above them all: which packets
@@ -115,6 +141,9 @@ For each packet, oldest first:
    in this template, true for the forty-first invocation and FALSE for the forty-second, whose
    close-out was interrupted at the push — and the false sentence is permanently in the record
    because it was committed before the action it describes.**
+   **Format comes from THIS file's Step 4 rules — never copy format from a runner line authored
+   under an earlier runner version (QR-6(d), ruled 2026-08-16 in dynamic form; a named static
+   exemplar was proposed and rejected because it goes stale — the QR-5 shape).**
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's — AND
    into `docs/specs/attorney-review-queue.md`, which is the standing
@@ -126,6 +155,10 @@ For each packet, oldest first:
    question survives.** (QR-1, ruled 2026-08-07. Failure class this
    prevents: Q-5's original wording destroyed; K-6/K-7 retired because
    their text existed nowhere.)
+   **The queue merge is TWO acts (QR-6(b), ruled 2026-08-16): the rows AND the Status header's
+   per-batch "Reconciled again to session-log #NN" sentence — update both. The omission has
+   happened once (#84) and is recorded in that header, whose own words are "keep it current or
+   the pointer lies."**
 3. Rewrite docs/specs/BUILD-STATE.md IN FULL — never append. **150-line
    hard cap** (Michael's ruling 2026-07-27, BS-1, raised from 120; the cap
    exists for READABILITY, not token cost). At the cap, **displace — cut
@@ -133,6 +166,10 @@ For each packet, oldest first:
    `docs/specs/anti-resurrection-ledger.md`; the cap applies to BUILD-STATE
    only, not the ledger. Describe what EXISTS, verifiable from the working
    tree at the stated commit.
+   **Recompute at every refresh, never copy from a packet (OPEN-5(a), ruled 2026-08-16): the
+   unreviewed-entries range comes from the log at HEAD (A-4) and the queue-reconciled-through
+   pointer from that file's own header at HEAD (A-5); every count BUILD-STATE states is
+   re-derived, not carried.**
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
    from an unchecked command. **If the push is rejected non-fast-forward
    (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
