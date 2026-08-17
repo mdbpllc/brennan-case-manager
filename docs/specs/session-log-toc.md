@@ -9,42 +9,56 @@ This index is therefore rebuilt in full from the log each time it is refreshed; 
 existing copy will silently drift. Canonical path is stable and unversioned for exactly that reason.
 
 - **Canonical repo path (PROPOSED):** `docs/specs/session-log-toc.md`
-- **Generated:** 2026-08-16 (Central, per DT-1 — the container clock read UTC 2026-08-16 23:5x,
-  within ten minutes of the 19:00-Central roll to 08-17; the Central date was checked and used)
-- **Produced by:** CHAT-DISPATCH Task 17, design session, Opus 5, Cowork
+- **Generated:** 2026-08-17 (Central, per DT-1) — **SECOND EDITION**, regenerated from the first
+  (2026-08-16, `#91`) after it went sixteen entries stale
+- **Produced by:** CODE-DISPATCH v3 task C-2, Claude Code session, Opus 5, on mdb-pllc
 
 ## Basis of this read
-
-Built from a **full-text read of the log at HEAD**, not from RAG retrieval. Michael granted the
-repo checkout through the Cowork device bridge at session start for this purpose; RAG returns
-fragments, and a finding aid built from fragments is silently incomplete.
 
 | | |
 |---|---|
 | Checkout | `C:\Users\Brennan\brennan-case-manager`, branch `master` |
-| HEAD | `a5a95a97059cf5768c63fd701349b3f9c79c6373` |
-| `origin/master` (local ref) | `a5a95a9` — **0 ahead / 0 behind** |
-| Working tree | 200 files show as modified; `git diff --ignore-all-space` is **empty** — CRLF only, the known false-DIRTY signature |
-| `inbox/` | empty at read time |
-| Source file | `docs/specs/session-log.md`, 842,825 bytes, **9,188 raw / 7,996 non-blank lines** |
+| Read FROM commit | `c7ba8f7` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `c7ba8f7`. The C-2 entry was written BEFORE this file was generated precisely so the index could contain its own row (the BUILD-STATE convention, borrowed because the problem is identical) |
+| `origin/master` at read time | `c7ba8f7`, confirmed by a live `git ls-remote` — 0 ahead / 0 behind |
+| Working tree | clean at `c7ba8f7` before this batch's edits |
+| `inbox/` | empty — the fifty-third invocation's packet was deleted and the deletion verified |
+| Source file | `docs/specs/session-log.md`, 970,933 bytes, **10,197 raw / 8,924 non-blank lines** |
 
-**This was NOT a QR-3 pass.** `git fetch` was not run and cannot be: the device VM has no network
-access, so `origin/master` above is the *local remote-tracking ref*, not a live read of origin. It
-establishes what is in the working tree. Per the standing operational note, **a bridge read never
-establishes what is on origin** — a Code session must run the real gate.
+**METHOD — read this before trusting a row, because the two halves of this file rest on different
+evidence.** The first edition (`#91`) built its 190 rows from a **full-text read of every entry**.
+This edition did **not** re-read those 190. Instead it **proved they cannot have changed**: the log
+blob at `#91`'s own basis commit `a5a95a97` was fetched and compared byte-for-byte against the log
+at HEAD, and **the 2,477-byte preamble is byte-identical, every remaining byte of prior entry text
+is byte-identical, and exactly 121,802 bytes carrying exactly sixteen new `## ` headings were
+inserted between them.** The log has been **purely prepended**, so those 190 rows describe entries
+that have not moved a byte and are carried on that evidence rather than on trust.
+
+**The seventeen new rows were written from each new entry's heading and its bolded bullet lead-ins
+— NOT from a complete reading of every line of all seventeen.** In this log the heading is written
+as the entry's own thesis, so the summaries are drawn from what each entry says about itself; a
+reader who needs a load-bearing detail must still open the entry. **The ID, date, type and ordering
+columns for all 207 rows are mechanical and were re-derived in full this refresh.**
 
 ## How to read the ID column
 
 The log carries **two independent numbering systems**, and neither covers every entry:
 
-- **`#nn`** — design and Code session entries. The series as written runs **#2 – #90**.
-- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("FORTY-FIFTH
-  invocation"), counted separately from `#nn`. Runs **5 – 45**.
+- **`#nn`** — design and Code session entries. The series as written runs **#2 – #98**.
+- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("FIFTY-THIRD
+  invocation"), counted separately from `#nn`. Runs **5 – 53**.
 - **`—`** — entries carrying neither. Mostly the pre-numbering era (2026-07-21 → 2026-07-26),
-  plus one micro-entry and one test packet.
+  plus one micro-entry, one test packet, one unnumbered runner line, and — **new this edition** —
+  the C-2 Code session that generated this file.
 
 Eight QUEUE-RUNNER batches carry a `#nn` **instead of** an ordinal (#6, #7, #10, #14, #31, #33,
 #35, #36) — they are indexed under their number and named as runner batches in the Type column.
+
+**`TOC-6`, NEW AND UNRULED: should a Code session take the next `#nn`?** The C-2 entry at the top of
+this index is a Code session and the bullet above says `#nn` covers those, so it arguably owed
+itself **#99**. It did not take one: **design sessions author the series, and a Code session minting
+a number races the next design session for it** — a collision the log cannot later untangle, and
+observation 1 below shows the series already carries one discontinuity nobody can reconstruct.
+**Michael's word makes it `#99`; renumbering a log entry is a doc edit.**
 
 **No source line numbers are given, deliberately.** New entries are prepended, so every line number
 in the file shifts on every append; a line-anchored index would be wrong the day after it was built.
@@ -52,32 +66,39 @@ Search the log by the ID or the date instead.
 
 ## Coverage — what was mechanically verified
 
-Every row below was written from the entry's own body. The ID and date columns were then re-derived
-**mechanically from the source headings** and diffed against the transcribed values, and the
-*received* side of the corrections column was generated by reverse-indexing the *issued* side rather
-than transcribed by hand. One transcription error was caught this way and fixed (a runner line
-mislabelled with the number of the entry beneath it).
-
-- **190 entries indexed — one row per `## ` heading in the file. No entry skipped.**
-- Numbered entries: **89**, range **#2–#90**, **no gaps except #1**, no duplicates.
-- Runner ordinals: **41**, range **5–45**, **no gaps, no duplicates**.
-- Unnumbered legacy/other entries: **59**.
-- Correction edges recorded: **67** issued, of which **22** are self-corrections and **14** resolve to another log entry; the remainder name a
-  document, a packet, or an unnamed prior claim rather than a numbered entry.
+- **207 entries indexed — one row per `## ` heading in the file. No entry skipped.**
+- Numbered entries: **97**, range **#2–#98**, **no gaps except #1**, no duplicates.
+- Runner ordinals: **49**, range **5–53**, **no gaps, no duplicates**.
+- One QUEUE-RUNNER line carries no ordinal (see observation 4); unnumbered legacy/other
+  entries: **60**, which now includes this edition's own C-2 entry.
+- **97 + 49 + 1 + 60 = 207.** The buckets are stated so they add up on their face; the first
+  edition's equivalent bullets required the reader to fold observation 4 back in by hand.
+- **EVERY BUCKET RECONCILES AGAINST THE FIRST EDITION, which is the strongest available check on a
+  mechanical re-derivation.** #91 recorded 89 numbered, 41 ordinals, 1 unnumbered runner, 59 other
+  = 190. The sixteen new log entries are **8 numbered and 8 runner lines**; both legacy buckets are
+  unmoved except by this file's own entry. Nothing else shifted.
+- Correction edges — **reported split by method rather than blended**: **67 issued** in the 190
+  carried rows (from #91's full-text read, of which 22 self-corrections and 14 resolving to another
+  entry) plus **15 issued** in the seventeen new rows derived this refresh (2 self-corrections, 9
+  resolving to another entry, 4 naming a document). **Totals: 82 issued, 24 self, 23 resolving to
+  another log entry.**
+- **The *received* side is generated by reverse-indexing the *issued* side**, per the first
+  edition's method. Eight of this refresh's nine entry-resolving edges land on entries that are
+  themselves new rows; **`#73` is the only carried row modified by this regeneration**, acquiring
+  `received ← fifty-third invocation runner line`.
 
 ### Structural observations (recorded, not adjudicated)
 
 These are stated as facts about the file. **None is asserted to be an error**, and this document
-has no standing to correct anything — two of the five orderings below are explained by the log
-itself, one of those by a formal correction entry. The rest are recorded without explanation
-because the file offers none.
+has no standing to correct anything. **All four were re-derived this edition against 207 entries,
+not carried:** the sixteen new entries changed none of them.
 
 1. **No entry carries `#1`.** The numbered series as written begins at `#2`. Whether `#1` was
    assigned to the entry immediately older than `#2` and lost, or simply never used, is **not
    determinable from the file** — so it is not guessed here.
 2. **`#30` uses a different heading shape** (`— #30 (…)`) from every other numbered entry
    (`(#30) — …`). Cosmetic; it parses only if a reader allows for both forms.
-3. **5 places where a date sits out of newest-first order:**
+3. **5 places where a date sits out of newest-first order — still exactly five, re-derived:**
    - `runner 23` (2026-08-12) sits above `#65` (2026-08-13)
    - `runner 11` (2026-08-11) sits above `#49` (2026-08-12)
    - `#45` (2026-08-06) sits above `runner 8` (2026-08-09)
@@ -89,7 +110,8 @@ because the file offers none.
    order, dates follow authoring*). The two 07-2x pairs sit in the founding era and are set off by
    horizontal rules not used elsewhere — **consistent with a separate append, but the file does not
    say so, so it is not claimed here.** `runner 23`/`#65` is noted without explanation: **none was
-   found in the file, and none is invented.**
+   found in the file, and none is invented.** **The sixteen new entries added no sixth inversion**
+   — the five 2026-08-17 entries are same-date, which is not an inversion.
 4. **One QUEUE-RUNNER line carries no ordinal at all** (2026-07-28, headed simply `(RUNNER)`).
    It is indexed as `runner (unnumbered)`.
 
@@ -99,6 +121,23 @@ Newest first, matching the log's own order.
 
 | # | Date | Type | Summary | Corrections issued / received |
 |---|---|---|---|---|
+| `—` | 2026-08-17 | Code session, Opus 5, Claude Code | This regeneration: the index rebuilt at 207 entries on byte-proof that the log has been purely prepended since `a5a95a97`, staleness re-derived to sixteen rather than incremented, and no `#nn` minted for the entry itself (`TOC-6`). | issues → the carried staleness figure (document) |
+| `runner 53` | 2026-08-17 | QUEUE-RUNNER runner line | Executes the Task 19 sign-off walk: 24 registry Status lines move to VERIFIED on Michael's recorded word, five ROUTE-C wordings execute and stay unverified, and #73's `V-4` cross-reference limb is found never executed while its row is being closed. | issues → #73 |
+| `#98` | 2026-08-17 | design session, Fable 5, Cowork | Task 19 sign-off walk executed item by item with Michael live: 24 of 40 entries verified, five ROUTE-C wordings adopted, five directed edits, six housekeeping rulings; `OPEN-4` and `Q1` closed. | issues → the *Park Cities Bank* pinpoint (document) |
+| `runner 52` | 2026-08-17 | QUEUE-RUNNER runner line | A second multi-agent preflight finds two arithmetic errors inside the staged worklist itself and both are left standing because the packet ordered it verbatim; a carried BUILD-STATE count is re-derived and found wrong at its own prior refresh. | issues → #97; issues → BUILD-STATE's carried TOC figure (document) |
+| `#97` | 2026-08-17 | design session, Opus 5, Cowork | Task A found already executed and stopped on its own gate; Michael elected prep-only on Task B, so the walk's staging worklist was built against all forty entries and nothing was verified. | — |
+| `runner 51` | 2026-08-17 | QUEUE-RUNNER runner line | A multi-agent preflight run before any file was touched finds a rewritten citation flag inside an act ruled to be a verbatim split; executes V-5, V-6 and V-7 under eleven separate rulings. | issues → #96; issues → the queue's `V-EXEC` row (document) |
+| `#96` | 2026-08-16 | design session, Opus 5, Cowork | V-EXEC executed in part: the three two-case entries split into six, cross-referenced and never merged, backlog 37 → 40; the split's ID scheme routed as a packet-added choice rather than assumed. | issues → the queue's stale `34 → 37` figure (document) |
+| `runner 50` | 2026-08-16 | QUEUE-RUNNER runner line | Executes six registry wordings under the route it is simultaneously making standing law, and finds that three of the packet's four directed closures had no row to close. | issues → #95 |
+| `#95` | 2026-08-16 | design session, Opus 5, Cowork | Wording adjudication: execute-then-verify ruled for Task 19, six registry wordings adopted each staying unverified, Reading A's scope expressly deferred, and route (c) ruled standing law → v21. | — |
+| `runner 49` | 2026-08-16 | QUEUE-RUNNER runner line | Amends the runner under the ruling it is landing (v8 → v9) and finds one of the six limbs landed only half while a seventh disposition had no target at all. | issues → #94 |
+| `#94` | 2026-08-16 | design session (Fable run) | QR-6(a)–(f) all ruled in, taking the runner to v9; Q-COM-11 ruled (A) so both `privilege_tier` columns lose their default; the registry gains its first work-product propositions; cite-stability ruled. | — |
+| `runner 48` | 2026-08-16 | QUEUE-RUNNER runner line | The Step 0 ahead-stop fires for the first time since it was written and is right — the forty-seventh's close-out had failed at the push — and an entry citing BUILD-STATE by line number seven times is correct today and stale by batch end. | issues → forty-seventh invocation runner line; issues → #92 |
+| `#93` | 2026-08-16 | design session, Opus 5, Cowork | Task 19 attempted and not completed: a redundant retrieval pass withdrawn under correction, and the finding that governs the task — Task 19 as written would verify ten entries against wording already ruled to change. | issues → self; issues → forty-seventh invocation runner line |
+| `runner 47` | 2026-08-16 | QUEUE-RUNNER runner line | The packet's headline question is its own third recording and already carries a live ID; the entry reporting a stale version number states a version state the record expressly declines to assert. Close-out interrupted at the push. | issues → #92; received ← #93; received ← forty-eighth invocation runner line |
+| `#92` | 2026-08-16 | design session, Opus 5, Cowork | The go-live runbook: three places where reading a gate ALONE gives the wrong answer, and a GL-1 floor item naming an instructions version five revisions stale. No status column, deliberately. | received ← forty-seventh invocation runner line; received ← forty-eighth invocation runner line |
+| `runner 46` | 2026-08-16 | QUEUE-RUNNER runner line | The fetch the packet named as its own decisive check answers it YES on both limbs, and every figure the index states about its source file survives independent re-derivation. | — |
+| `#91` | 2026-08-16 | design session, Opus 5, Cowork | This index's first edition: the log runs 190 entries under TWO numbering systems no single reader was tracking, no entry anywhere carries `#1`, and five dates sit out of newest-first order. | issues → self |
 | `runner 45` | 2026-08-16 | QUEUE-RUNNER runner line | Confirms the `rm -f inbox/*` allowlist suppressed the deletion prompt (QR-5(b)'s first live test), observes the stale `.git/index.lock` cause — the mount denies `unlink` — and flags a false HK-7 annotation claim. | — |
 | `#90` | 2026-08-16 | design session, Opus 5, Cowork | T3 pilot-recording protocol: HK-4 may already be satisfied (bundle archived 2026-07-25 with a README), and ground truth exists for only five of the thirteen recordings. | — |
 | `runner 44` | 2026-08-16 | QUEUE-RUNNER runner line | Re-verifies the Step 0 gate via `git ls-remote`, audits the Step 1 report (65 findings, 23 non-confirmed), and flags that the packet's §7 omits full question text. | — |
@@ -133,7 +172,7 @@ Newest first, matching the log's own order.
 | `#75` | 2026-08-14 | design session, Opus 5, Cowork, CHAT-DISPATCH Task 6 | Deadline-engine memo sourced to clean TRCP authority for the first time; the 50-day discovery cushion proves Family-Code-only, which the TRCP skeleton has backwards. | — |
 | `runner 29` | 2026-08-14 | QUEUE-RUNNER runner line | Processes the CD-2 role-mining packet as #74; QR-3 v7 gate passed natively; ten packet-local IDs became CD-4–CD-13; nothing built. | — |
 | `#74` | 2026-08-13 | design session, Opus 5, Cowork, CHAT-DISPATCH Task 3 | CD-2 role mining finds CD-2 already ruled and partly built, reframing the task from greenfield taxonomy design into a coverage audit. | — |
-| `#73` | 2026-08-13 | Code session, Opus; rulings Michael's | Ruling run V-4 through V-8, decided one at a time; V-9 opened on the majority-opinion rule's gap for Irwin-class cases; nothing executed. | — |
+| `#73` | 2026-08-13 | Code session, Opus; rulings Michael's | Ruling run V-4 through V-8, decided one at a time; V-9 opened on the majority-opinion rule's gap for Irwin-class cases; nothing executed. | received ← fifty-third invocation runner line |
 | `runner 28` | 2026-08-13 | QUEUE-RUNNER runner line | Processes the registry-workbook-and-citator packet, renumbered from #69 to #72 on a stale numbering premise; QR-3 gate passed; HK-7 ID assigned. | — |
 | `#72` | 2026-08-13 | design session, Opus 5, Cowork, CHAT-DISPATCH Tasks 1+2 (the ATOMIC PAIR) | Registry verification workbook and citator pass retrieve 34 of 34 backlog entries verbatim; three new FLP retrieval-hazard classes found; nothing verified. | — |
 | `#71` | 2026-08-13 | Code session, Opus; Michael's hand on every click | Outlook edit/cancel exercised live: cancel works; edit works except the first edit after a connect push duplicates the event; cause undetermined. | issues → self |
@@ -299,12 +338,16 @@ entries name an interface or actor but no model (`#14`, `#19`, `#20`, `#21`, `#3
 `#41`); the model is omitted there rather than guessed. `#44`'s own heading hedges its attribution
 ("Fable 5 **believed**") and that hedge is carried through rather than resolved.
 
-No other row is PARTIAL: the full-text read reached every entry.
+No other row is PARTIAL. **The first edition could say "the full-text read reached every entry";
+this one cannot say it of the seventeen rows it added, and says so in Method above instead.**
 
 ## What this document is not
 
 - Not a correction of anything. Every entry in the log **stands as written**.
 - Not a status source. `BUILD-STATE.md` is the only authority on what is built.
-- Not a substitute for reading the entry. Summaries are 12–28 words against entries averaging
-  ~42 non-blank lines; anything load-bearing must be read in the log itself.
+- Not a substitute for reading the entry. Summaries are 12–40 words against entries averaging
+  ~45 non-blank lines; anything load-bearing must be read in the log itself.
 - Not verification of any legal proposition, count, or claim summarised here.
+- Not a ruling on its own upkeep: **`TOC-4`** (regeneration cadence), **`TOC-5`** (whether a file
+  this size should sync into project knowledge at all) and **`TOC-6`** (the `#nn` question above)
+  are all Michael's, and this edition is evidence for them rather than an answer to any.

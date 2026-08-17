@@ -12,6 +12,79 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-17 — CODE SESSION (CODE-DISPATCH v3, task C-2): the session-log index regenerated at 207 entries on PROOF that the log has been purely prepended since the index was built, and the carried staleness figure re-derived a second time
+
+**Session:** Claude Code, Opus 5, on mdb-pllc; CODE-DISPATCH v3 task **C-2**, fired by Michael's
+go-ahead after C-1's checkpoint. Instructions **v21**, runner **v10**. DT-1: 2026-08-17 Central.
+**Docs only; nothing built, nothing verified, no registry file touched.**
+
+- **NO `#nn` WAS MINTED FOR THIS ENTRY, DELIBERATELY, AND THAT IS ITSELF A QUESTION FOR MICHAEL
+  (`TOC-6`).** The log's `#nn` series is described by its own index as *"design and Code session
+  entries,"* so a Code session arguably takes the next number (**#99**). It was not taken: design
+  sessions author the `#nn` series and a Code session minting one **races the next design session
+  for the same number**, which is a collision the log cannot later untangle — and this index's own
+  observation 1 records that the series already carries one unexplained discontinuity nobody can
+  reconstruct. **Indexed as `—` alongside the 59 other unnumbered entries. One word from Michael
+  makes it #99 instead; renumbering a log entry is a doc edit.**
+- **THE REGENERATION IS A REGENERATION, NOT AN APPEND — the file's own binding rule, and the
+  reason it can be trusted here is a proof rather than an assurance.** `docs/specs/session-log-toc.md`
+  states *"REGENERATE, DO NOT APPEND … adding rows to an existing copy will silently drift."*
+  **The drift risk was closed by direct comparison rather than by assertion:** the log blob at the
+  index's own basis commit `a5a95a97` was fetched and compared byte-for-byte against the log at
+  HEAD. **The 2,477-byte preamble is byte-identical, all 842,825 − 2,477 bytes of prior entry text
+  are byte-identical, and exactly 121,802 bytes carrying exactly SIXTEEN new `## ` headings were
+  inserted between them.** The log has been **purely prepended** since the index was built, so the
+  190 prior rows describe entries that have not changed a byte and are carried on evidence.
+- **STALENESS RE-DERIVED, NOT INCREMENTED — and the dispatch's own figure was a floor.** C-2 named
+  the index *"stale by fourteen-plus."* Re-derived at HEAD it is **SIXTEEN**: `#91` through `#98`
+  and the forty-sixth through fifty-third runner lines. Derivation, disconfirmable: the index's
+  basis row reads `a5a95a97`, whose newest log entry is the **FORTY-FIFTH** runner line; the
+  sixteen-heading count above is independent of that; and `grep -ic` for `#91` and for
+  `forty-sixth` against the index both return **0**. **This is the second consecutive refresh in
+  which that figure was re-derived rather than carried, and the second in which carrying it would
+  have been wrong** — the fifty-second found "nine" understating its own floor, and this one finds
+  "fourteen" two short.
+- **EVERY COVERAGE FIGURE RECONCILES AGAINST THE #91 READ, WHICH IS THE STRONGEST AVAILABLE CHECK
+  ON A MECHANICAL RE-DERIVATION.** At HEAD: **207 entries** (206 at C-1's commit plus this one);
+  numbered **97**, range **#2–#98**, **no gaps except `#1`, no duplicates**; runner ordinals
+  **49**, range **5–53**, **no gaps, no duplicates**; one unnumbered runner line; **60** other
+  unnumbered entries. Against #91's figures — 89 numbered, 41 ordinals, 1 unnumbered runner, 59
+  other — every bucket moves by exactly what the sixteen new entries contain (**+8 numbered, +8
+  ordinals**) and the legacy buckets do not move at all. **The five out-of-order dates are still
+  exactly the five #91 recorded; the sixteen new entries introduced none.**
+- **ONE CARRIED ROW WAS MODIFIED, and only because the file's stated method requires it.** The
+  index generates the *received* side of its corrections column by **reverse-indexing the issued
+  side**. Nine of this refresh's fifteen new correction edges resolve to another log entry, and
+  eight of those nine land on entries that are themselves new rows — **`#73` is the sole carried
+  row that acquires a `received ←`**, from the fifty-third invocation's finding that #73's `V-4`
+  ruling had a cross-reference limb nobody executed.
+- **AN HONEST LIMIT ON METHOD, STATED IN THE FILE AND HERE.** #91 built its 190 rows from a
+  **full-text read** of every entry. This refresh did **not** re-read those 190 — it carried them
+  on the byte-identity proof above — and wrote the seventeen new rows from **each new entry's
+  heading and its bolded bullet lead-ins**, not from a complete reading of every line of all
+  seventeen. **The ID, date and ordering columns for all 207 rows are mechanical and were
+  re-derived in full.** The summaries for the new rows are therefore drawn from the entries' own
+  stated theses rather than from an exhaustive read, and the file says so where a reader will see
+  it. **Correction-edge totals are reported split — 67 carried from #91's full-text read, 15
+  derived this refresh — rather than as one blended figure that would hide which half rests on
+  which method.**
+- **THE INDEX INDEXES ITS OWN ENTRY, which is a change of posture worth recording.** #91's copy was
+  generated before its own log entry existed and was stale by one the moment it landed. This entry
+  was written **first**, then the index generated over a log already containing it, so the file is
+  current as of the commit that carries it. **The basis row states the commit the read was made
+  FROM (`c7ba8f7`) and says in terms that the batch's own commit is where every row verifies** —
+  the BUILD-STATE convention, borrowed because the problem is identical.
+- **`TOC-5` ACCRUES AGAIN AND IS NOT RULED.** The file grows with the log; it is in the synced
+  `docs/specs/` and enters project knowledge at the next Sync click, spending context budget there.
+  **Nothing was done about it** — `TOC-4` (regeneration cadence) and `TOC-5` (whether it should
+  sync at all) remain Michael's, and this refresh is evidence for both rather than an answer to
+  either.
+
+Staged for Code: none — this WAS the Code session.
+Awaiting/Returned from Code, unreviewed: #75 through #98 floor per the fifty-second refresh's
+stated derivation limit, the runner lines through the fifty-third, and this entry.
+
+
 ## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-THIRD invocation) — the batch that wrote twenty-four attorney verifications into the registry files, and found that the ruling it was closing had a second half nobody had executed
 
 **One packet, executed in full under runner v10.** **Packet:** `push-to-code_task19-signoff-walk_2026-08-17.zip`, identity pinned at Step 1 per QR-6(c) — **19,562 bytes, mtime `2026-08-17 18:08:21 −0500`, sha256 `d3bcf475f15ea539c5ff8e9e690ead8083e02e196b0753616d144d7bf4ac62df`**. Filename-date order and pure-mtime order agreed; the date parsed cleanly. **Nothing was superseded** — one packet, so the conflict rule never fired — and **nothing was skipped as already built.**
