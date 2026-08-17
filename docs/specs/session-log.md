@@ -12,6 +12,128 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-SIXTH invocation) — the fetch the packet named as its own decisive check answers it YES on both limbs, and every figure the index states about its source file survives independent re-derivation
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 17** — the
+session-log table of contents. Runner re-read at HEAD per QR-2 (the `/queue-runner` command is a
+pointer and was followed as one); **v8 read and v8 followed.** No conflict rule fired and nothing was
+superseded — a single packet cannot disagree with a later one — and **nothing was skipped as already
+built.**
+
+- **THE FORTY-FIFTH BATCH LANDED, ON BOTH LIMBS, AND THIS IS THE FIRST LINE THAT CAN SAY SO.**
+  QR-5(a) routes the previous batch's push and deletion results forward, and the previous line closed
+  by stating it asserts nothing about either. **Both are now confirmed: `git fetch origin` then
+  `HEAD == origin/master == a5a95a9` — and `a5a95a9` IS the forty-fifth invocation's own commit, so
+  its push landed** — while `inbox/` held **only** the new Task 17 zip, the Task 16 packet gone, **so
+  its deletion ran as well.** **Nothing is carried forward.** *(The packet's §9 item 1 raised exactly
+  this as an open question and named the decisive check it could not run — a fetch or `git ls-remote`
+  from a networked session — having reached only "HEAD and `origin/master` agree locally and `inbox/`
+  is empty," which it correctly said was equally consistent with Michael's own hand. **It is closed
+  affirmatively, not carried.** Its §9 item 2 was already closed by Michael in-session and needed
+  nothing.)*
+- **STEP 0 GATE PASSED ON NAMED EVIDENCE (`QR-6(a)`).** `git fetch origin` then `git status
+  --short --branch` + `git rev-parse HEAD origin/master`: clean, on `master`, **0 ahead / 0 behind**.
+  Not behind, not diverged, **and not ahead** — the v7 ahead-stop had nothing to fire on. **The CRLF
+  false-DIRTY signature did NOT appear natively** (it is a bridge-mount artifact), and **no stale
+  `.git/index.lock` was present** — `git add` was never blocked, so nothing inside `.git/` was
+  touched or needed to be. **The §1 numbers were NOT carried in as a fetch**, per §6 item 2; the gate
+  was run natively and independently agreed with them.
+- **THE ALREADY-EXECUTED CHECK CAME BACK GENUINELY PENDING, AND THE DISTINCTION QR-5 ADDED WAS
+  CHECKED RATHER THAN ASSUMED.** `session-log-toc*` was absent from the working tree by recursive
+  search **and** absent from `git ls-files`; since HEAD is exactly `origin/master`, absent-at-HEAD is
+  also absent-from-origin — **so neither committed-and-pushed nor committed-but-unpushed**, which is
+  the pair that trapped the forty-second invocation. `session-log-toc` returned **ZERO** across
+  tracked files before the add.
+- **THE §4.1 DUPLICATE-INDEX BRANCH WAS CHECKED AND DID NOT FIRE.** All 88 files in `docs/specs/`
+  were listed and read for an earlier index, contents or TOC document **under any name**; there is
+  none. Had one existed the instruction was to **stop and tell Michael** rather than create a second
+  index, so the check was run before the file was written, not after.
+- **THE COPY WAS HASHED ON BOTH SIDES AND IS BYTE-IDENTICAL** — `sha256 0FDE562E…C1DE`, 52,994
+  bytes, matching the staged file exactly. **It was copied, never re-typed and never hand-edited**
+  (§6): the document regenerates, so a manual fix would be destroyed at the next pass and is a
+  finding for Michael instead.
+- **EVERY FIGURE THE INDEX STATES ABOUT ITS SOURCE SURVIVES INDEPENDENT RE-DERIVATION, INCLUDING THE
+  ONE THAT LOOKS LIKE A DISCREPANCY AND IS ACTUALLY A CORROBORATION.** Counted natively: `session-log.md`
+  carries **190 `## ` headings** against the index's **190 rows**; **842,825 bytes**; **9,188 raw /
+  7,996 non-blank lines** — all four exactly as stated. And a mechanical `(#nn)` sweep of the headings
+  returns **88, not the 89 the index claims** — **the difference is precisely the `#30` heading-shape
+  anomaly the index itself records** (`— #30` rather than `(#30)`), so the one figure that failed a
+  naive re-derivation is the one the document had already explained. **Two claims confirmed by a
+  single check.**
+- **NOTHING WAS TIDIED, WHICH WAS THE LARGEST PART OF THE §6 LIST.** No entry renumbered · **no `#1`
+  assigned or backfilled** · `#30`'s heading shape **not normalized** · the **five out-of-order dates
+  not resequenced** · the log not "corrected" from the index. `TOC-1` (whether `#1` is a lost label
+  or was never assigned) and `TOC-2` (the unexplained `runner 23` / `#65` ordering) are **Michael's
+  alone**, and the index is derived while the log is the record — where they disagree, the index is
+  wrong.
+- **THE QUEUE MERGE WAS TWO ACTS (`QR-6(b)`).** Five rows — **`TOC-1` … `TOC-5`, full question text
+  per QR-1** — plus the Status-header reconcile sentence. **`TOC-<n>` was collision-checked repo-wide
+  at HEAD and returned ZERO**; the IDs come from the packet's own §7 and are **packet-local, not
+  minted** — minting is Michael's act, so **ID-DL-1 now governs a TWELFTH packet.** The packet is
+  deleted after processing, so those five rows are the only place those questions survive.
+- **`TOC-5` IS THE ONE WITH A CONSEQUENCE THAT ARRIVES WITHOUT A RULING.** The index is ~53 KB and
+  lands in `docs/specs/`, **which is inside the sync selection** — so it will enter project knowledge
+  and spend context budget against the working-set policy, whose stated concern is exactly that.
+  **Flagged, not acted on:** whether it is excluded from sync and kept repo-only is Michael's, and
+  the argument for excluding it is that its value is to a session that can read the repo full-text
+  anyway. **No sync-picker change was made.**
+- **THE HEALTH CHECK WAS SKIPPED EXPLICITLY, NOT SILENTLY (`QR-6(f)`).** §5 is NONE and no `src/`,
+  `db/`, `supabase/` or build-tooling path was routed — `git status` shows `docs/` paths only — so
+  `npm test` / `build` / `lint` would prove nothing about this batch. The #68 measurement (278 tests,
+  23 files, build + lint clean) still stands unchallenged.
+- **THIS RUNNER LINE IS WRITTEN UNDER QR-5 LIMB (a): it asserts nothing about its own push or its
+  own deletion**, both of which happen after it is committed. Results go to Michael in-session; any
+  failure rides into the NEXT runner line.
+
+## 2026-08-16 (#91) — CHAT-DISPATCH TASK 17: the session-log table of contents — the log runs 190 entries under TWO numbering systems that no single reader was tracking, no entry anywhere carries `#1`, and five dates sit out of newest-first order (design session, Opus 5, Cowork)
+
+**One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 17** — a
+finding aid over `docs/specs/session-log.md`, one line per entry: `[# | date | type | one-line
+summary | corrections issued/received by #]`. It corrects nothing. Every entry stands as written.
+
+- **READ FULL-TEXT AT HEAD, NOT RAG — and the task is the reason.** Michael granted the repo
+  checkout through the device bridge at session start. Task 17 requires EVERY entry, and
+  `project_read` cannot open synced repo files at all: the log reaches a design session only as RAG
+  fragments. An index built from fragments is *silently* partial — it looks complete. The log at
+  HEAD `a5a95a9` is **842,825 bytes, 9,188 raw / 7,996 non-blank lines**, read in full.
+- **190 ENTRIES, AND THE ID SPACE IS TWO SYSTEMS, NOT ONE.** `#nn` design/Code entries run **#2–#90**
+  (89 entries). QUEUE-RUNNER lines are numbered separately by **invocation ordinal, 5–45** (41
+  entries). Neither series has a gap or a duplicate. The remaining 59 are the pre-numbering era plus
+  a micro-entry and a test packet. **Eight runner batches carry a `#nn` INSTEAD of an ordinal**
+  (#6, #7, #10, #14, #31, #33, #35, #36), and **one carries neither** (2026-07-28, headed `(RUNNER)`).
+  A reader who assumes one system will mis-file roughly a quarter of the log.
+- **NO ENTRY CARRIES `#1`.** The numbered series as written begins at `#2`. Whether `#1` was assigned
+  to the entry immediately older than `#2` and lost, or simply never used, is **not determinable from
+  the file**, so it is not guessed. `TOC-1`.
+- **FIVE DATES SIT OUT OF NEWEST-FIRST ORDER. TWO ARE ALREADY EXPLAINED BY THE LOG ITSELF; THREE ARE
+  NOT.** `#49`/`runner 11` is the DT-1 origin exhibit, formally corrected at `#50`, `#49` standing as
+  written. `#45`/`runner 8` the log explains in terms — a packet sat unprocessed four days; *entry
+  numbers follow processing order, dates follow authoring*. The two 2026-07-2x pairs sit in the
+  founding era. **`runner 23` (2026-08-12) above `#65` (2026-08-13) is unexplained anywhere in the
+  file** — recorded, not diagnosed, and no explanation invented. `TOC-2`.
+- **THE CORRECTIONS GRAPH IS THINNER THAN IT READS.** 67 correction edges recorded across the log.
+  **22 are self-corrections** — a session catching itself. Only **14 resolve to another log entry**.
+  The remaining 31 name a *document*, a *packet*, or an *unnamed prior claim* rather than a numbered
+  entry, so they cannot be followed from the log alone.
+- **METHOD, because a finding aid is only as good as its weakest row.** Each row was written from the
+  entry's own body — never from its heading alone, and never from inference. The `#` and `date`
+  columns were then **re-derived mechanically from the source headings and diffed** against the
+  transcribed values, and the *received* side of the corrections column was **generated by
+  reverse-indexing the *issued* side** rather than transcribed. That diff caught one real error: a
+  runner line had been labelled with the `#` of the entry beneath it. **Three rows are marked
+  PARTIAL** — entries stating no session type in heading or body. Where a model is not named, it is
+  omitted, not inferred from the routing conventions; `#44`'s own "Fable 5 **believed**" hedge is
+  carried through rather than resolved.
+- **NO SOURCE LINE NUMBERS, DELIBERATELY.** Entries are prepended, so every line number shifts on
+  every append; a line-anchored index is wrong the day after it is built.
+- **PROPOSED, both parts.** Canonical path `docs/specs/session-log-toc.md` — **stable and
+  unversioned**, because the doc **regenerates rather than appends** and a dated filename would
+  accumulate stale copies of a finding aid. Michael has not ruled either. `TOC-3`, `TOC-4`.
+
+**Staged for Code:** `docs/specs/session-log-toc.md` (new file, or full replacement if present).
+
+**Awaiting/Returned from Code, unreviewed:** none.
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FORTY-FIFTH invocation) — the allowlist entry is proven, the stale lock finally has an observed cause, and a header sentence claims an annotation that was never written
 
 **One packet, one staged file, docs only, nothing built (§5 NONE).** CHAT-DISPATCH **Task 16** — the
