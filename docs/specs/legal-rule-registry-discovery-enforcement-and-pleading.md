@@ -1,6 +1,6 @@
 # Legal Rule Registry — Discovery Enforcement, Declaratory Judgment, Venue and Pleading
 
-**Status: ALL THIRTY ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under CLAUDE.md's registry discipline these propositions may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
+**Status: ALL THIRTY-THREE ENTRIES UNVERIFIED.** Nothing in this file has attorney sign-off. Under CLAUDE.md's registry discipline these propositions may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.**
 
 **Filed 2026-08-12 (queue-runner, twentieth invocation).** Entries come from the two REQ-CAPTUREs reconciled that day: `REQ-CAPTURE_deficiency-handling_2026-08-11.md` §4 (enforcement of propounded written discovery — twenty-two entries) and `REQ-CAPTURE_uim-udja-petition-transform_2026-08-12.md` §4 (declaratory-judgment vehicle, fees, venue, and the pleading relief bracket — five entries). Both captures state their own propositions as unverified; that status is carried, not re-derived.
 
@@ -180,26 +180,67 @@
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED.**
 **Relied on for:** rebutting work-product objections to contention discovery.
 
-## Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009); Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995)
+## Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009)
 
-**Cite:** Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009); Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995).
+**Cite:** Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009).
 **Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's claim.
-**Status:** UNVERIFIED. *(Two cases, one proposition — kept as one entry because the capture relies on them jointly. Split on Michael's word if he prefers one entry per case.)*
+**Status:** UNVERIFIED.
 **Relied on for:** the motion to compel's framing of the central deficiencies.
+**Split note:** **entry 19a**, from former joint entry 19, split one entry per case on Michael's ruling 2026-08-13 (#73, V-5) and executed 2026-08-16. The co-authority *Able Supply Co. v. Moye*, 898 S.W.2d 766 (Tex. 1995), is now **entry 19b** — **cross-referenced, never merged.** The proposition, cite and reliance line are carried verbatim from the joint entry; nothing was re-researched.
+**ATTRIBUTION QUESTION — CARRIED, NOT ANSWERED BY THE SPLIT.** The joint entry never recorded which case supplied which half of the proposition, so both entries carry it whole. Resolving the attribution is part of verification. **On this entry the question is sharper, because there is a separate opinion:** the majority is FLP **opinion 9513075, type `020lead`, Johnson, J.** (cluster 895102, Tex. Sup. Ct. No. 06-0875, filed 2009-04-03, Published), and **a CONCURRENCE exists — opinion 9513076, Wainwright, J.** One read of 9513075 confirms the proposition is the majority's. Source: `registry-citator-pass-2026-08-13.md` §2.1; `registry-verification-workbook-2026-08-13.md` §4 case table.
+**Retrieval hazard — majority-opinion rule applies.** The cluster also holds a `010combined` record whose id (895102) **collides with the cluster id**, so a retrieval on the cluster id lands on the combined text rather than the lead. Never characterize from a cluster id; enumerate `sub_opinions` and identify the majority positively.
 
-## In re Alford Chevrolet-Geo, 997 S.W.2d 173 (Tex. 1999); Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017)
+## Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995)
 
-**Cite:** In re Alford Chevrolet-Geo, 997 S.W.2d 173 (Tex. 1999); Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017).
+**Cite:** Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995).
+**Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's claim.
+**Status:** UNVERIFIED.
+**Relied on for:** the motion to compel's framing of the central deficiencies.
+**Split note:** **entry 19b**, from former joint entry 19, per #73 (V-5), executed 2026-08-16. The co-authority *Ford Motor Co. v. Castillo*, 279 S.W.3d 656 (Tex. 2009), is now **entry 19a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
+**ATTRIBUTION QUESTION — CARRIED.** Same as 19a: the joint entry did not record which case supplied which half.
+**NO LOOK NEEDED to resolve cite or majority — and this is one of the three entries the split frees.** Clean single-opinion reported Supreme Court authority: FLP cluster 2432526, opinion 2432526, type `010combined`, Owen, J., Tex. Sup. Ct. No. 95-0048, filed 1995-06-08, Published, **no separate opinions** (`registry-citator-pass-2026-08-13.md` §2.2). It no longer waits on a co-authority to verify.
+
+## In re Alford Chevrolet-Geo, 997 S.W.2d 173 (Tex. 1999)
+
+**Cite:** In re Alford Chevrolet-Geo, 997 S.W.2d 173 (Tex. 1999).
 **Proposition.** A party resisting discovery must produce evidence supporting its objections, not conclusory allegations.
-**Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED on Collins** (Westlaw cite). *(Two cases, one proposition — same note as above.)*
+**Status:** UNVERIFIED.
 **Relied on for:** the evidence-burden argument against the objection set.
+**Split note:** **entry 20a**, from former joint entry 20, per #73 (V-5), executed 2026-08-16. The co-authority *Collins v. Kappa Sigma Fraternity*, 2017 WL 218286 (Tex. App.—Fort Worth 2017), is now **entry 20b** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
+**THIS IS THE CASE THAT DECIDED V-5.** A 1999 Texas Supreme Court authority was hostage to a 2017 memorandum opinion that is not in FLP, not on the public web, and may never be retrieved — a joint entry verifies at the speed of its slowest case. Split, this entry verifies on its own.
+**DUPLICATE-RECORD FLAG — a retrieval hazard, not a currency finding.** FLP holds **two clusters carrying the same reporter cite**: **2419858** (filed 1999-08-26, single `010combined`, citation_count 207 — treated as operative) and **5269700**, "In re Chevroletgeo" (filed 1999-06-10, two sub-opinions 5097124/5097125, citation_count 3), same docket 97-1171. **A lookup landing on 5269700 reports three citing references instead of 207 and reads as a dead authority.** The June 10 record is most likely the original opinion superseded on rehearing, **but that characterization is inference and is not asserted — no opinion text was read.** One look, and it is a **records** look, not a law look (`registry-citator-pass-2026-08-13.md` §2.3).
+**ATTRIBUTION QUESTION — CARRIED.** The joint entry did not record which case supplied which half.
 
-## In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding); Peeples v. Fourth Supreme Judicial Dist., 701 S.W.2d 635 (Tex. 1985)
+## Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017)
 
-**Cite:** In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding); Peeples v. Fourth Supreme Judicial Dist., 701 S.W.2d 635 (Tex. 1985).
+**Cite:** Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017).
+**Proposition.** A party resisting discovery must produce evidence supporting its objections, not conclusory allegations.
+**Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** (Westlaw cite) — **carried unchanged.**
+**Relied on for:** the evidence-burden argument against the objection set.
+**Split note:** **entry 20b**, from former joint entry 20, per #73 (V-5), executed 2026-08-16. The co-authority *In re Alford Chevrolet-Geo* is now **entry 20a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
+**NOT LOCATED — retrieval is the whole task on this entry.** Absent from FLP and from the public web at #65 and again at the 2026-08-13 citator pass; no citing graph and no treatment posture exist for it (`registry-citator-pass-2026-08-13.md` §3). **Beware the 2010 sibling appeal in the same litigation, No. 02-09-00305-CV** — it is not this opinion. **This is the authority that was holding entry 20a hostage; after the split it holds only itself.**
+**ATTRIBUTION QUESTION — CARRIED.**
+
+## In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding)
+
+**Cite:** In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding).
 **Proposition.** Merely listing a privilege proves nothing; the burden rests on the party asserting it.
-**Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED on Redman** (Westlaw cite). *(Two cases, one proposition — same note as above.)*
+**Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** (Westlaw cite) — **carried unchanged.** Note beside it, not in place of it: the citator pass records this as a **memorandum opinion**, on which its reading is that the **WL cite is permanent**. Whether that resolves the flag or merely explains it is Michael's call at verification; the flag was not removed.
 **Relied on for:** the PRIV category of the DE-1 taxonomy.
+**Split note:** **entry 21a**, from former joint entry 21, per #73 (V-5), executed 2026-08-16. The co-authority *Peeples v. Fourth Supreme Judicial Dist.*, 701 S.W.2d 635 (Tex. 1985), is now **entry 21b** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
+**CONFIRMATION LOOK, ONE CLICK:** the substantive opinion is **FLP opinion 9890720, October 11, 2023** — **not** the October 18 mootness dismissal. A reported companion for the same proposition already sits in this file: *In re Park Cities Bank*, 409 S.W.3d 859, **at 868** (`registry-citator-pass-2026-08-13.md` §3 and §2.6).
+**ATTRIBUTION QUESTION — CARRIED.**
+
+## Peeples v. Fourth Supreme Judicial Dist., 701 S.W.2d 635 (Tex. 1985)
+
+**Cite:** Peeples v. Fourth Supreme Judicial Dist., 701 S.W.2d 635 (Tex. 1985).
+**Proposition.** Merely listing a privilege proves nothing; the burden rests on the party asserting it.
+**Status:** UNVERIFIED.
+**Relied on for:** the PRIV category of the DE-1 taxonomy.
+**Split note:** **entry 21b**, from former joint entry 21, per #73 (V-5), executed 2026-08-16. The co-authority *In re Redman* is now **entry 21a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
+**NO LOOK NEEDED to resolve cite or majority — the third entry the split frees.** FLP cluster 2436879, opinion 2436879, type `010combined`, Wallace, J., Tex. Sup. Ct. No. C-4010, filed 1985-10-16, Published, **no separate opinions** (`registry-citator-pass-2026-08-13.md` §2.4).
+**ONE FLAG CARRIED FROM THE CITATOR PASS, RECORDED RATHER THAN SUPPRESSED.** Unlike the other reported authorities in this file, *Peeples*' citing traffic in FLP tops out around **2020** rather than 2025–2026. **That is a flag, not a finding:** it is at least as likely to reflect FLP's citation-graph coverage as any decline in the case's authority, and a 1985 foundational privilege case being cited less often in the 2020s is unremarkable. Recorded because a quiet period is exactly the pattern a currency check exists to notice.
+**ATTRIBUTION QUESTION — CARRIED.**
 
 ## Dillard Department Stores v. Hall, 909 S.W.2d 491 (Tex. 1995)
 
@@ -208,12 +249,17 @@
 **Status:** UNVERIFIED.
 **Relied on for:** the anticipated-response section of the motion. **Entered as opposing authority; nothing in the registry takes sides.**
 
-## Tex. Civ. Prac. & Rem. Code § 37.001 et seq. — the declaratory-judgment vehicle
+## Tex. Civ. Prac. & Rem. Code ch. 37 — the Uniform Declaratory Judgments Act: what the statute provides
 
 **Cite:** Tex. Civ. Prac. & Rem. Code § 37.001 et seq. (Uniform Declaratory Judgments Act).
-**Rule.** The UDJA is available as the vehicle for establishing an insured's UIM-coverage prerequisites against the insured's own carrier.
+**Rule.** A court of record within its jurisdiction has power to declare rights, status, and other legal relations **whether or not further relief is or could be claimed**, and an action is not open to objection on the ground that a declaratory judgment is prayed for (§ 37.003(a)). A person **whose rights, status, or other legal relations are affected by a statute … or contract** may have determined any question of construction or validity arising under it and obtain a declaration of rights, status, or other legal relations thereunder (§ 37.004(a)). The chapter is **remedial**, its purpose being to settle and to afford relief from uncertainty and insecurity with respect to rights, status, and other legal relations, and **it is to be liberally construed and administered** (§ 37.002(b)).
+**Operative text, spot-checked against raw extraction:** § 37.003(a) — "A court of record within its jurisdiction has power to declare rights, status, and other legal relations whether or not further relief is or could be claimed. An action or proceeding is not open to objection on the ground that a declaratory judgment or decree is prayed for." § 37.004(a) — "A person interested under a deed, will, written contract, or other writings constituting a contract or whose rights, status, or other legal relations are affected by a statute, municipal ordinance, contract, or franchise may have determined any question of construction or validity arising under the instrument, statute, ordinance, contract, or franchise and obtain a declaration of rights, status, or other legal relations thereunder." § 37.002(b) — "This chapter is remedial; its purpose is to settle and to afford relief from uncertainty and insecurity with respect to rights, status, and other legal relations; and it is to be liberally construed and administered."
 **Status:** UNVERIFIED.
-**Relied on for:** the cause of action in the drafted UIM/UDJA original petition; the declarations block's typed declarations (liability, damages-compensability, coverage-fit, limits, damages-by-category, offset-excess, amount-with-fees).
+**Relied on for:** the **statutory basis** of the cause of action in the drafted UIM/UDJA original petition, and the statutory power behind the declarations block's typed declarations (liability, damages-compensability, coverage-fit, limits, damages-by-category, offset-excess, amount-with-fees). **It does NOT carry the availability holding** — that the UDJA is a proper vehicle for a UIM-benefit determination against the insured's own carrier is *Irwin*'s, and lives on the **Allstate Ins. Co. v. Irwin** entry (entry 24) immediately below, **cross-referenced, not merged.**
+**Narrowing note:** narrowed 2026-08-16 per V-7 (#73) from the entry as filed, which read: *"The UDJA is available as the vehicle for establishing an insured's UIM-coverage prerequisites against the insured's own carrier,"* cited to "§ 37.001 et seq." **Nothing in ch. 37 addresses UIM coverage prerequisites, and § 37.001 is a definition of "person" and nothing else.** Consistent with V-4 and V-5, ruled the same hour: separate entries, cross-referenced, never a joint statute-plus-case proposition.
+**COST OF THE NARROWING, STATED AND ACCEPTED AT #73:** the availability proposition now waits on **the least verifiable entry in the backlog.** *Irwin* has **no reporter cite in FLP and two clusters**, and it is the case that opened **V-9** — the class in which CLAUDE.md's binding majority-opinion rule **cannot run**, since the record offers neither an opinion-type marker nor authoring language. Splitting the proposition off this statute entry does not make *Irwin* easier; it makes the statutory half verifiable now.
+**Source:** official Texas statute corpus, `Documents\Knowledge Repo\Statutes 26-08-14\CP.pdf.zip` → `cp.37.pdf` (corpus download date **2026-08-14**; corpus currency per the source's own statement, **89th 2nd Called Session, 2025**). Retrieval RUN 2026-08-14 (`statute-pass-registry-retrieval-2026-08-14.md` §5) and re-extracted 2026-08-16: raw `pdftotext -layout` in the device VM's own home directory, §3 characterized normalizer applied, **residual glued `AA` = 0**. All three sections carry Acts 1985, 69th Leg., ch. 959, § 1, eff. Sept. 1, 1985 in the corpus text.
+**Wording:** adopted 2026-08-16 per #96 (V-7, ruled #73); verification attaches to this wording.
 
 ## Allstate Ins. Co. v. Irwin, 627 S.W.3d 263 (Tex. 2021)
 
@@ -222,6 +268,7 @@
 **Status:** UNVERIFIED. **Corroboration is not verification, and the distinction is on the record:** the capture reports that the case name, docket, and decision date were corroborated against a public docket source during the drafting session, **but the reporter citation itself remains unverified.** Under CLAUDE.md that corroboration is a **flag, never a verification**.
 **Note:** this case already appears in `pi-case-playbooks.md` A9 as prose (UDJA route, Brainard/Nicastro context). **Playbook prose is not the registry** — this entry is its first registry home, and it enters unverified.
 **Majority-opinion rule applies** if this is ever pulled from CourtListener: enumerate `sub_opinions` and identify the majority positively; never characterize from a cluster id.
+**Cross-reference:** the statutory power this holding operates on is the ch. 37 entry immediately above (§§ 37.002(b), 37.003(a), 37.004(a)), narrowed 2026-08-16 per V-7 (#73). **This entry is the availability holding; that entry is the statute. Cross-referenced, never merged.**
 
 ## Tex. Civ. Prac. & Rem. Code § 37.009 — fees in declaratory-judgment actions
 

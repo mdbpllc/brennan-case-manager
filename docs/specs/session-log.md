@@ -12,6 +12,119 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FIRST invocation) — the batch that ran a multi-agent preflight before touching a file, found a rewritten citation flag inside an act ruled to be a verbatim split, and executed V-5, V-6 and V-7 under eleven separate rulings
+
+**One packet, executed in full under runner v10.** **Packet:** `push-to-code_v5-v6-v7-wording-execution_2026-08-16.zip`, identity pinned at Step 1 per QR-6(c) — **36,976 bytes, mtime `2026-08-16 23:21:43 −0500`, sha256 `095a92e5cecf79c9e0b52af8984842331b8729c60ba1a157ded7ff1a47a52335`**. Order was trivial and the filename-date and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.** **The batch opened 2026-08-16 and closed after midnight Central** — see the date note below.
+
+- **Step 0 gate passed on live evidence, and it answers the question the packet asked.** `git fetch origin`, then `git status --porcelain` (empty), `git rev-parse --abbrev-ref HEAD` (`master`) and `git rev-parse HEAD` against **`git ls-remote origin master`** — the live remote read QR-6(a) demands, not the tracking ref: **HEAD == `origin/master` == `260dc77`**, 0 ahead / 0 behind. The packet's §1 recorded its own `0 0` as a local-only read and `git ls-remote` failing with **HTTP 403 from the design VM** for the fourth consecutive session (#93/#94/#95/#96); **this is the confirmation it asked for — `260dc77` is on origin.**
+- **QR-5 already-executed check: NOT EXECUTED, on four checks each capable of disconfirming — and NOT "committed but unpushed" either**, since HEAD is on origin and none of the artifacts existed at HEAD. The `Castillo; Able Supply` joint entry still matched; the civil header still read **ALL THIRTY ENTRIES UNVERIFIED**; `registry-v5-v6-v7-wording-execution-2026-08-16.md` did not exist; `(#96)` returned **0** in the log, with high-water **#95** by `## ` heading, so **#96 needed no renumber.**
+- **A MULTI-AGENT READ-ONLY PREFLIGHT RAN BEFORE ANY FILE WAS TOUCHED — Michael's instruction mid-batch ("run it on ultracode"), and a first for this queue.** Six independent auditors plus a cross-checking synthesis, all forbidden to write, each required to name a command capable of disconfirming. **It earned its cost: it found the RANK-1 defect below, which the packet did not catch and which a straight execution would have committed.** It also produced the counts the BUILD-STATE rewrite used and the DO-NOT checklist the batch ran against. **Its findings were not taken on faith** — the runner re-ran the material ones, and **rejected one**: staged 20a's `citation_count 207` was called a hardening of the citator pass's preserved `168 / 187 / 207` range, but the pass records that named API field as **207** at its own §1, so the staged text is precise and was left alone.
+- **ELEVEN ITEMS WERE PUT TO MICHAEL AT THE STEP 1 STOP AND ALL ELEVEN WERE RULED**, one at a time per ROUTE-C, never as a package. Adopted: **V6-33**, **V6-33-HEAD**, **V6-34**, **V6-34-HEAD**, **V6-34-CITE**, **V7-23**, **V7-23-HEAD**, **V7-24-XREF**, plus the batch itself and the two runner-found items below. **Rejected: `V7-23-CITE`** — entry 23's cite **stays `§ 37.001 et seq.`** No open row was entered for it: it is **ruled, not awaiting a ruling.** The heading moved and the cite did not, which is **not** the entry-27 shape — `§ 37.001 et seq.` *is* ch. 37, so heading and cite agree.
+- **V-5 EXECUTED MECHANICALLY RATHER THAN BY TRANSCRIPTION, which is what made the verbatim-carry rule checkable.** The six replacement blocks were lifted byte-for-byte from the staged record by script, the three joint entries were confirmed present verbatim before replacement, and the splice was asserted at every boundary. **Result: 30 → 33 `##` entries, six REPORTER-CITE flags before and after, zero code fences and zero `#### Entry` labels leaked** — the fence-stripping the packet never specified. Propositions, cites and reliance lines carried verbatim; nothing re-researched.
+- **ONE RULED DEVIATION FROM THE STAGED TEXT, and it is the reason the preflight ran.** Staged **20b** did not carry its citation flag — it **reworded** it (`(Westlaw cite)` → "carried at a Westlaw cite"), **imported a sentence from the file's own header** into an entry body, and did so **inconsistently with 21a in the same batch**, which preserved the house form. **Michael ruled: conform 20b to 21a.** The entry now reads `**Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** (Westlaw cite) — **carried unchanged.**` **The staged drafting record was NOT rewritten** — it is the drafting record; the deviation is annotated at its §4.2.
+- **THE THREE JOINT ENTRIES' `*(Two cases, one proposition…)*` PARENTHETICALS ARE GONE, and that is stated rather than smoothed.** No packet section routed the drop. It is unavoidable — entry 19's version reads *"kept as one entry because the capture relies on them jointly. Split on Michael's word if he prefers one entry per case"*, which the split makes false in both halves — but it was **the in-file provenance of the V-5 ruling itself**, and it now exists only in git history and here.
+- **TASK-19 HAD NO ROW TO ANNOTATE — the third consecutive batch with a directed act that had no target.** `grep` for `TASK-19` in the queue returned **nothing**; the ID appeared only inside other rows' bodies, and the packet used it for two different subjects (§4.5 the sign-off gate, §7 the CHAT-DISPATCH resume point). **Nothing was invented.** Michael ruled it **entered as its own row** — the `READ-A` disposition from one batch earlier — which matters because the gate sentence lived inside `V-EXEC`, and `V-EXEC` closed this batch. **The gate is now OPEN and the row says so.**
+- **QUEUE: two rows CLOSED, three ENTERED, two ANNOTATED, and the header's second act performed.** Closed: **`V-EXEC`** (all three landed) and the **v21 paste row** — the latter **on the design side's own observation, attributed as such**, since a Code session cannot read the project-instructions field. Entered with full text per QR-1: **`V5-IDS`**, **`V5-ATTRIB`**, **`TASK-19`**. Annotated add-only: **`V-EXEC`**'s stale `34 → 37` (`V5-COUNT`; correct figure **37 → 40**, the row's own words left standing) and **`Q-STAT-6`** (`V-Q-STAT-6`; entries 23/33/34 now resolve at verification of the new text — **a flag, never a closure**). Per QR-6(b) the Status header's **"Reconciled again to session-log #96"** sentence was written as the merge's second act. **#92 and #93 remain missing theirs — still reported, not back-written, per the #90 precedent.**
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path was routed** — every file this batch touched is under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would have proven nothing about it. The last measured figures stand from #94 (278 tests, 23 files, build and lint clean).
+- **RUNNER-FOUND AND DELIBERATELY NOT ACTED ON (QR-6(e) — no routing row, so they need Michael's word).** (1) **`V5-COUNT` is under-scoped by at least four sites**: the packet routed one, but the **`V-5` row** itself still reads *"BACKLOG 34 → 37 WHEN EXECUTED — it is still 34 in the files today"* (both halves already false at HEAD), and `READ-A`, `Q-FE5-7` and `Q-STAT-2` each carry a present-tense 34. The record still carries two figures, which is the outcome the packet's own aim was to avoid. (2) **`registry-verification-workbook-2026-08-13.md` — the numbering authority `V5-IDS` rests on — is absent from the packet entirely**, is in no routing row, and its rows 19/20/21 still describe one proposition against two cases; it will read as stale from the moment this batch lands. It also **already records the entry-19 attribution problem** that `V5-ATTRIB` re-raises. (3) **`Q-STAT-6`'s "fourteen" may already be stale by one** — its eighteen include entry 1, adopted at #95.
+- **DATE BOUNDARY, stated because a date was changed.** The batch opened 2026-08-16 and Michael's later rulings and the whole execution fell after midnight Central. **The packet's routed literals keep their `2026-08-16` stamp** — the three `**Wording:** adopted 2026-08-16 per #96` lines and the #96 entry's own date — because they are quoted text and the adoption session opened that day. **One routed literal was changed: the queue's reconcile sentence reads `on 2026-08-17`, not the packet's `on 2026-08-16`, because it states when the act happened.** The deviation is recorded in the sentence itself.
+- **OPEN ITEMS carried to Michael (§7 merged into the review queue with full text).** New and his: **`V5-IDS`** (one word, reversible — and the #66 precedent supports the naming, not the file shape, so the two registry files are now shaped differently), **`V5-ATTRIB`** (carried onto all six split entries), **`TASK-19`** (gate OPEN, sign-off is his alone). Runner-found, above and on his hand list: the four stale-34 sites, the unannotated workbook, and `Q-STAT-6`'s fourteen. Carried untouched: **`READ-A`**, **`REGISTRY-V`**, **`MIGRATION`**, **`EXTRACT`**, **`OPEN-5(b)`** and the **`AUD-5..9`** one-word apply, **`Q-COM-10`**, **`Q-COM-12`**, **`Q-WF-4`**, the 192.5 consolidation question, **the TRCP 47 heading** (still one word, still his), `Q-STAT-2` – `Q-STAT-5`, and **`V-9`**.
+- **Nothing set to verified. No Status line moved. No entry added or removed beyond the V-5 split. No entry renumbered. No pair merged back. No REPORTER-CITE flag removed. `statute-pass-registry-retrieval-2026-08-14.md` §9, the fourteen non-material divergences, `READ-A`'s deferred scope, `legal-rule-registry-discovery-and-carrier-duties.md`, `legal-rule-registry-draft-entries-medical-billing.md`, `Go_Live_Gates.md`, every REQ-CAPTURE and the drafting-disclosures skill were NOT touched. The session capture was NOT committed — project knowledge only. No `src/` was read or written.**
+
+## 2026-08-16 (#96) — V-EXEC EXECUTED IN PART: the three two-case entries are SPLIT (V-5, backlog
+37 → 40), and V-6 and V-7 are DRAFTED AND PUT, not adopted — with four implied heading-and-cite
+changes each flagged as its own act rather than repeating the entry-27 divergence (design session,
+Opus 5, Cowork, device bridge)
+
+**Execution session per §7.2 — this session adjudicated nothing.** Session start: bridge granted (two
+folders, one dialog — the checkout and `Documents\Knowledge Repo`; HK-7's seventeenth annotation, and
+the second folder was SPENT on raw statute extraction for V-6 and V-7). BUILD-STATE read IN FULL at
+local HEAD `260dc77`, top log entries and runner v10 text read at HEAD; `git rev-parse` only through
+the bridge — `git status` deliberately not run there. `inbox/` verified EMPTY, which is evidence the
+fiftieth invocation's close-out ran **past Step 4 item 4** (the delete is item 5) and is **not**
+evidence about origin. **`git ls-remote` again returned HTTP 403 from the design VM**, so nothing
+here asserts that any commit is on origin.
+
+- **THE INSTRUCTIONS ARE v21, BY OBSERVATION — THE #82/A-1 MECHANISM, FOURTH CONSECUTIVE USE.** This
+  running session read its own live instructions field: **v21, 2026-08-16, carrying ROUTE-C as a
+  standing convention and the #95 header.** BUILD-STATE said in terms that it *"asserts nothing about
+  whether it happened"* — it happened. **The `v21-PASTE` queue row closes on the observation, not on
+  recall.**
+- **THE TEN-ENTRY LIST RECONCILED BEFORE ANY DRAFTING, and it balances exactly.** #93's ten =
+  V-5 (19, 20, 21) + V-6 (33, 34) + V-7 (23) + route (c)'s §9 four (5, 6, 11, 27). #95 adopted six —
+  **four of the ten plus entries 1 and 3, which were never among them** — leaving exactly the six
+  entries this session was sent for. **Verified by direct read at HEAD, not inferred:** six `Wording:`
+  lines present on the right six entries; 19/20/21 still joint; 23 still doctrinal; 33/34 still
+  "(instrument family observed in plea paperwork)".
+- **V-5 EXECUTED — three joint entries became six, cross-referenced, never merged. Backlog 37 → 40;
+  the civil file's header 30 → 33.** Propositions, cites and reliance lines were **carried verbatim**;
+  nothing was re-researched, which is what #73 meant by a split. **The split frees Able Supply, Alford
+  and Peeples** — each now verifies without waiting on a co-authority, which was the citator pass's
+  decisive argument and #73's stated reason.
+- **AND THE SPLIT'S ID SCHEME WAS A PACKET-ADDED CHOICE, ROUTED RATHER THAN ASSUMED (`V5-IDS`).**
+  #73 ruled the split and named no ID scheme. Derived IDs — **19a/19b, 20a/20b, 21a/21b** — were
+  executed on the file family's own precedent, the #66 split of the criminal file's former entry 4
+  into 4a and 4b. **The reason is not tidiness: entry numbering is the workbook's and is not
+  positional in the registry files** (#94's three work-product entries went in by subject order and
+  #95 still executed correctly against "entries 1, 3, 5, 6, 11, 27"), **so renumbering 19–24 would
+  have silently changed what "entry 23", "entry 27", "entries 1–3" and `Q-STAT-6`'s eighteen-entry
+  list refer to across the log, BUILD-STATE, the queue and three research files.** One word reverses
+  it.
+- **THE ATTRIBUTION DEFECT WAS CARRIED, NOT GUESSED AT (`V5-ATTRIB`).** None of the three joint
+  entries recorded which case supplied which half of its proposition, and neither the workbook nor
+  the citator pass grounds it — so **each pair's two entries carry the whole proposition as filed**
+  and the question rides onto all six, resolved at verification. #73's own instruction. **On 19a
+  there is a second, independent look:** *Castillo* carries a Wainwright **concurrence** (FLP opinion
+  9513076) beside the Johnson lead (9513075, `020lead`), plus the cluster-id collision the
+  majority-opinion rule exists for.
+- **V-6 AND V-7 WERE DRAFTED AND PUT — ADOPTED BY NOBODY, EACH ENTRY INDEPENDENTLY, PER ROUTE-C.**
+  Entry 33 (art. 42.0197) gains the article's operative test: **on the State's motion**, the judge
+  **shall** make and enter the finding **if** the judge determines the conduct was gang-related as
+  defined by Penal Code § 71.01 — a rule with a trigger, a mandatory consequence and an incorporated
+  definition, against an entry that said only that an instrument family exists. Entry 34 (art. 27.18)
+  states **all three conjunctive conditions** where the entry as filed named one. Entry 23 (CPRC
+  ch. 37) states what the statute provides — **§ 37.003(a) power, § 37.004(a) subject matter,
+  § 37.002(b) remedial construction** — and hands the UIM-availability holding to the *Irwin* entry,
+  cross-referenced.
+- **SIX IMPLIED ACTS, EACH FLAGGED AS ITS OWN, AND THE REASON IS IN THIS
+  SAME FILE.** `V6-33-HEAD` (the article's own title is *"FINDING REGARDING GANG-RELATED CONDUCT"*,
+  not *"affirmative criminal-street-gang finding"*), `V6-34-HEAD` and `V6-34-CITE` (art. 27.18 →
+  27.18(a)), `V7-23-HEAD` and `V7-23-CITE` (`§ 37.001 et seq.` → `§§ 37.002(b), 37.003(a),
+  37.004(a)`), plus `V7-24-XREF`, a single added line on a **different** entry. **Entry 27's heading
+  still reads `TRCP 47(b)–(c)` against a cite reading `47(b), (c), (d)` precisely because the #95
+  packet moved the cite and said nothing about the heading** — this packet declines to repeat that,
+  and routes every one of them.
+- **ONE CONSTRUCTION POINT FLAGGED RATHER THAN RESOLVED.** Art. 27.18 reads *"may accept … **if**"*;
+  the statute pass characterized it as *"only if all three."* **The proposed wording states the
+  conditions conjunctively — which the "and" supports — and deliberately does not write "only if,"
+  because the article does not.** Whether they are exclusive is a construction question and Michael's.
+- **A STALE FIGURE IN A LIVE QUEUE ROW, FLAGGED NOT CORRECTED (`V5-COUNT`).** The `V-EXEC` row says
+  *"When V-5 executes the backlog goes 34 → 37."* That is #73's figure; the forty-ninth invocation's
+  three work-product entries already spent it. **The correct figure is 37 → 40, which is what
+  BUILD-STATE and the #95 entry both say.**
+- **SOURCING, per item.** All statute text from the official corpus,
+  `Documents\Knowledge Repo\Statutes 26-08-14\` (**download date 2026-08-14**) — `cp.37.pdf`,
+  `cr.27.pdf`, `cr.42.pdf`. **Currency is the source's own statement, 89th 2nd C.S. (2025); the
+  amendment histories recorded are corroboration, never the figure.** Extraction ran in the **device
+  VM's own home directory, not a mounted path** — the preferred method found 2026-08-16 — so **this
+  session left no scratch in any connected folder**; `_claude_extract\` was verified still present and
+  left untouched. The §3 **characterized** normalizer was applied, **residual glued `AA` = 0 on all
+  three chapters**, and **every quotation was spot-checked individually against raw extraction**.
+- **Nothing set to verified. No status line moved. No entry added or removed beyond the V-5 split.
+  `statute-pass-registry-retrieval-2026-08-14.md` §9 was NOT touched; the fourteen non-material
+  divergences were NOT resolved; `READ-A`'s deferred scope was NOT reopened;
+  `legal-rule-registry-discovery-and-carrier-duties.md`, `legal-rule-registry-draft-entries-medical-billing.md`,
+  `Go_Live_Gates.md`, every REQ-CAPTURE and the drafting-disclosures skill were NOT touched. No `src/`
+  was read. The entry-27 heading item remains Michael's one word.**
+
+Staged for Code: this entry; `registry-v5-v6-v7-wording-execution-2026-08-16.md` (NEW); the V-5 split
+executed in `legal-rule-registry-discovery-enforcement-and-pleading.md` with its count header 30 → 33;
+the conditional V-6/V-7 edits, performed only as Michael authorizes them item by item; the queue merge
+(rows plus the Status-header reconcile sentence); BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: recomputed from the log at HEAD per A-4 — the carried
+#31–#33 material, #37–#61's own routing, and **#75 through #96** together with the runner lines
+interleaved among them — plus this batch's own handback.
+
 ## 2026-08-16 — QUEUE-RUNNER batch (runner line; FIFTIETH invocation) — the batch that executed six registry wordings under the route it was simultaneously making standing law, and found that three of the packet's four directed closures had no row to close
 
 **One packet, executed in full under runner v9 and closing as v10** (the §4.3 amendment is itself one of this batch's acts). **Packet:** `push-to-code_wording-adjudication-rulings_2026-08-16.zip`, identity pinned at Step 1 per QR-6(c) — **11,579 bytes, mtime `2026-08-16 22:32:27`, sha256 `06baf7e0…`**. Order was trivial and the filename and pure-mtime orders agreed. **Nothing was superseded** (single packet, so the conflict rule never fired) and **nothing was skipped as already built.**
