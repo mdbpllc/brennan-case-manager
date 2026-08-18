@@ -16,6 +16,251 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-SIXTH invocation) — the docs-only batch that landed five research documents untouched, entered twenty-six questions, and caught the DT-1 drift on its own side of the wire before it could stamp anything
+
+**One packet, executed in full under runner v11.** **Packet:** `push-to-code_chat-dispatch-v4-chain_2026-08-17.zip`, identity pinned at Step 1 per QR-6(c) — **57,055 bytes, mtime `2026-08-17 22:38:48 −0500`, sha256 `5d55f2ca1817878c1e9d77816a476fab998e1d6ed0daae384e98a780fcf9b83a`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built. §5 is NONE, and nothing was built.**
+
+- **THE DATE ON THIS LINE WAS COMPUTED, NOT READ OFF `date` — AND HAD IT BEEN READ OFF `date` IT WOULD HAVE BEEN WRONG.** This session's Bash shell reports **GMT** and **silently ignores `TZ`**: `TZ=America/Chicago date` returned **`2026-08-18 03:45 GMT`**, identical to `date -u`. The machine's actual wall clock, read through PowerShell — `Get-Date -Format "yyyy-MM-dd HH:mm:ss K"` → **`2026-08-17 22:45:33 −05:00`**, `[System.TimeZoneInfo]::Local.Id` → **`Central Standard Time`** — is **2026-08-17**. **So this runner line is dated 2026-08-17**, and a bare `date` here would have stamped it 2026-08-18: the exact forward drift `#101` rules on, one batch later, on the OTHER side of the wire. **The fifty-fifth invocation's native `date` read (`2026-08-17 21:37 CDT`) came from a shell that carried the zone; this one does not** — which is the part worth keeping, because it means the DT-1 check's reliability depends on WHICH SHELL runs it, and a Code session that trusts `date` is not safe merely by being local. **Consequence, and it is the one T-32 was for: this runner line and both entries below now agree at 2026-08-17, so this batch adds NO `TOC-2` inversion** — the class the fifty-fifth had to explain does not arise.
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin master`** — the live remote read, not the local tracking ref. Both `d30f2ab`; `git rev-list --left-right --count HEAD...origin/master` returned **0 / 0**. Not behind, not ahead.
+- **NOTHING WAS CARRIED IN FROM THE FIFTY-FIFTH, AND THAT IS ON EVIDENCE RATHER THAN SILENCE.** QR-5 requires a failed push or a surviving zip to be carried forward. Neither exists: `d30f2ab` — the SHA the live `ls-remote` returned — **is the fifty-fifth invocation's own commit** (`git log -1 --format=%s d30f2ab`), so that push landed; and `inbox/` held **exactly one zip, this packet's**, so that deletion landed too.
+- **QR-5 already-executed check: NEGATIVE — genuinely pending, and neither "already committed" nor "committed but unpushed."** All five staged deliverables and the `#101` entry were absent from the working tree **and** absent from the `origin/master` tree, the second checked by `git ls-tree -r --name-only origin/master` — a path read, not a message search.
+- **THE §1 STOP CONDITION MATCHED EXACTLY ON BOTH PINNED FILES.** `docs/specs/session-log.md` **1,006,187 B `e375dd781f341485`** and `docs/specs/attorney-review-queue.md` **486,120 B `abe5a065b678f705`**, both as the packet pinned them at `d30f2ab`. The five canonical paths for the new documents were re-checked and all five were **ABSENT**, as the packet's own duplicate-routing check predicted.
+- **THE PACKET'S CLEAN-CHECKOUT CLAIM WAS CHECKED RATHER THAN TAKEN, AND IT HOLDS.** It states — as a first in the recorded series — that its bridge reads stranded no `.git/index.lock`. **`ls .git/index.lock` returns no such file.** After eight consecutive occurrences, `GIT_OPTIONAL_LOCKS=0` is the first design-side practice that has actually stopped it, and this is the first batch in the series with no lock to clear.
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the SEVENTH consecutive firing.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table or in `git status`** — the six changed paths are one modified and five new files, all under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch.
+- **WHAT EXECUTED — FIVE NEW DOCUMENTS BYTE-IDENTICAL TO THE PACKET, AND VERBATIM WAS VERIFIED RATHER THAN ASSUMED.** sha256 of each staged file was compared against the file as written; **all five IDENTICAL**. The packet's stated sizes AND non-blank line counts were **re-derived rather than trusted, and all ten figures matched**: `registry-new-entry-drafts-2026-08-17.md` 24,081 B / 219, `ws3-privilege-authority-read-2026-08-17.md` 20,818 B / 189, `criminal-opinions-read-2026-08.md` 23,203 B / 238, `privilege-tier-unified-vocabulary-proposal-2026-08-17.md` 22,002 B / 306, `designation-source-method-research-2026-08-17.md` 12,086 B / 120.
+- **QUEUE: TWENTY-SIX ROWS ENTERED WITH FULL QUESTION TEXT, THREE ANNOTATED ADD-ONLY, AND NOT ONE CLOSED — the header's second act performed (QR-6(b)).** Entered: `Q-WS2-1`–`Q-WS2-3`, `Q-WS1-1`, `Q-WS3-1`–`Q-WS3-5`, `Q-RL6-1`–`Q-RL6-6`, `Q-COM-10-A`–`Q-COM-10-F`, `Q-DES-1`–`Q-DES-5`, **all twenty-six collision-checked repo-wide at HEAD and all twenty-six ZERO** outside the five documents themselves; packet-local, **deliberately not minted**. Annotated, none closed: `Q-COM-10` (the list is drafted and drafting it broke the ruled answer), `WESTLAW-5` (T-27 spent the nine-opinion read; the five Westlaw pulls are untouched and the cite supply is still Michael's), `Q-PR3-1` (second task shaped by it, row not amended). **`Q-WS2-3` and `Q-WS3-1` are ONE question with two entry points and got ONE row**, per QR-1's no-second-row discipline.
+- **THE ORDINAL WAS DERIVED RATHER THAN COPIED, AND THIS PACKET STATED NONE.** The highest recorded in `attorney-review-queue.md` is **SEVENTEENTH** and BUILD-STATE independently reads **"SEVENTEEN packets"**, so `ID-DL-1` now governs an **EIGHTEENTH**. Where the fifty-fourth's packet claimed an ordinal wrongly and the fifty-fifth's claimed one rightly, this one made no claim at all — so the figure is the runner's own derivation, and it is stated as such.
+- **RUNNER-FOUND, AND IT WILL BITE THE NEXT REFRESH IF NOBODY WRITES IT DOWN: THE BACKLOG COUNT'S BASIS IS NOW GLOB-HOSTILE.** The backlog is **re-derived at HEAD, never carried: 33 (20 V / 13 U) in `legal-rule-registry-discovery-enforcement-and-pleading.md` + 7 (3 V / 4 U) in `legal-rule-registry-criminal-plea-and-costs.md` = 40 entries, 23 VERIFIED / 17 UNVERIFIED — unchanged by this batch.** But `registry-new-entry-drafts-2026-08-17.md`, landed today, contains **six `**Status:** UNVERIFIED` lines of its own** — drafted entry TEXTS inside a drafting record, not registry entries — and it matches `docs/specs/*registry*`. **A count taken over that glob now returns 46 and would be wrong.** The basis is the two named in-backlog files, and `legal-rule-registry-discovery-and-carrier-duties.md` (22, all VERIFIED) is **not** in it either — a fact this runner had to establish from BUILD-STATE's own line rather than from the file names, having first derived 55 from the wrong pair.
+- **NOTHING MOVED IN THE REGISTRY, AND THAT IS CHECKABLE.** **No registry entry `**Status:**` line was added, removed or changed anywhere in the diff** (`git diff -U0 | grep -E '^[+-].*\*\*Status:\*\*'` returns exactly one hit, and it is `attorney-review-queue.md`'s own **"Status: WORKING CHECKLIST"** header sentence — the QR-6(b) reconcile act, not an entry status). Six registry entry texts are drafted and `WS-3`'s is drafted, and **none of the seven exists in any registry file.**
+- **EVERY §6 DO-NOT HONORED, each one checkable from `git status`:** no registry file was touched at all, so no T-29 entry was inserted and no `WS-3` entry created; **no SQL was extracted, run, or folded in — `db/schema.sql` is unmodified and `db/migrations/` gained nothing**; **`src/domain/billing.ts` and `src/domain/transcripts.ts` were neither read nor edited**; **no 2026-08-18 date was restamped, conformed, or "fixed"** anywhere, `#101` being the record and Michael's disposition being deliberate-leave-alone; **`194.2(9)` was not conformed outside doc 3's own draft**; the four V-9-flagged opinions (*Bailey*, *Simmons 2014*, *Green*, *Carter*) were **not staged for verification**; **no cite was selected for entries 30 or 31 and *Middleton* was not added to entry `4a`'s candidate line**; no `Q-` item was resolved; and no second row was created for the `Q-WS2-3`/`Q-WS3-1` pair.
+- **`QR-6(e)` DID NOT FIRE THIS BATCH — no packet-added act sits outside the routing table and Step 4.** Recorded because the fifty-fifth's did fire (the `.git/index.lock` deletion) and an absence stated is worth more than an absence assumed.
+- **WHAT THIS BATCH DID NOT DO, stated because five research documents can read as more than they are:** nothing was verified, nothing was built, no registry entry was created, no migration was written or run, and **no Status line moved in either direction**. `WS-3`'s authority is located and read in full — which retires BUILD-STATE's "NO TEXAS AUTHORITY was located" line — but **locating is not adopting and adopting is not verifying**, and the drafted entry would enter UNVERIFIED even on Michael's word.
+- **RUNNER-FOUND, NOT ACTED ON, SECOND CONSECUTIVE BATCH: `T-26` STILL HAS NO ROW IN `attorney-review-queue.md`.** The packet's §7 carries it as Michael's hand — the Group A verification looks (entries 2, 12, 13, 29, 32), entry 13 first, INTERACTIVE and needing him live — and the packet **deliberately did not attempt it**. `TASK-19` is closed and no successor row exists; it survives in `docs/prompts/CHAT-DISPATCH-v4.md` at HEAD, so QR-1's destruction risk does not bite. **No row was minted; minting is Michael's act.**
+
+Staged for Code: none — this batch is the Code half.
+Awaiting/Returned from Code, unreviewed: this runner line.
+
+## 2026-08-17 (#102) — CHAT-DISPATCH v4 EXECUTED, T-32 + T-27 THROUGH T-31 IN ONE PASS: the WS-3
+gap CLOSED by located authority, LaPorte found HALF-OVERRULED, V-9's cannot-identify floor fired
+four times, and the ruled fourth privilege_tier value found NOT MUTUALLY EXCLUSIVE with the other
+three (design session, Opus 5, Cowork; Michael not present after the paste)
+
+- **RECONCILE FIRST ran against the live checkout through the bridge.** HEAD `d30f2ab` on
+  `master`; `inbox/` EMPTY; instructions **v22 CONFIRMED IN FORCE** from this session's own live
+  instructions field — the #82/A-1 mechanism, EIGHTH consecutive use. **BUILD-STATE is stale on
+  exactly that point**, reading "v21 IS IN FORCE … v22 IS DRAFTED AND DELIVERED BUT NOT IN FORCE";
+  Michael pasted it between #100 and this session, so his "paste v22" item is CLOSED. Backlog
+  RE-DERIVED at HEAD, never carried: 33 + 7 = **40 entries, 23 VERIFIED / 17 UNVERIFIED**.
+  `docs/prompts/CHAT-DISPATCH-v4.md` was read in full at HEAD before any task began.
+- **T-32 — THE DT-1 CORRECTION, RULED BY MICHAEL 2026-08-17 AND ENTERED AT `#101`.** #100 and every
+  artifact it authored are stamped 2026-08-18; all of it occurred **2026-08-17 Central, evening**.
+  **Stamps DELIBERATELY LEFT ALONE**, the #50 disposition. Evidence is filesystem-and-repo, not
+  recollection: the packet zip's own mtime `2026-08-17 21:14:02 −0500`; the `.git/index.lock` #100
+  stranded at `2026-08-17 20:17:25 −0500`; bracketing commits `c26b21a` 20:04:58 and `d30f2ab`
+  21:46:33, both −0500, re-read this session; and the fifty-fifth's own native `date` read,
+  `2026-08-17 21:37 CDT`. **The Code side had already flagged the discrepancy** under its own
+  heading — this entry rules on it rather than discovering it. **Failure class: DT-1 forward drift,
+  first recurrence since DT-1 became binding — the rule existed, was in force, and was not run.**
+  Consequence recorded: the `TOC-2` inversion this batch added **dissolves** — corrected, the
+  runner line IS newer and the log's order is right.
+- **T-29 — SIX ENTRY TEXTS DRAFTED, AND TWO ARE HELD ON A COLLISION NOBODY HAD SEEN.** TRCP
+  193.4(a), 199.6, 192.3(h)'s own-statement right, 194.1(a), 194.2(b)(9), 194.5, from the
+  clean-authority July 2026 PDF; every quotation spot-checked in **TWO extraction modes** on a
+  whitespace-normalized stream (a naive check returned four false zeroes — mode-dependent line
+  wrapping, characterized not guessed); raw `AA` count **0**, so the statute-pass normalizer stays
+  off this publisher. **THE COLLISION: `legal-rule-registry-discovery-and-carrier-duties.md`
+  already carries a VERIFIED "TRCP 194" entry whose own first sentence states the disclosure duty,
+  and that file carries an UNRESOLVED span flag (whole rule vs. 194.1–194.4).** So 194.1(a) may be
+  a duplicate and 194.5 may sit inside an already-verified entry — `Q-WS2-1`, four parts, and
+  **entries C and E are drafted and HELD on it.** Separately `Q-WS2-2`: the ruling says "194.2(9)"
+  and **the rule has no such subdivision** — item (9) sits under (b), and a bare `194.2(9)` appears
+  **0 times** in the rule text while `194.2(b)(3)`-style citation appears twice. **Conformed to
+  194.2(b)(9) and FLAGGED as its own act, never silently.**
+- **T-28 — `WS-3`'s GAP IS CLOSED. Authority exists and it was read in full.** BUILD-STATE records
+  WS-3 as "NO TEXAS AUTHORITY was located." **Two published intermediate opinions decide it**, both
+  with majority authorship confirmed on the face of the document (V-9): *In re Fontenot*, 13 S.W.3d
+  111 (Livingston, J.) — *"Comment nine to the rule, however, instructs that this broad rule
+  applies only to non-privileged statements"* — and *In re ExxonMobil Corp.*, 97 S.W.3d 353
+  (Seymore, J.), which adopts it and twice finds an abuse of discretion in ordering the
+  witness-statement portion of an otherwise privileged document produced. **Both reach it through
+  comment 9, NOT through 192.3(a) by name** — the ruled shorthand is supported in substance and not
+  in terms, and the drafted entry says so rather than smoothing it. **THE LIMIT: both construe the
+  1999 rules.** Under the 2021 amendments a witness statement is a 194.2(b)(9) initial disclosure
+  and 194.5 bars *"no objection or assertion of work product"* — which **does not name the
+  attorney-client privilege**, so the *Fontenot* line survives while the *Jimenez*/*Team Transport*
+  work-product line is disturbed and **no located authority says how**. **THE PROTÉGÉ LEADS ARE A
+  MIXED BAG, and checking them was itself the finding:** seven resolve exactly; *In re Young*'s
+  cite resolves to an **SVP civil-commitment case**; *Franklin Ctr.* and *Kona Coast* are **real but
+  cite-unconfirmed, two clusters each, V-9 STOP applied**; ***In re Scherer* is not located at all.**
+  Absence from FLP is not proof of non-existence and is recorded that way.
+- **T-27 — THE NINE READ IN FULL, AND THE BRIDGE IS NOT BUILT.** Eight of nine never mention art.
+  102.073. **Only *Middleton v. State*, 634 S.W.3d 46, touches it** — fn. 36 quotes 102.073(a) and
+  fn. 37 discusses it, both at [*53], as the **State's** parallel-statute argument answered *"even
+  assuming the State is correct"* and expressly not decided, with two limits reserved. **Suggestive
+  dicta, not an adoption**, and the entry-31 cite supply stays Michael's — the read stages, never
+  selects. **THE FINDING NOBODY ASKED FOR: LaPorte is HALF-OVERRULED.** *Ex parte Carter*, 521
+  S.W.3d 344, 347 overrules its **void-sentence holding at 415** — five votes, stated on the face —
+  while **expressly reaffirming its "single criminal action" construction at 414**; *Ex parte
+  Simmons* (2015) disavows the same language independently. **Entry `4a` carries LaPorte as a
+  candidate with NO pinpoint**, so which half it cites now matters (`Q-RL6-3`). **V-9's floor fired
+  FOUR times the day after it was ruled:** *Bailey*, *Simmons 2014* and *Green* are per curiam with
+  no author and no panel on the copy, and ***Ex parte Carter* has NO MAJORITY — it is a plurality.**
+  All four flagged, none staged for verification. Two copy defects reported: the *Simmons 2015*
+  vendor copy **omits the Keasler dissent its own Judges: line announces**, and the *Green* copy
+  contains **only the dissent** — what is published at 457 S.W.3d 90 is not the majority.
+- **T-30 — THE RULED FOURTH VALUE DOES NOT FIT THE COLUMN, and that only appears when you write it
+  down.** `WS-4` ruled a fourth `privilege_tier` state. But `privilege_tier` holds ONE value, and
+  T-28's authority holds a witness statement inside a privileged communication **is** privileged —
+  so a client-interview recording is both, and a four-value enum **forces a false choice with
+  opposite consequences**. Put as `Q-COM-10-A` with two options: four values in one column, or three
+  values plus a `witness_statement boolean`. Also proposed: conform `'privileged'` →
+  `'attorney-client'`, because the current transcripts list **opposes a genus to its own species** —
+  work product IS an assertion of privilege (TRCP 192.5(d)), the project's own recorded position.
+  Migration **authored, UNRUN, NOT AUTHORIZED**, on the 2026-08-16 precedent's shape — and unlike
+  that precedent it **ABORTS at Step 0** rather than backfilling if any row holds `'privileged'`,
+  because rewriting a privilege tier is a re-characterization and is Michael's. **The `src/` half is
+  specified IN WORDS and NOT drafted: reading `src/domain/billing.ts` and `src/domain/transcripts.ts`
+  would answer `Q-PR3-1` by doing it.**
+- **T-31 — THE QUESTION WAS BEING ASKED OF THE WRONG INSTRUMENT.** From TRAP 47 (clean-authority
+  PDF): Texas has **TWO independent designation axes** the record has been treating as one — 47.2(a)
+  "Opinion" vs "Memorandum Opinion" (civil AND criminal, memorandum being the **default** under
+  47.4), and 47.2(b) "publish"/"do not publish" (**criminal only**). And 47.7(b) gives post-2003
+  civil memorandum opinions **full precedential value**. **So FLP's `precedential_status` is not
+  failing — it answers the authority question correctly and cannot express the designation.**
+  Proved empirically, live: `court=texapp`, `q="memorandum opinion"` returns **1** Unpublished
+  against **174,292** Published, and the top three Published results have case names that literally
+  begin *"Memorandum Opinion"*. **Hazard 0.1.6 confirmed by measurement rather than assertion.**
+  Second FLP hazard recorded: **multi-cluster duplicates are systemic** — three clusters for one
+  *Collins v. Kappa Sigma* opinion, two each for *Franklin Ctr.* and *Kona Coast*.
+- **RR-1 ran and CAUGHT TWO**, both cross-task and both folded before shipping: T-29 gained
+  `Q-WS2-3` (does attorney-client privilege excuse a 194.2(b)(9) disclosure, given 194.5 names only
+  work product?) after the T-28 read made the interaction visible; and the T-28 memo gained the
+  T-31 finding that FLP cluster multiplicity is systemic, so no inference is drawn from it at
+  *Franklin Ctr.* or *Kona Coast*. **Neither entry was reworded — both interactions are flagged.**
+- **Method notes worth keeping.** The nine opinions were read by three parallel readers over
+  VM-local extractions; **one reader detected that the hand-off file truncated at 262,144
+  characters** — cutting one opinion and omitting another entirely — **re-extracted both from
+  source and verified its third against the truncated copy line-for-line.** An undetected truncation
+  would have produced a confident report on an opinion nobody read. **Nothing was written into any
+  connected folder and no `.git/index.lock` was stranded — the first design session in this series
+  to read the checkout and leave it clean.**
+
+Staged for Code: this packet — five new documents, entries #101 and #102, and the queue merge.
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
+
+## 2026-08-17 (#101) — CORRECTION: the #100 adjudication session and every artifact it
+authored are stamped 2026-08-18; the session and all twenty-four rulings occurred 2026-08-17
+CENTRAL, evening — stamps DELIBERATELY LEFT ALONE by Michael's ruling; the DT-1 check that
+would have caught it was not run, and was run this session (design session, Opus 5, Cowork)
+
+CORRECTION ENTRY, required fields:
+
+- WHAT WAS ASSERTED: that the FABLE adjudication session (#100) and its artifacts are of
+  **2026-08-18**. The stamp is carried, at HEAD `d30f2ab`, by fifteen tracked files —
+  derived by `grep -rl '2026-08-18' docs/ db/ supabase/ CLAUDE.md README.md`, not recalled:
+  this log's `#100` heading; `docs/specs/fable-adjudication-record-2026-08-18.md` (the
+  **filename itself**); `docs/prompts/CHAT-DISPATCH-v4.md` ("**Authored 2026-08-18**");
+  `CLAUDE.md` (rule 5, the V-9 amendment); `docs/prompts/QUEUE-RUNNER.md` (TOC-4, v10 → v11);
+  `docs/specs/Go_Live_Gates.md` (the OPEN-1 append beneath GL-1);
+  `docs/specs/attorney-review-queue.md` (eighteen rows closed, five annotated);
+  `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md` and
+  `-discovery-and-carrier-duties.md` (RL-1's adopted wording; RL-5's reciprocal notes);
+  `docs/specs/registry-courtlistener-integration-design.md` (V-8's §0.1);
+  both registry workbook banners; `docs/specs/session-log-toc.md`; and
+  `docs/specs/BUILD-STATE.md`. Outside the repo the same stamp rides the packet filename
+  `push-to-code_fable-adjudication_2026-08-18.zip` (recorded in the fifty-fifth runner line;
+  the zip is deleted), the project-knowledge capture
+  `claude/claude_Fable_Adjudication_Session_Capture_2026-08-18.md`, and the **v22 instructions
+  header** — `# v22 — 2026-08-18`, twice more inside its own trigger-#3 history line.
+- WHAT IS TRUE INSTEAD: the session ran the **EVENING OF 2026-08-17 CENTRAL**, and every one of
+  its twenty-four rulings — V-9, V-8 with all four §C additions, RL-1 through RL-6, WS-1
+  through WS-4, WB2-1, WB2-2, DE1-SPEC-1, Q-COM-12, OPEN-1, TOC-4, TOC-6, HK-7 — is of that
+  date. **Evidence, each item with the command or record that produced it (QR-6(a)):**
+  (1) **The packet's own mtime.** `push-to-code_fable-adjudication_2026-08-18.zip`, the #100
+  session's own deliverable, was pinned at Step 1 per QR-6(c) at **24,404 bytes, mtime
+  `2026-08-17 21:14:02 −0500`**, sha256 `e14baaa0…` — recorded in the fifty-fifth runner line
+  above. A session cannot write its output before it runs.
+  (2) **The stranded `.git/index.lock`,** left by #100's own bridge `git status` (the known
+  cause, eighth occurrence): **0 bytes, mtime `2026-08-17 20:17:25 −0500`**, `tasklist` showing
+  no `git.exe` — found by the fifty-fifth invocation exactly as that packet's §7 predicted. A
+  filesystem timestamp, on Michael's machine, of an act performed BY the session in question.
+  (3) **The bracketing commits,** re-read at HEAD this session with
+  `git log -3 --format='%h %ad %s' --date=iso` (lock-free, `GIT_OPTIONAL_LOCKS=0`):
+  `c26b21a` at **2026-08-17 20:04:58 −0500** — the fifty-fourth invocation, the HEAD #100
+  reconciled against — and `d30f2ab` at **2026-08-17 21:46:33 −0500**, the fifty-fifth, which
+  executed #100's rulings. The session sits inside a bracket both of whose ends are 2026-08-17.
+  (4) **The Code side's own native clock read:** the fifty-fifth runner line records `date`
+  returning **`2026-08-17 21:37 CDT`** minutes before its own commit, on Michael's machine.
+  (5) The dispatch authorizing this entry states the session ran ~20:00–21:45 Central with a
+  first bridge command at 20:05. **That 20:05 figure is the authoring session's account and was
+  NOT independently verified here** — it is consistent with (1)–(4) and is recorded as account,
+  not as a check. Items (1)–(4) alone pin the window to roughly 20:04–21:14 Central on
+  2026-08-17, with the bridge lock at 20:17:25 inside it.
+  The mechanism is the one DT-1 names: the cloud container's clock runs UTC and rolls to the
+  next date at **19:00 Central** during daylight time. A session running past that hour reads
+  2026-08-18 unless it checks. **#100 did not check.**
+- WHICH ENTRY IT CORRECTS: **`#100`**, and with it the v22 instructions header's dating and the
+  fourteen other tracked files listed above. **#100 stands as written**, as does every artifact
+  it authored. This entry does not amend them; it records the true date beside them.
+- ACTOR: **Fable 5** (design session, Cowork; Michael live throughout — the rulings are his
+  words and none of them is disturbed by this entry, only their date stamp is explained).
+  **NO ERROR ON THE CODE SIDE, and this is not a courtesy:** the fifty-fifth invocation dated
+  its own runner line from the machine clock, and — under the heading *"DATE DISCREPANCY,
+  STATED RATHER THAN SMOOTHED (DT-1)"* — **flagged this exact divergence before any design
+  session looked at it**, naming the 2026-08-18 packet against its own 2026-08-17 clock and
+  appending the entry at the date it carried, unedited. **This entry does not discover the
+  discrepancy; it rules on it.** The runner could state the conflict and could not resolve
+  it — the true date is Michael's to fix, and he has.
+- FAILURE CLASS: **DT-1 forward drift — container-UTC date substituted for Michael's Central
+  wall-clock date** on a design-side session running past 19:00 Central. **Prior instance named
+  on the record: `#50`** (the 2026-08-11-evening session, which stamped its rulings 2026-08-12
+  and whose correction is the entry DT-1 itself was ruled in). **This is the same cause on the
+  same surface, and it is the first recurrence since DT-1 was made binding** — which is the
+  part worth recording: the convention existed, was in force, was carried in the very
+  instructions the session was running under, and was simply not executed. **The failure is not
+  a gap in the rule; it is a skipped check.** Note also the INVERSE case already on the record
+  (2026-08-16): a Code-side runner line stamped a day EARLIER than its own commit, having
+  carried a packet's filename date into its header. DT-1 governs forward drift off a container
+  clock; a runner line's date is its RUN date. Both directions have now bitten once each.
+- WHAT CHANGED AS A RESULT: **NOTHING — DELIBERATELY LEFT ALONE, by Michael's ruling of
+  2026-08-17 Central**, the same disposition he gave the origin exhibit at `#50`. The
+  2026-08-18 stamps are internally consistent across everything that landed, they are
+  load-bearing in filenames and in a cite chain that already points at them
+  (`fable-adjudication-record-2026-08-18.md` is referenced by BUILD-STATE, the queue, and the
+  runner line), and **restamping fifteen tracked files to repair a date nobody was misled by
+  would cost more truth than it bought.** **This entry is the record.** No file is edited by
+  it; no ruling's substance is touched; no Status line moves; the backlog is unchanged.
+
+ALSO RECORDED — A CONSEQUENCE THAT RESOLVES ITSELF, AND ONE THAT DOES NOT:
+
+**(a) THE `TOC-2` INVERSION THIS BATCH ADDED IS NOT AN OUT-OF-ORDER DATE AT ALL — IT IS THIS
+DRIFT, SEEN FROM THE INDEX.** The fifty-fifth runner line records that its 2026-08-17 header
+sits ABOVE #100's 2026-08-18 header in a newest-first log, states the inversion so the index
+"does not have to guess," and files it as *"the `TOC-2` class … the explained kind, not the
+unexplained kind."* **With the true date established, the inversion dissolves:** #100 ran
+~20:04–21:14 Central and the fifty-fifth committed at 21:46:33 the same evening, so the runner
+line **is** the newer entry and the log's physical order is **correct as it stands**. The
+apparent disorder is an artifact of the stamp, not of the sequence. **No index row is changed
+and no count is touched** — `TOC-1`/`TOC-2`'s five-out-of-order-dates figure and whatever this
+batch's addition does to it stay exactly as written. **Whether `session-log-toc.md` should
+carry a note distinguishing an artifact from a genuine out-of-order date is MICHAEL'S** — it is
+a sixth instance that is not really an instance, and deciding that is a ruling, not a cleanup.
+
+**(b) THE CHECK THAT FAILED HAS NO ENFORCEMENT POINT, AND THAT IS NOT PROPOSED FOR REPAIR
+HERE.** DT-1 is a convention a session must remember to execute; nothing in the design-side
+start-of-session steps, in the push-to-code skill, or in any packet template *requires* the
+Central-date computation before a stamp is written, and no artifact records whether it was run.
+`#50` ruled the convention; two years of one session's discipline is what stands between it and
+this entry. **Whether DT-1 gains an execution point — a start-of-session step, a packet-manifest
+field asserting "Central date computed: <value>", or nothing at all — is MICHAEL'S RULING and
+is deliberately NOT proposed as adopted here.** It is raised because this entry is the second
+time the same rule has been broken the same way, and the first time it was broken while binding.
+*(This session ran the check: container `2026-08-18 03:02 UTC`, `TZ=America/Chicago date` →
+**`2026-08-17 22:02 CDT`**. Every stamp in this packet is 2026-08-17.)*
+
+Staged for Code: this entry.
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
+
 ## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FIFTH invocation) — the batch that executed twenty-four rulings from one adjudication, moved a registry Status line BACKWARD on purpose, and ran the index-regeneration obligation it had just written into its own runner text
 
 **One packet, executed in full under runner v10 and closing out under v11 — the amendment this batch installed governs its own close-out.** **Packet:** `push-to-code_fable-adjudication_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **24,404 bytes, mtime `2026-08-17 21:14:02 −0500`, sha256 `e14baaa0560273a2c0cdcc8f49cbced32f1fb09aabfb81e431b23927b7cf3892`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built.**
