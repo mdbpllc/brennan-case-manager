@@ -12,6 +12,136 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FOURTH invocation) — the docs-only batch that landed five staged documents untouched, and found that the ordinal the packet told it to check was the one thing the packet had wrong
+
+**One packet, executed in full under runner v10.** **Packet:** `push-to-code_chat-dispatch-v3-t20-t25_2026-08-17.zip`, identity pinned at Step 1 per QR-6(c) — **71,981 bytes, mtime `2026-08-17 19:39:13 −0500`, sha256 `933eac6e9fb1b0c8e67f9d4fbdc62df71738ac9ffe8475c2889813015654a748`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built.**
+
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin refs/heads/master`** — the live remote read, not the local tracking ref. Both `5447538`; `git rev-list --left-right --count` returned **0 / 0**. Not behind, not ahead. **The packet's §1 predicted the native tree would be clean against the mount's ~200-file false DIRTY, and it was.**
+- **QR-5 already-executed check: NEGATIVE — the packet was genuinely pending, and it was neither "already committed" nor "committed but unpushed."** All five canonical paths were absent from the working tree by `find` over the repo with `node_modules` pruned — not a filename-substring test, which the packet's §1 correctly warned would mis-flag `registry-verification-workbook-2026-08-13.md` and `registry-courtlistener-integration-design.md`. Both near-misses were confirmed present and untouched.
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the FIFTH consecutive firing (#95, #96, #97, #98, now).** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears anywhere in the routing table** — all eight rows are `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch.
+- **WHAT EXECUTED: FIVE NEW FILES, BYTE-IDENTICAL TO THE PACKET, AND NOTHING ELSE TOUCHED.** `registry-records-look-staging-2026-08-17.md` (53,672 B) · `witness-statement-conversion-research-2026-08.md` (28,823 B) · `registry-verification-workbook-v2-2026-08.md` (22,147 B) · `de-1-deficiency-letter-template-spec-2026-08.md` (23,470 B) · `q5-v8-section-0-1-candidate-text-2026-08-17.md` (13,283 B). **Verbatim was verified, not assumed: sha256 of each staged file compared against the file as written, all five IDENTICAL.** Every one carries its own PROPOSED or CANDIDATE status line; **no registry Status line in any of the four registry files was touched, and the backlog stands where the walk left it.**
+- **RUNNER-FOUND, AND IT IS THE ONE CHECK THE PACKET EXPRESSLY ORDERED: `ID-DL-1`'s ORDINAL IS OFF BY ONE.** §6 item 15 says *"`ID-DL-1` now governs a **FIFTEENTH** packet — verify that ordinal against the queue rather than taking it from this line."* Verified: the queue at HEAD **already** records a fifteenth — the `Q-T19-4` row, entered by the fifty-third invocation, reads *"`ID-DL-1` now governs a FIFTEENTH packet,"* and BUILD-STATE independently reads *"now **FIFTEEN** packets — #98 added `WESTLAW-5` and `Q-T19-4`."* **Two sources agree that #98 was the fifteenth, so this packet is the SIXTEENTH**, and it was entered as such. **The instruction to check rather than copy is what caught it.**
+- **ID COLLISION CHECK, REPO-WIDE AT HEAD: ALL THIRTEEN RETURNED ZERO.** `RL-1`..`RL-6`, `WS-1`..`WS-4`, `WB2-1`, `WB2-2` and `DE1-SPEC-1`, checked both backticked and on word boundaries. **All thirteen stay PACKET-LOCAL and deliberately NOT minted — minting is Michael's.**
+- **RUNNER-FOUND, NOT ACTED ON: THE `HK-7` ANNOTATION SERIES IN THE QUEUE STOPS AT #93, AND BUILD-STATE SAYS IT STOPS AT #98.** The row's own annotations run to *"A FOURTEENTH TIME … (#93)"*; **`grep` for `#94` through `#98` inside the row returns nothing**, while BUILD-STATE asserts *"#98 IS THE NINETEENTH ANNOTATION."* **That is five consecutive annotations recorded only in BUILD-STATE**, on top of the #89 and #92 gaps the row already records against itself. **Nothing was back-written** — an annotation authored now for a session that did not write one is a fabricated record, the K-6/K-7 rule the row itself invokes. This batch's annotation is labelled by session and says so.
+- **RUNNER-FOUND, NOT ACTED ON: THE SESSION-LOG TOC GOES STALE BY TWO WITH THIS COMMIT.** `docs/specs/session-log-toc.md` was regenerated hours earlier by CODE-DISPATCH v3 task C-2 at 207 rows, and **this batch prepends two entries it does not index** (#99 and this runner line). **It was NOT regenerated: it is in no routing table here**, and its own banner says regenerate-don't-append. `TOC-4` is the cadence question.
+- **RUNNER-FOUND, NOT ACTED ON: `TOC-6` HAS NO ROW IN `attorney-review-queue.md`.** It was raised in the C-2 index file and that Code entry was not a runner batch, so no QR-1 merge carried it. **The question therefore lives in one file only** — the failure class QR-1 exists to prevent. **No row was created**, minting and merging an unrouted question both being outside this batch.
+- **`QR-6(e)` DID NOT FIRE, AND THE FIVE-BATCH STREAK ENDS AT FIVE.** No act in this packet sits outside a routing-table row or a Step 4 item. **Every §6 DO-NOT was honored and each is checkable:** `registry-courtlistener-integration-design.md`, `CLAUDE.md`'s majority-opinion rule, `registry-verification-workbook-2026-08-13.md`, `registry-citator-pass-2026-08-13.md`, `transcript-workflows.md`, `form-engine.md`, `fe-d1-build-slice.md`, `db/schema.sql` and `docs/prompts/CHAT-DISPATCH-v3.md` are **all unmodified** — `git status` shows five additions and three edits (the log, the queue, this file's BUILD-STATE sibling) and nothing else. **The nine unnamed opinions were not read or routed (`RL-6`); no registry entry was created for any rule named at `RL-4`/`WS-1`/`WS-2`; no `privilege_tier` CHECK or union was touched.**
+- **THE STRANDED `.git/index.lock` RETURNED, AND THIS TIME IT IS DATABLE TO THE SESSION THAT CAUSED IT.** Step 4's `git add` failed with *"Unable to create '…/.git/index.lock': File exists."* Inspected rather than assumed: **0 bytes, mtime `2026-08-17 19:04:22 −0500`** — **before this session and matching the packet's own §1, which records the design side reading the repo natively through the device bridge at ~19:05 Central** — with `tasklist` showing **no `git.exe` running** and no other residue in `.git/`. That is the observed cause exactly: the mount denies `unlink`, so git's own cleanup fails and a 0-byte lock strands. **Removing a file inside `.git/` was put to Michael in-session on the QR-6(e) precedent and AUTHORIZED; nothing else in `.git/` was touched, and the index was verified intact afterwards.** **The lock tally moves to SEVEN, and this is the first occurrence with a timestamp that matches a documented bridge read minute-for-minute.**
+- **QUEUE: THIRTEEN ROWS ENTERED WITH FULL QUESTION TEXT PER QR-1, TEN ANNOTATED ADD-ONLY, AND THE HEADER'S SECOND ACT PERFORMED (QR-6(b)).** Entered: `RL-1`..`RL-6`, `WS-1`..`WS-4`, `WB2-1`, `WB2-2`, `DE1-SPEC-1`. Annotated, none closed: `WESTLAW-5` (satisfied as to all five pulls and over-delivered; **its consumers 30 and 31 still need Michael's cites, so it does not close**), `V5-ATTRIB` (candidate answer for two of six), `V-9` (answered for one case from a private copy, which is a workaround and not a rule), `V-8` (candidate §0.1 text filed, framing mismatch carried), `Q-COM-12`, `Q-COM-10`, `TASK-19`, `HK-7`, `OPEN-1`, and `ID-DL-1` at its corrected ordinal.
+- **WHAT THIS BATCH DID NOT DO, stated because a docs-only batch can read as more than it is:** nothing was verified, nothing was built, no Status line moved, and **locating is not verifying** — 20b is located and stays UNVERIFIED, 24's majority is identified and it stays UNVERIFIED, 17's designation is the court's own word and it stays UNVERIFIED. The five ROUTE-C entries still await their post-execution look. **The registry backlog was re-derived at HEAD rather than carried and is unchanged: 33 + 7 = 40 entries, 24 VERIFIED, 16 UNVERIFIED.**
+
+Staged for Code: none — this batch is the Code half.
+Awaiting/Returned from Code, unreviewed: this runner line.
+
+## 2026-08-17 (#99) — CHAT-DISPATCH v3 TASKS T-20 THROUGH T-25 EXECUTED IN ONE PASS: the
+Westlaw pulls landed and three of the five blockers the worklist called unclearable moved
+(design session, Cowork, Opus 5; Michael not live after the initial paste)
+
+- **THE DISPATCH'S FIRST ASSUMPTION WAS WRONG, FAVOURABLY, AND THE SESSION CONTINUED RATHER
+  THAN STOPPING.** It assumed HEAD `0be89ed` with the sign-off-walk packet still pending in
+  `inbox/` and **C-1 unlanded**, which made **T-23 ATOMIC-blocked**. At session start HEAD was
+  **`5447538`** and `inbox/` was empty: **C-1 and C-2 had both landed.** The ATOMIC dependency
+  was satisfied, so T-23 ran inside this chain instead of waiting. **Rule 5's STOP exists so a
+  session does not build on a wrong premise; the premise resolved with MORE available, not
+  less.** Instructions **v21** confirmed from the running session's own live field — the
+  #82/A-1 mechanism, **SIXTH consecutive use**; runner **v10** confirmed at HEAD.
+- **`WESTLAW-5` IS SATISFIED AND THEN SOME — AND IT PAID FOR THE WHOLE SESSION.**
+  `Documents\Knowledge Repo\Opinions\` holds all five named pulls plus *De Anda*, plus **nine
+  criminal-side opinions the dispatch never named.** The nine were **NOT opened** — reading
+  them would be a session deciding which authority supports a cite-less entry, which is
+  Michael's act — and are listed by filename only as `RL-6`.
+- **T-20 + T-21 STAGED AS ONE MEMO,** `registry-records-look-staging-2026-08-17.md`, source
+  named per item across three classes (FLP, Knowledge Repo PDFs, named public sources), the
+  majority-opinion rule run and reported on every retrieval. **Extraction was VM-local; nothing
+  was written into any connected folder and nothing is left for Michael's hand.**
+- **20b (*Collins*) IS LOCATED.** BUILD-STATE and the worklist both carried it as **NOT
+  LOCATED — absent from FLP and the public web across two passes.** The Lexis pull supplies
+  cause **02-14-00294-CV**, Jan. 19, 2017, MEMORANDUM OPINION, **pet. denied Jan. 26, 2018**
+  (*Kappa Sigma Fraternity v. Collins*, 2018 Tex. LEXIS 76), and **positively distinguishes the
+  2010 sibling No. 02-09-00305-CV** the dispatch warned about — the copy's own Prior History
+  names it. **The proposition is in the opinion by QUOTATION OF *ALFORD* at 181**, which is
+  also 20a's pinpoint.
+- **24 (*Irwin*) — V-9's factual half is answered and V-9 itself is untouched.** The paginated
+  copy states on its face: *"JUSTICE DEVINE delivered the opinion of the Court, in which
+  JUSTICE LEHRMANN, JUSTICE BOYD, JUSTICE BLACKLOCK, and JUSTICE BUSBY joined. CHIEF JUSTICE
+  HECHT filed a dissenting opinion, in which JUSTICE GUZMAN, JUSTICE BLAND, and JUSTICE HUDDLE
+  joined."* **5–4.** **But V-9 asks what a BINDING rule requires when FLP's data cannot support
+  identification, and one case being answerable from a private copy does not answer it** — a
+  Westlaw pull is a workaround, not a rule. **AND A PREREQUISITE NOBODY HAD NAMED IS NOW
+  VISIBLE: entry 24's proposition has never been located inside the Devine opinion.** The next
+  act on that entry is not verification.
+- **17's DESIGNATION IS THE COURT'S OWN WORD: MEMORANDUM OPINION**, from the Fifth Court's own
+  PDF — Nov. 30, 2017, Lang, J. **What FOLLOWS from a memorandum designation is Michael's**;
+  the document supplies the fact, not the consequence. **FLP's only record for that docket is
+  the Aug. 8, 2017 procedural ORDER — the merits opinion is not in FLP at all.**
+- **THE *ALFORD* SUPERSESSION INFERENCE IS CONTRADICTED BY THE OPERATIVE TEXT.** The citator
+  pass carried, expressly as unasserted inference, that the June 10 record was "most likely the
+  original opinion superseded on rehearing." The caption reads *"Decided June 10, 1999.
+  Rehearing Overruled August 26, 1999."* **Rehearing was OVERRULED; nothing was superseded**;
+  the two clusters carry different dates out of one caption. **`RL-2` — retiring the sentence
+  is Michael's, and the E-3 precedent cuts both ways on WHERE.**
+- **V5-ATTRIB HAS A CANDIDATE ANSWER FOR TWO PAIRS, AND IT IS NOT A SPLIT.** *Castillo* states
+  the heart-of-the-claim proposition **and attributes it to *Able Supply* at 772** (the chain
+  runs *Walker v. Packer* → *Able* → *Castillo*); *Collins* carries 20a/20b's proposition **by
+  quoting *Alford* at 181.** Both pairs resolve the same way: **one case is the source, the
+  other applies it.** The other four split entries are untouched.
+- **THE REPORTER-CITE FLAG SURVIVED EVERY LOOK THAT COULD HAVE RESOLVED IT** — four entries,
+  two independent source classes, **zero reporter cites found.** Entry 18's hoped-for
+  **UPGRADE DID NOT LAND**: the *Ochoa* copy carries Lexis and Westlaw only, **while
+  simultaneously stating "Notice: PUBLISH" and "Released for Publication July 30, 2004" and
+  heading its own body MEMORANDUM OPINION.** Both halves reported; neither resolved.
+- **T-22 — the commissioned note, and its headline is that the question's premise is off by one
+  step in the expensive direction.** `witness-statement-conversion-research-2026-08.md`. On
+  TRCP 192.3(h)(2) **the line is crossed at RECORDING, not at transcription** — the recording
+  is already a witness statement and the verbatim transcript is a second artifact of the same
+  character. **And a witness statement is a Rule 194.2(9) INITIAL disclosure owed without a
+  request (194.1(a)), against which Rule 194.5 permits NO work-product assertion at all.**
+  *Trahan v. Lone Star Title Co. of El Paso*, 247 S.W.3d 269, is the same failure sanctioned —
+  audio recordings of phone calls, a party who thought "witness statement" meant signed
+  statements only, counsel who "had never listened to them." **The quietest exposure in the
+  pipeline is the adjuster call**, because nobody classifies it as a witness interview. **Four
+  registry gaps flagged (`WS-1`..`WS-4`), none created.**
+- **T-23 — workbook v2**, `registry-verification-workbook-v2-2026-08.md`, built on the EXECUTED
+  text rather than the record's expected text. **It does NOT supersede the v1 workbook**, whose
+  rows stay the numbering authority `V5-IDS` and `Q-T19-1` rest on; WP numbering stays DEFERRED
+  (`D-6`); every count re-derived at HEAD. **Its own question `WB2-1` is whether two live
+  descriptions of one backlog is the `#13`/`R-3` copy-forward shape.**
+- **T-24 — the DE-1 template spec**, `de-1-deficiency-letter-template-spec-2026-08.md`. **The
+  dispatch's taxonomy line was one category SHORT** — the ruled list is **seven**
+  (BP/STO/OO/EV/**CONTRA**/PRIV/RFP-form) and the missing one is what REQ-03 calls the
+  highest-value deficiency. **CONTRA HAS NO VERIFIED AUTHORITY AT ALL** — it rests on entries 2
+  and 12, both in Group A awaiting one look each. The corrected thicket-waiver argument is
+  drafted from entry 5's ruled DE-1 note, with *De Anda* as the case that runs it on 193.2(e);
+  the conference fuse is drafted on entry 13's ADOPTED wording, **which is itself UNVERIFIED**,
+  so the fuse's whole legal substrate is pending one look.
+- **T-25 — CANDIDATE §0.1 text**, `q5-v8-section-0-1-candidate-text-2026-08-17.md`, split
+  deliberately: **§B executes `V-8`'s ruled three hazards; §C proposes four additions that are
+  NOT ruled** and must each be ruled separately, so nothing new rides into §0.1 on a 2026-08-13
+  ruling that did not contemplate it. **The V-8 / Q5 framing mismatch is carried and NOT
+  resolved** — the row says RULED-execution-pending, the #98 packet says Q5-OPEN, and which
+  governs decides whether §B is execution or proposal. **`registry-courtlistener-integration-design.md`
+  was NOT edited.**
+- **RR-1 CAUGHT A REAL ERROR AND IT PROPAGATED BOTH WAYS.** T-25's read of `V-8`'s actual text
+  showed the dispatch understated it — V-8 ruled **three** hazards, not two-plus-the-existing —
+  and the T-20 memo had followed the dispatch. **Corrected in §3.1 with the correction
+  recorded rather than silently made, and cross-noted into T-24.** **THAT IS TWO PLACES IN ONE
+  SESSION WHERE CHAT-DISPATCH v3's SUMMARY IS SHORT OF THE RULED RECORD** — the taxonomy and
+  the hazard count. Both corrected against the record rather than followed. **One is a slip;
+  two is worth knowing before the next dispatch is written.**
+- **T-26 NOT RUN** — INTERACTIVE, needs Michael live. The chain is complete without it.
+- **MODEL NOTE (§7.2):** execution/research/data-prep, Opus's lane, exactly as dispatched. The
+  session adjudicated nothing and verified nothing. **METER: the Fable bar resets Tue
+  2026-08-18 ~4:00 PM Central and unspent Fable is lost — flagged to Michael in-session, with
+  the gates re-check (GL-1 item 5) and V-9 named as the strongest remaining claims.**
+
+Staged for Code: registry-records-look-staging-2026-08-17.md;
+witness-statement-conversion-research-2026-08.md; registry-verification-workbook-v2-2026-08.md;
+de-1-deficiency-letter-template-spec-2026-08.md; q5-v8-section-0-1-candidate-text-2026-08-17.md;
+this entry; the queue merge and BUILD-STATE rewrite.
+Awaiting/Returned from Code, unreviewed: #75 through #98 floor per the fifty-second refresh's
+stated derivation limit, the runner lines through the fifty-third, and the unnumbered C-2 Code
+entry — re-derive at refresh, never carry.
+
 ## 2026-08-17 — CODE SESSION (CODE-DISPATCH v3, task C-2): the session-log index regenerated at 207 entries on PROOF that the log has been purely prepended since the index was built, and the carried staleness figure re-derived a second time
 
 **Session:** Claude Code, Opus 5, on mdb-pllc; CODE-DISPATCH v3 task **C-2**, fired by Michael's
