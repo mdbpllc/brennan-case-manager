@@ -35,6 +35,7 @@
 **Rule.** 30-day response period for interrogatories (after service).
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
 **Load-bearing for:** deadline engine (DL-INPUT 2026-08-11, per-defendant clocks).
+**Dedupe note (reciprocal — #73's V-4 "cross-referenced" second half, executed on Michael's 2026-08-18 ruling, RL-5):** the enforcement file (legal-rule-registry-discovery-enforcement-and-pleading.md) carries a TRCP 197.2(c) entry — a different subsection and proposition (records-reference answers must specify the records).
 
 ## TRCP 196.2 — production response period *(batch item 4)*
 
@@ -42,6 +43,7 @@
 **Rule.** 30-day response period for requests for production (after service).
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
 **Load-bearing for:** deadline engine (same).
+**Dedupe note (reciprocal — RL-5, 2026-08-18):** the enforcement file carries a TRCP 196.2(b) entry — a different proposition on the same rule number (the four permitted response forms).
 
 ## TRCP 198.2 — admission response period and deemed admissions *(batch item 5)*
 
@@ -49,6 +51,7 @@
 **Rule.** 30-day response period for requests for admission; matters deemed admitted absent timely response.
 **Status:** VERIFIED — Michael Brennan, 2026-08-11.
 **Load-bearing for:** deadline engine; the template preamble's deemed-admission warning.
+**Dedupe note (reciprocal — RL-5, 2026-08-18):** the enforcement file carries a TRCP 198.1 entry — a different proposition (application-of-law-to-fact admissions).
 
 ## TRCP 193.3 — privilege assertion / withholding statement *(batch item 6)*
 

@@ -9,8 +9,112 @@ Purpose: a dated, running record of what happened session to session in this pro
 - Do not let this file grow unbounded — if it gets long, consider archiving older entries to a dated sub-file and keeping only the most recent months here.
 - Each entry ends with two round-trip state lines so the Code handoff status is always visible at the top of the log: **"Staged for Code:"** (what this session prepared for a coding session) and **"Awaiting/Returned from Code, unreviewed:"** (what a coding session produced that the design space hasn't reviewed yet). Write "none" rather than omitting them. When a design session reviews returned material, the next entry clears it.
 - **Design-side visibility rule (added 2026-07-25, BINDING for Code sessions):** design-side sessions (Fable/Opus in the Project space) only see what reaches them — they cannot read the local repo. At the end of every substantive Code session: (1) append the log entry here, (2) rewrite `BUILD-STATE.md` in full (the one-doc "what is built now" snapshot design sessions read first; template + hard rules in CLAUDE.md), (3) **push to origin and VERIFY the push landed** (confirm the remote ref moved — never report "pushed" from an unchecked command); if the push is blocked, say so explicitly in the session report so Michael can run it — and (4) remind Michael in one line: **"Pushed at `<sha>` — click Sync now on the repo in the Claude project"** (wording corrected 2026-07-25; the old "re-upload BUILD-STATE.md" instruction was never the mechanism).
+- **Numbering rule (ruled 2026-08-18, TOC-6):** the `#nn` series is **DESIGN-ONLY**. Code
+  sessions never mint `#nn` — runner batches carry runner ordinals and other Code entries stay
+  unnumbered. (The C-2 index entry stays "—"; the collision class this closes is recorded at
+  TOC-6.)
 
 ---
+
+## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FIFTH invocation) — the batch that executed twenty-four rulings from one adjudication, moved a registry Status line BACKWARD on purpose, and ran the index-regeneration obligation it had just written into its own runner text
+
+**One packet, executed in full under runner v10 and closing out under v11 — the amendment this batch installed governs its own close-out.** **Packet:** `push-to-code_fable-adjudication_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **24,404 bytes, mtime `2026-08-17 21:14:02 −0500`, sha256 `e14baaa0560273a2c0cdcc8f49cbced32f1fb09aabfb81e431b23927b7cf3892`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built.**
+
+- **DATE DISCREPANCY, STATED RATHER THAN SMOOTHED (DT-1).** This runner line is dated from the machine clock — `date` returned **2026-08-17 21:37 CDT** — while the packet, its rulings record and its §3 entry are all dated **2026-08-18** by the design session's own DT-1 reading. **The entry below is appended at the date it carries, unedited**, so a 2026-08-17 runner line sits above a 2026-08-18 entry in a newest-first log. **The inversion is stated here so the index does not have to guess** — this is the `TOC-2` class, and it is the explained kind, not the unexplained kind.
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin refs/heads/master`** — the live remote read, not the local tracking ref. Both `c26b21a`; `git rev-list --left-right --count origin/master...HEAD` returned **0 / 0**. Not behind, not ahead.
+- **NOTHING WAS CARRIED IN FROM THE FIFTY-FOURTH, AND THAT IS ON EVIDENCE RATHER THAN SILENCE.** QR-5 requires a failed push or a surviving zip to be carried into the next batch's runner line. Neither exists: `c26b21a` — the SHA the live `ls-remote` returned — **is the fifty-fourth invocation's own commit** (`git log -1 --format=%s c26b21a`), so that push landed; and `inbox/` held **exactly one zip, this packet's**, so that deletion landed too.
+- **QR-5 already-executed check: NEGATIVE — the packet was genuinely pending, and it was neither "already committed" nor "committed but unpushed."** Both staged deliverables were absent from the working tree **and** absent from the `origin/master` tree, the second checked by `git ls-tree -r --name-only origin/master` rather than by a message search.
+- **THE §1 STOP CONDITION WAS THE STRONGEST RECONCILE ANY PACKET HAS SHIPPED, AND ALL SIX ROWS MATCHED EXACTLY.** The packet stated a byte size and a sha256 prefix for each of the six files it edits; every one matched at HEAD — `legal-rule-registry-discovery-enforcement-and-pleading.md` 42,874 B `787781e7cb18f5f5`, `legal-rule-registry-discovery-and-carrier-duties.md` 17,848 B `2b8b6e46017da8c4`, `registry-courtlistener-integration-design.md` 9,236 B `287fcbc3e4ff1f5e`, `Go_Live_Gates.md` 10,246 B `1b8321f935f9db7f`, `QUEUE-RUNNER.md` 13,789 B `89e22e769e8167f1`, `attorney-review-queue.md` 470,780 B `db35a8b2a7ba8e79`. **Michael's rulings attach to the text he was shown, and this batch could prove the text had not moved under them.**
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the SIXTH consecutive firing.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table or in `git status`** — the twelve changed paths are ten under `docs/`, one under `docs/prompts/`, and `CLAUDE.md`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch.
+- **THE STRANDED `.git/index.lock` RETURNED — EIGHTH OCCURRENCE — AND THE PACKET PREDICTED IT AGAINST ITSELF.** Its §7 lists the lock on Michael's hand list as **blocking**, stranded by its own bridge read; found exactly as described: **0 bytes, mtime `2026-08-17 20:17:25 −0500`**, with `tasklist` showing **no `git.exe` running**. **Removing a file inside `.git/` is a packet-added act outside every routing row and Step 4 item, so QR-6(e) governed: it was put to Michael at the Step 1 STOP and AUTHORIZED**, then removed and **verified absent**, with `git add -A --dry-run` proving the index writable rather than assuming it. Nothing else in `.git/` was touched.
+- **WHAT EXECUTED — TWO NEW FILES BYTE-IDENTICAL TO THE PACKET, AND ELEVEN ORDERED EDITS.** New: `docs/specs/fable-adjudication-record-2026-08-18.md` (20,657 B) and `docs/prompts/CHAT-DISPATCH-v4.md` (6,961 B) — **verbatim was verified, not assumed: sha256 of each staged file compared against the file as written, both IDENTICAL.** Edited: seven registry/design/gates/workbook files, `CLAUDE.md`, `QUEUE-RUNNER.md`, this log's preamble, and the queue.
+- **THE ONE REGISTRY STATUS LINE THAT MOVED, MOVED BACKWARD, AND THAT WAS THE POINT.** `RL-1` was ruled **ADOPT FOR BOTH 19a AND 19b** with the consequence chosen eyes-open: **entry 19b (*Able Supply Co. v. Moye*) returned from VERIFIED to UNVERIFIED** because the rewording detached its 2026-08-17 sign-off — verification attaches to wording (#95). **Exactly one `**Status:** VERIFIED` line was removed across the whole diff and none was added**, both checked against `git diff`. The pair stays verbatim-identical on the new text, by design and deliberately.
+- **THE HEADER COUNTS WERE RE-DERIVED, NOT TAKEN FROM THE PACKET — AND THE PACKET SAID SO ITSELF.** §4.3(h) stated an expectation of 20/13 and told the runner to state what it derived instead. Derived by counting the 33 per-entry `**Status:**` lines: **20 VERIFIED / 13 UNVERIFIED**, matching. The ROUTE-C-unverified-by-design class named in that header goes **three → five** with 19a and 19b.
+- **RUNNER-FOUND: THE PACKET'S §4.3(h) SAYS "the earlier five" AND THE FILE SAYS THREE.** The header names **three** ROUTE-C-unverified-by-design entries (192.3(h) discoverability, 215.4(b), 191.2), not five — #98 adopted five ROUTE-C wordings but only three of them stayed unverified. **The edit was executed against what the file actually says**, so the class reads three → five; the packet's phrase is recorded as loose rather than followed into a wrong count.
+- **RUNNER-FOUND, NOT CORRECTED — §C ENTERED §0.1 VERBATIM AS ORDERED, AND VERBATIM CARRIES ITS PROPOSED-ERA LANGUAGE WITH IT.** Three artifacts now sit inside adopted text: **§0.1.6's body still cites "(C-1)"**, which is now §0.1.4; **all four of §0.1.4–0.1.7 still read "Proposed rule:"** though Michael adopted every one; and **§0.1.7 still ends "Michael may prefer this in §0.1, in §5, or nowhere"** though he ruled it into §0.1. §4.6 ordered exactly two transformations — the heading parentheticals and one substitution in 0.1.2 — and §4's preamble says do not improve any of it. **Flagged for a later ruling, not silently conformed.**
+- **THE `ID-DL-1` ORDINAL WAS CHECKED RATHER THAN COPIED, AND THIS TIME THE PACKET HAD IT RIGHT.** §6 claims a **SEVENTEENTH** packet and orders the ordinal verified against the queue. Verified: the highest ordinal recorded in `attorney-review-queue.md` is **SIXTEENTH** (the fifty-fourth invocation's block) and BUILD-STATE independently reads **"SIXTEEN packets"** — so SEVENTEENTH is correct. **Nothing was minted: this batch entered no new packet-local IDs**, every ID it touched having been entered by the fifty-fourth.
+- **QUEUE: EIGHTEEN ROWS CLOSED, FIVE ANNOTATED ADD-ONLY, AND THE HEADER'S SECOND ACT PERFORMED (QR-6(b)).** Closed with the ruling stated per row and a pointer to the record's §1: `RL-1`–`RL-6`, `WS-1`–`WS-4`, `WB2-1`, `WB2-2`, `DE1-SPEC-1`, `V-8`, `V-9`, `OPEN-1`, `Q-COM-12`, `TOC-4` — with **`GLR-1` and `AUD-2` closing inside `OPEN-1`'s row**, which is where QR-1's no-second-row discipline had kept them. Annotated, none closed: `Q-COM-10` (direction ruled, closes on his adoption of the T-30 list), `V5-ATTRIB` (`RL-1` carries the propositions whole and attributes nothing), `WESTLAW-5` (`RL-6` stages nine reads; 30/31's cites stay his), `V-7` (its account of entry 24's blocker is now stale and is corrected by annotation, not rewritten), and `HK-7` (the ruled forward gap-note for #94–#98).
+- **THE `TOC-4` OBLIGATION WAS WRITTEN INTO THE RUNNER AND THEN RUN IN THE SAME BATCH.** `QUEUE-RUNNER.md` went **v10 → v11** (instructions trigger #3), gaining a Step 4 item 1 clause requiring `session-log-toc.md` to be regenerated over the log as just written. **The fifty-fourth invocation had flagged the index going stale by two and left it, having no routing row; this batch regenerated it** — the index rides this commit and is current at HEAD.
+- **RUNNER-FOUND, NOT ACTED ON: `T-26` HAS NO ROW IN `attorney-review-queue.md`.** The packet's §7 carries it as an open item on Michael's hand — the Group A verification looks (entries 2, 12, 13, 29, 32), entry 13 first — but `TASK-19` is closed and no successor row exists. **It survives in `docs/prompts/CHAT-DISPATCH-v4.md`, which is now committed**, so QR-1's destruction risk does not bite; **no row was minted, minting being Michael's act.** This is the same posture the fifty-fourth took on `TOC-6`, which Michael then ruled without a row ever existing.
+- **`QR-6(e)` FIRED ONCE — the `.git/index.lock` deletion — AND WAS AUTHORIZED BEFORE IT RAN. Every §6 DO-NOT was honored and each is checkable:** `registry-citator-pass-2026-08-13.md`, `registry-cite-check-2026-08-13.md`, `docs/prompts/CHAT-DISPATCH-v3.md`, `de-1-deficiency-letter-template-spec-2026-08.md`, `registry-records-look-staging-2026-08-17.md`, `db/schema.sql`, every migration and every `src/` file are **unmodified**; workbook v1's diff is **one line, its banner** (`git diff --stat` = 1 insertion, 1 deletion at line 5), no row touched. **No Status line was set to VERIFIED. The nine unnamed opinions were not read (`RL-6` routes them to T-27). None of the seven ruled new entry texts was drafted — that is design's act at T-28/T-29. No `privilege_tier` CHECK, union or migration was touched (`WS-4` executes only after Michael adopts the T-30 list).** `V-9-UI` and the `Q-COM-12` direction are recorded as design status only.
+- **WHAT THIS BATCH DID NOT DO, stated because twenty-four rulings can read as more than they are:** nothing was verified, nothing was built, and **the only Status movement was backward**. Six new registry entries are ruled into existence but **none exists yet** — their texts are drafted design-side, so the backlog stays where it is until they land. **Re-derived at HEAD rather than carried: 33 + 7 = 40 entries, 23 VERIFIED, 17 UNVERIFIED** — the 24/16 the packet started from, moved by 19b alone.
+
+Staged for Code: none — this batch is the Code half.
+Awaiting/Returned from Code, unreviewed: this runner line.
+
+## 2026-08-18 (#100) — FABLE ADJUDICATION SESSION: 24 items put, 24 ruled, zero deferrals —
+V-9 amended, RL-1 adopted for both 19a/19b (19b's verification detaches), six new registry
+entries ruled, V-8's §0.1 edit ruled fresh with all four §C additions adopted (design session,
+Cowork, Fable 5, typed; Michael LIVE throughout — every act is his word, item by item)
+
+- **RECONCILE FIRST ran against the live checkout through the bridge** (HEAD `c26b21a`
+  verified locally; origin per the fifty-fourth's live-remote read; inbox/ empty; instructions
+  v21 confirmed from the running session's own live field — the #82/A-1 mechanism, seventh
+  consecutive use; runner v10; backlog 40 = 24 V / 16 U re-derived). All five T-20–T-25
+  documents, the thirteen queue rows, and the V-8/V-9/OPEN-1 rows were read in full before
+  anything was put. **A bridge `git status` stranded a fresh 0-byte `.git/index.lock`
+  (the known cause, now eight-for-fourteen); flagged to Michael in-session for his hand.**
+- **TIER 0 — `V-9` RULED — ADOPTED AS DRAFTED**, his words: "Adopt as drafted, but also keep
+  my ideas to possibly use when we implement it." CLAUDE.md rule 5 gains the named-source
+  fallback chain (court's own document / paginated vendor copy / Michael's own identification,
+  recorded) with cannot-identify-STOP as the floor and unidentifiable entries flagged, never
+  staged for verification. Fires trigger #3; v22 drafted and delivered. **His prompt-me
+  mechanism (majority-marking window; obtain-and-upload prompt) recorded as PROPOSED design
+  input for the CourtListener integration — V-9-UI.**
+- **TIER 1:** `RL-6` — FULL READ of the nine unnamed criminal opinions, routed to Opus
+  (T-27); cite supply for 30/31 stays his. `RL-1` — **ADOPT FOR BOTH 19a AND 19b**, with the
+  consequence chosen eyes-open: **19b's verification DETACHES** (verification attaches to
+  wording, #95); the pair stays verbatim-identical on the new text; counts go 23 V / 17 U on
+  execution. `RL-2` — the *Alford* supersession inference is retired from entry 20a and
+  replaced with the caption facts; **the citator pass record is NOT touched** (a dated record
+  of what a pass found). `WB2-1` — **workbook v2 becomes the working layer; v1 is frozen as
+  the numbering record.**
+- **TIER 2 — `RL-3`, three separate cite acts:** 20b takes the full parenthetical (cause no. +
+  Jan. 19, 2017 + pet. denied + (mem. op.), every element from the copy's own face); 15 and
+  21a each take date + cause number; no pinpoint and no (mem. op.) on either — not available
+  from any source read. All three entries stay UNVERIFIED; a cite act is not a verification.
+- **TIER 3:** `RL-4` — TRCP 193.4(a) AND 199.6 become entries. `RL-5` — **cross-reference
+  BOTH sets**: 17 ⇄ 18, and #73's V-4 second half finally executes (reciprocal notes in the
+  carrier-duties file; notes only). `WS-1` — the 192.3(h) own-statement right becomes a third
+  entry. `WS-2` — the Rule 194 machinery enters as THREE entries. `WS-4` — the fourth
+  privilege_tier state enters BOTH vocabularies, **ruling Q-COM-10's direction toward one
+  shared vocabulary** — the unified list is drafted and put to him before execution (T-30);
+  Q-COM-10 closes only at that adoption.
+- **TIER 4 — `WS-3`: Michael answered by his own hand in-session**, running the question
+  through Lexis Protégé and supplying its answer. Treated as a LOCATOR, never authority — a
+  vendor AI asserting law is a model asserting law. Leads captured (ExxonMobil 97 S.W.3d 353
+  is the load-bearing exhibit; Fontenot, Scherer, Kona Coast, Young, Jimenez, Franklin Ctr.,
+  City of Dickinson, CSX, Baytown Nissan, Pope, TRE 503, Dorsaneo §90.02, two AG letter
+  rulings). **RULED: read the leads and draft the entry** (T-28), entering UNVERIFIED.
+- **TIER 5:** `DE1-SPEC-1` — **DATA**: authority slots carry entry number + status; the
+  renderer refuses to emit an UNVERIFIED authority without a visible flag; the registry
+  coupling is accepted as a commitment; DE-1 stays unauthorized to build. `Q-COM-12` —
+  restatement ADOPTED and ANSWERED: decision points at BOTH capture and transcription;
+  discoverability suggestion derives from PARTICIPANTS, not context_type (design direction
+  only). `V-8` — **ruled fresh today, superseding the RULED-at-#73 vs. Q5-OPEN framing
+  mismatch**: the §B three hazards go into §0.1 with 0.1.2's V-9 sentence conformed to
+  today's V-9 ruling. **§C-1 through §C-4 each put independently and ALL FOUR ADOPTED**
+  (C-4 into §0.1); C-3 carries his rider, commissioned as T-31: "possibly we should seek
+  another way of determining the official texas designations."
+- **TIER 6:** `OPEN-1` — ruled at its fourth recording: ONE APPENDED LINE to GL-1 reading
+  item 5 as "the instructions current at the re-check, per trigger 1" (append-only honored;
+  closes AUD-2/OPEN-1/GLR-1). `WB2-2` — entry 24's row annotated add-only (blocker is now
+  proposition-location). `TOC-6` — **#nn is DESIGN-ONLY**, ruled; the C-2 entry stays "—";
+  the collision class closes. `HK-7` — forward gap-note annotation (nothing back-written).
+  `TOC-4` — **the session-log index regenerates EVERY RUNNER BATCH; runner v10 → v11**
+  (fires trigger #3). The CHAT-DISPATCH v3 summary shortfalls: file left alone; the
+  corrections in the deliverables govern; pattern noted for the next dispatch author.
+- **RR-1 ran; no contradiction found.** Meter: stated "enough — proceed"; the Fable bar
+  resets today and the session spent it deliberately on adjudication, per the v21 economics.
+  **Nothing was verified; no Status line moved; T-26 was not run and remains the resume
+  point — entry 13 first.** Instructions **v22** drafted (trigger #3 × 2) and delivered for
+  Michael's paste.
+
+Staged for Code: this packet — the rulings record (new file), CHAT-DISPATCH-v4 (new file),
+and the §4 edit set (two registry files, CLAUDE.md rule 5, the CourtListener design doc §0.1,
+Go_Live_Gates GL-1 append, QUEUE-RUNNER v11, session-log preamble line, both workbook banners,
+queue merge).
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
 
 ## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-FOURTH invocation) — the docs-only batch that landed five staged documents untouched, and found that the ordinal the packet told it to check was the one thing the packet had wrong
 

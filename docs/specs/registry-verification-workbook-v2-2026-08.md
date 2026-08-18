@@ -9,6 +9,8 @@ against repo HEAD `5447538`.
 landed 2026-08-17 (fifty-third queue-runner invocation) and C-2 followed; `task-19-signoff-record-2026-08-17.md`,
 the five executed ROUTE-C wordings and the two dispatch files are all at HEAD. **This workbook is
 built on the executed text, not on the record's expected text.**
+**WORKING LAYER per Michael's ruling 2026-08-18 (WB2-1):** this file is the working
+description of the open backlog; the v1 workbook is FROZEN as the numbering record only.
 
 ---
 

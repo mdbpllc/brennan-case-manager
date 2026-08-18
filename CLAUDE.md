@@ -261,6 +261,18 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
    Cash America cluster 1576064, same collision — see
    registry-courtlistener-integration-design.md §0.1.)
 
+   **V-9 amendment (ruled by Michael 2026-08-18; see
+   fable-adjudication-record-2026-08-18.md §2):** Where the retrieval source
+   cannot support positive identification (no opinion-type marker, no
+   authoring language — the *Irwin* class), the majority may be identified
+   only from: the court's own document; a paginated vendor copy stating on
+   its face who delivered the opinion; or Michael's own identification, put
+   to him and recorded against the specific record and text he identified.
+   Absent all three, the honest report is "cannot identify — stop": no
+   characterization, no inference from position or combined text, and the
+   entry is flagged, never staged for verification, until identification is
+   possible.
+
 ## Data hygiene (privileged legal data)
 
 - **No real client data in this repo, ever.** Seed/demo data is fictional

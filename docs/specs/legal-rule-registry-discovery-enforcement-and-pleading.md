@@ -1,6 +1,6 @@
 # Legal Rule Registry — Discovery Enforcement, Declaratory Judgment, Venue and Pleading
 
-**Status: MIXED — 21 of 33 entries VERIFIED, 12 UNVERIFIED.** Re-derived from this file at execution, 2026-08-17; the header no longer reads ALL-UNVERIFIED because it no longer can. **Twenty-one entries carry Michael's sign-off from the Task 19 walk of 2026-08-17** — his word recorded entry by entry in `task-19-signoff-record-2026-08-17.md` §1 (edit E-5, §3 of that record). The other twelve do not, and for them nothing changes: under CLAUDE.md's registry discipline an unverified proposition may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.** **Three of the twelve — TRCP 192.3(h) (discoverability), 215.4(b) and 191.2 — carry wording ADOPTED 2026-08-17 under ROUTE-C and are UNVERIFIED BY DESIGN: adoption is not verification, and verification attaches to the new wording at a later look (execute-then-verify, #95).**
+**Status: MIXED — 20 of 33 entries VERIFIED, 13 UNVERIFIED.** Re-derived from this file at execution, 2026-08-18 (queue-runner, fifty-fifth invocation), by counting the 33 per-entry `**Status:**` lines rather than carrying the prior header's figures. **Twenty entries carry Michael's sign-off from the Task 19 walk of 2026-08-17** — his word recorded entry by entry in `task-19-signoff-record-2026-08-17.md` §1 (edit E-5, §3 of that record). **The count fell 21 → 20 because one verification DETACHED, not because anything was un-verified:** entry 19b (*Able Supply Co. v. Moye*) was reworded on Michael's ruling of 2026-08-18 (RL-1, `fable-adjudication-record-2026-08-18.md` §2), and verification attaches to wording (#95) — so the 2026-08-17 sign-off no longer attaches to what the entry now says, and re-verification is his at a later look. The other thirteen carry no sign-off, and for them nothing changes: under CLAUDE.md's registry discipline an unverified proposition may exist here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed legal outcome, until Michael verifies it.** A model asserting legal currency is never verification. **Only Michael verifies.** **Five of the thirteen carry wording ADOPTED under ROUTE-C and are UNVERIFIED BY DESIGN — TRCP 192.3(h) (discoverability), 215.4(b) and 191.2, adopted 2026-08-17; and entries 19a (*Ford Motor Co. v. Castillo*) and 19b (*Able Supply Co. v. Moye*), adopted 2026-08-18 at the Fable adjudication — adoption is not verification, and verification attaches to the new wording at a later look (execute-then-verify, #95).**
 
 **Filed 2026-08-12 (queue-runner, twentieth invocation).** Entries come from the two REQ-CAPTUREs reconciled that day: `REQ-CAPTURE_deficiency-handling_2026-08-11.md` §4 (enforcement of propounded written discovery — twenty-two entries) and `REQ-CAPTURE_uim-udja-petition-transform_2026-08-12.md` §4 (declaratory-judgment vehicle, fees, venue, and the pleading relief bracket — five entries). Both captures state their own propositions as unverified; that status is carried, not re-derived.
 
@@ -160,11 +160,12 @@
 **Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
 **Relied on for:** the BP and PRIV categories of the DE-1 taxonomy.
 
-## In re Volt Power, LLC, 2023 WL 2804430 (Tex. App.—Tyler 2023, orig. proceeding)
+## In re Volt Power, LLC, No. 12-23-00047-CV, 2023 WL 2804430 (Tex. App.—Tyler Apr. 5, 2023, orig. proceeding)
 
-**Cite:** In re Volt Power, LLC, 2023 WL 2804430 (Tex. App.—Tyler 2023, orig. proceeding).
+**Cite:** In re Volt Power, LLC, No. 12-23-00047-CV, 2023 WL 2804430 (Tex. App.—Tyler Apr. 5, 2023, orig. proceeding).
 **Proposition.** A party challenging discovery responses must explain each asserted deficiency.
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** — carried at a Westlaw cite; a reporter cite may now exist. Michael's verification act, not Code's.
+**Cite elements adopted 2026-08-18 (RL-3):** date + cause number, distinguishing the Apr. 20, 2023 companion record on the same docket. No pinpoint and no designation notation — not available from any source read. Reporter-cite flag survives.
 **Relied on for:** the per-item structure of the deficiency letter and grid (DE-1) — the practice reason deficiencies are stated request by request.
 
 ## De Anda v. Jason C. Webster, P.C., 2018 WL 3580579 (Tex. App.—Houston [14th Dist.] 2018, pet. denied)
@@ -180,6 +181,7 @@
 **Proposition.** Contention discovery is permissible; where no evidence supports the objections, it is an abuse of discretion to sustain them.
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED.**
 **Relied on for:** the contention-discovery line and the evidence-burden argument.
+**Cross-reference (ruled 2026-08-18, RL-5):** this opinion cites *In re Ochoa* (entry 18) at \*2 for precisely entry 18's proposition — "see also In re Ochoa, No. 12-04-00163-CV, 2004 WL 1192444, at \*2 (Tex. App.—Tyler May 28, 2004, orig. proceeding) (citing TEX. R. CIV. P. 192.5(c)(1))" — the closest thing to a treatment signal either entry has.
 
 ## In re Ochoa, 2004 WL 1192444 (Tex. App.—Tyler 2004, orig. proceeding)
 
@@ -187,12 +189,14 @@
 **Proposition.** Contention discovery is not work product.
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED.**
 **Relied on for:** rebutting work-product objections to contention discovery.
+**Cross-reference (ruled 2026-08-18, RL-5):** relied on by *In re Sting Soccer* (entry 17) — a 2017 Dallas court citing this 2004 Tyler opinion at \*2 for exactly this proposition.
 
 ## Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009)
 
 **Cite:** Ford Motor Co. v. Castillo, 279 S.W.3d 656 (Tex. 2009).
-**Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's claim.
+**Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's case, or where the denial severely compromises a party's ability to present a viable defense.
 **Status:** UNVERIFIED.
+**Wording:** adopted 2026-08-18 (ROUTE-C, Fable adjudication — see fable-adjudication-record-2026-08-18.md §2); verification attaches to this wording.
 **Relied on for:** the motion to compel's framing of the central deficiencies.
 **Split note:** **entry 19a**, from former joint entry 19, split one entry per case on Michael's ruling 2026-08-13 (#73, V-5) and executed 2026-08-16. The co-authority *Able Supply Co. v. Moye*, 898 S.W.2d 766 (Tex. 1995), is now **entry 19b** — **cross-referenced, never merged.** The proposition, cite and reliance line are carried verbatim from the joint entry; nothing was re-researched.
 **ATTRIBUTION QUESTION — CARRIED, NOT ANSWERED BY THE SPLIT.** The joint entry never recorded which case supplied which half of the proposition, so both entries carry it whole. Resolving the attribution is part of verification. **On this entry the question is sharper, because there is a separate opinion:** the majority is FLP **opinion 9513075, type `020lead`, Johnson, J.** (cluster 895102, Tex. Sup. Ct. No. 06-0875, filed 2009-04-03, Published), and **a CONCURRENCE exists — opinion 9513076, Wainwright, J.** One read of 9513075 confirms the proposition is the majority's. Source: `registry-citator-pass-2026-08-13.md` §2.1; `registry-verification-workbook-2026-08-13.md` §4 case table.
@@ -201,8 +205,9 @@
 ## Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995)
 
 **Cite:** Able Supply Co. v. Moye, 898 S.W.2d 766 (Tex. 1995).
-**Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's claim.
-**Status:** VERIFIED — Michael, 2026-08-17 (Task 19 walk; see task-19-signoff-record-2026-08-17.md).
+**Proposition.** It is an abuse of discretion to deny discovery going to the heart of a party's case, or where the denial severely compromises a party's ability to present a viable defense.
+**Status:** UNVERIFIED. The 2026-08-17 verification (Task 19 walk) attached to the superseded wording and DETACHED on the 2026-08-18 rewording — verification attaches to wording (#95); re-verification is Michael's at a later look.
+**Wording:** adopted 2026-08-18 (ROUTE-C, Fable adjudication — see fable-adjudication-record-2026-08-18.md §2); verification attaches to this wording.
 **Relied on for:** the motion to compel's framing of the central deficiencies.
 **Split note:** **entry 19b**, from former joint entry 19, per #73 (V-5), executed 2026-08-16. The co-authority *Ford Motor Co. v. Castillo*, 279 S.W.3d 656 (Tex. 2009), is now **entry 19a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **ATTRIBUTION QUESTION — CARRIED.** Same as 19a: the joint entry did not record which case supplied which half.
@@ -216,24 +221,26 @@
 **Relied on for:** the evidence-burden argument against the objection set.
 **Split note:** **entry 20a**, from former joint entry 20, per #73 (V-5), executed 2026-08-16. The co-authority *Collins v. Kappa Sigma Fraternity*, 2017 WL 218286 (Tex. App.—Fort Worth 2017), is now **entry 20b** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **THIS IS THE CASE THAT DECIDED V-5.** A 1999 Texas Supreme Court authority was hostage to a 2017 memorandum opinion that is not in FLP, not on the public web, and may never be retrieved — a joint entry verifies at the speed of its slowest case. Split, this entry verifies on its own.
-**DUPLICATE-RECORD FLAG — a retrieval hazard, not a currency finding.** FLP holds **two clusters carrying the same reporter cite**: **2419858** (filed 1999-08-26, single `010combined`, citation_count 207 — treated as operative) and **5269700**, "In re Chevroletgeo" (filed 1999-06-10, two sub-opinions 5097124/5097125, citation_count 3), same docket 97-1171. **A lookup landing on 5269700 reports three citing references instead of 207 and reads as a dead authority.** The June 10 record is most likely the original opinion superseded on rehearing, **but that characterization is inference and is not asserted — no opinion text was read.** One look, and it is a **records** look, not a law look (`registry-citator-pass-2026-08-13.md` §2.3).
+**DUPLICATE-RECORD FLAG — a retrieval hazard, not a currency finding.** FLP holds **two clusters carrying the same reporter cite**: **2419858** (filed 1999-08-26, single `010combined`, citation_count 207 — treated as operative) and **5269700**, "In re Chevroletgeo" (filed 1999-06-10, two sub-opinions 5097124/5097125, citation_count 3), same docket 97-1171. **A lookup landing on 5269700 reports three citing references instead of 207 and reads as a dead authority.** The caption has been read (records-look staging 2026-08-17, §1.4): "Decided June 10, 1999. Rehearing Overruled August 26, 1999." — rehearing was OVERRULED; nothing was superseded; the two records are ONE decision carrying different dates out of one caption. Operative record for citation: 2419858 (reporter cite, star pagination, WL cite 1999 WL 374136). Inference retired by Michael's ruling 2026-08-18 (RL-2). The look ran 2026-08-17; the citator pass record stands unedited as a dated record of what that pass found.
 **ATTRIBUTION QUESTION — CARRIED.** The joint entry did not record which case supplied which half.
 
-## Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017)
+## Collins v. Kappa Sigma Fraternity, No. 02-14-00294-CV, 2017 WL 218286 (Tex. App.—Fort Worth Jan. 19, 2017, pet. denied) (mem. op.)
 
-**Cite:** Collins v. Kappa Sigma Fraternity, 2017 WL 218286 (Tex. App.—Fort Worth 2017).
+**Cite:** Collins v. Kappa Sigma Fraternity, No. 02-14-00294-CV, 2017 WL 218286 (Tex. App.—Fort Worth Jan. 19, 2017, pet. denied) (mem. op.).
 **Proposition.** A party resisting discovery must produce evidence supporting its objections, not conclusory allegations.
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** (Westlaw cite) — **carried unchanged.**
 **Relied on for:** the evidence-burden argument against the objection set.
 **Split note:** **entry 20b**, from former joint entry 20, per #73 (V-5), executed 2026-08-16. The co-authority *In re Alford Chevrolet-Geo* is now **entry 20a** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **NOT LOCATED — retrieval is the whole task on this entry.** Absent from FLP and from the public web at #65 and again at the 2026-08-13 citator pass; no citing graph and no treatment posture exist for it (`registry-citator-pass-2026-08-13.md` §3). **Beware the 2010 sibling appeal in the same litigation, No. 02-09-00305-CV** — it is not this opinion. **This is the authority that was holding entry 20a hostage; after the split it holds only itself.**
+**LOCATED 2026-08-17** via Michael's Lexis pull (WESTLAW-5): cause 02-14-00294-CV, decided Jan. 19, 2017, MEMORANDUM OPINION; pet. denied Jan. 26, 2018 (Kappa Sigma Fraternity v. Collins, 2018 Tex. LEXIS 76, from the copy's own Subsequent History); the 2010 sibling No. 02-09-00305-CV positively distinguished by the copy's own Prior History; the proposition is in the opinion by quotation of *Alford* at 181. **Cite elements adopted by Michael 2026-08-18 (RL-3), every element from the copy's face.** The reporter-cite flag SURVIVES — the copy carries Lexis + Westlaw only. Staging: registry-records-look-staging-2026-08-17.md §2.3.
 **ATTRIBUTION QUESTION — CARRIED.**
 
-## In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding)
+## In re Redman, No. 12-23-00212-CV, 2023 WL 6760074 (Tex. App.—Tyler Oct. 11, 2023, orig. proceeding)
 
-**Cite:** In re Redman, 2023 WL 6760074 (Tex. App.—Tyler 2023, orig. proceeding).
+**Cite:** In re Redman, No. 12-23-00212-CV, 2023 WL 6760074 (Tex. App.—Tyler Oct. 11, 2023, orig. proceeding).
 **Proposition.** Merely listing a privilege proves nothing; the burden rests on the party asserting it.
 **Status:** UNVERIFIED. **REPORTER-CITE CHECK FLAGGED** (Westlaw cite) — **carried unchanged.** Note beside it, not in place of it: the citator pass records this as a **memorandum opinion**, on which its reading is that the **WL cite is permanent**. Whether that resolves the flag or merely explains it is Michael's call at verification; the flag was not removed.
+**Cite elements adopted 2026-08-18 (RL-3):** date + cause number, distinguishing the Oct. 18, 2023 companion. No pinpoint and no designation notation — not available; the memorandum-opinion note above keeps its unconfirmed-premise posture. Reporter-cite flag survives.
 **Relied on for:** the PRIV category of the DE-1 taxonomy.
 **Split note:** **entry 21a**, from former joint entry 21, per #73 (V-5), executed 2026-08-16. The co-authority *Peeples v. Fourth Supreme Judicial Dist.*, 701 S.W.2d 635 (Tex. 1985), is now **entry 21b** — cross-referenced, never merged. Proposition, cite and reliance line carried verbatim.
 **CONFIRMATION LOOK, ONE CLICK:** the substantive opinion is **FLP opinion 9890720, October 11, 2023** — **not** the October 18 mootness dismissal. A reported companion for the same proposition already sits in this file: *In re Park Cities Bank*, 409 S.W.3d 859, **at 868** (`registry-citator-pass-2026-08-13.md` §3 and §2.6).

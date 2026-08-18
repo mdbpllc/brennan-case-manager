@@ -3,7 +3,7 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v10, 2026-08-16. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v11, 2026-08-18. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
@@ -17,7 +17,8 @@
      health-check-skip recording, and the BUILD-STATE recompute rule added by Michael's ruling
      2026-08-16 (QR-6(a)–(f) + OPEN-5(a), v9); Step 4 item 5 completed by Michael's authorization
      2026-08-16 (#95) — delete-by-explicit-filename, the QR-6(c) half the v9 amendment left at
-     Step 1 only (v10). -->
+     Step 1 only (v10); session-log-index regeneration added to Step 4 item 1 by Michael's ruling
+     2026-08-18 (TOC-4, v11). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -146,6 +147,10 @@ it now and record the result. Never skip silently.**
    **Format comes from THIS file's Step 4 rules — never copy format from a runner line authored
    under an earlier runner version (QR-6(d), ruled 2026-08-16 in dynamic form; a named static
    exemplar was proposed and rejected because it goes stale — the QR-5 shape).**
+   **Then REGENERATE `docs/specs/session-log-toc.md` over the log as just written (TOC-4, ruled
+   2026-08-18): regenerate in full per that file's own banner — never append rows — so the index
+   rides the same commit as the entries it indexes and is current at HEAD. Follow the index file's
+   own stated method and basis-row convention.**
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's — AND
    into `docs/specs/attorney-review-queue.md`, which is the standing

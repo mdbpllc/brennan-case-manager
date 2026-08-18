@@ -85,6 +85,11 @@ drafting continues via the drafting-disclosures skill, and the engine arrives as
 a live system. First recorded 2026-08-11 in the design session's project-knowledge capture;
 canonical here and in session-log #53.
 
+**Clarification appended 2026-08-18 (OPEN-1, ruled by Michael at its fourth recording):**
+item (5)'s "instructions v15" is read as **"the instructions current at the re-check, per
+trigger 1."** The version number above stands as written — this doc is append-only — and it no
+longer carries meaning, so it can never drift again. This closes AUD-2 / OPEN-1 / GLR-1.
+
 ## Supabase account facts (for future sessions)
 
 - Account created 2026-07-25 via GitHub login (mdbpllc identity), free tier.
