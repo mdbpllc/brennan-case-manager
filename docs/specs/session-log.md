@@ -16,6 +16,186 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-18 — QUEUE-RUNNER batch (runner line; FIFTY-SEVENTH invocation) — the docs-only batch that landed a correction entry and five corrected-in-place research documents, and found that the packet reporting twenty-two defects had miscounted its own open items in two directions
+
+**One packet, executed in full under runner v11.** **Packet:** `push-to-code_audit-corrections_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **68,516 bytes, mtime `2026-08-18 09:51:33 −0500`, sha256 `b1743f8524aebd9fcd6be3e97ca3fb69fd81feaadf27bf220c6ea746211842f3`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built. §5 is NONE, and nothing was built.**
+
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin refs/heads/master`** — the live remote read, not the local tracking ref. Both `a25c484`; `git rev-list --left-right --count HEAD...origin/master` returned **0 / 0**. Not behind, not ahead.
+- **NOTHING WAS CARRIED IN FROM THE FIFTY-SIXTH, ON EVIDENCE RATHER THAN SILENCE.** QR-5 requires a failed push or a surviving zip to be carried forward. Neither exists: `a25c484` — the SHA the live `ls-remote` returned — **is the fifty-sixth invocation's own commit** (`git log -1 --format=%s a25c484`), so that push landed; and `inbox/` held **exactly one zip, this packet's**, so that deletion landed too.
+- **QR-5 already-executed check: NEGATIVE — genuinely pending, and neither "already committed" nor "committed but unpushed."** The five canonical paths existed but at their **pre-correction** sizes (24,081 / 20,818 / 23,203 / 22,002 / 12,086) rather than the post-correction sizes §2 states, and `## #103` was absent from the log. HEAD and `origin/master` are the same tree, so the second limb cannot arise.
+- **THE §1 STOP CONDITION MATCHED EXACTLY ON ALL SEVEN PINNED FILES**, bytes and sha256 both: `session-log.md` 1,035,741 B `03f94b27399cb308`, `attorney-review-queue.md` 506,364 B `b499e41293f750bc`, and the five research documents at `56b47c4995716266`, `f3cbf87c09a4335c`, `814aedbec06b748c`, `bb23abead7370c33`, `b21376bd42bcb677`.
+- **THE DT-1 CHECK INVERTED FROM THE FIFTY-SIXTH'S FINDING, AND THAT INVERSION IS THE PART WORTH KEEPING.** That batch found its Bash shell reported **GMT** and silently ignored `TZ`, so a bare `date` would have stamped it wrong. **This session's Bash shell is the other way round: bare `date` returns `Tue Aug 18 09:55:35 CDT 2026`, which is RIGHT, while `TZ=America/Chicago date` returns `14:55 GMT`, identical to `date -u`** — here the `TZ=` prefix is the thing that lies. PowerShell, the authority under DT-1, reads `Get-Date -Format "yyyy-MM-dd HH:mm:ss K"` → **`2026-08-18 09:55:33 −05:00`**, `[System.TimeZoneInfo]::Local.Id` → **`Central Standard Time`**. **Two consecutive batches, two different shells, two OPPOSITE unsafe commands** — so the rule that survives is neither "prefer `date`" nor "prefer `TZ=`" but **read the wall clock through PowerShell and check the shell against it**. Every stamp in this batch is **2026-08-18**, matching the packet, and **this line adds no `TOC-2` inversion**: it sits above `#103`, also 2026-08-18, above the fifty-sixth's 2026-08-17.
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the EIGHTH consecutive firing.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table or in `git status`** — the changed paths are the log, the index, the queue, BUILD-STATE and the five documents, all under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch.
+- **WHAT EXECUTED — `#103` PREPENDED VERBATIM AND FIVE DOCUMENTS REPLACED IN FULL, VERBATIM VERIFIED RATHER THAN ASSUMED.** sha256 of each staged file was compared against the file as written; **all five IDENTICAL**. The packet's stated post-correction sizes AND non-blank line counts were **re-derived rather than trusted, and all ten figures matched**: `registry-new-entry-drafts-2026-08-17.md` 30,728 B / 269, `ws3-privilege-authority-read-2026-08-17.md` 30,463 B / 271, `criminal-opinions-read-2026-08.md` 32,415 B / 321, `privilege-tier-unified-vocabulary-proposal-2026-08-17.md` 26,911 B / 358, `designation-source-method-research-2026-08-17.md` 18,947 B / 188. Each opens with a **`⚠ CORRECTED IN PLACE 2026-08-18`** banner naming `#103`, and each was spot-checked for its own named correction before it was written — the withdrawn "Never cite 415," the restored TRAP 77.3 bar, the retracted 174,292-to-1 measurement, the VERIFIED-not-UNVERIFIED migration comment, and the `Q-WS2-1(e)` limb.
+- **RUNNER-FOUND, AND IT IS THE SAME CLASS THE PACKET'S OWN AUDIT WAS REPORTING ON: THE PACKET MISCOUNTED ITS OPEN ITEMS, IN TWO DIRECTIONS, AND NEITHER FIGURE WAS EDITED.** **(1) The count is wrong.** §7's header reads *"Twenty-eight items — twenty-three carried or amended, five new,"* and `#103` reads *"Open items went **26 → 28**."* **The table holds THIRTY rows**, counted mechanically off the ID column, and the arithmetic confirms it: the fifty-sixth invocation entered **26**, and this packet's table marks **FOUR rows NEW** — `Q-WS3-6`, `Q-DES-6`, `Q-DES-7`, `Q-AUDIT-1` — so **26 + 4 = 30**. The "five new" figure counts three new IDs plus two new *options on existing rows* (`Q-RL6-1`'s *Whaley*, `Q-WS3-5`'s *XL Specialty*), a category error on top of the arithmetic, **and it omits `Q-AUDIT-1` — the packet's own headline item — from the new count entirely.** **(2) The amend list is one short of the packet's own table.** §4.7 names **eight** rows to amend in place; §7's table marks **NINE** `**AMENDED**`, the ninth being **`Q-DES-4`** (*"Rows A, B, D, E **and F** were not tested"*). **The queue merge followed §7, the fuller statement, and amended all nine.** **NEITHER FIGURE WAS CORRECTED IN THE ENTRY OR IN ANY DOCUMENT** — `#103` was ordered prepended verbatim and a change to packet content is Michael's (the `Q-T19-3` precedent, where two arithmetic errors were likewise left standing inside a document ordered verbatim). **The correct figure, re-derived at HEAD after the merge: THIRTY rows in the CHAT-DISPATCH v4 block.**
+- **THE QUEUE MERGE RAN AS TWO ACTS PER QR-6(b).** Rows: **four ENTERED** with full question text per QR-1 (`Q-WS3-6`, `Q-DES-6`, `Q-DES-7`, `Q-AUDIT-1`), **nine AMENDED IN PLACE** (`Q-WS2-1`, `Q-WS3-1`, `Q-WS3-5`, `Q-RL6-1`, `Q-RL6-3`, `Q-RL6-5`, `Q-COM-10-A`, `Q-DES-1`, `Q-DES-4`) and **four ANNOTATED add-only** (`Q-WS2-2`, `Q-WS1-1`, `Q-COM-10-B`, `Q-DES-5`) — **no duplicate row was minted for any amended item**, per QR-1's no-second-row discipline and §6's express DO-NOT. **NOT ONE ROW WAS CLOSED.** Second act: the Status header's per-batch reconcile sentence was written, naming this batch.
+- **THE BACKLOG DID NOT MOVE, AND IT WAS RE-DERIVED AT HEAD RATHER THAN COPIED FROM THE PACKET.** `legal-rule-registry-discovery-enforcement-and-pleading.md` **20 VERIFIED / 13 UNVERIFIED against 33 `**Status:**` lines**; `legal-rule-registry-criminal-plea-and-costs.md` **3 / 4 against 7**. **40 entries, 23 verified, 17 not** — the packet's figure, independently reached. **No registry file was touched by this batch, no entry was created, and no Status line moved anywhere in the repo.** The five documents are research memos; replacing them changes no registry state.
+- **`QR-6(e)` DID NOT FIRE — every act the packet asked for sat in a routing row or a Step 4 item.** The §8.1 class of packet-added act (the `.git/` deletion the fiftieth invocation had to route) has no analogue here. **`.git/index.lock` is absent** (`ls .git/index.lock`), the packet's §1 hygiene claim checked rather than taken — the **second** consecutive design session to leave the checkout clean, so `GIT_OPTIONAL_LOCKS=0` now has two data points rather than one.
+- **`TOC-4` FIRED FOR THE THIRD TIME:** `docs/specs/session-log-toc.md` regenerated in full over the log as this batch writes it — **FIFTH EDITION, 216 rows** — so the index rides the same commit as the entries it indexes. The byte-proof was re-run against the fourth edition's basis.
+- **OPEN ITEMS MERGED — the CHAT-DISPATCH v4 block now stands at THIRTY, and every one of them is Michael's.** `Q-WS2-1` (now five limbs, `(e)` being the VERIFIED `TRCP 192.5(c)(1)` entry the drafts document missed in its own destination file) · `Q-WS2-2` · `Q-WS2-3` · `Q-WS1-1` · `Q-WS3-1` (narrowed to a cross-reference question — the rules decided the substance) · `Q-WS3-2` · `Q-WS3-3` · `Q-WS3-4` · `Q-WS3-5` (now the strongest item in the set: *In re XL Specialty Ins. Co.*, 373 S.W.3d 46) · `Q-WS3-6` (*In re Arden*) · `Q-RL6-1`–`Q-RL6-6` (`-1` gains *Whaley v. State*; `-3`'s remedy corrected from a pinpoint to a parenthetical; `-5`'s count corrected to four and its constraint to a TRAP 77.3 **bar**) · `Q-COM-10-A`–`F` (`A` rewritten to put the prior question — should `privilege_tier` be exhaustive at all? — which has never been ruled) · `Q-DES-1`–`Q-DES-7` (`-1`'s premise corrected; `-4` widened to five untested rows; `-6` and `-7` new) · **`Q-AUDIT-1`, the one that outlives this batch: RR-1 ran and caught none of these defects, because it checks documents against later rulings rather than against primary sources, and no house convention does. The multi-agent adversarial preflight is the only mechanism that ever has, it has now paid three times out of three, and it is still not a standing convention.** **`T-26` is still on the hand list with no queue row** — flagged now by three consecutive batches; minting one is Michael's act.
+
+Staged for Code: none.
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
+
+## 2026-08-18 (#103) — CORRECTION: an adversarial audit of the five CHAT-DISPATCH v4 research
+documents confirmed twenty-two defects across three severity bands, including a headline
+measurement with no control arm, a manufactured legal gap that rule text and a VERIFIED registry
+entry already closed, an unsupported superlative about this project's own record, and a
+copy-forward that would have landed a false verification status in tracked content — all five
+documents CORRECTED IN PLACE; no registry entry was ever created, so nothing propagated
+(design session, Opus 5, Cowork; audit run on Opus, five parallel adversarial auditors)
+
+CORRECTION ENTRY, required fields:
+
+- WHAT WAS ASSERTED: the five research documents landed by the fifty-sixth invocation at `a25c484`
+  — `registry-new-entry-drafts-2026-08-17.md`, `ws3-privilege-authority-read-2026-08-17.md`,
+  `criminal-opinions-read-2026-08.md`, `privilege-tier-unified-vocabulary-proposal-2026-08-17.md`
+  and `designation-source-method-research-2026-08-17.md` — together with session-log `#102`, which
+  summarizes them. Specifically asserted, among others: that **WS-3's work-product limb is
+  "UNDECIDED by any authority located"** and that a **2021 rule change** created that gap; that a
+  witness statement taken from **a third-party witness or an adjuster is "not protected by the
+  attorney-client privilege at all"**; that **LaPorte's definition is at 414 and "Never cite 415"**;
+  that **five of the nine criminal opinions** are marked "DO NOT PUBLISH"; that FLP returned
+  **"174,292 to 1,"** confirming hazard 0.1.6 **"empirically rather than by assertion"**; that
+  FLP's `precedential_status` **"is not failing — it is answering a different question,
+  correctly"**; that §3 of the drafts document checked its collision **"against both files at
+  HEAD"**; that TRCP 199.6 preserves an objection **"which 193.4 does not say in those terms"**;
+  and that this was **"the first design session in the recorded series to read the checkout without
+  stranding"** a `.git/index.lock`.
+- WHAT IS TRUE INSTEAD: **twenty-two findings were confirmed — three HIGH, eight MEDIUM, eleven
+  LOW — and I re-derived the decisive ones myself rather than taking any on faith** (the #96/#97
+  discipline). Evidence, each with the command or source that produced it:
+  **(1) The WS-3 work-product gap does not exist.** `TRCP 192.5(c)(1)`, verbatim from the
+  clean-authority PDF: *"the following is **not** work product protected from discovery: (1)
+  information discoverable under Rule 192.3 concerning experts, trial witnesses, **witness
+  statements**, and contentions."* *Jimenez* and *Team Transport* applied that provision and
+  **ordered production** — they did not rest on a work-product assertion, they rejected one.
+  **And this project already carries it as `## TRCP 192.5(c)(1)`, Status: VERIFIED — Michael,
+  2026-08-17**, in the very file the new entry was to be inserted into, with a *"Relied on for"*
+  naming the same `privilege_tier` consumers. **`Q-WS3-1` would have spent a ruling on a settled
+  question.**
+  **(2) Rule 194.5's work-product bar is 1999, not 2021.** The Rule 194 comment to the **1999**
+  change: disclosure is afforded *"without preparation of a lengthy inquiry, and **without
+  objection or assertion of work product**."* The **2021** comment describes a different change —
+  disclosure *"automatically, without awaiting a discovery request."* *Fontenot*'s own vehicle was a
+  194.2(i) request for disclosure, and *Jimenez* argued 194.5 in 1999.
+  **(3) The adjuster sentence is wrong three ways.** *W&G Trucking*'s declarant was the **defendant
+  driver — a party** — and lost on a **failure of proof** (*"the record does not establish that
+  Jamison was a 'client'"*); *In re Arden* (El Paso 2004) holds an insured's recorded statement to
+  his carrier's **adjuster** privileged, applying *Fontenot*; and *ExxonMobil* protected documents
+  whose witness-statement content **was a recounting of a third party's words.**
+  **(4) LaPorte does not split by page.** `grep -n` on the extraction: the `[*415]` marker is at
+  line 120; the holding sentence *"Therefore, we hold that a defendant is prosecuted in 'a single
+  criminal action'…"* is at line 130; the void-sentence language at line 139. **Both halves are on
+  415, in adjacent paragraphs.** *Carter* n.4 pin-cites the definition **"412, 414-15"**; *Whaley v.
+  State* (Dallas 2020) cites **415** for it as good law. **"Never cite 415" would have barred
+  counsel from the sentence stating the rule.** Two further errors rode with it: *Carter*'s
+  reaffirmation carries **four votes** (plurality, and dictum — the case was decided on
+  cognizability), against **five** for the overruling; and **"may be raised at any time" was
+  NARROWED, not overruled** — it *"does not control … cognizability in the habeas corpus
+  context,"* while on direct appeal § 3.03 remains a Marin waiver-only right, as *Stiger* (2024)
+  confirms by citing LaPorte at 415 for it. **The original ran against the client.**
+  **(5) Four, not five, are "DO NOT PUBLISH"** — re-derived per file: *Schmitt*, *Bailey*,
+  *Simmons 2014*, *Simmons 2015*. The memo's own §5 table listed four. The error propagated to
+  four places. **And the constraint was understated: all nine are Court of Criminal Appeals
+  opinions, governed by TRAP 77, not TRAP 47. TRAP 77.3, verbatim: *"Unpublished opinions have no
+  precedential value and must not be cited as authority by counsel or by a court."* A bar, not a
+  "citation limit."**
+  **(6) The FLP measurement had no control arm.** Re-run: `court=texapp` with **no `q` filter at
+  all** returns the **same count: 1** — the same single record. The phrase did no work; the ratio
+  measures FLP's ingestion of the whole `texapp` corpus and would come out the same for any subset.
+  **Retracted.** Relatedly, `"full precedential"` appears **0 times** in the TRAP PDF; 47.7(b) is
+  entirely negative and preservative, and the affirmative proposition sits in an amendment comment
+  whose year the two-column extraction could not resolve.
+  **(7) §3 of the drafts document did not check what it said it checked** — it checked the sibling
+  file for Rule 194 and missed the VERIFIED 192.5(c)(1) entry in the **destination** file, eight
+  headings above its own insertion point.
+  **(8) TRCP 193.4(b), verbatim:** *"A party need not request a ruling on that party's own objection
+  or assertion of privilege to preserve the objection or privilege."* **The asymmetry entry F
+  asserted — and told the reader to carry "into any deadline or waiver logic" — does not exist**,
+  and 193.4(b) had been read (entry B's own dedupe note says so).
+  **(9) The superlative is false.** `git cat-file -p d30f2ab:docs/specs/session-log.md | grep -in
+  'deliberately not run'` returns **two prior design sessions** — `#95` and `#96` — each recording
+  that it read the checkout through the bridge with *"`git status` deliberately not run there."*
+  **One grep, on a checkout the session already had open.**
+- WHICH ENTRY IT CORRECTS: **`#102`**, and the five documents it landed. **`#102` stands as
+  written**, as does the fifty-sixth invocation's runner line. `#101` is **not** corrected — every
+  one of its five evidence items was re-verified and holds.
+- ACTOR: **Opus 5** (the CHAT-DISPATCH v4 design session, Cowork). **No error on the Code side:**
+  the fifty-sixth invocation landed all five documents byte-identical to the packet, which this
+  session confirmed independently by sha256 against its own staged copies before auditing. The
+  runner executed correctly; the content it executed was defective.
+- FAILURE CLASS: **five classes, and one of them is already on this project's record by name.**
+  **(a) MANUFACTURED GAP** — declaring a question undecided that operative rule text answers on its
+  face, when the project **already carried the answer as a VERIFIED entry**. This is the
+  "check the repo record first" convention failing in the direction of inventing work rather than
+  criticizing someone. **New to the record in this direction.**
+  **(b) UNSUPPORTED SUPERLATIVE** — *"first design session in the recorded series,"* *"A
+  SUPERSESSION NOBODY FLAGGED,"* *"cheapest by a wide margin,"* *"the finding of §3."* Each is a
+  claim about the world or about this project's record, made without the check that would have
+  settled it. **The prior instance is the same convention's origin: verify before asserting.**
+  **(c) ONE-ARMED MEASUREMENT** — a headline empirical claim presented as *"confirmed empirically
+  rather than by assertion"* with no control arm. **New to the record.**
+  **(d) COPY-FORWARD** — the migration comment's *"registry entry UNVERIFIED"* was carried verbatim
+  from the 2026-08-16 migration's rationale, where it was **true when written** and false by
+  2026-08-17. **This is the named copy-forward class (#13 / R-3), and it appeared in a packet whose
+  own T-32 was a correction about a different carried-state failure.** It was drafted for commit
+  into tracked content.
+  **(e) QUOTATION DRIFT** — paraphrases that changed scope: *"which is"* → *"that is"* (moving a
+  clause's antecedent), a dropped *"or information,"* a dropped *"For purposes of these rules,"* a
+  loosened 199.6 proviso, an unmarked construction of *"this rule."* **Each survives a word-level
+  spot-check, which is the check the house rule prescribes.**
+  **AND A FINDING ABOUT A CONVENTION, worth more than any single defect: RR-1 RAN AND CAUGHT NONE
+  OF THIS.** RR-1 re-reads documents authored earlier in a session against rulings made later in
+  the same session — it caught two genuine cross-document interactions. **It is not designed to
+  check a document against its primary sources, and nothing in the house conventions is.** The
+  multi-agent adversarial preflight is the only mechanism that has ever caught this class, it has
+  now paid **three times out of three** (#96, #97, and here), and **it is still not a standing
+  convention.**
+- WHAT CHANGED AS A RESULT: **all five documents were CORRECTED IN PLACE** — Michael's ruling of
+  2026-08-18, taken because these are research memos rather than ruled registry text and will be
+  read as current. Every correction is marked in the document, the retracted text is quoted inside
+  its own correction block rather than deleted, and each names this entry. **Nothing propagated
+  into the registry: no entry from any of these documents was ever created, and the backlog is
+  unchanged at 40 — 23 VERIFIED / 17 UNVERIFIED, re-derived at HEAD.** Open items went **26 → 28**:
+  `Q-WS3-1` narrowed to a cross-reference question, `Q-RL6-3`'s remedy corrected from a pinpoint to
+  a parenthetical, `Q-RL6-5`'s count and constraint corrected, `Q-DES-1`'s premise corrected,
+  `Q-COM-10-A` rewritten to put the prior question that was never ruled, `Q-WS2-1` gained a fifth
+  limb `(e)`, and **five new items** — `Q-WS3-6` (*In re Arden*), `Q-DES-6` (TRAP 77 and CCA
+  unpublished opinions), `Q-DES-7` (FLP caption-field scraping artifact), plus new options on
+  `Q-RL6-1` (*Whaley v. State*) and `Q-WS3-5` (*In re XL Specialty Ins. Co.*).
+  **THREE AUTHORITIES THE ORIGINAL PASS NEVER LOCATED are now named, all LOCATOR-ONLY, none read,
+  none V-9-identified:** ***In re XL Specialty Ins. Co.*, 373 S.W.3d 46 (Tex. 2012)** — the Supreme
+  Court on TRE 503(a)(2) "representative of the client," the element *Fontenot*'s holding rests on;
+  ***In re Arden***, holding an adjuster-recorded statement privileged; and ***Whaley v. State***
+  (Dallas 2020), which **applies LaPorte's definition and art. 102.073 in one opinion** — the
+  entry-31 bridge T-27 was commissioned to look for, and which was not in the `Opinions\` folder.
+  **`#102` and the runner line stand as written.**
+
+ALSO RECORDED — WHAT SURVIVED THE ATTACK, because an audit that reports only failures misleads:
+
+**The core legal proposition of WS-3 held completely.** Comment 9 limits 192.3(h) by privilege;
+both quotations verbatim; both pinpoints correct; both V-9 identifications correct on the face of
+each document; the derivation note — *"no located case says '192.3(a) governs 192.3(h)' in those
+terms"* — **verified exactly** (`search_document` for "192.3(a)" in *Fontenot* returns 0). **The
+supersession finding is sound in substance.** The forensic layer of the drafts document held
+completely: extraction reproduces byte-for-byte, **every labeled verbatim quotation returns exactly
+1 hit in two independent extraction modes**, the page-header artifact is exactly where §1 says, all
+six insertion points are valid and convention-conforming, and the count arithmetic re-derives at
+both the claimed commit and HEAD. **The Rule 194 collision is real.** The FLP lead sweep was exact
+on every checkable item. **`#101`'s five evidence items are exact, every one.** And the two hygiene
+claims hold: nothing was written into any connected folder, and no `.git/index.lock` was stranded —
+**only the boast about being first was false.**
+
+**One limit, stated rather than smoothed:** eight items the auditors could not verify are recorded
+in their reports as unverifiable, chiefly conduct claims about the session's own method (that a
+hand-off file truncation was detected and corrected; that `inbox/` was empty at session start; that
+documents were "read in full"). **Nothing in the repo can confirm or refute those, and they should
+be read as the session's own account rather than as established fact.**
+
+Staged for Code: this entry and the five corrected documents.
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
+
 ## 2026-08-17 — QUEUE-RUNNER batch (runner line; FIFTY-SIXTH invocation) — the docs-only batch that landed five research documents untouched, entered twenty-six questions, and caught the DT-1 drift on its own side of the wire before it could stamp anything
 
 **One packet, executed in full under runner v11.** **Packet:** `push-to-code_chat-dispatch-v4-chain_2026-08-17.zip`, identity pinned at Step 1 per QR-6(c) — **57,055 bytes, mtime `2026-08-17 22:38:48 −0500`, sha256 `5d55f2ca1817878c1e9d77816a476fab998e1d6ed0daae384e98a780fcf9b83a`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built. §5 is NONE, and nothing was built.**

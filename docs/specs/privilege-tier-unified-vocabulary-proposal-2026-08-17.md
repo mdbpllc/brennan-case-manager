@@ -9,38 +9,54 @@ executing the direction ruled at `WS-4` on 2026-08-17.
 
 ---
 
-## 0. THE FINDING THAT SHOULD BE READ BEFORE THE LIST
+> ## ⚠ CORRECTED IN PLACE 2026-08-18 — READ THIS FIRST
+> Audited adversarially 2026-08-18. **§0's argument was a category slide, and — decisively — it
+> defeats §2's own conclusion when applied evenly.** §2 over-read TRCP 192.5(d) by dropping its
+> scope limiter. And the migration header carried a **copy-forward** asserting a registry entry is
+> UNVERIFIED when it was **VERIFIED at the very commit this document names** — text drafted for
+> commit into tracked content. Each correction is recorded at session-log **`#103`**; the original
+> stands at commit `a25c484`.
+
+## 0. THE CARDINALITY PROBLEM — corrected 2026-08-18
 
 `WS-4` ruled a **fourth state** — *"witness statement — owed as an initial disclosure"* — into
-both vocabularies. Drafting it against the actual schema surfaced a problem the ruling could not
-have seen, because it only appears when you try to write the value down:
+both vocabularies. Writing it against the actual schema surfaces a cardinality problem.
 
-**THE FOURTH STATE IS NOT MUTUALLY EXCLUSIVE WITH THE OTHER THREE, AND A SINGLE-VALUED COLUMN
-FORCES A FALSE CHOICE.**
+**A single-valued `privilege_tier` cannot record more than one attribute of a record.** For a
+recording of a client interview that is also a 192.3(h) witness statement, the column must choose
+between `'attorney-client'` and the new fourth value — and the two point in opposite directions:
+one asserts protection, the other a disclosure obligation under 194.2(b)(9).
 
-`privilege_tier` is one `text` column under one `CHECK`. It holds exactly one value. But the
-authority read at **T-28** holds precisely that a document can be **both** a witness statement
-**and** attorney-client privileged:
+> ### ⚠ TWO CORRECTIONS TO HOW THE ORIGINAL PUT THIS
+> **(1) It is a GENERAL property of the column, not a new problem the fourth value creates — and
+> the original's own §2 is the casualty.** `'attorney-client'` and `'work-product'` **already
+> overlap**: a lawyer's case-analysis memorandum written for a client is routinely both, and on
+> §2's own reasoning (*"work product **is** an assertion of privilege"*) that overlap is total.
+> **So §2's conclusion — "the three-value `generated_documents` list is therefore coherent where
+> the `transcripts` list is not" — does not survive §0's own argument.** Both lists have the same
+> property. The original made the general argument in §0 and then presented the defect as specific
+> to `'privileged'`/`'work-product'` in §2, which is the only thing that made conforming look like
+> a *fix* rather than a *preference*.
+>
+> **(2) *Fontenot* and *ExxonMobil* decide a DISCOVERY question, not a schema question.** They hold
+> what an opponent may compel. The step from *"the document is privileged and contains a witness
+> statement"* to *"the column must hold two values"* needs an unstated premise — that
+> `privilege_tier` is meant to be a **complete description** of the artifact rather than a
+> classification for a stated operational purpose. **That premise was never stated and is doubtful
+> on the schema's own face:** `transcripts` already carries `discoverable_flag` and `phi_flag` as
+> separate booleans, which is the schema saying it does *not* expect one column to carry every
+> legally relevant attribute. The original's *"either choice records something false"* holds only
+> if the column claims exhaustiveness. **It does not.** The cases are cited here as the practical
+> illustration that overlapping characterisations occur in the artifacts this firm creates — not
+> as authority for a data-model conclusion.
 
-> *"a witness statement contained within a confidential communication between attorney and client
-> is privileged and protected from discovery."* — *In re ExxonMobil Corp.*, 97 S.W.3d 353, applying
-> *In re Fontenot*, 13 S.W.3d 111, 114.
+**A second, smaller mismatch, which survives:** the column is named `privilege_tier` and the fourth
+value is a **disclosure obligation**, not a privilege posture.
 
-So for a recording of a client interview that is also a 192.3(h) witness statement, the schema
-would force a choice between `'attorney-client'` and the new fourth value — and **either choice
-records something false.** Worse, the choice is consequential in opposite directions: the
-attorney-client value asserts protection, the witness-statement value asserts a disclosure
-obligation under 194.2(b)(9) against which 194.5 permits no work-product assertion.
-
-**A second, smaller version of the same mismatch:** the column is named `privilege_tier`, and the
-fourth value is not a privilege tier — it is a **disclosure obligation.** The other three name a
-privilege posture; this one names what is owed.
-
-**This is put to Michael as `Q-COM-10-A` below rather than solved here**, because every available
-fix is a design act: keep one column and accept the flattening, add a separate boolean or column
-for the disclosure obligation, or rename the concept. **The ruling's direction is honored either
-way — the fourth state enters both vocabularies. The question is whether it should enter as a
-fourth *value* or as a second *dimension*.**
+**THE PRIOR QUESTION, WHICH HAS NEVER BEEN RULED:** *should `privilege_tier` be exhaustive at all?*
+Every option below presupposes an answer to it. **Put to Michael as `Q-COM-10-A`.** The ruling's
+direction is honored either way — the fourth state enters both vocabularies; the question is
+whether it enters as a fourth *value* or a second *dimension*.
 
 ---
 
@@ -60,7 +76,7 @@ And the contradiction that makes this a defect rather than a preference — `db/
 
 > `-- lands. Privilege vocabulary is the shared system-wide set.`
 
-**The file asserts a shared system-wide set and then defines a second, different one 120 lines
+**The file asserts a shared system-wide set and then defines a second, different one ~130 lines
 later.** Both columns already carry Q-COM-11's comment noting the divergence is left open on
 purpose, so nothing here is a surprise — but the "shared system-wide set" sentence is now simply
 untrue and should not survive whatever is adopted.
@@ -74,18 +90,40 @@ expressly did not reconcile the lists.
 
 **The case for conforming, and it is stronger than a tidiness argument:**
 
-**The `transcripts` list is internally incoherent as it stands.** It offers `'privileged'` and
-`'work-product'` as siblings — but **work product *is* an assertion of privilege.** That is not a
-drafting quibble; it is the project's own recorded position, in the registry (`TRCP 192.5(d) — an
-assertion of work product is an assertion of privilege`) and in the Q-COM-11 migration's own
-rationale: *"Writing 'work-product' into a privilege_tier column is not a filing label; by TRCP
-192.5(d) it is an assertion of privilege."* A list that opposes a genus to one of its species
-cannot be applied consistently — a work-product transcript is `'privileged'` **and**
-`'work-product'`, and the column admits one value.
+**The `transcripts` list is awkward, and the original overstated why.** It offers `'privileged'`
+and `'work-product'` as siblings. TRCP 192.5(d) provides — **and the scope limiter matters** —
+that ***"For purposes of these rules,** an assertion that material or information is work product
+is an assertion of privilege."*
 
-`'attorney-client'` does not have this problem: it names a **specific** privilege (TRE 503),
-parallel in kind to `'work-product'`. The three-value `generated_documents` list is therefore
-coherent where the `transcripts` list is not.
+> ⚠ **CORRECTED 2026-08-18.** The original read: *"**work product IS an assertion of privilege** …
+> A list that opposes a genus to one of its species **cannot be applied consistently**."* **Two
+> defects.** First, it dropped *"For purposes of these rules"* — **192.5(d) is a procedural
+> DEEMING provision about an ASSERTION**, whose work is to route a work-product claim into the
+> privilege machinery (the 193.3 log, the 193.4 hearing). It is not a taxonomy of privileges, and
+> from *"asserting X is treated as asserting a privilege"* it does not follow that X is a species
+> of a genus. Second, *"cannot be applied consistently"* is too strong: the list **can** be applied
+> consistently under a stated precedence rule (most specific wins), which is how every overlapping
+> enumeration in this schema already works. **And per §0, the same overlap exists between
+> `'attorney-client'` and `'work-product'` in the list proposed as the fix.**
+
+**The accurate statement:** `'privileged'` is **broader** than `'work-product'` and both can be
+true of one record, so applying the current list requires an unstated precedence rule.
+`'attorney-client'` names a **specific** privilege (TRE 503), parallel in kind to `'work-product'`,
+so conforming removes one unstated rule. **That is a reason to consider conforming. It is not a
+demonstration that the list is incoherent.**
+
+*(Status note, corrected: the registry's TRCP 192.5(d) entry is **VERIFIED — Michael, 2026-08-17**,
+not unverified. The argument is therefore **stronger** than the original's own footing — see §4.)*
+
+> ⚠ **The sentence that stood here is WITHDRAWN — 2026-08-18.** ~~"`'attorney-client'` does not have
+> this problem: it names a specific privilege (TRE 503), parallel in kind to `'work-product'`. **The
+> three-value `generated_documents` list is therefore coherent where the `transcripts` list is
+> not.**"~~ **It does have the problem.** A case-analysis memorandum written for a client is both
+> attorney-client privileged and work product, so the proposed list carries the same overlap it was
+> offered to cure. **Conforming trades one unstated precedence rule for another; it does not
+> eliminate the need for one.** That is still arguably worth doing — the tokens become parallel in
+> kind, which makes the precedence rule easier to state — but it must be put to Michael as a
+> **preference**, not as a fix for an incoherence unique to `transcripts`.
 
 **The case against conforming, stated fairly:** `'privileged'` is broader and could absorb
 privileges the narrower token cannot — physician-patient, spousal, clergy, § 5.05 mediation
@@ -177,15 +215,26 @@ checks rather than assumes.
 --
 -- WHY. Two tables carry privilege_tier under two different CHECK lists, and
 -- db/schema.sql calls one of them "the shared system-wide set" while defining
--- the other 120 lines later. The divergence is duplicated in TypeScript, so the
+-- the other ~130 lines later. The divergence is duplicated in TypeScript, so the
 -- question has four homes. WS-4 additionally ruled a fourth state — a witness
 -- statement owed as an initial disclosure — into both vocabularies.
 --
--- WHY 'privileged' BECOMES 'attorney-client'. Work product IS an assertion of
--- privilege (TRCP 192.5(d); registry entry UNVERIFIED). A list offering
--- 'privileged' and 'work-product' as alternatives opposes a genus to its own
--- species and cannot be applied consistently. 'attorney-client' names a specific
--- privilege (TRE 503) and is parallel in kind to 'work-product'.
+-- WHY 'privileged' BECOMES 'attorney-client'. TRCP 192.5(d) provides that "for
+-- purposes of these rules" an assertion of work product is an assertion of
+-- privilege (registry entry VERIFIED -- Michael, 2026-08-17, Task 19 walk).
+-- 'privileged' is broader than 'work-product' and both can be true of one
+-- record, so the current list requires an unstated precedence rule.
+-- 'attorney-client' names a specific privilege (TRE 503) and is parallel in kind
+-- to 'work-product'. NOTE: the same overlap exists between 'attorney-client' and
+-- 'work-product', so this is a preference for one unstated rule over another,
+-- not a cure. See the proposal's section 0.
+--
+-- CORRECTED 2026-08-18: this comment previously read "registry entry UNVERIFIED",
+-- carried forward verbatim from the 2026-08-16 migration's rationale, where it
+-- was true when written. The entry was VERIFIED on 2026-08-17 -- the same day
+-- this file was drafted, and at the very commit the proposal names as its read.
+-- This is the copy-forward failure class the project instructions name, caught
+-- before the false status reached tracked content. Recorded at session-log #103.
 --
 -- WHY 'witness-statement' EXISTS. TRCP 192.3(h) defines the artifact;
 -- 194.2(b)(9) makes it an initial disclosure owed without a request (194.1(a));
@@ -337,8 +386,13 @@ refused to settle Q-COM-10 by implementation.
 - In **`src/domain/transcripts.ts`**: the `PrivilegeTier` union must be changed from the
   transcripts vocabulary to the adopted unified list — i.e. `'privileged'` **replaced by**
   `'attorney-client'`, and `'witness-statement'` **added**.
-- In **`src/domain/billing.ts`**: the `PrivilegeTier` union must gain `'witness-statement'`; its
-  other three members already match Option 1's list and need no change.
+- In **`src/domain/billing.ts`**: BUILD-STATE **reports** the union as `'attorney-client' |
+  'work-product' | 'non-privileged'`. **If that report is accurate**, the edit is the addition of
+  `'witness-statement'` and nothing else. *(Corrected 2026-08-18: the original asserted its other
+  three members "already match Option 1's list and need no change" — a completed factual finding,
+  four bullets before the same section says a build session "must confirm the actual union members
+  before editing." Both cannot be operative. This document does not upgrade BUILD-STATE's report
+  to a read.)*
 - **Both unions must end up identical.** If the two files are meant to share one type, saying so
   is a further design act (one canonical export, imported by both) and is **not proposed here** —
   it is `Q-COM-10-D`.
@@ -351,7 +405,7 @@ refused to settle Q-COM-10 by implementation.
 
 | ID | Question | Status |
 |---|---|---|
-| `Q-COM-10-A` | **The exclusivity problem — read §0 first.** `privilege_tier` holds one value, but *Fontenot*/*ExxonMobil* hold that a witness statement inside a confidential attorney-client communication **is** privileged — so a record can be both, and a fourth enum value forces a false choice with opposite consequences. **Do you want Option 1 (four values, one column, accept the flattening) or Option 2 (three values plus a `witness_statement boolean`, which can express both)?** `WS-4`'s direction is satisfied either way. | **OPEN — blocks the migration** |
+| `Q-COM-10-A` | **REWRITTEN 2026-08-18 — the original asked a narrower question than the record supports.** `privilege_tier` holds one value, and records routinely carry more than one relevant characterisation — **not only the new fourth value: `'attorney-client'` and `'work-product'` already overlap.** So the real question is prior to the option choice: **should `privilege_tier` be EXHAUSTIVE at all, or is it a classification for a stated operational purpose under a precedence rule?** `transcripts` already carries `discoverable_flag` and `phi_flag` as separate booleans, which suggests the latter — but **it has never been ruled.** **(a) Rule the prior question. (b) Then: Option 1 (four values, one column, precedence rule stated) or Option 2 (three values plus a `witness_statement boolean`)?** `WS-4`'s direction is satisfied either way. | **OPEN — blocks the migration** |
 | `Q-COM-10-B` | **Does `transcripts`' `'privileged'` conform to `'attorney-client'`?** Proposed YES, on the ground that the current list opposes a genus (`privileged`) to its own species (`work-product`), which the project's own registry position (TRCP 192.5(d)) makes incoherent. **Adopt, reject, or edit.** | **OPEN** |
 | `Q-COM-10-C` | **The breadth objection, separated out so it is not lost inside B.** `'privileged'` could have been carrying non-attorney-client privileges a transcript is uniquely likely to catch — physician-patient, spousal, clergy, mediation confidentiality. **If you conform to `'attorney-client'`, do you also want specific values added for any of those, or is `'attorney-client'` the only privilege this system will record?** | **OPEN** |
 | `Q-COM-10-D` | **One type or two?** `src/domain/billing.ts` and `src/domain/transcripts.ts` each declare their own `PrivilegeTier`. Even with identical members, two declarations can drift again. **Do you want one canonical exported type imported by both — and if so, where does it live?** | **OPEN** |

@@ -11,6 +11,14 @@ executing `RL-6` as ruled 2026-08-17.
 select.** Where a case could serve an entry, it is presented with its limits attached and the
 choice left open — including the option of choosing none.
 
+> ## ⚠ CORRECTED IN PLACE 2026-08-18 — READ THIS FIRST
+> Audited adversarially 2026-08-18. **The supersession finding is TRUE IN SUBSTANCE and was WRONG
+> IN ARTICULATION in three ways that would each have caused a concrete mistake** — it split LaPorte
+> by page when the pages do not split that way, it bundled a holding into the overruling that was
+> only **narrowed**, and it presented a 4-judge plurality dictum as symmetrical with a 5-vote
+> majority act. **A headline count was wrong in four places.** Corrections in place; each recorded
+> at session-log **`#103`**. Original text stands at commit `a25c484`.
+
 ---
 
 ## 0. THE HEADLINE, IN FOUR LINES
@@ -20,22 +28,47 @@ choice left open — including the option of choosing none.
    S.W.3d 46, quotes art. 102.073(a) in **footnote 36** and discusses it in **footnote 37**, both
    at **[\*53]** — but as the **State's** parallel-statute argument, answered hypothetically
    ("even assuming the State is correct") and expressly **not decided.** §3.
-2. **A SUPERSESSION NOBODY FLAGGED: LaPorte's "void sentence" holding at 840 S.W.2d 415 IS
-   OVERRULED.** *Ex parte Carter*, 521 S.W.3d 344, 347 (2017) overrules it — with **five votes**,
-   stated on the face of the copy. *Ex parte Simmons* (2015) independently disavows the same
-   language. **LaPorte's *definitional* holding at 414 survives and is expressly reaffirmed.**
-   Entry 4a (=31) carries LaPorte as a candidate authority; **which half is cited now matters.** §4.
-3. **V-9 FIRED ON FOUR OF THE NINE, THE DAY AFTER IT WAS RULED.** Three are per curiam with no
-   author and no panel on the face of the copy; a fourth has **no majority opinion at all** — it
-   is a plurality. Under V-9 these are **flagged and NOT staged for verification.** §5.
-4. **FIVE OF THE NINE ARE MARKED "DO NOT PUBLISH."** §5.
+   **⚠ ADDED 2026-08-18: a published bridge case exists OUTSIDE the nine.** ***Whaley v. State***
+   (Tex. App.—Dallas Jan. 21, 2020) applies LaPorte's definition **and** art. 102.073 in one
+   opinion — *"because the cases were tried in the same proceeding, the court should only have
+   assessed costs for the higher category offense."* **LOCATOR ONLY — not read, not V-9-identified,
+   designation unconfirmed.** It changes `Q-RL6-1`, which offered three options and did not include
+   "published intermediate authority doing exactly this exists and was not in the folder."
+2. **LaPorte IS OVERRULED IN PART — and the original statement of it was wrong.**
+   ~~"A SUPERSESSION NOBODY FLAGGED … LaPorte's *definitional* holding at 414 survives … which half
+   is cited now matters."~~ **Corrected: the "NOBODY FLAGGED" framing is withdrawn** (*Carter* is a
+   published 2017 CCA opinion; any commercial citator would flag it — the defensible claim is that
+   *this project's record* had not distinguished LaPorte's two holdings), **and the page split is
+   wrong.** See §4 as rewritten. The accurate statement: **the void-sentence holding is overruled
+   by five votes; the definition survives and is secured by *Middleton*, not by *Carter*; and
+   "may be raised at any time" was NARROWED, not overruled.**
+3. **V-9 FIRED ON FOUR OF THE NINE, HOURS AFTER IT WAS RULED THE SAME EVENING.** *(Corrected: the
+   original said "THE DAY AFTER IT WAS RULED," which contradicts this packet's own T-32 correction
+   — V-9 was ruled 2026-08-17 evening and this read ran 2026-08-17, roughly an hour later. The
+   original also said it two incompatible ways in one file.)* Three are per curiam with no author
+   and no panel on the face of the copy; a fourth has **no majority opinion at all** — it is a
+   plurality. Under V-9 these are **flagged and NOT staged for verification.** §5.
+4. **FOUR OF THE NINE ARE MARKED "DO NOT PUBLISH"** — *Schmitt*, *Bailey*, *Simmons 2014*,
+   *Simmons 2015*. *(Corrected from "FIVE," which was wrong here and propagated to three other
+   places. §5's own table listed four and five PUBLISH; re-derived from the source PDFs.)*
+   **⚠ AND THE CONSEQUENCE IS WORSE THAN THIS MEMO ORIGINALLY STATED.** All nine are **Court of
+   Criminal Appeals** opinions, so **TRAP 77 governs them, not TRAP 47.** **TRAP 77.3:**
+   *"Unpublished opinions have no precedential value **and must not be cited as authority by counsel
+   or by a court.**"* **That is a bar, not a "citation limit"** — see `Q-RL6-5`, rewritten. §5.
 
 ---
 
 ## 1. Method, named per QR-6(a)
 
-- **Source:** the nine PDFs in `Documents\Knowledge Repo\Opinions\`, on Michael's per-path grant
-  (H5 — only the named folder was listed; a sibling `PI\` subfolder was **not** opened).
+- **Source (corrected 2026-08-18):** the granted folder `Documents\Knowledge Repo\Opinions\` holds
+  **fifteen** PDFs, of which **ten were read** — the nine named in T-27 **plus *LaPorte v. State*,
+  840 S.W.2d 412**, read for the entry-31 bridge test at §2. *(The original said "the nine PDFs in
+  `Opinions\`," which was wrong about its own corpus in the section that exists to state
+  provenance, and left the tenth opinion's source unnamed under a heading reading "named per
+  QR-6(a)." LaPorte's V-9 identification is confirmed: `Judges: En Banc` / `Opinion by: MCCORMICK`.
+  The original also referred to a sibling `PI\` subfolder as not opened — **no subdirectory of any
+  kind exists under `Opinions\`**; the `PI\` folder is under `Knowledge Repo\Civil\`, a different
+  grant, and was not opened there either.)* H5 honored: only granted paths were listed.
 - **Extraction:** `pdftotext -layout` into the device VM's own `/tmp` — **nothing written into any
   connected folder**, nothing staged, no scratch left on Michael's disk. **No `git` command was
   run against the checkout during this task and no `.git/index.lock` was stranded.**
@@ -64,8 +97,9 @@ merge or offset the costs."* Its recorded candidates are *"negative implication 
 Proc. art. 102.073; **LaPorte** …; **Hurlburt** …"* — both marked **UNREAD**.
 
 **LaPorte is now READ** (840 S.W.2d 412, Tex. Crim. App. 1992; the copy states *"Opinion by:
-MCCORMICK"* and *"Judges: En Banc. McCormick"* — V-9 satisfied). Its operative holding, verbatim
-at 414–15:
+MCCORMICK"* and *"Judges: En Banc. McCormick"* — V-9 satisfied). Its operative holding, verbatim —
+and **the `[*415]` marker falls BEFORE this sentence, so the holding itself is at 415**, a fact §4
+originally got backwards:
 
 > "Therefore, we hold that a defendant is prosecuted in 'a single criminal action' whenever
 > allegations and evidence of more than one offense arising out of the same criminal episode, as
@@ -97,10 +131,19 @@ into art. 102.073, and **LaPorte itself does not carry it there.**
 | *Ex parte Simmons*, 2015 Unpub. LEXIS 776 | **NO** | ×8 (+9 "single action") | 414, 414–15, 415 | **NO** |
 
 **Eight of nine: clean negative.** No mention of art. 102.073, no court-costs content of any kind.
-In *Bonilla*, *Williams*, *Schmitt*, *Green* and *Simmons 2014* the phrase appears only inside
-quoted statutory text or descriptive recitals, and the LaPorte cites are overwhelmingly to page
-**415** — the *void-sentence* holding — not to page **414** where the definition lives. *Williams*
-(2008) predates art. 102.073's enactment, so its silence carries no interpretive weight.
+In *Bonilla*, *Williams* and *Green* the phrase appears only inside quoted statutory text or
+descriptive recitals; **in *Schmitt* and *Simmons 2014* it does not appear at all.** *(Corrected
+2026-08-18: the original listed all five together as places the phrase "appears only inside quoted
+statutory text," contradicting its own table two lines above, which records zero occurrences for
+those two.)* *Williams* (2008) predates art. 102.073's enactment, so its silence carries no
+interpretive weight.
+
+> ⚠ **The "LaPorte pin cite" column above is corrected at §4 and should be read with it.** The
+> original's framing — 415 is the void-sentence page, 414 is where "the definition lives" — **is
+> wrong. Both sit on 415.** Two table cells are also off: *Middleton*'s "single criminal action"
+> count is **×9**, not ×8 (the ninth is inside fn. 36's quotation of art. 102.073(a)), and
+> *Simmons 2015* carries no `414–15` pin-cite form (its forms are `at 414` ×3, `at 415` ×1,
+> `412, 415` ×1). *Carter*'s `414–15, 415` is exact.
 
 ### 3.1 *Middleton* — the only one that touches the bridge, and it stops short
 
@@ -164,35 +207,75 @@ candidate for 31 directly** — and saying so is the finding.
 
 ---
 
-## 4. THE SUPERSESSION — LaPorte at 415 IS OVERRULED, LaPorte at 414 IS REAFFIRMED
+## 4. LaPorte IS OVERRULED IN PART — rewritten 2026-08-18
 
-This was not asked for and is the most consequential thing the read turned up.
+> ⚠ **THIS SECTION WAS REWRITTEN. The original was headed *"LaPorte at 415 IS OVERRULED, LaPorte at
+> 414 IS REAFFIRMED"* and instructed "Never cite 415" at §6. Both are wrong, and following them
+> would bar counsel from the very sentence stating the rule he wants.** The substance — LaPorte is
+> half-overruled — survives.
 
-***Ex parte Carter***, 521 S.W.3d 344, 347 (Tex. Crim. App. 2017), **published**, verbatim:
+**THE ACCURATE STATEMENT, in one paragraph.** *LaPorte v. State*, 840 S.W.2d 412, is **overruled in
+part**. Its holding that sentences under an improper cumulation order are *"void"* was overruled by
+***Ex parte Carter***, 521 S.W.3d 344, 347 (Tex. Crim. App. 2017), **by five votes**, in a
+**PLURALITY** opinion. Its definition of *"a single criminal action"* **survives** — reaffirmed in
+passing by the *Carter* plurality and, decisively, **adopted and applied by a UNANIMOUS Court in
+*Middleton v. State*, 634 S.W.3d 46, 50 & n.11 (Tex. Crim. App. 2021).** Its *"may be raised at any
+time"* holding was **NARROWED, not overruled**. The signal later courts use is **"overruled on
+other grounds by *Ex parte Carter*."**
 
-> "While we reaffirm LaPorte's statutory interpretation of 'a single criminal action,' we overrule
-> the opinion's holding that sentences subject to an improper cumulation order are themselves
-> 'void.' LaPorte arrived at this conclusion by mistakenly conflating the sentences with the
-> cumulation order."
+**(a) THE PAGES DO NOT SPLIT THE WAY THE ORIGINAL SAID.** The `[*415]` marker falls **before**
+LaPorte's holding sentence, so **page 415 carries the reaffirmed definitional holding AND the
+overruled void-sentence language, in adjacent paragraphs.** *Carter*'s own footnote pin-cites the
+definition to **"840 S.W.2d 412, 414-15"**; *Simmons 2015* uses "414-15"; and ***Whaley v. State***
+(Dallas 2020) cites **"840 S.W.2d 412, 415"** for the definition as good law, with the parenthetical
+*"overruled on other grounds by Ex parte Carter."* **"Never cite 415" is withdrawn.** Cite **414**
+for the compressed *"single trial or plea proceeding"* formulation (as *Middleton* n.11 does);
+**414–15** for the full holding. **Page number alone cannot distinguish live law from dead law
+here — the parenthetical must do it**, which makes the `FE-16` defect class *harder* than this memo
+originally said, not easier.
 
-**The vote is stated on the face of the copy** — Yeary, J., concurring, n.1: *"Although Judge
-Newell does not expressly join all of the plurality's opinion, he does expressly join in its
-overruling of LaPorte. … **That makes a majority of five votes to overrule LaPorte.**"*
+**(b) THE TWO ACTS ARE NOT SYMMETRICAL, AND THE ORIGINAL NEVER SAID "PLURALITY" HERE.**
+*Carter*'s lead opinion is a plurality — *"delivered the **judgment** of the Court and **an**
+opinion,"* joined in full by three (Keller, P.J., Hervey, Yeary) and **in part** by Newell.
 
-***Ex parte Simmons*** (2015) reaches the same place independently: *"we disavow the language in
-LaPorte that holds that the sentences were void. The sentences were lawfully assessed within the
-statutory limits and were neither void nor voidable."*
+| Half of LaPorte | Votes | Basis |
+|---|---|---|
+| Void-sentence holding **OVERRULED** | **5** | Yeary n.1 — *"That makes a majority of five votes to overrule LaPorte"* — **and independently corroborated by Newell's own text:** *"the Court expressly overrules that portion of LaPorte today. **I join these aspects of the Court's opinion.**"* Four full adherents + Newell on this point = 5 of 9 |
+| Definition **REAFFIRMED** | **4** | Plurality only. **No fifth vote anywhere**, and the reaffirmation was **unnecessary to the judgment** — *Carter* was decided on non-cognizability and never reached whether a single criminal action existed |
 
-**Why this matters here, in three places:**
+*(The original cited only Yeary's count. Yeary's arithmetic is correct and checkable, but Newell's
+own join is the stronger evidence and sat in the same PDF.)*
 
-1. **Entry 4a (=31) lists LaPorte as a candidate authority without distinguishing its two
-   holdings.** Cited at **414** for the definition, LaPorte is good and expressly reaffirmed.
-   Cited at **415** for "void sentence / may be raised at any time," it is **overruled.**
-2. **The registry's reporter-cite and currency machinery would not have caught this** — the cite
-   is valid, the case is real, and only the *pinpoint* distinguishes live law from overruled law.
-   This is precisely the defect class `FE-16` would have to catch.
-3. **CR-10 is hard-gated on these entries**, so an entry citing the overruled half would carry
-   into a completeness check.
+**(c) "MAY BE RAISED AT ANY TIME" WAS NARROWED, NOT OVERRULED — and the original's bundling of it
+runs AGAINST THE CLIENT.** *Carter* treats the two propositions differently in consecutive
+paragraphs: it **overrules** the "void" holding, then **separately** concludes that LaPorte's "may
+be raised at any time" holding *"does not control an improper-cumulation claim's cognizability **in
+the habeas corpus context**."* That is a limitation to one posture. On **direct appeal**, § 3.03
+remains a **Marin category-two waiver-only right** and no contemporaneous objection is required —
+and courts still cite LaPorte at **415** for exactly that: ***Stiger v. State*** (Tex. App.—
+Texarkana Nov. 19, 2024). **A defense attorney reading the original would have concluded an
+unpreserved stacking complaint is waived on direct appeal. It is not.**
+
+**(d) *Simmons 2015*'s corroboration is real but NOT CITABLE.** It disavows the same language, by a
+**five-judge majority**, two years before *Carter* — but it is marked **DO NOT PUBLISH**, and under
+**TRAP 77.3** unpublished CCA opinions *"must not be cited as authority by counsel or by a court."*
+**Treat it as confirmation that the Court's thinking had already moved, not as authority. The
+citable act is *Carter*.** *(The original disclosed the unpublished status at §3/§5/§6 but not at
+§0 or §4, the two places it was used as corroboration.)*
+
+**Why this matters here:**
+
+1. **Entry 4a (=31) lists LaPorte as a candidate authority with NO pinpoint and no parenthetical.**
+   That is the defect to fix — not by choosing a page, but by adding **"overruled on other grounds
+   by *Ex parte Carter*, 521 S.W.3d 344 (Tex. Crim. App. 2017)."**
+2. **The registry's reporter-cite and currency machinery would not have caught this** — the cite is
+   valid, the case is real, and **not even the pinpoint separates live from dead law.** Precisely
+   the defect class `FE-16` would have to catch.
+3. **CR-10 is hard-gated on these entries**, so an entry citing the overruled half would carry into
+   a completeness check.
+4. **The survival of the definition should rest on *Middleton*, not *Carter*** — unanimous vs.
+   4-judge plurality, holding vs. dictum, 2021 vs. 2017, and *Middleton* cites LaPorte with **no
+   negative-treatment signal at all**. This memo read *Middleton* and did not deploy it here.
 
 **A second, narrower tension, flagged and not resolved:** *Schmitt* (2012, unpublished) holds a
 judgment nunc pro tunc **unavailable** to undo a cumulation order, because the error is judicial
@@ -217,8 +300,9 @@ qualifier is doing real work and should never be quoted without it.
 | *Ex parte Carter*, 521 S.W.3d 344 | **PUBLISH** | *"Judges: KEASLER, J., delivered the **judgment** of the Court and **an** opinion…"* — 4 full joins of 9, **no `Opinion by:` line** | **⚠ NO MAJORITY EXISTS — it is a PLURALITY.** Plurality author identifiable (Keasler, J.); recording him as "majority author" would be **wrong** |
 
 **Four of nine could not be identified as majority-authored — three per curiam, one plurality.**
-V-9 was ruled on 2026-08-17 and its floor ("cannot identify — stop") fired four times the next
-working pass. **Per V-9 these four are flagged and none is staged for verification.**
+V-9 was ruled on 2026-08-17 and its floor ("cannot identify — stop") fired four times **hours
+later the same evening** *(corrected 2026-08-18 from "the next working pass" / "the day after";
+see §0 item 3)*. **Per V-9 these four are flagged and none is staged for verification.**
 
 **Two further copy defects, reported rather than worked around:**
 
@@ -245,8 +329,12 @@ opinions above are not staged for verification whatever their content.**
   parallel language without construing it or foreclosing consistent construction. **Limit that
   must ride with it:** fn 37 reserves assessment both at deferral and at post-adjudication
   sentencing, and fees unique to adjudicating guilt.
-- **`C-LAP-1` — *LaPorte*, 840 S.W.2d at 414.** The definition itself, **expressly reaffirmed by
-  *Carter*** in 2017. **Never cite 415.**
+- **`C-LAP-1` — *LaPorte*, 840 S.W.2d at 414–15** *(CORRECTED 2026-08-18; the original read "at
+  414 … **Never cite 415**," which is withdrawn — see §4(a))*. The definition itself. **Its
+  survival rests best on *Middleton v. State*, 634 S.W.3d 46, 50 & n.11 (Tex. Crim. App. 2021) —
+  unanimous, and the definition was necessary to its judgment** — with *Carter*'s reaffirmation as
+  plurality corroboration only. **Any cite to LaPorte must carry the parenthetical "overruled on
+  other grounds by *Ex parte Carter*, 521 S.W.3d 344 (Tex. Crim. App. 2017)."**
 - **NOTHING ELSE.** *Bonilla*, *Williams*, *Schmitt*, *Bailey*, *Carter*, *Green* and both
   *Simmons* contribute **no costs proposition**. That is a clean negative and is the finding.
 
@@ -285,11 +373,11 @@ opinions above are not staged for verification whatever their content.**
 
 | ID | Question | Status |
 |---|---|---|
-| `Q-RL6-1` | **Entry 31 (`4a`) cite supply — YOURS, and the read does not select.** The nine produced **no** authority for art. 102.073's *negative implication* (that separate criminal actions mean per-cause costs). The only costs-adjacent candidate is `C-MID-1`, and it bears on the **positive** term (entry `4b`), not the negative implication. **Do you want (a) entry 31 to remain cite-less; (b) *Middleton* cited on 4b with 31 resting on the negative implication expressly labelled as inference; or (c) `Hurlburt v. State`, 506 S.W.3d 199 (Waco 2016) — the remaining recorded candidate — pulled and read? *Hurlburt is NOT in the `Opinions\` folder and was not read.*** | **OPEN — your act** |
+| `Q-RL6-1` | **Entry 31 (`4a`) cite supply — YOURS, and the read does not select. A FOURTH OPTION WAS ADDED 2026-08-18.** The nine produced **no** authority for art. 102.073's *negative implication*. **Do you want (a) entry 31 to remain cite-less; (b) *Middleton* cited on 4b with 31 resting on the negative implication expressly labelled as inference; (c) `Hurlburt v. State`, 506 S.W.3d 199 (Waco 2016) pulled and read — **NOT in the `Opinions\` folder, not read**; or **(d) NEW — *Whaley v. State* (Tex. App.—Dallas Jan. 21, 2020) pulled and read?** *Whaley* applies **LaPorte's definition and art. 102.073 in one opinion** — *"because the cases were tried in the same proceeding, the court should only have assessed costs for the higher category offense"* — which is the bridge this task was commissioned to look for. **LOCATOR ONLY: not read, not V-9-identified, designation unconfirmed, and it is an intermediate-court opinion rather than a CCA one.** The original offered three options and none of them was "the case you're looking for exists and wasn't in the folder." | **OPEN — your act; option (d) is new** |
 | `Q-RL6-2` | **Entry 30 (`[NO CITE CARRIED]` — degree of offense must correspond to punishment assessed) — the nine produced NOTHING for it.** No opinion read addresses degree-of-offense/punishment correspondence. **Do you want a separate targeted search, or does entry 30 stay cite-less?** | **OPEN — your act** |
-| `Q-RL6-3` | **THE SUPERSESSION, and it needs a ruling rather than a note.** LaPorte's void-sentence holding at **840 S.W.2d 415** is **overruled** by *Ex parte Carter* (five votes) and disavowed by *Simmons 2015*; its definition at **414** is expressly reaffirmed. Entry `4a` lists "LaPorte v. State, 840 S.W.2d 412" as a candidate **with no pinpoint.** **Do you want the candidate line pinpointed to 414 and annotated that 415 is overruled?** *(This is a change to a registry entry's candidate-authority line and is therefore ROUTE-C-adjacent — flagged as its own act, never done silently.)* | **OPEN** |
+| `Q-RL6-3` | **REWRITTEN 2026-08-18 — the original asked the wrong remedy.** It proposed pinpointing entry `4a`'s LaPorte candidate line **to 414 and annotating that 415 is overruled.** **That would have been wrong: both halves sit on 415** (§4(a)), so a pinpoint cannot separate them. **The correct remedy is a PARENTHETICAL.** Entry `4a` lists *"LaPorte v. State, 840 S.W.2d 412"* with no pinpoint and no treatment signal. **Do you want the candidate line to read "*LaPorte v. State*, 840 S.W.2d 412, 414–15 (Tex. Crim. App. 1992), overruled on other grounds by *Ex parte Carter*, 521 S.W.3d 344 (Tex. Crim. App. 2017)"** — and do you want *Middleton* added as the current authority for the definition? *(A change to a registry entry's candidate-authority line, ROUTE-C-adjacent — flagged as its own act, never done silently.)* | **OPEN — remedy corrected** |
 | `Q-RL6-4` | **Four of the nine are author-unidentifiable under V-9** (*Bailey*, *Simmons 2014*, *Green* — per curiam; *Carter* — plurality, no majority exists). They are flagged and not staged for verification. **Do you want any of them pulled in a form that would identify the majority** — the court's own document, or a paginated copy stating authorship on its face — **or do they stay flagged?** *Carter* may be unresolvable in principle: **there is no majority to identify.** | **OPEN — your hand** |
-| `Q-RL6-5` | **Five of the nine are marked "DO NOT PUBLISH."** Registry entries built on unpublished CCA opinions carry a citation limit under the appellate rules. **Do you want a standing rule on whether unpublished opinions may support a registry entry at all**, or is that judged per entry? | **OPEN** |
+| `Q-RL6-5` | **REWRITTEN 2026-08-18 — the count was wrong and the constraint was understated.** **FOUR** of the nine are marked "DO NOT PUBLISH" (*Schmitt*, *Bailey*, *Simmons 2014*, *Simmons 2015*), not five. And the constraint is **not** a "citation limit": all nine are **Court of Criminal Appeals** opinions, governed by **TRAP 77, not TRAP 47**, and **TRAP 77.3** provides that unpublished opinions *"have no precedential value **and must not be cited as authority by counsel or by a court.**"* **That is a bar.** It reaches four staged candidates — `C-SIM-1`, `C-SCH-1`, `C-BAI-1` and (as a dissent) `C-GRE-1`. **Do you want a standing rule that no unpublished CCA opinion may support a registry entry at all, or is it judged per entry?** | **OPEN — count and constraint corrected** |
 | `Q-RL6-6` | **The *Simmons 2015* vendor copy is incomplete** — it omits the Keasler dissent its own `Judges:` line announces. **Do you want a complete copy obtained**, or is the majority sufficient for any use contemplated? | **OPEN — your hand** |
 
 **Nothing here is verified. No cite was selected. No registry entry was created or changed.**
