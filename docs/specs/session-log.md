@@ -16,6 +16,132 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-18 — QUEUE-RUNNER batch (runner line; FIFTY-EIGHTH invocation) — the docs-only batch that landed the four located authorities, and whose authorized preflight caught the packet asserting a publication notation could not be found when the notation is in the copy and says DO NOT PUBLISH
+
+**Two zips in `inbox/`, ONE executed.** **Ran:** `push-to-code_authority-read_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **18,155 bytes, mtime `2026-08-18 11:06:17 −0500`, sha256 `98a43d930458821e7929546d34efc14831bcf0c71932d6526a893686e462e8ea`**. **NOT re-run:** `push-to-code_audit-corrections_2026-08-18.zip` — **68,516 bytes, mtime `2026-08-18 09:51:33 −0500`, sha256 `b1743f8524aebd9fcd6be3e97ca3fb69fd81feaadf27bf220c6ea746211842f3`**, byte-identical to the identity the fifty-seventh invocation pinned. Michael confirmed the order at the Step 1 STOP and authorized three things there: the order, deleting BOTH zips at close-out, and the preflight. **§5 is NONE and nothing was built.**
+
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin refs/heads/master`** — the live remote read, not the local tracking ref. Both `9daff3c`; `git rev-list --left-right --count HEAD...origin/master` returned **0 / 0**. Not behind, not ahead.
+- **CARRIED IN FROM THE FIFTY-SEVENTH, AND IT IS HALF A FAILURE RATHER THAN NONE.** QR-5 requires a failed push or a surviving zip to be carried forward. **The push landed** — `git log -1 --format=%s 9daff3c` returns that batch's own commit subject, and the live `ls-remote` returns the same SHA. **The deletion did not** — its zip is still in `inbox/`, unchanged in all three pinned dimensions, so it was never removed rather than removed-and-replaced. Note the ordering QR-5 warns about: a close-out interrupted at item 4 never reaches item 5, so a surviving zip is evidence about the push too — checked here, and the push is clean, which isolates the failure to the delete.
+- **QR-5 already-executed check ran on BOTH zips and split.** `authority-read`: **NEGATIVE, genuinely pending** — `docs/specs/costs-and-privilege-authority-read-2026-08-18.md` absent from the whole working tree (`find . -name "*costs-and-privilege*"` returned nothing) and `grep -c "(#104)"` over the log returned **0**. `audit-corrections`: **POSITIVE, and it is "committed AND pushed," not "committed but unpushed"** — all five deliverables at their canonical paths at exactly the stated sizes (32,415 / 18,947 / 26,911 / 30,728 / 30,463), `## 2026-08-18 (#103)` already in the log, and HEAD identical to live `origin/master`. **A packet survived its own execution, which is precisely why the zip is not proof of a pending packet.**
+- **THE §1 STOP CONDITION MATCHED EXACTLY ON BOTH PINNED FILES**, bytes and sha256: `session-log.md` 1,059,492 B `c45221691e1f1247`, `attorney-review-queue.md` 522,131 B `fe2c42a24b0b3894`.
+- **ONE INSTRUCTION WAS SUPERSEDED AND IS NAMED RATHER THAN DROPPED (Step 2 conflict rule).** The audit packet's §6 reads *"Do not act on the three newly located authorities — In re XL Specialty, In re Arden, Whaley v. State. All are LOCATOR-ONLY: not read, not V-9-identified."* **The later packet is the authorized read of exactly those three.** Later packet wins; the DO-NOT is spent, not violated. Every other cumulative DO-NOT still binds and was honored — in particular `src/domain/billing.ts` and `src/domain/transcripts.ts` were not opened (`Q-PR3-1` unruled), no registry entry was created, and no Status line moved.
+- **DT-1: THIS SHELL LIES THE SAME WAY THE FIFTY-SEVENTH'S DID, AND THE OPPOSITE WAY FROM THE PACKET'S CONTAINER.** PowerShell, the authority, reads `Get-Date -Format "yyyy-MM-dd HH:mm:ss K"` → **`2026-08-18 11:46:41 −05:00`**, `[System.TimeZoneInfo]::Local.Id` → **`Central Standard Time`**. Bare `date` → `Tue Aug 18 11:46:48 CDT 2026`, **right**; `TZ=America/Chicago date` → `16:46 GMT`, identical to `date -u`, **wrong**. The packet's own §0 records its container resolving the other way. **Three shells across three batches, no stable answer — the practice that survives is to read the wall clock through PowerShell and check the shell against it.** Every stamp here is **2026-08-18**, and this line adds no `TOC-2` inversion: it sits above `#104`, also 2026-08-18, above the fifty-seventh's 2026-08-18.
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the NINTH consecutive firing.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table or in `git status`** — the changed paths are the log, the index, the queue, BUILD-STATE and one new document, all under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch.
+- **WHAT EXECUTED.** `#104` prepended verbatim; `docs/specs/costs-and-privilege-authority-read-2026-08-18.md` written verbatim at its canonical path, **sha256 compared against the staged file and IDENTICAL**. The packet's stated metrics were **re-derived rather than trusted and both matched: 19,158 bytes / 200 non-blank.** The backlog was re-derived independently at HEAD and **did not move: 20 VERIFIED / 13 UNVERIFIED against 33 `**Status:**` lines in `legal-rule-registry-discovery-enforcement-and-pleading.md`, 3 / 4 against 7 in `legal-rule-registry-criminal-plea-and-costs.md` — 40 entries, 23 verified, 17 not.**
+- **THE PREFLIGHT MICHAEL AUTHORIZED COULD NOT RUN AS DESIGNED, AND THE FAILURE IS REPORTED RATHER THAN LAUNDERED.** A seven-agent adversarial workflow was launched and **every agent died on `API Error: 529 Overloaded` — twice, fourteen launches, zero completions, zero tokens, zero tool calls.** The workflow returned `{"surviving_defects":[],"per_area":[]}`, **which is a total failure wearing the costume of a clean bill of health** — the exact shape QR-6(a) warns about, and it would have read as "audited, nothing found" if reported as returned. **It was re-run inline instead**, single-threaded against CourtListener, and the substantive checks below are that inline pass. **Coverage is honestly partial: *Hurlburt*, *Whaley* and *Anastassov* were checked against primary sources; *In re Arden* and the *XL Specialty* text were NOT read** — only *XL Specialty*'s identity and sub-opinion structure were pulled. **Nothing below rests on an agent report; every quote was read.**
+- **THE HEADLINE AUTHORITY VERIFIED CLEAN, AND IT IS WORTH SAYING SO PLAINLY.** ***Hurlburt*** is real and is what the packet says: **506 S.W.3d 199**, Waco (10th), **2016-11-30**, No. **10-15-00400-CR**, `<opinion type="majority">`, captioned a full **"OPINION"** not a memorandum, authored by **TOM GRAY, Chief Justice**, cluster `4327009` carrying **exactly one sub-opinion** so no V-9 collision arises. **All four quoted passages confirmed verbatim against the opinion text**, including the gap sentence, the presumption holding, *"We agree with Hurlburt,"* and the criminal-episode narrowing. The application facts check out to the number — **four separate indictments, heard together at the defendant's request, punishment tried over four days spanning six months** — as does the *Pharr* cite (**897 S.W.2d 795**) and the distinction the packet draws from it.
+- **AND THEN THE PREFLIGHT PAID, ON ITS FIRST PASS, WITH A HIGH-SEVERITY DEFECT: *WHALEY*'S PUBLICATION NOTATION IS IN THE COPY, AND IT SAYS DO NOT PUBLISH.** The document asserts the notation *"could not be found anywhere in the copy I read"* and **builds new open item `Q-AUTH-2` on that premise**, asking whether to pull the court's own document. **It is at the foot of the FLP-served opinion in the Dallas court's standard form** (`opinion_id` 4494303, position 11086): *"/Bill Whitehill/ — BILL WHITEHILL — JUSTICE — **Do Not Publish** — TEX. R. APP. P. 47.2 (b) — 181255F.U05"*, the trailing `U` in the court's own file stamp being its unpublished marker. **So the answer exists, it required no pull, and it is the adverse one: under TRAP 47.7(a) *Whaley* has no precedential value and may be cited only with the notation.** **Two things follow.** (1) `Q-RL6-1`'s `#103` option (d) — cite *Whaley* on the entry-31 bridge — **is not available as authority**, which leaves *Hurlburt*. (2) **FLP reports `status: "Published"` for this very opinion while the court's own document says the opposite** — a live, concrete proof of `#103`'s rule that FLP's status field is not evidence of a Texas designation, found in the same batch that restated the rule.
+- **A SECOND DEFECT, AND IT IS A BREACH OF THE BINDING RULE RATHER THAN A CITE ERROR: V-9 ON *ANASTASSOV*.** The document characterises it at length — four quoted passages and candidate `C-ANA-1` — while recording that **authorship was not checked**. **PD-0848-20 carries TWO documents on FLP** (`opinion_id` 8212892 at 14 pages, `8212891` at 2), **both typed `010combined` with an empty `author_str`**, and the document names neither the one it read nor the existence of a separate opinion. **V-9 bars characterising without positive identification and requires both disclosures; flagging is not a cure for the bar.** **And the identification was one query away from a source V-9 expressly permits** — the court's own document opens *"SLAUGHTER, J., delivered the opinion for a unanimous Court. YEARY, J., filed a concurring opinion."* **So the flag recorded an omission, not a limit of the source.** The substance survives and is in fact **stronger** than claimed — a **unanimous** CCA holding, both quoted passages confirmed verbatim.
+- **THREE SMALLER FINDINGS, RECORDED AND NOT ACTED ON.** (a) ***XL Specialty* has a second sub-opinion the document does not disclose** — `sibling_ids [5110338, 5110339]`, and the panel list carries **Willett**, who is missing from the document's *"joined by seven."* Majority authorship (Jefferson) is positively identified and correct, so V-9's core is met, but its separate-opinion disclosure is not. (b) **TRAP 77.3 was never applied to *Anastassov*** though the document states the bar in its own §1; the practical risk is low (a captioned "OPINION" for a unanimous Court on a granted PDR), **but the check the document's own rule demanded was not made, and *Whaley* just proved the status field unreliable.** (c) **The notation test is applied to *Whaley* and never to *Hurlburt*, also a criminal `-CR` appeal whose copy likewise carries no notation** — the difference that justifies the outcome is that *Hurlburt* has a S.W.3d reporter cite and *Whaley* has none, and the document never states it.
+- **WHAT THE PREFLIGHT DID NOT FIND, WHICH IS THE PART THIS PACKET EARNS: ITS ARITHMETIC HOLDS.** The batch it succeeds was caught miscounting its own open items in two directions. This one does not repeat it — **manifest §7 (nine rows = four new, three amended, two carried) and the document's §5 (seven rows = four new, three amended) agree on every classification**, `30 + 4 = 34` is what the queue now holds re-derived after the merge, the stated file metrics re-derive exactly, and the **TRAP 47.7(a)-criminal / 47.7(b)-civil assignment matches the repo's own corrected T-31 research** — no swap.
+- **THE QUEUE MERGE RAN AS TWO ACTS PER QR-6(b).** Rows: **four ENTERED** with full question text per QR-1 (`Q-AUTH-1`–`Q-AUTH-4`) and **three AMENDED IN PLACE** (`Q-RL6-1`, `Q-WS3-5`, `Q-WS3-6`), **no duplicate row minted for any amended item** and **NOT ONE ROW CLOSED** — verified mechanically: the CHAT-DISPATCH v4 block holds **34 open rows and zero closed**. Second act: the Status header's per-batch reconcile sentence was written, naming this batch. **THREE ROWS WERE THEN ANNOTATED ADD-ONLY WITH THE RUNNER'S OWN FINDINGS** — `Q-AUTH-2` and `Q-RL6-1` with the *Whaley* notation, `Q-AUTH-3` with the *Anastassov* identification — **each marked runner-found, each preserving the packet's question text above it, none closed.** **No packet content was edited anywhere: the document and `#104` land verbatim, the `Q-T19-3` precedent governing again.** The queue row is the only place the question survives the packet's deletion, which is why the correction belongs there rather than only here.
+- **`QR-6(e)` DID NOT FIRE — every act the packet asked for sat in a routing row or a Step 4 item.** `.git/index.lock` is **absent** (`ls .git/index.lock`), the packet's §1 hygiene claim checked rather than taken — the **third** consecutive design session to leave the checkout clean.
+- **`TOC-4` FIRED FOR THE FOURTH TIME:** `docs/specs/session-log-toc.md` regenerated in full over the log as this batch writes it — **SIXTH EDITION, 218 rows** — so the index rides the same commit as the entries it indexes. The byte-proof was re-run against the fifth edition's basis.
+- **OPEN ITEMS — the CHAT-DISPATCH v4 block goes THIRTY → THIRTY-FOUR, and every one is Michael's.** New: **`Q-AUTH-1`** (*Ex parte Pharr* unread and load-bearing — the cheapest high-value act left), **`Q-AUTH-2`** (now answered adversely by the runner and narrowed to drop-or-retain-with-notation), **`Q-AUTH-3`** (*Anastassov* as its own entry — identification now supplied), **`Q-AUTH-4`** (pair folder reads with a search pass as standing practice?). Amended: `Q-RL6-1`, `Q-WS3-5`, `Q-WS3-6`. **`T-26` is still on the hand list with no queue row — flagged now by FOUR consecutive batches.** **And `Q-AUDIT-1` gains its fourth data point: the multi-agent preflight is now four-for-four on catching a defect no house convention catches, and this time it caught one that would have sent Michael to pull a document whose answer was already in front of him. It is still not a standing convention.**
+
+## 2026-08-18 (#104) — THE FOUR LOCATED AUTHORITIES READ, AND THE ENTRY-31 BRIDGE FOUND: it is
+*Hurlburt*, it routes through *Pharr* rather than *LaPorte*, and it drops the criminal-episode limb
+for costs — plus a CCA scope holding nobody had, and a CORRECTION of the open-item count the
+fifty-seventh invocation found (design session, Opus 5, Cowork)
+
+- **RECONCILE FIRST ran against the live checkout through the bridge.** HEAD `9daff3c` on `master`;
+  `#nn` ceiling **103**, so this entry is `#104`; backlog **40 = 23 VERIFIED / 17 UNVERIFIED**,
+  re-derived at HEAD, unchanged. **`inbox/` was NOT empty — see the carried item below.**
+- **THE BRIDGE T-27 WAS COMMISSIONED TO FIND EXISTS, AND IT IS HELD.** ***Hurlburt v. State*, 506
+  S.W.3d 199 (Tex. App.—Waco 2016)** — **published, a full "OPINION," Tom Gray, C.J., V-9 satisfied
+  on the face** — states the gap and closes it: *"The phrase, 'in a single criminal action' is not
+  defined in this provision, and **no court has otherwise defined this phrase in the context of
+  court costs**,"* then holds that *"we must presume the Legislature meant for the same
+  interpretation to apply to the same phrase when the Legislature used it in article 102.073(a)."*
+- **AND IT NARROWS THE TEST FOR COSTS, WHICH CHANGES ENTRIES 4a AND 4b.** The **"same criminal
+  episode" limb DROPS OUT** under art. 102.073, because the statute carries no such limitation:
+  *"there is no need to use the phrase, 'convictions that arise out of the same criminal episode,'
+  when applying the *Pharr* definition… to article 102.073(a)."* **Applied to four separate
+  indictments heard together, punishment tried over four days spanning six months — still a single
+  criminal action.**
+- **THE ROUTE IS *EX PARTE PHARR*, 897 S.W.2d 795 (Tex. Crim. App. 1995), NOT *LaPorte* — WHICH IS
+  WHY T-27's BRIDGE TEST CAME BACK EMPTY.** T-27 asked whether any of the nine applied ***LaPorte***
+  to art. 102.073 and correctly answered no. **The question was aimed one case to the side.**
+  ***Pharr* WAS NOT READ** and is now the load-bearing unread case (`Q-AUTH-1`). **It also supplies
+  entry 31's negative side** — *Pharr* is where sequentially concluded proceedings were **not** a
+  single criminal action, which is the proposition entry `4a` has been carrying cite-less.
+- **A CCA HOLDING ON 102.073's SCOPE THAT NOTHING IN THE RECORD HAD.** ***Anastassov*** (Tex. Crim.
+  App. 2022, PD-0848-20), found by search: art. 102.073 *"applies only to court costs and fees"* —
+  ***"A fine is not a court cost or fee; it is part of the punishment"*** — and a court of appeals
+  applying it to fines *"was incorrect."* **And it expressly RESERVED the rest:** *"we do not
+  consider the propriety of the court of appeals' holding with respect to court costs in this
+  opinion."* **So there is still no CCA holding on the bridge, and the CCA declined the chance.**
+  Authorship not V-9-checked — flagged, not staged.
+- ***XL SPECIALTY* DOES NOT UNDERCUT *FONTENOT*. IT RUNS THE OTHER DIRECTION AND CONFIRMS THE TEST.**
+  The audit raised it as a possible problem for the WS-3 entry. Read in full (**Chief Justice
+  Jefferson, joined by seven, V-9 satisfied**): the party claiming privilege was the **INSURER**, and
+  the **INSURED** was held not to be a representative of the insurer's client-side — *"Cintas could
+  not have been a 'representative of the client,' as it did not have the authority to obtain legal
+  services for **its insurer, XL**."* ***Fontenot* is the reverse posture** — the carrier as
+  representative of the insured client, under a policy conferring the duty to obtain his defense.
+  **Same test, opposite direction, and a real boundary added: in a bad-faith action the parties are
+  adverse and the privilege does not bridge them.** Failure of proof again: *"XL has neither pleaded
+  nor proved that this is the case."*
+- ***IN RE ARDEN* IS THE *FONTENOT* PATTERN, NOT A THIRD-PARTY RULE — so the sentence `#103` withdrew
+  was wrong for a second reason.** **Arden was the DEFENDANT**, Farmers insured **him**, and the
+  adjuster took **his own** statement *"while acting as his representative, for the purpose of
+  obtaining and facilitating his legal representation because he believed that the carrier would owe
+  him a legal defense."* **It does not stand for "adjuster recordings are privileged."** Two things
+  worth keeping: **the proof was made** (*"The adjuster's affidavit was the only evidence
+  presented"*), which is the difference from *W&G Trucking*; and **Arden expressly conceded that
+  witness statements are not work product** — a party conceding in 2003 exactly what TRCP 192.5(c)(1)
+  says, **independently corroborating `#103`'s correction to the WS-3 memo's §4.**
+- ***WHALEY* INDEPENDENTLY VALIDATES TWO `#103` CORRECTIONS.** Its footnote 1 quotes LaPorte's
+  definition pin-cited to **415 — not 414 —** with the parenthetical ***"overruled on other grounds
+  by Ex parte Carter, 521 S.W.3d 344 (Tex. Crim. App. 2017)."*** **That is the exact page and the
+  exact form `Q-RL6-3` proposed, reached by a Texas court of appeals independently.** But its weight
+  is limited and stated as such: the costs issue was **unopposed**, it applies both provisions
+  without expressly holding the definition governs 102.073, and — **`Q-AUTH-2`** — **its
+  publish/do-not-publish notation could not be found in the copy read**, which under TRAP 47.7(a)
+  controls whether a criminal court-of-appeals opinion has precedential value at all. **FLP's
+  "Published" is not evidence of that (`#103`).** ***Hurlburt* is stronger on every axis.**
+- **A METHOD FINDING ABOUT T-27's DESIGN, adjacent to `Q-AUDIT-1` (`Q-AUTH-4`).** T-27 read **the
+  nine PDFs in a folder.** **Four of the five authorities read today were not in that folder, and
+  three are more on point than anything that was.** A folder read cannot find what nobody put in the
+  folder — the bridge was two FLP queries away. **A limit of the task's design, not its execution.**
+- **Nothing was verified, no cite was selected, no registry entry was created or changed.** The cite
+  supply for entries 30 and 31 remains Michael's. **Entry 30 got nothing from this read** — it did
+  not reach degree-of-offense/punishment correspondence.
+
+CORRECTION, required fields — the open-item count:
+
+- WHAT WAS ASSERTED: the 2026-08-18 corrections packet's §7 header read *"Twenty-eight items —
+  twenty-three carried or amended, five new,"* and `#103` read *"Open items went **26 → 28**."* The
+  packet's §4.7 also named **eight** rows to amend in place.
+- WHAT IS TRUE INSTEAD: **the table holds THIRTY rows**, and **nine** rows were marked AMENDED. The
+  fifty-sixth invocation entered 26; the packet marked **four** rows genuinely NEW — `Q-WS3-6`,
+  `Q-DES-6`, `Q-DES-7`, `Q-AUDIT-1` — so **26 + 4 = 30**. The "five new" figure counted three new IDs
+  plus **two new options on existing rows** (`Q-RL6-1`'s *Whaley*, `Q-WS3-5`'s *XL Specialty*) — a
+  category error on top of the arithmetic — **and it omitted `Q-AUDIT-1`, the packet's own headline
+  item, from the new count entirely.** The ninth amended row §4.7 missed is **`Q-DES-4`**. Evidence:
+  the fifty-seventh invocation's runner line, which counted the ID column mechanically and re-derived
+  the figure at HEAD after the merge; **the queue merge followed §7, the fuller statement, and
+  amended all nine.**
+- WHICH ENTRY IT CORRECTS: **`#103`**, which **stands as written**, and the packet's §7/§4.7.
+- ACTOR: **Opus 5** (the design session that produced the corrections packet).
+- FAILURE CLASS: **an arithmetic and category error inside a document whose entire subject was
+  arithmetic and category errors** — the same class the audit it reported was reporting on, and the
+  `Q-T19-3` shape (arithmetic defects inside prose that no reconcile step inspects). **Recorded
+  because the irony is the lesson: an audit pass does not audit itself.**
+- WHAT CHANGED AS A RESULT: **nothing in the record was rewritten.** `#103` was ordered prepended
+  verbatim and a change to packet content is Michael's — the runner correctly left both figures
+  standing and reported them, the `Q-T19-3` precedent. **This entry is the correction.** The right
+  figure is **THIRTY**, and it becomes **thirty-four** if the four new items below are entered.
+
+ALSO CARRIED FORWARD, per QR-5 — **the fifty-seventh invocation's deletion did NOT land.**
+`push-to-code_audit-corrections_2026-08-18.zip` **is still in `inbox/`** at the time this entry was
+written, and its contents were **already executed** at `9daff3c`. **`device_bash` cannot delete, so
+removal is Michael's hand.** Any runner seeing two zips must treat that one as **ALREADY EXECUTED —
+do not re-run it** (QR-5's Step 1 marking), and order by filename date with mtime as tiebreak (QR-4).
+
+Staged for Code: this entry and the authority-read memo.
+Awaiting/Returned from Code, unreviewed: re-derive at refresh, never carry.
+
 ## 2026-08-18 — QUEUE-RUNNER batch (runner line; FIFTY-SEVENTH invocation) — the docs-only batch that landed a correction entry and five corrected-in-place research documents, and found that the packet reporting twenty-two defects had miscounted its own open items in two directions
 
 **One packet, executed in full under runner v11.** **Packet:** `push-to-code_audit-corrections_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **68,516 bytes, mtime `2026-08-18 09:51:33 −0500`, sha256 `b1743f8524aebd9fcd6be3e97ca3fb69fd81feaadf27bf220c6ea746211842f3`**. Michael confirmed the order at the Step 1 STOP. **No conflict rule fired and nothing was superseded** — a single-packet batch has no later packet to win. **Nothing was skipped as already built. §5 is NONE, and nothing was built.**
