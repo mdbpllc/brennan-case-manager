@@ -309,3 +309,93 @@ memorandum-opinion note keeps its unconfirmed-premise flag.)*
   lead read + entry draft; drafting the six new entry texts from the clean-authority PDF; the
   WS-4/Q-COM-10 unified-vocabulary list + authored-unrun migration + TS unions; T-26 remains
   Michael-interactive.
+
+## SPEND-DOWN ADJUDICATION SESSION (#105) — 2026-08-18, afternoon (fourth Fable adjudication session)
+
+Context: ~2% of the weekly Fable bar remained before the ~15:59 Central reset; the Opus-authored
+spend-down prompt ordered five items by leverage and instructed a clean stop. Two items were put;
+four limbs ruled; items 3–5 were NOT reached and are named below — silence is not a ruling.
+Reconcile at HEAD `fdcc9d8` (bridge, lock-free reads only): `inbox/` empty, ceiling #104, backlog
+40 = 23 VERIFIED / 17 UNVERIFIED re-derived exact from the two registry files.
+
+### §1 Q-AUDIT-1 — RULED: the adversarial preflight is STANDING law (PF-1)
+
+The question (carried in full in the spend-down prompt and the queue row): should the adversarial
+multi-agent read-only preflight — three runs, three payoffs (#96 reworded citation flag; #97
+arithmetic errors in staged prose; 2026-08-18 twenty-two defects including a manufactured legal
+gap), none catchable by RR-1, which re-reads against same-session rulings rather than primary
+sources — become a standing convention, at what trigger, run by whom?
+
+**Michael's ruling, picks verbatim from the option set put to him:**
+- Trigger limb: **"(a) Legal-content packets"** — standing, triggered by any packet carrying a
+  legal characterization or a proposed registry entry.
+- Operator limb: **"Design session, before shipping"** — the shipping session runs it before the
+  packet enters `inbox/`.
+
+Reason recorded with the ruling: all three paid runs were on exactly that content class, so the
+trigger scopes cost to where the record shows the risk lives; pre-ship keeps the defect out of the
+record entirely — the sending-side sibling of RR-1, and the only house mechanism that checks a
+document against its PRIMARY SOURCES. Discretionary preflights on other content remain available at
+Michael's direction, per instance. (The model tier is not the variable — the three that paid all ran
+on Opus.)
+
+**Instructions trigger #3 FIRED.** Verbatim v23 amendment text is at §3 below; full-text assembly
+is Opus lane per MODEL USAGE (mechanical instruction assembly), deliberately not spent from the
+Fable bar; Michael pastes same-day.
+
+### §2 Q-COM-10-A — RULED, both limbs: privilege_tier is purpose-scoped; Option 2
+
+The question (carried in full in the queue row): WS-4 ruled a fourth `privilege_tier` state into
+both vocabularies; drafting surfaced that a single-valued column cannot record two attributes —
+a general property ('attorney-client' and 'work-product' already overlap), and `transcripts`
+already carries `discoverable_flag` and `phi_flag` as separate booleans, suggesting the column was
+never meant to be exhaustive, though that had never been ruled.
+
+**Michael's ruling, picks verbatim:**
+- Limb (a): **"Purpose-scoped + precedence"** — `privilege_tier` is NOT exhaustive; it classifies
+  for a stated operational purpose under a stated precedence rule; orthogonal attributes live in
+  their own fields, matching the schema's existing separate-boolean pattern.
+- Limb (b): **"Option 2: 3 values + boolean"** — three `privilege_tier` values plus a
+  `witness_statement` boolean, which can express "work-product AND owed as an initial disclosure"
+  without precedence gymnastics. WS-4's direction — the fourth state in both vocabularies — is
+  satisfied on this shape.
+
+**Consequence flag, stated so it cannot ride silently:** the authored, UNRUN migration was drafted
+to the FOUR-VALUE shape and must be REDRAFTED to Option 2 before anything executes. It remains NOT
+AUTHORIZED; the run is Michael's hand; nothing executes until the shared list is adopted
+(Q-COM-10's direction). Q-COM-10-B through -F are unblocked and are Opus work.
+
+### §3 Verbatim v23 amendment text (for Michael's paste; assembly = Opus lane)
+
+Header line for v23 (replace the v22 header comment block's opening):
+
+> \# v23 — 2026-08-18 (supersedes v22 of 2026-08-18 — from the FABLE spend-down adjudication
+> session of 2026-08-18 (#105), which put items 1 and 2 of the spend-down list and ruled both.
+> Trigger #3 fired ONCE: PF-1 RULED — the adversarial multi-agent read-only preflight is STANDING,
+> trigger (a) (any packet carrying a legal characterization or a proposed registry entry), run by
+> the DESIGN SESSION before shipping; the Binding conventions below now carry it. The same session
+> also ruled Q-COM-10-A (privilege_tier purpose-scoped, NOT exhaustive; Option 2 — three values +
+> witness_statement boolean; the authored migration must be redrafted to that shape and remains
+> unauthorized) — recorded in the session log (#105) and the adjudication record, no instructions
+> change. Items 3–5 of the spend-down list were not reached. Nothing else changed from v22 except
+> as stated here.)
+
+New convention bullet (insert in "Binding conventions (do not drift)", after the ROUTE-C bullet):
+
+> - PF-1 (ruled 2026-08-18, #105): the adversarial multi-agent read-only PREFLIGHT is STANDING.
+>   Trigger: any packet carrying a legal characterization or a proposed registry entry. Run by the
+>   DESIGN SESSION before shipping — before the packet enters `inbox/` — the sending-side sibling
+>   of RR-1: RR-1 re-reads against same-session rulings; PF-1 checks against PRIMARY SOURCES, which
+>   no other house convention does. Three paid runs on the record (#96, #97, and the 2026-08-18
+>   authority-read preflight). Discretionary preflights on other content remain available at
+>   Michael's direction, per instance.
+
+Also bump the trigger-#3 history parenthetical in v23's "When to prompt Michael to UPDATE these
+instructions" §3 with: "Fired 2026-08-18 a third time that day and resolved in v23 — PF-1, from the
+fourth FABLE adjudication session (#105)."
+
+### §4 Not reached (named so nothing rides silently)
+
+Item 3 `Q-WS2-1` (five-limb TRCP 194 collision); item 4 `Q-RL6-1` + `Q-AUTH-1` (Hurlburt/Pharr cite
+supply — **the Pharr read stays unauthorized**); item 5 `Q-WS3-5`/`Q-WS3-6` (XL Specialty / Arden
+adoption). The spend-down prompt's do-not-spend list untouched as designed; T-26 not attempted.
