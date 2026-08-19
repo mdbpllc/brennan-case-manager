@@ -87,10 +87,10 @@ were disposed in a single criminal action or separate ones.
 
 ### 4b — Tex. Code Crim. Proc. art. 102.073 — single criminal action: each cost once, highest category
 
-**Cite:** Tex. Code Crim. Proc. art. 102.073 (text read verbatim 2026-08-13 from a public
-source; verification against official text is Michael's act).
+**Cite:** Tex. Code Crim. Proc. art. 102.073 (text read verbatim 2026-08-13 from a public source; verified against the official bulk corpus, Statutes 26-08-14, at #109).
 **Rule.** (a) In a single criminal action in which a defendant is convicted of two or more offenses or of multiple counts of the same offense, the court may assess each court cost or fee only once against the defendant. (b) In a criminal action described by Subsection (a), each court cost or fee the amount of which is determined according to the category of offense must be assessed using the highest category of offense that is possible based on the defendant's convictions. (c) This article does not apply to a single criminal action alleging only the commission of two or more offenses punishable by fine only.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-18 (#109).
+**Verified:** 2026-08-18 one-look (#109): exact match against the official corpus (Statutes 26-08-14), characterized artifacts normalized. Record: post-execution-signoff-record-2026-08-18.md §1.
 **Relied on for:** CR-10's cost-total check on consolidated pleas — the capture's live
 exhibit was a multi-cause consolidated plea; if that was a single criminal action, an
 unqualified per-cause total is forbidden by (a).
