@@ -1,7 +1,7 @@
 # Project Knowledge Working-Set Policy
 
 **Canonical repo path:** `docs/project-knowledge-working-set-policy.md`
-**Status:** LANDED in repo 2026-07-26 (drafted same day, design session, Opus 5; routed by Code). A one-line pointer to this doc lives in `CLAUDE.md` under working style/conventions.
+**Status:** LANDED in repo 2026-07-26 (drafted same day, design session, Opus 5; routed by Code). A one-line pointer to this doc lives in `CLAUDE.md` under working style/conventions. Amended 2026-08-18 (ruled same day): execution-capability line and capture-pruning caveat — see the two sections below.
 **Applies to:** the Claude project knowledge base for brennan-case-manager. Not to the repo, which has no equivalent constraint.
 
 ---
@@ -34,9 +34,9 @@ Everything else routes to the repo.
 - **On adding a large source document:** ask whether an index or synthesis would serve the working set better than the raw source. If yes, the raw source goes to the repo and the synthesis stays.
 - **On a doc reaching canonical status in the repo:** it comes out of project knowledge at the next handoff, unless pinned. The handoff should say so explicitly.
 - **Claude raises this unprompted** when a session adds material that would push the working set past the pinned list, and at any session where project capacity is discussed.
-- **Never prune design docs to save space.** They are a rounding error in the token budget and the highest-value content in the project. If space is the problem, the problem is a corpus, not a spec.
+- **Never prune design docs to save space.** They are a rounding error in the token budget and the highest-value content in the project. If space is the problem, the problem is a corpus, not a spec. Caveat (2026-08-18, ruled): this line was written when the twelve claude_* docs were ~3% of the load. SESSION CAPTURES are a distinct class from specs and design docs — they are RAW CAPTURE whose canonical content lands in the repo through the queue, and by 2026-08-18 they had grown to ~14% of usage (44 were retired that day by ruling, archived losslessly first). Specs and design docs remain never-pruned. Captures whose sessions' durable content is confirmed on the repo record are prunable — by Michael's ruling per instance, never by default, and always archive-before-delete.
 
-## Pruning runbook (Michael executes — Claude cannot delete project files)
+## Pruning runbook (execution: Michael's hand, or — since 2026-08-18 — a Cowork design session via the Projects tool. A session deletes ONLY on Michael's explicit in-session ruling, and ONLY after delivering him a lossless, byte-verified archive of everything being removed. A deletion that times out is verified against the re-read doc list, never assumed either way.)
 
 Ordered by value per unit of effort. Steps 1 and 2 are lossless.
 

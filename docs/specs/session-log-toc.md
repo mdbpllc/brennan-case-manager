@@ -9,48 +9,48 @@ This index is therefore rebuilt in full from the log each time it is refreshed; 
 existing copy will silently drift. Canonical path is stable and unversioned for exactly that reason.
 
 - **Canonical repo path (PROPOSED):** `docs/specs/session-log-toc.md`
-- **Generated:** 2026-08-18 (Central, per DT-1) — **EIGHTH EDITION**, regenerated from the seventh
-  (2026-08-18, the fifty-ninth invocation) in the very next batch, so it never went stale at all —
-  the fifth consecutive edition of which that is true
-- **Produced by:** the QUEUE-RUNNER's **sixtieth invocation**, Claude Code session, Opus 5, on
-  mdb-pllc — the **sixth** firing of the `TOC-4` obligation. Regeneration is a Step 4 item 1 act, so
+- **Generated:** 2026-08-18 (Central, per DT-1) — **NINTH EDITION**, regenerated from the eighth
+  (2026-08-18, the sixtieth invocation) in the very next batch, so it never went stale at all —
+  the sixth consecutive edition of which that is true
+- **Produced by:** the QUEUE-RUNNER's **sixty-first invocation**, Claude Code session, Opus 5, on
+  mdb-pllc — the **seventh** firing of the `TOC-4` obligation. Regeneration is a Step 4 item 1 act, so
   the index rides the same commit as the entries it indexes instead of going stale the moment they
   land
-- **DT-1 note — this edition's shell tells the truth, and the UTC clock has now crossed into the
-  NEXT DAY, which is a sharper failure than any prior edition recorded.** Bare `date` →
-  `Tue Aug 18 19:30:53 CDT 2026`, **right**; but `date -u` → **`Wed Aug 19 00:30:53 UTC 2026`**, so
-  a UTC-derived stamp would not merely have been off by hours — **it would have dated both new
-  entries 2026-08-19 and manufactured a genuine out-of-order inversion in this index.** The date
-  above comes from the machine's wall clock through PowerShell — `2026-08-18 19:30:53 −05:00`,
-  `Central Standard Time`. **Five shells across five batches and still no stable answer**, so what
-  survives is not a preferred command but the practice: read the wall clock through PowerShell and
-  check the shell against it
+- **DT-1 note — the day-crossing found by the eighth edition is NOT a one-off: it reproduced here,
+  half an hour later, in a separate session.** Bare `date` → `Tue Aug 18 19:59:32 CDT 2026`,
+  **right**; `date -u` → **`Wed Aug 19 00:59:32 UTC 2026`**, so a UTC-derived stamp would again have
+  dated both new entries 2026-08-19 and manufactured a genuine inversion in this index. The date
+  above comes from the machine's wall clock through PowerShell — `2026-08-18 19:59:29 −05:00`,
+  `Central Standard Time`. **What the second instance adds is that this is a WINDOW, not a moment:**
+  every batch run between ~19:00 Central and midnight will read a UTC date one day ahead, so the
+  practice — read the wall clock through PowerShell and check the shell against it — is load-bearing
+  for a predictable five-hour stretch of every evening, not just for one unlucky batch
 
 ## Basis of this read
 
 | | |
 |---|---|
 | Checkout | `C:\Users\Brennan\brennan-case-manager`, branch `master` |
-| Read FROM commit | `67ff5f4` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `67ff5f4`. The runner line and the `#106` entry were both written by this batch |
-| `origin/master` at read time | `67ff5f4`, confirmed by a live `git fetch` + `git ls-remote origin refs/heads/master` — 0 ahead / 0 behind |
-| Working tree | clean at `67ff5f4` before this batch's edits |
-| `inbox/` | **one** packet at Step 1, identity pinned per QR-6(c) — `push-to-code_fc-adjudication_2026-08-18.zip`, 20,553 bytes, sha256 `ae4d6715…`, checked NEGATIVE on four independent paths and genuinely pending |
-| Source file | `docs/specs/session-log.md`, 1,110,547 bytes, **11,123 raw / 9,792 non-blank lines** |
+| Read FROM commit | `83d244b` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `83d244b`. The runner line and the `#107` entry were both written by this batch |
+| `origin/master` at read time | `67ff5f4` at the Step 0 gate — **one commit BEHIND HEAD**, the ahead-stop firing on a live `git fetch` + `git ls-remote origin master`. The sixtieth invocation had committed without pushing. **Michael pushed by hand between invocations**; re-read `83d244b`, 0 ahead / 0 behind, and the batch then proceeded |
+| Working tree | clean at `83d244b` before this batch's edits |
+| `inbox/` | **two** packets at Step 1, both identities pinned per QR-6(c) and **re-pinned unchanged after the STOP** — `push-to-code_working-set-policy-amendments_2026-08-18.zip` (8,707 B, sha256 `8d6eec16…`), **executed**, checked NEGATIVE on two content probes at HEAD; and `push-to-code_fc-adjudication_2026-08-18.zip` (20,553 B, sha256 `ae4d6715…`), **skipped as already executed** — it ran at `83d244b` and survived only because that close-out never reached its Step 4 item 5 |
+| Source file | `docs/specs/session-log.md`, 1,123,589 bytes, **11,185 raw / 9,847 non-blank lines** |
 
 **METHOD — read this before trusting a row, because the parts of this file rest on different
 evidence.** The first edition (`#91`) built its 190 rows from a **full-text read of every entry**.
 Each edition since has added rows for the new entries and **proved the older rows could not have
 changed** by a byte-for-byte comparison of the log blob at the prior edition's basis commit against
-the log as the current batch writes it. This edition does that again against the seventh edition's
-basis: `git show 67ff5f4:docs/specs/session-log.md` was compared with the log as written, and **the
-220 prior entries' text is byte-identical — the old body below the preamble (1,093,620 bytes) is an
-exact SUFFIX of the new body (1,107,777 bytes), with 14,157 bytes carrying exactly two new `## `
-headings inserted above it.** The log has been **purely prepended**, so those 220 rows describe
-entries that have not moved a byte and are carried on that evidence rather than on trust.
+the log as the current batch writes it. This edition does that again against the eighth edition's
+basis: `git show HEAD:docs/specs/session-log.md` at `83d244b` was compared with the log as written,
+and **the 222 prior entries' text is byte-identical — the old body below the preamble (1,107,776
+bytes) is an exact SUFFIX of the new body (1,120,818 bytes), with 13,042 bytes carrying exactly two
+new `## ` headings inserted above it.** The log has been **purely prepended**, so those 222 rows
+describe entries that have not moved a byte and are carried on that evidence rather than on trust.
 
-**AND THE PREAMBLE IS BYTE-IDENTICAL AGAIN** — `head -18` of the log at `67ff5f4` and at HEAD
-compare equal, all 2,771 bytes counting its trailing newline, as they did at the fifth, sixth and
-seventh editions. This batch touched no preamble line, so the byte-proof covers the whole file below
+**AND THE PREAMBLE IS BYTE-IDENTICAL AGAIN** — `head -18` of the log at `83d244b` and as written
+compare equal under `cmp`, all 2,771 bytes counting its trailing newline, as they did at the fifth
+through eighth editions. This batch touched no preamble line, so the byte-proof covers the whole file below
 its own two new entries.
 
 **The two new rows were written from each new entry's heading and its bolded bullet lead-ins — NOT
@@ -59,36 +59,34 @@ own thesis, so the summaries are drawn from what each entry says about itself; a
 load-bearing detail must still open the entry. **The ID, date, type and ordering columns for all 222
 rows are mechanical and were re-derived in full this refresh.**
 
-**NO CARRIED ROW WAS EDITED THIS REFRESH**, and the absence is stated rather than assumed — with one
-distinction this edition has to draw for the first time. `#106` reports that **v23 was assembled
-design-side**, which changes the state described by the same-day note appended to the `runner 59`
-entry (*"no v23 DOCUMENT exists"* and *"a Code session structurally cannot perform the assembly"*).
-**That is supersession by events, not a correction: both of the note's findings were true when
-written and neither is contradicted** — the assembly was done by the design side, exactly as the
-note said it would have to be. **So no *Corrections issued / received* cell above the two new rows
-changed**, and the `#106` row records the relationship in its own cell instead. The seventh
-edition's carried cells stand as written.
+**NO CARRIED ROW WAS EDITED THIS REFRESH**, and the absence is stated rather than assumed. Neither
+new entry corrects, supersedes or re-characterizes any earlier one: `#107` records a project-knowledge
+prune and two policy amendments that touch no prior entry's subject, and the `runner 61` line's only
+backward reference is to the sixtieth invocation's **unpushed** state — which the sixtieth's own line
+could not have stated, because it was committed before the push was attempted. **That is a gap being
+filled forward under QR-5, not a carried row being edited.** No *Corrections issued / received* cell
+above the two new rows changed, and the eighth edition's carried cells stand as written.
 
 ## How to read the ID column
 
 The log carries **two independent numbering systems**, and neither covers every entry:
 
-- **`#nn`** — design and Code session entries. The series as written runs **#2 – #106**.
+- **`#nn`** — design and Code session entries. The series as written runs **#2 – #107**.
   **RULED 2026-08-18 (`TOC-6`): the `#nn` series is DESIGN-ONLY.** Code sessions never mint one —
   runner batches carry runner ordinals and other Code entries stay unnumbered — which is why the
-  C-2 row below keeps its `—`, and why this edition, also a Code session, did not take `#107`.
-  **`#106` is design-minted: it is the FC-block adjudication entry, authored design-side and landed
-  here verbatim.**
-- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* (“SIXTIETH
-  invocation”), counted separately from `#nn`. Runs **5 – 60**.
+  C-2 row below keeps its `—`, and why this edition, also a Code session, did not take `#108`.
+  **`#107` is design-minted: it is the project-knowledge pruning entry, authored design-side and
+  landed here verbatim; the runner only filled its `#___` placeholder from the ceiling at HEAD.**
+- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* (“SIXTY-FIRST
+  invocation”), counted separately from `#nn`. Runs **5 – 61**.
 - **`—`** — entries carrying neither. Mostly the pre-numbering era (2026-07-21 → 2026-07-26),
   plus one micro-entry, one test packet, one unnumbered runner line, and the C-2 Code session that
   generated the second edition of this file.
 
 Eight QUEUE-RUNNER batches carry a `#nn` **instead of** an ordinal (#6, #7, #10, #14, #31, #33,
 #35, #36) — they are indexed under their number and named as runner batches in the Type column.
-**Re-derived this refresh rather than carried: 65 headings name a QUEUE-RUNNER batch, 8 of them
-carry an own `#nn`, leaving 57** — which is the 56 ordinals plus the one unnumbered runner line.
+**Re-derived this refresh rather than carried: 66 headings name a QUEUE-RUNNER batch, 8 of them
+carry an own `#nn`, leaving 58** — which is the 57 ordinals plus the one unnumbered runner line.
 
 **No source line numbers are given, deliberately.** New entries are prepended, so every line number
 in the file shifts on every append; a line-anchored index would be wrong the day after it was built.
@@ -96,16 +94,23 @@ Search the log by the ID or the date instead.
 
 ## Coverage — what was mechanically verified
 
-- **222 entries indexed — one row per `## ` heading in the file. No entry skipped.**
-- Numbered entries: **105**, range **#2–#106**, **no gaps except #1**, no duplicates.
-- Runner ordinals: **56**, range **5–60**, **no gaps, no duplicates.**
+- **224 entries indexed — one row per `## ` heading in the file. No entry skipped.**
+- Numbered entries: **106**, range **#2–#107**, **no gaps except #1**, no duplicates.
+- Runner ordinals: **57**, range **5–61**, **no gaps, no duplicates.**
 - One QUEUE-RUNNER line carries no ordinal; unnumbered legacy/other entries: **60**, which includes
   the second edition's own C-2 entry.
-- **105 + 56 + 1 + 60 = 222.** The buckets are stated so they add up on their face.
-- **EVERY BUCKET RECONCILES AGAINST THE SEVENTH EDITION, which is the strongest available check on a
-  mechanical re-derivation.** The seventh edition recorded 104 numbered, 55 ordinals, 1 unnumbered
-  runner, 60 other = 220. The two new log entries are **1 numbered (`#106`) and 1 runner line
-  (60)**; both legacy buckets are unmoved. Nothing else shifted.
+- **106 + 57 + 1 + 60 = 224.** The buckets are stated so they add up on their face.
+- **EVERY BUCKET RECONCILES AGAINST THE EIGHTH EDITION, which is the strongest available check on a
+  mechanical re-derivation.** The eighth edition recorded 105 numbered, 56 ordinals, 1 unnumbered
+  runner, 60 other = 222. The two new log entries are **1 numbered (`#107`) and 1 runner line
+  (61)**; both legacy buckets are unmoved. Nothing else shifted.
+- **A FIFTH DERIVATION TRAP APPEARED THIS REFRESH AND IS RECORDED, because the four carried below
+  did not cover it.** A scan that extracts every `(#nn)` token from a heading — rather than only the
+  token in the ID position — reports a **duplicate `#62`** and a false numbered count, because at
+  least one heading names another entry's number inside its own text. The carried traps warn that a
+  bare `#[0-9]+` scan **over-counts**; this is the sharper form, since the symptom is not a large
+  number but a plausible-looking **duplicate** in a series that has none. The published figures come
+  from the position-anchored pass, which reports **no duplicates and no gaps across #2–#107.**
 - **THE FOUR DERIVATION TRAPS ARE CARRIED AND WERE RE-CONFIRMED LIVE, AND NO FIFTH APPEARED.**
   `#30`'s heading writes its ID as `— #30`, not `(#30)`, so the extraction pattern must accept both;
   a bare `#[0-9]+` scan over the headings over-counts, because headings routinely mention OTHER
@@ -116,11 +121,11 @@ Search the log by the ID or the date instead.
   before the paren — so an ordinal scan anchored on the literal `invocation)` returns 54 where the
   true figure is 56, and silently drops TWO. The published figures come from the anchored,
   case-tolerant, suffix-tolerant pass.
-- **NO NEW OUT-OF-ORDER DATE WAS INTRODUCED — BUT THIS IS THE FIRST EDITION THAT CAME CLOSE.** Both
-  new entries are dated 2026-08-18 and sit above the fifty-ninth runner line's 2026-08-18, which is
-  correct newest-first order. **A UTC-derived stamp would have written 2026-08-19 and produced a real
-  inversion** (see the DT-1 note above) — the first time the drift the log has been tracking since
-  `#101` would have changed a DATE rather than an hour. The one inversion the fifty-fifth recorded —
+- **NO NEW OUT-OF-ORDER DATE WAS INTRODUCED, AND THE NEAR-MISS THE EIGHTH EDITION RECORDED HAS NOW
+  HAPPENED TWICE.** Both new entries are dated 2026-08-18 and sit above the sixtieth runner line's
+  2026-08-18, which is correct newest-first order. **A UTC-derived stamp would again have written
+  2026-08-19 and produced a real inversion** (see the DT-1 note above) — so the day-crossing is a
+  reproducible property of the evening window, not the eighth edition's bad luck. The one inversion the fifty-fifth recorded —
   its 2026-08-17 line above `#100`'s 2026-08-18 heading — **is untouched and still stands as `#101`
   ruled it: an artifact of a container clock rather than a genuine out-of-order date.** Whether the
   index should distinguish an artifact from a real instance is **Michael's, and is raised in `#101`
@@ -132,6 +137,8 @@ Newest first, matching the log's own order.
 
 | # | Date | Type | Summary | Corrections issued / received |
 |---|---|---|---|---|
+| `runner 61` | 2026-08-18 | QUEUE-RUNNER runner line | The Step 0 ahead-stop fires for the first time on a real stranded push: the sixtieth invocation is found to have committed and never pushed, so 613 insertions across six files had reached nobody, and the runner's own retry is refused by the auto-mode classifier — Michael pushes by hand before the batch proceeds. The working-set policy takes its three anchored amendments, and the batch's first already-executed probe is found to have been aimed at a capture file that is absent by design and could never have answered the question. | issues → this batch's own first Step 1.3 probe (corrected by Michael before execution); fills forward → the sixtieth line's unstated push and undone deletion (QR-5) |
+| `#107` | 2026-08-18 | design session, Fable 5, Cowork | The second capacity event on record: 44 session captures retired from project knowledge by ruling — archived losslessly, byte-verified and delivered before deletion — proving in passing that the capacity meter counts TOKENS rather than bytes, and that the dominant consumer is the GitHub sync (~86%) rather than the docs (~14%). Two working-set-policy amendments ruled: a Cowork session CAN now delete project files under stated conditions, and session captures become a prunable class distinct from specs and design docs. | issues → a same-session in-chat meter projection (corrected in the capture, not in any log entry) |
 | `runner 60` | 2026-08-18 | QUEUE-RUNNER runner line | The FC-block packet lands all five routing rows; the one queue row the runner had to rewrite turns out to be a correction Michael wrote himself two commits earlier, so it is amended rather than reversed — his words stand and the design side's later assembly of v23 is recorded below them, carried on the packet's word because the instructions field is unreadable from a build session. `Q-RE-9` closes as a side effect of another item's ruling rather than on its own text, and `date -u` is found already on the next day. | issues → nothing; the v23 amendment supersedes state rather than correcting any entry |
 | `#106` | 2026-08-18 | design session, Fable 5, Cowork | The fifteen-item FC form-corpus block put one at a time: thirteen ruled — `{token}` made the one canonical convention with the importer accepting legacy forms and emitting one, per-spot formatting moved into template settings, bracket handling made an allowlist, fee basis held per client, deadlines split two-track, consent made a first-class entity — FC-12 and FC-13 deferred, four adjacent rows ruled, and SOURCING gaining a fourth named channel that resolves `Q-RE-9` and carries v23 to assembly. | supersedes in part → `runner 59`'s same-day v23 note (state changed by the design-side assembly; the note's findings are not contradicted) |
 | `runner 59` | 2026-08-18 | QUEUE-RUNNER runner line | The adversarial preflight becomes standing law in the one batch its own packet bars from applying it — PF-1 fires pre-`inbox/`, on the sending side — and the migration the ruling sends back for a redraft proves to be a section of a proposal document, not the `db/migrations/` file on the hand list, which the ruling does not reach. | issues → the packet's “authored, UNRUN migration” referent (disambiguated, not contradicted) |
