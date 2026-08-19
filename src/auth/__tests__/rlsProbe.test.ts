@@ -35,12 +35,12 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 36 schema tables with one policy-less exception', () => {
+  it('covers all 37 schema tables with one policy-less exception', () => {
     // 32 + the two CL-2 tables (case_clients, case_client_flags) + the two CD-1
-    // tables (case_roster_flags, contact_edges). A table the probe does not
-    // list is a table whose missing GRANT nothing would catch.
-    expect(SCHEMA_TABLES).toHaveLength(36);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(35);
+    // tables (case_roster_flags, contact_edges) + gate 10's party_pii. A table
+    // the probe does not list is a table whose missing GRANT nothing would catch.
+    expect(SCHEMA_TABLES).toHaveLength(37);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(36);
   });
 
   it('lists the CD-1 tables, so their grants are probed from birth', () => {
@@ -55,6 +55,13 @@ describe('expectedUnreachable', () => {
     const names = SCHEMA_TABLES.map((t) => t.name);
     expect(names).toContain('case_clients');
     expect(names).toContain('case_client_flags');
+  });
+
+  it('lists gate 10 party_pii, so a missing GRANT on the SSN table cannot hide', () => {
+    // The gate 10 slice ships the table, its RLS, its policy and its GRANT in
+    // one act; the probe row lands in the same commit for the same reason.
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('party_pii');
   });
 });
 

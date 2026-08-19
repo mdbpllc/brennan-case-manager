@@ -9,64 +9,81 @@ This index is therefore rebuilt in full from the log each time it is refreshed; 
 existing copy will silently drift. Canonical path is stable and unversioned for exactly that reason.
 
 - **Canonical repo path (PROPOSED):** `docs/specs/session-log-toc.md`
-- **Generated:** 2026-08-19 (Central, per DT-1) — **SEVENTEENTH EDITION**, regenerated from the
-  sixteenth (2026-08-19, the sixty-eighth invocation) in the very next batch and on the same day,
-  so it never went stale at all — the fourteenth consecutive edition of which that is true
-- **Produced by:** the QUEUE-RUNNER's **sixty-ninth invocation**, Claude Code session, Opus 5, on
-  mdb-pllc — the **fifteenth** firing of the `TOC-4` obligation. Regeneration is a Step 4 item 1 act,
-  so the index rides the same commit as the entries it indexes instead of going stale the moment
-  they land
-- **DT-1 DID NOT FIRE THIS BATCH.** Bare `date` read `Wed Aug 19 13:44:36 CDT 2026` and `date -u`
-  read `18:44:36 UTC`, and **both agree on 2026-08-19.** The evening window the eighth edition
-  identified (~19:00 Central to midnight) was nowhere near — this batch ran in the early afternoon. Recorded
-  because a check reported only when it fires cannot be distinguished from a check nobody ran.
-- **THERE IS NO DATE SPLIT IN THIS EDITION'S TWO NEW ROWS EITHER — THE THIRD CONSECUTIVE EDITION
-  OF WHICH THAT IS TRUE.** `runner 69` and `#115` are **both** dated 2026-08-19, and the interval
-  between them is about an hour: the design session authored the packet in the early afternoon and
-  the runner executed it the same afternoon. The thirteenth and fourteenth editions each had to
-  explain a split; the fifteenth, sixteenth and this one have none. **Saying so keeps the absence from reading as an
-  omission.**
+- **Generated:** 2026-08-19 (Central, per DT-1) — **EIGHTEENTH EDITION**, regenerated from the
+  seventeenth (2026-08-19, the sixty-ninth invocation) later the same afternoon, so it never went
+  stale at all — the fifteenth consecutive edition of which that is true
+- **Produced by:** the **GATE 10 BUILD SESSION**, Claude Code, Opus 5, on mdb-pllc — **NOT a runner
+  batch, and therefore NOT a `TOC-4` firing.** `TOC-4`'s ruled trigger is *every runner batch*; this
+  regeneration is directed instead by the gate 10 kickoff prompt's own closing checklist, so **the
+  firing count stays at FIFTEEN while the edition count moves to EIGHTEEN.** The distinction is
+  recorded rather than smoothed, because a firing count that silently absorbed every non-runner
+  regeneration would stop measuring the obligation it exists to measure. Regeneration still rides
+  the same commit as the entry it indexes, which is the point of doing it here at all
+- **DT-1 DID NOT FIRE THIS SESSION.** PowerShell, the authority, read `2026-08-19 14:18:38 −05:00`
+  / `Central Standard Time`; bare `date` read `Wed Aug 19 14:18:41 CDT 2026` and `date -u` read
+  `19:18:41 UTC`, and **all three agree on 2026-08-19.** The evening window the eighth edition
+  identified (~19:00 Central to midnight) was nowhere near — this session ran in the early
+  afternoon. Recorded because a check reported only when it fires cannot be distinguished from a
+  check nobody ran.
+- **NO DATE SPLIT IN THIS EDITION'S ONE NEW ROW — THE FOURTH CONSECUTIVE EDITION OF WHICH THAT IS
+  TRUE**, and the simplest instance yet: a single row, dated 2026-08-19, written by the session it
+  describes. The thirteenth and fourteenth editions each had to explain a split; the four since have
+  none. **Saying so keeps the absence from reading as an omission.**
 - **NO CARRIED ROW WAS EDITED THIS REFRESH — not one cell.** A binary read of this file returns
   **0 CRLF and 0 bare CR**, so the fourteenth edition's repair of the `runner 65` row's lone
   carriage return still holds.
+- **ONE GENERATED FIGURE IN THIS FILE'S OWN FOOTER WAS STALE AND IS CORRECTED HERE, NOT RE-CARRIED.**
+  It published *"this edition is its **thirteenth** firing"* through the sixteenth and seventeenth
+  editions as well, having frozen at the fifteenth — **the exact self-contradiction this file's
+  header warns readers about, in the file that does the warning.** It now names the firing count as
+  fifteen and states that this edition is not itself a firing.
 
 ## Basis of this read
 
 | | |
 |---|---|
 | Checkout | `C:\Users\Brennan\brennan-case-manager`, branch `master` |
-| Read FROM commit | `b752fcc` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `b752fcc`. The `runner 69` line and the `#115` entry were both written by this batch |
-| `origin/master` at read time | `b752fcc`, **0 ahead / 0 behind**, from a live `git fetch origin` plus `git ls-remote origin refs/heads/master` — not from the local tracking ref, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all three limbs: clean, on `master`, neither behind nor ahead. **The sixty-seventh's push had never been confirmed in a design session's presence and its packet asked for exactly this check; it is confirmed** |
-| Working tree | clean at `b752fcc` before this batch's edits |
-| `inbox/` | **one** packet at Step 1, identity pinned per QR-6(c) — `push-to-code_gate10-slice-and-authorization_2026-08-19.zip` (19,490 B, sha256 `79e9d0c0…`), **executed**. The QR-5 already-executed probe was negative on both limbs — `(#115)` returned 0 at HEAD and at `origin/master` against a control `(#114)` returning 1 at both, and both canonical paths were absent |
-| Health check | **SKIPPED, DELIBERATELY, AND THE SKIP IS RECORDED RATHER THAN SILENT.** `QR-6(f)`'s skip limb needs nothing built **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs are satisfied — this batch's routing table is `docs/` ONLY, and its `§5` is AUTHORIZED-BUT-NOT-HERE, the build being barred to this runner** — so `npm test` / `npm run build` / `npm run lint` would have proved nothing about it. Last MEASURED figures stand from the sixty-seventh: 278 tests across 23 files, build and lint exit 0 |
+| Read FROM commit | `f01011e` — **but this index DESCRIBES the log as this session commits it**, so the session's own commit is where every row verifies, not `f01011e`. The one new row was written by this session, about itself |
+| `origin/master` at read time | `f01011e`, **0 ahead / 0 behind**, from a live `git fetch origin` plus `git rev-parse` on both refs — not from the local tracking ref alone, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all four limbs: clean, on `master`, neither behind nor ahead, and `inbox/` empty |
+| Working tree | clean at `f01011e` before this session's edits |
+| `inbox/` | **EMPTY.** `ls -la inbox/` returned no packet, so the MM-1 stop did not arise and **this session never doubled as the queue runner** — which the gate 10 kickoff prompt bars in terms. Nothing was executed from the queue and no packet was deleted |
+| Health check | **RAN — `QR-6(f)`'s skip limb does not reach a build session, and this one touched `db/` and `src/` besides.** MEASURED, with the exit codes read off `npm` itself rather than through a pipe (the first attempt used `| tail`, which reports `tail`'s status, and was re-taken): **`npm test` 279 passed across 23 files** — 278 plus the one this session added, asserting `party_pii` is in the RLS probe list — **`npm run build` exit 0, `npm run lint` exit 0.** The >500 kB chunk warning is pre-existing and unchanged |
 
 **THE LOG WAS PURELY PREPENDED, AND THAT IS PROVED RATHER THAN ASSUMED.** The prior body is an
-**exact suffix** of the log as written (1,257,908 bytes → 1,278,162 bytes, the file this batch
-commits), and **the preamble compares byte-identical** between `b752fcc` and the new file at all
-2,771 bytes. So the 238 rows carried from the sixteenth edition describe entries that have not moved
-a byte, and they are carried on that evidence rather than on trust.
+**exact suffix** of the log as written (1,278,162 bytes → 1,295,715 bytes, the file this session
+commits), and **the preamble compares byte-identical** between `f01011e` and the new file at all
+2,771 bytes. So the 240 rows carried from the seventeenth edition describe entries that have not
+moved a byte, and they are carried on that evidence rather than on trust.
 
-**The two new rows were written from each new entry's heading and its bolded bullet lead-ins — NOT
-from a complete reading of every line of both.** In this log the heading is written as the entry's
-own thesis, so the summaries are drawn from what each entry says about itself; a reader who needs a
-load-bearing detail must still open the entry. **The ID, date, type and ordering columns for all 240
-rows are mechanical and were re-derived in full this refresh.**
+**The one new row was written by the session that wrote the entry**, which is a different basis from
+every carried row and is worth naming: the summaries carried below were drawn from each entry's
+heading and bolded lead-ins, whereas this one is written with the whole session in view. A reader
+who needs a load-bearing detail must still open the entry. **The ID, date, type and ordering columns
+for all 241 rows are mechanical and were re-derived in full this refresh** — and the derivation is
+worth stating because the naive form is wrong: **an unanchored `#(\d+)` sweep over the headings
+returns the set {1..115}, which would put `#1` in the log and contradict `TOC-1`.** It does not
+exist; the hit comes from a `#1` inside the **text** of the `#91` heading. **Anchor the ID at the
+start of the heading (`^<date> (#nn)` or `^<date> — #nn`) and the sound figures fall out: 114
+numbered entries, #2–#115, no gaps and no `#1`.**
 
-**NO CARRIED ROW WAS EDITED THIS REFRESH — not one cell.** Neither new entry corrects or supersedes
-an earlier one, but the `runner 69` line **does correct one figure inside its own packet**: the
-`#115` packet's §7 says the `#114` packet's file-wide gate probe "returns 1"; it returns **2**, the
-second match being the scope paragraph the sixty-eighth batch itself wrote. The three substantive
-corrections riding in that same §7 all reproduce exactly (354 file-wide / **342** open rows / 12
-prose lines). `#115` is unusual in a different way: **it authorizes a build that its own executing
-batch is barred from running**, so the runner filed the kickoff prompt and did not execute it. The
-`runner 69` line's only backward references are to the sixty-eighth invocation's push and deletion —
-**the push confirmed at the Step 0 gate by live `ls-remote`, the deletion confirmed by the Step 1
-inventory holding exactly one file, so nothing was left owed under QR-5.**
+**NO CARRIED ROW WAS EDITED THIS REFRESH — not one cell.** The new entry does not correct or
+supersede an earlier log entry — but it **does correct two facts inside the documents that
+commissioned it**, and that is unusual enough to name here. Its kickoff prompt says the grok
+migration's bad ordering header *"cost a transaction rollback of two live fixes"*; `#113` says the
+defect was **"CONFIRMED AGAINST THE LIVE DATABASE BEFORE ANYTHING WAS PASTED"** and that *"the
+hazard is spent"* — **caught, not suffered.** And both that prompt and the slice date the episode
+*"three days"* back, while `git log` puts the file's landing (`d6f97e6`), its header correction
+(`3773e6d`) and `#113` **all on 2026-08-19** — **same-day**, the three-day figure apparently counted
+from the 2026-08-18 in the filename. **Neither correction touches a log entry, so no row moves; both
+are recorded in the new entry and in `spec-feedback.md`.**
 
 **Row counts by edition, stated so they add up on their face:** 190 at the first (full-text read),
-then seventeen at the second, four at the third, three at the fourth, and two at each of the fifth
-through this one — **190 + 17 + 4 + 3 + (2 × 13) = 240.**
+then seventeen at the second, four at the third, three at the fourth, two at each of the fifth
+through the seventeenth, and **one** at this one — **190 + 17 + 4 + 3 + (2 × 13) + 1 = 241.**
+**Checked the other way, from the log rather than from this arithmetic:** 241 `^## ` headings, of
+which **114 numbered (#2–#115, gapless) + 65 runner ordinals + 1 unnumbered runner (`(RUNNER)`,
+2026-07-28) + 61 other = 241.** The "other" bucket is the one that moved, this being an unnumbered
+Code session under `TOC-6`.
 
 ## How to read the ID column
 
@@ -158,6 +175,7 @@ Newest first, matching the log's own order.
 
 | # | Date | Type | Summary | Corrections issued / received |
 |---|---|---|---|---|
+| `—` | 2026-08-19 | Gate 10 build session (Claude Code, Opus 5) | **Gate 10's repo half is BUILT and the gate is deliberately NOT recorded as closed.** `db/schema.sql` gains `parties.date_of_birth date` and a `party_pii` child table — SSN, licence number and issuing state, provenance only — with triggers, RLS, policy and its own GRANT from birth; the live half is authored and **UNRUN**, Michael's hand. The two halves were proved equivalent rather than assumed: the executable lines of the `party_pii` block are **identical, 20 for 20**. **`G10-3` is answered from `src/` and comes back YES on all three** — the party form writes `dob`, `ssn`, `dlNumber` and `dlState` into `parties.fields` today and the adapter's party reads are `select('*')` — **so the exclusion limb is delivered in the schema and is NOT yet in effect in the app**, and no front-end half was built. | issues → **the kickoff prompt's rollback claim**: `#113` records the ordering defect as caught before any paste, *"the hazard is spent"*, not suffered; issues → **"three days" is same-day** in both the slice and the prompt, `git log` putting `d6f97e6`, `3773e6d` and `#113` all on 2026-08-19; issues → **the slice's §5 key list cannot match the app's own licence keys** (`dlNumber` / `dlState`), so the ruled probe alone would report a stored licence number clean — the migration now probes both lists, labelled; issues → BUILD-STATE's "intake is not built" as **too wide**, `partyRegistry.ts` carrying the PNC funnel's four values as a `fields` key. Receives → nothing |
 | `runner 69` | 2026-08-19 | QUEUE-RUNNER runner line | A docs-only batch that **files an AUTHORIZED build it is itself barred from running**: `§5` reads AUTHORIZED-BUT-NOT-HERE rather than NONE, so the gate 10 slice and its kickoff prompt land at their canonical paths byte-for-byte and hash-verified, while the build waits for Michael to fire it in its own session on the CD-1 / FE-D1 pattern. Two `G10` rows enter `attorney-review-queue.md` with question text extracted from the filed slice rather than retyped; **the four go-live gates named in the packet's §7 deliberately take no row**, the `#114` scope ruling applying to them as written. The packet's own RR-1 conformance claim was re-checked at the filed copy and held on all four places. | issues → **the packet's §7 probe parenthetical is off by one**: the `#114` file-wide gate probe returns **2**, not 1, the second match being the scope paragraph the sixty-eighth itself wrote — the disarmed-probe class firing one level up, on a note written to correct a probe; issues → the `#30` extraction trap **fired live and was caught by the bucket arithmetic**; confirms → the three §7 count corrections reproduce exactly (354 / **342** / 12). Receives → nothing; the sixty-eighth's push and deletion were both confirmed, so no QR-5 carry-forward was owed |
 | `#115` | 2026-08-19 | Design session (Opus 5, Cowork) | **Gate 10 — the last unbuilt item on the go-live path — is ruled in three parts and its build AUTHORIZED.** The SHAPE splits by sensitivity: `date_of_birth` becomes a typed column on `parties` while SSN and driver's licence move to a `party_pii` child table, because **table-level exclusion works at one role where column-level `REVOKE` does not** — revoking a column from `authenticated`, the only role, breaks the app. SSN SCOPE: **full SSN stored**, over a last-4 alternative. `G10-1`: **provenance only — the audit limb rides with `O-1`**, so gate 10 closes on its exclusion limb and **leaves its audit limb explicitly owed**. The CD-1 no-second-identity-table firewall is argued past rather than slipped: `party_pii`'s **primary key IS its foreign key**, so it cannot create a person. | issues → `G10-2` (its `on delete cascade` **reverses `O-7`'s direction**, deliberately, and belongs in that ruling) and `G10-4` (gate 10 is the **first design act to hit `Q-WF-6`'s recorded privacy gap** — ch. 521 named as a LOCATOR, no entry created); records → `G10-3` resolved procedurally, the build session reading `src/` and reporting only. Receives → nothing |
 | `runner 68` | 2026-08-19 | QUEUE-RUNNER runner line | A two-act docs-only batch, and the first whose one real finding is that **the fix disarms the probe that found the defect**: the scope paragraph inserted into `attorney-review-queue.md` quotes the very phrase list the sixty-seventh used to establish that five go-live gates had no row there, so all six phrases now return non-zero **entirely from this batch's own text** and a future runner re-running that check would read rows where none exist. `§5` NONE, nothing built, no database touched. The queue merge is the two `QR-6(b)` acts and **zero rows** — `⬜` unmoved at 354 against the packet's absolute. Health check **SKIPPED on `QR-6(f)`'s skip limb, recorded with its reason**: `§5` NONE and `docs/specs/` only. Step 0 clears all three limbs and discharges both halves of what the sixty-seventh left owed — `3773e6d` confirmed on origin by live `ls-remote`, and its hand-deleted zip confirmed gone by the Step 1 inventory. | issues → **the disarmed-probe finding**, recorded against any future runner reading the six phrase counts as rows; issues → the sixth trap firing again as described (`grep -c '(#114)'` returns 2, heading-anchored 1); issues → an **eighth derivation trap**, in this index rather than the log: `grep -c '^\| \`' ` over the whole file counts the *Basis of this read* rows too. Receives → nothing; no carried figure moved this refresh |
@@ -422,7 +440,10 @@ Method above instead.**
 - Not verification of any legal proposition, count, or claim summarised here.
 - Not a ruling on its own upkeep — **but two of the three are now Michael's answers rather than
   this file's questions.** **`TOC-4` (regeneration cadence) was RULED 2026-08-18: every runner
-  batch**, written into QUEUE-RUNNER v11 Step 4 item 1, and this edition is its **thirteenth** firing.
+  batch**, written into QUEUE-RUNNER v11 Step 4 item 1, and it stands at **fifteen** firings —
+  **this edition is not one of them.** It was produced by a gate 10 BUILD session, on its kickoff
+  prompt's instruction rather than on `TOC-4`'s trigger, so the edition count moved and the firing
+  count did not.
   *(**That figure was STALE and is corrected here rather than re-carried.** It read "tenth" and had frozen at the
   twelfth edition, so it disagreed with this document's own banner through three consecutive regenerations —
   eleventh, twelfth and thirteenth firings all published as "tenth", the gap widening each time. Editions

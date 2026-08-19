@@ -76,6 +76,9 @@ create table if not exists cases (
 -- CD-1 (2026-08-12): `parties` IS the contact directory (contact-directory.md
 -- §1). There is deliberately no second identity table — a second one recreates
 -- the wrong-level defect class CL-2 was built to kill.
+-- GATE 10 (2026-08-19): `party_pii` further down is NOT a second identity table
+-- and is argued past that firewall rather than slipped past it — its PRIMARY KEY
+-- IS its FOREIGN KEY, so it cannot create a person (gate10-pii-slice.md §2).
 create table if not exists parties (
   id uuid primary key default gen_random_uuid(),
   -- RETAINED, not dropped, by CD-1: role_tags supersedes it as the thing the
@@ -94,6 +97,17 @@ create table if not exists parties (
   -- CD-1 §3.1 — a fact of the PERSON, true on every case at once.
   deceased boolean not null default false,
   deceased_date date,
+  -- GATE 10 §3.1, ruled 2026-08-19 — promoted OUT of `fields`, and TYPED, which
+  -- is half the point independent of privacy: a `date` column cannot hold
+  -- "3/4/80", "March 4 1980" and "1980-03-04" as three different strings for one
+  -- fact, which `fields jsonb` can and eventually would.
+  -- Nullable: most contacts have no DOB and none is invented.
+  -- NO INDEX by design — DOB is displayed, not searched. Add one when a query
+  -- needs it. SSN and driver's licence deliberately do NOT live here: they are in
+  -- `party_pii` below (§1), because a `select *` on parties cannot return a value
+  -- that is not in parties, and column-level REVOKE — the textbook answer — is
+  -- unavailable while `authenticated` is the only role.
+  date_of_birth date,
   -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
   -- Nullable: pre-existing rows have no actor and are never invented one.
   -- NO per-user RLS rides with this; that stays behind the security gate.
@@ -380,6 +394,119 @@ create policy "authenticated full access case_roster_flags" on case_roster_flags
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access contact_edges" on contact_edges
   for all to authenticated using (true) with check (true);
+
+-- ============ GATE 10 — SENSITIVE IDENTITY NUMBERS (party_pii) ============
+-- Go-live gate 10, ruled by Michael 2026-08-18 (C-4 of the Grok external review)
+-- and shaped 2026-08-19. Spec: docs/specs/gate10-pii-slice.md. The gate's own
+-- reason is that promoted columns are "excludable from API selects and auditable."
+--
+-- WHY A CHILD TABLE AND NOT THREE MORE COLUMNS ON `parties` (§1). Column-level
+-- REVOKE is the textbook way to keep a column out of a PostgREST select, and
+-- PostgREST honours it — but `authenticated` is the ONLY role here and the
+-- application IS `authenticated`, so revoking a column from it breaks the app.
+-- Column exclusion becomes real when a second role exists, which is the
+-- multi-user phase (gate 2) and deliberately outside this slice. TABLE-level
+-- exclusion works TODAY, at one role, because the app's default `parties` reads
+-- do not join this table.
+--
+-- WHY DOB IS NOT IN HERE. The three values are not alike. DOB appears on
+-- pleadings, drives conflicts checks and the minor/incapacitated determination,
+-- and is read constantly; SSN surfaces for liens, MSP reporting, 1099s and
+-- probate — rarely, and by one person. Putting DOB here would cost a join on the
+-- common case in order to protect the rare one.
+--
+-- THIS IS NOT AN IDENTITY TABLE (§2, the CD-1 firewall argued past rather than
+-- slipped past): no display_name, no party_type, no kind, no role_tags, no
+-- aliases. Nothing in it identifies anyone — it holds attributes OF an identity
+-- established in `parties`. Nothing references it, and nothing may.
+create table if not exists party_pii (
+  -- The PK IS the FK: one row per contact, enforced structurally rather than by
+  -- a `unique` constraint. No separate `id`, because a PII record has no identity
+  -- of its own — and a separate id would permit two PII rows per contact, which
+  -- this shape makes unrepresentable.
+  --
+  -- `on delete cascade`, and it is a DELIBERATE REVERSAL of this project's
+  -- current direction: O-7's cascade/retention map proposes moving children from
+  -- CASCADE to RESTRICT — eleven FKs across six named children, with four
+  -- component FKs argued for KEEPING cascade, so not literally every one. PII is
+  -- the case that runs the other
+  -- way — a person's SSN must not survive the deletion of that person's record.
+  -- RESTRICT here would mean a contact cannot be deleted until their SSN row is
+  -- deleted first: friction with no benefit, and a state in which an orphaned SSN
+  -- outlives a deletion attempt. FLAGGED as G10-2, an O-7 interaction to be ruled
+  -- inside O-7 rather than settled here by default.
+  party_id uuid primary key references parties (id) on delete cascade,
+
+  -- FULL SSN, ruled 2026-08-19 over a last-4-by-default alternative that was put
+  -- and declined. `text`, NOT a formatted or constrained type, and NO CHECK on
+  -- format: ITINs and legitimate edge cases exist, and a constraint that rejected
+  -- a valid ITIN would be worse than no constraint (§6). Format validation belongs
+  -- in the UI, where it can warn rather than refuse.
+  ssn text,
+
+  -- A licence number is meaningless without its issuing state.
+  drivers_license text,
+  drivers_license_state text,
+
+  -- PROVENANCE, NOT AN AUDIT LOG — the distinction is the whole of §4. These say
+  -- who wrote the row and when it last changed. They do NOT give a history of
+  -- prior values, a record of reads, or any freeze against silent modification.
+  -- G10-1 RULED 2026-08-19: PROVENANCE ONLY. The audit limb rides with O-1 (the
+  -- F-8a audit-integrity package: classifier columns, freeze, REVOKE UPDATE and
+  -- DELETE), and O-1 is OPEN. So gate 10 closes on its EXCLUSION limb and leaves
+  -- its AUDIT limb explicitly owed. Nobody may read gate 10 as having delivered
+  -- auditability: F-8's finding — that a classified value can change with no
+  -- author, no time and no log — is true of this SSN column the day it exists.
+  created_by uuid references auth.users (id),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- No index, deliberately. Nothing searches by SSN or licence number.
+
+drop trigger if exists party_pii_touch on party_pii;
+create trigger party_pii_touch before update on party_pii
+  for each row execute function touch_updated_at();
+
+drop trigger if exists party_pii_set_created_by on party_pii;
+create trigger party_pii_set_created_by before insert on party_pii
+  for each row execute function set_created_by();
+
+alter table party_pii enable row level security;
+
+drop policy if exists "authenticated full access party_pii" on party_pii;
+create policy "authenticated full access party_pii" on party_pii
+  for all to authenticated using (true) with check (true);
+
+-- BE HONEST ABOUT WHAT THAT POLICY DOES: nothing the other policies in this file
+-- do not. It is permissive — `using (true) with check (true)` — exactly like every
+-- other one here. THE PROTECTION THIS SLICE DELIVERS IS THAT THE APP'S `parties`
+-- READS DO NOT JOIN THIS TABLE, so a `select *` on `parties` cannot return a value
+-- stored HERE.
+--
+-- AND THAT IS NOT THE SAME SENTENCE AS "no SSN rides a party read." Today it still
+-- does. Answering G10-3 from `src/` on 2026-08-19: `src/domain/partyRegistry.ts`
+-- declares `ssn`, `dlNumber` and `dlState` on the client party type, the party form
+-- renders and saves every declared field into `parties.fields`, and the Supabase
+-- adapter's party reads are `select('*')`. So TWO things would be false to say —
+-- that the RLS policy protects the SSN, and that this table existing has taken the
+-- SSN out of `parties`. GATE 10'S EXCLUSION LIMB IS DELIVERED IN THIS FILE AND IS
+-- NOT YET IN EFFECT IN THE APP; a front-end half that writes here instead of into
+-- `fields` is a separate, unauthorized act.
+--
+-- THE GRANT BELOW IS REDUNDANT IN THIS FILE, AND IS HERE ANYWAY — SAID PLAINLY,
+-- because the wrong reason is easy to write and expensive to inherit. A fresh full
+-- run is the ONLY thing this file does, and the `all tables in schema public`
+-- statement at its foot already covers `party_pii` on every such run, exactly as
+-- the "*** READ THIS BEFORE ADDING A TABLE ***" block down there says. It is
+-- repeated here so the gate 10 block is complete as a unit and matches the
+-- migration line-for-line (the slice's §3.3 asks for RLS and GRANT "from birth").
+-- WHERE THE REASON REALLY BITES IS THE MIGRATION, not this file: ALTER DEFAULT
+-- PRIVILEGES is NOT set on this database (C-2, ruled 2026-08-18: keep the current
+-- posture), so on an EXISTING database a new table without its own GRANT is
+-- unreachable — which is why the migration's copy of this line is load-bearing and
+-- this one is belt-and-braces. `anon` gets NOTHING, by design. Do not widen it.
+grant select, insert, update, delete on party_pii to authenticated;
 
 -- ============================================================
 -- BILLING MODULE — Phase 1a (spec: docs/specs/medical-billing-analysis-module-synthesis.md Part 4)

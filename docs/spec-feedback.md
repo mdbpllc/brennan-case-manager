@@ -706,6 +706,56 @@ For the design space: the schema can no longer keep a gapless promise and now sa
 spec sentence is the last place the retired claim survives. Michael may want it conformed on the
 next refresh of that document.
 
+## 2026-08-19 - gate 10 slice: the ruled key list cannot find the app's own driver's-licence keys
+
+Raised by the gate 10 build session, which is the first session with authority to read `src/` on
+this question. Nothing in the spec was edited; the migration handles it and says so.
+
+**The slice's §5 pre-flight report scans `parties.fields` for keys that look like DOB / SSN / DL,
+using this ruled list:**
+
+    'dob','date_of_birth','ssn','social_security',
+    'dl','drivers_license','driver_license','license_number'
+
+**Two of those are right and four are misses.** `src/domain/partyRegistry.ts` declares, on the
+`client` party type (lines 94-97), the field keys `dob`, `ssn`, `dlNumber` and `dlState` - and
+`dob` again on the `person` type (line 255). So `dob` and `ssn` are covered, and NONE of `dl`,
+`drivers_license`, `driver_license` or `license_number` matches either `dlNumber` or `dlState`.
+**On the ruled list alone, a stored driver's licence number and its issuing state would have come
+back CLEAN.**
+
+This is not a defect in the slice's reasoning - §5 states in terms that the list is a heuristic and
+cannot be exhaustive, and it was written design-side where `src/` is outside the sync and
+`Q-PR3-1` is unruled. It is that stated limit turning out to be load-bearing on the first run.
+
+**What the build session did, and what it deliberately did not do.** The migration
+`db/migrations/2026-08-19-gate10-pii-columns.sql` probes BOTH lists, labelled separately: the ruled
+eight carried verbatim, and the four as-built keys marked as the build session's addition on
+evidence, with the file naming the source line. The ruled list was not edited, extended in place,
+or quietly replaced - a reader of that file can still see exactly what the slice said.
+
+**The larger finding behind it, which is the part for the design space.** G10-3 asked whether the
+front end writes these values into `fields` today. **It does, on all three, and the app has no
+other home for them:** the party form renders every registry field with no filter and saves the
+whole blob; the OAA importer writes an extracted `dob` on party creation; the demo seed plants
+`dob` on two fixtures. The `sensitive: true` flag on `ssn` masks the DISPLAY in list views
+(`src/components/fieldWidgets.tsx`) and has no effect on storage. `listParties()`, `getParty()`
+and `getParties()` all `select('*')`.
+
+**Consequence for how gate 10 should be read: the migration delivers the exclusion limb in the
+SCHEMA and does not put it in EFFECT.** Until a front-end half writes SSN and licence numbers to
+`party_pii` instead of to `fields`, the values keep riding every party read exactly as they do
+today. No front-end work was built - the slice is report-only on this point by its own terms and
+the kickoff prompt's DO-NOT list is explicit - but the gate cannot be read as closed by the
+migration alone, and **authorizing that front-end half is now the named next act on this gate.**
+
+**One operational consequence Michael should expect.** The migration's pre-flight STOPS the whole
+file if any `parties` row already carries one of the ten keys, per the slice's flag-rather-than-guess
+rule. Whether the two live rows carry `fields.dob` is not determinable from the repo - the seed is
+localStorage-only and never reaches Supabase, and the RLS probe inserts no `fields` at all. So a
+STOP on first run is a real possibility and is the design working, not a failure; the exception
+names the keys it found.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

@@ -24,14 +24,19 @@ import { supabase } from '../data/supabaseClient';
  * real client data, ever — including anything created to exercise RLS).
  */
 
-/** All 36 tables in db/schema.sql. `policy: false` marks the deliberate omission.
+/** All 37 tables in db/schema.sql. `policy: false` marks the deliberate omission.
  *
  *  KEEP THIS IN STEP WITH THE SCHEMA. A table missing here is not probed, so a
  *  missing GRANT on it stays invisible to the one instrument built to catch
  *  that — the 2026-07-28 401 wall in a quieter form. CL-2 added the two
  *  case_client* tables below; CD-1 added case_roster_flags and contact_edges
  *  IN THE SAME COMMIT as the tables themselves, which is the point of the
- *  slice's "RLS + probe from birth" item. Do the same for every table you add. */
+ *  slice's "RLS + probe from birth" item; gate 10 added party_pii the same way.
+ *  Do the same for every table you add.
+ *
+ *  Order follows db/schema.sql's own table order, so this list can be diffed
+ *  against `grep '^create table' db/schema.sql` without reconciling two
+ *  orderings. */
 export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'file_counters', policy: false },
   { name: 'cases', policy: true },
@@ -41,6 +46,11 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'contact_edges', policy: true },
   { name: 'case_clients', policy: true },
   { name: 'case_client_flags', policy: true },
+  // GATE 10 (2026-08-19). Probed from birth, like CD-1's two. Note what a green
+  // read here does and does not prove: it proves the table exists and is
+  // API-exposed, not that the SSN in it is protected. The protection this table
+  // delivers is that the app's default `parties` reads do not join it.
+  { name: 'party_pii', policy: true },
   { name: 'medical_bills', policy: true },
   { name: 'bill_line_items', policy: true },
   { name: 'code_mappings', policy: true },
