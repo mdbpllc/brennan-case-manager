@@ -43,6 +43,31 @@ Client/provider tokens used by the variant library:
 
 Grammar engine: singular/plural inflection computed from party counts (Plaintiff/Plaintiffs, verb agreement, etc.); templates mark flex points. Name-rendering variants selectable per spot: names listed out vs. collective label vs. last names.
 
+### Token syntax and formatting (RULED by Michael, 2026-08-18 — FC-1, FC-2, FC-3, FC-4; record: `fc-adjudication-record-2026-08-18.md`)
+
+- **Canonical form: `{token}` — single brace, bare name** (FC-1 limb 2). This is the house
+  style: the stored form, the form the template editor displays, and the form all new templates
+  are written in. Governing principle, Michael's words: *"My system should stay true to one
+  convention as much as possible."*
+- **The importer accepts legacy conventions on the way in and emits canonical form** (FC-1
+  limb 1, "accept both, emit one"): `{{TOKEN|filter}}` double-brace-with-filter (the 15 MDB PLLC
+  production letters) and registered bracket tokens. Legacy forms are never written back.
+- **Per-spot formatting lives in TEMPLATE SETTINGS, not in the token text** (FC-2): sensible
+  per-type defaults, with a per-occurrence override panel in the template editor. Evidence of
+  need: the same date field renders under two different pictures in different production
+  letters, so formatting is per-use, not per-field. On import, a legacy `|filter` translates
+  into a settings entry.
+- **Bracket handling on import is an ALLOWLIST, never a pattern match** (FC-3): a bracket string
+  is a token only if deliberately registered. Evidence: 147 `[signature block on next page]`
+  drafting notes, 80 `[s]` markers, Texas citation parentheticals (`[1st Dist.]`) and statutory
+  cross-references would otherwise silently become data fields.
+- **The `[s]` plural marker converts on import to the grammar engine's party-count flex point**
+  (FC-4) — an allowlist *conversion* entry, capturing 80 hand-placed pluralization hooks.
+- **Import gate:** all import behavior above is posture recorded ahead of FC-12 (import
+  posture), which is DEFERRED — the conservative default governs and **no corpus content
+  imports today**. FE-D1 slice 1's §11.3 skeleton extraction is unaffected (it works from
+  Michael's own shell per §8, not the mined corpus).
+
 ## 4. Per-provider interview cards
 
 Pattern (settled): **pull, don't ask; ask once, write back.**

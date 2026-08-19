@@ -16,6 +16,84 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-18 — QUEUE-RUNNER batch (runner line; SIXTIETH invocation) — the FC-block batch, in which the one row this runner had to rewrite was a correction Michael made himself two commits earlier, and the clock crossed midnight in UTC while the entry it stamps is still Tuesday
+
+**One zip in `inbox/`, one executed.** **Ran:** `push-to-code_fc-adjudication_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **20,553 bytes, mtime `2026-08-18 17:37:47 −0500`, sha256 `ae4d6715d1de0cdf967d27bba880383e9a5b648be028fa456ee3551cd3b11c3f`**. Michael confirmed the order at the Step 1 STOP. **§5 is NONE and nothing was built.** Filename-date order and pure-mtime order agree trivially on a single packet, and that is stated rather than skipped (QR-4).
+
+- **Step 0 gate passed on live evidence, each command named per QR-6(a).** `git fetch origin`, then `git rev-parse --abbrev-ref HEAD` (`master`), `git status --porcelain` (empty), and `git rev-parse HEAD` compared against **`git ls-remote origin refs/heads/master`** — the live remote read, not the local tracking ref. Both `67ff5f4`; `git rev-list --left-right --count HEAD...origin/master` returned **0 / 0**. Not behind, not ahead, not dirty. **Nothing carried forward from the fifty-ninth batch: its zip is gone and its close-out completed.**
+- **QR-5 already-executed check: NEGATIVE on FOUR independent paths, all by path or by content and none by `git log --grep`, which proves no absence.** `grep -c '(#106)' docs/specs/session-log.md` → **0** and `grep -c 'FC-BLOCK ADJUDICATION'` → **0**; `docs/specs/fc-adjudication-record-2026-08-18.md` absent under both `git ls-files` and `ls`; `form-engine.md` carried no FC-1 or 2026-08-18 marker; and an anchored grep for backticked `FC-<n>` rows in `docs/specs/attorney-review-queue.md` returned **0**, matching the packet's own claim to have grepped the queue whole. Genuinely pending — neither executed nor committed-but-unpushed.
+- **THE RECONCILE DELTA WAS REAL THIS TIME, AND IT POINTED AT A SENTENCE MICHAEL WROTE HIMSELF.** The packet's §1 states HEAD `fdcc9d8`; the live gate read `67ff5f4` — **two commits later**, the fifty-ninth runner line and then the v23 correction. The ceiling was still **#105**, so **#106 minted correctly and the §1 STOP did not fire.** But the packet's §4.4 item 6 amends the v23 row to say v23 is **ASSEMBLED**, and the row at HEAD said, in Michael's own words recorded two commits earlier, that **no v23 document exists and a Code session cannot assemble one.** Under the Step 2 conflict rule the later packet wins — **so the row was amended, NOT reversed: his correction stands in the row exactly as written, and the amendment sits below it recording that the DESIGN side did the assembly at #106.** **The runner cannot verify that assembly and says so** — the versioned instructions live in the Claude.ai project-instructions field and are deliberately never routed to the repo, so **the ASSEMBLED status is carried on the packet's word alone.** The item returns to ONE act: paste.
+- **DT-1 PRODUCED ITS SHARPEST DATA POINT YET, BECAUSE THE TWO CLOCKS ARE NOW ON DIFFERENT DATES.** PowerShell, the authority, reads `Get-Date -Format "yyyy-MM-dd HH:mm:ss K"` → **`2026-08-18 19:30:53 −05:00`**, `[System.TimeZoneInfo]::Local.Id` → **`Central Standard Time`**. Bare `date` → `Tue Aug 18 19:30:53 CDT 2026`, **right**. But `date -u` → **`Wed Aug 19 00:30:53 UTC 2026`** — **so a UTC-derived stamp would have dated this entry 2026-08-19 and inverted it against the #106 entry it sits above.** Every prior DT-1 finding was a wrong hour; this one is a wrong DAY. **Every stamp here is 2026-08-18.**
+- **HEALTH CHECK SKIPPED AND RECORDED, per QR-6(f)'s docs-only limb — the ELEVENTH consecutive firing.** Reason, named: **§5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table or in `git status`** — the changed paths are the log, the index, the queue, BUILD-STATE, `form-engine.md` and one new document, all under `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. **The carried figures stay carried and labelled as such: 2026-08-17, 278 tests across 23 files, build clean, lint exit 0.**
+- **WHAT EXECUTED, ALL FIVE ROUTING ROWS.** `#106` prepended verbatim. `fc-adjudication-record-2026-08-18.md` landed as a NEW file, **byte-identical to the staged copy (`cmp` clean, 25,182 B / 299 non-blank)** — the §4.2 duplicate watch came back clean. The token-syntax subsection folded into `form-engine.md` **at the end of §3**, verified as a **pure insertion: `git diff --numstat` reports 25 insertions and ZERO deletions in a single hunk at line 46** — **§9 was not touched and no existing line was rewritten.** The queue amendments ran as both QR-6(b) acts. **The packet's own no-action row (`session-log-toc.md`) was honored as written.**
+- **`QR-6(e)` DID NOT FIRE — every act the packet asked for sat in a routing row or a Step 4 item.** `.git/index.lock` is **absent** (`ls .git/index.lock`), the hygiene claim checked rather than taken — the **fifth** consecutive design session to leave the checkout clean.
+- **PF-1 RAN FOR THE FIRST TIME AS STANDING LAW, AND IT RAN WHERE THE RULING PUTS IT.** The packet reports two read-only adversarial agents design-side, pre-`inbox/`, on legal-content trigger (a): **twelve defects, 0 HIGH, all corrected in the record before packaging** — including its own §8 first draft stating the PF-1 result *before* the run, the QR-5(a) class, caught by the run it predicted. **No preflight was run here and none could be: PF-1 is a sending-side act, so a receiving runner cannot satisfy it.** That is a description of where the step lives, not a carve-out.
+- **NOTHING WAS SUPERSEDED BETWEEN PACKETS — one packet leaves the Step 2 conflict rule with nothing to resolve.** **Every cumulative DO-NOT still binds and was honored:** nothing built; no migration run, redrafted or staged; **no registry entry created and no Status line moved**; the case-type tree and ladders untouched; `form-engine.md` §9 untouched; **no corpus content imported (FC-12's conservative default)**; the v23 instructions text neither pasted nor routed; the packet's content landed verbatim without edit (`Q-T19-3`); and **no `#nn` minted for this line (TOC-6)**.
+- **THE BACKLOG WAS RE-DERIVED AT HEAD WITH THE ANCHORED GREP AND DID NOT MOVE:** `legal-rule-registry-discovery-enforcement-and-pleading.md` **20 VERIFIED / 13 UNVERIFIED against 33 Status lines**, `legal-rule-registry-criminal-plea-and-costs.md` **3 / 4 against 7** — **40 entries, 23 verified, 17 not.** The FC-13 directed pass was retrieval only and created nothing.
+- **THE QUEUE MERGE RAN AS TWO ACTS PER QR-6(b).** Rows: **THREE CLOSED** — `Q-RE-1` ("Both, separate triggers"), `Q-COM-2` ("Yes — adopt the list," closed as ruled-DIRECTION with **the CHECK migration expressly NOT authorized**), and `Q-RE-9` (**RESOLVED as a side effect of FC-14 rather than by any ruling on its own text** — the first row in this register to close that way). **TWO ANNOTATED AND DELIBERATELY LEFT OPEN** — `Q-AUTH-1` and `Q-IN2-1`, each ruled "yes" but each waiting on documents Michael must pull by hand, so **⬜ stands**. **The v23 row amended as described above. A NEW `FC` series entered** — `FC-12` and `FC-13`, both DEFERRED, **full question text per QR-1** including FC-12's three lettered options and FC-13's candidate list, under a new `### Form corpus (FC series)` heading placed with the FE series because that is the work they belong to. Second act: the Status header's per-batch reconcile sentence, naming this batch.
+- **THE CHAT-DISPATCH v4 BLOCK DID NOT MOVE, AND SAYING SO IS THE POINT.** `Q-AUTH-1` sits inside that block and was RULED this session — **but ruled-pending-execution is not closed**, so the block stays **THIRTY-TWO OPEN + TWO CLOSED**, re-derived after the merge. The read is authorized to an **Opus** session per MODEL USAGE; the *Pharr* and *Hurlburt* pulls are Michael's hand and gate it.
+- **`TOC-4` FIRED FOR THE SIXTH TIME:** `docs/specs/session-log-toc.md` regenerated in full over the log as this batch writes it, so the index rides the same commit as the entries it indexes.
+- **OPEN ITEMS — every one is Michael's, named from §7 so nothing rides silently.** `FC-12` (corpus import posture, deferred bare — **the conservative default governs and no corpus content imports**) · `FC-13`'s open half (whether any corpus proposition opens as a registry entry, one at a time) · **the v23 paste, now one act** · the *Pharr*/*Hurlburt* pulls then the authorized Opus read · the blank CR-3 form + instruction manual · **two practice items reported in-session and touching no repo file: his `Payout Template - Normal.xlsx` carries a LIVE SETTLEMENT in the template body, and the A-4 $150/$175 expense-fee conflict is confirmed at source** · `_claude_extract\` still present · **`T-26` still has no queue row of its own — flagged now by a SIXTH consecutive batch**; minting one is his act, not a runner's.
+
+## 2026-08-18 (#106) — FABLE FC-BLOCK ADJUDICATION: fifteen FC items put one at a time, THIRTEEN
+RULED (FC-1..FC-11, FC-14, FC-15), FC-12 DEFERRED (bare; conservative default — no corpus content
+imports), FC-13 DEFERRED with a directed Knowledge Repo pass (run same session); four adjacent
+rows ruled (Q-RE-1, Q-COM-2, Q-AUTH-1, Q-IN2-1) and Q-RE-9 resolved via FC-14; SOURCING gains a
+FOURTH NAMED CHANNEL (trigger #3 fired — v23 ASSEMBLED design-side, paste pending, now carrying
+FOUR same-day firings); PF-1 ran pre-ship and paid (12 defects, 0 HIGH, corrected in place)
+(design session, Fable 5, Cowork)
+
+- **RECONCILE FIRST ran against the live checkout through the bridge, lock-free** (plain file
+  reads; no git command; no index.lock stranded). HEAD `fdcc9d8` on `master`; ceiling #105 → this
+  entry #106; queue grepped whole — ZERO FC- rows existed, no duplicate minted; backlog 40 =
+  23 VERIFIED / 17 UNVERIFIED, re-derived, unmoved by this session.
+- **Authority for every ruling: `docs/specs/fc-adjudication-record-2026-08-18.md`** — Michael's
+  word per item, verbatim, recorded before any file was touched (#98 pattern). Compressed here:
+  FC-1 accept-both-emit-one + `{token}` CANONICAL · FC-2 per-spot formatting in TEMPLATE
+  SETTINGS · FC-3 bracket ALLOWLIST · FC-4 `[s]` → grammar flex point on import · FC-5 fee basis
+  STAYS PER CLIENT (D-CL2-3 stands; contrary stream-rate evidence recorded as considered and not
+  followed) · FC-6 reduction model FORWARD (ruled on MDB PLLC's own payout templates, read at
+  source at his direction — client net is an OUTPUT; the client-net-as-input worksheets are the
+  prior firm's method) · FC-7 deadlines TWO-TRACK, his definitions · FC-8 court-keyed deadline
+  PROFILE + structured geography on `cases` when a schema act is next authorized (no migration
+  authorized) · FC-9 both rule kinds + holiday calendar · FC-10 consent FIRST-CLASS entity,
+  expiry a field · FC-11 the breakdown is a LIVING scenario document freezing at client
+  signature; a case may carry retainage and a second breakdown per later recovery · FC-14
+  SOURCING fourth channel (below) · FC-15 the designation paragraph STAYS, whole, in all 12
+  (deliberate practice; his EFM registration confirmed current at michael@brennanstx.com).
+- **Governing principle, his words:** "My system should stay true to one convention as much as
+  possible" — `{token}` is the one convention; every other corpus notation is a legacy import
+  artifact, never written back.
+- **FC-14 / trigger #3: SOURCING gains a FOURTH NAMED CHANNEL** — State Bar / court-published
+  Texas conduct-and-administration rules as clean-authority PDFs in `Documents\Knowledge Repo\`,
+  cited by each PDF's own effective date. Michael acquired six documents by hand mid-session
+  (TDRPC eff. 3/7/2025; Rules of Disciplinary Procedure amends. eff. 10/1/2024; Rules of
+  Judicial Administration amends. eff. 7/1/2026; Code of Judicial Conduct; judicial-candidate
+  disciplinary rules 04/01/2026; rules of judicial education). Q-RE-9's unverifiable-citation
+  wall falls with it. **v23 was ASSEMBLED design-side** (fold-don't-fragment honored — the #105
+  fragments plus this firing, one document); **the paste is Michael's hand and had NOT happened
+  when this entry was authored.**
+- **The FC-13 directed pass ran** (his direction, verbatim in the record): TDRPC 1.08(g) and
+  1.04(f)(2) now match their citations as read; TRCP 239a is a notice rule (the SCRA question
+  stays federal and outside all channels); TRCP 47(c)'s $250k bands and discovery bar confirmed;
+  TRCP 194a confirmed for Family Code suits. **All retrieval, all UNVERIFIED; only Michael
+  verifies. No registry entry was created; backlog unmoved.**
+- **PF-1 ran design-side pre-ship** on the record (its trigger: legal characterizations): two
+  read-only adversarial agents, both returned real findings (the #104 empty-list warning
+  applied — substantive output with tool use confirmed). Twelve defects, 0 HIGH; all corrected
+  in the record before packaging, including its own §8 first draft stating the PF-1 result
+  before the run — the QR-5(a) class, caught by the run it predicted.
+- **Practice items reported to Michael in-session, no file edited** (shapes only): his
+  `Payout Template - Normal.xlsx` carries a live settlement in the template body (the §8
+  type-over pattern, live in his current library; the PD-Only template is properly tokenized);
+  the A-4 $150/$175 expense-fee conflict confirmed at source.
+- **RR-1 ran:** all documents were authored after the rulings they record and re-read against
+  every later ruling, including the FC-15 invalidity residue and FC-14's mid-put acquisition.
+- Staged for Code: push-to-code_fc-adjudication_2026-08-18.zip (this entry; the FC record; the
+  form-engine §3 fold-in; six queue-row amendments + two new rows).
+- Awaiting/Returned from Code, unreviewed: the fifty-ninth invocation's runner line was read at
+  this session's reconcile; re-derive at refresh, never carry.
+
 ## 2026-08-18 — QUEUE-RUNNER batch (runner line; FIFTY-NINTH invocation) — the batch that makes the adversarial preflight standing law and is forbidden by its own packet from running it, and finds that the migration the ruling sends back for a redraft is a section of a document rather than the file on Michael's hand list
 
 **One zip in `inbox/`, one executed.** **Ran:** `push-to-code_fable-spenddown-adjudication_2026-08-18.zip`, identity pinned at Step 1 per QR-6(c) — **7,898 bytes, mtime `2026-08-18 13:13:56 −0500`, sha256 `82e1df295db991d6e72b542694913ab0cc3d2d790294e6d2e5ecfe934e18885a`**. Michael confirmed the order at the Step 1 STOP. **§5 is NONE and nothing was built.** Filename-date order and pure-mtime order agree trivially on a single packet, and that is stated rather than skipped.
