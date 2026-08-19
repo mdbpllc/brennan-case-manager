@@ -11,29 +11,33 @@
 --   F-3  (item 3)  file-number year and cases.date_opened default -> Central
 --   F-2  (item 2)  freeze cases.file_number once issued
 --   F-25 (item 7)  created_by columns + auth.uid() trigger, five core tables
+--   F-4 + F-18 (item 4)  widened case_parties roster key + capacity-pointer
+--                        CHECK - ADDED 2026-08-19, see the note below
 -- The same changes are folded into db/schema.sql so a fresh project is correct.
 -- Comment-only rulings (F-27 stale counts, C-6 gapless wording) live in
 -- schema.sql alone and have no live-database effect.
 --
--- DELIBERATELY ABSENT - READ THIS BEFORE ASSUMING IT WAS FORGOTTEN.
--- Ruling 4 (F-4 + F-18: widen the case_parties unique key to
---   unique nulls not distinct (case_id, party_id, role, capacity_kind,
---   capacity_points_at_party_id)
--- plus the capacity-pointer CHECK) is NOT in this file. The ruling makes
--- Postgres major >= 15 a hard gate and directs a STOP if it is not met. The live
--- database was reported by Michael at 14.5 on 2026-08-18, so the gate FAILED and
--- the item was stopped rather than worked around: NULLS NOT DISTINCT does not
--- exist before PG15, and substituting a different implementation would be a new
--- ruling, not this one. When the database is on 15+, that item lands in its own
--- migration under the existing ruling - it needs no fresh authorization, only
--- the gate passing. The F-18 CHECK half is version-independent and was stopped
--- with it, deliberately, because splitting a ruled item is Michael's call.
---
--- ORDERING. Michael chose (2026-08-18) that the F-4 constraint change would ride
--- in THIS file rather than in the unrun CD-1 migration, which would have made
--- "run this before CD-1" a hard requirement. Because ruling 4 is stopped, that
--- requirement does not arise: this file touches no case_parties constraint and
--- has NO ordering dependency on db/migrations/2026-08-12-cd1-contact-directory.sql.
+-- RULING 4 IS NOW INCLUDED - IT WAS NOT, AND THE HISTORY MATTERS.
+-- When this file was first authored (2026-08-18) the live database was on 14.5.
+-- Ruling 4 makes Postgres major >= 15 a hard gate and directs a STOP if unmet, so
+-- BOTH halves were stopped - including the F-18 CHECK, which is version-independent
+-- - because splitting a ruled item is Michael's call and not the executing
+-- session's. Nothing was substituted: a COALESCE-based unique index expressing the
+-- same intent would have been a DIFFERENT DDL than the one ruled.
+-- Michael upgraded the database on 2026-08-19 and the item landed under the
+-- EXISTING ruling - no fresh authorization, only the gate passing.
+-- The version is not derivable from the repo, so it is not taken on trust here
+-- either: the guard below refuses to run this file on anything under 15.
+
+-- ORDERING - THIS MATTERS AGAIN NOW THAT RULING 4 IS IN THE FILE.
+-- Michael chose (2026-08-18) that the F-4 constraint change would ride in THIS
+-- file rather than in the unrun CD-1 migration. Ruling 4 requires the widened key
+-- to be in place BEFORE CD-1 runs, because CD-1's capacity model cannot operate
+-- under the old key. Both files are unrun, so the required order is:
+--     1. THIS FILE (2026-08-18-grok-review-fixes.sql)
+--     2. db/migrations/2026-08-12-cd1-contact-directory.sql
+-- Running CD-1 first is not a disaster - it simply cannot create the two-entry
+-- capacity rows it was written for, and would fail on the second insert.
 -- =============================================================================
 
 begin;
@@ -152,6 +156,59 @@ create trigger generated_documents_set_created_by before insert on generated_doc
 -- ALTER DEFAULT PRIVILEGES stays unset; any migration adding a TABLE must still
 -- ship its own grant in the same file.)
 
+-- ---------------------------------------------------------------------------
+-- F-4 + F-18 (ruling 4) - the roster identity key, widened, and the capacity
+-- pointer made mandatory for the capacities that point at someone.
+--
+-- HARD GATE, enforced rather than assumed: NULLS NOT DISTINCT is PG15+. On an
+-- older server this raises instead of silently doing something else.
+-- ---------------------------------------------------------------------------
+do $$
+begin
+  if current_setting('server_version_num')::int < 150000 then
+    raise exception
+      'Ruling 4 requires PostgreSQL 15 or later (NULLS NOT DISTINCT). This server is %.',
+      current_setting('server_version');
+  end if;
+end $$;
+
+-- The OLD constraint was declared INLINE and UNNAMED in schema.sql, so its live
+-- name is whatever Postgres generated. Guessing it is the F-23 failure mode
+-- exactly - a "drop constraint if exists" on a guessed name is a silent no-op.
+-- So it is looked up by DEFINITION rather than by name.
+do $$
+declare
+  v_name text;
+begin
+  select conname into v_name
+    from pg_constraint
+   where conrelid = 'case_parties'::regclass
+     and contype = 'u'
+     and pg_get_constraintdef(oid) = 'UNIQUE (case_id, party_id, role)';
+
+  if v_name is not null then
+    execute format('alter table case_parties drop constraint %I', v_name);
+    raise notice 'Dropped old roster unique constraint: %', v_name;
+  else
+    raise notice 'No UNIQUE (case_id, party_id, role) constraint found - already widened, or named differently. Check pg_constraint before assuming this was a no-op.';
+  end if;
+end $$;
+
+alter table case_parties drop constraint if exists case_parties_roster_identity_key;
+alter table case_parties add constraint case_parties_roster_identity_key
+  unique nulls not distinct
+    (case_id, party_id, role, capacity_kind, capacity_points_at_party_id);
+
+-- F-18. 'individually' is exempt by design: it points at nobody. Existing rows
+-- all carry capacity_kind NULL (CD-1 is unrun), so nothing can violate this yet.
+alter table case_parties drop constraint if exists case_parties_capacity_pointer_check;
+alter table case_parties add constraint case_parties_capacity_pointer_check
+  check (
+    capacity_kind is null
+    or capacity_kind not in ('next-friend-of','representative-of-estate-of','dba')
+    or capacity_points_at_party_id is not null
+  );
+
 commit;
 
 -- ---------------------------------------------------------------------------
@@ -167,4 +224,11 @@ commit;
 --     ('cases_freeze_file_number','cases_set_created_by');
 --   select table_name from information_schema.columns
 --    where column_name = 'created_by' order by table_name;   -- expect the five
+--   select conname, pg_get_constraintdef(oid) from pg_constraint
+--    where conrelid = 'case_parties'::regclass and contype in ('u','c');
+--     -- expect case_parties_roster_identity_key as UNIQUE NULLS NOT DISTINCT
+--     -- over the five columns, and case_parties_capacity_pointer_check present.
+--     -- There must be exactly ONE unique constraint on this table: if the old
+--     -- three-column one is still listed, the lookup above did not match it and
+--     -- it must be dropped by hand before CD-1 runs.
 -- ---------------------------------------------------------------------------

@@ -147,7 +147,24 @@ create table if not exists case_parties (
     check (active_state is null or active_state in ('active','withdrawn','substituted-out')),
   slot_role text,
   created_at timestamptz not null default now(),
-  unique (case_id, party_id, role)
+  -- F-4 + F-18, ruled 2026-08-18, landed 2026-08-19 once the Postgres 15+ gate
+  -- passed. The OLD key was `unique (case_id, party_id, role)`, which cannot
+  -- coexist with CD-1's own capacity model: a mother appearing individually AND
+  -- as next friend of her minor child is TWO roster entries over one contact and
+  -- one role, and the old key rejected the second insert. NULLS NOT DISTINCT is
+  -- required because capacity_kind and the pointer are NULL on ordinary rows, and
+  -- under default NULL semantics those rows would stop colliding with each other
+  -- entirely - which would silently allow true duplicates.
+  constraint case_parties_roster_identity_key
+    unique nulls not distinct
+      (case_id, party_id, role, capacity_kind, capacity_points_at_party_id),
+  -- F-18: a representative capacity has to say who it represents. 'individually'
+  -- is deliberately exempt - it points at nobody by definition.
+  constraint case_parties_capacity_pointer_check check (
+    capacity_kind is null
+    or capacity_kind not in ('next-friend-of','representative-of-estate-of','dba')
+    or capacity_points_at_party_id is not null
+  )
 );
 
 create index if not exists case_parties_case_idx on case_parties (case_id);
