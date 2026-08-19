@@ -16,6 +16,226 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-SEVENTH invocation) — the record catches up with the live database, one comment block is corrected without touching a statement, and the packet's own verification figure is the thing that fails
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_live-migration-execution_2026-08-19.zip` — **13,639 bytes, mtime `2026-08-19 10:58:42 −0500`, sha256 `2095788af308da44475e28b3a726e16f9ce11eccd6847412a30eba4e3fe9bfd6`**, identity pinned at Step 1 per QR-6(c). Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded:** one packet leaves the Step 2 conflict rule with nothing to resolve. **Nothing was skipped as already built.** **`§5` is NONE — nothing was built and nothing was authorized to build.**
+
+- **THE STEP 0 GATE CLEARED ON ALL THREE LIMBS AND THE SIXTY-SIXTH LEFT NOTHING OWED.** A live `git fetch origin` plus `git ls-remote origin refs/heads/master` returned `de5307a`, equal to local HEAD, with `rev-list --left-right --count` reading **0 behind / 0 ahead** — so that batch's commit is on origin. Its deletion took as well: at Step 1 `inbox/` held only this batch's zip. **CARRY-FORWARD OWED TO THIS LINE UNDER QR-5: NONE.** The runner text was re-read at HEAD rather than from a cached copy — **v11, blob `c75de00d`, sha256 `38a57e22…`**, identical to what the sixty-sixth recorded.
+- **DT-1 DID NOT FIRE, AND THIS TIME NOT EVEN NEARLY.** Bare `date` read `Wed Aug 19 11:07:31 CDT 2026` and `date -u` read `16:07:31 UTC` — **both agree on 2026-08-19**, a late-morning batch nowhere near the ~19:00-to-midnight window the recent batches kept crossing. **Both new log entries carry the same date for the first time in four editions:** the design session ran that morning and this batch executed it the same morning, so authorship date and run date coincide and there is no split to explain.
+- **THE ALREADY-EXECUTED CHECK WAS NEGATIVE ON BOTH QR-5 LIMBS, AND THE PROBE WAS SHOWN ABLE TO FIRE BEFORE IT WAS BELIEVED.** `#113` returned **0** at HEAD and at `origin/master` while `#112` returned **1** at both; the `ORDERING` block's corrected text returned **0** at each ref while the old text returned **1**. Neither the committed-and-pushed nor the committed-but-unpushed limb applied.
+- **THE ONE EDIT TO `db/` CHANGED NO STATEMENT, AND THAT IS PROVED BY A FILTER RATHER THAN BY INTENT.** The `ORDERING` comment block in `db/migrations/2026-08-18-grok-review-fixes.sql` was replaced text-anchored, not by line number, after confirming the block still read exactly as §4.2 quoted it — 10 lines / 732 bytes out, 35 lines / 2,241 bytes in **as replace-anchor text** — `git diff` renders it as **8 removed / 33 added**, two boundary lines being shared context, and the byte figures reconcile exactly either way (2,241 − 732 = +1,509 = 13,623 − 12,114). **Both bases are stated so a later reviewer re-deriving from `git diff` does not read a discrepancy into it.** **Filtering the diff to lines whose first non-space characters are not `--` returns EMPTY**, so every changed line is a comment. The file is pure LF before and after (0 CRLF, 0 bare CR, from a binary read), and the blob git will store is LF at 13,623 bytes despite `core.autocrlf=true`.
+- **AND THE PACKET'S OWN VERIFICATION FIGURE FOR THAT EDIT IS WRONG — AGAINST THE REPLACEMENT TEXT THE PACKET ITSELF SHIPS.** §4.2 states `grep -c "alter table case_parties"` → **5 (unchanged)**. After the edit the raw count is **6**, because the new comment block *quotes* an `alter table case_parties add constraint …` line to explain why the old ordering could not execute. On **executable lines** the count is **5**, unchanged, which is what the check was actually testing. `capacity_kind` moves the same way: raw 4 → 6, executable 3 across the two constraint statements. **This is the sixty-fifth invocation's second method finding firing again, now from the packet side rather than the runner side: a post-edit grep can match the comment you just wrote.** **The figure was REPORTED, NOT EDITED — packet content is Michael's** (the `Q-T19-3` class).
+- **AND TWO MORE COMMENTS IN THAT SAME FILE NOW CONTRADICT THE BLOCK THIS BATCH CORRECTED — FOUND, NOT FIXED, BECAUSE §4.2 SAYS "NOTHING ELSE IN THE FILE CHANGES."** **(1)** A comment beside the capacity CHECK still reads *"all carry capacity_kind NULL (CD-1 is unrun)"* — but under the corrected order CD-1 runs FIRST, so by the time this file executes CD-1 is by construction already run. **Its conclusion survives on a durable fact the reason does not supply: CD-1 creates `capacity_kind` and never writes it, so every pre-existing row really is NULL.** **(2)** The post-run verification block still instructs that a surviving old constraint *"must be dropped by hand before CD-1 runs"* — **a deadline the corrected order has already passed**, leaving a live safety check with no reachable trigger. **Both are comment-only repairs and both are YOURS: this batch was authorized to replace exactly one block and did exactly that.** The irony is on the record — **the defect class this packet exists to fix is a comment asserting a run-state that is no longer true, and the same file carries two more.**
+- **HEALTH CHECK RUN, NOT SKIPPED, AND THE RULE READ STRICTLY IS WHY.** `QR-6(f)`'s skip limb needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. `§5` is NONE here, but `db/migrations/2026-08-18-grok-review-fixes.sql` sits in the routing table, so the run limb applied — and the packet's §8 said so itself. **2026-08-19: 278 tests pass across 23 files; `npm run build` exit 0; `npm run lint` exit 0**; the >500 kB chunk warning pre-existing. Unchanged from the sixty-fifth's figures, which is the expected result for a batch whose only `db/` act is a comment block — **expected is not assumed, and it was measured.**
+- **THE `OPEN-5(a)` SWEEP RAN AS SIX INDEPENDENT RE-DERIVATIONS AND ALMOST EVERYTHING HELD.** Confirmed unmoved at HEAD: registry backlog **47 / 35 verified / 12 not** on the two-named-file basis; `legal-rule-registry-discovery-and-carrier-duties.md` at **22 VERIFIED** against its stale "ALL TWENTY" header; every research-document size; the runner blob and sha256; the CHAT-DISPATCH v4 chain at **25 open + 7 closed of 32**; `db/schema.sql` at **36 tables, 36 RLS-enabled, 35 policies**; the log preamble at **2,771 bytes**. **The glob trap was re-measured and put on record with the detail that makes it dangerous: `legal-rule-registry*` returns 74 / 57 / 12 — the UNVERIFIED figure COINCIDES with the correct basis, so a checker comparing only that one number would not detect the wrong basis.**
+- **FOUR FIGURES WERE WRONG, AND THEY ARE NOT ALL THE SAME KIND — WHICH IS THE FINDING.** BUILD-STATE published `grok-external-review-2026-08-18.md` at **29,458 B / 168 non-blank**; it is **238**. The bytes were right. **This is not carried drift: `git log -S` puts the wrong figure and the file it describes in the SAME commit, `d6f97e6` — it was wrong at birth.** Corrected here and named. **Three more surfaced when the finished tree was put to an adversarial pass rather than to a reading, and every one had survived the sweep above.** **(2) BUILD-STATE said `cases` has "no county, venue, district or jurisdiction column" — `cases.county` EXISTS**, executable DDL in `db/schema.sql`'s OAA intake block; venue, district and jurisdiction really are absent, and **a claim that is partly true is worse than one wholly wrong, because FC-8 would have authorized adding a column that already exists.** **(3) The registry section's "eleven that remain" counted entries 30 and 31 on both sides** — they ARE the criminal file's two — **and omitted 19b, yielding 13 unverified against the 12 the same file derives twice.** **(4) "REGISTRY RESEARCH SUPPORT — FOURTEEN DOCS" headed a list of fifteen**, on a line expressly claiming every size was re-derived. **The sixty-sixth's carried-drift kind, this batch's wrong-at-birth kind, and these three — a stale claim about the schema, an arithmetic error, and a label that did not follow its own list — are indistinguishable by reading. Only re-derivation separates the first two, and only an adversarial read caught the last three.**
+- **THE 2,770 / 2,771 OSCILLATION IS SETTLED AND IT WAS NEVER DRIFT.** The thirteenth TOC edition published 2,770, the fourteenth published 2,771 and called it a *correction of a carried figure*. Both measure the **same unchanged bytes** under different conventions — inclusive or exclusive of the newline terminating the preamble. **The fourteenth was right about the number and wrong about the cause.** The convention is now fixed in the index as **inclusive, 2,771**, so no future edition re-reports it as a defect.
+- **BUILD-STATE WAS REWRITTEN IN FULL AS TWENTY-EIGHT ASSERTED IN-PLACE DISPLACEMENTS, AND THE CAP IS WHY.** The file sits at **exactly 150 non-blank lines** — the ruled cap with zero headroom — so appending was structurally impossible and every change had to displace. **The packet named seven false statements; the reconcile found FIVE MORE it had not listed** — a second "the same unrun" reference to the grok migration inside `## Data layer`, both hand-list entries under `## For design side`, the GL-1 floor's item (1), and the CD-1/PR-3 ordering bullet, which flips from a scheduling question to a realized outcome. **A near-miss was identified and deliberately NOT displaced:** `## Design-input memos` carries "The migration remains AUTHORED, UNRUN AND NOT AUTHORIZED", which is **T-30's four-value proposal text and none of the three migrations** — a keyword sweep catches it and displacing it would have been an error.
+- **THE LIVE-DATABASE FACTS ARE CARRIED WITH THEIR PROVENANCE AND ARE NOT MARKED RE-DERIVED.** PostgreSQL **`17.6`**; the live database at **36 tables**, agreeing with `schema.sql` for the first time since 08-12; all three migrations run and verified. **These are Michael's own query output as reported at `#113`. No repo check reaches them, `OPEN-5(a)` does not apply to them, and the header now says so** — the same posture the displaced "34" carried, kept deliberately rather than upgraded.
+- **THE TWO-ROW CAVEAT SURVIVED INTO THE SNAPSHOT RATHER THAN BEING SMOOTHED.** CD-1's backfill ran over **two rows**, and steps (c) and (d) matched **nothing** — there is no Plaintiff, Defendant, Witness, adjuster, provider, expert or judge link in the live database. The C3 check returning **2 flags against 2 `Client` links** is one-for-one and at the high end, which is the right end. **GL-1 item (1) is satisfied by the pair — this run plus the fixture exercise at #61 — but "verified clean" reads broader than what happened, and BUILD-STATE now says so.**
+- **THE QUEUE MERGE WAS THE TWO ACTS `QR-6(b)` REQUIRES.** `Q-PR3-3` **ANNOTATED ADD-ONLY** with the packet's text verbatim — the backfill limb spent, step (c) having matched zero rows, **the row itself left OPEN** — and the Status header's per-batch reconcile sentence written to **#113**. **This batch ADDED no row and CLOSED none.** The `#113` session opened no row for the `ORDERING` defect on purpose: found, ruled and executed inside one day, it lives in the entry. **That absence is recorded as a decision so it cannot later read as an oversight.**
+- **`TOC-4` FIRED FOR THE THIRTEENTH TIME — FIFTEENTH EDITION, 236 rows against 236 log headings, riding this commit.** Buckets re-derived: **112 numbered (#2–#113) + 63 ordinals (5–67) + 1 unnumbered runner + 60 other = 236.** **No carried row was edited — not one cell.** A **seventh derivation trap** is entered, and it runs opposite to the six before it: **the re-derivation prompt asserted that a bare `#[0-9]+` scan over headings over-counts the entry total, and at HEAD it does not** — it returns the same 111 and the same set as the anchored pass. What it corrupts is the ID *inventory*: nine false duplicates and **one spurious `#1` lifted out of heading #91's prose**, which makes a naive scan report "#1–#112, no gaps" and **mask the most-cited fact about the series — that no entry #1 exists.** A trap described imprecisely gets walked into from the other side.
+- **EVERY §6 DO-NOT HONORED, with the diff as the evidence.** No SQL statement touched — the `begin;`/`commit;` wrapper, ruling 4's two constraint statements, F-1, F-2, F-3 and F-25 all unchanged on executable lines · **no existence guard added around ruling 4** · **no database connected to, and no migration run or re-run** · the two `privilege_tier` vocabularies **left disagreeing**, `Q-COM-10` untouched · **the two open roster flags not resolved** · **`Q-PR3-3` annotated, not closed** · Grok's Gate 10 shapes, the cascade R1/R2/R3 framing and the F-14 hardening block **treated as PROPOSED, unruled and outside the repo — none entered any file AS DESIGN** (the `#113` entry names all three in order to record that they are unruled and outside the repo, which is what §3 says verbatim and what the DO-NOT protects) · **the live figures not marked re-derived** · nothing built.
+- **`QR-6(e)` DID NOT FIRE, AND `PF-1` DID NOT EITHER — both absences stated rather than assumed.** Every act this packet asked for sat in a routing-table row or a §8 item; there was no packet-added act to authorize. `PF-1`'s trigger is a packet carrying a legal characterization or a proposed registry entry, and this one carries neither — the design session said so itself, and the reconcile agrees: **no registry file was opened, no entry created or reworded, no Status line moved anywhere, and nothing was verified.** **HK-5 held: nothing on Michael's filesystem was swept, and the CD-1 flag resolution stays his hand.**
+- **THE §7 OPEN ITEMS ARE CARRIED, NOT MERGED — AND THE DIFFERENCE IS A REAL GAP, PUT TO YOU RATHER THAN PAPERED OVER.** §7 lists nine: **Gate 10** (PII promotion out of `parties.fields` — the ONLY unbuilt item on the go-live path, and AHEAD of the floor) · **Gate 1** Supabase Pro · **Gate 9** production SMTP, whose trigger is *reliance* and not real data · **Gate 3** RLS write-path test including CD-1's two now-live tables · **T#1** gates re-check plus the trigger-1 instructions revision · `Q-PR3-3` (annotated this batch) · `Q-COM-10` · `O-7` cascade map, **whose §6 warns that RESTRICT without app-layer soft-delete means matters can no longer be deleted at all** · `O-3`, **now carrying F-14 as LATENT rather than as a GL-1 blocker**, the edge functions being written and undeployed so its trigger is "before you deploy." **The queue file gained ZERO rows this batch** — the packet's §5B says no row was created and §8 asks only for the annotation plus the header sentence, and that is exactly what was done. **BUT FIVE OF THE NINE — Gate 10, Gate 1, Gate 9, Gate 3 and T#1 — HAVE NO ROW IN `attorney-review-queue.md` AT ALL**, on a distinctive-phrase check (`Supabase Pro`, `SMTP`, `PII`, `parties.fields`, `RLS write-path`, `T#1` all return zero). **So §7's closing line — "Everything else stands in `attorney-review-queue.md`" — asserts a coverage that file does not have.** The gates live in `Go_Live_Gates.md` and in this snapshot instead, and they await your ACTION rather than your ruling, which is a defensible reason for the register not to hold them. **Whether QR-1 nonetheless requires rows for them is YOURS — no row was minted here, because minting five is a change to what the register is for.**
+
+Staged for Code: none — this line closes the batch.
+Awaiting/Returned from Code, unreviewed: everything this batch wrote — the `#113` entry, the BUILD-STATE refresh carrying the live-database facts, the `Q-PR3-3` annotation and the fifteenth TOC edition — **plus the whole of the sixty-sixth's output**, which no design session has reviewed yet.
+
+## 2026-08-19 (#113) — EXECUTION SESSION: all three pending live migrations RUN AND VERIFIED by
+Michael's hand, in an order corrected against the header that got it backwards; GL-1 floor item (1)
+COMPLETE; F-1 and F-3 closed on the live database (design session, Opus 5, Cowork, typed)
+
+The first design session in this project whose substance is a change to the LIVE DATABASE rather
+than to a document. Nothing was built and nothing was authorized to build. Michael executed; this
+entry is the record, and it is the only place the evidence exists.
+
+**Session opened at `de5307a`**, read full-text through the device bridge. DT-1 applied: Central
+date 2026-08-19, container clock 15:44 UTC / 10:44 Central at close — no day-crossing, the window
+that opens at 19:00 Central was never entered.
+
+### WHAT RAN, IN ORDER, AND WHAT EACH RETURNED
+
+**1. `db/migrations/2026-08-12-cd1-contact-directory.sql`** — CD-1 slice item 7. Ran clean. Its five
+verification checks, answered in words per the file's own instruction:
+
+| Check | Result |
+|---|---|
+| C1 untagged / mismatched | 0 / 0 against 2 `parties` rows |
+| C2 role_drift / no_joined_by / no_state | 0 / 0 / 0 against 2 `case_parties` rows |
+| C3 open roster flags | **2, against 2 links carrying role `Client`** |
+| C4 `authenticated` reaches both new tables | true / true |
+| C5 `to_regclass('public.case_links')` | null — the CL-1 firewall holds |
+
+**C3 IS THE CHECK THAT MATTERED AND IT CAME OUT AT THE HIGH END, WHICH IS THE RIGHT END.** The file
+warns that a LOW number would mean something guessed. Both links carry role `Client`, which is
+neither a caption-alignment role (backfill step c) nor a function role (step d), so both correctly
+fell through to a flag rather than being forced to a nearest-looking value. Two flags for two
+Client links is one-for-one.
+
+**HONEST LIMIT ON WHAT "EXERCISED" MEANS HERE, STATED RATHER THAN GLOSSED.** The backfill ran over
+**two rows**. Steps (c) and (d) matched NOTHING — there is no Plaintiff, Defendant, Witness,
+adjuster, provider, expert or judge link in the live database. So these checks establish that the
+migration did not break anything and that the flagging path works; **they do not exercise the
+caption-alignment or function-role branches.** Those were exercised in code on fixture data at
+`#61`. GL-1 item (1) reads "landed **and exercised**" and is satisfied by the pair — but a two-row
+backfill proved less than a reader of "verified clean" would assume.
+
+**CONSEQUENCE FOR `Q-PR3-3`, WHICH NOBODY HAD TO ACT ON BECAUSE THE DATA WAS NOT THERE.** That
+unruled item warned that running CD-1 before PR-3 lets mis-parented probate rows take the
+plaintiff-defendant derivation with nothing later revisiting them — "the quieter failure is the one
+scheduled." **Backfill step (c) matched zero rows, so no row took that derivation and the failure
+did not occur.** The backfill limb of `Q-PR3-3` is spent. Whether anything remains in it is
+Michael's; **the row is annotated, not closed.**
+
+**2. `db/migrations/2026-08-18-grok-review-fixes.sql`** — ran clean, SECOND, against its own header
+(see below). Its six verification checks:
+
+| Check | Result |
+|---|---|
+| F-1 PUBLIC execute on `next_file_number` | **ok — no PUBLIC entry** |
+| F-3 function body uses `America/Chicago` | true |
+| F-3 `cases.date_opened` default | `((now() AT TIME ZONE 'America/Chicago'::text))::date` |
+| F-2 `cases_freeze_file_number` trigger | 1 |
+| F-25 tables carrying `created_by` | `cases, generated_documents, medical_bills, parties, transcripts` — the five, and only the five |
+| F-25 `set_created_by` triggers | 5 |
+| R4 unique constraints on `case_parties` | **1** |
+| R4 old three-column key still present | **0** |
+| R4 new roster identity key | `UNIQUE NULLS NOT DISTINCT (case_id, party_id, role, capacity_kind, capacity_points_at_party_id)` |
+| F-18 `case_parties_capacity_pointer_check` | 1 |
+
+**F-1 WAS A LIVE EXPOSURE AND IS NOW CLOSED.** `next_file_number()` is `SECURITY DEFINER`; Postgres
+grants EXECUTE to PUBLIC on new functions and `CREATE OR REPLACE` preserves that ACL, so it was
+callable by `anon` over PostgREST RPC from 2026-07-28 until 2026-08-19. **Checked against the
+PostgreSQL 17 documentation rather than assumed, because the server had moved three major versions:
+the default is unchanged in 17** ("EXECUTE privilege for functions and procedures"), so the revoke
+was necessary, not redundant.
+
+**THE R4 PAIR IS THE ONE THAT COULD HAVE FAILED SILENTLY AND DID NOT.** The file drops the old key
+by matching `pg_get_constraintdef(oid) = 'UNIQUE (case_id, party_id, role)'` — by DEFINITION, not by
+a guessed name, deliberately avoiding the F-23 failure mode. **The live constraint was read BEFORE
+the run** and returned `case_parties_case_id_party_id_role_key` → `UNIQUE (case_id, party_id, role)`,
+a character-exact match, so the lookup was known to be able to fire before it was asked to. Rows
+"1 unique constraint" and "0 old keys" are the confirmation. **The file's `raise notice` was treated
+as decoration, not evidence** — the Supabase SQL editor does not reliably surface NOTICE output, and
+a check that cannot produce a disconfirmation is not a check (`QR-6(a)`, applied outside the runner).
+
+**3. `db/migrations/2026-08-16-privilege-tier-no-default.sql`** — ran clean, THIRD. Its checks:
+
+| Check | Result |
+|---|---|
+| C1 `generated_documents.privilege_tier` nullable / default | YES / none |
+| C1 `transcripts.privilege_tier` nullable / default | YES / none |
+| C2 existing values, both tables | **(no rows)** — neither table has any row |
+| C3 `generated_documents` CHECK | `attorney-client`, `work-product`, `non-privileged` |
+| C3 `transcripts` CHECK | `privileged`, `work-product`, `non-privileged` |
+| C5 policies reading `privilege_tier` | 0 |
+
+**C2 IS SATISFIED TRIVIALLY, NOT MEANINGFULLY, AND THE DIFFERENCE IS WORTH THE LINE.** The file's
+check exists to prove nothing was re-characterized. Both tables are empty, so nothing COULD have
+been. **C3 is the one that was read deliberately: the two vocabularies still disagree and both
+CHECKs are untouched.** That is the CORRECT result — `Q-COM-10` stays open and unimplemented, which
+is the named failure the migration was written to avoid. **The file's check 4 (insert-a-null inside
+a transaction, then roll back) was NOT run**; C1's catalog read establishes the same fact and no
+fixture row was created. Stated rather than omitted.
+
+### THE DEFECT THIS SESSION FOUND, AND THE RULING ON IT
+
+**`2026-08-18-grok-review-fixes.sql` STATES IN ITS OWN HEADER AN EXECUTION ORDER ITS OWN DDL CANNOT
+SATISFY.** The `ORDERING` block read *"the required order is: 1. THIS FILE … 2.
+db/migrations/2026-08-12-cd1-contact-directory.sql,"* and *"Running CD-1 first is not a disaster."*
+
+**It is exactly backwards.** Ruling 4's two statements name `capacity_kind` and
+`capacity_points_at_party_id`; **those columns are created by the CD-1 migration**, and only by it.
+On a database where CD-1 has not run they do not exist, so the constraint statement raises `42703` —
+and **because the file is wrapped in one transaction, F-1's revoke and F-3's Central-time fix roll
+back with it.** The header's own reasoning ("cannot create the two-entry capacity rows … would fail
+on the second insert") describes a DATA limitation between two runs, in a database with no real
+data, and offers it as grounds for a DDL ordering that fails outright. **The same file's post-run
+verification block quietly disagrees with its own header**, ending *"it must be dropped by hand
+before CD-1 runs."*
+
+**CONFIRMED AGAINST THE LIVE DATABASE BEFORE ANYTHING WAS PASTED**, not inferred from the files: a
+read of `information_schema.columns` for `case_parties` returned exactly seven columns — `id`,
+`case_id`, `party_id`, `role`, `side`, `note`, `created_at` — and neither capacity column. **That
+read also independently established that CD-1 was still unrun**, a fact BUILD-STATE says the repo
+cannot reach.
+
+**RULED BY MICHAEL 2026-08-19: correct the header, leave the DDL alone.** Reason: the DDL was always
+right and only the instruction was wrong, so the smallest honest act is to fix the instruction.
+**The hazard is spent** — both files have run, in the corrected order, and a fresh project builds
+from `db/schema.sql` rather than replaying migrations — so the guard variant would have bought
+protection for a future replay rather than for Michael. **Considered and not taken:** an existence
+guard around ruling 4's two statements (would make the file order-independent; rejected as buying
+nothing now), and record-only with no edit (rejected — the file would keep giving a live instruction
+that fails). **No SQL statement was touched and none may be.**
+
+### THE OUTSIDE-MODEL PASS, AND WHAT IT DEMONSTRATED BY ACCIDENT
+
+Michael put the tree to an outside model (Grok) twice on 2026-08-19.
+
+**The first pass found the header defect from the other direction and was half right.** It read the
+`ORDERING` block, believed it, and issued a "CORRECTION REQUIRED" instructing that the Grok file run
+FIRST. **That correction would have failed on paste and rolled back F-1 and F-3.** But it earned its
+keep: this session had read the file's header only to line 30 and had reached CD-1-first on a
+shallower argument, without noticing the file said the opposite. **Neither read alone was
+sufficient** — one had the header, the other had the DDL. Recorded as a finding about method, not a
+score.
+
+**The second pass, run after the migrations had already executed, produced a stale worklist** —
+*"Four pastes / purchases / configs remain yours (CD-1, Grok-fixes once header repaired, Pro, SMTP,
+privilege-tier)"* — naming three pastes that had run and verified hours earlier. **The model was not
+careless and the tree was not wrong. The tree is silent about the database.** This is the
+`#74`/`#93` operational note extended one hop: **a repo read establishes what the files say, never
+what the live instance contains.** It is also the strongest available argument for this entry
+existing at all.
+
+**Grok's other dispositions, both accepted:** the migration order (CD-1 first, with the header
+identified as the defect) and **F-14 characterized as LATENT** — `legiscan-poller` is an
+unauthenticated `service_role` writer, but the edge functions are **written and NOT deployed**, so
+its trigger is "before you deploy," not "before real data." **It belongs with `O-3`, not on the
+GL-1 floor.** Corrected from the note's own framing, which called it "still an unauthenticated
+service-role endpoint."
+
+**PROPOSED, UNRULED, AND LIVING OUTSIDE THE REPO — recorded so it is not silently lost.** Grok
+reports having drafted: **three Gate 10 shapes** (A columns on `parties` / B a `party_pii` child
+table / C hybrid), a **cascade-map decision summary** (`O-7`) framed R1 full / R2 minimal
+high-value subset / R3 defer, and an **F-14 hardening block** (`verify_jwt = false`, `CRON_SECRET`
+gate, Vault-backed schedule). **None is ruled, none is in this packet, and none is in the repo.**
+Per standing registry discipline an outside model is a LOCATOR, never authority. If Michael wants
+any of it, the text travels by his hand.
+
+### STATE FACTS ESTABLISHED THIS SESSION THAT NO REPO CHECK CAN REACH
+
+- **PostgreSQL `17.6`.** The record said only that the PG15+ gate passed; the actual server is three
+  majors above 14.5, not one. Reported by Michael from `show server_version`.
+- **The live database is at 36 tables**, up from 34: CD-1's `case_roster_flags` and `contact_edges`
+  landed. `db/schema.sql` has 36. **The two figures now agree for the first time since 08-12.**
+- **All three migrations in `db/migrations/` that were "authored, unrun and yours" are RUN.**
+- Live `case_parties` before the run carried seven columns and one unique constraint; after, it
+  carries CD-1's eight additional columns, one unique constraint and one capacity CHECK.
+
+### PROCESS NOTES
+
+- **`PF-1` DID NOT FIRE, and the reason is named rather than the check silently skipped.** Its
+  trigger is a packet carrying a legal characterization or a proposed registry entry. This packet
+  carries neither: no registry entry was created, none was reworded, no proposition is asserted.
+- **`RR-1` RAN AND CAUGHT TWO OF THIS SESSION'S OWN DOCUMENTS.** Two chat deliverables authored
+  earlier — a remaining-work list and a migration-order defect note — both state that the three
+  migrations are unrun. **Both are superseded by the execution recorded here. Neither is packet
+  content and neither is routed anywhere**, so nothing stale enters the repo; recorded because
+  Michael holds copies.
+- **`ROUTE-C` did not fire** — no registry proposition was read against operative text this session.
+- **`H5` honored:** every filesystem read was against declared paths in the granted checkout.
+  Nothing was swept.
+
+**Staged for Code:** this entry; the `ORDERING` comment-block replacement in
+`db/migrations/2026-08-18-grok-review-fixes.sql`; the BUILD-STATE facts at §5A of the work order;
+one `Q-PR3-3` annotation.
+
+**Awaiting/Returned from Code, unreviewed:** none from this session. Carried items per `#112` and
+the sixty-sixth runner batch — verify against the entries that staged them, never against this line.
+
 ## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-SIXTH invocation) — the routed OPUS-RUN paste comes home as two staged records, the numbering race the packet predicted resolves in its favour, and the health check is skipped on the rule rather than by omission
 
 **One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_fc13-drafts-and-ws3-second-pass_2026-08-18.zip` — **44,312 bytes, mtime `2026-08-19 00:29:20 −0500`, sha256 `10c4bb6682059a1af548c846801ed61340fc2ff6b42d80ab14f983a271df1b6b`**, identity pinned at Step 1 per QR-6(c). Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order. **Nothing was superseded:** one packet leaves the Step 2 conflict rule with nothing to resolve. **Nothing was skipped as already built.** **Docs-only: two new files under `docs/specs/`, and `§5` is NONE.**

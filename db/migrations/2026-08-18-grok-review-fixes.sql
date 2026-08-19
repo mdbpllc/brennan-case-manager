@@ -29,15 +29,40 @@
 -- The version is not derivable from the repo, so it is not taken on trust here
 -- either: the guard below refuses to run this file on anything under 15.
 
--- ORDERING - THIS MATTERS AGAIN NOW THAT RULING 4 IS IN THE FILE.
+-- ORDERING - CORRECTED 2026-08-19. READ THIS BEFORE RUNNING ANYTHING.
 -- Michael chose (2026-08-18) that the F-4 constraint change would ride in THIS
--- file rather than in the unrun CD-1 migration. Ruling 4 requires the widened key
--- to be in place BEFORE CD-1 runs, because CD-1's capacity model cannot operate
--- under the old key. Both files are unrun, so the required order is:
---     1. THIS FILE (2026-08-18-grok-review-fixes.sql)
---     2. db/migrations/2026-08-12-cd1-contact-directory.sql
--- Running CD-1 first is not a disaster - it simply cannot create the two-entry
--- capacity rows it was written for, and would fail on the second insert.
+-- file rather than in the CD-1 migration. That choice stands. The ORDER this
+-- block previously stated does not.
+--
+-- THE REQUIRED ORDER IS:
+--     1. db/migrations/2026-08-12-cd1-contact-directory.sql
+--     2. THIS FILE (2026-08-18-grok-review-fixes.sql)
+--
+-- WHAT THIS BLOCK SAID BEFORE, AND WHY IT WAS WRONG. It stated the opposite
+-- order - this file first - reasoning that "CD-1's capacity model cannot operate
+-- under the old key." That reasoning describes a DATA limitation between the two
+-- runs. The ordering constraint is a DDL one and it runs the other way: ruling
+-- 4's two statements below name `capacity_kind` and
+-- `capacity_points_at_party_id`, and those columns are created by the CD-1
+-- migration. On a database where CD-1 has not run they do not exist, so
+--     alter table case_parties add constraint case_parties_roster_identity_key
+--       unique nulls not distinct (case_id, party_id, role, capacity_kind, ...)
+-- raises 42703 - and because this file is wrapped in a single transaction,
+-- F-1's revoke and F-3's Central-time fix ROLL BACK WITH IT. The stated order
+-- could not execute, and would have silently cost the two fixes this file exists
+-- to deliver while reporting nothing but an error on one line.
+--
+-- HOW IT WAS FOUND AND SETTLED. Found 2026-08-19 in a design session and
+-- confirmed against the LIVE database before either file was run: a query on
+-- information_schema.columns for case_parties returned seven columns
+-- (id, case_id, party_id, role, side, note, created_at) and neither capacity
+-- column. Michael ruled the same day: correct the header, leave the DDL alone -
+-- THE DDL WAS ALWAYS RIGHT; ONLY THE INSTRUCTION WAS WRONG. Both files were then
+-- run in the corrected order and verified clean (session log #113).
+--
+-- NOTE FOR ANY FUTURE READER. Nothing below this block was changed by that
+-- ruling. The file remains guarded and idempotent and is safe to re-run; on a
+-- database where CD-1 has already run, the order question is moot.
 -- =============================================================================
 
 begin;
