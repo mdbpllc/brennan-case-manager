@@ -16,6 +16,149 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-NINTH invocation) — a docs-only batch that files an AUTHORIZED build it is BARRED from running, and catches the packet's own probe note off by one against the paragraph the last batch wrote
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate10-slice-and-authorization_2026-08-19.zip` — **19,490 bytes, mtime `2026-08-19 13:40:43 −0500`, sha256 `79e9d0c00671b41da586465267313192c962a6c4f836509014cba027f3eb8c8c`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded:** one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.**
+
+- **`§5` IS `AUTHORIZED-BUT-NOT-HERE`, WHICH IS NOT `NONE`, AND THE DISTINCTION IS THE POINT OF THE BATCH.** Michael authorized the gate 10 build 2026-08-19 — *"Authorize — its own Code session"* — and **the packet BARS this runner from it** on the CD-1 / FE-D1 precedent. **So the runner filed the build's own kickoff prompt and did not execute it, read no `src/`, wrote no migration, connected to no database and built nothing.** The authorization is real, it is unfired, and it is Michael's hand: `docs/prompts/PROMPT-gate10-pii-build-session.md`.
+- **THE STEP 0 GATE CLEARED ON ALL THREE LIMBS, AND IT DISCHARGES WHAT THE SIXTY-EIGHTH OWED.** A live `git fetch origin` plus `git ls-remote origin refs/heads/master` returned `b752fcc`, equal to local HEAD, with `git rev-list --left-right --count origin/master...HEAD` reading **0 behind / 0 ahead** and `git status --porcelain` empty. **The sixty-eighth's line owed this one its push and its deletion results under QR-5, and both are discharged by commands that could have disconfirmed them:** that batch's push **landed** — `b752fcc` is the commit `ls-remote` returns from origin — and its deletion **took**, `inbox/` holding exactly one file at Step 1, this batch's. **No carry-forward is owed forward except this batch's own, reported to Michael at the close rather than predicted here.** The runner text was re-read at HEAD rather than from a cached copy — the machine-local command is a QR-2 pointer and was followed — **v11, 2026-08-18**, the same version the sixty-eighth recorded.
+- **DT-1 DID NOT FIRE.** Bare `date` read `Wed Aug 19 13:44:36 CDT 2026` and `date -u` read `18:44:36 UTC` — **both agree on 2026-08-19**, an early-afternoon batch outside the ~19:00-to-midnight window. **Third consecutive edition with no date split:** the packet was authored and executed the same afternoon, so authorship date and run date coincide and there is nothing to explain.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS AND WAS CONTROLLED IN BOTH DIRECTIONS.** `(#115)` returned **0** at `HEAD` and at `origin/master` while the control `(#114)` returned **1** at both. Both canonical paths were absent, and a whole-tree `find` plus `git ls-files` returned nothing for `gate10` but the zip itself. **The filename sweep was reported at the STOP as the weaker limb and a content probe was run beside it:** `party_pii` returned **1** at each ref — a single pre-existing line at `session-log.md:294` describing Grok's three PROPOSED shapes, not this packet's text. Neither the committed-and-pushed nor the committed-but-unpushed limb applied.
+- **THE PACKET'S §1 RECONCILE HELD ON EVERY LIMB, MEASURED RATHER THAN ACCEPTED.** `.git/index.lock` **absent**; `BUILD-STATE.md` at **exactly 150 non-blank lines**, the ruled cap with zero headroom, so every change had to displace; **both canonical paths genuinely new**; the session-log high-water mark **`#114`**, so `#115` is correct and TOC-6 renumbering did not arise. Every routed file is **pure LF on a binary read** (0 CRLF, 0 bare CR) before and after — checked on the staged files too, since `core.autocrlf` is `true` on this machine while every committed blob is LF.
+- **BOTH NEW DOCUMENTS WERE FILED BY PROGRAM AND VERIFIED BY HASH, NEVER RETYPED.** `docs/specs/gate10-pii-slice.md` (15,402 bytes, sha256 `eb7d481c…`) and `docs/prompts/PROMPT-gate10-pii-build-session.md` (7,979 bytes, sha256 `7cc6827f…`) are **byte-for-byte identical to the staged files**, source and filed copy hashed separately and compared. The `#115` entry was likewise **extracted from the manifest as a byte-exact substring**, not transcribed.
+- **THE PACKET'S RR-1 CLAIM WAS CHECKED RATHER THAN BELIEVED, AND IT HELD ON ALL FOUR PLACES.** Its process note says `gate10-pii-slice.md` was authored before `G10-1` was ruled and was conformed in four places before packaging. Read at the filed copy: the status block reads **BUILD AUTHORIZED 2026-08-19**, §4 states the ruling rather than offering two options, the §7 `G10-1` row is **struck through as closed**, and §8's heading reads **AUTHORIZED**. Nothing was softened to PROPOSED, per §6.
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES, AND THE GATES TOOK ZERO ROWS.** A new **G10 series** subsection with **two rows** — `G10-2` and `G10-4`, their question text **extracted from the filed slice doc's §7 by program** rather than retyped, per QR-1 — plus the Status header's per-batch sentence written to **#115**. Row-anchored open rows moved **342 → 344**, exactly the two; `git diff --numstat` reads **12 insertions / 1 deletion**, the lone deletion being line 3 rewritten in place by the mandated header act. **No existing row was touched, closed or reworded.** **The four go-live gates in the packet's §7 — gate 10, gate 9, gate 3, `T#1` — deliberately took NO row**, the `#114` scope ruling applying to them exactly as written; `G10-1` is ruled and `G10-3` is assigned to the build session, so neither is a row either. **Each of those four absences is stated in the file rather than left to be read as an oversight.**
+- **AND THE PACKET'S OWN PROBE NOTE IS OFF BY ONE — THIS BATCH'S ONE REAL FINDING.** §7 carries three probe/count corrections owed, and **all three reproduce exactly at HEAD**: the file-wide glyph count is **354**, the open-**row** count is **342**, and the difference is **12 prose lines** — so the sixty-eighth's 354 was the wrong matcher and the correction is right. **But the parenthetical inside that same row says the `#114` packet's file-wide gate probe "returns 1, matching the Status header." It returns 2.** The second match is **line 11, the scope paragraph the sixty-eighth itself wrote** — and the row-anchored form the §7 note correctly prefers returns **0**, which is the substance and is sound. **This is the disarmament class the sixty-eighth flagged, firing one level up: the note written to correct a probe was itself measured against a file the correcting batch had already edited.** The per-phrase counts are unchanged from that batch's line (each 1; `T#1` 2), which is why the discrepancy is in the combined alternation alone.
+- **HEALTH CHECK SKIPPED, DELIBERATELY, WITH THE REASON RECORDED (`QR-6(f)`).** Nothing was built and the routing table touches **only** `docs/` — no `src/`, no `db/`, no `supabase/`, no build tooling — so both limbs of the skip rule are satisfied and `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. **Not skipped silently; the packet's §8 named the same limb independently.** The last measured figures stand unchanged at the sixty-seventh: 278 tests across 23 files, build and lint exit 0. **The gate 10 build session runs the check for real — its own Step 6 says the skip limb does not apply to it.**
+- **BUILD-STATE WAS REWRITTEN IN FULL AS IN-PLACE DISPLACEMENTS, THE CAP BEING WHY, AND THE OWED HALF IS STATED IN ITS OWN RIGHT.** Gate 10 now reads as **specified and AUTHORIZED but UNFIRED**, with its two documents named. **Per §5A and §6 it is recorded as delivering the EXCLUSION limb only: its AUDIT limb is explicitly owed to `O-1`**, so nothing in the file lets gate 10 read as having delivered auditability. The floor is carried at **gate 9 SMTP · gate 3 RLS write-path test · `T#1`**, with the sequencing note that **gate 10 fires before gate 3** so the new table is covered once rather than twice.
+- **THE CH. 521 CHARACTERIZATION ENTERS THE REPO, AND WHAT IT IS AND IS NOT IS STATED HERE.** The filed slice doc names Texas Bus. & Com. Code ch. 521 as keying breach-notification on SSN and driver's licence numbers. **It is carried marked UNVERIFIED and as a LOCATOR only: no registry entry was created, none was drafted, no `**Status:**` line moved, and nothing was verified — Claude does not verify.** `Q-WF-6`'s recorded gap — the registry holds not one privacy proposition — stands untouched, and whether a go-live gate's shape may rest on an unentered proposition is `G10-4`, now a queue row and Michael's.
+- **`TOC-4` FIRED FOR THE FIFTEENTH TIME — SEVENTEENTH EDITION, riding this commit.** Two rows added (`runner 69` and `#115`) against the sixteenth's 238, every bucket re-derived mechanically rather than incremented, and the carried body checked as an exact suffix rather than trusted. **No carried row was edited — not one cell.**
+- **THE §7 OPEN ITEMS ARE CARRIED.** §7 lists: **Gate 10 build** — **AUTHORIZED and UNFIRED, the next act, Michael opens a fresh Code session on the kickoff prompt, and it fires BEFORE gate 3** · **Gate 9** production SMTP, lead time DNS plus a sending provider, **start it regardless of order** since it is the only floor item whose lead time is not Michael's to compress · **Gate 3** RLS write-path test, after gate 10 · **`T#1`** gates re-check plus the trigger-1 instructions revision, distinct from the v23 paste · **`G10-2`** the `on delete cascade` reversal, to be ruled inside `O-7` (non-blocking) · **`G10-4`** the unentered privacy proposition · `Q-PR3-1` (may a design session read `src/` through the bridge — **sidestepped here, not resolved**) · and `O-7` · `O-3` · `Q-COM-10` · `Q-PR3-3` carried unchanged. **The three probe/count corrections rode in §7 rather than as their own batch and are recorded above, with the one figure that did not reproduce named.**
+- **EVERY §6 DO-NOT HONORED, with the diff as the evidence.** **Nothing built** · **the kickoff prompt filed and NOT executed** · **no migration written or run, no database connected to** · **`src/` neither read nor modified** — `G10-3` belongs to the build session · the slice doc's status **not softened** from BUILD AUTHORIZED to PROPOSED · **`G10-2` and `G10-4` not resolved**, both entered as open rows instead · **no registry entry created for ch. 521** · BUILD-STATE **not allowed to record gate 10 as delivering auditability**, and **not appended to** — rewritten in full at the cap · **no push reported from an unchecked command**, `git ls-remote` being the only evidence accepted.
+- **`QR-6(e)` DID NOT FIRE AND `PF-1` DID NOT EITHER — both absences stated rather than assumed.** Every act sat in a routing-table row or a §8 item; there was no packet-added act to authorize. **`PF-1`'s trigger is a legal characterization or a proposed registry entry travelling as design: ch. 521 travels as a locator inside a build slice, creating no entry and drafting no proposition** — if an entry is ever opened on it, PF-1 fires on that packet. **HK-5 held — nothing on Michael's filesystem was swept**, and every read was against a declared repo path.
+
+Staged for Code: **the gate 10 build — AUTHORIZED, UNFIRED, and Michael's to start** from `docs/prompts/PROMPT-gate10-pii-build-session.md`, in its own session, with the migration his hand to paste.
+Awaiting/Returned from Code, unreviewed: everything this batch wrote — the `#115` entry, the two new documents, the two G10 queue rows and the header sentence, the BUILD-STATE refresh and the seventeenth TOC edition — **plus the whole of the sixty-sixth through sixty-eighth invocations' output**, which no design session has reviewed yet.
+
+## 2026-08-19 (#115) — GATE 10 RULED IN THREE PARTS AND THE BUILD AUTHORIZED: the shape splits by
+sensitivity, full SSN is stored, and the audit limb is explicitly owed to O-1 — the last unbuilt
+item on the go-live path now has a slice and a kickoff prompt (design session, Opus 5, Cowork, typed)
+
+Third design entry of 2026-08-19, opened at `b752fcc`. DT-1 applied: Central date 2026-08-19; the
+19:00 window not entered.
+
+**GATE 10 WAS THE ONLY UNBUILT ITEM ON THE GO-LIVE PATH AND IT NOW HAS A SPECIFIED SLICE**:
+`docs/specs/gate10-pii-slice.md`, with `docs/prompts/PROMPT-gate10-pii-build-session.md` as its
+kickoff. **The build is AUTHORIZED and runs in its own Code session** — the queue runner is barred,
+per the CD-1 / FE-D1 precedent — **and the live migration is Michael's hand to paste.**
+
+### THE READING THAT DECIDED THE SHAPE
+
+C-4's stated reason is the whole design brief: *"promoted columns are excludable from API selects
+and auditable."* **Three properties of this schema decide how that is delivered, and two of them cut
+against the obvious answer.**
+
+- **RLS gives nothing here.** `parties` carries `for all to authenticated using (true) with check
+  (true)` — no row filter, no column filter. It is not a lever.
+- **COLUMN-LEVEL `REVOKE` — the textbook answer — BUYS NOTHING TODAY.** It is the correct mechanism
+  for excluding a column from a PostgREST select and PostgREST honours it, **but `authenticated` is
+  the only role and the application IS `authenticated`.** Revoking a column from the only role that
+  reads it breaks the app. Column exclusion becomes real when a second role exists — **gate 2
+  territory, deliberately outside this slice.**
+- **TABLE-LEVEL exclusion works today, at one role, because the app's default reads do not join.**
+  A `select *` on `parties` cannot return a value that is not in `parties`. **That is the entire
+  argument for the ruled shape.**
+
+**AND THE GATE'S OWN SENTENCE CONTAINS THE TRAP: the three values are not alike.** DOB appears on
+pleadings, drives conflicts checks and the minor/incapacitated determination, and is read
+constantly. SSN surfaces for liens, MSP reporting, 1099s and probate — rarely, by one person.
+Driver's licence sits between. **Lumping them because one sentence lists them together was the error
+available here**, and both the all-columns and all-child-table options make it in opposite
+directions.
+
+### THE THREE RULINGS, EACH WITH ITS REASON
+
+- **SHAPE — SPLIT BY SENSITIVITY.** `parties.date_of_birth date`; SSN and driver's licence (plus
+  its issuing state) in a `party_pii` child table, 1:1, own RLS, own GRANT. **Reason: it follows the
+  access pattern rather than the sentence** — the value read constantly stays cheap to reach, and the
+  values rarely read are excluded from every default select. **Considered and not adopted:** all
+  three as columns (SSN then rides every `select *`, and the fix breaks the app at one role); all
+  three in the child table (costs a join for the one value read constantly); columns-now-revisit-at-
+  multi-user (defers the design, and the cheap moment is now).
+- **SSN SCOPE — FULL SSN STORED**, over a last-4-by-default alternative that was put with its
+  smaller-liability argument and declined.
+- **`G10-1` AUDIT LIMB — PROVENANCE ONLY; the audit limb RIDES WITH `O-1`.** `created_by` /
+  `created_at` / `updated_at` and nothing further. **Reason: at one user and one role the audit limb
+  protects against a second actor who does not yet exist, and pulling `O-1`'s `REVOKE UPDATE,
+  DELETE` forward would settle part of `O-1`'s design by implementation rather than as a whole.**
+
+**SO GATE 10 CLOSES ON ITS EXCLUSION LIMB AND LEAVES ITS AUDIT LIMB EXPLICITLY OWED.** That is
+recorded as a named gap, not an oversight: `F-8` is the finding that `privilege_tier` can change
+with no author, no time and no log, and **the same will be true of an SSN column the day it
+exists.** **BUILD-STATE must not let gate 10 read as having delivered auditability.**
+
+### THE CD-1 FIREWALL, ADDRESSED RATHER THAN SLIPPED PAST
+
+`db/schema.sql` states above `parties`: *"There is deliberately no second identity table — a second
+one recreates the wrong-level defect class CL-2 was built to kill."* **A child table has to be
+argued past that.**
+
+`party_pii` **is not an identity table by construction**: no `display_name`, no `party_type`, no
+`kind`, no `role_tags`, no `aliases` — nothing in it identifies anyone. **Its primary key IS the
+foreign key**, so it cannot exist without a `parties` row and has no independent identity. Nothing
+references it. **The defect CL-2 killed was a second place a PERSON could be created; this table
+cannot create a person.** It is the relationship `case_clients` has to `case_parties` — parallel
+attributes on one identity. **One-to-one is enforced structurally by the PK, not by a `unique`
+constraint**, so two PII rows per contact is unrepresentable.
+
+### ONE DELIBERATE REVERSAL, FLAGGED RATHER THAN INHERITED (`G10-2`)
+
+**`party_pii.party_id` takes `on delete cascade`, which runs OPPOSITE to `O-7`'s direction.** The
+cascade/retention map proposes moving children from CASCADE to RESTRICT across the board.
+**PII is the case that goes the other way: a person's SSN must not survive the deletion of that
+person's record**, and RESTRICT would mean a contact cannot be deleted until their PII row is deleted
+first — friction with no benefit, and a state in which an orphaned SSN outlives a failed delete.
+**This is an `O-7` interaction and belongs in that ruling, not in this one. It does not block the
+build.**
+
+### `G10-3` RESOLVED PROCEDURALLY, NOT SUBSTANTIVELY
+
+**Does the front end write DOB into `parties.fields` today?** Unanswerable design-side: `src/` is
+excluded from the sync and **`Q-PR3-1` — whether a design session may read `src/` through the device
+bridge at all — is UNRULED, and was not quietly assumed away.** **`Q-PR3-1` governs DESIGN sessions,
+not Code**, so the build session reads `src/` freely and takes the answer there. **It REPORTS what
+it finds and builds no front-end half without a fresh authorization** — carried on the kickoff
+prompt's DO-NOT list.
+
+### `G10-4` — GATE 10 IS THE FIRST DESIGN ACT TO HIT THE REGISTRY'S RECORDED PRIVACY GAP
+
+Texas Bus. & Com. Code ch. 521 keys breach-notification obligations specifically on SSN and
+driver's licence numbers — **the exact two values this slice isolates.** **UNVERIFIED, a LOCATOR
+ONLY, and Claude does not verify.** `Q-WF-6` already records that the registry holds **not one
+privacy proposition**; this would be its first. **No entry was created and none was drafted** —
+whether the shape of a go-live gate should rest on an unentered proposition is Michael's.
+
+### PROCESS NOTES
+
+- **`RR-1` RAN AND CAUGHT THE SLICE DOCUMENT AGAINST ITS OWN SESSION.** `gate10-pii-slice.md` was
+  authored BEFORE `G10-1` was ruled and before the build was authorized — it shipped as *"build NOT
+  authorized"* with §4 offering two options and §7 listing `G10-1` as open. **All four places were
+  conformed before packaging: the status block, §4, the `G10-1` row, and §8's heading.** This is the
+  failure RR-1 exists for and it fired on the first document of the session.
+- **`PF-1` DID NOT FIRE, and the reason is named rather than the check silently skipped.** Its
+  trigger is a packet carrying a legal characterization or a proposed registry entry. **`G10-4`
+  names a statute as a LOCATOR and expressly creates no entry, drafts no proposition and asserts no
+  holding** — so no characterization travels. If a registry entry is later opened on ch. 521, PF-1
+  fires on that packet.
+- **`H5` honored:** reads were against declared paths in the granted checkout. Nothing swept, and
+  `src/` was NOT read.
+
+**Staged for Code:** `docs/specs/gate10-pii-slice.md` (new); `docs/prompts/PROMPT-gate10-pii-build-
+session.md` (new); this entry; the BUILD-STATE displacements at §5A of the work order.
+
+**Awaiting/Returned from Code, unreviewed:** none from this session. Carried per `#114` and the
+sixty-eighth runner batch — verify against the entries that staged them, never against this line.
+
 ## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-EIGHTH invocation) — a two-act docs-only batch: gate 1 is recorded as bought, the review queue is told in its own words what it does not hold, and the probe that established the gap is disarmed by the paragraph that fixes it
 
 **One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate-1-and-queue-scope_2026-08-19.zip` — **8,626 bytes, mtime `2026-08-19 12:37:15 −0500`, sha256 `371bbbaaed38f391730ad880b7fb94f3b93b917c4592bd04ab9a5181dfc5ef52`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded:** one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.** **`§5` is NONE — nothing was built, nothing was authorized to build, no database was connected to and no migration was run or re-run.**

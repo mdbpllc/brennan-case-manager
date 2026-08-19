@@ -9,22 +9,22 @@ This index is therefore rebuilt in full from the log each time it is refreshed; 
 existing copy will silently drift. Canonical path is stable and unversioned for exactly that reason.
 
 - **Canonical repo path (PROPOSED):** `docs/specs/session-log-toc.md`
-- **Generated:** 2026-08-19 (Central, per DT-1) — **SIXTEENTH EDITION**, regenerated from the
-  fifteenth (2026-08-19, the sixty-seventh invocation) in the very next batch and on the same day,
-  so it never went stale at all — the thirteenth consecutive edition of which that is true
-- **Produced by:** the QUEUE-RUNNER's **sixty-eighth invocation**, Claude Code session, Opus 5, on
-  mdb-pllc — the **fourteenth** firing of the `TOC-4` obligation. Regeneration is a Step 4 item 1 act,
+- **Generated:** 2026-08-19 (Central, per DT-1) — **SEVENTEENTH EDITION**, regenerated from the
+  sixteenth (2026-08-19, the sixty-eighth invocation) in the very next batch and on the same day,
+  so it never went stale at all — the fourteenth consecutive edition of which that is true
+- **Produced by:** the QUEUE-RUNNER's **sixty-ninth invocation**, Claude Code session, Opus 5, on
+  mdb-pllc — the **fifteenth** firing of the `TOC-4` obligation. Regeneration is a Step 4 item 1 act,
   so the index rides the same commit as the entries it indexes instead of going stale the moment
   they land
-- **DT-1 DID NOT FIRE THIS BATCH.** Bare `date` read `Wed Aug 19 12:43:09 CDT 2026` and `date -u`
-  read `17:43:09 UTC`, and **both agree on 2026-08-19.** The evening window the eighth edition
-  identified (~19:00 Central to midnight) was nowhere near — this batch ran at lunchtime. Recorded
+- **DT-1 DID NOT FIRE THIS BATCH.** Bare `date` read `Wed Aug 19 13:44:36 CDT 2026` and `date -u`
+  read `18:44:36 UTC`, and **both agree on 2026-08-19.** The evening window the eighth edition
+  identified (~19:00 Central to midnight) was nowhere near — this batch ran in the early afternoon. Recorded
   because a check reported only when it fires cannot be distinguished from a check nobody ran.
-- **THERE IS NO DATE SPLIT IN THIS EDITION'S TWO NEW ROWS EITHER — THE SECOND CONSECUTIVE EDITION
-  OF WHICH THAT IS TRUE.** `runner 68` and `#114` are **both** dated 2026-08-19, and the interval
-  between them is about ten minutes: the design session authored the packet at ~12:34 Central and
-  the runner executed it immediately. The thirteenth and fourteenth editions each had to explain a
-  split; the fifteenth and this one have none. **Saying so keeps the absence from reading as an
+- **THERE IS NO DATE SPLIT IN THIS EDITION'S TWO NEW ROWS EITHER — THE THIRD CONSECUTIVE EDITION
+  OF WHICH THAT IS TRUE.** `runner 69` and `#115` are **both** dated 2026-08-19, and the interval
+  between them is about an hour: the design session authored the packet in the early afternoon and
+  the runner executed it the same afternoon. The thirteenth and fourteenth editions each had to
+  explain a split; the fifteenth, sixteenth and this one have none. **Saying so keeps the absence from reading as an
   omission.**
 - **NO CARRIED ROW WAS EDITED THIS REFRESH — not one cell.** A binary read of this file returns
   **0 CRLF and 0 bare CR**, so the fourteenth edition's repair of the `runner 65` row's lone
@@ -35,71 +35,78 @@ existing copy will silently drift. Canonical path is stable and unversioned for 
 | | |
 |---|---|
 | Checkout | `C:\Users\Brennan\brennan-case-manager`, branch `master` |
-| Read FROM commit | `3773e6d` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `3773e6d`. The `runner 68` line and the `#114` entry were both written by this batch |
-| `origin/master` at read time | `3773e6d`, **0 ahead / 0 behind**, from a live `git fetch origin` plus `git ls-remote origin refs/heads/master` — not from the local tracking ref, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all three limbs: clean, on `master`, neither behind nor ahead. **The sixty-seventh's push had never been confirmed in a design session's presence and its packet asked for exactly this check; it is confirmed** |
-| Working tree | clean at `3773e6d` before this batch's edits |
-| `inbox/` | **one** packet at Step 1, identity pinned per QR-6(c) — `push-to-code_gate-1-and-queue-scope_2026-08-19.zip` (8,626 B, sha256 `371bbbaa…`), **executed**. The QR-5 already-executed probe was negative on both limbs and controlled in both directions: `(#114)` returned 0 at `HEAD` and at `origin/master` while `(#113)` returned 1 at both, and the scope paragraph's lead phrase returned 0 at each ref while the `**Convention:**` anchor returned 1 |
-| Health check | **SKIPPED, DELIBERATELY, AND THE SKIP IS RECORDED RATHER THAN SILENT.** `QR-6(f)`'s skip limb needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs are satisfied — this batch's routing table is `docs/specs/` only** — so `npm test` / `npm run build` / `npm run lint` would prove nothing about it. Last measured at the sixty-seventh: 278 tests across 23 files, build and lint exit 0 |
+| Read FROM commit | `b752fcc` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `b752fcc`. The `runner 69` line and the `#115` entry were both written by this batch |
+| `origin/master` at read time | `b752fcc`, **0 ahead / 0 behind**, from a live `git fetch origin` plus `git ls-remote origin refs/heads/master` — not from the local tracking ref, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all three limbs: clean, on `master`, neither behind nor ahead. **The sixty-seventh's push had never been confirmed in a design session's presence and its packet asked for exactly this check; it is confirmed** |
+| Working tree | clean at `b752fcc` before this batch's edits |
+| `inbox/` | **one** packet at Step 1, identity pinned per QR-6(c) — `push-to-code_gate10-slice-and-authorization_2026-08-19.zip` (19,490 B, sha256 `79e9d0c0…`), **executed**. The QR-5 already-executed probe was negative on both limbs — `(#115)` returned 0 at HEAD and at `origin/master` against a control `(#114)` returning 1 at both, and both canonical paths were absent |
+| Health check | **SKIPPED, DELIBERATELY, AND THE SKIP IS RECORDED RATHER THAN SILENT.** `QR-6(f)`'s skip limb needs nothing built **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs are satisfied — this batch's routing table is `docs/` ONLY, and its `§5` is AUTHORIZED-BUT-NOT-HERE, the build being barred to this runner** — so `npm test` / `npm run build` / `npm run lint` would have proved nothing about it. Last MEASURED figures stand from the sixty-seventh: 278 tests across 23 files, build and lint exit 0 |
 
 **THE LOG WAS PURELY PREPENDED, AND THAT IS PROVED RATHER THAN ASSUMED.** The prior body is an
-**exact suffix** of the log as written (1,241,803 bytes → the file this batch commits), and **the
-preamble compares byte-identical** between `3773e6d` and the new file at all 2,771 bytes. So the
-236 rows carried from the fifteenth edition describe entries that have not moved a byte, and they
-are carried on that evidence rather than on trust.
+**exact suffix** of the log as written (1,257,908 bytes → 1,278,162 bytes, the file this batch
+commits), and **the preamble compares byte-identical** between `b752fcc` and the new file at all
+2,771 bytes. So the 238 rows carried from the sixteenth edition describe entries that have not moved
+a byte, and they are carried on that evidence rather than on trust.
 
 **The two new rows were written from each new entry's heading and its bolded bullet lead-ins — NOT
 from a complete reading of every line of both.** In this log the heading is written as the entry's
 own thesis, so the summaries are drawn from what each entry says about itself; a reader who needs a
-load-bearing detail must still open the entry. **The ID, date, type and ordering columns for all 238
+load-bearing detail must still open the entry. **The ID, date, type and ordering columns for all 240
 rows are mechanical and were re-derived in full this refresh.**
 
 **NO CARRIED ROW WAS EDITED THIS REFRESH — not one cell.** Neither new entry corrects or supersedes
-an earlier one. `#114` is unusual in a different way: **its whole substance is one fact Michael
-reports about a vendor dashboard and one ruling about what a register is for**, and the fact —
-Supabase Pro being active — **is reachable by no repo check at all**, which is why both the entry
-and BUILD-STATE state it as his word rather than as re-derived. The `runner 68` line's only backward
-references are to the sixty-seventh invocation's push and deletion — **the push confirmed at the
-Step 0 gate, the deletion confirmed by the Step 1 inventory holding exactly one file, so nothing
-was left owed under QR-5.**
+an earlier one, but the `runner 69` line **does correct one figure inside its own packet**: the
+`#115` packet's §7 says the `#114` packet's file-wide gate probe "returns 1"; it returns **2**, the
+second match being the scope paragraph the sixty-eighth batch itself wrote. The three substantive
+corrections riding in that same §7 all reproduce exactly (354 file-wide / **342** open rows / 12
+prose lines). `#115` is unusual in a different way: **it authorizes a build that its own executing
+batch is barred from running**, so the runner filed the kickoff prompt and did not execute it. The
+`runner 69` line's only backward references are to the sixty-eighth invocation's push and deletion —
+**the push confirmed at the Step 0 gate by live `ls-remote`, the deletion confirmed by the Step 1
+inventory holding exactly one file, so nothing was left owed under QR-5.**
 
 **Row counts by edition, stated so they add up on their face:** 190 at the first (full-text read),
 then seventeen at the second, four at the third, three at the fourth, and two at each of the fifth
-through this one — **190 + 17 + 4 + 3 + (2 × 12) = 238.**
+through this one — **190 + 17 + 4 + 3 + (2 × 13) = 240.**
 
 ## How to read the ID column
 
 The log carries **two independent numbering systems**, and neither covers every entry:
 
-- **`#nn`** — design and Code session entries. The series as written runs **#2 – #114**.
+- **`#nn`** — design and Code session entries. The series as written runs **#2 – #115**.
   **RULED 2026-08-18 (`TOC-6`): the `#nn` series is DESIGN-ONLY.** Code sessions never mint one —
   runner batches carry runner ordinals and other Code entries stay unnumbered — which is why the
   C-2 row below keeps its `—`, and why this edition, also a Code session, did not take a number.
-  **`#114` is design-minted:** it was authored design-side, carries its own number in the packet, and
-  the runner's only act was to confirm at HEAD that `#114` was still free before appending it. **As
-  at the last edition there was no race to resolve:** the packet's expectation of a `#113` ceiling
-  matched HEAD exactly — a heading-anchored count returned `#113` as the high-water mark and zero
-  occurrences of `#114` — so its standing renumber instruction never fired.
-- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("SIXTY-EIGHTH
-  invocation" → `runner 68`). One early runner line carries no ordinal at all and is shown as
+  **`#115` is design-minted:** it was authored design-side, carries its own number in the packet, and
+  the runner's only act was to confirm at HEAD that `#115` was still free before appending it. **As
+  at the last two editions there was no race to resolve:** the packet's expectation of a `#114`
+  ceiling matched HEAD exactly — a heading-anchored count returned `#114` as the high-water mark and
+  zero occurrences of `#115` at HEAD *and* at `origin/master` — so its standing renumber instruction
+  never fired.
+- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("SIXTY-NINTH
+  invocation" → `runner 69`). One early runner line carries no ordinal at all and is shown as
   `runner —`.
 
 ## Coverage — what was mechanically verified
 
-- **238 entries indexed — one row per `## ` heading in the file. No entry skipped.**
-- Numbered entries: **113**, range **#2–#114**, **no gaps except #1**, no duplicates.
-- Runner ordinals: **64**, range **5–68**, **no gaps, no duplicates.**
+- **240 entries indexed — one row per `## ` heading in the file. No entry skipped.**
+- Numbered entries: **114**, range **#2–#115**, **no gaps except #1**, no duplicates.
+- Runner ordinals: **65**, range **5–69**, **no gaps, no duplicates.**
 - One QUEUE-RUNNER line carries no ordinal — `2026-07-28 (RUNNER)`, shown as `runner —`;
   unnumbered legacy/other entries: **60**, which includes the second edition's own C-2 entry.
-- **113 + 60 + 1 + 64 = 238.** The buckets are stated so they add up on their face.
+- **114 + 60 + 1 + 65 = 240.** The buckets are stated so they add up on their face.
 - **WHY THE ORDINALS START AT 5, RE-DERIVED RATHER THAN INHERITED — it is not a gap.** Ordinals 1–4
   were never written as ordinal-bearing headings: the earliest runner batches were logged inside the
   NUMBERED series instead, at **#6, #7, #10, #14, #31, #33, #35 and #36**, plus the one `(RUNNER)`
   line. **Reporting the range as "1–68" would invent four batches that were logged, but not logged
   that way.**
-- **EVERY BUCKET RECONCILES AGAINST THE FIFTEENTH EDITION, which is the strongest available check on
-  a mechanical re-derivation.** The fifteenth recorded 112 numbered, 60 other, 1 unnumbered runner
-  and 63 ordinals = 236. The two new log entries are **1 numbered (`#114`) and 1 runner line (68)**;
-  both legacy buckets are unmoved. Nothing else shifted.
+- **EVERY BUCKET RECONCILES AGAINST THE SIXTEENTH EDITION, which is the strongest available check on
+  a mechanical re-derivation.** The sixteenth recorded 113 numbered, 60 other, 1 unnumbered runner
+  and 64 ordinals = 238. The two new log entries are **1 numbered (`#115`) and 1 runner line (69)**;
+  both legacy buckets are unmoved. Nothing else shifted. **The sum is checked the other way this
+  edition as well:** the **74** headings containing `QUEUE-RUNNER` are 65 ordinal-bearing + 1
+  `(RUNNER)` + **the 8 early batches logged inside the numbered series** (`#6`, `#7`, `#10`, `#14`,
+  `#31`, `#33`, `#35`, `#36`) — which is why runner headings and the ordinal bucket must never be
+  equated, and is the same eight the note below names.
 - **AN EIGHTH DERIVATION TRAP IS ENTERED THIS EDITION, AND IT IS A TRAP IN THIS FILE RATHER THAN IN
   THE LOG.** Counting this index's own rows with `grep -c '^| \`'` returns **238 at the fifteenth
   edition's 236 rows** — the two extra matches being **rows of the *Basis of this read* table**,
@@ -113,11 +120,15 @@ The log carries **two independent numbering systems**, and neither covers every 
   `\(#nn\)`-only scan looks clean while silently dropping `#30`, whose heading writes its ID as
   `— #30`. **Two wrong answers, one alarming and one reassuring.** The published figures come from
   the position-anchored pass — the token immediately after the date, accepting both forms — which
-  reports **113 numbered, no duplicates, and no gaps across #2–#114.**
+  reports **114 numbered, no duplicates, and no gaps across #2–#115.** *(This trap fired live at
+  this refresh and was caught by the arithmetic rather than by memory: the parenthesised-only pass
+  returned 113 distinct against a maximum of #115, which cannot be gapless, and the missing token
+  was `#30` — exactly the entry this note names.)*
 - **THE SIXTH TRAP FIRED AGAIN THIS BATCH, EXACTLY AS DESCRIBED, WHICH IS THE POINT OF CARRYING IT.**
-  Counting an ID with a bare `grep -c '(#114)'` over the log returns **2** where the true figure is
-  **1** — the extra match being the `runner 68` line's own bullet, which quotes the probe command
-  inside its text. **Anchor ID counts to headings (`^## .*`).** The seventh trap is carried
+  Counting an ID with a bare `grep -c '(#115)'` over the log returns **2** where the true figure is
+  **1** — the extra match being the `runner 69` line's own bullet, which quotes the already-executed
+  probe inside its text. **Third consecutive edition in which this fires, and always for the same
+  reason: the runner line reports the probe it ran on its own entry's ID.** **Anchor ID counts to headings (`^## .*`).** The seventh trap is carried
   unchanged: a bare `#[0-9]+` scan over headings does **not** over-count the heading total, but it
   corrupts the ID *inventory* with false duplicates and **one spurious `#1` lifted out of heading
   #91's prose**, which makes a naive scan report "no gaps" and **mask the single most-cited fact
@@ -147,6 +158,8 @@ Newest first, matching the log's own order.
 
 | # | Date | Type | Summary | Corrections issued / received |
 |---|---|---|---|---|
+| `runner 69` | 2026-08-19 | QUEUE-RUNNER runner line | A docs-only batch that **files an AUTHORIZED build it is itself barred from running**: `§5` reads AUTHORIZED-BUT-NOT-HERE rather than NONE, so the gate 10 slice and its kickoff prompt land at their canonical paths byte-for-byte and hash-verified, while the build waits for Michael to fire it in its own session on the CD-1 / FE-D1 pattern. Two `G10` rows enter `attorney-review-queue.md` with question text extracted from the filed slice rather than retyped; **the four go-live gates named in the packet's §7 deliberately take no row**, the `#114` scope ruling applying to them as written. The packet's own RR-1 conformance claim was re-checked at the filed copy and held on all four places. | issues → **the packet's §7 probe parenthetical is off by one**: the `#114` file-wide gate probe returns **2**, not 1, the second match being the scope paragraph the sixty-eighth itself wrote — the disarmed-probe class firing one level up, on a note written to correct a probe; issues → the `#30` extraction trap **fired live and was caught by the bucket arithmetic**; confirms → the three §7 count corrections reproduce exactly (354 / **342** / 12). Receives → nothing; the sixty-eighth's push and deletion were both confirmed, so no QR-5 carry-forward was owed |
+| `#115` | 2026-08-19 | Design session (Opus 5, Cowork) | **Gate 10 — the last unbuilt item on the go-live path — is ruled in three parts and its build AUTHORIZED.** The SHAPE splits by sensitivity: `date_of_birth` becomes a typed column on `parties` while SSN and driver's licence move to a `party_pii` child table, because **table-level exclusion works at one role where column-level `REVOKE` does not** — revoking a column from `authenticated`, the only role, breaks the app. SSN SCOPE: **full SSN stored**, over a last-4 alternative. `G10-1`: **provenance only — the audit limb rides with `O-1`**, so gate 10 closes on its exclusion limb and **leaves its audit limb explicitly owed**. The CD-1 no-second-identity-table firewall is argued past rather than slipped: `party_pii`'s **primary key IS its foreign key**, so it cannot create a person. | issues → `G10-2` (its `on delete cascade` **reverses `O-7`'s direction**, deliberately, and belongs in that ruling) and `G10-4` (gate 10 is the **first design act to hit `Q-WF-6`'s recorded privacy gap** — ch. 521 named as a LOCATOR, no entry created); records → `G10-3` resolved procedurally, the build session reading `src/` and reporting only. Receives → nothing |
 | `runner 68` | 2026-08-19 | QUEUE-RUNNER runner line | A two-act docs-only batch, and the first whose one real finding is that **the fix disarms the probe that found the defect**: the scope paragraph inserted into `attorney-review-queue.md` quotes the very phrase list the sixty-seventh used to establish that five go-live gates had no row there, so all six phrases now return non-zero **entirely from this batch's own text** and a future runner re-running that check would read rows where none exist. `§5` NONE, nothing built, no database touched. The queue merge is the two `QR-6(b)` acts and **zero rows** — `⬜` unmoved at 354 against the packet's absolute. Health check **SKIPPED on `QR-6(f)`'s skip limb, recorded with its reason**: `§5` NONE and `docs/specs/` only. Step 0 clears all three limbs and discharges both halves of what the sixty-seventh left owed — `3773e6d` confirmed on origin by live `ls-remote`, and its hand-deleted zip confirmed gone by the Step 1 inventory. | issues → **the disarmed-probe finding**, recorded against any future runner reading the six phrase counts as rows; issues → the sixth trap firing again as described (`grep -c '(#114)'` returns 2, heading-anchored 1); issues → an **eighth derivation trap**, in this index rather than the log: `grep -c '^\| \`' ` over the whole file counts the *Basis of this read* rows too. Receives → nothing; no carried figure moved this refresh |
 | `#114` | 2026-08-19 | Design session (Opus 5, Cowork) | **Gate 1 is BOUGHT — Michael upgraded the Supabase project to Pro, and `GL-1` floor item (2) closes**, the second of six cleared that day and both in his hand. The floor now stands at four: gate 10 (unbuilt, and ahead of the floor) · gate 9 SMTP · gate 3 RLS write-path test · `T#1`. What the upgrade buys is recorded because the gate's own text is why it was on the floor — daily backups, no pausing, 8 GB — **and the consequence forward is the backups: every schema act until this day, the three migrations of that morning included, ran against a database with no automatic backup, and gate 10's migration will be the first with one behind it.** Second act: **the queue-scope question the sixty-seventh put rather than answered is RULED — *fix the claim, not the register*.** No rows are minted for the five gates; `attorney-review-queue.md` gains one scope paragraph saying in its own words that it is the complete inventory of open **rulings**, not of open items, and that the gates live in `Go_Live_Gates.md` with their status in `BUILD-STATE.md`. Both costs of the rejected alternative are named: it would make the register an action tracker, and it would create **a third place gate status is asserted** — the `#13`/`R-3` copy-forward class. | issues → a correction to its own predecessor's closing line: `#113`'s §7 said *"Everything else stands in `attorney-review-queue.md`"*, **asserting a coverage that file did not have** — the register was never incomplete, the sentence describing it was wrong. Receives → nothing. **Its central fact is reachable by no repo check**: Pro status is an assertion about a vendor dashboard, stated as Michael's word and expressly not marked re-derived |
 | `runner 67` | 2026-08-19 | QUEUE-RUNNER runner line | The first batch whose packet reports a change to the LIVE DATABASE rather than to a document, and the record catches up with it: six standing BUILD-STATE statements are displaced at once, including the live table count moving 34 → 36 and all three "authored, unrun and yours" migrations becoming RUN. One comment block in `db/migrations/2026-08-18-grok-review-fixes.sql` is replaced and **no SQL statement is touched** — verified by filtering the diff to non-comment lines, which returns empty. The packet's own stated check for that edit (`grep -c "alter table case_parties"` → 5) is found WRONG against the replacement text the packet itself ships, because that text quotes an `alter table` line inside a comment; on executable lines the figure is 5 and unchanged. The health check RUNS rather than skips, on `QR-6(f)` read strictly. | issues → the packet's §4.2 raw-grep verification figure (reported, not edited — packet content is Michael's); issues → **FOUR BUILD-STATE figures**: the `grok-external-review` non-blank count of 168 (it is 238, and **wrong at birth rather than carried**), the claim that `cases` has no county column (**`cases.county` exists as executable DDL**), the "eleven that remain" arithmetic (counted the criminal file's two on both sides, yielding 13 against a derived 12), and a "FOURTEEN DOCS" label over a list of fifteen; issues → **this index's own footer**, which had published "tenth firing" through three regenerations while its banner said otherwise; issues → **two further stale comments in the grok migration** (a "(CD-1 is unrun)" reason and a "before CD-1 runs" deadline the corrected order has passed) — **found and NOT fixed, because §4.2 authorized exactly one block**; settles → the 2,770/2,771 preamble oscillation as a convention difference, not drift; receives → none, the sixty-sixth's push and deletion both having landed |
