@@ -16,6 +16,99 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-EIGHTH invocation) — a two-act docs-only batch: gate 1 is recorded as bought, the review queue is told in its own words what it does not hold, and the probe that established the gap is disarmed by the paragraph that fixes it
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate-1-and-queue-scope_2026-08-19.zip` — **8,626 bytes, mtime `2026-08-19 12:37:15 −0500`, sha256 `371bbbaaed38f391730ad880b7fb94f3b93b917c4592bd04ab9a5181dfc5ef52`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded:** one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.** **`§5` is NONE — nothing was built, nothing was authorized to build, no database was connected to and no migration was run or re-run.**
+
+- **THE STEP 0 GATE CLEARED ON ALL THREE LIMBS, AND IT DISCHARGES THE ONE THING THE SIXTY-SEVENTH LEFT OWED.** A live `git fetch origin` plus `git ls-remote origin refs/heads/master` returned `3773e6d`, equal to local HEAD, with `git rev-list --left-right --count origin/master...HEAD` reading **0 behind / 0 ahead** and `git status --porcelain` empty. **The packet's §1 asked this batch to confirm `3773e6d` on origin rather than inherit it, because no design session had seen it confirmed — it is confirmed, by a command that reads the remote and could have disconfirmed it (QR-6(a)).** The other half of the carry-forward is discharged the same way: the sixty-seventh's Step 4 item 5 deletion did not take in-session and Michael removed that zip by hand, and at Step 1 `inbox/` held **exactly one file**, this batch's. **CARRY-FORWARD OWED TO THE NEXT LINE UNDER QR-5: reported to Michael at the close, not predicted here.** The runner text was re-read at HEAD rather than from a cached copy — the machine-local command is a QR-2 pointer and was followed — **v11, blob `c75de00d`, sha256 `38a57e22…`**, identical to what the sixty-sixth and sixty-seventh each recorded.
+- **DT-1 DID NOT FIRE.** Bare `date` read `Wed Aug 19 12:43:09 CDT 2026` and `date -u` read `17:43:09 UTC` — **both agree on 2026-08-19**, an early-afternoon batch nowhere near the ~19:00-to-midnight window. **Second consecutive edition with no date split of any kind:** the packet was authored at ~12:34 Central and executed within ten minutes, so authorship date and run date coincide and there is nothing to explain.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS AND WAS CONTROLLED IN BOTH DIRECTIONS.** `(#114)` returned **0** at `HEAD` and at `origin/master` while `(#113)` returned **1** at both; the scope paragraph's lead phrase returned **0** at each ref while the anchor `**Convention:**` line returned **1**. Neither the committed-and-pushed nor the committed-but-unpushed limb applied. The Step 1 filename sweep was reported at the STOP as weak on its own — a paragraph routed INTO an existing file cannot be disconfirmed by `find` — and this content probe is what actually settled it.
+- **THE PACKET'S §1 RECONCILE HELD ON EVERY LIMB, MEASURED RATHER THAN ACCEPTED.** `.git/index.lock` **absent**; `BUILD-STATE.md` at **exactly 150 non-blank lines**, the ruled cap with zero headroom, so every change had to displace; the §4.2 anchor paragraph **matched character-for-character** with exactly one occurrence, and its following two lines were the blank and the `---` the packet described. The four routed files are **pure LF** on a binary read (0 CRLF, 0 bare CR) before and after.
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES, AND ZERO ROWS.** One scope paragraph inserted text-anchored after the `**Convention:**` line, verbatim from the staged deliverable — extracted from the packet and written by program, never retyped — and the Status header's per-batch sentence written to **#114**. `grep -c '⬜'` returns **354, unchanged from the absolute the packet stated**, so no row was created; `git diff --numstat` reads **3 insertions / 1 deletion**, the lone deletion being line 3 rewritten in place by the mandated header act, with the paragraph insert itself contributing +2 and no deletions. **No existing row was touched, closed or reworded.**
+- **AND THE PARAGRAPH THAT FIXES THE GAP DISARMS THE PROBE THAT FOUND IT — THIS BATCH'S ONE REAL FINDING.** The sixty-seventh established the five-gate absence with a distinctive-phrase check, and it was **re-derived here rather than inherited**: at `HEAD`, `Supabase Pro`, `SMTP`, `PII`, `parties.fields`, `RLS write-path` and `T#1` each return **0** in `attorney-review-queue.md`. In the working tree every one of them now returns **1** — and `T#1` returns **2** — **entirely from the scope paragraph and the header sentence this batch wrote, which quote the probe's own phrase list in order to explain the absence.** No row exists behind any of them. **A future runner re-running that check will get six non-zero counts and, reading them as rows, would conclude the register holds the gates — the exact claim the ruling exists to deny.** This is the `#113` class firing a third time (a post-edit `grep` matching text the same edit shipped), and it is recorded here because the disarmed probe is now the only thing that would have caught a regression. **The packet anticipated the class and guarded its OWN check — the `⬜` count was chosen as an absolute and the inserted text was tested against that matcher before shipping — but a probe inherited from the PREVIOUS batch sat outside that guard.**
+- **HEALTH CHECK SKIPPED, DELIBERATELY, WITH THE REASON RECORDED (`QR-6(f)`).** `§5` is NONE and the routing table touches **only** `docs/specs/` — no `src/`, no `db/`, no `supabase/`, no build tooling — so both limbs of the skip rule are satisfied and `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. **Not skipped silently; the packet's §8 named the same limb independently.** The last measured figures stand unchanged at the sixty-seventh: 278 tests across 23 files, build and lint exit 0.
+- **BUILD-STATE WAS REWRITTEN IN FULL AS IN-PLACE DISPLACEMENTS, THE CAP BEING WHY.** The gate-1 statements the packet named were displaced in both places — the `GL-1` floor line and the `## For design side` hand list — and the floor now reads **four**: gate 10 (unbuilt, and AHEAD of the floor) · gate 9 SMTP · gate 3 RLS write-path test · `T#1`. **Two of six cleared 2026-08-19, both in Michael's hand.** What Pro buys is carried because the gate's own text is why it was on the floor: **daily backups, no pausing, 8 GB — and the consequence forward is the backups**, gate 10's migration being the first schema act with one behind it. The queue-scope ruling is carried, and the pointer line to the review queue no longer reads as though that file holds everything.
+- **THE PRO FACT IS CARRIED WITH ITS PROVENANCE AND IS NOT MARKED RE-DERIVED.** Supabase Pro status is an assertion about a dashboard; **no repo check reaches it and none was attempted.** It is stated as reported by Michael in the 2026-08-19 design session, the same posture the live-database figures took at `#113`, and `OPEN-5(a)` is expressly not applied to it. Every figure `OPEN-5(a)` DOES reach was re-derived at HEAD rather than copied from the packet.
+- **`TOC-4` FIRED FOR THE FOURTEENTH TIME — SIXTEENTH EDITION, riding this commit.** Two rows added (`runner 68` and `#114`) against the fifteenth's 236, with every bucket re-derived mechanically rather than incremented. **No carried row was edited — not one cell** — and the carried body was checked as an exact suffix rather than trusted.
+- **THE §7 OPEN ITEMS ARE CARRIED, AND FOR THE FIRST TIME THE GAP UNDER THEM IS CLOSED BY RULING RATHER THAN LEFT OPEN.** §7 lists nine: **Gate 10** (PII promotion out of `parties.fields` — the ONLY unbuilt item on the go-live path, AHEAD of the floor, needing a shape ruling then a build then a paste; Grok's three shapes are PROPOSED, unruled and outside the repo) · **Gate 9** production SMTP, trigger *reliance* not real data, lead time DNS plus a sending provider · **Gate 3** RLS write-path test, **which gate 10 should precede so the columns are only tested once** · **`T#1`** gates re-check plus the trigger-1 instructions revision · `Q-PR3-3` (annotated last batch, backfill limb spent) · `Q-COM-10` two `privilege_tier` vocabularies · `O-7` cascade map, whose §6 warns RESTRICT without app-layer soft-delete means matters can no longer be deleted at all · `O-3` edge-function pass carrying F-14 (latent while undeployed) and F-29 · and **PROPOSED, unruled: an adversarial outside read of `src/`**, never reviewed by anything and excluded from the design-side sync, with three defects already known incidentally. **The question the sixty-seventh put — whether QR-1 requires rows for the five gates — is RULED at `#114`: fix the claim, not the register.** The register keeps zero gate rows and gains the sentence that says why.
+- **EVERY §6 DO-NOT HONORED, with the diff as the evidence.** **No queue row minted** — `⬜` count unmoved at 354 · **no existing row edited** · the Pro fact **not marked re-derived** · **nothing appended to BUILD-STATE**, which was rewritten in full at the cap · **no correction re-issued for the `#113` §4.2 grep figure** — the sixty-seventh recorded it correctly and packet content is Michael's · **no database connected to, no migration run or re-run** · Grok's Gate 10 shapes, cascade R1/R2/R3 and the F-14 hardening block **treated as PROPOSED, unruled and outside the repo, entering no file as design** · nothing built.
+- **`QR-6(e)` DID NOT FIRE AND `PF-1` DID NOT EITHER — both absences stated rather than assumed.** Every act sat in a routing-table row or a §8 item; there was no packet-added act to authorize. `PF-1`'s trigger is a legal characterization or a proposed registry entry, and this packet carries neither: **no registry file was opened, no entry created or reworded, no Status line moved, nothing verified.** **HK-5 held — nothing on Michael's filesystem was swept.**
+
+Staged for Code: none — this line closes the batch.
+Awaiting/Returned from Code, unreviewed: everything this batch wrote — the `#114` entry, the scope paragraph and header sentence in `attorney-review-queue.md`, the BUILD-STATE refresh and the sixteenth TOC edition — **plus the whole of the sixty-sixth and sixty-seventh invocations' output**, which no design session has reviewed yet.
+
+## 2026-08-19 (#114) — GATE 1 BOUGHT — GL-1 floor item (2) COMPLETE; and the queue-scope question
+the sixty-seventh batch put rather than answered is RULED: FIX THE CLAIM, NOT THE REGISTER
+(design session, Opus 5, Cowork, typed)
+
+Second design entry of 2026-08-19, small by design, opened at `3773e6d`. DT-1 applied: Central
+12:34 CDT, container 17:34 UTC — same date, the 19:00 window not entered.
+
+**GATE 1 IS COMPLETE. Michael upgraded the Supabase project to Pro on 2026-08-19.** GL-1 floor item
+(2) closes. **The floor now stands at four: gate 10 (the only UNBUILT item, and AHEAD of the floor)
+· gate 9 production SMTP · gate 3 RLS write-path test · T#1 gates re-check + the trigger-1
+instructions revision.** Two of the six cleared today, both in Michael's hand.
+
+**WHAT THE UPGRADE ACTUALLY BUYS, since the gate's own text is the reason it was on the floor:**
+daily backups, no pausing after inactivity, 8 GB. **The consequence that matters forward is the
+backups.** Every schema act until today ran against a database with no automatic backup — the three
+migrations this morning included, on a manual-dump-or-nothing footing. **Gate 10's migration will be
+the first schema act with a backup behind it.**
+
+**PROVENANCE, STATED RATHER THAN ASSUMED.** Pro status is a fact about the Supabase dashboard.
+**No repo check can reach it and none was attempted** — it is reported by Michael in this session,
+exactly as the live-database figures at `#113` were. Do not mark it re-derived.
+
+**QUEUE SCOPE RULED — `attorney-review-queue.md` gains a scope paragraph and ZERO rows.** The
+sixty-seventh runner batch found that **five of the nine open items named in the `#113` packet's §7
+have no row in the review queue at all** — Gate 10, Gate 1, Gate 9, Gate 3 and `T#1`, on a
+distinctive-phrase check returning zero for `Supabase Pro`, `SMTP`, `PII`, `parties.fields`, `RLS
+write-path` and `T#1`. **It declined to mint five rows on its own and put the question**, on the
+stated ground that minting them is a change to what the register is for. **That was the right
+call.**
+
+**RULED 2026-08-19: fix the claim, not the register.** The gates live in `Go_Live_Gates.md`, which
+is canonical and binding for them, and their status lives in `BUILD-STATE.md`, which is the only
+authority on it. **They await ACTION, not RULING, and that is the line this register is drawn on.**
+Two costs were named and both were avoided: minting rows would make the queue an action tracker as
+well as a ruling queue, and it would create **a THIRD place gate status is asserted — the `#13` /
+`R-3` copy-forward class**, which this project has already been bitten by once, where a cleared item
+propagated across roughly a dozen entries on both sides before anyone checked.
+
+**WHAT WAS ACTUALLY WRONG WAS A CLAIM, NOT AN ABSENCE.** The `#113` packet's §7 closed with
+*"Everything else stands in `docs/specs/attorney-review-queue.md`"* — **asserting a coverage that
+file does not have.** The register was never incomplete; the sentence describing it was wrong. So
+the fix lands on the file whose header made the implicit promise: it now says in its own words that
+it is **the complete inventory of open RULINGS, not of open items**, and names where the gates live.
+**Considered and not taken:** minting the five rows (rejected on both costs above), and
+record-the-gap-only (rejected — the runner line and `#113` both already name the gap, and a reader
+opening the queue cold would still take it as complete, which is the actual failure).
+
+**PACKET-SIZE NOTE, RECORDED BECAUSE THE REASONING WAS REVERSED IN-SESSION.** Gate 1 was first held
+to ride with gate 9 so one batch could clear floor items (2) and (3) together. **That was wrong on
+two counts and both are worth keeping.** Gate 9's lead time is DNS records and a sending provider —
+**not bounded, and not Michael's to control** — so "hold until SMTP lands" is an open-ended hold
+dressed as a short one. And the gate-1 fact would have lived **only in a chat window** in the
+meantime, which is precisely the failure `#113` exists to have fixed. **A one-fact packet is
+ceremony; a two-act packet is a batch.** The queue-scope ruling is what made it the latter.
+
+**ALSO CARRIED FROM THE SIXTY-SEVENTH, NOT RE-LITIGATED.** Its Step 4 item 5 deletion did not take
+in-session; **Michael deleted the packet zip by hand and `inbox/` was verified empty afterward.**
+Its own push was never confirmed by `git ls-remote` in a design session's presence — **this packet's
+Step 0 is asked to confirm `3773e6d` on origin and say so.** And the `#113` packet's §4.2 stated
+`grep -c "alter table case_parties"` → 5 where the post-edit raw count is 6, **because the
+replacement comment the same packet shipped quotes an `alter table case_parties` line**; on
+executable lines it is 5, unchanged, which is what the check tested. **The runner reported it and
+did not edit it — packet content is Michael's — and the record already carries it correctly, so
+nothing further is owed and nothing is issued here.**
+
+**Staged for Code:** this entry; one scope paragraph into `docs/specs/attorney-review-queue.md`; the
+BUILD-STATE displacements at §5A.
+
+**Awaiting/Returned from Code, unreviewed:** none from this session. Carried items per `#113` and
+the sixty-seventh runner batch — verify against the entries that staged them, never against this
+line.
+
 ## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-SEVENTH invocation) — the record catches up with the live database, one comment block is corrected without touching a statement, and the packet's own verification figure is the thing that fails
 
 **One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_live-migration-execution_2026-08-19.zip` — **13,639 bytes, mtime `2026-08-19 10:58:42 −0500`, sha256 `2095788af308da44475e28b3a726e16f9ce11eccd6847412a30eba4e3fe9bfd6`**, identity pinned at Step 1 per QR-6(c). Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded:** one packet leaves the Step 2 conflict rule with nothing to resolve. **Nothing was skipped as already built.** **`§5` is NONE — nothing was built and nothing was authorized to build.**
