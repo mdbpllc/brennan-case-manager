@@ -16,6 +16,117 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-SIXTH invocation) — the routed OPUS-RUN paste comes home as two staged records, the numbering race the packet predicted resolves in its favour, and the health check is skipped on the rule rather than by omission
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_fc13-drafts-and-ws3-second-pass_2026-08-18.zip` — **44,312 bytes, mtime `2026-08-19 00:29:20 −0500`, sha256 `10c4bb6682059a1af548c846801ed61340fc2ff6b42d80ab14f983a271df1b6b`**, identity pinned at Step 1 per QR-6(c). Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order. **Nothing was superseded:** one packet leaves the Step 2 conflict rule with nothing to resolve. **Nothing was skipped as already built.** **Docs-only: two new files under `docs/specs/`, and `§5` is NONE.**
+
+- **THE STEP 0 GATE CLEARED AND IT SETTLED THE SIXTY-FIFTH'S TWO LOOSE ENDS AT ONCE.** A live `git fetch` plus `git ls-remote origin master` returned `f894640`, equal to local HEAD, with `rev-list --left-right --count` reading **0 ahead / 0 behind** — so **both** of that batch's commits are on origin, the batch (`d6f97e6`) and the same-night ruling-4 landing (`f894640`). Its deletion took as well: at Step 1 `inbox/` held only this batch's zip. **CARRY-FORWARD OWED TO THIS LINE UNDER QR-5: NONE.** The runner text was re-read at HEAD rather than from a cached copy — **v11, blob `c75de00d`, sha256 `38a57e22…`**, matching what the sixty-fifth recorded.
+- **DT-1 WAS APPLIED, AND THE TWO DATES ON THIS PAGE DIFFER ON PURPOSE.** Clock at the top of the batch: `date` read **`Wed Aug 19 00:38:17 CDT 2026`** and `date -u` read **`05:38:17 UTC`** — the same late-window pattern as the recent batches, on the far side of midnight Central. **This runner line carries its own run date, 2026-08-19.** Every packet-derived stamp — both filenames, both documents' internal dates, and the `#112` entry — stays **2026-08-18 Central**, which is when the work was authored, per the packet's own §1.4 and the resolution the sixty-fifth reached the same night. A reader comparing them is seeing a deliberate split, not a drift.
+- **THE PACKET WAS BUILT WHILE THE SIXTY-FIFTH WAS MID-FLIGHT, AND ITS AUTHOR HELD IT OUT OF `inbox/` ON PURPOSE.** §1.6 records a deliberate deviation from its own dispatch's close-out instruction, taken on MM-1 and the `QR-6(c)`/`QR-5(b)` hazards: a zip appearing after that batch's Step 1 inventory had closed would have made its deletion re-list report a **false failure**, injecting a phantom into the record. Michael placed it only after the push landed — which is exactly what §1.6 asked of him, and the Step 0 gate above confirms the precondition was real. **The deviation is recorded because the packet disclosed it, not because it was caught.**
+- **THE NUMBERING RACE THE PACKET PREDICTED RESOLVED IN ITS FAVOUR, AND IT WAS CHECKED RATHER THAN ASSUMED.** §1.3 minted `#112` from a design-side view at `33a6c74`, where the ceiling was `#110` and an **uncommitted** `#111` sat in the working tree. At HEAD the ceiling is now **`#111`** and `#112` is **unclaimed** — `grep -c "(#112)"` returns **0** — so §1.3's standing renumber instruction never fired. TOC-6 keeps this runner line unnumbered.
+- **THE ALREADY-EXECUTED CHECK WAS NEGATIVE ON BOTH QR-5 LIMBS, AND THE PROBE WAS CONTROLLED IN BOTH DIRECTIONS.** Neither `fc13-entry-drafts-2026-08-18.md` nor `ws3-second-pass-read-2026-08-18.md` existed in the working tree, at `HEAD`, or at **`origin/master`**. The probe was shown capable rather than asserted to be: the same `git ls-tree -r --name-only` grep on `-2026-08-18` returned **eight** sibling records at HEAD and eight at origin, and the working-tree `find` returned **eleven** paths — those eight plus the routed OPUS-RUN prompt, the grok-review migration, and the packet's own zip. Neither the committed-and-pushed nor the committed-but-unpushed limb applied.
+- **BOTH FILES LANDED VERBATIM, AND THAT WAS VERIFIED BY COMPARISON RATHER THAN BY INTENT.** `cmp` reports **byte-identical** against the packet sources, at exactly the sizes the packet states — **52,128** and **33,968**. Each carries the status line §4 requires, already present in the source and therefore not authored here: `DRAFT ENTRY TEXTS. NOT INSERTED. NOTHING HERE IS A REGISTRY ENTRY.` and `READ RECORD. RETRIEVAL ONLY. IT VERIFIES NOTHING AND CLOSES NOTHING.` **Line endings were derived from a binary read, not a shell text tool** — both files and all four destination docs are **0 CRLF**, so the LF doc convention held and nothing was converted.
+- **HEALTH CHECK SKIPPED — ON THE RULE, WITH THE REASON NAMED, NOT BY OMISSION (QR-6(f)).** `§5` is NONE and no `src/`, `db/`, `supabase/` or build-tooling path appears in the routing table; `git status --porcelain` showed only the two `docs/specs/` additions before the close-out edits began. **The batch cannot have moved `npm test` / `npm run build` / `npm run lint`, so running them would have measured the sixty-fifth's tree and reported it as this one's.** The last real measurement is that batch's — 278 tests across 23 files, build and lint exit 0 — and it stands as **carried, not re-run**.
+- **EVERY §6 DO-NOT HONORED, and the diff is the evidence rather than the assurance.** Nothing built · **no drafted entry inserted into any registry file**, and no entry text lifted out of the blockquotes · `C-DICK-1`, `C-DICK-2` and `C-JIM-1` **not adopted** · the **VERIFIED `WS-3` entry untouched**, `legal-rule-registry-discovery-enforcement-and-pleading.md` never opened for edit · the **VERIFIED `## TRCP 47(b)–(d)` entry untouched**, its 47(c) text left a candidate · **no `**Status:**` line moved anywhere** · **no practice-of-law registry file created** — naming a home decides part of `Q-STAT-5` · **SOURCING and `statute-pass-registry-retrieval-2026-08-14.md` §3 unamended**, the reading-order qualification left at `FC13-Q-6` · none of `FC13-Q-1..6` or `Q-WS3P-1..6` resolved · the sixty-fifth's files **neither re-run nor attributed here** · neither staged document edited to reconcile it with the tree · **and no count, sha, ceiling or queue figure copied out of the packet into BUILD-STATE.**
+- **`QR-6(e)` DID NOT FIRE, AND ONE §9 LINE WAS DELIBERATELY NOT ACTED ON.** Every act the packet asked for sat in a routing-table row or a §8 item. §9's housekeeping line reports `Knowledge Repo\Statutes 26-08-14\_claude_extract\` **still present on Michael's machine** — **that is his hand, and HK-5 forbids a runner sweeping his filesystem to confirm it.** It is carried exactly as reported, **unverified from here, and said to be unverified** rather than quietly checked.
+- **TWELVE OPEN ITEMS MERGED WITH FULL QUESTION TEXT (QR-1), AS THE TWO ACTS QR-6(b) REQUIRES** — the rows **and** the Status header's per-batch reconcile sentence. `FC13-Q-1..6` and `Q-WS3P-1..6` had **zero** prior occurrences in `attorney-review-queue.md`, so nothing collided and nothing was renumbered. **This packet closes no row.** `Q-WS3-5` stays exactly as #108 left it until `Q-WS3P-4` is answered, and the packet's own resume note is carried: `FC13-Q-2` and `Q-WS3P-1` are the two that unblock the most.
+- **THE BUILD-STATE REFRESH CAUGHT FIVE FIGURES THE SIXTY-FIFTH CARRIED UNCHANGED FROM THE SIXTY-FOURTH, AND THE PROOF IS A DIFF RATHER THAN A READING.** `git show` of the two committed copies returns **byte-identical** text on all five: the health-check clause claiming a **fifteenth CONSECUTIVE SKIP** on the batch that in fact **RAN** the suite; `TOC-4`'s firing count reading **TENTH**; the queue pointer reading **#110** after that same batch's own merge had written **#111**; and the index described as **TWELFTH edition / 230 rows** in **two separate places** after it produced the thirteenth at 232. A sixth figure went the other way and is corrected too — the log preamble published at **2,770** bytes measures **2,771**. **All six corrected in this refresh and named rather than smoothed.** **This is the exact failure `OPEN-5(a)` was ruled to prevent, occurring inside the refresh that rule governs** — and the mechanism is worth stating plainly, because it is not carelessness: **a carried sentence is indistinguishable from a re-derived one by reading, so only re-deriving catches it.**
+- **THE SIXTY-FIFTH'S TWO METHOD FINDINGS WERE ADOPTED INTO DURABLE FORM THIS BATCH**, at Michael's direction — they had fired once and survived only as prose in that runner line. **(1)** Git Bash text tools strip `\r` silently, so a CRLF file reads as LF and every line-ending or count claim must come from a **binary** read; **(2)** a post-edit grep can match the comment you just wrote quoting the old form, so a failed-edit conclusion must be re-run against **executable lines only**. **Both were exercised here, and the second fired on this very entry.** The CRLF figures above are a bytes read rather than a `grep`; and when this batch checked that `#112` was claimed exactly once, a naive `grep -c` returned **2** — the second match being **the bullet four lines above, which quotes the command in its own text.** Anchored to headings (`^## .*`) the count is **1**, which is the true figure. **The fix caught the runner line that had just adopted it, inside the same batch** — the cheapest possible demonstration that the failure mode is real.
+
+Staged for Code: none — this line closes the batch.
+Awaiting/Returned from Code, unreviewed: the two records this batch routed — `docs/specs/fc13-entry-drafts-2026-08-18.md` and `docs/specs/ws3-second-pass-read-2026-08-18.md` — and the twelve queue rows; **plus the whole of the sixty-fifth's output**, which no design session has reviewed yet.
+
+
+## 2026-08-18 (#112) — THE OPUS-RUN PASTE EXECUTED: five FC-13 entry drafts and the Q-WS3-5
+five-lead read, and the reconcile found every destination occupied and the Supreme Court absent
+(design session, Opus 5, Cowork)
+
+Executed `docs/prompts/OPUS-RUN_fc13-drafts-and-ws3-leads_2026-08-18.md` — the routed paste, both
+tasks, in one pass. **Nothing was inserted, nothing verified, no Status line moved anywhere.**
+
+**TASK 1 — the five FC-13 drafts exist, and the reconcile is the finding.** Six entry texts drafted
+for the five entries #108 opened (the fourth pick, "§18.001 / §41.0105," is two statutes — put as
+`FC13-Q-1`). Primary text pulled from the named sources per item: Prop. Code ch. 55, CPRC ch. 146
+incl. the 2025 (c-1) amendment, §18.001 and §41.0105 from the official corpus `Statutes 26-08-14`
+(unzipped and read in the device VM's own /tmp, never a mounted path); TRCP 47 from the July 2026
+clean-authority PDF; TDRPC 1.04(f) from the State Bar PDF, FC-14's fourth channel. **RECONCILE FIRST
+found that not one of the five destinations is free.** TRCP 47(c)'s home is the `## TRCP 47(b)–(d)`
+entry, **VERIFIED 2026-08-17** — so a new entry duplicates it (the 194.1(a) one-proposition-one-home
+precedent, ruled at #108 itself), while conforming its wording is a per-entry ROUTE-C act that
+**DETACHES that verification**; the 47(c) text is therefore drafted as a **conforming candidate, not
+adopted**. Prop. Code ch. 55, CPRC ch. 146, §18.001 and §41.0105 **already have DRAFT entries** as
+medical-billing ENTRIES 4, 5, 2 and 1 — and ENTRY 5 already carries the (c-1) amendment. TDRPC
+1.04(f) has **no home at all** and naming one would decide part of `Q-STAT-5`, which #108 expressly
+left open — so its destination is **deliberately a question**. Six questions, `FC13-Q-1..6`.
+
+**TASK 2 — the answer is no.** Read *City of Dickinson*, *CSX*, *Baytown Nissan*, *Pope* and
+*Jimenez* via FLP/CourtListener (Descrybe OUT; the Lexis Protégé lead list treated as a locator,
+never authority). **The Texas Supreme Court has NOT touched the comment-9 limit on TRCP 192.3(h):**
+literal queries across all five returned `comment 9` = 0/0/0/**3**/0, `witness statement` =
+0/0/0/**15**/0, `192.3(h)` = 0/0/0/**yes**/0 — the only positives are *Jimenez*, an intermediate
+court. **V-9 satisfied on all five from each document's own author line**, no "cannot identify"
+floor reached: Devine, J.; PER CURIAM; Bland, J.; Taft, J.; Cochran, J. for eight.
+
+**But the read paid twice.** *In re City of Dickinson*, 568 S.W.3d 642, 646 (Tex. 2019) holds that
+**192.3(a)'s "not privileged" limit governs a permissive "may discover" subsection of 192.3 absent a
+specific provision otherwise** — applied to (e), not (h): the structure of the WS-3 entry's argument,
+from the Supreme Court, about a sibling subsection, and **an analogy, not a holding on (h)**. And at
+648 the same opinion draws the entry's own work-product/attorney-client asymmetry in the Court's
+words. Separately, *Jimenez* **considered and rejected the comment-9 shield argument** in terms tied
+to its posture — "when the only privilege asserted is 'work product'" — which the WS-3 entry does not
+record. **Three candidates, `C-DICK-1`, `C-DICK-2`, `C-JIM-1`, ALL UNADOPTED.** The WS-3 entry is
+VERIFIED, so adoption detaches verification and is Michael's alone. Six questions, `Q-WS3P-1..6`.
+
+**PF-1 RAN AND EARNED ITS RULE AN EIGHTH TIME — three HIGH findings, all corrected pre-`inbox/`.**
+Two independent read-only adversarial agents, design-side. **(1) The *City of Dickinson* disposition
+was stated BACKWARDS** — the packet said mandamus relief granted; the opinion's last line is "The
+petition for writ of mandamus is denied," the relator being the City, the party seeking discovery.
+**(2) The one-proposition-one-home precedent was cited to #109 and "eight days ago"** — it is #108,
+`Q-WS2-1(b)`, the same session that authorized this run and the same date. **(3) The § 18.001
+extraction note placed the statutory affidavit form inside § 18.001(f)–(g)** — the form is **§ 18.002**,
+a separate section, and all 23 uncharacterized residuals sit there, not in any quoted region. Sixteen
+further MEDIUM/LOW findings were also corrected, including a §18.001(i) quotation that had dropped
+"by all parties," an un-retrieved Gov't Code parallel cite in the TDRPC draft, and a "no cite change
+is proposed" line contradicted by three candidates that each add authority to a VERIFIED entry.
+**Both agents returned substantive work (75 and 63 tool calls) — checked against the #104 failure mode
+where a dead fleet returns an empty finding list wearing the costume of a clean bill of health.**
+
+**METHOD FINDINGS worth more than this packet.** (a) **The non-layout `pdftotext` extraction
+scrambles reading order — in three files across BOTH publishers**: cp.18 §18.001(d-1)/(d-2)/(e-1),
+pr.55 §§55.002(c)/55.003(b)/55.005(a), and TRCP 47, whose raw displaces the `(d)` subdivision marker.
+Layout reads all of them correctly. **Four of this packet's 27 source quotations therefore do NOT pass
+the ruled raw-extraction spot-check as written**, and were resolved on a qualification this session
+wrote and disclosed rather than one Michael ruled — put as `FC13-Q-6`, with the four named so the
+question is answerable without re-running anything. (b) A **new uncharacterized `A`-run context**:
+runs of seven or more used as column padding inside § 18.002's form caption — reported, not
+transformed, per the §3 design rule. (c) The A-for-space normalizer reproduces exactly: 81/27/122/75
+substitutions, residual 0/0/0/23, and glued-`AA` measured **0** in both the TRCP and TDRPC PDFs,
+confirming rather than assuming the not-this-publisher rule.
+
+**THE SIXTY-FIFTH RUNNER BATCH WAS MID-FLIGHT DURING THIS SESSION, AND THIS PACKET WAS HELD OUT OF
+`inbox/` BECAUSE OF IT.** `inbox/` was empty at 04:18 UTC and held the grok-review zip by 04:48; the
+working tree then showed a continuous run of writes ending at `session-log-toc.md`, 05:16:25 UTC,
+seventy-two seconds before the check — while `master` and `origin/master` both still read `33a6c74`
+and the processed zip still sat in `inbox/`. That batch had reached Step 4's TOC regeneration and had
+not committed. **Adding a zip mid-batch would have hit the `QR-6(c)` open window from the other side
+and made `QR-5(b)`'s deletion re-list report a false failure**, so placement was left to Michael's
+hand after that batch confirms `pushed at <sha>` against `git ls-remote`. **MM-1 governed the call.**
+
+**THE `#nn` RACE TOC-6 CLOSED APPEARED LIVE THE SAME NIGHT.** The ceiling at HEAD `33a6c74` is `#110`;
+the working tree carried an **uncommitted `#111`** from that in-flight batch. A design session minting
+from the HEAD ceiling alone would have taken `#111` and collided. This entry takes **`#112`**.
+
+**Staged for Code:** `docs/specs/fc13-entry-drafts-2026-08-18.md` (new) ·
+`docs/specs/ws3-second-pass-read-2026-08-18.md` (new) · this log entry · the twelve queue rows in §7.
+
+**Awaiting/Returned from Code, unreviewed:** the sixty-fifth batch's own output — `db/schema.sql`,
+`db/migrations/2026-08-18-grok-review-fixes.sql`, `db/migrations/2026-08-12-cd1-contact-directory.sql`,
+`docs/specs/grok-external-review-2026-08-18.md`, `docs/specs/cascade-retention-map-2026-08-18.md`,
+`Go_Live_Gates.md`, `spec-feedback.md` and the `#111` entry — **none of it design-reviewed; this session
+saw it only as mtimes on an uncommitted working tree.** Carried: everything BUILD-STATE's own
+verification-status line lists at HEAD, re-derived there rather than copied from here.
+
+
 ## 2026-08-19 — QUEUE-RUNNER batch (runner line; SIXTY-FIFTH invocation) — the first batch in fifteen to touch the database, the batch that STOPPED a ruled item on its own version gate, and the batch that caught its own shell tools lying about a file's line endings
 
 **One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_grok-review-rulings_2026-08-18.zip` — **16,127 bytes, mtime `2026-08-18 23:48:08 −0500`, sha256 `1f2488c7ceabba3f3e2bc18187d7a61c71857b30c2871ad854617860285fb562`**, identity pinned at Step 1 per QR-6(c). Filename-date order and pure-mtime order **agree trivially** — one packet, date parses from the filename (QR-4). Michael confirmed the order. **Nothing was superseded:** one packet leaves the Step 2 conflict rule with nothing to resolve. **Nothing was skipped as already built.** **This is the first batch since the forty-ninth to carry a live `§5` — fifteen consecutive docs-only batches ended here.**
