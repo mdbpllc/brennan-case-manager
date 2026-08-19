@@ -19,9 +19,20 @@
 --
 -- NOT RUN BY THE AUTHORING SESSION. Running migrations against live is Michael's
 -- hand (CL-2 / CD-1 / grok-fixes precedent):
---   1. BACK UP FIRST. (Supabase Pro since 2026-08-19, so this is the first
---      schema act on this database with an automatic backup behind it — that is
---      a reason to check the backup exists, not a reason to skip the step.)
+--   1. BACK UP FIRST — and know what your backups actually are, because the
+--      record was wrong about this and was corrected at the moment of running.
+--      This file first said Pro (bought 2026-08-19) made this "the first schema
+--      act with an automatic backup behind it." IT IS NOT. Michael read the
+--      Supabase backup list before pasting: PHYSICAL backups daily back to
+--      12 August, a week BEFORE the upgrade — eleven of them — landing ~10:30
+--      UTC (~05:30 Central), with extras on 15 and 19 August. So this is at
+--      least the eighth schema act with a backup artifact behind it.
+--      WHAT IS STILL NOT ESTABLISHED, and the distinction is the whole point:
+--      whether the pre-Pro backups were RESTORABLE at the time. A backup you
+--      cannot restore from is an artifact, not protection, and only the vendor
+--      dashboard can settle which these were. Gate 1's rationale in
+--      Go_Live_Gates.md rests on "the free tier has no automatic backups";
+--      that sentence now needs checking rather than repeating.
 --   2. Paste this file ALONE into an empty SQL buffer — nothing else in it.
 --   3. Answer the verification checks at the bottom IN WORDS before moving on.
 -- The same changes are folded into db/schema.sql so a fresh project is correct.
@@ -260,8 +271,8 @@ create table if not exists party_pii (
   -- current direction — flagged, not ridden past. O-7's cascade/retention map
   -- proposes moving children from CASCADE to RESTRICT — eleven FKs across six
   -- named children, with four component FKs argued for KEEPING cascade, so not
-  -- literally every one. PII is
-  -- the case that runs the other way: a person's SSN must not survive the
+  -- literally every one. PII is the case that runs the other way: a person's
+  -- SSN must not survive the
   -- deletion of that person's record. RESTRICT here would mean a contact cannot
   -- be deleted until their SSN row is deleted first — friction with no benefit,
   -- and a state in which an orphaned SSN outlives a deletion attempt. Recorded
