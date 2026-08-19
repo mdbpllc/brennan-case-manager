@@ -756,6 +756,204 @@ localStorage-only and never reaches Supabase, and the RLS probe inserts no `fiel
 STOP on first run is a real possibility and is the design working, not a failure; the exception
 names the keys it found.
 
+## 2026-08-19 - `anon` and `service_role` hold three privileges on all 37 tables that nothing in this repo granted
+
+Found by the gate 10 build session, from a query it ran only because "no mechanism I know of"
+is not evidence. **Nothing was changed. No remedy was run. Every option below is Michael's.**
+
+**UPDATED THE SAME EVENING: FOUR OF THE EIGHT DIAGNOSTICS BELOW WERE RUN BY MICHAEL'S HAND, AND
+THEY IDENTIFY THE MECHANISM, CLOSE THE READ-EXPOSURE LIMB AND FALSIFY C-2'S PREMISE.** The entry is
+kept in its original order with the answers folded in where they land, so the reasoning that led to
+the queries is still legible next to what the queries returned.
+
+**THE OBSERVATION, his own query output, live:**
+
+    grantee       privilege_type   tables
+    anon          REFERENCES       37
+    anon          TRIGGER          37
+    anon          TRUNCATE         37
+    service_role  REFERENCES       37
+    service_role  TRIGGER          37
+    service_role  TRUNCATE         37
+
+and separately `has_table_privilege('anon','party_pii', <select|insert|update|delete>)` FALSE on
+all four, against TRUE on all four for `authenticated`.
+
+**WHAT IS PROVEN, AND WHAT IS NOT - THE DISTINCTION IS THE WHOLE FINDING.**
+
+- PROVEN: the privileges exist, on every table, for both roles.
+- PROVEN: nothing in this repository granted them. Across `db/schema.sql` and all six migrations
+  there are **17 executable grant/revoke statements and ZERO executable lines naming `anon` or
+  `service_role`** - every occurrence of either string in `db/` is inside a `--` comment.
+- **PROVEN, AND BY CATALOG READ RATHER THAN INFERENCE: THERE IS NO READ EXPOSURE.** `anon` holds
+  none of the four DML privileges, and a `pg_class.relacl` sweep for an empty-grantee entry across
+  every table in `public` returned **ZERO ROWS** — so there is no `PUBLIC` grant anywhere either,
+  which was the one way a read could have hidden from the first sweep. *(An earlier draft of this
+  line kept the universal claim open and blamed `information_schema` for not displaying PUBLIC
+  grants. That was wrong twice over: the view does surface PUBLIC when the grantor is an enabled
+  role, and what actually hid them was the grantee filter in the sweep's own WHERE clause. The fix
+  was one more query, not a permanent limit.)*
+- **PROVEN: `anon` holds FOUR privileges, not three.** `pg_class.relacl` reads `anon=Dxtm/postgres` —
+  TRUNCATE, REFERENCES, TRIGGER and **MAINTAIN**. `MAINTAIN` is a PostgreSQL 17 addition and
+  `information_schema` follows the SQL standard, which has no such privilege, so the first sweep
+  silently truncated the answer.
+  Three limits, because the reassuring version is the one that would be wrong: *"writes nothing"*
+  would be FALSE, since `TRUNCATE` is a destructive write and `anon` holds it; the
+  `has_table_privilege` test covered **`party_pii` only** and the other 36 rest on the
+  `information_schema` listing (see 3b: a direct `relacl` sweep has since confirmed no PUBLIC grant exists on any of them); and reachability is open in either direction.
+- **NOT ESTABLISHED, IN EITHER DIRECTION: whether the three are REACHABLE by an unauthenticated
+  caller.** Holding a privilege and being able to fire it are different facts and only the first is
+  proven. Every draft assertion of "not reachable today" was refuted in review for substituting the
+  repo for the live database. TRUNCATE is destructive and, as engine behaviour, is not filtered by
+  RLS - but whether PostgREST will ever emit it for a role holding only these three is not
+  answerable from any file here.
+
+**THE RECORD DAMAGE.** The sentence *"`anon` gets nothing, by design"* and its variants appear
+**16 times across 13 files** at `f44b3ec`, measured WRAP-AWARE - a line-anchored sweep returns 15
+across 12 and is wrong, because `in-1`'s copy wraps across a line break. The tally moves with the pattern, so no single sweep can be trusted to have found them
+all. *(An earlier draft of this entry claimed one variant was reached by no `anon`-anchored
+pattern at all; that was FALSE - `anon` sits on the same physical line, thirteen characters
+before the predicate - and is retracted here.)* The reason this cannot be grep-and-replaced
+does not rest on that: it rests on the sentence being true in the sense each file meant it.
+The sites are including `db/schema.sql`, four migrations, BUILD-STATE, the gate 10
+slice, the gate 10 kickoff prompt, three forward-looking specs that would carry it into unbuilt
+slices, two append-only session-log entries, and `src/components/RlsProbePanel.tsx:73`, which
+renders it to the screen on a signed-out probe run. **It cannot be fixed by grep-and-replace**: it
+is true in the sense each file meant it - the project grants `anon` nothing - and false as written.
+Blurring those back together while repairing them would lose the finding. Two sites are append-only
+history and several are design-space canonical, so the routing is Michael's. **BUILD-STATE's copy
+is corrected in this batch; nothing else was touched.**
+
+**C-2 IS TWO CLAIMS FUSED, AND ONLY ONE WAS EVER ESTABLISHED.** The ruling (grok review section 3
+item 9, 2026-08-18) reads *"`ALTER DEFAULT PRIVILEGES` stays unset"*, reasoned from *"chosen
+deliberately twice; has held since the #28 outage."*
+
+1. *This project never issued it* - **TRUE**, and checkable: six occurrences across `db/schema.sql` **plus** `db/migrations/*.sql`, all six
+   inside comments, zero executable. (Counting note: one of the six **wraps across a comment break**
+   at `db/schema.sql:504-505`, so a line-anchored grep under-reports it at five. The build session's
+   own first count made exactly that error and was corrected.)
+2. *It is not set on the database* - **FALSE, AND NOW READ RATHER THAN ASSUMED.** It had never been
+   checked by anyone; it has now. `pg_default_acl` carries
+   `postgres | public | r | anon=Dxtm/postgres, authenticated=Dxtm/postgres, service_role=Dxtm/postgres`,
+   so **`ALTER DEFAULT PRIVILEGES` IS SET** — by Supabase's own bootstrap, before this project's first
+   table existed. `party_pii`'s `relacl` matches it character-for-character, with `relowner = postgres`.
+   No file in `db/`, `docs/`, `src/` or `supabase/` had ever read `pg_default_acl`. The stated reason is a record of the project's own
+   conduct, not a catalog read. The grok review even flagged it - its Uncertain list carries
+   *"live ACLs unverifiable"* - while its clean-bill line *"no anon grants anywhere"* is true of the
+   repo's SQL and reads as a statement about the database.
+
+**We didn't do it, therefore it isn't there. That is F-1's exact shape, one level up** — named at
+16:00 and disproven by 17:00 the same afternoon, by one catalog read. **C-2's operative conclusion -
+*a new table without its own GRANT is unreachable* - SURVIVES, ON A WARRANT NOBODY HAD:** it is true
+because the vendor's default withholds exactly the four DML privileges, not because no default
+exists. **So the posture has been held by Supabase's bootstrap, not by this project's discipline, and
+it would change silently if that default changed.**
+
+**AND A SHARPER CONDITION SURFACED THAT NO VERSION OF C-2 CONTEMPLATED.** A *second* default-privileges
+rule, `supabase_admin | public | r`, grants **`anon=arwdDxtm` — SELECT INCLUDED** — to tables created by
+THAT role. Default privileges are per-creating-role, so it does not touch the 37, all of which are owned
+by `postgres`. **But "unreachable by default" now depends on WHICH ROLE CREATES THE TABLE, and whether
+anything in Supabase's tooling ever creates a `public` table as `supabase_admin` is OPEN.**
+
+**THE INSTRUMENT PROBLEM.** `src/auth/rlsProbe.ts` drives PostgREST, so it can only ever observe
+read and write privileges. `REFERENCES`, `TRIGGER` and `TRUNCATE` are invisible to it on every role.
+**An unexpected grant hides from it exactly as well as a missing one — and it fired a second time,
+subtly: `information_schema` reported THREE privileges where the catalog shows FOUR, `MAINTAIN` being
+a PG17 addition the SQL standard has no name for.** The tempting next
+sentence is NOT available: that they sat there through every probe run ever made is UNESTABLISHED.
+The sweep is one reading, taken 2026-08-19; an ACL carries no timestamp, the granting mechanism is
+unidentified, and a blanket GRANT issued last week would return the same 37 rows as a default in
+force since July. How long they have been held is OPEN. BUILD-STATE already reasons to within one step of this
+("only a WRITE proves a policy grants access"); the step further is that a probe which only reads
+cannot see privileges that are not read privileges.
+
+**EIGHT READ-ONLY DIAGNOSTICS. FOUR HAVE NOW BEEN RUN — Michael's hand, 2026-08-19, writing
+nothing. The remaining four stay staged.**
+
+1. **RUN — ANSWERED: YES, IT IS SET.** The query that answers C-2 literally:
+   `select defaclrole::regrole, defaclnamespace::regnamespace, defaclobjtype, defaclacl from pg_default_acl;`
+   **Returned `postgres | public | r | anon=Dxtm/postgres, ...` plus a second rule from
+   `supabase_admin` granting `anon=arwdDxtm`. C-2's premise is FALSE.**
+2. **RUN — ANSWERED: `postgres`, via the default above.** The ACL carries the grantor, which
+   `information_schema` discards:
+   `select relname, relowner::regrole, relacl from pg_class where oid = 'public.party_pii'::regclass;`
+   `anon=xtD/postgres` vs `anon=xtD/supabase_admin` discriminates an inherited default from a
+   vendor-role grant. An entry with an EMPTY grantee is a grant to PUBLIC, which the
+   `information_schema` view does not display at all.
+3. ~~Per-table scope~~ - **RUN — ANSWERED: all 37, both roles.**
+3b. **RUN — ANSWERED: NO `PUBLIC` GRANT ANYWHERE.** A `pg_class.relacl` sweep for an empty-grantee
+   entry across every table in `public` returned ZERO ROWS, which closes the read-exposure limb for
+   all 37 rather than for the one directly tested:
+   `select c.relname, a.acl::text from pg_class c join pg_namespace n on n.oid = c.relnamespace cross join lateral unnest(coalesce(c.relacl,'{}')) as a(acl) where n.nspname='public' and c.relkind='r' and a.acl::text like '=%';`
+4. Is there a DDL event trigger - the creation-time mechanism invisible to (1):
+   `select evtname, evtevent, evtenabled, evtowner::regrole, evtfoid::regproc from pg_event_trigger;`
+5. Does `anon` hold USAGE on schema public - the gate under every reachability question, and the
+   repo grants USAGE to `authenticated` only:
+   `select has_schema_privilege('anon','public','usage'), has_schema_privilege('anon','public','create');`
+   FALSE on the first would make all three privileges inert.
+6. Does `service_role` really lack DML - only `anon` was tested with `has_table_privilege`; the
+   `service_role` claim rests on the weaker `information_schema` listing.
+7. What functions the live database actually holds and who may execute them - the repo's
+   four-function inventory is not the database's:
+   `select n.nspname, p.proname, p.prosecdef, p.proacl from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname not in ('pg_catalog','information_schema');`
+8. Not a query - **the dashboard.** What Supabase's "auto-expose new tables OFF" actually does at
+   the SQL level. The repo has assumed since 2026-07-28 that it is why nothing was exposed; this
+   observation shows something did. That answer is in the vendor's documentation, not here.
+
+**REMEDIES, NONE RECOMMENDED AS URGENT AND NONE RUN.** A revoke on one table, or across all tables,
+would not stop recurrence - the next table created gets them again - so the real question the
+diagnostics decide is whether any fix is a one-off or has to become a standing step in every future
+migration. An `ALTER DEFAULT PRIVILEGES ... REVOKE` standing rule **collides with C-2 as ruled and
+is Michael's to re-rule, not a coding session's to implement.** A revoke of `service_role`'s
+TRUNCATE would also remove a privilege a future statute-cache refresh might want, failing later and
+far from here. **Capture `relacl` before any revoke** so the restore is byte-exact rather than
+reconstructed. The go-live gates today contain **no privilege step at all**.
+
+**Not urgent: no real client data exists anywhere in this database — and after the four diagnostics
+the only limb still open is REACHABILITY, holding `TRUNCATE` and being able to fire it being different
+facts.** **THE REMEDY QUESTION IS NOW SHARPER, NOT SOFTER: the rule producing these grants is
+SUPABASE'S, so any `ALTER DEFAULT PRIVILEGES ... REVOKE` is a divergence from the vendor baseline
+rather than a correction of this project's own act — squarely Michael's to rule, and not something a
+coding session should implement.**
+
+## 2026-08-19 - gate 1's backup rationale is half wrong, and one limb of it can never be settled
+
+Found the same session, from Michael's own Supabase dashboard, read before pasting gate 10's
+migration. **Nothing was edited in `Go_Live_Gates.md` - it is append-only and design-space
+canonical.**
+
+`Go_Live_Gates.md` gate 1 (2026-07-25) reads: *"The free tier has no automatic backups and pauses
+after inactivity; neither is acceptable once real case data exists."* Session log `#114` reasoned
+from it: *"Every schema act until today ran against a database with no automatic backup - the three
+migrations this morning included, on a manual-dump-or-nothing footing. Gate 10's migration will be
+the first schema act with a backup behind it."*
+
+**The dashboard shows ELEVEN PHYSICAL backups spanning 12-19 August** - a week before the Pro
+purchase of 2026-08-19 - **and each row carries a Restore button.** The eleven decompose exactly:
+eight days, one per day at ~10:30 UTC (~05:30 Central), plus **two extra on 15 August and one on
+19 August**. **So gate 10's migration was the FOURTH live schema act with a backup artifact behind
+it** - the three of 2026-08-19 morning (session log #113), then this one - **and the seventh ever.**
+*(An earlier draft said "at least the EIGHTH" and derived it from nothing: eight is the number of
+DAYS in the window, not a count of schema acts. Corrected before filing, because a correction that
+repeats the error class it exists to fix is worse than no correction.)* Retention appears to be about seven
+days; had backups begun only at the upgrade there would be one or two, not eleven spanning a week.
+
+**THE LIMB THAT CANNOT CLOSE, RECORDED AS UNCLOSEABLE RATHER THAN SMOOTHED.** Michael is reading
+that Restore button **from a Pro account**. Whether it was there on 18 August, from a free account,
+is a different question and is now permanently unanswerable - the upgrade changed the only state
+that could have answered it. It remains possible that Supabase retained physical backups on the free
+tier and exposed restore only on paid, in which case `#114`'s *operational* framing was right even
+though its factual claim was wrong. **The distinction between "the artifacts existed" and "you could
+have restored from them" is the one the finding turns on, and it is left open.**
+
+**What this does and does not change.** It does not unmake the decision: gate 1 is bought, `GL-1`
+floor item (2) stays closed, and Pro's other purchases - no pausing, 8 GB, whatever retention and
+PITR terms attach - are untouched. What was wrong is the gate's stated REASON, which gave backups as
+a co-equal ground. **For the design space: gate 1's text may want a correcting append, and `#114`'s
+reasoning should not be cited forward as written.** The gate 10 migration's own run instructions
+carried the same claim and were corrected in place before it was pasted (commit `f44b3ec`,
+comment-only, executable lines verified identical before and after).
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
