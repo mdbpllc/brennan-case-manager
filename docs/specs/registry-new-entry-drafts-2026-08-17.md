@@ -77,6 +77,8 @@ UNVERIFIED. The enforcement file goes 33 → 39 status lines (20 V / 19 U). **Th
 does not move: creating an entry is not verifying one.** *(`WS-3`'s entry, drafted at T-28,
 would take it to 47 — not counted here.)*
 
+*(**Superseded 2026-08-18, #108 — FIVE entries executed, not six.** Entry C became a second observation, so the enforcement file went 33 → 38 status lines; and three verifications Michael gave the same day (TRCP 191.2, TRCP 192.3(h) discoverability, HS § 481.115(b)) moved independently of these insertions. The executed figures are re-derived at HEAD in that batch's runner line and in BUILD-STATE — never read them from this paragraph.)*
+
 ---
 
 ## 3. THE COLLISION THAT MUST BE RULED BEFORE `WS-2` EXECUTES
@@ -220,6 +222,8 @@ proposition on the same subdivision — the shape `WS-1` ruled.
 
 ### C — `WS-2` (1 of 3) · insert AFTER entry B — **HELD ON `Q-WS2-1`**
 
+*(**Resolved 2026-08-18, #108, Q-WS2-1(b): entry C is NOT inserted.** Its substance enters as a SECOND OBSERVATION on the VERIFIED "TRCP 194 — initial disclosures (post-2021), EXPANDED wording" entry in `legal-rule-registry-discovery-and-carrier-duties.md`, under the one-proposition-one-home rule. The block below is retained as the drafted text of record; it does not execute.)*
+
 ```markdown
 ## TRCP 194.1(a) — initial disclosures are owed without awaiting a request
 
@@ -239,6 +243,8 @@ the carve-out as new.
 
 ### D — `WS-2` (2 of 3) · insert AFTER entry C — **cite conformed, see `Q-WS2-2`**
 
+*(**Resolved 2026-08-18, #108: Q-WS2-2 RULED — the 194.2(b)(9) conformation is confirmed** and stays flagged on the entry as its own act. Entry D executed 2026-08-18; because entry C is not inserted, D was placed immediately after entry B.)*
+
 ```markdown
 ## TRCP 194.2(b)(9) — a witness statement is an initial disclosure
 
@@ -252,6 +258,8 @@ the carve-out as new.
 ```
 
 ### E — `WS-2` (3 of 3) · insert AFTER entry D, BEFORE `## TRCP 196.2(b)` — **HELD ON `Q-WS2-1(c)`**
+
+*(**Resolved 2026-08-18, #108, Q-WS2-1(c)+(e): entry E IS inserted — its own entry, with an express cross-reference** to the VERIFIED `## TRCP 192.5(c)(1)` entry in the destination file. Executed 2026-08-18; the cross-reference line was added on insertion and is not in the block below.)*
 
 ```markdown
 ## TRCP 194.5 — no objection and no work-product assertion against a Rule 194 disclosure
@@ -319,10 +327,12 @@ currently names TRCP 194 as deduped-away and the execution of `WS-2` changes tha
 
 | ID | Question | Status |
 |---|---|---|
-| `Q-WS2-1` | The Rule 194 collision question, stated in full at §3 above — now **FIVE** parts. **(a)** Does the span flag resolve to the whole rule or to 194.1–194.4? **(b)** Should 194.1(a) be its own entry or a **second observation** on the existing VERIFIED TRCP 194 entry? **(c)** Same question for 194.5. **(d)** Confirm 194.2(b)(9) is new on either reading. **(e) NEW 2026-08-18 — the overlap §3 missed:** the **destination** file already carries `## TRCP 192.5(c)(1) — witness statements excepted from work-product protection`, **VERIFIED — Michael, 2026-08-17**, whose own *"Relied on for"* names the same `privilege_tier` consumers entry E names. 192.5(c)(1) says a witness statement **is not work product at all**; 194.5 says **no objection or work-product assertion is permitted against a Rule 194 disclosure** — narrower and procedural. **Does 194.5 earn its own entry, or take a second observation on the verified 192.5(c)(1) entry?** | **OPEN — blocks entries C and E** |
-| `Q-WS2-2` | Cite conformation `194.2(9)` → `194.2(b)(9)`, stated in full at §3 above. | **OPEN — entry D drafted conformed, flagged** |
+| `Q-WS2-1` | The Rule 194 collision question, stated in full at §3 above — now **FIVE** parts. **(a)** Does the span flag resolve to the whole rule or to 194.1–194.4? **(b)** Should 194.1(a) be its own entry or a **second observation** on the existing VERIFIED TRCP 194 entry? **(c)** Same question for 194.5. **(d)** Confirm 194.2(b)(9) is new on either reading. **(e) NEW 2026-08-18 — the overlap §3 missed:** the **destination** file already carries `## TRCP 192.5(c)(1) — witness statements excepted from work-product protection`, **VERIFIED — Michael, 2026-08-17**, whose own *"Relied on for"* names the same `privilege_tier` consumers entry E names. 192.5(c)(1) says a witness statement **is not work product at all**; 194.5 says **no objection or work-product assertion is permitted against a Rule 194 disclosure** — narrower and procedural. **Does 194.5 earn its own entry, or take a second observation on the verified 192.5(c)(1) entry?** | **OPEN — blocks entries C and E** — **RESOLVED 2026-08-18, #108: RULED on all five limbs; entries A, B, D, E, F inserted, C became a second observation. See `t26-signoff-and-adjudication-record-2026-08-18.md` §2.** |
+| `Q-WS2-2` | Cite conformation `194.2(9)` → `194.2(b)(9)`, stated in full at §3 above. | **OPEN — entry D drafted conformed, flagged** — **RESOLVED 2026-08-18, #108: RULED — the 194.2(b)(9) conformation is confirmed and stays flagged on the entry as its own act.** |
 | `Q-WS2-3` | Whether attorney-client privilege excuses a Rule 194.2(b)(9) initial disclosure, given that 194.5 bars only objections and work-product assertions while *Fontenot*/*ExxonMobil* limit 192.3(h) discovery by privilege. **Full question text at §4a above.** Cross-referenced with `Q-WS3-1`; one question, not two rows. | **OPEN — flagged, entries D/E not reworded** |
 | `Q-WS1-1` | `WS-1`'s entry cites 215.1(e) *within* the entry as its enforcement limb rather than minting a separate 215.1(e) entry, per the conservative default. **Confirm that placement, or direct 215.1(e) to take its own entry** — the file already carries 215.1(c) and 215.1(d) as separate entries, which cuts the other way. | **OPEN — entry A drafted on the conservative default** |
 
 **Nothing in this document is verified. Nothing is built. Entries A, B, D and F are ready to
 execute on Michael's word; C and E are drafted and HELD on `Q-WS2-1`.**
+
+*(**Superseded 2026-08-18, #108.** `Q-WS2-1` is RULED on all five limbs and `Q-WS2-2` is RULED. Entries A, B, D, E and F were inserted into `legal-rule-registry-discovery-enforcement-and-pleading.md` on 2026-08-18, all UNVERIFIED; entry C was not, becoming a second observation instead. Nothing in this document is verified — that has not changed.)*

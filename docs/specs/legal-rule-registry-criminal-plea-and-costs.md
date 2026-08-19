@@ -1,15 +1,18 @@
 # Legal Rule Registry — Criminal Offense Classification, Plea Procedure and Costs
 
-**Status: MIXED — 3 of 7 entries VERIFIED, 4 UNVERIFIED.** Re-derived from this file at execution,
-2026-08-17. **Three entries carry Michael's sign-off from the Task 19 walk of 2026-08-17** — § 31.07,
+**Status: MIXED — 4 of 7 entries VERIFIED, 3 UNVERIFIED.** Re-derived from this file at execution,
+2026-08-18 (queue-runner, sixty-second invocation), by counting the 7 per-entry `**Status:**` lines. **Three entries carry Michael's sign-off from the Task 19 walk of 2026-08-17** — § 31.07,
 art. 42.0197 and art. 27.18(a), his word recorded entry by entry in
-`task-19-signoff-record-2026-08-17.md` §1 (edit E-5, §3 of that record). The other four do not, and
+`task-19-signoff-record-2026-08-17.md` §1 (edit E-5, §3 of that record). **A fourth, Health & Safety Code § 481.115(b), carries his sign-off from the T-26 Group A look of 2026-08-18 (#108)** — his word, recorded with exactly what was put in front of him at
+`t26-signoff-and-adjudication-record-2026-08-18.md` §1.4; the grading-only condensation of (a)+(b) was accepted and noted. The other three do not, and
 for them nothing changes: under CLAUDE.md's registry discipline an unverified proposition may exist
 here and drive warnings or placeholders; **none may be hard-coded, and none may drive a computed
 legal outcome, until Michael verifies it.** A model asserting legal currency is never verification.
-**Only Michael verifies.** **Two of the four — § 481.115(b) and art. 102.073 (entry 4b) — carry
-wording ADOPTED 2026-08-17 under ROUTE-C and are UNVERIFIED BY DESIGN: adoption is not verification,
-and verification attaches to the new wording at a later look (execute-then-verify, #95).** The other
+**Only Michael verifies.** **One of the three — art. 102.073 (entry 4b) — carries
+wording ADOPTED 2026-08-18 under ROUTE-C and is UNVERIFIED BY DESIGN: its Rule line was conformed
+VERBATIM to the official text at Michael's direction (#108, §1.5 of that record), adoption is not
+verification, and verification attaches to the new wording at a later look (execute-then-verify, #95).**
+*(§ 481.115(b) sat in this sentence until 2026-08-18; it left by being VERIFIED at exactly that later look.)* The other
 two are entry 3 and entry 4a, both still **cite-less until verified**. *(File provenance, unchanged:
 **former entry 4 was SPLIT into 4a and 4b by Michael's ruling 2026-08-13, #66** — one proposition
 became two; the "33 → 34" backlog figure that ruling produced is the #66-era figure and is not a
@@ -52,9 +55,10 @@ worksheet caught degree-of-offense misprints on drafted judgments before signing
 
 **Cite:** Tex. Health & Safety Code § 481.115(b).
 **Rule.** Possession of a controlled substance listed in Penalty Group 1 or 1-B is a state jail felony if the amount possessed is, by aggregate weight, including adulterants or dilutants, less than one gram.
-**Status:** UNVERIFIED.
+**Status:** VERIFIED — Michael, 2026-08-18 (#108).
 **Relied on for:** CR-10 degree-of-offense vs. punishment checks, same exhibit as above.
 **Wording:** adopted 2026-08-17 per #98 (ROUTE-C); verification attaches to this wording.
+**Verified:** 2026-08-18 post-execution look (#108) against the official corpus (Statutes 26-08-14); grading-only condensation of (a)+(b) accepted and noted. Record: §1.4.
 
 ## [NO CITE CARRIED] — degree of offense and punishment assessed must correspond
 
@@ -85,12 +89,12 @@ were disposed in a single criminal action or separate ones.
 
 **Cite:** Tex. Code Crim. Proc. art. 102.073 (text read verbatim 2026-08-13 from a public
 source; verification against official text is Michael's act).
-**Rule.** In a single criminal action in which a defendant is convicted of two or more offenses or of multiple counts of the same offense, each court cost or fee may be assessed only once against the defendant. Each court cost or fee whose amount is determined according to the category of offense must be assessed using the highest category of offense possible based on the defendant's convictions. The article does not apply to a single criminal action alleging only offenses punishable by fine only.
+**Rule.** (a) In a single criminal action in which a defendant is convicted of two or more offenses or of multiple counts of the same offense, the court may assess each court cost or fee only once against the defendant. (b) In a criminal action described by Subsection (a), each court cost or fee the amount of which is determined according to the category of offense must be assessed using the highest category of offense that is possible based on the defendant's convictions. (c) This article does not apply to a single criminal action alleging only the commission of two or more offenses punishable by fine only.
 **Status:** UNVERIFIED.
 **Relied on for:** CR-10's cost-total check on consolidated pleas — the capture's live
 exhibit was a multi-cause consolidated plea; if that was a single criminal action, an
 unqualified per-cause total is forbidden by (a).
-**Wording:** adopted 2026-08-17 per #98 (ROUTE-C); verification attaches to this wording.
+**Wording:** adopted 2026-08-18 per #108 (ROUTE-C — conformed VERBATIM to the official text at Michael's direction); verification attaches to this wording.
 
 ## Tex. Code Crim. Proc. art. 42.0197 — finding regarding gang-related conduct
 
