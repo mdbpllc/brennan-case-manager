@@ -16,6 +16,49 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SEVENTIETH invocation) — one docs-only packet, routed verbatim, and the first batch to exercise the boundary the `#114` scope ruling drew rather than merely restate it
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate9-smtp-runbook_2026-08-19.zip` — **9,894 bytes, mtime `2026-08-19 17:36:21` local, sha256 `d037b87927712d432c3b7dd0c12b6d914f7acc759beb9a988adb1a9498ed2efd`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. **Order was trivial and is stated rather than skipped:** one packet, its date parses from the filename, so filename-date order and pure-mtime order agree with nothing to reconcile (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded** — one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.**
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus `git ls-remote origin refs/heads/master` returned **`fe445d9`**, equal to local `HEAD`, with `git rev-list --left-right --count origin/master...HEAD` reading **0 behind / 0 ahead** and `git status --porcelain` empty, on `master`. **The ahead-stop did not arise, and this batch is the reason why:** the same session had pushed `fe445d9` and verified it at origin before the packet arrived, so there was no unpushed layer to build on. The runner text was re-read at HEAD rather than from any cached copy — **v11, blob `c75de00d`, sha256 `38a57e22…`**, identical to the identity BUILD-STATE records. Setup items 1–4 were all already satisfied, including `Bash(rm -f inbox/*)` in `.claude/settings.local.json`, so the Step 4.5 deletion did not prompt.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS, AND BOTH WERE ACTUALLY CHECKED.** `docs/smtp-setup.md` and `docs/specs/smtp-setup.md` were absent from the working tree; a whole-tree `find` for `*smtp*` returned only the zip itself; `git ls-files` returned nothing; and `git grep` at **`fe445d9` — the commit on origin** — returned nothing. So the packet was neither committed-and-pushed nor committed-but-unpushed, which are the two limbs that rule distinguishes.
+- **THE ONE ROUTING ROW EXECUTED AND WAS VERIFIED BY HASH, NEVER RETYPED.** `smtp-setup.md` → **`docs/smtp-setup.md`**, new file, verbatim: source and filed copy hashed separately and compared — **sha256 `c3433e46…` on both, 10,907 bytes, byte-identical**, matching the size the manifest states. Pure LF, 0 CRLF, 0 bare CR.
+- **THE §6 CREDENTIAL BAR WAS ENFORCED BY A SCAN, NOT BY TRUST.** Before filing, the staged file was swept for API-key-shaped assignments, AWS access-key IDs, long bearer-ish tokens, UUID server tokens, `re_`-prefixed Resend keys and PEM private-key blocks: **all six patterns returned none.** The runbook is instructions only; the credential lives in the provider and Supabase dashboards and nowhere else, which is what its own closing section requires.
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES — AND IT IS THE FIRST TO EXERCISE THE `#114` BOUNDARY RATHER THAN RESTATE IT.** A new **D-SMTP series** with **two rows**, `D-SMTP-1` (provider) and `D-SMTP-2` (sender identity), their question text **EXTRACTED FROM THE PACKET'S §7 BY PROGRAM** and verified present verbatim in the filed queue, per QR-1 — plus the Status header's per-batch reconcile sentence. Row-anchored open rows moved **344 → 346**, exactly the two. **GATE 9 ITSELF TOOK NO ROW**, the `#114` scope ruling applying to it as written — **but the two DECISIONS inside it did, because they await Michael's RULING and not merely his ACTION.** Every prior batch has stated that boundary; this is the first to have an item land on each side of it.
+- **HEALTH CHECK SKIPPED, DELIBERATELY, WITH THE REASON RECORDED (`QR-6(f)`).** Both limbs of the skip rule are satisfied: **§5 is NONE by the work order's own terms** — Michael, 2026-08-19: *"Do not change application code — this is a dashboard-and-DNS configuration, not a build"* — **and the routing table touches `docs/` ONLY**, no `src/`, no `db/`, no `supabase/`, no build tooling. `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. **The last MEASURED figures stand, from this session's own gate 10 work earlier today: 279 tests pass across 23 files; `npm run build` exit 0; `npm run lint` exit 0.** **A skipped check reported as a skip is honest; a skipped check reported as a pass is the failure the rule exists to prevent.**
+- **THE PACKET'S §1 RECONCILE HELD, WITH ONE DELTA NAMED RATHER THAN GLOSSED.** Its duplicate-watch limb is confirmed: no SMTP setup doc existed at any path. **But its stated basis is narrower than the repo** — §1 reports "no `smtp|email|mail` match in `docs/`", while `git grep -i smtp` at `fe445d9` returns six `docs/specs/` files (BUILD-STATE, `Go_Live_Gates.md`, the review queue, the go-live runbook, the log and its index). Those are gate references and queue rows, not a runbook, **so the packet's conclusion is right and its evidence sentence is too strong** — recorded because a future duplicate-watch run on that phrasing would report a false positive. Its BUILD-STATE view (`f44b3ec`, 106th refresh) was one commit stale by execution time, exactly as its own "treat as possibly stale" line anticipated.
+- **`QR-6(e)` DID NOT FIRE — stated rather than assumed.** Every act sat in a routing-table row or a Step 4 item; there was no packet-added act needing in-session authorization. **`PF-1` did not fire either, and the packet says so itself in its §0:** it carries no legal characterization and no proposed registry entry, so the trigger is not met.
+- **EVERY §6 DO-NOT HONORED, AGAINST THE DIFF.** No credential entered, requested, scaffolded or placeholdered anywhere · **`docs/specs/Go_Live_Gates.md` NOT edited**, gate 9's text standing as written · **gate 9 NOT marked complete, closed or satisfied** in BUILD-STATE, in this entry, or in the runbook, which says in its own words that it closes nothing · **`D-SMTP-1` and `D-SMTP-2` NOT resolved** — both entered as open rows · no application code, no email template in code, no auth-flow change, no schema object touched · the provider figures carried with their 2026-08-19 read date and their own re-check instruction, not as durable facts.
+
+## 2026-08-19 — Gate 9 SMTP runbook staged (design session, Cowork, Fable 5; routed by queue runner; UNNUMBERED per TOC-6)
+
+Michael's direct work order: write docs/smtp-setup.md, the gate 9 production-SMTP
+setup runbook. Authored design-side 2026-08-19 after full-text bridge reads of
+Go_Live_Gates.md (gate 9 + GL-1), CLAUDE.md, BUILD-STATE (106th refresh, stated
+commit f44b3ec), and the two format precedents (outlook-setup.md,
+statute-cache-setup.md); provider facts web-sourced 2026-08-19, each source named
+in the doc.
+
+- NEW: docs/smtp-setup.md — provider comparison (Postmark / Resend / Amazon SES)
+  put to Michael as OPEN decision D-SMTP-1, not picked; sender-identity decision
+  D-SMTP-2 (address + root-vs-subdomain) also OPEN; exact DNS record shapes per
+  provider (SPF/DKIM/DMARC) with the two-SPF-records and DMARC-touches-M365-mail
+  warnings and the 24–48h propagation lead time; step-by-step Supabase custom-SMTP
+  dashboard path (Authentication → Emails/SMTP; 30/hr default rate limit after
+  enabling); verification section built to FAIL — provider domain verification,
+  authenticated test message (spf/dkim/dmarc=pass in headers), a real signed-out
+  magic-link round trip in Supabase mode, junk + outside-mailbox check, repeat on
+  a later day.
+- GATE 9 REMAINS OPEN. The runbook existing closes nothing; completion criteria
+  are in the doc's own closing section and the close is recorded at the gates
+  re-check with Michael. No credential was created, entered, or recorded anywhere.
+- Nothing built; no code, schema, or Go_Live_Gates.md change. Both decisions to
+  the attorney-review queue with full question text (QR-1).
+
+Staged for Code: docs/smtp-setup.md (this packet — executed by this batch).
+Awaiting/Returned from Code, unreviewed: this batch's own routing (design side
+to verify docs/smtp-setup.md landed verbatim at HEAD after sync).
+
 ## 2026-08-19 — GATE 10 RUN AND VERIFIED LIVE (Claude Code, Opus 5; UNNUMBERED per TOC-6) — the same session that built it walks it in by Michael's hand, and the verification finds two record claims false that had nothing to do with gate 10
 
 **Continuation of this day's gate 10 build entry below; that entry is pushed and is NOT edited — this is the successor, per the append-only rule.** Michael pasted the migration, answered all six checks in words, and two of the queries written to verify gate 10 **disproved sentences the record had been carrying for weeks.** No remedy was run for either.
