@@ -690,6 +690,22 @@ dev-dependency chains of a lockfile green at 232 tests on 07-28. Triage as a rou
 machine that can test the result — NOT auto-fixed via `npm audit fix`, which can silently desync
 the machine from the tested lockfile. Filed by ruling 2026-08-13 (#66).
 
+## 2026-08-19 — "gapless" file-number claim survives in the master spec (C-6 fallout)
+
+Michael ruled C-6 on 2026-08-18 (Grok external review, record doc section 3 item 11): the
+file-number requirement is **"unique, year-scoped, not client-assigned"**, and the "gapless"
+claim comes out. The ruling names the SCHEMA HEADER, and the executing Code session removed it
+there (db/schema.sql) - holes are now documented as normal.
+
+**The same claim also sits in a canonical spec, which a coding session may not edit:**
+docs/specs/case-management-project-instructions.md line 55 reads "server-side gapless file
+numbers" in the v0.1 slice description. That doc is design-space canonical and read-only here,
+and the packet routed no change to it. Left exactly as it is.
+
+For the design space: the schema can no longer keep a gapless promise and now says so, so the
+spec sentence is the last place the retired claim survives. Michael may want it conformed on the
+next refresh of that document.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session

@@ -2,8 +2,11 @@
 -- Run this in the Supabase SQL editor (Database → SQL) on a fresh project.
 -- Mirrors the settled data model: lean case record, party-once-link-many,
 -- roles layered on top of party identity, YY-NNNN file numbers with a
--- January counter reset, generated server-side so numbers are gapless and
--- race-free with multiple users.
+-- January counter reset, generated server-side so ISSUANCE is race-free with
+-- multiple users. THE REQUIREMENT IS: unique, year-scoped, not client-assigned.
+-- Numbers are NOT gapless: holes are normal (deleted matters, burned calls) and
+-- must never be read as missing files. (C-6, ruled 2026-08-18 - Grok external
+-- review; docs/specs/grok-external-review-2026-08-18.md section 3 item 11.)
 
 -- ============ FILE NUMBERS ============
 create table if not exists file_counters (
@@ -20,7 +23,10 @@ security definer
 set search_path = public
 as $$
 declare
-  v_yy text := to_char(now(), 'YY');
+  -- F-3, ruled 2026-08-18: the year is CENTRAL, never UTC. On Supabase now()
+  -- is UTC, so a case opened 2026-12-31 18:05 Central would have been issued a
+  -- '27-' number. Same class as the v0.1 date_opened bug.
+  v_yy text := to_char((now() at time zone 'America/Chicago'), 'YY');
   v_n integer;
 begin
   insert into file_counters (yy, counter) values (v_yy, 1)
@@ -43,7 +49,8 @@ create table if not exists cases (
   commercial_policy_involved boolean,     -- MVC rollup flag
   pi_flags text[] default '{}',           -- stackable overlay flags (settled: flags, not case types)
   date_of_incident date,
-  date_opened date not null default current_date,
+  -- F-3, ruled 2026-08-18: current_date is UTC on Supabase. Central, always.
+  date_opened date not null default (now() at time zone 'America/Chicago')::date,
   -- NO statute_of_limitations HERE — RETIRED by CL-2 (D-CL2-2), dropped from the
   -- live database 2026-07-28 by db/migrations/2026-07-28-cl2-client-dimension.sql.
   -- The date lives on case_clients; the case DISPLAYS the earliest across
@@ -54,6 +61,10 @@ create table if not exists cases (
   court_name text,
   cause_number text,
   notes text,
+  -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
+  -- Nullable: pre-existing rows have no actor and are never invented one.
+  -- NO per-user RLS rides with this; that stays behind the security gate.
+  created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -83,6 +94,10 @@ create table if not exists parties (
   -- CD-1 §3.1 — a fact of the PERSON, true on every case at once.
   deceased boolean not null default false,
   deceased_date date,
+  -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
+  -- Nullable: pre-existing rows have no actor and are never invented one.
+  -- NO per-user RLS rides with this; that stays behind the security gate.
+  created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -255,6 +270,62 @@ drop trigger if exists case_clients_touch on case_clients;
 create trigger case_clients_touch before update on case_clients
   for each row execute function touch_updated_at();
 
+-- ============ FILE-NUMBER FREEZE (F-2, ruled 2026-08-18) ============
+-- An issued file number is on letters, pleadings and the client's file. No
+-- legitimate workflow relabels one, and UNIQUE only promises "unused right
+-- now" - it does not stop a PATCH from renaming 26-0004 to 26-0007. This
+-- refuses the change outright rather than logging it after the fact.
+create or replace function freeze_file_number()
+returns trigger language plpgsql as $$
+begin
+  if new.file_number is distinct from old.file_number then
+    raise exception
+      'file_number is immutable once issued (case %, % -> %)',
+      old.id, old.file_number, new.file_number
+      using errcode = 'check_violation';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists cases_freeze_file_number on cases;
+create trigger cases_freeze_file_number before update on cases
+  for each row execute function freeze_file_number();
+
+-- ============ ACTOR PROVENANCE (F-25, ruled 2026-08-18) ============
+-- Stamps the authenticated caller on insert. Columns only - NO per-user RLS.
+-- Left NULL when there is no JWT (SQL editor, service role, seeds): a NULL
+-- actor is honest, an invented one is not.
+create or replace function set_created_by()
+returns trigger language plpgsql as $$
+begin
+  if new.created_by is null then
+    new.created_by := auth.uid();
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists cases_set_created_by on cases;
+create trigger cases_set_created_by before insert on cases
+  for each row execute function set_created_by();
+
+drop trigger if exists parties_set_created_by on parties;
+create trigger parties_set_created_by before insert on parties
+  for each row execute function set_created_by();
+
+drop trigger if exists transcripts_set_created_by on transcripts;
+create trigger transcripts_set_created_by before insert on transcripts
+  for each row execute function set_created_by();
+
+drop trigger if exists medical_bills_set_created_by on medical_bills;
+create trigger medical_bills_set_created_by before insert on medical_bills
+  for each row execute function set_created_by();
+
+drop trigger if exists generated_documents_set_created_by on generated_documents;
+create trigger generated_documents_set_created_by before insert on generated_documents
+  for each row execute function set_created_by();
+
 -- ============ ROW LEVEL SECURITY ============
 -- Single-user phase: RLS is ON with an authenticated-only policy, so nothing is
 -- publicly readable. When staff logins arrive, replace these with per-role policies.
@@ -325,6 +396,10 @@ create table if not exists medical_bills (
   patient_balance numeric(12,2),
   balance_reduction numeric(12,2),
   notes text,
+  -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
+  -- Nullable: pre-existing rows have no actor and are never invented one.
+  -- NO per-user RLS rides with this; that stays behind the security gate.
+  created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -528,6 +603,10 @@ create table if not exists generated_documents (
   content text not null,
   disclaimer_version text not null,
   generated_by text not null,
+  -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
+  -- Nullable: pre-existing rows have no actor and are never invented one.
+  -- NO per-user RLS rides with this; that stays behind the security gate.
+  created_by uuid references auth.users (id),
   generated_at timestamptz not null default now()
 );
 
@@ -651,6 +730,10 @@ create table if not exists transcripts (
   -- Not-case-related recordings are kept in the Office notes store (O3).
   office_note boolean not null default false,
   summary text,
+  -- F-25, ruled 2026-08-18: actor provenance - cheap now, expensive later.
+  -- Nullable: pre-existing rows have no actor and are never invented one.
+  -- NO per-user RLS rides with this; that stays behind the security gate.
+  created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -937,8 +1020,10 @@ create policy "authenticated full access bill_statute_refs" on bill_statute_refs
 
 -- ============ API ROLE PRIVILEGES ============
 -- ADDED 2026-07-28, auth slice §5A, after the first live run of this file found
--- every request refused 401 / 42501 "permission denied for table" — 32 tables,
--- RLS on, 31 policies, and not one of them ever evaluated.
+-- every request refused 401 / 42501 "permission denied for table": every table
+-- in the schema had RLS on and a policy defined, and not one of them was ever
+-- evaluated. (Counts deliberately not stated here - they go stale, which is
+-- exactly what F-27 caught. Ruled 2026-08-18.)
 --
 -- RLS decides WHICH ROWS a role may touch. It does NOT grant access to the table
 -- itself; that is a separate SQL privilege layer and PostgREST hits it FIRST.
@@ -950,8 +1035,8 @@ create policy "authenticated full access bill_statute_refs" on bill_statute_refs
 -- these for us. That posture is correct and is being kept — the grants are
 -- simply made explicit here.
 --
--- `authenticated` ONLY. `anon` is deliberately granted NOTHING: all 31 policies
--- are `to authenticated`, so a signed-out caller is refused at the privilege
+-- `authenticated` ONLY. `anon` is deliberately granted NOTHING: EVERY policy in
+-- this file is `to authenticated`, so a signed-out caller is refused at the privilege
 -- layer and never reaches RLS at all.
 --
 -- *** READ THIS BEFORE ADDING A TABLE ***  With auto-expose off, a new table is
@@ -979,4 +1064,9 @@ grant select, insert, update, delete
 -- privilege of their own. Granting here would defeat that design.
 revoke all on file_counters from authenticated;
 
+-- F-1, ruled 2026-08-18 (narrow fix; the full trigger redesign is O-6, deferred).
+-- Postgres grants EXECUTE on new functions to PUBLIC, and CREATE OR REPLACE keeps
+-- that ACL - so this SECURITY DEFINER writer was callable by `anon` over PostgREST
+-- RPC, burning file numbers without inserting a case. REVOKE runs BEFORE the grant.
+revoke execute on function next_file_number() from public;
 grant execute on function next_file_number() to authenticated;

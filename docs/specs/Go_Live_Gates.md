@@ -72,6 +72,16 @@ Trigger: before the app is relied on for real work — not merely before real da
 locked out is an availability problem rather than a confidentiality one. No SMTP work was done in
 the 2026-07-28 auth session; this is a gate note only.
 
+## Gate 10 (appended 2026-08-18, C-4 of the Grok external review)
+
+**10. PII column promotion out of `parties.fields`.** DOB / SSN / driver's-license values move
+from the `parties.fields` jsonb blob to dedicated columns (excludable from API selects,
+auditable) BEFORE any real client record enters the database. Ruled by Michael 2026-08-18 as
+part of the Grok external review; the cheap moment is before real data exists, and after
+go-live the same change is a migration over privileged records. Record:
+docs/specs/grok-external-review-2026-08-18.md §3 item 10. Trigger: before the first real
+client record — this gate sits ahead of GL-1's floor, not behind it.
+
 ## GL-1 — The go-live floor (RULED by Michael, 2026-08-11)
 
 Go-live means real case, party, client, and SOL data entered by hand into the core app —

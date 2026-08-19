@@ -100,8 +100,15 @@ update case_parties cp
    and c.practice_area in ('Personal Injury','General Civil Litigation');
 --   d. Roles that name a FUNCTION are never caption parties on any case type
 --      this practice files. NULL here is the value "non-party".
+--   F-12, ruled 2026-08-18 (Grok external review, record doc section 3 item 5):
+--   `coalesce(party_status, null)` was a NO-OP - every Witness / Adjuster /
+--   provider / expert / judge would have ended NULL though 'non-party-actor'
+--   exists in the CHECK. The value is definitionally true for exactly the roles
+--   this UPDATE targets, per this block's own comment above, so writing it is
+--   not a guess and the never-guess principle is not offended.
 update case_parties
-   set caption_alignment = null, party_status = coalesce(party_status, null)
+   set caption_alignment = null,
+       party_status = coalesce(party_status, 'non-party-actor')
  where caption_alignment is null
    and role in ('Witness','Opposing counsel','Co-counsel','Adjuster on claim',
                 'Treating provider','Expert — ours','Expert — opposing',
