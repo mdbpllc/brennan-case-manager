@@ -116,6 +116,29 @@ client record — this gate sits ahead of GL-1's floor, not behind it.
    gate's shape rests on an unentered ch. 521 privacy proposition) are both still OPEN and are
    NOT closed by this. Records: session log, the 2026-08-19 gate 10 build, run and front-end
    entries; `docs/specs/gate10-pii-slice.md` and `docs/specs/gate10-pii-frontend-slice.md`.*
+
+   *EDGE (2) DISCHARGED — 2026-08-20 (Central). The §5 pre-flip report HAS NOW BEEN RUN against the
+   live database, by Michael's hand in the Supabase SQL editor, from
+   `docs/specs/gate10-preflip-report-query.sql` unmodified. **Result: "Success. No rows returned."**
+   Both labelled lists came back empty — the RULED EIGHT and the four AS-BUILT keys. So the sentence
+   above — "that is a reason to expect it, not a reading of it" — is answered: **it is now a
+   reading.** Gate 10's exclusion limb rests on a measurement rather than on an expectation, and
+   edge (2) is closed. Edge (1) is untouched and still open on `O-1`.*
+
+   *TWO LIMITS ON WHAT THAT ZERO MEANS, and a third that WAS raised and has been measured away.
+   **(a) It is clean ON TEN KEYS, not in general.** The query's own header calls the list a
+   heuristic; a value stored under an unguessed key is invisible to it, and no amount of querying
+   closes that — it is a property of the list. **(b) It is a POST-FLIP reading where §5 specifies a
+   PRE-FLIP one** — the front-end half landed at `47b65b4` (2026-08-19 23:56 Central) and the report
+   ran roughly half an hour later. **The deviation is recorded rather than glossed; its consequence
+   is (c).** **(c) THAT CONSEQUENCE WAS MEASURED TO NIL.** The write-guard strips `dob`, `ssn`,
+   `dlNumber` and `dlState`, so a party saved inside that window would have been written back
+   stripped — cleaning the row silently and leaving a post-flip zero unable to speak to the pre-flip
+   state for those four. **`parties` carries `updated_at` with a `parties_touch` BEFORE UPDATE
+   trigger, so any update moves it. Michael's second read —* `updated_at >= timestamptz '2026-08-19
+   23:56 America/Chicago'` *— returned **`false` on both rows**. No party was updated in the window;
+   the guard cleaned nothing; the reading reads the pre-flip state.** So the pre-flip inference is
+   **UNCONDITIONAL on all ten keys**, and (b) costs nothing.*
 ## GL-1 — The go-live floor (RULED by Michael, 2026-08-11)
 
 Go-live means real case, party, client, and SOL data entered by hand into the core app —

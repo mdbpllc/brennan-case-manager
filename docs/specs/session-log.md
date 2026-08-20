@@ -16,6 +16,265 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-THIRD invocation) — three docs-only packets from one design session, run in mtime order because the filename dates tie three ways, and the batch whose swapped packet was announced rather than discovered
+
+**Three zips in `inbox/`, ALL THREE executed, in this order:** `push-to-code_correction-sweep_2026-08-20.zip` (**9,960 B, mtime `05:23:43` UTC, sha256 `9de0e060…`**) → `push-to-code_gate10-edge2-discharge_2026-08-20.zip` (**10,600 B, `05:38:19` UTC, sha256 `68e0b318…`**) → `push-to-code_knowledge-capacity_2026-08-20.zip` (**12,884 B, `05:49:08` UTC, sha256 `bb35de31…`**). Identity pinned at Step 1 per QR-6(c). **ORDER WAS NOT TRIVIAL AND BOTH ORDERS WERE COMPUTED (QR-4).** All three filenames parse to `2026-08-20`, so filename-date order is a **three-way tie** and the mtime tiebreak alone separates them; the pure-mtime order is identical, and each packet's own §0 asserts the same sequence independently. **No disagreement to print.** Michael confirmed the order at the Step 1 STOP.
+
+- **THE SWAPPED PACKET WAS ANNOUNCED IN THE BATCH PROMPT RATHER THAN LEFT TO BE DISCOVERED, AND THE PIN CONFIRMS THE SWAP LANDED.** `gate10-edge2-discharge` was written at 05:33 and **replaced at 05:38** after a design session caught an attribution Michael had not made. The prompt named the dead hash and the live one; **what is on disk pins to `68e0b31851299d8f…`, and a search for the dead `c2e744bf…` returns nothing.** This is the first batch in which the Step 1 pin confirmed an *intended* substitution rather than guarding against an unintended one — QR-6(c) exists because a packet has in fact been swapped mid-STOP, and here the same mechanism did the opposite job.
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`84437a8`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 / 0**, `git status --porcelain` empty, on `master`. Neither the behind-limb nor the ahead-stop arose. Step 0 items 1–4 were already satisfied: `inbox/` exists, `.gitignore:16` carries `inbox/`, and `Bash(rm -f inbox/*)` is present in `.claude/settings.local.json`. No `.git/index.lock`, none left behind.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS FOR ALL THREE, AND TWO OF THE THREE NEEDED A CONTENT PROBE RATHER THAN A FILENAME SWEEP.** `knowledge-capacity-measurement-2026-08-20.md` was absent from the working tree, from `git ls-files`, **and** from `git ls-tree -r origin/master`. **Packets 1 and 2 route surgical edits INTO existing files, where `find` can prove nothing** — so content probes were run instead: packet 1's OLD block occurred **exactly once** and its NEW block **zero** times; packet 2's APPEND block and the string `EDGE (2) DISCHARGED` both **zero**. Neither the committed-and-pushed nor the committed-but-unpushed limb applied.
+- **`#118`, `#119` AND `#120` WERE ALL FREE AND TOOK NO RENUMBER.** Each returned **0** across the whole of `docs/` with `#117` returning **4** as a control, so the probe could disconfirm. Design high-water at HEAD is `#117`. **Per TOC-6 this runner line mints no `#nn` and carries only the invocation ordinal.**
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** §5 is **NONE in all three packets** and all three routing tables touch `docs/specs/` **only** — no `src/`, no `db/`, no `supabase/`, no build tooling — so `npm test` / `npm run build` / `npm run lint` could prove nothing about this batch. **The skip limb applies and is taken once for the whole batch. No health figure is asserted anywhere in this entry; a skipped check is not a pass.**
+- **THE CONFLICT RULE DID NOT FIRE, AND THE THREE PACKETS ARE COMPLEMENTARY RATHER THAN MERELY NON-OVERLAPPING.** No canonical path is claimed by two packets and no instruction is contradicted. **Packet 2's append depends on the correction packet 1 makes** — packet 1 removes the false gloss that a Code session may not touch `Go_Live_Gates.md`, and packet 2 then makes exactly that append — which is why the order matters for substance and not only for the `#nn` sequence. **Nothing was superseded and nothing was skipped as already built.**
+- **PACKET 1: ONE OCCURRENCE, MATCHED WHOLE, AND THE TRAP THE CORRECTION IS ABOUT REPRODUCED EXACTLY.** The OLD block matched **exactly once**; a line-anchored search for `his hand` returns **zero** because the phrase wraps across the 13/14 line ending, and a whitespace-normalized search returns **one**. `docs/specs/gl1-1-gate1-append-draft-2026-08-19.md` moves **6,816 → 8,168 bytes**, `git diff --numstat` **17/2**, still **pure LF, 0 CR** on a binary read. **The retraction-class quote survives inside the new conformance note** — it quotes the false sentence in order to deny it — and `GL1-1` stays **⬜ OPEN**.
+- **PACKET 2: ADDITIONS ONLY, AND THE PREFIX ABOVE THE INSERTION POINT WAS PROVED BYTE-IDENTICAL RATHER THAN ASSUMED.** `git diff --numstat -- docs/specs/Go_Live_Gates.md` reads **23 0** — the `−0` the order requires. The **9,519 bytes above the insertion point compare byte-identical to `HEAD`** (sha256 `cef86891…`), so nothing above it was rewritten; the block was inserted between gate 10's closure note and the `## GL-1` heading, which sit adjacent with a single newline between them. File **14,023 → 16,012 bytes**, still 0 CR. **Edge (2) stands as written** — its sentence now counts **2**, the original plus the new note quoting it in order to answer it — and edge (1), `G10-2` and `G10-4` are untouched and still OPEN. **GL-1's floor is UNCHANGED at three.**
+- **AND THE ONE PROBE THAT RETURNED ZERO WAS NOT REPORTED AS AN ABSENCE — THIS BATCH'S CLEANEST NEAR-MISS.** Packet 2's §1 requires that edge (2) still read as unrun. A literal search for *"that is a reason to expect it, not a reading of it"* returned **0**; **the phrase wraps across a line ending**, and normalized it returns **1**. Reported as a zero it would have tripped the packet's own STOP limb and halted a batch that was in fact clean. **Separately, the gates doc never uses the literal string `edge (2)` at all** — it labels those edges `(1)` and `(2)` inside a *"TWO THINGS THIS CLOSURE DOES NOT DELIVER"* block — so that phrasing legitimately returns zero too. **Two different reasons for a zero, in one reconcile, neither of them absence.**
+- **PACKET 3: FILED BY BYTE COPY AND VERIFIED BY HASH, NEVER RETYPED.** `docs/specs/knowledge-capacity-measurement-2026-08-20.md` — **10,746 bytes, sha256 `e489c336ab33e87d…`**, source and filed copy hashed separately and compared **byte-identical**, pure LF. Its §2 correction was checked against HEAD rather than accepted: `git ls-tree -r HEAD -- docs/authority/` returns **exactly two paths**, with **one** file under `pdf/` — so the document is right and the `WS-P2` row is what is wrong. **`WS-P2` was NOT closed, amended or re-scoped**; that is `Q-CAP-4` and is Michael's.
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES, AND THE ROW/NO-ROW SPLIT WENT TO MICHAEL RATHER THAN BEING DEFAULTED.** All three packets state that no rows are requested and invoke QR-6(e), **while seven items across their §7 tables had no row at HEAD** — the same self-contradiction the seventy-second invocation met, and resolved the same way: put to him. **He ruled: two rows only.** **`PF-2`** (does the preflight-re-run rule become a convention) and **`SW-1`** (does the C1 single-run sweep record take a dated addendum for the normalizer defect) were **minted by this runner on that ruling**, both **free repo-wide before minting**, their full question text **extracted from the packets' §7 by program** per QR-1 rather than retyped. **`Q-CAP-1`–`Q-CAP-5` deliberately took NO durable IDs and NO rows on the same ruling** — QR-1's rationale is that the packet is deleted and their full text lives in the measurement document this batch filed, which is permanent; the same reasoning that kept the twenty-one packet-local questions out of the register. Plus the Status header's per-batch sentence, written to **#120**. **Row-anchored open rows 350 → 352**, exactly the two; `git diff --numstat` reads **3 insertions / 1 deletion**, the lone deletion being line 3 rewritten in place by the mandated header act. **No existing row was touched, closed or reworded.**
+- **ONE INTERNAL INCONSISTENCY INSIDE THE FILED MEASUREMENT, FLAGGED AND NOT FIXED.** Its **§1.2 states the synced scope is *"163 files, 6,216,246 bytes"*** while **§1.3's table states 6,200,715 bytes at the same commit `84437a8`** — a **15,531-byte gap between two figures purporting to be the same measurement.** The packet's §1 and §6 both bar this session from refreshing, recomputing or "improving" any figure in it (dated snapshot, single-run-record pattern), **so it is filed verbatim and flagged here instead.** Neither figure was re-derived; **which one is right is not decided by this entry.** The document's substantive conclusions do not turn on the gap — both figures round to ~90% of the budget.
+- **TWO SMALLER OBSERVATIONS, RECORDED RATHER THAN RECONCILED.** **(1)** Packet 2's §0 states *"There are almost certainly TWO packets in `inbox/`, and this is the SECOND."* **There were three** — packet 3 was cut eleven minutes later and its own §0 carries the correct three-way table. Benign, and noted rather than silently smoothed. **(2)** **`docs/archive/` does not exist at HEAD** — `git ls-tree -r HEAD -- docs/archive/` returns nothing and there is no such directory on disk. That is consistent with `Q-CAP-1`'s proposal, which would create it, but it means **`Q-CAP-3` currently proposes excluding a path that is not there yet**, and the two must be ruled together for either to free anything.
+- **EVERY §6 DO-NOT HONORED, CHECKED AGAINST THE DIFF RATHER THAN ASSERTED.** The changed paths are **`gl1-1-gate1-append-draft-2026-08-19.md`, `Go_Live_Gates.md`, the new `knowledge-capacity-measurement-2026-08-20.md`**, plus the four Step 4 targets — `attorney-review-queue.md`, `session-log.md`, `session-log-toc.md`, `BUILD-STATE.md` — **and nothing else.** **`src/` not touched at all** · **nothing split, archived, truncated, pruned, moved or deleted** · **no sync setting changed and no `.gitignore` line added** · **`docs/reference/CR3-code-sheet-2023.pdf` untouched** · **no database connected to** · **no registry entry set to verified** · **no gate ruled, closed or amended**, `GL1-1` · `G10-2` · `G10-4` · `O-1` · `WS-P2` all still OPEN · **the C1 normalizer not "fixed"** · **and every retraction-class passage left standing**, in `gl1-1`, in `Go_Live_Gates.md`, and in the new measurement's §2, all three of which quote a false figure or sentence in order to deny it and will hit any future sweep for those phrases.
+- **THIS BATCH ADDS TO THE SYNCED SCOPE, WHICH IS THE SUBJECT OF ONE OF ITS OWN PACKETS.** One new document, three log entries, two queue rows, a full TOC regeneration and a BUILD-STATE rewrite — all inside `docs/`, all synced. **Nothing was trimmed to compensate and this session is expressly barred from trimming anything.** `Q-CAP-1` (split, and at what cutoff), `Q-CAP-2` (`/docs/reference/` out of the picker) and `Q-CAP-3` (`/docs/archive/` out of the picker) are the only levers that subtract, **and `Q-CAP-1` and `Q-CAP-3` must be ruled together or the split frees nothing at all.**
+
+**The three packets' §7 open items, merged here so the top of the log stays truthful — all Michael's, none resolved by this batch:** **`Q-CAP-1`–`Q-CAP-5`, NEW** (the session-log split and its cutoff · `/docs/reference/` · `/docs/archive/` · what becomes of `WS-P2` · whether a standing capacity policy is wanted) — **no rows, by his ruling; their text lives in the filed measurement's §5** · **`PF-2`, NEW and now a row** (does the preflight-re-run rule become a convention) · **`SW-1`, NEW and now a row** (does the C1 single-run record take a dated addendum) · `Q-G3-1` (**live database or throwaway for the gate-3 write-path test — named by two of the three packets as the nearest thing to a next act**, and on the critical path because gate 3 is one of GL-1's three remaining floor items) · `GL1-1` (gate 1's correcting append; **unchanged by this batch**, which corrects only how the draft describes the mechanism) · `LE-1` (the bridge-`git status` note and the `.gitattributes` question) · `G10-2` and `G10-4` (both still OPEN, both untouched) · `O-1` (the audit limb gate 10's closure expressly does not deliver; **edge (1) is still owed to it**) · `WS-P2` (**premise corrected, row not touched**) · `Q-521-*`, `Q-DE-*`, `Q-PH-*` and `Q-G3-2`–`Q-G3-5`, which stay in the documents that carry them · and the **eight-vs-six** omitted-clearance count, still open.
+
+**Staged for Code:** nothing. All three packets are executed; no build is authorized by any of them and §5 is NONE in all three.
+
+**Awaiting/Returned from Code, unreviewed:** everything this batch wrote — the `#118`, `#119` and `#120` entries, the `gl1-1` correction, the `Go_Live_Gates.md` edge-(2) discharge, the new knowledge-capacity measurement, the two queue rows and the header sentence, the BUILD-STATE refresh and this TOC edition — **plus the whole of the sixty-sixth through seventy-second invocations' output**, which no design session has reviewed yet.
+
+## 2026-08-20 (#120) — PROJECT KNOWLEDGE AT 89.8% AND THE RUNWAY IS ABOUT A DAY: the weight measured, `WS-P2` corrected off the wrong target, and the fix is a PAIR of acts only one of which Code can perform (design session, Cowork, Opus 5; bridge reads at `84437a8`)
+
+Raised by Michael. **§7.2: an Opus EXECUTION session — it adjudicates nothing.** Bridge reads
+lock-free (`GIT_OPTIONAL_LOCKS=0`) at `84437a8`; **no `.git/index.lock` stranded.** Measurement:
+**`docs/specs/knowledge-capacity-measurement-2026-08-20.md`** (PROPOSED). **DT-1: 2026-08-20.**
+
+- **THE READING, AND THE UNIT DERIVED RATHER THAN ASSUMED.** `knowledge_size` **1,795,567 of
+  2,000,000 — 89.8%**, ~204K headroom. The synced scope is **163 files / 6,216,246 bytes**, which
+  against the reported figure is **3.46 characters per unit** — so **the metric is TOKENS**, as the
+  instructions' operational note says, **and the synced repo alone accounts for essentially all of
+  it.** Byte size and budget share are therefore proportional, which is what makes the lever table
+  actionable rather than indicative.
+- **THE GROWTH RATE IS THE FINDING, NOT THE LEVEL.** Synced-scope bytes by HEAD: **2.72 MB
+  (08-12, 39%) → 3.67 MB (08-15, 53%) → 5.45 MB (08-19, 79%) → 6.20 MB (08-20, 90%). +3.48 MB in
+  eight days, and +750 KB — about 217K tokens, ~11% of the whole budget — in the last
+  TWENTY-FOUR HOURS.** **At that rate the remaining headroom is about ONE DAY; at the eight-day
+  average, about a day and a half.** *(A prediction, not a reading — it assumes a pace that is
+  itself a function of how much work gets done.)*
+- **AND THE MECHANISM IS THE CLOSE-OUT ITSELF, WHICH IS WHY IT COMPOUNDS.** Every runner batch
+  appends a dense log entry, regenerates the index in full (TOC-4) and rewrites BUILD-STATE — all
+  by ruled design, none of it a defect. **`session-log.md` went 549,427 → 1,421,039 bytes between
+  08-12 and 08-20: it nearly TRIPLED in eight days.** **The record-keeping has become the dominant
+  consumer of the budget that lets sessions read the record.**
+- **`WS-P2` IS CORRECTED, AND THIS IS THE PART THAT WOULD HAVE COST REAL TIME.** The row asserts
+  `docs/authority/pdf/` *"holds 16 scanned opinion PDFs… the probable home of the sync's ~1.38M-token
+  weight — the single largest lever on project capacity now identified."* **Measured at HEAD: that
+  directory holds exactly ONE tracked file, `README.md`.** `git ls-files docs/authority/` returns
+  two paths in total; **no opinion PDF is tracked anywhere in the repo**, and none appears in the
+  project's current document list either. **All of `docs/authority/` is 7,010 bytes — about 0.1%.**
+  **The README explains the confusion in its own words:** it is a *"Destination for the 16
+  case-opinion PDFs currently in Claude project knowledge… Michael moves them, not Code"* — **a
+  planned destination recorded as though it were a current home.** **The row stands as written; it
+  is still OPEN; and answering it as written would free about seven kilobytes.** **ACTOR: unknown —
+  the estimate predates this session and the record does not attribute it. CLASS: a figure attached
+  to a directory without measuring the directory — the same class as `#117`'s `109` lines and batch
+  72's "three weeks."**
+- **WHERE THE WEIGHT ACTUALLY IS.** `session-log.md` **1,421,039 B ≈ 21% of the budget** ·
+  `attorney-review-queue.md` **610,133 B ≈ 9%** · `docs/reference/CR3-code-sheet-2023.pdf`
+  **268,359 B ≈ 3.9%** — **the one tracked PDF in the repo, and it is not the one `WS-P2` names** ·
+  `pi-case-playbooks.md` ~3.3% · `session-log-toc.md` ~1.8% · BUILD-STATE ~1.6%. **The top two are
+  ~30% between them; `docs/specs/` is 88% of the synced scope.**
+- **THE FIX IS A PAIR OF ACTS AND ONLY ONE OF THEM IS CODE'S — WHICH ANSWERS MICHAEL'S QUESTION
+  DIRECTLY.** **Moving content to another file inside `docs/` frees NOTHING; it is still synced.
+  A saving requires an EXCLUSION IN THE SYNC PICKER, which is his hand in the Claude project UI and
+  which NO CODE PUSH CAN PERFORM.** So: **(a) HIS HAND, TONIGHT, NO CODE — exclude
+  `/docs/reference/`, worth ~3.9% and about half a day of runway, at the cost of a SCANNED page-image
+  PDF leaving RAG where it was never retrievable prose.** **(b) THE PAIR — split `session-log.md`
+  at a cutoff, archive the older entries verbatim to `docs/archive/`, regenerate the TOC over both,
+  and THEN exclude `/docs/archive/` in the picker.** **The log's own header already sanctions the
+  archive** — *"consider archiving older entries to a dated sub-file and keeping only the most recent
+  months here."*
+- **THE CUTOFF IS MEASURED SO THE RULING IS INFORMED, NOT GUESSED.** Keeping entries on or after
+  **2026-08-19** frees 16.9% (24 kept) · **08-18** 14.7% (43) · **08-16** 11.2% (72) · **08-13**
+  7.8% (114) · **08-11** 6.0% (146) · **08-07** 4.8% (164). **PROPOSED: 2026-08-13** — it keeps the
+  whole active gate-10 / queue-runner / FABLE history current work actually cites, and 08-13 is a
+  real convention watershed (instructions v17). **08-16 is the defensible aggressive option; 08-19
+  is not recommended — 24 entries is thinner than the work in flight reaches back.**
+  **THE COST, NAMED: archived entries leave RAG. A design session WITH the bridge loses nothing —
+  it reads the archive at HEAD as a file, which is how this session read everything tonight. A
+  session WITHOUT the bridge loses reach into older history.** **A second-order GAIN the capacity
+  number does not show: cutting 184 stale entries out of retrieval should make RAG over the
+  remainder better, not merely cheaper — the instructions' own note is that the real cost of
+  oversized knowledge is silent retrieval dilution, not lockout.**
+- **NOTHING HERE IS EXECUTED AND NOTHING IS RULED.** No file split, no picker change, no row closed.
+  **The split touches an APPEND-ONLY canonical file and needs Michael's explicit word**, and
+  `Q-CAP-1` and `Q-CAP-3` **must be ruled together or the work is wasted** — the split without the
+  exclusion frees nothing at all.
+
+**Staged for Code:** `docs/specs/knowledge-capacity-measurement-2026-08-20.md` (PROPOSED) and this
+entry. **Awaiting/Returned from Code, unreviewed:** batch 72's routing and its conformance notes;
+`67c313c`, `e60032a`, `d045e72`, `47b65b4`, `84437a8`. **Still open and still Michael's:**
+**`Q-CAP-1`–`Q-CAP-5`** (the split and its cutoff · `/docs/reference/` · `/docs/archive/` · what
+becomes of `WS-P2` · whether a standing capacity policy is wanted) · `GL1-1` · `Q-G3-1` · `LE-1` ·
+`Q-521-*` · `Q-DE-*` · `Q-PH-*` · the eight-vs-six clearance count.
+
+## 2026-08-20 (#119) — THE §5 PRE-FLIP REPORT RUN LIVE: "Success. No rows returned." — gate 10's edge (2) discharged, and the one inference the zero does NOT carry unconditionally is named (design session, Cowork, Opus 5; bridge reads at `84437a8`)
+
+Fired by Michael. **§7.2: an Opus EXECUTION session — it adjudicates nothing.** Checkout read
+**lock-free** (`GIT_OPTIONAL_LOCKS=0`) at `84437a8`; **no `.git/index.lock` stranded, none left
+behind.** **No database was connected to by this session** — the reading below is Michael's, from
+the Supabase SQL editor, and this session's contribution is the reading of the reading. **DT-1:
+2026-08-20 Central.**
+
+- **A CODE SESSION WAS OFFERED THE JOB AND SHOULD NOT HAVE TAKEN IT — CHECKED RATHER THAN
+  ASSUMED.** The suggestion put to Michael was *"run the live §5 report and tell me the result."*
+  **Three checks say the checkout cannot do it honestly.** `.env` holds `VITE_SUPABASE_URL` and
+  `VITE_SUPABASE_ANON_KEY` **and no service-role key**; there is **no Supabase CLI link**
+  (`supabase/` holds only `functions/`, no `config.toml`); and **`anon` holds no privilege on
+  `parties`**, so an anon-key read fails at the privilege layer rather than returning a misleading
+  empty set. **The query's own filed header already said so** — *"The build session that landed the
+  front-end half could NOT run this: the same authority's DO-NOT list bars it from connecting to the
+  database."* **And the precedent is unbroken:** every live act on this database — the migration
+  paste, the six checks, the four diagnostics, the `pg_default_acl` read, the two-row `parties`
+  count at `#113` — **has been Michael's hand**, and the migration file says it in terms: *"NO REPO
+  CHECK REACHES IT, this session having connected to no database."*
+- **THE READING.** Michael pasted `docs/specs/gate10-preflip-report-query.sql` **unmodified** into
+  the Supabase SQL editor. **Result: "Success. No rows returned."** Both labelled lists empty — the
+  **RULED EIGHT** and the four **AS-BUILT** keys. **The SQL editor is the context that makes the
+  zero a reading rather than an artifact:** there the caller is the table owner, so neither RLS nor
+  the `anon` privilege wall can produce a false empty. The same question asked through any `anon`
+  path would have produced a number that meant nothing.
+- **EDGE (2) IS DISCHARGED, AND THAT IS THE POINT OF THE EXERCISE.** Gate 10 closed on 2026-08-20
+  with the edge recorded in the gates doc in its own words: *"the expected result is zero — but that
+  is a reason to expect it, not a reading of it."* **It is now a reading.** The exclusion limb rests
+  on a measurement. **Edge (1) — auditability — is untouched and still rides `O-1`, which is OPEN.**
+  Nothing here discharges it, and the closure still does not deliver it.
+- **THREE LIMITS ON THE ZERO, STATED BECAUSE A CLEAN RESULT IS EXACTLY WHERE A RECORD GOES SOFT.**
+  **(a) Clean ON TEN KEYS, not in general** — the query's own header calls the list a heuristic and
+  a value under an unguessed key is invisible to it. **(b) It is a POST-FLIP reading where §5
+  specifies a PRE-FLIP one** — the front-end half landed at `47b65b4` (2026-08-19 23:56 Central) and
+  the report ran roughly half an hour later; **the deviation is named rather than glossed.**
+  **(c) LIMIT (b)'s CONSEQUENCE WAS MEASURED TO NIL BY A SECOND READ, SO THE PRE-FLIP INFERENCE IS
+  UNCONDITIONAL ON ALL TEN KEYS.** The exposure was narrow and real: the write-guard strips `dob`,
+  `ssn`, `dlNumber` and `dlState`, so a party saved through the app inside the window would have
+  been written back with a stripped `fields` object — **cleaning the row silently and making a
+  post-flip zero unable to speak to the pre-flip state for those four.** *(The other six —
+  `date_of_birth`, `social_security`, `dl`, `drivers_license`, `driver_license` and
+  `license_number` — are stripped by nothing and written by nothing, so they were never exposed.)*
+  **Put to Michael and then, rather than resting on his answer, MEASURED:** `parties` carries
+  `updated_at timestamptz not null` with a **`parties_touch` BEFORE UPDATE trigger running
+  `touch_updated_at()`**, so any update moves the column. His second read —
+  `updated_at >= timestamptz '2026-08-19 23:56 America/Chicago'` — returned **`false` on both
+  rows.** **No party was updated between the flip and the report. The guard cannot have cleaned
+  anything, and the post-flip reading reads the pre-flip state.** *(Stated with its own mechanism so
+  it is checkable rather than asserted: the chain rests on the trigger being BEFORE UPDATE FOR EACH
+  ROW, which is a schema fact at HEAD, and on nobody having run with it disabled.)* **The first
+  draft of this bullet recorded Michael's own account of his evening as the answer; that was an
+  attribution he had not made, it was caught before shipping, and it is the difference between a
+  report and a reading — which is the distinction this entire gate closure turns on.**
+- **A LIVE TRAP FOUND IN THE PROJECT'S OWN DOCUMENTED SWEEP METHOD, CAUGHT BY IT FIRING ON THIS
+  ENTRY'S OWN PRE-SHIP CHECK.** `C1`'s sweep normalizer — recorded at
+  `anon-adp-sweep-verification-2026-08-19.md` and reused by the `#118` correction sweep — **deletes
+  `*`, `_` and backtick as emphasis characters.** That is right for prose and for the statute corpus
+  it was characterized against. **It is wrong for THIS repo, whose documents are dense with
+  snake_case identifiers.** Demonstrated: *"strips `party_pii`'s `date_of_birth` from
+  `file_counters`"* normalizes to *"strips partypii's dateofbirth from filecounters"* — **so a sweep
+  for `party_pii`, `date_of_birth`, `file_counters`, `service_role`, `case_clients` or
+  `legal_rules` over C1-normalized text returns ZERO AND LOOKS CLEAN.** **It has not bitten yet, and
+  only by luck:** C1's two families (`anon … nothing`, `ALTER DEFAULT PRIVILEGES`) carry no
+  underscore, and none of `#118`'s thirteen claims did either. **The fix is one lookaround — treat
+  `_` as emphasis only when it is not flanked by alphanumerics** (`(?<![A-Za-z0-9])_(?![A-Za-z0-9])`),
+  which preserves every identifier and still strips markdown emphasis. **Same family as the emphasis
+  trap and the wrap trap, and the lesson is now three-for-three: a normalizer written to defeat one
+  trap creates another, silently.** **PROPOSED, not ruled:** whether the C1 record takes a further
+  dated addendum — it is a single-run record and its own header bars in-place updates — is Michael's.
+- **WHAT THIS DOES NOT TOUCH.** `party_pii`'s own contents are not queried by this report and are
+  not in evidence. **`G10-2` and `G10-4` stay OPEN.** **GL-1's floor is UNCHANGED at three** — gate
+  10 sat ahead of the floor, so discharging its edge moves the floor not at all: **gate 9 SMTP,
+  gate 3's RLS write-path test, and the gates re-check are exactly where they were.**
+
+**Staged for Code:** the gate-10 edge-(2) append order and this entry. **Awaiting/Returned from
+Code, unreviewed:** batch 72's routing and its two conformance notes; `67c313c`, `e60032a`,
+`d045e72`, `47b65b4`, `84437a8` — **none verified by this session**, whose reads were scoped to the
+query, the gate text and the credential check. **Still open and still Michael's:** `GL1-1` ·
+**`Q-G3-1`, now the nearest thing to a next act** · `Q-521-*` · `Q-DE-*` · `Q-PH-*` · `LE-1` · the
+eight-vs-six clearance count · whether the preflight-re-run rule of `#118` becomes a convention.
+
+## 2026-08-20 (#118) — THE CORRECTION SWEEP AFTER BATCH 72: one live carrier out of ten hits, the rest retraction class — and the process finding is that a preflight which runs BEFORE the repairs validates a draft that never ships (design session, Cowork, Opus 5; bridge reads at `84437a8`)
+
+Fired by Michael after the gate-10 closure. **§7.2: an Opus EXECUTION session — it adjudicates
+nothing.** Checkout read **lock-free** (`GIT_OPTIONAL_LOCKS=0`) at `84437a8`; **no `.git/index.lock`
+stranded, none left behind.** Nothing written to the checkout but the packet zip. **DT-1: Central
+has rolled past midnight — this entry stamps 2026-08-20 and the container agrees for once.**
+
+- **THE TWO INCONSISTENCIES BATCH 72 FOUND WERE BOTH MINE, AND THEY ARE ONE FAILURE, NOT TWO.** In
+  `g10-4-ch521-entry-drafts` I corrected §1.1's corpus gap to **over four months** and left
+  `Q-521-4` in §5 saying **three weeks**. In `post-sync-verification` I corrected §3.6's two naming
+  errors and left §5's carried-forward line reproducing **both**. **In each case I patched the site
+  a preflight agent named and never swept the document for the same claim.** That is **RR-1 failing
+  on my own corrections** — RR-1 requires re-reading every earlier document against every later
+  ruling in the session, and **my preflight repairs were exactly such rulings.** I edited sites; I
+  did not sweep claims.
+- **THE PROCESS FINDING IS SHARPER THAN THE TWO DEFECTS AND IS THE REASON THIS ENTRY EXISTS.**
+  **`PF-1` ran BEFORE the repairs and was never re-run after them.** So the fleet validated a draft
+  that never shipped, and **both defects were CREATED by the repairs rather than missed by the
+  fleet.** A preflight that gates the shipping decision has to run on **what actually ships**.
+  **PROPOSED, not ruled: when a preflight returns findings that are then fixed, the fix pass needs
+  its own check before the zip closes** — at minimum a normalized re-sweep of every claim touched.
+  Michael's, and it is the generalizable lesson of the whole evening.
+- **A THIRD ERROR, DIFFERENT CLASS, AND MICHAEL CAUGHT IT RATHER THAN THE FLEET.** The `GL1-1` draft
+  says of its own append *"Michael's ruling and his hand"* — which reads as a bar on a Code session
+  touching `Go_Live_Gates.md` at all. **False. The rule governs the FORM — append, never rewrite —
+  not the hand.** Re-verified independently this session: **`git log -S` shows both prior gate
+  appends were queue-runner CODE sessions executing his rulings — GL-1's floor at `70df10f`
+  (2026-08-11), and gate 10 itself ADDED at `d6f97e6` (2026-08-19).** **The claim came from an
+  assumption when the record was one command away.** Named for what it is: **verify-before-
+  criticizing pointed the other way — verify before RESTRICTING.** **An over-claim gets checked
+  because someone tests the figure; an over-restriction is silent, because a removed option never
+  announces itself** — and this one removed a real option from the one document whose purpose is to
+  lay his options out. Repair staged; **`GL1-1` stays OPEN and this changes no answer.**
+- **THE SWEEP THAT SHOULD HAVE HAPPENED BEFORE THE ZIP HAPPENED NOW, AND IT IS THE METHOD THAT
+  MATTERS.** All **thirteen** claims corrected during last night's preflight were re-swept across
+  all seven filed documents, **normalized the way C1's sweep normalizes — emphasis characters
+  deleted and whitespace including newlines collapsed** — because a raw pattern cannot span either
+  trap. **Nine claims: clean. Ten hits across four claims, EVERY ONE CLASSIFIED BY READING, not by
+  count.** **Result: exactly ONE live carrier — the `GL1-1` "his hand" sentence.** The other nine
+  are **retraction class by design**: my own corrections and batch 72's conformance notes quoting
+  the false text in order to deny it. **They will keep returning on every future sweep of these
+  phrases and they must not be "fixed."**
+- **THE WRAP TRAP FIRED A FOURTH TIME IN TWO DAYS, ON ME, WHILE HUNTING MY OWN DEFECT.** A
+  line-anchored `grep 'his hand'` over the `GL1-1` draft returned **nothing** — the phrase breaks
+  across the 13/14 line ending. It was found only by the normalized sweep. **The instrument that
+  keeps failing is the line-anchored one, and the fix keeps being the same fix.** The staged edit
+  order therefore matches the whole block rather than the phrase, and says why on its face.
+- **TWO FLAGS RAISED AND DELIBERATELY NOT EDITED, because each would cost more than it fixes.**
+  (1) **`deadline-engine-spec` §9.1 Q3 restates the `#75` memo's question VERBATIM under QR-1, and
+  that question's own text contains *"no queue item"* — which its own filing falsified.** Editing a
+  QR-1 full-text carry to make it true would break the thing QR-1 exists to preserve; **§8.3 of that
+  same document already explains it — "the row asserting that no row exists IS the row."** Left as
+  is, named here. (2) **`PROMPT-gate10-frontend-build-session` cites `RlsProbePanel.tsx:73` in its
+  Step 5 body while its own closing parenthetical says to locate the sentences by TEXT** — a real
+  tension, but the prompt quotes the slice's own reference, **and the prompt is SPENT: the build ran
+  at `47b65b4`.** Not worth an edit.
+- **WHAT LANDED WHILE THIS SESSION WAS NOT LOOKING, READ AT HEAD RATHER THAN ASSUMED.** Since
+  `beb27f4`: batch 72 routed the seven documents (`2bc5926`); the two inconsistencies were repaired
+  on Michael's ruling (`67c313c`); **`G10-6` was RULED IN — the front-end slice's §7 item 6 grows to
+  cover BOTH false sentences** (`e60032a`), closing the item `#117` carried as open; **`G10-5` was
+  authorized and recorded before the build ran** (`d045e72`), which is the sequencing the kickoff
+  prompt's Step 0 was rewritten to force; **the front-end half was BUILT** (`47b65b4`); and **gate
+  10 was CLOSED** (`84437a8`), with its two edges written into the gates doc itself rather than the
+  log. **`LE-1` was minted for the bridge-`git status` question.** **GL-1's floor is UNCHANGED at
+  three** — gate 10 sat ahead of the floor. **Gate 3's RLS write-path test is now one of those
+  three, which puts `gate3-write-path-test-protocol.md` on the critical path**, and it cannot run
+  until **`Q-G3-1`** (live database or throwaway) is answered, because that choice decides what a
+  clean run proves.
+
+**Staged for Code:** the `GL1-1` surgical edit order and this entry. **Awaiting/Returned from Code,
+unreviewed:** batch 72's own routing and its two conformance notes; `67c313c`, `e60032a`, `d045e72`,
+`47b65b4` and `84437a8` — **none of which this session verified**, its reads being scoped to the
+correction sweep. **Still open and still Michael's:** `GL1-1` · `Q-G3-1`–`Q-G3-5` · `Q-521-1`–
+`Q-521-5` · `Q-DE-1`–`Q-DE-6` · `Q-PH-1`–`Q-PH-5` · `LE-1` · the eight-vs-six clearance count · and
+**whether the preflight-re-run rule above becomes a convention.**
+
 ## 2026-08-20 — CODE SESSION (ruling recorded): GATE 10 CLOSED — and the closure's edges are recorded as carefully as the closure
 
 **Session:** Claude Code, Opus 5, on `mdb-pllc`. **Michael's ruling: *"close gate 10."*** Recorded by an append beneath the gate in `docs/specs/Go_Live_Gates.md`; **the gate's own text is untouched.** **No code was written and nothing under `src/`, `db/` or `supabase/` was touched.** Unnumbered Code entry; no `#nn`, no runner ordinal (TOC-6). **DT-1 did NOT fire:** PowerShell read **`2026-08-20 00:10 -05:00`** and `date -u` read **`Thu Aug 20 05:10 UTC 2026`** — the same day, the Central clock having simply rolled past midnight since the build. **This is the first entry dated 2026-08-20.**

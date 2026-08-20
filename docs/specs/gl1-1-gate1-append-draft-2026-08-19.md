@@ -10,10 +10,25 @@ act — **adopt / reject / edit**. `GL1-1` is an **OPEN** row in `docs/specs/att
 *"Does `Go_Live_Gates.md` gate 1 take a correcting append?"*
 
 **WHAT THIS IS NOT.** **`Go_Live_Gates.md` is append-only and design-space canonical. Nothing here
-edits it, and this document does not append anything.** The append is **Michael's ruling and his
-hand.** If he adopts it, the block below goes into the gates doc **beneath gate 1**, in the same
+edits it, and this document does not append anything.** **WHETHER THE APPEND HAPPENS IS MICHAEL'S
+RULING. WHOSE HAND EXECUTES IT IS NOT RESTRICTED** — a Code session may make the append once he has
+ruled it. If he adopts it, the block below goes into the gates doc **beneath gate 1**, in the same
 indented-italic shape gate 2's 2026-08-11 clarification and its 2026-08-12 GH-1 tripwire already
 use — and gate 1's own text stands as written, untouched.
+
+*(**Conformed 2026-08-20**, on Michael's finding, and the error corrected here was mine. This
+passage read* "The append is **Michael's ruling and his hand.**" *— which reads as a bar on a Code
+session touching the file at all. **That is false. The rule governs the FORM — append, never
+rewrite — not the hand**, and the record settles it in one command: `git log -S` shows **both**
+prior gate appends were made by QUEUE-RUNNER CODE SESSIONS executing Michael's rulings —* **GL-1's
+go-live floor at `70df10f`** *(2026-08-11), and* **gate 10 itself was ADDED at `d6f97e6`**
+*(2026-08-19). The claim was drawn from an assumption rather than from the record when the record
+was one command away — the same shape as verify-before-criticizing, pointed the other way. It also
+failed in the direction that is hardest to notice: an over-claim gets checked, an* **over-restriction
+silently removes an option** *— here, from the one document whose whole purpose is to lay Michael's
+options out.* **The RULING requirement is unchanged and is not softened by this note.** *This note is
+**retraction class** — it quotes the false sentence in order to deny it, so it will keep returning on
+any sweep for "his hand" and* **must not be "fixed."**)*
 
 **SOURCE.** `docs/spec-feedback.md`, the entry *"2026-08-19 - gate 1's backup rationale is half
 wrong, and one limb of it can never be settled."* **The finding is quoted from there, not
