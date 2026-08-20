@@ -290,11 +290,13 @@ it is Michael's hand.
 
 ### 6.6 What any new table must carry
 
-`ALTER DEFAULT PRIVILEGES` is **deliberately not set** — *"Any migration adding a table must add
-its own grant."* Every table this design space implies ships, **in the same commit as the table**:
-`enable row level security`, its `for all to authenticated using (true) with check (true)` policy,
-its own `grant select, insert, update, delete … to authenticated`, and an RLS-probe extension.
-`anon` gets nothing.
+**This project issues no `ALTER DEFAULT PRIVILEGES`** — *"Any migration adding a table must add
+its own grant"* — **and the database nonetheless carries one: Supabase's bootstrap default, whose
+withholding of the four DML privileges is what makes an ungranted table unreachable (C-2 as
+RESTATED 2026-08-19).** Every table this design space implies ships, **in the same commit as the
+table**: `enable row level security`, its `for all to authenticated using (true) with check (true)`
+policy, its own `grant select, insert, update, delete … to authenticated`, and an RLS-probe
+extension. `anon` is granted none of the four DML privileges.
 
 ---
 

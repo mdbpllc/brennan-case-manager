@@ -501,11 +501,17 @@ create policy "authenticated full access party_pii" on party_pii
 -- the "*** READ THIS BEFORE ADDING A TABLE ***" block down there says. It is
 -- repeated here so the gate 10 block is complete as a unit and matches the
 -- migration line-for-line (the slice's §3.3 asks for RLS and GRANT "from birth").
--- WHERE THE REASON REALLY BITES IS THE MIGRATION, not this file: ALTER DEFAULT
--- PRIVILEGES is NOT set on this database (C-2, ruled 2026-08-18: keep the current
--- posture), so on an EXISTING database a new table without its own GRANT is
--- unreachable — which is why the migration's copy of this line is load-bearing and
--- this one is belt-and-braces. `anon` gets NOTHING, by design. Do not widen it.
+-- WHERE THE REASON REALLY BITES IS THE MIGRATION, not this file: on an EXISTING
+-- database a new table without its own GRANT is unreachable — because Supabase's
+-- own default ACL withholds the four DML privileges from every API role
+-- (pg_default_acl, read by Michael's hand 2026-08-19), NOT because no default
+-- exists. C-2 was RESTATED on that warrant 2026-08-19 (dated annotation in
+-- docs/specs/grok-external-review-2026-08-18.md); per-migration explicit grants
+-- stand. The migration's copy of this line is load-bearing and this one is
+-- belt-and-braces. This file grants `anon` nothing and no policy names it; the
+-- sentence that survives the 2026-08-19 catalog read is: `anon` holds none of
+-- the four DML privileges (it holds TRUNCATE/REFERENCES/TRIGGER/MAINTAIN
+-- vendor-wide — remedy open, O-11). Do not widen it.
 grant select, insert, update, delete on party_pii to authenticated;
 
 -- ============================================================
@@ -1179,16 +1185,22 @@ create policy "authenticated full access bill_statute_refs" on bill_statute_refs
 -- these for us. That posture is correct and is being kept — the grants are
 -- simply made explicit here.
 --
--- `authenticated` ONLY. `anon` is deliberately granted NOTHING: EVERY policy in
--- this file is `to authenticated`, so a signed-out caller is refused at the privilege
--- layer and never reaches RLS at all.
+-- `authenticated` ONLY. This file deliberately grants `anon` NOTHING, and EVERY
+-- policy is `to authenticated` — a signed-out caller is refused reads and writes
+-- at the privilege layer and never reaches RLS. Stated precisely (2026-08-19
+-- catalog read): `anon` holds none of the four DML privileges. It DOES hold
+-- TRUNCATE/REFERENCES/TRIGGER/MAINTAIN on every postgres-owned table via
+-- Supabase's own default ACL — nothing this file did; remedy open at O-11.
 --
--- *** READ THIS BEFORE ADDING A TABLE ***  With auto-expose off, a new table is
--- unreachable until it is granted. The statement below is written as ALL TABLES
--- so a fresh run of this file is complete, but it is point-in-time, not a
--- standing rule — ALTER DEFAULT PRIVILEGES is deliberately NOT set, because
--- silently exposing future tables is the posture this project rejected. Any
--- migration adding a table must add its own grant.
+-- *** READ THIS BEFORE ADDING A TABLE ***  A new table is unreachable until it
+-- is granted. The statement below is written as ALL TABLES so a fresh run of
+-- this file is complete, but it is point-in-time, not a standing rule. THIS
+-- PROJECT has never issued ALTER DEFAULT PRIVILEGES — but the DATABASE carries
+-- one anyway (Supabase's bootstrap; pg_default_acl read 2026-08-19), and the
+-- unreachability of an ungranted table rests on that vendor default WITHHOLDING
+-- the four DML privileges (C-2 as RESTATED 2026-08-19). It would change
+-- silently if the vendor default changed. Any migration adding a table must
+-- add its own grant.
 --
 -- WORKED EXAMPLE, 2026-07-28: the CL-2 slice added `case_clients` and
 -- `case_client_flags` and shipped their grants in the SAME migration

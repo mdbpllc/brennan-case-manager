@@ -257,3 +257,20 @@ commit;
 --     -- three-column one is still listed, the lookup above did not match it and
 --     -- it must be dropped by hand before CD-1 runs.
 -- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- CORRECTION — appended 2026-08-19 (Central) by Michael's ruling. Everything
+-- above stands untouched as the record of the text that ran.
+-- The comment above reads "ALTER DEFAULT PRIVILEGES stays unset" (C-2 posture
+-- kept, ruling 9). The project-conduct half is true; as a database statement it
+-- is false, and C-2 has since been restated.
+-- What is true, read from the catalog by Michael's hand 2026-08-19: `anon` and
+-- `service_role` hold TRUNCATE, REFERENCES, TRIGGER and MAINTAIN on every table
+-- in public, granted by Supabase's own default ACL (pg_default_acl:
+-- postgres | public | r), not by anything in this repository — and
+-- `ALTER DEFAULT PRIVILEGES` IS set on this database, by that vendor bootstrap,
+-- though this project has never issued it. The sentence that survives: `anon`
+-- holds none of the four DML privileges. C-2 RESTATED 2026-08-19 (see the dated
+-- annotation in docs/specs/grok-external-review-2026-08-18.md); remedy open and
+-- Michael's (O-11); enforce-vs-inherit deferred pending diagnostics (O-12).
+-- ---------------------------------------------------------------------------

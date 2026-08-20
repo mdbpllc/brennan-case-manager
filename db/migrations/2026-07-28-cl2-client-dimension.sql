@@ -249,3 +249,20 @@ commit;
 --   select column_name from information_schema.columns
 --     where table_name = 'cases' and column_name = 'statute_of_limitations';
 -- ------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- CORRECTION — appended 2026-08-19 (Central) by Michael's ruling. Everything
+-- above stands untouched as the record of the text that ran.
+-- The comments above read "ALTER DEFAULT PRIVILEGES deliberately unset" and
+-- "anon gets nothing." The first is false as a database statement; the second is
+-- true of this project's grants and false of the database.
+-- What is true, read from the catalog by Michael's hand 2026-08-19: `anon` and
+-- `service_role` hold TRUNCATE, REFERENCES, TRIGGER and MAINTAIN on every table
+-- in public, granted by Supabase's own default ACL (pg_default_acl:
+-- postgres | public | r), not by anything in this repository — and
+-- `ALTER DEFAULT PRIVILEGES` IS set on this database, by that vendor bootstrap,
+-- though this project has never issued it. The sentence that survives: `anon`
+-- holds none of the four DML privileges. C-2 RESTATED 2026-08-19 (see the dated
+-- annotation in docs/specs/grok-external-review-2026-08-18.md); remedy open and
+-- Michael's (O-11); enforce-vs-inherit deferred pending diagnostics (O-12).
+-- ---------------------------------------------------------------------------

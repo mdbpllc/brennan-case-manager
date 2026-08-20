@@ -259,12 +259,15 @@ suggested request stub is not a fact about anything; it is a proposal. **Carried
 
 ### 4.5 What any new table must carry
 
-`ALTER DEFAULT PRIVILEGES` is **deliberately not set** — the schema's own note reads *"Any
-migration adding a table must add its own grant."* Every table this spec's design space implies
-ships, **in the same commit as the table**: `enable row level security`, its
-`for all to authenticated using (true) with check (true)` policy, its own
-`grant select, insert, update, delete … to authenticated`, and an RLS-probe extension. `anon` gets
-nothing. This is the #28 / CL-2 / CD-1 lesson and it is standing practice.
+**This project issues no `ALTER DEFAULT PRIVILEGES`** — the schema's own note reads *"Any
+migration adding a table must add its own grant"* — **and the database nonetheless carries one:
+Supabase's bootstrap default (pg_default_acl, read 2026-08-19), whose withholding of the four DML
+privileges is what actually makes an ungranted table unreachable (C-2 as RESTATED 2026-08-19).**
+Every table this spec's design space implies ships, **in the same commit as the table**: `enable
+row level security`, its `for all to authenticated using (true) with check (true)` policy, its own
+`grant select, insert, update, delete … to authenticated`, and an RLS-probe extension. `anon` is
+granted none of the four DML privileges. This is the #28 / CL-2 / CD-1 lesson and it is standing
+practice.
 
 ---
 

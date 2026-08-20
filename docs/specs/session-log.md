@@ -16,6 +16,87 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SEVENTY-FIRST invocation) — one docs-and-comments packet, executed whole, and the first batch in which a packet's own minted queue ID collided with a row already in the register
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate10-frontend-and-anon-corrections_2026-08-19.zip` — **26,976 bytes, mtime `2026-08-19 18:46:08` local, sha256 `0ce2e8352ea1bf680f7dc31732cceb6ceaf827f1205a5fb71b7b50b46b09483b`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. **Order was trivial and is stated rather than skipped:** one packet, its date parses from the filename, so filename-date order and pure-mtime order agree with nothing to reconcile (QR-4). Michael confirmed the order at the Step 1 STOP and ruled the one open question in the same breath — **§4.6 Edit B RIDES** (the packet had offered it for striking as beyond Task A's literal scope). **Nothing was superseded** — one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.**
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus `git ls-remote origin master` returned **`f5e4ab4`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 ahead / 0 behind** and `git status --porcelain` empty, on `master`. The ahead-stop did not arise. The runner text was re-read at HEAD rather than from any cached copy — **v11, blob `c75de00d`, sha256 `38a57e22…`**, identical to the identity the seventieth invocation recorded. Setup items 1–4 were already satisfied, including `Bash(rm -f inbox/*)` in `.claude/settings.local.json`.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS.** `docs/specs/gate10-pii-frontend-slice.md` was absent from the working tree and a `docs/`-wide `find -iname 'gate10*frontend*'` returned nothing — so the packet was neither committed-and-pushed nor committed-but-unpushed, which are the two limbs that rule distinguishes. **All twelve of the packet's §1 sha256 pins matched the working tree exactly**, so no per-file STOP arose and no reconciliation delta existed.
+- **THE PACKET'S OWN MINTED QUEUE ID COLLIDED — THE FIRST TIME THIS HAS HAPPENED — AND MICHAEL RULED IT AT EXECUTION.** The packet minted **`O-10`** for the C-2 restatement; the O series **already carried an `O-10`**, the CD-1/PG15 hand-run-migration question, OPEN and his. **Unlike every collision this project has flagged-not-renamed — `O-5`/`O5`, `GL1-1`/`GL-1`, `H`/`HK` — the two strings are IDENTICAL**, so flagging alone would have left "resolve `O-10`" pointing at two rows in one series. Put to Michael with the alternatives; **he ruled: renumber the incoming row to `O-13` and flag it.** The packet's own rule for design-minted identifiers governs and was cited — *renumber on collision and say so*. **No existing row was renumbered, edited or closed**, so §6 holds. **One residual, stated rather than papered over:** the §W annotation appended to the grok record and the `#116` entry below both name that row `O-10`, and neither may be edited (Michael's express append-only ruling, and the log is append-only) — **so the `O-13` row and the O-series collision note both carry the cross-reference, and that is where the pointer resolves.**
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES.** Rows: **`O-11`** (residual-privilege remedy), **`O-12`** (enforce-vs-inherit, deferred by ruling), **`O-13`** (C-2 restated, RULED-and-recorded), **`G10-5`** (front-end authorization), **`GL1-1`** (gate 1 correcting append) — **their question text EXTRACTED FROM THE PACKET'S §7 BY PROGRAM and each verified present verbatim in the filed queue by substring test**, per QR-1 — plus the Status header's per-batch reconcile sentence. **Row-anchored open rows moved 346 → 350, exactly the four new OPEN items**; `O-13` is ruled-and-recorded and correctly takes no open glyph. **The counting method is stated because it matters:** the row-anchored pattern yields 346 at the prior HEAD and reproduces the figure the header last stated; a bare glyph count returns 358 lines / 384 glyphs and is the wrong measure.
+- **HEALTH CHECK RUN, NOT SKIPPED, AND THE PACKET WAS RIGHT TO DECLINE THE SKIP LIMB.** `QR-6(f)`'s skip requires a `docs/`-only routing table; this batch touches **`db/schema.sql` and five files under `db/migrations/`**, comment-only though every edit is. **`npm test`: 279 tests pass across 23 files. `npm run build`: exit 0. `npm run lint`: exit 0.**
+- **COMMENT-ONLY-NESS WAS PROVEN MECHANICALLY ON ALL SIX SQL FILES, NOT ASSERTED.** Executable lines were extracted before and after each edit by a tokenizer that respects single-quoted and dollar-quoted bodies (so a `--` inside a function body counts as executable, the conservative direction) and compared: **`db/schema.sql` 748 = 748; the five migrations 5 = 5, 123 = 123, 100 = 100, 101 = 101, 66 = 66 — identical in every case.** Independently, `git diff` shows the five migrations took **additions only, zero deletions**, and every changed line in `schema.sql` is a `--` line.
+- **A LINE-ENDING TRAP FIRED AND IS RECORDED BECAUSE IT WILL FIRE AGAIN.** The packet's OLD blocks are pure LF; **`db/schema.sql` is CRLF (1,216 CR / 1,216 LF), as are two of the five migrations** — so the first exact-match attempt returned **zero occurrences on a correct block**. Two probes disagreed about the same file (a `grep` CR test claimed 148 CRLF-terminated lines in a file with **zero** CR bytes), and the disagreement was settled by a raw byte read, never by the text tool. The editor was then made line-ending-aware: it detects each target's own convention, matches and writes in it, and **every replacement asserts exactly one occurrence or aborts**. `core.autocrlf` is `true` locally, which is why the repo carries both conventions; no file's convention was changed by this batch.
+- **`QR-6(e)` DID NOT FIRE — stated rather than assumed.** Every act sat in a routing-table row or a Step 4 item; there was no packet-added act needing in-session authorization. **`PF-1` did not fire either, and the packet says so in its own §0:** no legal characterization, no proposed registry entry, ch. 521 travelling solely as the existing `G10-4` row's subject.
+- **EVERY §6 DO-NOT HONORED, AGAINST THE DIFF.** **`src/` not touched at all** — `git status` shows no file under `src/`, and the `RlsProbePanel.tsx:73` repair was left for `G10-5` · **no executable SQL line changed anywhere** (proven above) · nothing edited above the appended blocks in the five migrations or the grok record — the grok append was verified by diffing the first 295 lines against `HEAD` and finding them unchanged · **no session-log entry, `docs/spec-feedback.md` or `Go_Live_Gates.md` edited** · the retraction sites left alone · the front-end slice filed **PROPOSED, not build-authorized**, and the schema slice's BUILD AUTHORIZED + BUILT-AND-RUN status not softened · `O-11`, `O-12`, `G10-5`, `GL1-1`, `G10-2`, `G10-4` all left open · **no database connected to; no diagnostic, REVOKE or `ALTER DEFAULT PRIVILEGES` statement run** · no registry entry created, drafted or verified.
+- **THE TWO STAGED FILES WERE FILED BY COPY AND VERIFIED BY HASH, NEVER RETYPED.** `gate10-pii-frontend-slice.md` (**sha256 `309a7ba4…`, 10,346 B**) and the `gate10-pii-slice.md` replacement (**sha256 `35339086…`, 19,364 B**) each hashed identical between packet source and filed copy; both pure LF, 0 CR bytes, confirmed by a raw byte read.
+
+## 2026-08-19 (#116) — GATE 10's FRONT-END HALF SPECIFIED, AND THE `anon`/C-2 RECORD REPAIRED ON
+MICHAEL'S RULINGS (design session, Cowork, Fable 5; bridge reads at f5e4ab4)
+
+Fired by Michael from docs/prompts/PROMPT-gate10-frontend-and-anon-corrections.md. Checkout read
+lock-free at f5e4ab4 (HEAD = origin tracking ref; no index.lock stranded, none left behind). All
+six Step 0 documents read in full; Michael present and ruling throughout.
+
+- FIVE RULINGS, EACH PUT INDEPENDENTLY AND EACH WITH ITS ANSWER QUOTED IN THE PACKET — PLUS ONE
+  STANDING PATTERN CARRIED, NOT RULED (item 6): (1) C-2 is
+  RESTATED on the true warrant ("Restate on the true warrant") — per-migration explicit grants
+  stand; an ungranted table's unreachability rests on Supabase's own default ACL withholding the
+  four DML privileges (pg_default_acl, read 2026-08-19), not on the absence of a default; the grok
+  record takes a dated APPENDED annotation, never an in-place rewrite. Recorded as O-10. (2)
+  Enforce-vs-inherit is DEFERRED pending the four unrun diagnostics ("Decide after diagnostics"),
+  cheapest first: anon's schema USAGE. Queue row O-12. (3) All four unregistered items take durable
+  IDs and queue rows ("Yes — rows for all four"): O-10 (ruled, recorded), O-11 (remedy, open),
+  G10-5 (front-end authorization, open), GL1-1 (gate 1 append, open) — they sit on the D-SMTP side
+  of the #114 boundary, awaiting RULINGS not actions. (4) The anon repair wording is ADOPTED:
+  "anon holds none of the four DML privileges," adapted per site; run migrations are ANNOTATED with
+  appended dated corrections, originals untouched ("Adopt; annotate run migrations") — extended by
+  his follow-up ruling to ALL FIVE run migrations after this session corrected its own "two"
+  framing ("Yes — all four annotated", the grok-fixes file added as the fifth, an ADP-only
+  carrier). In-place repairs only for schema.sql, the three forward-looking specs, and the spent
+  kickoff prompt. (5) SSN visibility: masked everywhere by default, explicit per-view reveal, NO
+  reveal logging — reveal logging is named as O-1 material ("Masked + explicit reveal, no log
+  yet"). (6) The front-end slice itself: drafted, PROPOSED, and expressly NOT build-authorized —
+  authorization is G10-5, his own act on the CD-1 / FE-D1 / gate-10 pattern; that is the dispatch's
+  standing instruction carried, not a fresh ruling.
+- THE A.1 SWEEP WAS RE-DERIVED, NOT COPIED, AND IT MOVED THE COUNT AGAIN — the record's own
+  warning firing on the record itself. Wrap-aware, whitespace-normalized, over every tracked file:
+  the false sentence and its variants are asserted at 14 sites across 11 carrier files at f5e4ab4,
+  plus 2 FROZEN occurrences in the append-only log (entries of 2026-07-28 and the gate 10 build
+  entry — never edited; this entry is their correction vehicle) and the retraction class
+  (spec-feedback, BUILD-STATE, the gate 10 run entry, the TOC row), which quotes the sentence to
+  deny it and must never be "fixed." The 14/11 exceeds the record's 15-less-BUILD-STATE across 12
+  by ONE SITE on a WIDER pattern: the "`anon` has NOTHING" variant at the gate 10 migration's
+  check-4 label and the kickoff prompt's verification line — the migration's own shorthand note
+  already scopes its copy to the four DML privileges, the label alone still overstates. Which of
+  those two sites the recorded 16 already counted is not derivable from the record, so both are
+  named and repaired. Three
+  false positives excluded by reading, not by pattern: "cited for nothing, by design"
+  (attorney-review-queue), "the schema granted nothing" (#28 entry), "missing GRANT nothing would
+  catch" (rlsProbe.test.ts).
+- STEP 0.1's TWO STALE CANONICAL DOCS ARE THE PACKET'S FOLD-BACKS: the grok record gains an
+  appended dated annotation (its §3 item 9 premise falsified 2026-08-19; C-2 as restated; O-10/
+  O-11/O-12 pointers), and the gate 10 slice is replaced with G10-3 ANSWERED (YES on all three),
+  §8 item 6 pointing at the front-end slice, §3.3's C-2 comment and anon note conformed, the
+  select-* sentence drawing the distinction the G10-3 answer forced, and the "three days" figure
+  corrected to same-day per the build session's measurement.
+- ONE REPAIR BEYOND TASK A's LITERAL SCOPE, NAMED RATHER THAN RIDING: the kickoff prompt's false
+  "cost a transaction rollback of two live fixes / three days ago" sentence — disproven on the
+  record by the gate 10 build entry ("caught, not suffered"; same-day) — is repaired in place with
+  the record cited. It is its own §4 order and its own routing row; striking it strikes nothing
+  else.
+- NOTHING WAS BUILT. src/ was not read (Q-PR3-1 unruled; the §1 facts in the front-end slice are
+  quoted from the build session's G10-3 record). RlsProbePanel.tsx:73's on-screen false sentence
+  is repaired by the FRONT-END slice when authorized, not by this packet. No registry entry
+  created or drafted; PF-1 did not fire and the packet says so in §0. No remedy was run for the
+  residual privileges; the four diagnostics stay staged and Michael's.
+
+Staged for Code: this packet — the front-end slice (new), the gate 10 slice replacement, the grok
+annotation append, the schema/migration/prompt/spec repair orders, five queue rows, this entry.
+Awaiting/Returned from Code, unreviewed: the seventieth runner batch's output and the two gate 10
+Code entries of 2026-08-19 (this session read all three live through the bridge — review rides the
+next design session's sync check).
+
 ## 2026-08-19 — QUEUE-RUNNER batch (runner line; SEVENTIETH invocation) — one docs-only packet, routed verbatim, and the first batch to exercise the boundary the `#114` scope ruling drew rather than merely restate it
 
 **One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_gate9-smtp-runbook_2026-08-19.zip` — **9,894 bytes, mtime `2026-08-19 17:36:21` local, sha256 `d037b87927712d432c3b7dd0c12b6d914f7acc759beb9a988adb1a9498ed2efd`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. **Order was trivial and is stated rather than skipped:** one packet, its date parses from the filename, so filename-date order and pure-mtime order agree with nothing to reconcile (QR-4). Michael confirmed the order at the Step 1 STOP. **Nothing was superseded** — one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.**

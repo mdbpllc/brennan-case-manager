@@ -54,8 +54,9 @@ So a fresh project is correct. Per slice §3:
   `ssn text`, `drivers_license text`, `drivers_license_state text`, `created_by uuid references
   auth.users (id)`, `created_at`, `updated_at`.
 - Its `_touch` and `set_created_by` triggers, `enable row level security`, the `authenticated`
-  policy, **and its own explicit GRANT** — `ALTER DEFAULT PRIVILEGES` is unset by ruling (C-2), so a
-  table without its own GRANT is unreachable.
+  policy, **and its own explicit GRANT** — an ungranted table is unreachable because Supabase's own
+  default ACL withholds the four DML privileges (C-2 as RESTATED 2026-08-19), so each table ships
+  its grant.
 - **Carry the slice's §3.3 comment about what the policy does NOT do.** It is permissive like every
   other policy here; the protection is that default `parties` reads do not join this table. A later
   reader who believes the policy protects the SSN is worse off than one who knows it does not.
@@ -68,10 +69,12 @@ grok-fixes precedent.
 - Header states what it does, its authority, and **the order it expects.** There is no prerequisite
   among the migrations — none are pending — **but state that explicitly and make sure the DDL matches
   the sentence.** The `2026-08-18-grok-review-fixes.sql` header stated an order its own DDL could not
-  execute; that cost a transaction rollback of two live fixes and it was three days ago (`#113`).
+  execute; `#113` records that hazard as CAUGHT before the paste, not suffered, and the defect was
+  written and found the SAME DAY (this sentence corrected 2026-08-19 — the gate 10 build entry
+  names this prompt as the source of the false "rollback" and "three days" claims).
 - **Verification checks at the bottom, ANSWERED IN WORDS**, house pattern: `parties.date_of_birth`
   exists and is `date` · `party_pii` exists with `party_id` as PRIMARY KEY and no separate `id` ·
-  `has_table_privilege('authenticated','party_pii','select')` is true · **`anon` has nothing** ·
+  `has_table_privilege('authenticated','party_pii','select')` is true · **`anon` holds none of the four DML privileges** ·
   the §5 report below returns zero rows.
 - **The §5 REPORT, not a backfill.** Query `parties.fields` for keys that look like DOB / SSN / DL.
   **Expect zero rows. If any row returns, the migration STOPS and reports** — moving a value between
@@ -115,7 +118,9 @@ Report the three figures.
   that work belongs with gate 2 (slice §1).
 - **Do not backfill anything out of `fields`.** Report only (Step 3).
 - **Do not store last-4 instead of full SSN.** Ruled 2026-08-19: full SSN stored.
-- **Do not widen `anon`.** It gets nothing, by design.
+- **Do not widen `anon`.** It holds none of the four DML privileges, and nothing here changes that.
+  *(Wording conformed 2026-08-19; the original "It gets nothing, by design" was falsified by the
+  2026-08-19 catalog read — O-11.)*
 - **Do not touch `case_clients`, `case_parties`, or anything CL-2/CD-1 walked.**
 - **Do not double as the queue runner** (Step 0).
 

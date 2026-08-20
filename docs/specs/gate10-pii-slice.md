@@ -1,6 +1,19 @@
 # Gate 10 — PII promotion out of `parties.fields` — BUILD SLICE
 
-**Status: BUILD AUTHORIZED 2026-08-19 — shape, SSN scope and audit limb all RULED the same day.**
+**Status: BUILD AUTHORIZED 2026-08-19 — shape, SSN scope and audit limb all RULED the same day.
+BUILT, RUN AND VERIFIED LIVE 2026-08-19: the migration was pasted by Michael's hand and all six
+checks answered in words.** The schema half is delivered. **The exclusion limb is delivered IN THE
+SCHEMA and NOT YET IN EFFECT IN THE APP** — see the `G10-3` answer at §7 — and the FRONT-END half
+is specified at `docs/specs/gate10-pii-frontend-slice.md` (PROPOSED, awaiting authorization,
+`G10-5`).
+
+*REVISED 2026-08-19 (design session, Fable 5, per the gate-10 front-end dispatch): the `G10-3` row
+and §8 item 6 fold in the build session's answer; §3.3's C-2 comment and `anon` note conform to the
+2026-08-19 catalog findings (C-2 RESTATED by Michael 2026-08-19; adopted `anon` wording); §3.3's
+`select *` sentence draws the distinction the `G10-3` answer forced; §5's "three days" figure is
+corrected to same-day per the build session's measurement; §5 carries the as-built key finding.
+Everything else stands as written.*
+
 Michael authorized the build in its own Code session, on the CD-1 / FE-D1 pattern: **the queue
 runner is BARRED from it**, and the live migration is his hand to paste. Kickoff prompt:
 `docs/prompts/PROMPT-gate10-pii-build-session.md`.
@@ -143,18 +156,28 @@ drop policy if exists "authenticated full access party_pii" on party_pii;
 create policy "authenticated full access party_pii" on party_pii
   for all to authenticated using (true) with check (true);
 
--- ALTER DEFAULT PRIVILEGES is NOT set on this database (C-2, ruled: keep).
--- A new table without its own GRANT is UNREACHABLE. This one carries its own.
+-- A new table without its own GRANT is UNREACHABLE — because Supabase's own
+-- default ACL withholds the four DML privileges (C-2 as RESTATED by Michael
+-- 2026-08-19: the property rests on the vendor's default, read from
+-- pg_default_acl 2026-08-19, not on the absence of a default; this project's
+-- per-migration explicit grants stand). This table carries its own.
 grant select, insert, update, delete on party_pii to authenticated;
 ```
 
 **Be honest about what the policy does: nothing.** It is permissive, exactly like every other policy
 in this schema. **The protection this slice delivers is that the app's `parties` reads do not join
-this table**, so no accidental `select *` can return an SSN. Saying the RLS policy protects the SSN
-would be false, and a later reader acting on that belief would be worse off than one who knows the
-truth.
+this table** — a `select *` on `parties` cannot return a value stored in `party_pii`. **But that
+sentence is narrower than it looks, and the `G10-3` answer is why (§7): until the front-end half
+lands, the app still writes `ssn` and licence numbers into `parties.fields`, which `select('*')`
+DOES return.** Saying the RLS policy protects the SSN would be false, and saying the schema half
+alone has taken the SSN off the wire would be false too; a later reader acting on either belief
+would be worse off than one who knows the truth.
 
-**A note the build session must not skip:** `anon` gets nothing, by design. Do not widen.
+**A note the build session must not skip:** `anon` holds none of the four DML privileges on this
+table, and nothing here widens it. *(Wording conformed 2026-08-19: the earlier "`anon` gets
+nothing, by design" was true of this project's grants and false of the database — `anon` holds
+TRUNCATE / REFERENCES / TRIGGER / MAINTAIN vendor-wide via Supabase's default ACL; remedy open at
+`O-11`.)*
 
 ---
 
@@ -193,7 +216,10 @@ nothing further.
 
 **There is no data to migrate.** The live database holds two `parties` rows, both fictional, and no
 DOB / SSN / DL exists in `fields` today. **The migration must not assume that stays true between
-authoring and running** — it has already been three days once.
+authoring and running** — the grok-fixes ordering defect was written and found inside ONE DAY
+(*corrected 2026-08-19: this slice originally said "three days," a figure the build session
+measured at HEAD and disproved — the file's 08-18 filename was its likeliest source; a same-day
+defect makes the point more sharply, not less*).
 
 **The migration REPORTS rather than backfills:**
 
@@ -211,6 +237,14 @@ rather than guess (the CD-1 roster-flag precedent, where 'Client' was flagged ra
 a nearest-looking value). **The key list above is a heuristic and cannot be exhaustive** — a value
 stored under an unguessed key would not be found, which is a limit of the check and is stated rather
 than papered over.
+
+**That stated limit was load-bearing on the first run (found by the build session, 2026-08-19):**
+none of the four licence guesses above matches the app's as-built keys `dlNumber` / `dlState`
+(`src/domain/partyRegistry.ts`), so on the ruled list alone a stored licence number would have come
+back CLEAN. The as-run migration probes BOTH lists, labelled — the ruled eight verbatim, the four
+as-built keys marked as the build session's addition on evidence. The pre-flight ran live
+2026-08-19 and returned **zero rows on both lists**. Full record: `docs/spec-feedback.md`, the
+2026-08-19 key-list entry.
 
 **The GIN index needs no action.** `parties_fields_idx` indexes `fields`; once these values are not
 in `fields`, they are not in the index. Nothing to drop, nothing to rebuild.
@@ -240,25 +274,34 @@ something already rejected.
 |---|---|
 | ~~**G10-1**~~ | **RULED 2026-08-19 — provenance only, audit rides with `O-1`.** See §4. Closed. |
 | **G10-2** | **`on delete cascade` on `party_pii.party_id` reverses `O-7`'s direction for this one table.** Correct here for the reason at §3.2, but it is an `O-7` interaction and should be ruled inside it rather than by default. **Does not block the build.** |
-| **G10-3** | **Does the UI write DOB into `fields` today?** Unanswerable design-side — `src/` is excluded from the sync and `Q-PR3-1` is UNRULED. **RESOLVED PROCEDURALLY, NOT SUBSTANTIVELY: the BUILD session can read `src/` freely** (`Q-PR3-1` governs *design* sessions, not Code), so the answer is taken there. **The build session REPORTS what it finds and builds no front-end half without a fresh authorization** — see the kickoff prompt's DO-NOT list. |
+| ~~**G10-3**~~ | **ANSWERED 2026-08-19 by the build session — YES ON ALL THREE, the opposite of what §5 expected.** The party form renders and saves every registry field into `fields` (SSN and licence included, `client` being the default selection); the OAA importer writes an extracted `dob`; the demo seed plants `dob` twice — and `listParties()` / `getParty()` / `getParties()` all `select('*')`, so the values ride every party read today. **Consequence: the exclusion limb is delivered in the schema and NOT yet in effect in the app.** Record: session log (gate 10 build entry, 2026-08-19) and `docs/spec-feedback.md`. **The front-end half is specified at `docs/specs/gate10-pii-frontend-slice.md`; authorizing it is `G10-5`.** Closed as a question. |
 | **G10-4** | **Does the shape of this gate depend on a privacy proposition nobody has entered?** Texas Bus. & Com. Code ch. 521 keys breach-notification obligations specifically on SSN and driver's licence numbers. **UNVERIFIED, a locator only, and Claude does not verify.** `Q-WF-6` already records that the registry holds **not one privacy proposition**; this would be the first, and gate 10 is the first design act to run into that gap. |
+| **G10-5** | **Does Michael authorize the FRONT-END half?** Slice: `docs/specs/gate10-pii-frontend-slice.md` (PROPOSED). His own act, its own session, the CD-1 / FE-D1 / gate-10 pattern. Until it fires, the app keeps writing SSN and licence numbers into `parties.fields`. |
 
 ---
 
-## 8. Build-session checklist — AUTHORIZED 2026-08-19
+## 8. Build-session checklist — AUTHORIZED 2026-08-19 — **EXECUTED 2026-08-19; kept as the record
+of what was ordered**
 
 1. `db/schema.sql` — add `date_of_birth` to `parties`; add the `party_pii` block with its triggers,
-   RLS, policy and GRANT in the same place, so a fresh project is correct.
+   RLS, policy and GRANT in the same place, so a fresh project is correct. **DONE.**
 2. `db/migrations/<date>-gate10-pii-columns.sql` — the live half. **Guarded and idempotent. NOT RUN
    by the authoring session — Michael's hand, per the CL-2 / CD-1 / grok-fixes precedent.**
+   **DONE; run and verified 2026-08-19.**
 3. The migration carries **verification checks answered IN WORDS**, in the house pattern: the column
    exists and is `date`; the table exists with `party_id` as PK; `authenticated` reaches it
-   (`has_table_privilege`); `anon` does not; the §5 report returns zero rows.
+   (`has_table_privilege`); `anon` does not (the four DML privileges); the §5 report returns zero
+   rows. **DONE — all six answered.**
 4. **ORDERING: this file has no prerequisite among the unrun migrations — there are none left.** All
    three pending migrations ran 2026-08-19. **State the order the file expects anyway, and make the
    DDL match the sentence** — the `2026-08-18-grok-review-fixes.sql` header stated an order its own
-   DDL could not execute (`#113`), and that failure is three days old.
+   DDL could not execute (`#113`); *that defect was written and found the SAME DAY (corrected
+   2026-08-19 — this item originally said "three days old"), which sharpens rather than weakens the
+   rule that a file may not assume authoring-time truth at run time.* **DONE — the as-run file
+   enforces its ordering sentence with a `to_regprocedure` guard.**
 5. Update the `/diagnostics` probe's table list — it covered 36 and this makes 37. **`file_counters`
    is protected at the privilege layer, not by RLS; keep the probe in step or a missing GRANT
-   hides.**
-6. No front-end work is specified here. See `G10-3`.
+   hides.** **DONE — same commit as the table.**
+6. ~~No front-end work is specified here. See `G10-3`.~~ **The front-end half is now specified at
+   `docs/specs/gate10-pii-frontend-slice.md` — PROPOSED, awaiting Michael's authorization
+   (`G10-5`). No front-end work was built by the schema half, exactly as ordered.**

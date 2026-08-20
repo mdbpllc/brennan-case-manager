@@ -293,3 +293,32 @@ contact_edges self-check + unique match comment · case_clients.party_id RESTRIC
 CL-2 file not provided (backfill unscored) · live ACLs unverifiable · PostgREST function exposure config · edge verify_jwt/cron headers · Postgres version for NULLS NOT DISTINCT · pg_trgm availability · live practice_area/role distinct values · app-layer filters (protective-order, confirmed-runs-only, attorney-only verified).
 
 *(End of carried output.)*
+
+---
+
+## §W ANNOTATION — appended 2026-08-19 (Central) by Michael's ruling; nothing above is edited
+
+**§3 item 9 (C-2)'s factual premise was FALSIFIED on 2026-08-19, and Michael RESTATED the ruling
+the same day.** The premise *"`ALTER DEFAULT PRIVILEGES` stays unset"* fused two claims: *this
+project never issued it* (TRUE — six occurrences across `db/schema.sql` and `db/migrations/*.sql`,
+all comments, zero executable) and *it is not set on the database* (FALSE — `pg_default_acl`, read
+by Michael's hand 2026-08-19, carries `postgres | public | r` granting TRUNCATE, REFERENCES,
+TRIGGER and MAINTAIN to `anon`, `authenticated` and `service_role` on every table `postgres`
+creates in `public`: Supabase's own bootstrap, set before this project's first table existed). The
+ruling's stated reason — "chosen deliberately twice; has held since the #28 outage" — was a record
+of this project's conduct, never a catalog read. This file's own Uncertain list ("live ACLs
+unverifiable") was the honest limb.
+
+**C-2 AS RESTATED (Michael, 2026-08-19 — "Restate on the true warrant"):** Explicit per-migration
+grants stand. The operative conclusion — a new table without its own GRANT is unreachable —
+survives on the true warrant: the VENDOR'S default withholds the four DML privileges; it is not
+that no default exists. The posture is held by Supabase's bootstrap, not by this project's
+discipline, and would change silently if that default changed. A second vendor rule
+(`supabase_admin | public | r`) grants `anon` full DML including SELECT on tables created by THAT
+role — none of the 37 is; all are `postgres`-owned. Whether the property becomes ENFORCED rather
+than inherited is DEFERRED pending the four unrun diagnostics (queue row `O-12`); the
+residual-privilege remedy is open at `O-11`. Grok's migrator-role middle path remains recorded as
+considered, not adopted.
+
+Full finding and diagnostics: `docs/spec-feedback.md`, the 2026-08-19 `anon`/`service_role` entry.
+Queue rows: `O-10` (this restatement, recorded), `O-11`, `O-12`.

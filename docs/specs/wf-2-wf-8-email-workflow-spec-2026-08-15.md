@@ -739,11 +739,16 @@ seven pipelines would create its first table.
 - **`generated_documents.privilege_tier`** — a precedent for classifying stored content by privilege
   posture (§6.4 item 4). *Caveat:* that table cannot itself serve WF-3 (§5).
 
-**One structural rule that binds any WF table from birth, and is easy to lose:** BUILD-STATE —
-*"GRANTS ARE PART OF THE SCHEMA — load-bearing. `authenticated` ONLY, `anon` gets nothing by design.
-`ALTER DEFAULT PRIVILEGES` is NOT set: **every new table must carry its own GRANT or it is
-unreachable.**"* And the RLS probe covers **36** tables — *"keep it in step or a missing GRANT
-hides."* CD-1 carried its own grants in the same commit as its tables; any WF slice does the same.
+**One structural rule that binds any WF table from birth, and is easy to lose:** GRANTS ARE PART
+OF THE SCHEMA — load-bearing. `authenticated` ONLY; every new table carries its own GRANT or it is
+unreachable. *(Conformed 2026-08-19: this paragraph formerly quoted a BUILD-STATE snapshot reading
+"`anon` gets nothing by design. `ALTER DEFAULT PRIVILEGES` is NOT set" — both halves were
+falsified by the 2026-08-19 catalog read and BUILD-STATE no longer says them. The unreachability
+of an ungranted table rests on Supabase's own default ACL withholding the four DML privileges —
+C-2 as RESTATED 2026-08-19 — and `anon` holds none of the four DML privileges while holding
+TRUNCATE/REFERENCES/TRIGGER/MAINTAIN vendor-wide; O-11.)* And the RLS probe — *"keep it in step or
+a missing GRANT hides"* — covered 36 tables when this spec was written, 37 since gate 10. CD-1
+carried its own grants in the same commit as its tables; any WF slice does the same.
 
 ---
 
