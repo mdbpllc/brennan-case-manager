@@ -16,6 +16,127 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-SEVENTH invocation) — one docs-only packet: the gate-3 run's four handed-back items CLEARED design-side, and the queue's `LE-1` row gains its decisive CRLF evidence WITHOUT gaining a status
+
+**One zip in `inbox/`, executed:** `push-to-code_gate3-reconcile-124_2026-08-20.zip` (**9,114 B, mtime `2026-08-20 15:50:46 −05:00`, sha256 `edcd19022a945905…`**). Identity pinned at Step 1 per QR-6(c), **re-pinned byte-for-byte after the STOP and unchanged**, and checked by explicit name at Step 4 item 5. **Both orders were still computed (QR-4) and are trivially identical** — one packet admits no ordering — and the filename date parses cleanly, so no unparseable-date flag was owed. Michael confirmed at the Step 1 STOP; nothing was executed on silence.
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`dcc9db2`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 / 0** and `git status --short --branch` showing a clean tree on `master`. Neither the behind-limb nor the ahead-stop arose. **The packet's §1 expressly declined to claim anything about origin and left it to this gate** — the right posture, and the gate settled it.
+- **BOTH QR-5 CARRY-FORWARD LIMBS WERE CLEAR, AND EACH WAS LEARNED THE ONLY WAY THIS BATCH COULD LEARN IT.** `git merge-base --is-ancestor 6d90037 origin/master` returns true, so **batch 76's push DID land** — that entry is barred from asserting it. And **`inbox/` held EXACTLY ONE zip, this batch's own, which is the only way this batch could learn that batch 76's DELETION ran**, barred by the same rule. **Nothing was carried into this line.** Step 0 items 1–4 were already satisfied: `inbox/` exists, `.gitignore:16` carries `inbox/`, CLAUDE.md:349 carries the note, and `Bash(rm -f inbox/*)` is present in `.claude/settings.local.json`.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS, AND HERE IT HAD TO BE A CONTENT PROBE RATHER THAN A PATH PROBE.** Both of this packet's acts are APPENDS INTO EXISTING FILES, so no path's absence could mean anything — the opposite of batch 76, whose deliverable was a new file. Probed by content instead: **`(#124)` occurred 0 times** in the log and design high-water stood at **`#123`**, so `#124` was free and no renumber was owed; **`Evidence appended 2026-08-20` occurred 0 times** in the queue. The committed-but-unpushed limb was excluded by the Step 0 result rather than by assumption — `HEAD` and `origin/master` are the same commit, so there was nothing at `HEAD` for `origin` to be missing.
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** The skip needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs hold**: §5 reads `— **NONE.**` in terms, and the routing table reaches only `docs/specs/session-log.md` and `docs/specs/attorney-review-queue.md`. `npm test` / `npm run build` / `npm run lint` could prove nothing about a batch that changed no code. **No health figure is asserted anywhere in this entry; a skipped check is not a pass.**
+- **THE CONFLICT RULE DID NOT FIRE AND HAD NOTHING TO REACH — ONE PACKET, TWO ROUTING ROWS. Nothing was superseded and nothing was skipped as already built.** `#124` was filed **BY BYTE COPY** from the packet's staged file — 9,391 B, 0 CR, confirmed present exactly once and byte-exact — and **per TOC-6 this runner line mints no `#nn`**, carrying only the invocation ordinal. The packet minted `#124` design-side, as its §4 says.
+- **THE QUEUE TOOK BOTH HALVES OF `QR-6(b)` THIS TIME — the rows act AND the Status-header act — where batch 76 correctly took only the conditional half.** The `LE-1` row gained **one appended evidence sentence at its tail and nothing else**, and the Status header gained its per-batch reconcile sentence in the same touch. **NO ROW WAS ADDED AND NO ROW WAS CLOSED. `LE-1` REMAINS ⬜ OPEN: the append is EVIDENCE, not a ruling**, and the row's original question text stands untouched ahead of it. **Row-anchored open rows re-derived at HEAD on the file's own matcher (`lstrip()` then `- ⬜`) and UNMOVED at 350**, the figure the edit-order predicted. `git diff -U0` confirms the whole edit is **two lines — 3 and 441 — and no other row in the file was touched.**
+- **THE ROW-LESS SERIES WERE VERIFIED TO HAVE HOMES RATHER THAN TRUSTED TO HAVE THEM, WHICH IS THE ONLY THING THAT MAKES "NO NEW ROWS" COMPLIANCE INSTEAD OF LOSS.** QR-1's rationale is that the packet is deleted, so a question with no filed home dies with it. Checked at HEAD: **`Q-CAP-3`, `Q-CAP-4` and `Q-CAP-5`** carry their full text in `docs/specs/knowledge-capacity-measurement-2026-08-20.md` §5 (present, 11,682 B), row-less by Michael's seventy-third-batch ruling; **`Q-G3-3`, `Q-G3-4` and `Q-G3-5`** carry theirs in `docs/specs/gate3-write-path-test-protocol.md` (22,609 B) and the run record's §7/§11 (16,698 B), row-less by his batch-72 ruling; **`GL1-1` and `LE-1` already hold open rows**; and **gate 9's §4 remainder is gates-side**, kept out of the queue by the 2026-08-19 scope ruling written into that file's own header. **Every one of those files was opened and counted this batch — none was inferred from a packet's say-so.**
+- **THE DIRECTED TEXTS WERE EXTRACTED FROM THE PACKET BY PROGRAM AND PLACED VERBATIM — NEITHER WAS RETYPED.** The edit-order's two fenced blocks were parsed out and asserted before use: the **14-character row matcher** and the **500-character evidence sentence**, the latter appended after a single space with the length delta checked against it (**1,455 → 1,956, delta 501 = 500 + 1**) and the row proved still ONE physical line. This is the standing rule after a hand-typed line twice slipped a curly apostrophe into this repo.
+- **THE TOC RIDES THIS COMMIT AT ITS TWENTY-EIGHTH EDITION AND IS A GENUINE `TOC-4` FIRING — THE TWENTY-THIRD.** The census the twenty-seventh edition warned about was applied as written and came out clean **before** the edit: **128 `## ` headings − 1 pointer stanza = 127 entries against 127 rows**, so nothing had landed unindexed since the gate-3 run's same-day row. As written it is **130 − 1 = 129 entries against 129 rows.** **The pointer-stanza subtraction is not optional arithmetic — without it this batch would have reported a phantom missing row**, which is exactly what batch 76 predicted the next census would do.
+- **`DT-1` WAS READ AND THE DIVERGENT WINDOW DID NOT APPLY.** PowerShell, the authority, read **`2026-08-20 16:00 −05:00`** (`Central Standard Time`) against a UTC **`2026-08-20 21:00`** — **the same calendar day**, unlike the twenty-second and twenty-seventh editions. Every date written this batch is the Central **2026-08-20**, which is also what the packet's §0 stamped.
+- **ONE PACKET-ADDED ACT WAS OFFERED AND IS RECORDED RATHER THAN QUIETLY ABSORBED (QR-6(e)).** §8 replaces the standard Step 4 item 6 close-line with one that also warns Michael to add `/docs/archive/` to the picker exclusions **before** he clicks Sync. It is a change to a MESSAGE, not an act with side effects, so it is honored — **and both lines are delivered, the runner's `<sha>` line and the packet's warning**, so nothing the runner mandates is displaced by a packet.
+- **WHAT DID NOT HAPPEN, STATED SO THE RECORD CANNOT INFLATE IT.** **Gate 3 was not closed and `Q-G3-4` was not touched** — Michael's, at the gates re-check. **`Q-G3-5` was not executed**: growing `src/auth/rlsProbe.ts` to 37 write paths is a BUILD act needing its own authorization, and §5 is NONE, so `src/` was not opened. `docs/specs/gate3-write-path-test-run-2026-08-20.md` was **not edited** — dated, single-run, it stands. `Go_Live_Gates.md`, `docs/specs/gate3-write-path-test-protocol.md`, `docs/prompts/PROMPT-gate3-write-path-test.md` and `docs/prompts/QUEUE-RUNNER.md` were **not amended**. **No sync or picker claim of this batch's own is made anywhere** — a Code session can neither read nor change that setting — and `#124`'s knowledge/picker figures were **left exactly as stamped**, per §6, because an entry states its stamp time's truth. **No registry entry was set to verified, and no credential of any kind appears in anything this batch wrote.**
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's routing — the `#124` byte-copy, the `LE-1` evidence append and its Status-header sentence, the twenty-eighth TOC edition, and the BUILD-STATE refresh. **Still open and still Michael's — the first two IN ORDER, per the packet's §7:** **(1)** add `/docs/archive/` to the sync-picker exclusions (`Q-CAP-3`'s hand half — absent from the filters at 15:45, and the archive re-ingests until it lands) · **(2)** click **Sync**. Then: **gate 9's §4 remainder** (headers · junk statement · outside mailbox · later-day repeats · optional DMARC) · the **gates re-check sweep**, which is the last floor sitting: `Q-G3-4` · `Q-G3-5` · `Q-G3-3` · `GL1-1` · `LE-1` · `Q-CAP-4` · `Q-CAP-5` · the `#118` re-sweep proposal · and the **protocol caution-annotation for the §7 parser blind spots**, PROPOSED and unruled, offered at that re-check · everything carried at `#121`, `#122`, `#123` and `#124`.
+
+## 2026-08-20 (#124) — THE GATE-3 RUN CLEARED DESIGN-SIDE AT `dcc9db2`, FULL-TEXT: the run record holds on every limb it can be checked on from here — and the day's DOUBLE DISPATCH is recorded with TWO FABLE CORRECTIONS, one of them the reason the second dispatch existed at all (design session, Cowork, Fable 5; bridge reads at `dcc9db2`)
+
+**THE CLEARANCE, ITEMIZED — read full-text through the bridge at `dcc9db2`, not from RAG.** The
+four items the gate-3 session handed back unreviewed are **REVIEWED AND CLEARED**, each on a stated
+basis: **(1) the run's unnumbered log entry** — read whole; every verification names its command,
+the token-discipline sentence is present, TOC-6 honored (no `#nn`, no ordinal). **(2)
+`docs/specs/gate3-write-path-test-run-2026-08-20.md`** — read whole, all eleven sections. The §2
+grid recounts from its own rows: 37 rows; 37 signed-out DENY-privilege; rows 1–36 signed-in ALLOW;
+row 37, the deny control, DENY with the **privilege message** as §3 requires. §3's quoted texts
+carry no RLS wording anywhere; §10 keeps the negative scope whole (one policy tested on 36 tables;
+UPDATE/DELETE not exercised — named, not resolved; `party_pii.ssn` written under `using (true)`
+flagged to `G10-2`/`O-1`; gate 2 expressly untouched). **Credential check by read: the token appears
+nowhere in the record** — what appears (session UUID, signed-in email, run tag, project ref) is
+identity, not secret. **(3) the BUILD-STATE refresh** — header self-describes the
+written-FROM-`6d90037` / verifies-at-own-sha convention correctly; measured at exactly 150 non-blank
+(at cap, zero headroom — the next rewrite must displace); the MEASURED-37 vs STANDING-INSTRUMENT-5
+separation is the right claim split. **(4) the TOC regeneration** — the unnumbered gate-3 row is
+present at HEAD. **What this clearance is NOT: a re-measurement.** No probe was re-run and none may
+be (single-run authorization, spent); the database facts are the run's own measurements, reviewed
+here for internal consistency and convention compliance — all holding. The independent close-out
+audit by the stood-down second session (below), including its own bare `git ls-remote` →
+`dcc9db2`, corroborates.
+
+- **THE DOUBLE DISPATCH, ON THE TIMELINE THE ARTIFACTS THEMSELVES STAMP.** The run's record reads
+  its Central clock **14:10** before stamping; its close-out committed at **14:21** as `dcc9db2`,
+  driven from the repo-canonical `docs/prompts/PROMPT-gate3-write-path-test.md` under the
+  in-session authorization (`#121`'s rulings). **At 15:17** this design session — not knowing the
+  run had landed — authored a redundant kickoff naming `6d90037` as expected HEAD; Michael pasted
+  it into a second fresh Opus Code session at **15:19**. That session ran the checkout gate, saw
+  `dcc9db2` was itself the sitting's close-out, and **STOPPED before Step 0.5 — no database
+  connection, no token request, no writes, no commit, no entry** (it changed nothing and correctly
+  claimed no entry for saying so). **The designed catches worked live:** the single-run
+  authorization's own text, the dated run-record filename, and the possibly-already-executed
+  discipline are exactly what stood between a stale dispatch and a second live-database run.
+- **ONE INFERENCE FROM THE STOOD-DOWN SESSION, CORRECTED BEFORE IT CAN ENTER THE RECORD:** it
+  concluded the kickoff it was handed "is the same one that drove that run." **False by the
+  timeline above** — the run predates the kickoff's authoring by ~56 minutes; both named `6d90037`
+  independently because that WAS pre-run HEAD. Chat-only inference, Opus 5, harmless, never filed;
+  corrected here so it cannot propagate.
+- **CORRECTION (the dispatch itself).** **What was asserted:** this session's kickoff artifact
+  (15:17, chat-delivered) presented the gate-3 sitting as still to run, with "expected HEAD
+  `6d90037`" — stale at authoring; origin had been at `dcc9db2` for ~56 minutes. **True instead:**
+  the sitting had already run and pushed — evidence: `dcc9db2`'s own commit time and content, and
+  Michael's *"Done and synced,"* which meant the RUN, not (as this session read it) the sync-picker
+  step. **Corrects:** no filed entry — the error lived in a chat artifact and a chat reading;
+  recorded so the class is on the record. **Actor:** Fable 5 (this design session). **Failure
+  class:** asserting/acting on build status from a stale read instead of re-reading at decision
+  time — the session-start rule's own warning; kin to R-3 copy-forward (`#13`). A thirty-second
+  HEAD re-read before authoring would have prevented the dispatch. **What changed:** nothing in
+  the repo carried it; the second session's stand-down was the catch, proven live.
+- **CORRECTION (`#123`'s capacity projection).** **What was asserted** (`#123`, stands as
+  written): *"~78K tokens return at the next sync"* from the `/docs/reference/` exclusion, and
+  "roughly 80%" once both levers land. **True instead:** three consecutive post-exclusion syncs
+  measured `knowledge_size` **1,837,143 → 1,846,727 → 1,856,462** (91.9% → 92.3% → 92.8%) —
+  monotonically UP, each rise ≈ the day's own additions; no ~78K subtraction ever appeared.
+  **Diagnosis:** the projection was BYTE-derived (PDF bytes ÷ ~3.46); a scanned PDF's knowledge
+  cost is its EXTRACTED TEXT, which for the CR3 sheet is evidently ≈ nothing. The exclusion was
+  still right as working-set hygiene; its token payoff was misestimated. **The real lever is
+  `/docs/archive/` (~543 KB of pure text, ~167K tokens), still unapplied at this entry's stamp** —
+  revised projection once it lands: **~84%**, not ~80%. **Corrects:** `#123` (stands as written).
+  **Actor:** Fable 5. **Failure class:** instrument/estimate — byte-derived token figures for
+  non-text content; kin to the `WS-P2` false premise corrected at `#120`. **What changed:** the
+  capacity doc's `/docs/reference/` lever row is now known-overstated — **deliberately left
+  alone** (the doc is PROPOSED and gets swept at `Q-CAP-4`); nothing else republished the figure.
+- **ROUTING OF THE RUN'S OPEN ITEMS, UNDER THE STANDING RULINGS — NO NEW ROWS, AND THAT IS
+  COMPLIANCE, NOT OMISSION.** Michael's batch-72 ruling: the `Q-G3` series takes **no durable IDs
+  and no queue rows** — full text lives permanently in the protocol and now also in the run
+  record's §11. Accordingly: **`Q-G3-4`** (does a clean run close gate 3, or close `GL-1` item (4)
+  with the gate open on its wider text) is **gates-side, Michael's, at the re-check** — the queue
+  is for rulings, the gates deliberately live outside it (`#114`). **`Q-G3-5`** (grow
+  `src/auth/rlsProbe.ts` to all 37 write paths) and **`Q-G3-3`** (unruled for future runs) stay
+  row-less and ride to the re-check; when ruled, the ruling lands as dated annotations on their
+  protocol bullets, exactly as `Q-G3-1`/`Q-G3-2`'s did. **The two §7 derivation-instrument
+  findings** (a *named* `constraint … check` is invisible to a pattern anchored on `check (…)`;
+  `primary key` columns carrying no literal `not null` are still required) have their permanent
+  home in run record §7, and their named consumer is **whoever executes `Q-G3-5`** — the standing
+  probe's derivation inherits both blind spots. PROPOSED, unruled, for the re-check: a dated
+  caution annotation on the protocol's derivation section naming the two classes. Not done here.
+- **ONE QUEUE ACT THIS BATCH, AND IT IS EVIDENCE, NOT A RULING: `LE-1` gains an appended evidence
+  sentence** (EDIT-ORDER in this packet). A second bridge-side design session (Opus 5, today)
+  independently rediscovered the CRLF false-dirty and supplied the cheapest decisive check yet:
+  through the bridge, `git -c core.autocrlf=true status` reports the tree **CLEAN** — direct
+  evidence on both halves of the open question (operational note; `.gitattributes`). That command
+  existed only in chat; unfiled evidence evaporates, which is QR-1's whole rationale. **The row
+  stays open; no status changes.**
+- **OWNERSHIP NOTE:** the run entry records two minor corrections to the kickoff prompt's
+  token-sourcing route (`/diagnostics` does not surface the token; the storage key read from
+  source, `sb-<ref>-auth-token`). Both are corrections of THIS session's authored prompt — actor
+  Fable 5 — already recorded by the run entry; named here so attribution is explicit.
+- **KNOWLEDGE/PICKER AT STAMP (Q-CAP-3's hand half, still open):** the sync filters re-read after
+  the third sync carry `/docs/reference/` but **no `/docs/archive/`**; the archive file itself
+  returns from design-side retrieval, which is presence proven, not inferred. True at 15:45
+  Central. If the exclusion lands before this batch runs, the runner corrects nothing here —
+  entries state their stamp time's truth.
+
+**Staged for Code:** this entry; `EDIT-ORDER_LE1-evidence-append.md` — one packet.
+**Awaiting/Returned from Code, unreviewed:** this batch's handback.
+**Still open and still Michael's:** the `/docs/archive/` picker exclusion, then Sync (`Q-CAP-3`) ·
+gate 9's §4 remainder (headers · junk statement · outside mailbox · later-day repeats · optional
+DMARC) · the gates re-check sweep: `Q-G3-4` · `Q-G3-5` · `Q-G3-3` · `GL1-1` · `LE-1` · `Q-CAP-4` ·
+`Q-CAP-5` · the `#118` re-sweep proposal · all carried per `#121`/`#122`/`#123`.
+
 ## 2026-08-20 — GATE 3 RLS WRITE-PATH TEST: THE RUN (Code session, UNNUMBERED per TOC-6 — no `#nn`, no runner ordinal) — 37 tables probed twice against the LIVE database, 37/37 refused signed out and 36/36 allowed signed in, every fixture row deleted and the deletion verified; the gate is NOT closed
 
 **Not the queue runner and never doubling as it (MM-1): `inbox/` was empty at Step 0.** Driven from `docs/prompts/PROMPT-gate3-write-path-test.md` against `docs/specs/gate3-write-path-test-protocol.md` at HEAD, which governed wherever the two differed. **Authorized in session** — Michael, 2026-08-20, *"Let's do the three things right now,"* with **`Q-G3-1` → "Live Supabase project"** and **`Q-G3-2` → "Run as written."** Full record, dated and single-run: **`docs/specs/gate3-write-path-test-run-2026-08-20.md`**.
