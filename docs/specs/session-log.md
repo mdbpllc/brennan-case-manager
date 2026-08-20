@@ -16,6 +16,86 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-FIFTH invocation) — one docs-only packet: gate 9's round trip one recorded WITHOUT closing the gate, and a re-derivation catches a size figure this file published one batch ago
+
+**One zip in `inbox/`, executed:** `push-to-code_gate9-roundtrip1_2026-08-20.zip` (**5,316 B, mtime `2026-08-20 03:02:04 −05:00`, sha256 `40f1a872e8066f1b…`**). Identity pinned at Step 1 per QR-6(c). **BOTH ORDERS WERE STILL COMPUTED (QR-4) AND ARE TRIVIALLY IDENTICAL** — one packet admits no ordering — **but the packet's §1 carried a DISCONFIRMABLE prediction and it held**: *"`inbox/` should hold only this packet (batch 74's deletion was verified)."* A second zip would have contradicted it, so the agreement is evidence rather than a tautology. Michael confirmed at the Step 1 STOP.
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`85d36c7`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 / 0**, `git status --porcelain` empty, on `master`. Neither the behind-limb nor the ahead-stop arose — **so batch 74's push DID land, which is the only way this batch could learn it** (that batch's own entry is barred from asserting it, QR-5). Step 0 items 1–4 were already satisfied: `inbox/` exists, `.gitignore:16` carries `inbox/`, and `Bash(rm -f inbox/*)` is present in `.claude/settings.local.json`.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS, AND IT HAD TO BE A CONTENT PROBE BECAUSE THE SOLE DELIVERABLE IS AN APPEND INTO AN EXISTING FILE — where absence of a path proves nothing.** Three distinctive phrases from `#122` returned **0** hits across the whole of `docs/` in the working tree **and 0** against the `origin/master` blob of `docs/specs/session-log.md`, so neither the committed-and-pushed nor the committed-but-unpushed limb applied.
+- **`#122` WAS FREE, ON A PROBE THAT COULD HAVE SAID OTHERWISE.** `#122` returned **0** hits across `docs/` at HEAD with `#121` returning **18** as a control. Design high-water at HEAD is `#121`, exactly as the packet's §1 predicted, so no renumber was owed. **Per TOC-6 this runner line mints no `#nn` and carries only the invocation ordinal.**
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** §5 is **NONE**, and the routing table is **ONE row into `docs/specs/session-log.md`** — no `src/`, no `db/`, no `supabase/`, no build tooling — so `npm test` / `npm run build` / `npm run lint` could prove nothing about this batch. **No health figure is asserted anywhere in this entry; a skipped check is not a pass.**
+- **THE CONFLICT RULE DID NOT FIRE AND HAD NOTHING TO REACH.** One packet, one routing row. **Nothing was superseded and nothing was skipped as already built.** The entry was filed **BY BYTE COPY from the packet and verified by hash, never retyped.**
+- **A FIGURE THIS FILE PUBLISHED ONE BATCH AGO IS STALE AT HEAD, FOUND BY RE-DERIVATION RATHER THAN BY THE PACKET, AND THE CAUSE WAS READ FROM `git` RATHER THAN GUESSED.** `BUILD-STATE.md` publishes `knowledge-capacity-measurement-2026-08-20.md` at **10,746 B**; at HEAD it is **11,682 B**. It *was* 10,746 B when filed at `bfca144` (batch 73) and grew at `2a6ae67`, when the same-day `Q-CAP-2` ruling session appended its §5 note — **so the seventy-fourth batch published the PRE-ANNOTATION figure and called it "filed verbatim this batch."** **This is the SAME CLASS as the `grok-external-review` correction that file already records — a size carried across an annotation — firing a second time, one document over.** **Corrected in `BUILD-STATE.md` only, which is wholesale-rewritten; the seventy-fourth batch's entry is append-only and STANDS AS WRITTEN.** **Every other size that file publishes was re-derived this batch and all are exact** — the six adjudication records, the eleven registry-research documents, workbook v1 at 29,844 B / 171, the runbook at 81 / 106, the T3 protocol at 534 / 688, CHAT-DISPATCH v4 at 79 / 94.
+- **A SECOND CLAIM SURVIVED A PROBE THAT RETURNED THE WRONG ANSWER, AND THE FIX WAS CLASSIFICATION RATHER THAN A NARROWER PATTERN.** `BUILD-STATE.md` says `select('*')` on `parties` returns **ZERO**; a sweep returned **ONE**, in `src/data/__tests__/gate10Pii.test.ts`. **The hit is the RETRACTION CLASS: a guard test whose whole purpose is to assert the absence** — `expect(src).not.toContain("from('parties').select('*')")` — the string present in order to deny it. **The claim stands unamended.** That file's own standing note about the retraction class covers this, and it must never be "fixed" into a smaller pattern.
+- **THE PACKET'S §1 RECONCILE LIMB WAS TESTED AND DID NOT FIRE.** It directs a correction if `BUILD-STATE.md` implies the app on `mdb-pllc` ran Supabase mode between 2026-08-14 and 2026-08-20. **It carries no such sentence:** its only Supabase-mode statements describe the APP's behavior — *"Sign-in gate — Supabase mode only"* — not this machine's configuration. Nothing was corrected because nothing was wrong.
+- **`.env` WAS DELIBERATELY NOT READ, AND THE HALF THAT IS REPO-CHECKABLE WAS CHECKED.** `#122`'s `.gitignore` claim verifies at HEAD (`.env` at line 24, `.env.*` at 25). **The VALUES are not repo-checkable and no probe was run at them** — §6 bars any credential, token or key from anything this batch writes, and a length test is still a test on a secrets file. **Everything this batch says about the fill is `#122`'s word, asserted no further.**
+- **WHAT DID NOT HAPPEN, STATED SO THE RECORD CANNOT INFLATE IT.** **Gate 9 was NOT closed — round trip one is not the gate**, and `#122` names what it still owes. `Go_Live_Gates.md` and `docs/smtp-setup.md` were **not touched**. No database was connected to, no DNS record read or written, and **this runner did NOT double as the gate-3 run it reports as authorized** — that bar is standing.
+- **THE QUEUE TOOK NO ROWS AND CLOSED NONE, ON THE PACKET'S EXPRESS §6 — AND SO IT TOOK NO STATUS-HEADER SENTENCE EITHER, WHICH IS THE CONDITIONAL HALF OF `QR-6(b)` RATHER THAN AN OMISSION OF IT.** Both acts are triggered by a merge; there was no merge. **Every §7 item has an existing home, verified here rather than assumed:** `LE-1` and `GL1-1` are live rows · gate 9's remaining §4 items and the firing of the gate-3 run are **ACTION, not ruling** (the `#114` boundary) · and **`Q-CAP-1` and `Q-CAP-3` deliberately have NO rows** — `Q-CAP-3` returns **0** hits in that file and `Q-CAP-1`'s only occurrence is inside the Status header itself — their text living in the filed measurement document, which is Michael's own seventy-third-batch ruling on where those questions live. **Row-anchored open rows re-derived at HEAD and UNMOVED at 350**, on the file's own matcher (`lstrip()` then `- ⬜`); the plausible wrong matchers still disagree — line-anchored **334**, raw glyph **388**.
+- **`DT-1` WAS READ AND THE DIVERGENT WINDOW DID NOT APPLY — the three-batch streak ENDS here, and saying so is the point of measuring rather than carrying.** PowerShell, the authority, read **`2026-08-20 11:26 −05:00`** (`Central Standard Time`) against a UTC **`2026-08-20 16:26`**: **the SAME calendar day.** This batch runs late morning, not in the ~19:00-to-midnight window where the two dates split. Every date written this batch is the Central **2026-08-20** regardless, which is also what the packet's §0 stamped.
+- **THE TOC RIDES THIS COMMIT AT ITS TWENTY-SIXTH EDITION AND IS A GENUINE `TOC-4` FIRING — THE TWENTY-FIRST.** Census run **before** the edit as well as after: **263 rows against 263 log headings** at `85d36c7`, **265 against 265** as written. **AND A STALE BLOCK WAS CORRECTED RATHER THAN CARRIED: the *Coverage* section still published `261` and its bucket arithmetic through the twenty-fifth edition**, while that edition's own banner said 263 — the two sections disagreeing inside one file at HEAD.
+- **A THIRD FIGURE THIS PROJECT'S OWN CLOSE-OUTS PUBLISH TURNED OUT TO BE UN-RE-DERIVABLE, AND IT IS FLAGGED RATHER THAN REPEATED OR REPAIRED.** The seventy-fourth batch listed *"the v4 chain at 25 + 7"* among its **re-derived** figures. **It cannot be reproduced from the file it names:** `docs/prompts/CHAT-DISPATCH-v4.md` contains **ZERO** status glyphs of either kind — not a matcher problem but an absence of the thing to match. **And the only other place the block is tracked disagrees:** the queue's Status header last records it going **THIRTY-FOUR OPEN → THIRTY-TWO OPEN + TWO CLOSED**, i.e. **34 rows**, against `BUILD-STATE.md`'s **25 + 7 = 32**. **Neither number was changed and neither is now asserted** — that header is append-only, and choosing between two records is a ruling, not a count. **All three of this batch's findings are one pattern: a figure published as RE-DERIVED that was carried past the thing that moved it.**
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's routing and all THREE findings above. **Still open and still Michael's:** gate 9's remaining §4 items — the header read (`spf=pass`, `dkim=pass` with `d=brennanstx.com`), the junk-placement statement, **the outside-mailbox run**, the later-day repeats from a fresh browser, and the optional DMARC `p=none` · **firing the gate-3 run** (`docs/prompts/PROMPT-gate3-write-path-test.md`, authorized, token source now live) · the gates re-check (floor item 5) · `Q-CAP-1` + `Q-CAP-3` · `GL1-1` · `LE-1` · everything carried at `#121`.
+
+## 2026-08-20 (#122) — GATE 9 ROUND TRIP ONE PASSES END TO END: DNS published and verified authoritative, Postmark live, custom SMTP on, and a magic link from signin@brennanstx.com signs Michael into the live database — plus the .env finding that explains why this machine was in demo mode (design session, Cowork, Fable 5; screenshot-driven walkthrough per §7.2)
+
+**The gate-9 execution walkthrough, Michael's hand throughout, ~01:30–03:15 Central.** No repo file
+was touched; no credential entered this chat at any point — the one secret (the Postmark Server API
+Token) traveled dashboard-to-dashboard. **DT-1: 2026-08-20.**
+
+- **WHAT IS NOW PROVEN, in order proven.** (1) **Both Postmark DNS records published at Namecheap
+  and verified at the AUTHORITATIVE servers** (`dns1/dns2.registrar-servers.com`) by direct query
+  from the cloud container, ~02:31 Central — DKIM TXT an **exact match** to the issued key
+  (independently validated as a structurally sound RSA-1024 SPKI before publication), Return-Path
+  CNAME → `pm.mtasv.net`, **all four server×record checks green**; the mid-poll flapping was
+  Namecheap's anycast pool syncing, resolved within ~80s. (2) **Postmark verified the domain** —
+  the Return-Path confirmation arrived by email during the sitting. (3) **Supabase custom SMTP is
+  ON** — host `smtp.postmarkapp.com`, port 587, Server API Token as both credentials, sender
+  `signin@brennanstx.com`, per the runbook's §3. (4) **§4 ROUND TRIP ONE PASSED WHOLE, ~03:15
+  Central:** signed-out gate → magic link requested for michael@brennanstx.com → **email arrived
+  FROM `signin@brennanstx.com`** → link clicked in the same browser → **signed in against the live
+  database.** The From address is itself the proof the custom sender carried the mail — the
+  built-in dev sender cannot produce it.
+- **THE FINDING THAT UNBLOCKED IT, AND IT CORRECTS THIS SESSION'S OWN EARLIER CLAIM.** The app
+  opened in DEMO MODE on `mdb-pllc` because **`.env`'s `VITE_SUPABASE_URL` and
+  `VITE_SUPABASE_ANON_KEY` were EMPTY — the keys present, the values never filled.** The file was
+  copied from the template and only the two MSAL values were ever entered (2026-08-14, the Outlook
+  work). `usingSupabase = Boolean(url && key)` did exactly what it says. **Michael filled both
+  values 2026-08-20 (dashboard → his hand → `.env`, which is gitignored at `.gitignore:24`) and the
+  footer flipped to "Connected: central database."** **Correction, mine (Fable 5, this session):**
+  hours earlier this session asserted *"`.env` holds `VITE_SUPABASE_URL` and
+  `VITE_SUPABASE_ANON_KEY`"* — **the check behind that claim redacted values with `=<redacted>`,
+  which renders a FILLED value and an EMPTY one identically.** A value-LENGTH check is what the
+  first check should have been. Same failure class as `#119`'s underscore-stripping normalizer: the
+  instrument constructed so it cannot disconfirm. The earlier claim is corrected here; nothing
+  downstream relied on it before it was caught — **except the gate-3 kickoff's Step 0.3, which
+  called `.env`'s URL "the address of record" when it was empty at authoring. It is now filled, so
+  the prompt's premise is true at run time; recorded rather than repaired.**
+- **CONSEQUENCE FOR GATE 3, AND IT IS A GOOD ONE:** the same two values are what the write-path
+  run's script reads, so **the fill was a prerequisite of TWO floor items wearing one disguise** —
+  and the browser session round trip one just created **is the Step 0 token source**, live on
+  `mdb-pllc` now.
+- **WHAT GATE 9 STILL OWES BEFORE IT CLOSES AT THE RE-CHECK, named so the round trip is not read
+  as the gate:** the header read on a delivered message (`spf=pass`, `dkim=pass` with
+  `d=brennanstx.com`); the junk-placement confirmation stated in words; **the outside-mailbox run**
+  (a non-M365 address — deliverability to your own tenant proves little about anyone else's); **the
+  later-day repeats** from a fresh browser; and the optional DMARC `p=none` record, **not
+  published tonight** — deliberately not during the go-live window per the runbook's own warning.
+  **Gate 9 remains OPEN; it closes at the gates re-check on the §4 evidence, per the runbook's
+  completion section.**
+- **TWO WALKTHROUGH INCIDENTS, recorded because each is a class:** (1) `npm run dev` was pasted
+  into the Supabase SQL editor, which refused it (`42601`) — **no harm, nothing ran**; the fix was
+  naming which window owns which command. (2) The first authoritative-DNS check ran BEFORE the
+  Namecheap save and returned NXDOMAIN everywhere; a doubled-name probe ruled out the auto-append
+  trap, and the re-poll after his save went green — **diagnose-from-the-decisive-check held: the
+  authoritative servers, not the caches, and never a conclusion from a stale read.**
+
+**Staged for Code:** this entry. **Awaiting/Returned from Code, unreviewed:** batch 74's routing
+(unverified beyond the design-side spot-check recorded in chat). **Still open and still Michael's:**
+gate 9's remaining §4 items above · firing the gate-3 run (`docs/prompts/PROMPT-gate3-write-path-test.md`,
+authorized, token source now live) · the gates re-check (floor item 5, Fable session) ·
+`Q-CAP-1`+`Q-CAP-3` · `GL1-1` · `LE-1` · everything carried at `#121`.
+
 ## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-FOURTH invocation) — one docs-only packet: four rulings filed, the gate-3 kickoff staged unfired, and the pre-run audit's headline re-derived against the schema before a live run is authorized to touch anything
 
 **One zip in `inbox/`, executed:** `push-to-code_gate3-and-smtp-rulings_2026-08-20.zip` (**13,572 B, mtime `2026-08-20 01:41:55 −05:00`, sha256 `4a10d6e9ea6a0787…`**). Identity pinned at Step 1 per QR-6(c). **BOTH ORDERS WERE STILL COMPUTED (QR-4) AND ARE TRIVIALLY IDENTICAL** — one packet admits no ordering — **but the packet's §0 carried a DISCONFIRMABLE prediction and it held**: *"Expect a single packet — batch 73 emptied `inbox/`."* A second zip would have contradicted it, so the agreement is evidence rather than a tautology. Michael confirmed at the Step 1 STOP.
