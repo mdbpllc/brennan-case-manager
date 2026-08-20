@@ -82,6 +82,40 @@ go-live the same change is a migration over privileged records. Record:
 docs/specs/grok-external-review-2026-08-18.md §3 item 10. Trigger: before the first real
 client record — this gate sits ahead of GL-1's floor, not behind it.
 
+   *CLOSED — RULED by Michael, 2026-08-20 (Central). The gate's text above stands as written per
+   the append-don't-rewrite rule; this note records the closure and, more importantly, its edges.*
+
+   *WHAT CLOSED IT. Both halves are built and exercised. **Schema half** (2026-08-19): `parties`
+   gains a typed `date_of_birth`; a `party_pii` child table holds SSN, licence number and issuing
+   state, keyed PK-is-FK so a second PII row per contact is unrepresentable; RLS, policy and its
+   own GRANT from birth. Pasted and verified live by Michael's hand, all six checks answered.*
+   ***Front-end half*** *(2026-08-19, `G10-5`): registry fields carry a storage destination, a
+   write-guard at BOTH adapter seams strips the four keys from every `fields` write whatever the
+   caller hands over, the three party reads moved from `select('*')` to an explicit column list
+   (`select('*')` on `parties` now returns ZERO), `party_pii` is fetched on demand and NEVER
+   joined into a list read, and SSN and licence are masked by default behind an explicit reveal.
+   Walked in a browser, not merely unit-tested. So the gate's own two properties are answered:
+   the values are OUT of the blob and in dedicated columns, and they are EXCLUDABLE from API
+   selects — demonstrably, not by inference.*
+
+   ***TWO THINGS THIS CLOSURE DOES NOT DELIVER, RECORDED HERE SO THE GATE IS NOT READ AS
+   COVERING THEM.*** *(1)* ***AUDITABILITY IS NOT BUILT.*** *The gate's parenthetical calls the
+   dedicated columns "excludable from API selects, auditable." Excludable is delivered;
+   auditable describes what the SHAPE now permits, not machinery that exists. `G10-1` was ruled
+   PROVENANCE-ONLY, and the audit limb — history, freeze, `REVOKE UPDATE, DELETE`, and reveal
+   logging — is expressly owed to **`O-1`**, which is OPEN. Nothing here discharges it.*
+   *(2)* ***THE §5 PRE-FLIP REPORT WAS NEVER RUN AGAINST THE LIVE DATABASE.*** *The slice
+   requires it immediately before the write path flips; the same authority barred the build
+   session from connecting to the database, so the local half was asserted by test and the live
+   half is UNRUN. The query is filed at `docs/specs/gate10-preflip-report-query.sql` and is
+   Michael's to run. **The migration's own pre-flight returned zero rows on 2026-08-19 and no
+   real client data has ever entered this database — so the expected result is zero — but that
+   is a reason to expect it, not a reading of it.***
+
+   *`G10-2` (the `on delete cascade` reversal, ruled inside `O-7`) and `G10-4` (whether the
+   gate's shape rests on an unentered ch. 521 privacy proposition) are both still OPEN and are
+   NOT closed by this. Records: session log, the 2026-08-19 gate 10 build, run and front-end
+   entries; `docs/specs/gate10-pii-slice.md` and `docs/specs/gate10-pii-frontend-slice.md`.*
 ## GL-1 — The go-live floor (RULED by Michael, 2026-08-11)
 
 Go-live means real case, party, client, and SOL data entered by hand into the core app —
