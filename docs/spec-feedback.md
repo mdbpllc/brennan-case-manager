@@ -588,11 +588,24 @@ tables are exposed automatically, but this project was deliberately created with
    6 suggested.** Gate 6 correctly said policies could not be tested without a sign-in flow.
    It did not anticipate that they could not be *reached* either. Both were true at once.
 2. **CL-2 INHERITS THIS.** `case_clients` — and any other table that slice adds — will be
-   unreachable the moment it is created unless its GRANT is written with it. `ALTER DEFAULT
+   unreachable the moment it is created unless its GRANT is written with it. THIS PROJECT has
+   never issued `ALTER DEFAULT PRIVILEGES` — silently exposing future tables is exactly the
+   posture it rejected — but the DATABASE carries one anyway (Supabase's bootstrap;
+   `pg_default_acl` read 2026-08-19), and the unreachability of an ungranted table rests on
+   that vendor default WITHHOLDING the four DML privileges (C-2 as RESTATED 2026-08-19). The
+   cost is that every new table needs an explicit grant. `db/schema.sql` carries a
+   *** READ THIS BEFORE ADDING A TABLE *** note at the grants block.
+   *(**Conformed 2026-08-19 on Michael's ruling.** This passage read: "`ALTER DEFAULT
    PRIVILEGES` was deliberately NOT set, because silently exposing future tables is exactly
-   the posture this project rejected. The cost is that every new table needs an explicit
-   grant. `db/schema.sql` carries a *** READ THIS BEFORE ADDING A TABLE *** note at the
-   grants block.
+   the posture this project rejected." The project-conduct half was true; as a statement about
+   the database it was false, and the 2026-08-19 `pg_default_acl` read settled it. **It was in
+   no repair inventory** — found by the CODE-DISPATCH v4 task C1 re-sweep, which reached it only
+   because the phrase WRAPPED across the line ending here: a line-anchored grep of this file
+   returned FOUR hits before this repair and never this one. (It returns five now — the
+   corrected sentence above sits on a single line. The figure moved with the edit, which is
+   why it is stated against a commit rather than left in the present tense.) **The 2026-07-28 finding this entry records is
+   unaffected** — an ungranted table was unreachable then and is unreachable now, on a warrant
+   nobody had read yet.)*
 3. **The two undeployed edge functions probably share this root cause.** BUILD-STATE
    describes them as auth-blocked because "the poller writes to tables nothing can read."
    That diagnosis is likely incomplete — `service_role` grants were never issued either.

@@ -408,3 +408,28 @@ recovered from the index map.
 - **Not a verification of any legal proposition.** Nothing here touches the registry.
 - **Not a claim about the live database.** Every fact about privileges cited here is quoted from the
   record of your own 2026-08-19 catalog reads. **No database was connected to.**
+
+---
+
+## 11. ADDENDUM — appended 2026-08-19 (Central) by Michael's ruling; nothing above is edited
+
+**Two of the three carriers were REPAIRED after this record was filed and pushed.** The tables and
+verdicts above stand as written — they are the state at `82be555`, which is what a dated one-run
+record is for — and this section is the only place that state is superseded.
+
+- **`docs/spec-feedback.md`:591 (§5.2) — REPAIRED.** The passage now states the true warrant (this
+  project never issued it; the database carries a vendor default that withholds the four DML
+  privileges) and carries a dated conformance note quoting what it used to say. **It remains a
+  hit on any future sweep, now in the RETRACTION class** — the note quotes the sentence in order
+  to deny it, and must never be "fixed."
+- **`docs/specs/attorney-review-queue.md`:793 (§5.3) — REPAIRED**, and taking the same corrected
+  wording its source memo already carried, so the two copies read alike again.
+- **`src/components/RlsProbePanel.tsx`:73 (§5.1) — STILL STANDS**, deliberately, behind `G10-5`.
+  So does the second sentence at :70–71 that §6.3 named. **The carrier count at HEAD is ONE.**
+
+**A line-ending trap fired during the repair and is recorded because it will fire again:**
+`docs/spec-feedback.md` is **CRLF** (983 CR / 983 LF by raw byte read) while the queue, BUILD-STATE
+and the session log are all **LF**. A multi-line block authored in LF matched ZERO times against it;
+the single-line queue edit was unaffected. **The editor was made line-ending-aware — convention
+detected from a raw byte read, block translated before matching, file written as bytes** — and each
+replacement asserted exactly one occurrence or aborted. **No file's convention was changed.**
