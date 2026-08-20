@@ -331,6 +331,20 @@ warned about.** Corrected list:
 classification table (§3.5) · **the health-check figures, 279 tests / 23 files / build 0 / lint 0
 (§3.3)** · anything about origin (§1.2) · the twelve §1 pins, permanently uncheckable (§2.C, §3.2).
 
-**Carried forward, unresolved and Michael's:** whether `G10-5` item 6 grows to cover
-`RlsProbePanel.tsx:70–71` · the eight-vs-six clearance count and the nine-entry undetermined set ·
-whether §1.1 earns an instructions operational note and whether a `.gitattributes` is wanted.
+**Carried forward, unresolved and Michael's:** whether **the front-end slice's §7 item 6** grows to
+cover *"The role has no SQL privilege on these tables"* · the eight-vs-six clearance count and the
+nine-entry undetermined set · whether §1.1 earns an instructions operational note and whether a
+`.gitattributes` is wanted.
+
+*(**Conformed 2026-08-19**, on Michael's ruling — queue-runner batch 72, after the batch that filed
+this document flagged the defect and left it. This line read* "whether `G10-5` item 6 grows to cover
+`RlsProbePanel.tsx:70–71`" *— reproducing **both** of the naming errors §3.6 of THIS document had
+already caught and corrected before shipping. §3.6 governs and is unchanged: (a)* **`G10-5` is a single
+yes/no queue row and has no items** *— the numbered item lives in
+`docs/specs/gate10-pii-frontend-slice.md` §7; and (b) per **CITE-STABILITY** the sentence is cited by
+its **text**, not by a source-file line number that goes wrong the first time anyone edits above it.
+The finding is not otherwise altered and the question is still Michael's — it is now queue row*
+**`G10-6`**, *and the `.gitattributes` question beside it is* **`LE-1`**, *both entered by that same
+batch.* **§2.D's table row is deliberately NOT touched:** *its `:70-71` reports what BUILD-STATE names,
+which is a different claim from this document citing the sentence itself. This note is retraction
+class — it quotes the wrong forms in order to deny them, and must not be "fixed.")*
