@@ -174,3 +174,37 @@ permission, it does not add a prohibition.**
 - **Not a change.** `.claude/settings.local.json` was read and not written. No candidate was applied.
 - **Not portable.** The file is untracked and machine-local; every finding is about `mdb-pllc`.
 - **Not a security review.** The go-live gates still require a professional one before real data.
+
+---
+
+## 11. ADDENDUM — appended 2026-08-19 (Central) by Michael's ruling; nothing above is edited
+
+**Two of the acts this audit proposed were APPLIED.** Everything above stands as the state it
+described — an audit that says "nothing was applied" and is then acted on does not get rewritten;
+this section is the only place its §5 and §10 are superseded.
+
+**His ruling: add the allowlist entry and narrow `git push`.** Applied to
+`.claude/settings.local.json` by two minimal text edits, the rest of the file byte-identical,
+**entries 23 → 24**, result re-parsed as JSON and the delta asserted before the write:
+
+| Act | Before | After | Section |
+|---|---|---|---|
+| **ADDED** | *(no Bash entry matched the prescribed verification command)* | `Bash(git ls-remote origin refs/heads/master)` | §4 |
+| **NARROWED** | `Bash(git push *)` | `Bash(git push origin master)` | §5 row 13 |
+
+**The narrowing is the one with teeth: `--force` and `--delete` no longer carry standing
+permission**, which is what §5 said MM-1 deserved and had nowhere mechanical to live. Note §9's
+limit still applies — **narrowing removes standing permission; it does not add a prohibition.**
+
+**NOT applied, and still Michael's:** the remaining **four** narrowing candidates (`git add`,
+`git config`, `npm run`, `git fetch`), the **ten dead entries** including entry 7's `unzip` with
+no `-d` target, and the repo-`.gitignore` line for `.claude/settings.local.json` (§6).
+*(Count correction: §5's table has six rows but one of them — `git status` / `git rev-list` —
+says leave as they are, so the narrowing candidates were **five**, not the six this audit's
+session-log entry and checkpoint both said. One applied, four remain.)*
+
+**The file remains untracked, machine-local, and was NOT `git add`ed** — `git status --porcelain`
+is empty of it, and the runner's own Step 0 item 4 forbids staging it. **This addendum, not the
+file, is the record.** The narrowed push's first live exercise is the push of the commit carrying
+this addendum; **that result is reported to Michael in the session report and cannot be asserted
+here, because this file is committed before the push happens.**
