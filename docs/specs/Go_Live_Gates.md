@@ -15,6 +15,43 @@
 ## Gates
 
 1. **Upgrade Supabase to Pro ($25/mo) — LOCKED IN per Michael, 2026-07-25.** The free tier has no automatic backups and pauses after inactivity; neither is acceptable once real case data exists. Trigger: *before* the first real client record enters the database — not after. Pro brings daily backups, no pausing, 8 GB database. Claude: raise this explicitly and unprompted in any session where live mode / real-data migration is being wired.
+
+   *Correcting append (drafted 2026-08-19 for `GL1-1`; the gate's text above stands as written —*
+   *this doc is append-only). **Gate 1's stated REASON is half wrong. The decision it produced is***
+   ***not disturbed.***
+
+   *Gate 1 gives as its ground that "the free tier has no automatic backups and pauses after*
+   *inactivity." **On 2026-08-19, before pasting gate 10's migration, Michael read his own Supabase*
+   *dashboard: ELEVEN PHYSICAL BACKUPS spanning 12–19 August — a week BEFORE that day's Pro*
+   *purchase — each row carrying a Restore button.** The eleven decompose exactly: eight days, one*
+   *per day at ~10:30 UTC (~05:30 Central), plus two extra on 15 August and one on 19 August.*
+   *Retention appears to be about seven days; had backups begun only at the upgrade there would be*
+   *one or two, not eleven spanning a week.*
+
+   ***One limb of this can never be settled, and it is recorded as uncloseable rather than***
+   ***smoothed.** Michael is reading that Restore button **from a Pro account**. Whether it was there*
+   *on 18 August **from a free account** is a different question and is now **permanently***
+   ***unanswerable** — the upgrade changed the only state that could have answered it. It remains*
+   *possible that Supabase retained physical backups on the free tier and exposed restore only on*
+   *paid. **The distinction the finding turns on is between "the artifacts existed" and "you could*
+   *have restored from them," and it is left open.***
+
+   ***WHAT DOES NOT CHANGE.** Gate 1 is **bought**; **`GL-1` floor item (2) stays closed**; and*
+   *Pro's other purchases — no pausing, 8 GB, whatever retention and PITR terms attach — are*
+   *untouched. **It is the REASON that was wrong, not the decision.***
+
+   ***AND A CONSEQUENCE FOR THE RECORD:** session log `#114` reasoned from gate 1's stated ground —*
+   *"Every schema act until today ran against a database with no automatic backup … on a*
+   *manual-dump-or-nothing footing. Gate 10's migration will be the first schema act with a backup*
+   *behind it." **That entry stands as written (the log is append-only), and its footing sentence*
+   *must not be cited forward as written.** On the dashboard reading, **gate 10's migration was the*
+   ***FOURTH** live schema act with a backup artifact behind it — the three of 2026-08-19 morning*
+   *(`#113`), then this one — **and the seventh ever**.*
+
+   *Full finding: `docs/spec-feedback.md`, the 2026-08-19 gate-1 entry. The gate 10 migration's own*
+   *run instructions carried the same claim and were corrected in place before it was pasted*
+   *(`f44b3ec`; comment-only, executable lines verified identical before and after).*
+
 2. **Professional security review** before multi-user / live use (existing binding rule, CLAUDE.md — Claude is not a substitute for it).
 
    *Clarification (RULED by Michael, 2026-08-11): the professional security review gates the MULTI-USER phase — instructions trigger 2 governs. Solo live use by Michael proceeds without it. Gate 2's phrase "multi-user / live use" reads as multi-user use; the gate's text above stands as written per the append-don't-rewrite rule.*
@@ -22,6 +59,25 @@
    *(GH-1 tripwire, added 2026-08-12: before the multi-user phase or ANY widening of this repo's visibility — outside collaborator, non-private — revisit GH-1 in attorney-review-queue.md: identifying strings from a prior case survive in git history, accepted 2026-08-12 while the repo is private and solo. See session log #56.)*
 
 3. **RLS policies written and tested** for every exposed table (project was provisioned 2026-07-25 with automatic RLS on + auto-expose off; default-deny until policies exist). *See gate 6 — policies cannot be meaningfully tested until a sign-in flow exists.*
+
+   *CLOSED — RULED by Michael, 2026-08-20 (`Q-G3-4`, recorded `#126`), on the 37×2 live
+   write-path run of the same date (`docs/specs/gate3-write-path-test-run-2026-08-20.md`,
+   reviewed and cleared design-side at `#124`): 37/37 refused signed out at the privilege layer,
+   36/36 policy-bearing tables allowed signed in, the `file_counters` deny control refused with
+   the privilege message, teardown verified to zero. The gate's text above stands as written.*
+
+   *EDGES, recorded so the closure is not over-read. (1) The run tested ONE policy body —
+   `for all to authenticated using (true) with check (true)` — in force on 36 tables; what varied
+   per table is whether the GRANT+RLS pair is live. (2) UPDATE and DELETE were not
+   designed-tested against `using (true)`; the run exercised INSERT and the implicit `using` on
+   teardown deletes. (3) The closure's solo-practice framing holds only while the set of
+   authenticatable users is closed — the signup-toggle finding (`#125`) and its disposition,
+   recorded in the log from `#126` forward, govern. (4) `Q-G3-5` (the standing probe growing
+   5 → 37 write paths) is DEFERRED by the same ruling to the gate-2 multi-user trigger or
+   Michael's earlier call, with the run record's §7 derivation cautions riding its builder.
+   (5) `Q-G3-3` stays open for future runs. Column-level exposure and multi-user isolation remain
+   gate-2 territory, exactly as the run record's §10 states.*
+
 4. **LegiScan API key** in Supabase edge-function secrets (`LEGISCAN_API_KEY`), never in the repo; rotate after any chat-transcript exposure.
 5. **No real client data in the repo or demo fixtures** (existing binding rule — fixtures stay fictional; statute text is the public-domain exception).
 

@@ -16,6 +16,97 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-NINTH invocation) — one docs-only packet, FOUR routing rows: gate 3 CLOSES with its edges, GL1-1's correcting append lands beneath gate 1, three queue rows close — and the session STOOD DOWN from a superseded dispatch before writing anything
+
+**THE PACKET.** `push-to-code_ruling-night-126_2026-08-20.zip`, identity pinned at Step 1 per QR-6(c) — **10,178 B, mtime 2026-08-20 17:57:53 Central, sha256 `a2d4d3fa637acfa52fb83dea3c083533a9edac23b1eab6416967e8c189af3167`** — checked against the hash Michael stated in-session and matching on every fact. One packet, four routing rows, **executed in the manifest's order 2 → 3 → 4 → 1** so the entry lands last describing acts already done. Step 0 gate: live `git fetch` + `git ls-remote origin refs/heads/master` → `89ccd87…`, equal to local HEAD, 0 ahead / 0 behind, `git status --porcelain` empty, no stranded lock. Nothing superseded (single packet); nothing skipped as already built — the three pre-checks each returned the zero their order required (`Q-G3-4` and `GL1-1` absent from the gates doc, `#126` absent from the log), and with HEAD equal to origin this was genuinely PENDING rather than committed-but-unpushed.
+
+**HEALTH CHECK SKIPPED, AND RECORDED RATHER THAN SILENT (QR-6(f)).** Docs-only batch: §5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path was written. `npm test` / `npm run build` / `npm run lint` would prove nothing about a batch that changed no code, so the trio was not run and no health figure is claimed here.
+
+**THE STAND-DOWN, RECORDED BECAUSE IT IS THE SECOND OF THE DAY.** A CHAT-DISPATCH for the gate-closure sitting was pasted into THIS Code session before the design side's rulings landed; it directed a §A0 collection and the assembly of the very packet that, by then, already existed in `inbox/`. On Michael's response the session **stood down from §A0/§B without writing, staging or authoring anything**, and ran the queue on the already-cut packet instead — **no duplicate artifact was created, no second `#126`, no competing edit-order.** (The day's first stand-down is at `#124`. No `#nn` is minted here — TOC-6; this runner ordinal carries it.)
+
+- **ROW 2 — GATE 3 CLOSES.** The closure note was appended beneath gate 3 in `docs/specs/Go_Live_Gates.md`, block extracted from the edit-order by program. Gate 3's own text is untouched; `Q-G3-4` appears exactly once; byte growth equalled the block exactly and the byte-prefix above the append point was proved unchanged. **A FIX PASS WAS NEEDED AND GOT ITS OWN RE-SWEEP, WHICH IS THE `#118` RULE ADOPTED THE SAME SITTING BINDING ON ITS FIRST BATCH:** the first write left gate 4 with no blank line above it, where gate 2's clarifications — the shape the order names — carry one, and without it CommonMark lazy-continuation folds gate 4 into the preceding paragraph. The blank line was inserted and **every touched claim re-swept normalized**: no CR, `Q-G3-4` once, gate-3 text intact, gates 1–5 all present and line-anchored, all five edges present.
+- **ROW 3 — `GL1-1` ADOPTED AS DRAFTED, both acts.** The candidate text was extracted **from `docs/specs/gl1-1-gate1-append-draft-2026-08-19.md` at HEAD by `git show`, never retyped**, its `> ` markers stripped to the three-space indented-italic shape, and the transform **proved mechanically by strip-and-compare rather than eyeballed**. Placed beneath gate 1, present exactly once, prefix above unchanged, gate 1's text and the draft file both untouched. The retraction-class note inside the block survives byte-exact.
+- **ROW 4 + ROW 3's ACT 2 — THREE ROWS CLOSED, ONE HEADER SENTENCE (QR-6(b)'s two acts).** `GL1-1`, `LE-1` and `WS-P2` closed ⬜ → ✅ with **every question text preserved byte-exact and the answers APPENDED** per QR-1. **Row-anchored open rows 350 → 347**, derived on the file's own matcher — which is `^\s*- ⬜`, counting 334 top-level plus 16 nested rows; a bare `^- ⬜` reads 334 and an any-position glyph reads 362, and neither is the published figure.
+- **A DISCREPANCY IN THE ORDER ITSELF, REPORTED NOT PAPERED OVER.** `EDIT-ORDER_gl1-1-append-and-row.md` predicted **350 → 348 if `WS-P2` is a row**. Three rows close when it is one, so the arithmetic is off by one; the **manifest's §1 was right** ("expect 350 − 2 or − 3"). The count above is derived, not carried.
+- **`WS-P2` — WHAT WAS ACTUALLY MOOTED.** The order treats it as an unruled question. **The row itself records it RULED 2026-08-18 (#108) "Exclude," left open on the `Q-AUTH-1` ruled-pending-execution shape awaiting Michael's click.** So what `Q-CAP-4` moots is **the pending click**, not a ruling — and it is genuinely moot: `git ls-files docs/authority/pdf/` returns **one file, `README.md`, 388 B**, re-verified at HEAD this batch rather than carried from `#120`, and the README names itself a *destination* for PDFs that live in project knowledge, not in the repo. A note to that effect rides the closed row. **`WS-P1` is untouched and stays OPEN — its click has a real target.**
+- **`PF-2` WAS NOT CLOSED, AND THAT IS REPORTED RATHER THAN QUIETLY DONE.** The `#118` proposal ruled **"Adopt as standing"** this sitting is carried verbatim by an existing OPEN queue row, `PF-2` — *"Does the preflight-re-run rule become a convention?"* **No routing row in this packet reaches it**, and closing a row no order names is precisely the packet-added act QR-6(e) bars without Michael's in-session authorization. It stays ⬜ OPEN. **For Michael: the register currently carries an open row whose question was answered tonight; one word closes it in the next batch.**
+- **DO-NOTs HONORED.** Gate 9 and its section were not touched — tomorrow's sitting owns it, on evidence that does not exist yet. The gate-3 run record, protocol and prompts were not touched; the `GL1-1` draft was read, never modified; no `Q-G3`/`Q-CAP` row was minted; **v24 and the project instructions were neither routed nor committed** — pasting is Michael's hand. No token, link or email-body content appears anywhere in this batch.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's handback — the two gates-doc appends, the three row closures with their header sentence, and `#126` as filed.
+**Still open and still Michael's (the packet's §7, merged so the top of the log stays truthful):** paste **v24** into the project instructions, then Sync — delivered this sitting, his hand · the **signup toggle → OFF** and its ruling record · the **outside mailbox's provider + folder** · the **16:47 link's** click-or-lapse · the **§4.5 fresh-profile repeat** and a later-day second · the **gate-9 closure sitting**, the last floor act · the **`/usage` reading**, asked and not yet stated · and now **`PF-2`'s closure**, added by this batch's finding.
+
+## 2026-08-20 (#126) — THE RE-CHECK'S RULING NIGHT: EIGHT RULINGS IN ONE SITTING — gate 3 CLOSES with edges, GL1-1 adopts, the #118 re-sweep rule and the Q-CAP-5 capacity policy become standing law, LE-1 and Q-CAP-4 close, Q-G3-5 and DMARC defer — and v24 ships the same day trigger 3 fired, three ways (design session, Cowork, Fable 5; bridge reads at `89ccd87`)
+
+**THE SITTING.** The gates re-check (GL-1 floor item 5) was pre-staged in this session: full gate
+walk at `89ccd87` from the record (`#124`/`#125`, BUILD-STATE, the gates doc read full-text via
+bridge), then every ruling that does not depend on tomorrow's §4.5 evidence was put to Michael
+via question buttons, each with the recommendation stated and the full context in the question
+text. **His selections, quoted exactly as chosen:**
+
+1. **`Q-G3-4` — "Close gate 3, edges recorded."** Gate 3 CLOSES on the 2026-08-20 run via a
+   gate-10-style appended note (EDIT-ORDER in this packet) naming the edges: one policy body in
+   force on 36 tables; UPDATE/DELETE not designed-tested; the solo framing conditioned on the
+   signup toggle (`#125`); `Q-G3-5` deferred; `Q-G3-3` open for future runs. **GL-1 floor item
+   (4) CLEARS.**
+2. **`Q-G3-5` — "Defer to a named trigger."** The standing probe stays at 5 write paths;
+   re-raised at the gate-2 multi-user phase or Michael's earlier call; the run record's §7
+   derivation cautions ride its eventual builder. No build act now.
+3. **`GL1-1` — "Adopt as drafted."** The candidate correcting append (filed 2026-08-19 at
+   `docs/specs/gl1-1-gate1-append-draft-2026-08-19.md`) goes beneath gate 1 by program-extracted
+   byte copy; the queue row closes per QR-1 (EDIT-ORDER in this packet). Gate 1's decision stands
+   undisturbed; its record becomes accurate about its own reasoning, uncloseable limb included.
+4. **The `#118` proposal — "Adopt as standing."** New binding convention, RR-1 family: **when a
+   preflight or audit returns findings that are then fixed, the fix pass gets its own check
+   before the zip closes — at minimum a normalized re-sweep of every claim the fixes touched.**
+   Origin exhibits: batch 72's two post-fix defects. **Instructions trigger 3 FIRED.**
+5. **`LE-1` — "Note yes, .gitattributes no."** The bridge-CRLF false-dirty earns a v24
+   operational note (the decisive checks included — among them `git -c core.autocrlf=true
+   status` → clean, preserved on the row at `#124`); **no `.gitattributes`** — normalization
+   churn outweighs a design-side-only nuisance already mitigated; revisit only if it ever bites
+   a Code session. Row closes (EDIT-ORDER in this packet). **Trigger 3 FIRED (second).**
+6. **`Q-CAP-4` — "Close as moot."** `WS-P2`'s premise was measured false at `#120`; its real
+   subject was `Q-CAP-2`'s, already excluded. The EDIT-ORDER closes the row IF it is one, and
+   otherwise reports `WS-P2`'s actual home and touches nothing — this entry is the ruling record
+   either way.
+7. **`Q-CAP-5` — "Adopt all three."** Standing capacity policy, design-side, no runner change:
+   **(a)** any design session starting at knowledge ≥ 90% flags it and stages a capacity pass;
+   **(b)** when the LIVE log passes ~700 KB, the sitting proposes the next positional split for
+   Michael's ruling — cutoff rolled forward, `Q-CAP-1` mechanics, the split always his ruling,
+   never automatic; **(c)** capacity is re-measured at every trigger-7 monthly review.
+   **Trigger 3 FIRED (third).**
+8. **DMARC — "Defer past go-live."** Gate 9 closes without it; revisit after launch or at the
+   multi-user hardening. Recorded so it leaves the open lists.
+
+- **v24 DELIVERED THE SAME DAY, AS TRIGGER 3 REQUIRES.** The full instructions text — v23 plus
+  exactly: the `#118` convention, the `LE-1` operational note, the `Q-CAP-5` policy folded into
+  the capacity note, the gates-doc description updated for tonight's appends, and the trigger-3
+  log line — was drafted this sitting and handed to Michael as its own file. **Pasting it is his
+  hand; v24 is the floor-item-5 revision under OPEN-1's reading ("the instructions current at
+  the re-check").** No other instruction text changed.
+- **THE GATE WALK, AS PRE-STAGED AND PUT (full detail in this sitting's chat; statuses re-derived
+  at `89ccd87`, not carried):** gate 1 ✓ Pro (plus tonight's GL1-1 append) · gate 2 gates the
+  multi-user phase only, GH-1 tripwire intact · gate 3 **CLOSED tonight** · gate 4 ✓ key in
+  Supabase secrets, M-4 rides T3 · gate 5 ✓ standing, no violations on record · gate 6 ✓ in
+  substance — the gate-3 run authenticated through the flow it demanded · gates 7–8 not
+  floor-blocking by their own triggers · gate 9 OPEN pending §4.5 + the owed §4.4 details ·
+  gate 10 ✓ CLOSED with edges (2026-08-20, edge-2 discharged).
+- **FLOOR AFTER THIS BATCH:** (1) ✓ · (2) ✓ · (3) gate 9 — closes on tomorrow's evidence ·
+  (4) ✓ **cleared tonight** · (5) ✓ **this sitting + v24** (completing at gate 9's close).
+  **Go-live = gate 9's closure away.**
+- **STILL OPEN, MICHAEL'S, carried to the closure sitting:** the signup toggle's OFF click (+ its
+  ruling record) · the outside mailbox's provider + folder · the 16:47 link's click-or-lapse ·
+  the §4.5 fresh-profile repeat (tomorrow) and a later-day second · the §4.4
+  invite-substitution + §4.5 fresh-profile-form acceptances, ruled at gate-9 closure · the
+  `/usage` reading (asked; not yet stated — allocation for the final sitting reasons from it
+  when given). A CHAT-DISPATCH for that sitting was delivered this session (Opus; carries these
+  items and the gate-9 closure order's evidence requirements).
+
+**Staged for Code:** this entry; `EDIT-ORDER_gate3-closure-append.md`;
+`EDIT-ORDER_gl1-1-append-and-row.md`; `EDIT-ORDER_le1-wsp2-rows.md` — one packet.
+**Awaiting/Returned from Code, unreviewed:** this batch's handback.
+**Still open and still Michael's:** the items in the bullet above · `Q-CAP-5`(b)'s first firing
+whenever the live log crosses ~700 KB · gate 9's closure and with it the floor.
+
 ## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-EIGHTH invocation) — one docs-only packet, ONE routing row: gate 9's evidence day filed, the signup toggle found ON, and the queue deliberately NOT touched on a standing scope ruling
 
 **One zip in `inbox/`, executed:** `push-to-code_gate9-evidence-125_2026-08-20.zip` (**6,430 B, mtime `2026-08-20 17:04:05 −05:00`, sha256 `35fff0ea6ef212fd…`**). Identity pinned at Step 1 per QR-6(c), **re-pinned byte-for-byte after the STOP and unchanged**, and deleted by explicit name at Step 4 item 5 against that pin. **Both orders were still computed (QR-4) and are trivially identical** — one packet admits no ordering — and the filename date parses cleanly, so no unparseable-date flag was owed. Michael confirmed at the Step 1 STOP; nothing was executed on silence.
