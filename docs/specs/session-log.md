@@ -16,6 +16,229 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-19 — QUEUE-RUNNER batch (runner line; SEVENTY-SECOND invocation) — the seven-document design chain filed whole, and the batch whose only judgment call was manufactured by the packet contradicting its own §7
+
+**One zip in `inbox/`, ONE executed.** **Ran:** `push-to-code_chat-dispatch-v5-t1-t7_2026-08-19.zip` — **81,688 bytes, mtime `2026-08-19 22:41:49` local, sha256 `60cb547c…`**, identity pinned at Step 1 per QR-6(c) and re-checked against that pin before deletion. **Order was trivial and is stated rather than skipped:** one packet, its date parses from the filename, so filename-date order and pure-mtime order agree with nothing to reconcile (QR-4). **Michael confirmed the order at the Step 1 STOP**, then ruled the one open question this batch raised (below). **Nothing was superseded** — one packet leaves the Step 2 conflict rule nothing to resolve. **Nothing was skipped as already built.** **Nothing was owed forward from the seventy-first batch:** its addendum records that Michael pushed `157a2cf` by hand after the classifier refused the runner's push, and that its own zip was removed from `inbox/` with the removal re-listed and confirmed — so no QR-5 carry existed. *(That clause is about the SEVENTY-FIRST batch. This entry is committed before this batch's push and before its deletion, and asserts neither — a guard in the append script rejected an earlier wording of this very sentence for reading like the boilerplate QR-5 was written to stop.)* Date stamped from a PowerShell Central read (**2026-08-19 22:56 CDT**); DT-1 was live on the design side all session and every stamp in the packet is Central.
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`beb27f4`**, equal to local `HEAD`, with `git rev-list --left-right --count origin/master...HEAD` reading **0 ahead / 0 behind**, `git status --porcelain` empty, on `master`. The ahead-stop did not arise. **AND THIS SETTLES THE ONE THING THE PACKET SAID IT COULD NOT.** Its §1.2 recorded that the design session had no network in its bridge VM, that `.git/refs/remotes/origin/master` is a tracking ref and not evidence about origin, and that **whether `beb27f4` was on origin was left expressly to this Step 0** — the handoff worked as designed, and the answer is that it is. Runner text re-read at HEAD rather than from the pointer command (QR-2): **v11**. Setup items 1–4 all already satisfied, including `Bash(rm -f inbox/*)` in the machine-local allowlist.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS.** All seven canonical paths were absent from the working tree **and** untracked at HEAD (`git ls-tree -r --name-only HEAD` over `docs/specs` and `docs/prompts`), so the packet was neither committed-and-pushed nor committed-but-unpushed; with HEAD equal to live origin, absence at HEAD is absence at origin. **One near-miss was checked rather than assumed:** `docs/prompts/PROMPT-gate10-pii-build-session.md` already exists and is a **different document** — gate 10's **PII** half, routed by an earlier batch — while this packet files gate 10's **FRONT-END** half. No second doc was created at an occupied path.
+- **`#117` WAS FREE AND TOOK NO RENUMBER.** The design high-water at HEAD is `#116` and a search for `#117` returned zero, so the design-minted number stands as authored. **Per TOC-6 this runner line mints no `#nn` and carries only the invocation ordinal.**
+- **THE SEVEN DOCUMENTS WERE FILED BY COPY AND VERIFIED BY HASH, NEVER RETYPED — all seven sha256-identical between packet source and filed copy, and all seven pure LF (0 CR) by raw byte read.** `post-sync-verification-2026-08-19.md` (`410ebb2c…`, 24,537 B) · `gate3-write-path-test-protocol.md` (`d7f45435…`, 22,052 B) · `PROMPT-gate10-frontend-build-session.md` (`099adc87…`, 15,248 B) · `gl1-1-gate1-append-draft-2026-08-19.md` (`c6841018…`, 6,816 B) · `g10-4-ch521-entry-drafts-2026-08-19.md` (`14af6241…`, 28,832 B) · `deadline-engine-spec.md` (`d56ae638…`, 33,047 B) · `pharr-hurlburt-authority-read-2026-08-19.md` (`d8223c2b…`, 19,948 B). **The line-ending trap did not fire, and the reason is recorded rather than assumed:** both sides were byte-read before any write — all nine packet files and all four close-out targets are pure LF — so a byte-preserving copy could not change a convention. `core.autocrlf` is still `true` globally, which is why the check is run every time and never inherited.
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** §5 is **NONE** in the only packet and the routing table touches `docs/specs/` and `docs/prompts/` **only** — no `src/`, no `db/`, no `supabase/`, no build tooling — so `npm test` / `npm run build` / `npm run lint` could prove nothing about this batch. **The skip limb applies and is taken; no health figure is asserted anywhere in this entry.** *(The packet's §0 and §8.5 reached the same conclusion, and it was re-derived from the routing table rather than accepted from them.)*
+- **THE ONLY JUDGMENT CALL WAS MANUFACTURED BY THE PACKET CONTRADICTING ITSELF, AND IT WENT TO MICHAEL RATHER THAN BEING DEFAULTED.** Its **§8.2 states *"This packet asks for no new rows"*** and warns that adding any would be a packet-added act under QR-6(e) — **while its own §7 carries two items that had NO row in `attorney-review-queue.md` at HEAD**, one of them marked **"OPEN, new"** in that same table. Runner Step 4 item 2 requires merging §7 into the register, which makes the merge a Step 4 item rather than a packet-added act, and the packet's parenthetical is its own mistaken prediction about what its §7 held. **Both readings were put to him with the counts, and he ruled BOTH ROWS ENTERED** — so the entry is his act and is recorded as one, not as the runner resolving a contradiction in its own favour. **He separately ruled the four packet-local question groups stay packet-local.**
+- **THE QUEUE ACT WAS THE TWO ACTS `QR-6(b)` REQUIRES, AND THE ID CHOICE IS ON THE RECORD BECAUSE THE OBVIOUS ONE WAS A COLLISION.** Rows: **`G10-6`** — whether the front-end slice's §7 item 6 grows to cover the second false `RlsProbePanel` sentence, *"The role has no SQL privilege on these tables"* — and **`LE-1`** — whether the bridge-`git status` finding earns a project-instructions operational note and whether a `.gitattributes` is wanted. **Both questions were EXTRACTED FROM THE PACKET'S §7 BY PROGRAM and carried into the rows verbatim (QR-1), with the supporting finding beneath each**, plus the Status header's per-batch reconcile sentence. **Row-anchored open rows moved 350 → 352, exactly the two new items**, on the same row-anchored measure the seventieth and seventy-first lines name; **no row was closed.** **`Q-7` was the natural ID for the second row and is NOT used: it is already taken and RESOLVED in this log, and a `Q-07` exists in the register besides** — so a fresh `LE` prefix was minted, verified unused across the queue, the log and BUILD-STATE, rather than manufacture the exact ID collision this project has now flagged four times (`O-5`/`O5`, `GL1-1`/`GL-1`, `H`/`HK`, and the identical-string `O-10`). **`G10-6` is the next free ordinal in the existing G10 series.**
+- **THE 21 PACKET-LOCAL QUESTIONS TOOK NO DURABLE IDs AND NO ROWS, ON HIS RULING — AND THE REASON IS QR-1's OWN RATIONALE RUNNING THE OTHER WAY.** `Q-G3-1`–`Q-G3-5`, `Q-521-1`–`Q-521-5`, `Q-DE-1`–`Q-DE-6` and `Q-PH-1`–`Q-PH-5` all stay where they were authored. **QR-1 exists because the packet is deleted and its questions would die with it; these questions' full text lives in the seven documents this batch filed, which are permanent repo files** — so the failure class QR-1 guards against cannot arise for them. Recorded explicitly because the packet's §6 requires the runner to say so if it mints, and it did not mint.
+- **TWO INTERNAL INCONSISTENCIES WERE FOUND INSIDE THE FILED DOCUMENTS, BOTH FLAGGED AND NEITHER FIXED — the documents are filed VERBATIM by §4's own instruction, and both are self-corrections that did not reach their own back pages.** **(1)** `g10-4-ch521-entry-drafts-2026-08-19.md` §1.1 corrects the corpus content-to-download gap to **"over FOUR MONTHS, not three weeks,"** and says in terms that the error *understated the very limit the section exists to disclose*; **its own §5 `Q-521-4` still reads "predates its download by three weeks"** — the stale figure surviving inside the open question that asks whether the currency figure is acceptable as carried. **(2)** `post-sync-verification-2026-08-19.md` §3.6 corrects the naming in terms — *"`G10-5` is a single yes/no queue row — it has no items"* — and **its own §5 closing line still reads "whether `G10-5` item 6 grows to cover."** **THE FIRST HID BEHIND THE WRAP TRAP AND IS RECORDED FOR THAT REASON:** the phrase breaks across lines 401–402, so a line-anchored `grep 'three weeks'` returns **only the correcting sentence and not the stale one** — the same defect that hid `spec-feedback.md`:591 and `fe-4`'s `is **not** set`, firing a **fourth** time, and caught here only because the check was re-run whitespace-normalized after the raw grep looked clean. **Both are Michael's to route; a document filed verbatim is not the runner's to edit.**
+- **EVERY §6 DO-NOT HONORED, CHECKED AGAINST THE DIFF.** The changed paths are the seven new files plus the four Step 4 targets — `attorney-review-queue.md`, `session-log.md`, `session-log-toc.md`, `BUILD-STATE.md` — **and nothing else**. **`src/` not touched at all**, so both `RlsProbePanel` sentences stay exactly as they are behind `G10-5` · **`Go_Live_Gates.md` not edited** and no gate marked closed · **`trcp-deadline-skeleton-2026-03-01.md` not edited**, including the three §5 rows the deadline spec conflicts with, so the 50-day conflict stays flagged and unresolved by ruling · **no `legal-rule-registry-*` file created, edited or touched** — the ch. 521 texts are filed as candidates under `docs/specs/` and nothing entered a registry · **no registry entry set to verified anywhere: every proposition in this packet is `UNVERIFIED` and stays so** · `G10-4`, `G10-5`, `GL1-1`, `O-1`, `O-11`, `O-12`, `Q-RL6-1`, `Q-RL6-2`, `Q-WF-6`, `[DL-memo Q1]`–`[DL-memo Q5]` and `H43` all left open · the retraction-class passages left alone, including the several documents here that quote a false sentence in order to deny it · the gate-3 protocol **not run** and no database connected to · the front-end kickoff prompt filed **unfired**, with `G10-5` still ⬜ · the ch. 521 drafts' `candidate only` lines left in place · the `109` correction neither re-derived nor tidied.
+- **`QR-6(e)` DID NOT FIRE ON ITS OWN TERMS, and the near-case is named rather than glossed.** Every act sat in a routing-table row or a Step 4 item. **The queue rows are the near-case** — the packet characterized them as packet-added while the runner's Step 4 item 2 makes them a Step 4 item — **and they were put to Michael anyway rather than resolved on the runner's own reading**, which is the posture the hard limits require when a packet and the runner disagree. **`PF-1` had already fired on the design side before the zip shipped**, five read-only agents returning substantively, and its repairs are folded into the documents as filed.
+
+**The packet's §7 open items, merged here so the top of the log stays truthful — all Michael's, none resolved by this batch:** `G10-5` (front-end authorization; kickoff prompt now filed and unfired) · **`G10-6`, NEW** (the second false `RlsProbePanel` sentence; load-bearing on that prompt's Step 5 branch) · `GL1-1` (gate 1's correcting append; three sub-options offered on the un-re-derived FOURTH/SEVENTH figures) · `G10-4` / `Q-WF-6` (whether any ch. 521 entry is inserted and where — they would be the registry's first privacy entries, a new file rather than a fold-in on the siblings' placement rule) · **`LE-1`, NEW** (the bridge-`git status` operational note and the `.gitattributes` question) · `Q-RL6-1` / `Q-RL6-2` (cite supply for entries 30 and 31 — the authority read stages, it does not select) · `[DL-memo Q3]`, **carried and flagged** (the deadline spec found `P-2`'s *"only to mail"* in doubt — TRCP 21a(c) has long read *"by mail **or by commercial delivery service**"* — not re-retrieved this session, and named the highest-value verification target in that spec's §8) · `H43`, **flagged not renamed** (the FC record attaches it to the court-keyed proposition while the queue's `H43` row asks whether a Bexar hearing can be set unilaterally — one ID, two propositions, already in the record) · the **eight-vs-six** omitted-clearance count, the nine-entry undetermined set and the `#67` *"is LANDED"* row, all **untouched by `#117` on Michael's own ruling** and still open · and the four packet-local groups, which stay in the documents that carry them: `Q-G3-1`–`Q-G3-5` (gate-3 protocol §9), `Q-521-1`–`Q-521-5` (ch. 521 drafts §5), `Q-DE-1`–`Q-DE-6` (deadline spec §9.2), `Q-PH-1`–`Q-PH-5` (authority read §7).
+
+## 2026-08-19 (#117) — POST-SYNC VERIFICATION OF EVERYTHING LANDED AND UNREVIEWED AT `beb27f4`: seven of the eight bodies clear, the dispatch's own HEAD assumption is the first thing to fail, and a bridge `git status` reads 196 files dirty on a clean tree (design session, Cowork, Opus 5; bridge reads at `beb27f4`)
+
+Fired by Michael's paste of **CHAT-DISPATCH v5**, task **T1**. **§7.2: an Opus EXECUTION session — it
+adjudicates nothing**; every clearance below reports a reading. Checkout granted this session at
+`C:\Users\Brennan\brennan-case-manager`, read **lock-free throughout** (`GIT_OPTIONAL_LOCKS=0`);
+**no `.git/index.lock` stranded, none left behind** (see below — this is the first multi-invocation
+confirmation of that workaround). **Nothing written to the checkout; no database connected to.**
+Verification record: **`docs/specs/post-sync-verification-2026-08-19.md`** (PROPOSED). **DT-1 fired
+at authoring** — the container and the bridge VM both read `2026-08-20` UTC while Michael's clock
+read `2026-08-19 21:44 CDT`; every stamp here is Central.
+
+- **THE DISPATCH'S OWN ASSUMPTION FAILED, AND IT IS THE FIRST FINDING RATHER THAN A FOOTNOTE.** v5
+  states *"HEAD believed `20d1a0f`"*; **HEAD is `beb27f4` — eight commits later, all 2026-08-19
+  between 20:22 and 21:31 Central.** A whole **CODE-DISPATCH v4 chain (tasks C1, C2, C3, plus a
+  family-(b) repair session)** ran after v5 was authored, so **T1's three named targets were four
+  entries short of the real unreviewed set.** Put to Michael at the checkpoint with the alternatives;
+  **he ruled T1 EXPANDED to everything landed-and-unreviewed at HEAD.** *(The dispatch's other three
+  assumptions HOLD, each checked rather than carried: `inbox/` empty; queue at **350** row-anchored
+  open rows; runner **v11**; design high-water **`#116`**.)*
+- **HIS SECOND RULING BOUNDS WHAT THIS ENTRY MAY DO: "clear only what I verify by reading."** So
+  task C3's substance — the **eight-vs-six** omitted-clearance count, the nine-entry undetermined set
+  `#65`/`#66`/`#68`–`#74`, and the `#67` *"is LANDED"* row — **is untouched here and stays his**,
+  which is what `review-clearance-candidates-2026-08-19.md` says of itself on its own face. **An
+  Opus session verifying artifacts is not an adjudication of what counts as review, and the two were
+  kept apart deliberately.**
+- **A BRIDGE `git status` REPORTS 196 MODIFIED FILES ON A CLEAN TREE — NEW OPERATIONAL NOTE, AND THE
+  MOST REUSABLE THING IN THIS ENTRY.** Taken at face value that is a **QR-3 dirty-stop** and would
+  have been reported as one. **It is a mount artifact, established decisively rather than
+  consistently:** for each of the 196, the committed blob and the worktree file were hashed after
+  stripping CR — **196 CR-only, 0 genuine content differences.** The cause is that
+  **`core.autocrlf=true` lives in Michael's Windows GLOBAL config** (the repo's `.git/config` has it
+  **unset**, checked), so Windows materialises the LF blobs as CRLF while **the Linux bridge VM's
+  git has `autocrlf` unset** and compares CRLF against LF. **`--ignore-cr-at-eol` and `-w` do NOT
+  suppress it** — the cheap-looking check is the misleading one, and only the hash comparison
+  disconfirms. **A design session that reported "dirty, the runner is blocked" from this reading
+  would have reproduced the DIAGNOSE-FROM-THE-DECISIVE-CHECK failure one entry after it was
+  written.** *(Whether this earns an instructions note, and whether a `.gitattributes` is wanted —
+  it would change committed bytes — is Michael's, PROPOSED not decided.)*
+- **THIS PASS REPRODUCED THE EMPHASIS TRAP ON ITSELF, ONE COMMIT AFTER `C1` NAMED IT, AND IT IS
+  RECORDED BECAUSE IT NEARLY BECAME A FALSE DISCREPANCY.** The first check of the addendum's
+  `36 → 37` claim ran a raw `grep '37 tables'` and returned **zero across all five files** while
+  `36 tables` still returned hits — which reads exactly like a repair that did not land. **The files
+  read `probe covers **37** tables`, emphasis INSIDE the phrase**, the identical defect that hid
+  `fe-4`'s `is **not** set` from the first sweep. Re-run with C1's own emphasis-stripped normalizer,
+  **the claim verifies completely.** The lesson is now on the record three times in two days and
+  still caught a fresh reader on first contact.
+- **SEVEN OF THE EIGHT BODIES CLEAR, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT.** **70th
+  batch:** `docs/smtp-setup.md` at **10,907 B, sha256 `c3433e46…`, 0 CR** — all three as stated.
+  **71st batch + addendum, entire:** 17 routed artifacts; **the five migration annotations
+  additions-only, zero deletions in every one**; `db/schema.sql` comment-only proven again from the
+  diff (**0 added and 0 deleted non-comment lines**); the grok append confined to
+  **`@@ -295,0 +296,29 @@`**, nothing at or above 295 touched; the two staged files hash-exact at
+  `309a7ba4…`/**10,346 B** and `35339086…`/**19,364 B**, both 0 CR; **all five queue rows filed with
+  full text, `O-13` correctly carrying no open glyph and carrying the `O-10` cross-reference for
+  BOTH stranded references** — the grok §W annotation and `#116` — plus the Status-header reconcile
+  sentence, so QR-6(b)'s two acts are both present. **Addendum:** exactly one dated *"Conformed
+  2026-08-19"* note in each of the five files, and **the 36→37 correction scoped precisely** —
+  `fe-4`/`fe-5`/`fe-6` corrected, `qbo` and `re-1` **never carried a table count at all**, before or
+  after. **C1:** report filed, §11 appended **+25/−0**, BUILD-STATE at **exactly 150 non-blank** with
+  the anti-resurrection pointer intact, and the stale `PR-3 · QBO · RE-1` parenthetical corrected —
+  it now says in terms that it *"read 'NOT repaired' from `20d1a0f` onward and was FALSE there."*
+  **C2:** report filed; **`git check-ignore -v` resolves `.claude/settings.local.json` to
+  `.gitignore:21`**, so the protection now travels with the repository; both tracked `.claude/` files
+  still tracked; allowlist **24 entries**, the bare `ls-remote` form present and **`Bash(git push *)`
+  gone to zero occurrences**, which is MM-1's never-force-push bar finally holding mechanically.
+  **Repair session:** `spec-feedback.md` **CRLF at 983 CR / 983 LF** by byte read, one conformance
+  note, and **`NEITHER IS REPAIRED — both are YOURS to route.` returns zero** — the three surviving
+  `NOT repaired` hits are unrelated contexts, **checked by reading rather than by the count.**
+- **THE GATE-10 BUILD ENTRY CARRIES ONE FALSE FIGURE, AND IT IS THE CLASS THAT ENTRY NAMES ABOUT
+  ITSELF TWICE.** **ASSERTED:** *"`db/schema.sql` — THE FRESH-PROJECT HALF, A PURE INSERTION OF 109
+  LINES, ZERO DELETIONS."* **TRUE INSTEAD:** *zero deletions* holds — `--numstat` reads `127 0` and a
+  line-by-line pass finds no deleted line — **but 109 matches no measure this project recognises.**
+  Raw **127**; **non-blank 117**, which is the ruled default; executable **21**; and by hunk,
+  **113 / 103 / 11 / 3**. **No subset and no sum of subsets yields 109.** **CORRECTS:** the
+  2026-08-19 `GATE 10 BUILD SESSION` entry, first bullet; **that entry stands as written.**
+  **ACTOR:** **Opus 5**, from the entry's own self-identification, not inferred from session type.
+  **CLASS:** a figure stated without being re-derived. **AND THIS BULLET'S OWN FIRST DRAFT COMMITTED
+  THE SAME CLASS AND IS CORRECTED BEFORE SHIPPING — recorded because it is the point.** It said the
+  build entry *"names this class about itself twice,"* quoting *"an earlier draft of this line said
+  'ten'"* and *"at least the eighth."* **Both quotations are in the sibling `GATE 10 RUN AND
+  VERIFIED LIVE` entry, not the build entry** — a range-scoped `grep 'earlier draft'` over the build
+  entry returns **zero**. The claim was satisfying and unchecked: **verify-before-criticizing,
+  failed inside a correction, by the session writing the correction.** **What is true instead runs
+  the OTHER WAY and is better evidence:** the RUN entry corrects its own draft's *"ten"* as *"the
+  PREVIOUS entry's figure carried forward instead of re-derived"* — **and the previous entry is the
+  BUILD entry, which does say `ten lines changed, none added`.** So the build entry's figure was
+  carried into its sibling and caught there, **while its OTHER figure, 109, was never re-derived by
+  anyone until now.** Prior instances: the sixteenth invocation's uncut line, `#88`'s drifting cite,
+  **and this bullet's first draft.** **WHAT CHANGED:** **nothing in the
+  record, deliberately** — the log is append-only, and **no downstream document depends on the
+  figure**: BUILD-STATE, the queue and the TOC state schema *totals* (`37 / 37 / 36`), which were
+  independently re-derived this session and are **correct**. The correction is the remedy.
+- **THE GATE-10 BUILD'S HARDEST CLAIMS ALL HOLD, INCLUDING THE TWO MOST WORTH DOUBTING.** `party_pii`
+  carries **seven columns and none named `id`**, PK on `party_id` with `on delete cascade`. **The
+  schema and migration halves are equivalent as claimed** — the schema-side object block is
+  **20** executable lines and the migration's is **21**, **the first twenty identical line for
+  line**, the migration's single extra being **`commit;`**, the transaction wrapper, which is
+  migration-only by definition. *(A first draft of this sentence wrote "20 each," which its own next
+  clause contradicted twelve words later.)* `rlsProbe.ts` holds **37 entries, contains `party_pii`, and is
+  SEQUENCE-IDENTICAL to `db/schema.sql`'s own `create table` order** — element for element, so the
+  two really can be diffed directly from here on. **`file_counters` is the sole `policy:false`
+  entry**, so the 37/36 gap is the deny control and not a defect. And the migration's *"RAISE
+  EXCEPTION, not RAISE NOTICE"* holds under the obvious objection: **the file's single `raise notice`
+  occurrence is inside the comment that states the rule** — zero executable.
+- **WHAT WAS NOT VERIFIED IS NAMED RATHER THAN GLOSSED, AND ONE ITEM IS PERMANENTLY UNCHECKABLE.**
+  **Nothing about ORIGIN** — `device_bash` has no network, so `git ls-remote` cannot run, and
+  `.git/refs/remotes/origin/master` equalling HEAD is a **tracking ref, not evidence about origin**;
+  whether `beb27f4` landed is Michael's or the next Step 0's to settle. **The twelve §1 pins of the
+  71st packet are unrecoverable** — the packet was deleted and the pin values lived only in it, which
+  is QR-1's rationale arriving from the other side. **Every live-database reading** in the gate-10 run
+  entry and the C-2 restatement stands on Michael's hand. **The health figures were not re-run**, and
+  **C1's 116-hit classification table was not independently re-swept** — that is a second whole-tree
+  pass and its own act.
+- **ONE OPEN ITEM MOVED FROM HOUSEKEEPING TO LOAD-BEARING — AND ITS USUAL NAME IS WRONG, WHICH IS
+  FIXED HERE RATHER THAN CARRIED.** Whether the front-end slice's **§7 item 6** grows to cover the
+  second false sentence — *"The role has no SQL privilege on these tables"*, rendered two lines
+  above the one item 6 names, in the same `<p className="notice bad">` block, and **out of pattern
+  for every `anon`-anchored sweep** — is **still open and still Michael's**, and it now determines
+  what the gate-10 front-end kickoff prompt (T3, this chain) can put on its work list. **As the
+  slice's §7 stands, the build repairs one false sentence and leaves the other on the screen.**
+  *(Naming, corrected before shipping: a first draft called this **"`G10-5` item 6." `G10-5` is a
+  single yes/no queue row and has no items** — the numbered item is the slice's, sitting behind
+  `G10-5`. BUILD-STATE already had it right. And per **CITE-STABILITY** the sentence is cited by its
+  text rather than by `:70–71`: a source-file line cite frozen into an append-only log goes wrong
+  the first time anyone edits above it.)*
+
+- **THE CHAIN'S OTHER SIX TASKS ALSO LANDED, ALL PROPOSED, AND TWO OF THEM MOVED BECAUSE OF WHAT THE
+  VERIFICATION FOUND.** **T2** drafts the gate-3 write-path protocol on a structural finding
+  re-derived at HEAD — **all 36 policies are BYTE-IDENTICAL** (`for all to authenticated using
+  (true) with check (true)`), so the test exercises **one rule in force on 36 tables**, not 36 rule
+  sets, and **`file_counters` denies at the PRIVILEGE layer** by `revoke all … from authenticated`,
+  **so its refusal is not an RLS result and must not be scored as one.** **T3** drafts the `G10-5`
+  kickoff prompt, whose Step 5 now turns on the still-open second-sentence question above. **T4**
+  drafts the `GL1-1` gate-1 append for adopt/reject/edit. **T5** drafts five candidate ch. 521
+  registry entries from the **ruled primary source** — Michael connected `Knowledge Repo`
+  mid-session, so the corpus was read rather than the `.htm` fallback — **and they would be the
+  registry's FIRST privacy entries.** **T6** elaborates `FC-7`/`FC-9` into a deadline-engine spec
+  that **authorizes no schema act**. **T7** is the `Q-AUTH-1` authority read, on his "Go."
+- **`Q-AUTH-1` IS EXECUTED: *EX PARTE PHARR* AND *HURLBURT v. STATE*, BOTH READ IN FULL, BOTH
+  POSITIVELY IDENTIFIED UNDER V-9's SECOND LIMB** — paginated vLex Fastcase copies stating
+  authorship on their face: *Pharr* **PER CURIAM**, CCA **en banc**; *Hurlburt* **TOM GRAY, Chief
+  Justice**, which **corroborates `#104`'s independent identification from a different source nine
+  months later.** **No "cannot identify — stop" arose.** ***Hurlburt* builds the bridge expressly**,
+  importing *Pharr*'s § 3.03 definition into art. 102.073(a) on the settled-meaning presumption and
+  stating that the phrase *"is not defined in this provision, and no court has otherwise defined
+  this phrase in the context of court costs."* ***Pharr* supplies the negative side and it is
+  sharper than expected: two plea proceedings held back-to-back the SAME DAY — "Immediately
+  thereafter" — were still NOT a single criminal action**, because each concluded before the next
+  began; *Hurlburt* names that as its own distinguishing fact. **The criminal-episode limb drops
+  out — but by AGREEMENT ("We agree with Hurlburt"), not against opposition**, which is weaker
+  footing than a contested holding and is recorded as such. **Three limits ride on the record:
+  *Hurlburt* is TENTH COURT (Waco) and Bexar sits in the FOURTH, so it is persuasive and not
+  binding here; NO CURRENCY CHECK was run on a 2016 intermediate construction of a 2015 statute;
+  and both copies are vendor products — LOCATORS, not the reporter.** **The negative implication
+  entry 31 would rest on is NOT drafted as a proposition, deliberately: neither opinion holds it,
+  and drafting it would disguise an inference as a holding.** *Anastassov*'s express reservation
+  **stands and is if anything explained** — there is still no CCA holding on the bridge. **The cite
+  supply for entries 30 and 31 remains Michael's; nothing was selected.**
+- **PF-1 FIRED ON THE PACKET AND WAS NOT A FORMALITY — five read-only agents, all returning
+  substantively, and the repairs are folded in above rather than left for the runner.** Confirmed
+  and fixed before shipping: **the `109` correction's own attribution was wrong** (see the bullet
+  above); **`#117`'s first draft over-cleared with the word "entire"**; **the gate-3 protocol's
+  "all four allow-tables are FK-free roots" was false** — `glossary_terms` carries
+  `case_id references cases`, and six of the 32 untested tables ARE roots; **the ch. 521 PDF was
+  generated 2026-04-09, not 2026-07-24** (that is the zip entry's mtime), making the corpus
+  content-to-download gap **four months, not three weeks** — an error that *understated* the
+  currency limit it was written to disclose; **"no queue item for TRCP 21a" is false at HEAD** —
+  `[DL-memo Q3]` has been open since 2026-08-14, and **the row asserting no row exists IS the row**;
+  **`G10-5 item 6` does not exist** (it is the slice's §7 item 6; `G10-5` is a yes/no row with no
+  items); and **the kickoff prompt's Step 0 tested that `G10-5` "is RULED," which a ruling of NO
+  satisfies.** Also corrected: a byte figure taken on the CRLF worktree basis inside the document
+  whose own finding is that worktree bytes ≠ blob bytes; `raise exception` counted at 4 where 3 are
+  executable; and a business-day arithmetic claim off by roughly 3.5×.
+
+**Staged for Code:** `docs/specs/post-sync-verification-2026-08-19.md` · this entry ·
+`docs/specs/gate3-write-path-test-protocol.md` · `docs/prompts/PROMPT-gate10-frontend-build-session.md` ·
+`docs/specs/gl1-1-gate1-append-draft-2026-08-19.md` ·
+`docs/specs/g10-4-ch521-entry-drafts-2026-08-19.md` · `docs/specs/deadline-engine-spec.md` ·
+`docs/specs/pharr-hurlburt-authority-read-2026-08-19.md` — **all PROPOSED; none authorizes,
+inserts, adopts or closes anything.**
+
+**Awaiting/Returned from Code, unreviewed — CLEARED BY THIS ENTRY, and ONLY to the extent actually
+read.** *(A first draft of this line cleared the seventy-first batch **"entire"** while the same
+entry called its twelve §1 pins permanently uncheckable. **"Entire" is the copy-forward word these
+two lines exist to guard against**, and it is struck rather than softened.)*
+
+- the **seventieth** batch's routing — whole;
+- the two 2026-08-19 gate-10 Code entries' **repo-side** claims — **EXCEPT the `109 LINES` figure,
+  cleared as FALSE rather than as verified**, and except the run entry's live-database half;
+- the **seventy-first** batch and its addendum **on the eleven claims verified — NOT "entire"**;
+- **task C1**'s filed artifact and its BUILD-STATE correction — **not its 116-hit classification
+  table**;
+- **task C2**'s filed artifact and its three applied acts — whole;
+- the **family-(b) repair** session — whole.
+
+**NOT CLEARED and still unreviewed:** `review-clearance-candidates-2026-08-19.md` (C3 — substance
+untouched by his ruling); every live-database reading; C1's classification table; **the health-check
+figures — 279 tests / 23 files / build 0 / lint 0 — not re-run** *(omitted from the first draft of
+this line although the body named them)*; anything about origin; the twelve §1 pins, permanently.
+
+**Still open and still Michael's:** whether the front-end slice's §7 item 6 grows to cover
+*"The role has no SQL privilege on these tables"*; the eight-vs-six clearance count and the
+nine-entry undetermined set; whether the bridge-`git status` finding earns an instructions
+operational note, and whether a `.gitattributes` is wanted.
+
 ## 2026-08-19 — CODE SESSION (repair, on Michael's ruling; same session as the C1/C2/C3 entries below): the two family-(b) carriers repaired — and the line-ending trap fired on the one file nobody had byte-read
 
 **Session:** Claude Code, Opus 5, on `mdb-pllc`. **Michael's ruling at the checkpoint: "Repair the queue row and spec-feedback:591."** That also settles, by his act, the routing question the C1 report left open — `docs/spec-feedback.md`'s dated entries are treated as **repairable, not append-only history**. **Both carriers repaired on the house pattern: corrected in place, each taking a dated conformance note that QUOTES WHAT IT USED TO SAY.** No build; nothing under `src/`, `db/` or `supabase/` touched. **Unnumbered Code entry; no `#nn`, no runner ordinal (TOC-6).**
