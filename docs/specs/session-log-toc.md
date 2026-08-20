@@ -3,6 +3,15 @@
 **Status: FINDING AID — PROPOSED.** This document corrects nothing, rules nothing, and asserts
 nothing about build status. It is an index to `docs/specs/session-log.md`, nothing more. Where the
 log and this index disagree, **the log is right and this file is stale** — regenerate it.
+**SCOPE CHANGED AT THE TWENTY-SEVENTH EDITION: THIS FILE INDEXES THE LIVE LOG ONLY.** On 2026-08-20,
+under Michael's `Q-CAP-1` ruling, the 141 oldest entries — **2026-07-21 through 2026-08-12** — were
+moved verbatim out of `docs/specs/session-log.md` into the closed archive at
+**`docs/archive/session-log-archive-2026-07-21_2026-08-12.md`**, and **their 141 index rows went with
+them, frozen inside that file** under its own *Index of archived entries*. **Nothing was deleted and
+nothing was edited.** To find an entry older than the cutoff — anything numbered `#2`–`#64`, any runner
+ordinal 5–22, or the one ordinal-less `(RUNNER)` line — **go to the archive's frozen index, not to
+this file.** The archive is CLOSED: it is never regenerated, and no row is ever added to it.
+
 
 **REGENERATE, DO NOT APPEND.** The session log is append-only and new entries land at the TOP.
 This index is therefore rebuilt in full from the log each time it is refreshed; adding rows to an
@@ -44,6 +53,7 @@ existing copy will silently drift. Canonical path is stable and unversioned for 
   `Receives → nothing` is now a receipt. **No summary, ID, date or type cell was touched on any of
   the 246 carried rows**, and the corrected entry itself **stands as written**: the log is
   append-only and the row records the receipt, it does not restate the entry.
+- **TWENTY-SEVENTH EDITION, 2026-08-20 — THE EDITION THE SPLIT MADE, AND A GENUINE `TOC-4` FIRING: it rides the QUEUE-RUNNER's SEVENTY-SIXTH invocation. Edition count TWENTY-SIX → TWENTY-SEVEN; firing count TWENTY-ONE → TWENTY-TWO.** **THE ROW COUNT FALLS 265 → 126, AND THE CAUSE IS THE SPLIT, NOT DATA LOSS — which is stated first because a 139-row drop in a finding aid reads as deletion to anyone who does not know.** Under Michael's `Q-CAP-1` ruling the seventy-sixth batch moved the **141 oldest entries** — dated 2026-07-21 through 2026-08-12, **543,336 bytes, byte-identical** — out of `docs/specs/session-log.md` and into the closed archive at **`docs/archive/session-log-archive-2026-07-21_2026-08-12.md`**. **Their 141 index rows went with them, copied byte-exact out of the twenty-sixth edition and FROZEN inside that archive under its own *Index of archived entries* heading.** Nothing was edited, renumbered or deleted; the batch proved that with a byte-conservation identity rather than by assertion. **From this edition forward this file indexes the LIVE log only** — 124 carried rows plus this batch's two (`runner 76` and `#123`) = **126**. **AND THE CENSUS ITSELF CHANGES SHAPE, WHICH IS THE ONE THING A FUTURE REFRESH MUST NOT MISREAD.** Every edition of this file has counted `^## ` headings and subtracted its own row count, reading any surplus as an unindexed entry — the tenth trap's remedy. **The live log now carries a `## ` heading that is not an entry: the pointer stanza's `## ARCHIVED: entries older than the 2026-08-13 cutoff`, which TEXT B placed at the foot of the log.** So the honest census from this commit forward is **126 rows against 127 headings, and the difference of one is CORRECT** — subtract the pointer heading before comparing. Left unsaid, that surplus would manufacture a phantom missing row at every future batch, which is the tenth trap running in reverse. **THE FROZEN INDEX WAS EARNED, NOT ASSUMED.** A frozen index is worthless if row *i* does not describe heading *i*, and nothing in any prior edition ever asserted that correspondence — it was only ever implied by construction. **Before a single row was copied, all 265 rows were matched against all 265 log headings by program: zero date mismatches and zero numbered-ID mismatches**, with the boundary falling exactly where the cut does (row 124 = `#65`/2026-08-13, row 125 = `#64`/2026-08-12). **THE BUCKETS ARE RE-DERIVED OVER THE LIVE LOG AND ONE OF THEM IS NOW EMPTY:** numbered **59** (`#65`–`#123`, gapless), runner ordinals **54** (23–76, gapless), `other` **13**, and **the unnumbered-runner bucket is 0** — `2026-07-28 (RUNNER)`, the single ordinal-less runner line this file has carried since its first edition, is an archived entry now. **59 + 54 + 0 + 13 = 126.** **A FOOTER FIGURE WAS STALE AT HEAD AND IS CORRECTED HERE RATHER THAN CARRIED A THIRD TIME:** *What this document is not* still published **nineteen** `TOC-4` firings and called edition 23's successor "the nineteenth," while the twenty-fifth and twenty-sixth editions' own banners had already moved the count to twenty and twenty-one. **That is this file's most-repeated finding turned on its own footer for the third time**, and the footer now derives the figure instead of restating it. *(The bullets below are the twenty-sixth edition's and earlier, carried as their record. Every whole-log figure in them — 265 entries, 121 numbered, 71 ordinals, the 77 `QUEUE-RUNNER` headings, the eight early batches logged inside the numbered series — was true of the UNSPLIT log and now describes the two files TOGETHER, not this index. They are not stale; their subject moved.)*
 - **TWENTY-SIXTH EDITION, 2026-08-20 — A GENUINE `TOC-4` FIRING: it rides the QUEUE-RUNNER's SEVENTY-FIFTH invocation. Edition count TWENTY-FIVE → TWENTY-SIX; firing count TWENTY → TWENTY-ONE**, the two still running apart for the reason the twenty-first edition gave. **TWO NEW ROWS, and the census was run rather than assumed** — row count subtracted from the `^## ` heading count **before** the edit as well as after: **263 rows against 263 log headings** at `85d36c7`, **265 against 265** as written, so **no entry had landed unindexed since the twenty-fifth.** Buckets re-derived: **numbered 120 → 121** (`#122`; range `#2`–`#122`, **gapless but for `#1`**), **runner ordinals 70 → 71** (`runner 75`; range 5–75, no gaps), **`other` 72 and the lone unnumbered runner 1, both UNMOVED** — 121 + 71 + 1 + 72 = **265**. **THE PREPEND WAS PROVED WITH THE MEASURE NAMED:** the prior **body** is an exact byte suffix of the body as written — the whole-file form returns FALSE on a correct file and means nothing — with the **2,771-byte preamble** byte-identical; log **1,476,649 → 1,491,652 bytes**, **15,003 inserted at the top of the body and nothing else changed.** **AND THE *COVERAGE* SECTION WAS STALE AT HEAD IN TWO PLACES, BOTH CORRECTED HERE RATHER THAN CARRIED A THIRD TIME:** it still published **261** and its whole bucket arithmetic from the twenty-fourth edition, **disagreeing with the twenty-fifth edition's own banner two screens above it inside one file**; and it still said **two** `CODE SESSION` headings mention *“the queue-runner batch below”* when there are now **three**, the same-day `Q-CAP-2` ruling entry having become the third. **Neither figure was wrong when written; both were carried past the edit that moved them** — which is this file's own most-repeated finding, turned on itself.
 - **TWENTY-FIFTH EDITION, 2026-08-20 — A GENUINE `TOC-4` FIRING: it rides the QUEUE-RUNNER's SEVENTY-FOURTH invocation. Edition count TWENTY-FOUR → TWENTY-FIVE; firing count NINETEEN → TWENTY**, the two still running apart for the reason the twenty-first edition gave. **TWO NEW ROWS, and the census was run rather than assumed** — row count subtracted from the `^## ` heading count **before** the edit as well as after: **261 rows against 261 log headings** at `2a6ae67`, **263 against 263** as written, so **no entry had landed unindexed since the twenty-fourth** and the same-day `Q-CAP-2` row had already closed that gap. Buckets re-derived: **numbered 119 → 120** (`#121`; range `#2`–`#121`, **gapless but for `#1`**), **runner ordinals 69 → 70** (`runner 74`; range 5–74, no gaps), **`other` 72 and the lone unnumbered runner 1, both UNMOVED** — 120 + 70 + 1 + 72 = **263**. **THE PREPEND WAS PROVED WITH THE MEASURE NAMED:** the prior **body** is an exact byte suffix of the body as written — the whole-file form returns FALSE on a correct file and means nothing — with the **2,771-byte preamble** byte-identical; log **1,460,834 → 1,476,649 bytes**, **15,815 inserted at the top of the body and nothing else changed.** **A STALE FIGURE WAS CORRECTED RATHER THAN CARRIED FOR A SECOND CONSECUTIVE EDITION:** the *Basis of this read* prepend paragraph still published **`1,362,509 → 1,394,416`** and *“the 246 rows carried from the twenty-first edition”* — the twenty-second edition's figures, left standing through editions 23 and 24 while the log grew by ~82 KB. It is updated here. **Lines 12–46 remain the TWENTY-SECOND edition's frozen block and are deliberately untouched**, which is why its `Generated:` line still names that edition; a reader wanting THIS read's basis wants the *Basis of this read* table, which is rewritten every edition.
 - **A ROW WAS ADDED SAME DAY, AND THAT IS NEITHER A NEW EDITION NOR A `TOC-4` FIRING.** Michael ruled **`Q-CAP-2` IN** hours after the twenty-fourth edition shipped; that Code session appended a log entry, so a row is genuinely owed and is added here rather than left to the next runner batch — **the tenth trap acted on the same day rather than accruing.** Counts move with it: **261 rows against 261 log headings, `other` 71 → 72**, every other bucket unmoved. **The edition stays TWENTY-FOUR and the firing count stays NINETEEN** — `TOC-4`'s trigger is a runner batch and this was not one, the twenty-second edition's precedent followed.
@@ -60,85 +70,97 @@ existing copy will silently drift. Canonical path is stable and unversioned for 
 | | |
 |---|---|
 | Checkout | `C:\Users\Brennan\brennan-case-manager`, branch `master` |
-| Read FROM commit | `85d36c7` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies, not `2a6ae67`. The `runner 75` line was written by this batch; the `#122` entry came from the packet, **verbatim** — filed by BYTE COPY and confirmed present in the log exactly once, byte-exact |
-| `origin/master` at read time | `85d36c7`, **0 ahead / 0 behind**, from a live `git fetch origin` plus a bare **`git ls-remote origin refs/heads/master`** — not from the local tracking ref, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all four limbs: clean, on `master`, neither behind nor ahead |
-| Working tree | clean at `85d36c7` before this batch's edits |
-| `inbox/` | **ONE** packet at Step 1, identity-pinned per QR-6(c) — `push-to-code_gate9-roundtrip1_2026-08-20.zip` (**5,316 B, mtime `2026-08-20 03:02:04 −05:00`, sha256 `40f1a872e8066f1b…`**), executed. **Both orders were still computed (QR-4) and are trivially identical**, but the packet's §1 carried the disconfirmable prediction *“`inbox/` should hold only this packet (batch 74's deletion was verified)”* and it held — **which is also the only way this batch could learn that batch 74's deletion ran**, that entry being barred from asserting it (QR-5). The QR-5 already-executed probe was negative on BOTH limbs, and it had to be a **content** probe: the sole deliverable is an APPEND into an existing file, where the absence of a path proves nothing. Three distinctive phrases from `#122` returned **0** across all of `docs/` in the working tree **and 0** against the `origin/master` blob of `docs/specs/session-log.md` |
-| Health check | **SKIPPED ON THE RULE, AND THE REASON IS RECORDED (QR-6(f)).** The skip needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs hold**: `§5` is NONE and the routing table is a **single row into `docs/specs/session-log.md`**. **No health figure is asserted anywhere in this edition** — a skipped check is not a pass |
+| Read FROM commit | `1b26bd2` — **but this index DESCRIBES the log as this batch commits it**, so the batch's own commit is where every row verifies. The `runner 76` line was written by this batch; the `#123` entry came from the packet, **verbatim** — filed by BYTE COPY and confirmed present in the log exactly once, byte-exact |
+| `origin/master` at read time | `1b26bd2`, **0 ahead / 0 behind**, from a live `git fetch origin` plus a bare **`git ls-remote origin refs/heads/master`** — not from the local tracking ref, which is not evidence about origin (QR-6(a)). The Step 0 gate passed on all four limbs: clean, on `master`, neither behind nor ahead. **`HEAD` is also the exact commit the packet pinned its split figures at**, so no re-derivation drift was possible — and every figure was re-derived from bytes anyway |
+| Working tree | clean at `1b26bd2` before this batch's edits |
+| `inbox/` | **ONE** packet at Step 1, identity-pinned per QR-6(c) — `push-to-code_log-split_2026-08-20.zip` (**7,928 B, mtime `2026-08-20 12:01:43 −05:00`, sha256 `58e14a22b5ff3188…`**), executed. **Both orders were still computed (QR-4) and are trivially identical.** That the inbox held exactly one zip is **the only way this batch could learn that batch 75's deletion ran**, that entry being barred from asserting it (QR-5) — as the Step 0 result is the only way it could learn batch 75's push landed. **Both QR-5 carry-forward limbs were therefore CLEAR.** The already-executed probe was negative on both limbs, and here a PATH probe was valid evidence for once — the deliverable is a NEW FILE, so `docs/archive/` being absent means something, where an append into an existing file would have required a content probe |
+| Health check | **SKIPPED ON THE RULE, AND THE REASON IS RECORDED (QR-6(f)).** The skip needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs hold**: `§5` is NONE and the routing table reaches only `docs/specs/session-log.md` and the new archive file under `docs/archive/`. **No health figure is asserted anywhere in this edition** — a skipped check is not a pass |
 
-**THE LOG WAS PURELY PREPENDED, AND THAT IS PROVED RATHER THAN ASSUMED — with the measure named,
-because the naive form of this test fails on a correct file.** The prior **body** is an exact
-byte-level suffix of the body as written; **testing the whole file instead returns FALSE and means
-nothing**, since the insertion sits below a 2,771-byte preamble rather than at byte 0. That preamble
-compares **byte-identical** between `HEAD` and the new file. *(The twenty-first edition published
-2,770 for the same preamble; the one-byte difference is the boundary, not a change — this figure
-includes the newline that terminates the preamble, and the preamble is confirmed unchanged by the
-identity test above rather than by comparing the two numbers.)* The log moves
-**1,476,649 → 1,491,652 bytes**, the second figure taken LAST, after every edit to the log, with
-**15,003 bytes inserted at the top of the body and nothing else changed.** So the 263 rows carried
-into this edition describe entries that have not moved a byte, and they are carried on
-that evidence rather than on trust. *(This paragraph published the twenty-second edition's
-`1,362,509 → 1,394,416` and its “246 rows” through editions 23 and 24 while the log grew by ~82 KB —
-corrected at the twenty-fifth rather than carried a third time.)*
+**THE LOG WAS SPLIT AND THEN PREPENDED, AND BOTH HALVES OF THAT ARE PROVED RATHER THAN ASSUMED —
+with each measure named, because the naive form of each test fails on a correct file.** The split
+first: the **archive block inside the new archive file is a byte-exact extract of the original's
+tail**, and the **new live log with TEXT B removed is a byte-exact PREFIX of the original** — the two
+tests together admitting no edit anywhere, in either direction. The **byte-conservation identity**
+closes it: preamble **2,771** + kept **945,545** + archived **543,336** = **1,491,652**, the original
+file exactly. **That identity is the whole proof that this was a MOVE and not a rewrite**, and it is
+why no per-entry comparison was needed. Then the prepend, on the measure this file has used since the
+twenty-second edition: the prior **body** is an exact byte-level suffix of the body as written —
+**testing the whole file instead returns FALSE and means nothing**, since the insertion sits below a
+2,771-byte preamble rather than at byte 0 — with that preamble **byte-identical** across the write.
+The live log moves **1,491,652 → 949,027 → 965,700 bytes**, the middle figure taken after the split
+and the last after the two entries were prepended, with **16,673 bytes inserted at the top of the body
+and nothing else changed.** The archive file is **578,892 bytes**: TEXT A (**1,577 B**), the 141
+frozen rows, and the 543,336-byte block. **All figures come from raw byte reads and both files carry
+0 CR** — the ninth derivation trap, which is also why this file's own CRLF claim is taken that way.
+
+**THE 124 CARRIED ROWS ARE CARRIED ON EVIDENCE, AND SO IS THE DECISION TO DROP 141 OF THEM.** The
+carried rows describe entries that have not moved a byte, which the prefix test above establishes for
+the whole kept block at once. The 141 dropped rows were not discarded: they were **copied byte-exact
+into the archive file** — with the twenty-sixth edition's own header and separator rows copied
+byte-exact above them so the frozen table renders — and the copy was made **by program, never
+retyped**. **The correspondence they depend on was proved before the copy, not after:** all 265 rows
+matched against all 265 headings, **0 date mismatches and 0 numbered-ID mismatches**. No prior edition
+ever tested that; it was implied by construction and is now established for the one edition where
+being wrong would have frozen the error permanently.
 
 **The two rows for this batch were written by the session that wrote (or filed) the entries**, which
-is a different basis from every carried row and is worth naming: the carried summaries were drawn
-from each entry's heading and bolded lead-ins, whereas these are written with the whole batch in
-view. **The four CODE-DISPATCH rows sit on a third basis again** — they were written from the filed
-entries at `beb27f4` by a session that did not run them, which is the same basis as a carried row
-but taken fresh. A reader who needs a load-bearing detail must still open the entry. **The ID, date,
-type and ordering columns for all 265 rows are mechanical and were re-derived in full this refresh**
-— and the derivation is worth restating because the naive form is still wrong: **an unanchored
-`#(\d+)` sweep over the headings now returns 117 distinct values, which would put a `#1` in the log
-and contradict `TOC-1`.** It does not exist; the hit comes from a `#1` inside the **text** of the
-`#91` heading. **Anchor the ID at the start of the heading (`^<date> (#nn)` or `^<date> — #nn`) and
-the sound figures fall out: 121 numbered entries, #2–#122, no gaps and no `#1`.**
+is a different basis from every carried row and is worth naming: the carried summaries were drawn from
+each entry's heading and bolded lead-ins, whereas these are written with the whole batch in view. A
+reader who needs a load-bearing detail must still open the entry. **The ID, date, type and ordering
+columns for all 126 rows are mechanical and were re-derived in full this refresh** — and the
+derivation is worth restating because the naive form is still wrong: an unanchored `#(\d+)` sweep over
+headings picks up numbers that appear in other entries' prose. **Anchor the ID at the start of the
+heading (`^<date> (#nn)` or `^<date> — #nn`) and the sound figures fall out: 59 numbered entries,
+`#65`–`#123`, no gaps and no duplicates.** The `#1`-out-of-`#91` false hit that every recent edition
+has had to disclaim **cannot fire on this index at all now** — `#91` is an archived entry — but the
+anchored pass is still the only correct one, and the trap is carried below because it fires on the
+log as a whole.
 
-**A SECOND MIS-ASSIGNMENT IS RE-DERIVED HERE AND ITS COUNT HAS MOVED SINCE IT WAS LAST WRITTEN.**
+**A SECOND MIS-ASSIGNMENT IS CARRIED, AND ITS DESCRIPTION IS TIGHTENED HERE RATHER THAN ITS COUNT.**
 A heading matcher that routes every `QUEUE-RUNNER`-bearing heading without an ordinal into the
-unnumbered-runner bucket returns **4**, not 1. Only `2026-07-28 (RUNNER)` is a runner line; the
-other three are `CODE SESSION` headings that merely name *“the queue-runner batch below”* — the
-`G10-5` and `G10-6` ruling entries and, added at `2a6ae67`, the `Q-CAP-2` one. **The *Coverage*
-section below said “two” of these through the twenty-fifth edition and is corrected to three
-here.** Applied, the buckets close exactly: unnumbered runner **1**, `other` **69 + 3 = 72**.
+unnumbered-runner bucket over-reports, because `CODE SESSION` headings name queue-runner batches in
+their own text. **All three such headings survive into the live log** — the `G10-5` and `G10-6` ruling
+entries and the same-day `Q-CAP-2` one — and all three sit in `other`. **But only TWO of them carry
+the literal phrase *"the queue-runner batch below"* that the twenty-fifth and twenty-sixth editions
+used to name the class**; the `Q-CAP-2` heading says *"immediately after the seventy-third
+queue-runner batch"* instead. **The count of three was right and the phrase-anchored description was
+not**, which is the same lesson in miniature: a class named by one literal string is not the class.
+**The bucket that DID move is the other one — unnumbered runner falls 1 → 0**, `2026-07-28 (RUNNER)`
+having gone to the archive with its row.
 
 ## How to read the ID column
 
 The log carries **two independent numbering systems**, and neither covers every entry:
 
-- **`#nn`** — design and Code session entries. The series as written runs **#2 – #120**.
+- **`#nn`** — design and Code session entries. **In the LIVE log the series runs `#65` – `#123`,
+  gapless.** The rest of the series — **`#2` – `#64`, no `#1`** — is in the closed archive at
+  `docs/archive/session-log-archive-2026-07-21_2026-08-12.md`, indexed by that file's own frozen
+  index. **The series is continuous ACROSS the two files; only this index's coverage is not.**
   **RULED 2026-08-18 (`TOC-6`): the `#nn` series is DESIGN-ONLY.** Code sessions never mint one —
   runner batches carry runner ordinals and other Code entries stay unnumbered — which is why the
-  C-2 row below keeps its `—`, why the four CODE-DISPATCH rows added this edition keep theirs, and
-  why this edition, also a Code session, did not take a number. **`#117` is design-minted:** it was
-  authored design-side, carries its own number in the packet, and the runner's only act was to
-  confirm at HEAD that `#117` was still free before appending it. **As at the last four editions
-  there was no race to resolve:** a heading-anchored count returned `#116` as the high-water mark
-  and zero occurrences of `#117`, so the packet's standing renumber instruction never fired.
-- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("SEVENTY-SECOND
-  invocation" → `runner 72`). One early runner line carries no ordinal at all and is shown as
-  `runner —`.
+  `other` rows below keep their `—`, and why this edition, produced by a Code session, did not take
+  a number. **`#123` is design-minted:** it was authored design-side, carries its own number in the
+  packet, and the runner's only act was to confirm at HEAD that `#123` was still free before
+  appending it. **There was no race to resolve:** a heading-anchored count returned `#122` as the
+  high-water mark and zero occurrences of `#123`, so the packet's standing renumber instruction
+  never fired.
+- **`runner nn`** — QUEUE-RUNNER batch lines, numbered by *invocation ordinal* ("SEVENTY-SIXTH
+  invocation" → `runner 76`). **In the LIVE log these run 23 – 76, gapless.** Ordinals **5 – 22**
+  are archived, as is the one early runner line that carries no ordinal at all and was shown as
+  `runner —` in every edition through the twenty-sixth. **That `runner —` row does not appear in
+  this index and its absence is not a gap** — it is `2026-07-28 (RUNNER)`, and it is in the archive.
 
 ## Coverage — what was mechanically verified
 
-- **265 entries indexed — one row per `## ` heading in the file. No entry skipped.** *(263 at the twenty-fifth edition, plus this edition's two — the `runner 75` line and the `#122` entry.)* **This bullet and the four below it published the TWENTY-FOURTH edition's figures at HEAD — `261` and its whole bucket arithmetic — while the twenty-fifth edition's own banner said 263 two screens above. Corrected here, not carried.**
-- Numbered entries: **121**, range **#2–#122**, **no gaps except #1**, no duplicates. **`#30` is counted and is NOT a gap** — it is written `— #30 (design side, Fable 5)` rather than `(#30)`, which a parenthesis-only matcher misses; a first pass this edition reported it as missing and was corrected before publication.
-- Runner ordinals: **71**, range **5–75**, **no gaps, no duplicates.** **`fifth invocation` is lowercase in its heading** and is missed by a capitals-only matcher — the second half of the same correction.
-- One QUEUE-RUNNER line carries no ordinal — `2026-07-28 (RUNNER)`, shown as `runner —`;
-  unnumbered legacy/other entries: **72** — **UNMOVED this edition**, both of whose new rows are
-  numbered or runner-ordinalled. **THREE `CODE SESSION` headings that mention *"the queue-runner
-  batch below"* belong here and are NOT runner lines** — the `G10-5` and `G10-6` ruling entries and
-  the same-day `Q-CAP-2` one, which the twenty-fourth edition added and which made a count of
-  **two** stale the moment it landed. Re-derived here rather than carried.
-- **121 + 72 + 1 + 71 = 265.** The buckets are stated so they add up on their face.
-- **EVERY BUCKET RECONCILES AGAINST THE TWENTY-FIRST EDITION, which is the strongest available check
-  on a mechanical re-derivation — and this time the reconciliation is what EXPOSED the four missing
-  rows rather than merely confirming the two expected ones.** The twenty-first recorded 115
-  numbered, 63 other, 1 unnumbered runner and 67 ordinals = 246. The arithmetic owed +1 numbered
-  (`#117`) and +1 ordinal (`runner 72`) = 248, **and the headings count 252**. The gap of four is
-  exactly the CODE-DISPATCH chain, all four unnumbered, so `other` moves **63 → 67** while numbered
-  goes 115 → 116 and ordinals 67 → 68. **A refresh that had trusted "+2" and skipped the census
-  would have published 248 over a 252-entry log and never noticed.**
+- **126 entries indexed — one row per ENTRY heading in the LIVE log. No entry skipped.** *(124 carried from the twenty-sixth edition, plus this edition's two — the `runner 76` line and the `#123` entry. The other 141 rows the twenty-sixth edition carried are FROZEN in the archive, not dropped.)*
+- **THE CENSUS NOW HAS A CORRECTION TERM, AND IT IS STATED BEFORE THE BUCKETS BECAUSE EVERY FUTURE REFRESH DEPENDS ON IT.** The live log holds **127 `## ` headings**, of which **one is not an entry** — the pointer stanza's `## ARCHIVED: entries older than the 2026-08-13 cutoff`, placed at the foot of the log by the split. **126 rows against 127 headings is CORRECT.** Subtract the pointer heading before comparing; a refresh that does not will report a phantom unindexed entry forever.
+- Numbered entries: **59**, range **`#65`–`#123`**, **no gaps, no duplicates.** The series' other 63 numbers (`#2`–`#64`) are archived; **there has never been a `#1`.**
+- Runner ordinals: **54**, range **23–76**, **no gaps, no duplicates.** Ordinals **5–22** are archived. **`runner 23` is the oldest live one and it is the ruled positional exception** — the twenty-third invocation's line is dated **2026-08-12**, below the 2026-08-13 cutoff, and stays in the live log because it sits ABOVE `#65` in file order. **Moving it would have reordered the record**, which is why `Q-CAP-1`'s cut is positional rather than by date.
+- **The unnumbered-runner bucket is 0 and that is a real change, not a miscount.** `2026-07-28 (RUNNER)` — the one runner line with no ordinal, carried in every edition since the first — is archived. **No `runner —` row appears in this index.**
+- Unnumbered legacy/`other` entries: **13.** **All THREE `CODE SESSION` headings that name a queue-runner batch in their own text belong here and are NOT runner lines** — the `G10-5` and `G10-6` ruling entries and the same-day `Q-CAP-2` one — and all three survive into the live log. **Only two carry the literal phrase the last two editions used to name the class**; see *Basis of this read*, where the description is tightened and the count is not.
+- **59 + 54 + 0 + 13 = 126.** The buckets are stated so they add up on their face.
+- **EVERY BUCKET RECONCILES AGAINST THE TWENTY-SIXTH EDITION THROUGH THE SPLIT, WHICH IS THE ONLY CHECK AVAILABLE ON AN EDITION THAT DROPS 141 ROWS — AND THE ARCHIVE'S SIDE WAS DERIVED FROM THE ARCHIVE FILE, NOT INFERRED BY SUBTRACTION.** The twenty-sixth recorded 121 numbered, 72 `other`, 1 unnumbered runner and 71 ordinals = 265. **Counted in the archive itself: 63 numbered (`#2`–`#64`, gapless), 18 ordinals (5–22, gapless), the 1 unnumbered runner, and 59 `other` = 141**, dated 2026-07-21 through 2026-08-12. The two sides then close: 121 − 63 = 58 carried numbered **+ `#123` = 59**; 71 − 18 = 53 carried ordinals **+ `runner 76` = 54**; 1 − 1 = **0**; 72 − 59 = **13**; 265 − 141 = 124 carried rows **+ 2 = 126.** **Every bucket closes in both directions.** **A first pass of this bullet reached 62/17/61 by subtracting in prose and was corrected by the count** — which is the whole argument for deriving rather than inferring, made against this bullet.
+- **THE FIGURES IN THE CARRIED BULLETS BELOW DESCRIBE THE UNSPLIT LOG — they are not stale, their subject moved.** 265 entries, 121 numbered, 71 ordinals, the **77** headings containing `QUEUE-RUNNER`, the **8** early batches logged inside the numbered series (`#6`, `#7`, `#10`, `#14`, `#31`, `#33`, `#35`, `#36`), and the ordinals-start-at-5 finding are all statements about **the log as a whole**, which now lives in **two files**. Read against this index alone they will not reconcile, and should not be made to: **every one of those eight early batches, and every trap example numbered below `#65`, is an archived entry.**
 - **WHY THE ORDINALS START AT 5, RE-DERIVED RATHER THAN INHERITED — it is not a gap.** Ordinals 1–4
   were never written as ordinal-bearing headings: the earliest runner batches were logged inside the
   NUMBERED series instead, at **#6, #7, #10, #14, #31, #33, #35 and #36**, plus the one `(RUNNER)`
@@ -212,21 +234,34 @@ Newest first, matching the log's own order.
 | # | Date | Type | Summary | Corrections issued / received |
 |---|---|---|---|---|
 
-**Row counts by edition, stated so they add up on their face:** 190 at the first (full-text read),
-then seventeen at the second, four at the third, three at the fourth, two at each of the fifth
-through the seventeenth, one at each of the eighteenth and nineteenth, two at the twentieth, two at
-the twenty-first — **190 + 17 + 4 + 3 + (2 × 13) + 1 + 1 + 2 + 2 = 246** — then **six at the
-twenty-second**, **one added the same day** by the `G10-6` ruling session, **three at the
-twenty-third**, **four at the twenty-fourth**, and **one added the same day** by the `Q-CAP-2` ruling
-session: **246 + 6 + 1 + 3 + 4 + 1 = 261** — then **two at the twenty-fifth: 263**, and **two at
-the twenty-sixth: 265.**
-*(This paragraph published `= 246` through the twenty-second and twenty-third editions, by which
-point the file carried 256 rows — the stale-arithmetic class this document's own header warns
-about, corrected here rather than carried again.)*
-**Checked the other way, from the log rather than from this arithmetic:** 265 `^## ` headings, of
-which **121 numbered (#2–#122, gapless but for #1) + 71 runner ordinals + 1 unnumbered runner
-(`(RUNNER)`, 2026-07-28) + 72 other = 265.**
+**Row counts by edition, stated so they add up on their face — and the series RESTARTS here, because
+the twenty-seventh edition is the first whose row set is not a superset of its predecessor's.** Through
+the twenty-sixth the arithmetic ran: 190 at the first (full-text read), then seventeen at the second,
+four at the third, three at the fourth, two at each of the fifth through the seventeenth, one at each
+of the eighteenth and nineteenth, two at the twentieth, two at the twenty-first — **190 + 17 + 4 + 3 +
+(2 × 13) + 1 + 1 + 2 + 2 = 246** — then **six at the twenty-second**, **one added the same day** by the
+`G10-6` ruling session, **three at the twenty-third**, **four at the twenty-fourth**, **one added the
+same day** by the `Q-CAP-2` ruling session, **two at the twenty-fifth** and **two at the twenty-sixth**:
+**246 + 6 + 1 + 3 + 4 + 1 + 2 + 2 = 265.**
 
+**AT THE TWENTY-SEVENTH THE SPLIT SUBTRACTS FOR THE FIRST TIME: 265 − 141 archived = 124 carried, + 2
+new (`runner 76`, `#123`) = 126.** The 141 are not lost and were not deleted — they are **frozen
+byte-exact in `docs/archive/session-log-archive-2026-07-21_2026-08-12.md`** under that file's own
+*Index of archived entries*, which is closed and will never be regenerated. **Future editions count
+from 126 over the live log only.**
+
+*(This paragraph published `= 246` through the twenty-second and twenty-third editions, by which point
+the file carried 256 rows — the stale-arithmetic class this document's own header warns about,
+corrected at the twenty-sixth rather than carried again.)*
+
+**Checked the other way, from the log rather than from this arithmetic:** the live log holds **127
+`^## ` headings**, **one of which is the pointer stanza's `## ARCHIVED:` heading and not an entry**, so
+**126 entries** — of which **59 numbered (`#65`–`#123`, gapless) + 54 runner ordinals (23–76, gapless)
++ 0 unnumbered runners + 13 other = 126.** **The heading count and the row count differ by exactly one
+now, by design.**
+
+| `runner 76` | 2026-08-20 | QUEUE-RUNNER runner line | **One docs-only packet, executed: the session log SPLIT at the 2026-08-13 cutoff under Michael's `Q-CAP-1` ruling — 141 entries and 543,336 bytes MOVED to `docs/archive/session-log-archive-2026-07-21_2026-08-12.md`, not one byte edited.** Anchor asserted to occur exactly once (line 7097); all nine §4 invariants re-derived from bytes at the pinned commit and all matched; **byte-conservation identity 2,771 + 945,545 + 543,336 = 1,491,652 exactly**, which is the proof this was a move. Verified both ways after the write: archive block a byte-exact tail extract, live log minus TEXT B a byte-exact prefix. **`#123` then appended by byte copy; log 1,491,652 → 949,027 → 965,700 B.** **NO queue row added and none closed**, on the packet's express §6 and Michael's standing `Q-CAP` ruling — **and therefore no Status-header sentence either, the conditional half of `QR-6(b)`**. **Health check SKIPPED on `QR-6(f)`'s limb with the reason named.** Step 0 cleared on all four limbs at `1b26bd2`. Open rows re-derived and UNMOVED at 350. | issues → **the census gains a correction term from this commit forward**: the live log carries a `## ` heading that is NOT an entry — TEXT B's `## ARCHIVED:` pointer — so **126 rows against 127 headings is correct**, and a refresh that does not subtract it will report a phantom unindexed entry at every future batch; issues → **this file's footer was stale at HEAD for the third time in its history**, publishing **nineteen** `TOC-4` firings while the twenty-fifth and twenty-sixth banners had already moved the count to twenty and twenty-one — corrected and now derived rather than restated; issues → **the class named *"the queue-runner batch below"* was described by a literal string that only TWO of its three members carry** — the count of three was right, the phrase-anchored description was not; issues → **a draft of the twenty-seventh edition's reconciliation bullet reached 62/17/61 by subtracting in prose and was corrected by counting the archive file** (63/18/1/59). Receives → nothing |
+| `#123` | 2026-08-20 | Design session (Cowork, **Fable 5**) | **The capacity rulings land: `Q-CAP-2` EXECUTED and verified in the live sync filters, and `Q-CAP-1` RULED at the 2026-08-13 cutoff on Michael's adoption of the standing recommendation** — *"I am going to rule with your best recommendation."* `Q-CAP-2`'s effect measured rather than reported: the project's filters now carry `/docs/reference/": "exclude"` where they did not an hour earlier, ~78K tokens returning at the next sync. Knowledge measured at **1,837,143 of 2,000,000 — 91.9%**, projected to roughly **80%** once both acts land. **THE PRE-FLIGHT FOUND THE TRAP BEFORE THE RUNNER COULD:** a strict by-date split at 2026-08-13 is **not contiguous** — the twenty-third invocation's runner line is dated 2026-08-12 and sits BETWEEN two 2026-08-13 entries, so a date cut would have extracted it from the middle and **reordered the record**. **Ruled shape therefore: POSITIONAL, calibrated by date, anchored on the `#64` heading rather than a line number.** Instructions trigger 4 fired and was discharged same-day with the **v23** draft. | issues → **`Q-CAP-3` ruled in principle by the same adoption** — *"split without exclusion is work with no payoff"* — **the picker act being Michael's hand once `docs/archive/` exists**; issues → the split's measured figures were pinned at `1b26bd2` **for the executing batch to verify against rather than to trust**, and every one of them held. Receives → nothing |
 | `runner 75` | 2026-08-20 | QUEUE-RUNNER runner line | **One docs-only packet, executed: gate 9's round trip one is recorded WITHOUT the gate being closed, and a re-derivation catches a size figure `BUILD-STATE.md` published one batch ago.** Single routing row — `#122` appended at the top of the log **by byte copy**, `79 0`, additions only. **NO queue row added and none closed**, on the packet's express §6 — **and therefore no Status-header sentence either, which is the conditional half of `QR-6(b)` rather than an omission of it**: both acts are triggered by a merge and there was none. **Health check SKIPPED on `QR-6(f)`'s limb with the reason named.** Step 0 cleared on all four limbs at `85d36c7`. Open rows re-derived and UNMOVED at 350. | issues → **`knowledge-capacity-measurement-2026-08-20.md` is published in `BUILD-STATE.md` at 10,746 B and is 11,682 B at HEAD** — it *was* 10,746 B when filed at `bfca144` and grew at `2a6ae67`, when the same-day `Q-CAP-2` session appended its §5 note, **so the seventy-fourth batch published the pre-annotation figure and called it “filed verbatim this batch.”** Same class as the `grok-external-review` correction that file already records, one document over. **Corrected in `BUILD-STATE.md` only; the seventy-fourth entry is append-only and stands**; issues → **a claim survived a probe that returned the wrong answer, and the fix was CLASSIFICATION rather than a narrower pattern** — `select('*')` on `parties` is published as ZERO and a sweep returned ONE, the hit being a guard test asserting the absence (`expect(src).not.toContain(...)`), the retraction class; issues → **the *Coverage* section of this index was stale at HEAD in two places** — `261` against the twenty-fifth edition's own `263`, and “two” `CODE SESSION` headings where there are three; issues → **a third figure, and the same pattern: *“the v4 chain at 25 + 7”* was listed as re-derived last batch and CANNOT be reproduced** — `CHAT-DISPATCH-v4.md` carries zero status glyphs, and the queue's Status header last records the block at **34 rows** against `BUILD-STATE.md`'s 32. **Flagged, neither side changed, neither number now asserted.** Receives → nothing |
 | `#122` | 2026-08-20 | Design session (Cowork, **Fable 5**), screenshot-driven walkthrough | **Gate 9's round trip one passes end to end — DNS published and verified at the AUTHORITATIVE servers, Postmark verified, Supabase custom SMTP on, and a magic link FROM `signin@brennanstx.com` signs Michael into the live database — and the gate stays OPEN anyway.** Proven in order: both Postmark records live with **all four server×record checks green** (~02:31 Central, the mid-poll flapping being Namecheap's anycast pool syncing); Postmark's own domain verification; custom SMTP configured per the runbook §3; **§4 round trip one whole at ~03:15**, the From address itself the proof the custom sender carried the mail. **What the gate still owes is named so the round trip is not read as the gate:** the header read (`spf=pass`/`dkim=pass`), the junk-placement statement, **the outside-mailbox run**, later-day repeats, and the optional DMARC `p=none` — deliberately not published inside the go-live window. **No repo file touched; no credential entered the chat.** | issues → **the finding that unblocked it CORRECTS THE SESSION'S OWN EARLIER CLAIM**: the app ran in demo mode because `.env`'s two Supabase values were **EMPTY — keys present, values never filled** — and the earlier check **redacted values with `=<redacted>`, which renders a filled value and an empty one identically**. A value-LENGTH check is what it should have been; same failure class as `#119`'s normalizer, *the instrument built so it cannot disconfirm*; issues → **the fill was a prerequisite of TWO floor items wearing one disguise** — gate 3's script reads the same two values, and round trip one's browser session **is** its Step 0 token source. The gate-3 kickoff's Step 0.3 called `.env`'s URL *“the address of record”* when it was empty at authoring; **recorded rather than repaired**, the premise now being true at run time; issues → two walkthrough incidents, each a class: `npm run dev` pasted into the SQL editor (`42601`, nothing ran), and a first DNS check run BEFORE the save returning NXDOMAIN everywhere — **diagnose-from-the-decisive-check held**. Receives → nothing |
 | `runner 74` | 2026-08-20 | QUEUE-RUNNER runner line | **One docs-only packet, executed: four rulings filed, the gate-3 kickoff staged UNFIRED, and the pre-run audit's headline re-derived before any live run is let near the database.** `D-SMTP-1` → **Postmark** and `D-SMTP-2` → **signin@ on a send subdomain** CLOSED in the register, each ruling extracted verbatim from the packet's §4 by program and appended **beneath the preserved question text** (QR-1); `Q-G3-1` → **“Live Supabase project”** and `Q-G3-2` → **“Run as written”** annotated onto their own protocol bullets and **deliberately given NO rows** (Michael's batch-72 ruling). Two new files filed **byte-identical by sha256**; the protocol took **`7 0`, additions only**. **Health check SKIPPED on `QR-6(f)`'s limb with the reason named.** Step 0 cleared on all four limbs at `2a6ae67`. Open rows 352 → 350. | issues → **the audit's headline was re-derived rather than filed on trust, and 16 of 16 confirmed** against `db/schema.sql` at HEAD — **but a first pass returned 15/16 and the miss was the instrument's**: `routing_decisions.action` carries its `check (…)` on a **continuation line**, invisible to a one-line-per-column parser. Recorded, not published as a finding about the audit; issues → **the audit's `36` and the kickoff's `37` RECONCILE EXACTLY and neither file was edited to say so** — `db/schema.sql` holds 37 tables and `file_counters` is the deny control the audit handles separately in its §3, so 37 − 1 = 36; issues → **three plausible queue matchers were all wrong before the right one was found** — line-anchored `- ⬜` returns 336, contains-glyph 364, raw glyph 390, and the file's actual row-anchored matcher (`lstrip()` then `- ⬜`) returns the stated **352**; publishing any of the first three would have manufactured a discrepancy. Receives → nothing |
@@ -351,159 +386,25 @@ which **121 numbered (#2–#122, gapless but for #1) + 71 runner ordinals + 1 un
 | `runner 24` | 2026-08-13 | QUEUE-RUNNER runner line | Re-measures the repo test count via `npm test` (278, confirming the packet over BUILD-STATE's 274); registers three open items V-1 through V-3. | issues → carried BUILD-STATE line |
 | `runner 23` | 2026-08-12 | QUEUE-RUNNER runner line | Verifies and routes the CR-3 crash-report PDF and field-code map; PDF confirmed blank with zero PII; filed to a new `docs/reference/` per Michael's ruling. | — |
 | `#65` | 2026-08-13 | design session, Fable 5, Cowork, typed | Verifies the #62/#63/#64 batches full-text via the device-bridge checkout at HEAD `f72de66`; corrects the test count to 278; files the registry cite-check memo; Descrybe ruled out. | issues → #61 |
-| `#64` | 2026-08-12 | design session, Fable 5, Cowork, typed | Files the CR-3 crash-report code sheet as reference and the field-code map as PROPOSED input for IN-2; records the versioned-code-table requirement. | received ← #84 |
-| `runner 22` | 2026-08-12 | QUEUE-RUNNER runner line | Processes two packets, #62 and #63, docs only; the CR-series collision is flagged rather than renamed; `party_type` retention confirmed. | — |
-| `#63` | 2026-08-12 | design session, Fable 5, Cowork, typed | FE-D1 disclosures slice named, scoped and authorized; FE-13–FE-17 gating ruled; the email-workflow doc adopted with WF-2–WF-8; telemetry ruled to offline lockdown. | — |
-| `#62` | 2026-08-12 | design session, Fable 5, Cowork, typed | Uvalde REQ-CAPTURE reconciled; CR series created with CR-1–CR-11; six criminal registry propositions entered UNVERIFIED; `party_type` retention confirmed from #61. | — |
-| `#61` | 2026-08-12 | Code session, Opus | CD-1 contact-directory build: six of seven slice items built and exercised (parties, case_parties, roster definitions, edges, UI, RLS); the live migration is Michael's and has not been run. | received ← #65 |
-| `runner 21` | 2026-08-12 | QUEUE-RUNNER runner line | Processes one packet as #60 (renumbered from #59, taken by the Uvalde capture); corrects the sibling registry count from twenty-six to twenty-seven. | issues → twentieth invocation runner line |
-| `#60` | 2026-08-12 | design session, Fable 5, Cowork, typed | Twentieth-invocation flags resolved: registry placement confirmed, REQ-10 fold-in carried; the #58 batch verified design-side; registry count reconciliation commissioned. | — |
-| `#59` | 2026-08-12 | Code session (immediately after the twentieth runner batch) | Files the Uvalde docket-worksheet REQ-CAPTURE verbatim and unreconciled; no durable IDs assigned; six candidate registry propositions left UNVERIFIED for design-side ruling. | — |
-| `runner 20` | 2026-08-12 | QUEUE-RUNNER runner line | Processes REQ-CAPTUREs 4 and 5 as #58; creates a new registry file for twenty-seven unverified propositions; dedupes five propositions against existing entries. | received ← runner 21 |
-| `#58` | 2026-08-12 | design session, Fable 5, Cowork | REQ-CAPTUREs 4 (UIM-UDJA transform) and 5 (deficiency-handling) reconciled and group-ruled; DE series created; CL-3, CD-3, FE-13–FE-17, IN-6 and IN-7 issued. | — |
-| `runner 19` | 2026-08-12 | QUEUE-RUNNER runner line | Processes the probate-practice-project packet as #57; finds no standalone probate-home queue row existed, so none was created to close it. | — |
-| `#57` | 2026-08-12 | design session, Fable 5, typed, Cowork | PROBATE ruled into existence as the third practice project; REQ-1 extended to it; the MATTER-CARRY channel created for two grandfathered matter workspaces. | — |
-| `runner 18` | 2026-08-12 | QUEUE-RUNNER runner line | Processes the GH-1 history-acceptance packet as #56; verifies GH-1 collision-free; places a gate-2 pointer note without touching git history. | — |
-| `#56` | 2026-08-12 | design session, Fable 5, typed, Cowork | GH-1 ruled: identifying strings surviving in git history ACCEPTED, with a tripwire before visibility widens; a gate-2 pointer note added. | — |
-| `runner 17` | 2026-08-12 | QUEUE-RUNNER runner line | Processes the FE-3 close packet as #55; finds BUILD-STATE at 151 lines, not 150, contradicting the sixteenth invocation's close-out report. | issues → sixteenth invocation runner line |
-| `#55` | 2026-08-12 | design session, Fable 5, typed, Cowork | FE-3 closed after a full read of form-engine.md §8; two identifying strings generalized in the contamination bullet; BUILD-STATE residuals recorded. | — |
-| `runner 16` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the must-carry-54 packet as #54; appends the 2026-07-23 OAA-intake retrospective capture pointer; confirms the six FE rows stay open. | received ← runner 17 |
-| `#54` | 2026-08-11 | design session, Fable 5, typed, Cowork | Corrects #53's claim that the form-engine spec had no gating questions; rules FE-3 and FE-8–FE-12 do not gate naming; CRIM DEFENSE practice project created. | issues → #53 |
-| `—` | 2026-08-11 | micro-entry | Records that the 2026-07-23 OAA-intake/Outlook session received a retrospective capture in project knowledge; notes C2 closed per #54, others stand. | — |
-| `runner 15` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the fe4-7-and-gl1 packet as #53; appends form-engine §13 with the FE-4–FE-7 rulings; lands the GL-1 go-live floor and the gate-2 clarification. | — |
-| `#53` | 2026-08-11 | design session, Fable 5, typed | FE-4 definitions versioning, FE-5 subpart detection, FE-6 packaging and FE-7 distillation queue ruled; the GL-1 go-live floor ruled and gate-2 clarified. | received ← #54 |
-| `runner 14` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the cd1-build-authorization-and-sk-v2 packet as #52; authorizes the CD-1 build slice; replaces drafting-disclosures SKILL.md v1 with v2; re-parks FE-2. | — |
-| `#52` | 2026-08-11 | design session, Fable 5, typed | The CD-1 directory build slice named, scoped and authorized as the next build; FE-2 re-parked to intake; SKILL.md v2 authored. | — |
-| `runner 13` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the CD-1 schema-session packet: contact-directory.md lands new, cd-1-session-prep.md deleted, one queue item entered per QR-1 with full question text. | — |
-| `#51` | 2026-08-11 | design session, Fable 5 | Michael rules all eight CD-1 questions in one session: parties-as-directory fork, scope, identity, roster, edges, form-engine interface, IN-2's home, FE-1 mechanics adopted. | — |
-| `runner 12` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the DT-1 correction packet; closes the registry-widening flag with Michael's confirmation; registers the v14 instructions paste in the queue. | — |
-| `#50` | 2026-08-11 | correction entry; design session, Fable 5 | Corrects #49's 2026-08-12 date stamps as a UTC artifact for rulings made 2026-08-11 Central; DT-1 adopted as binding; registry widening confirmed by Michael. | issues → #49 |
-| `runner 11` | 2026-08-11 | QUEUE-RUNNER runner line | Processes the 2026-08-12-dated REQ-CAPTURE reconciliation packet; enters FE-8–FE-12, IN-4, IN-5 and WF-1 into the queue; widens the carrier-duties registry file's title. | — |
-| `#49` | 2026-08-12 | design session, Fable 5 | Two REQ-1 captures reconciled: attorney-edit roundtrip to FE-8/FE-9/FE-10 and roster-mining evidence to CD-1/CD-2/FE-11/FE-12; seven registry entries verified; CD-1 gate met. | received ← #50 |
-| `runner 10` | 2026-08-11 | QUEUE-RUNNER runner line | Processes two packets (drafting-disclosures learnings, trucking REQ-CAPTURE); resolves a session-number collision assigning #47 and #48; opens a discovery-and-carrier-duties registry file. | — |
-| `#48` | 2026-08-11 | design session, Fable 5 | First REQ-1 capture reconciled: ten durable IDs entered (CD-2, FE-4–FE-7, IN-1–IN-3); templates home set at docs/templates/; thirteen registry entries verified; CD-1 path ruled. | — |
-| `#47` | 2026-08-10 | drafting session, Fable 5 | First live run of the drafting-disclosures skill v1 (shell + medchron + answers in; draft, verification list and provider-data block out); six learnings staged as a §12 fold-in. | — |
-| `runner 9` | 2026-08-10 | QUEUE-RUNNER runner line | Processes two packets (disclosures skill, QR-4 ordering ruling); QR-4 adopted the same day as proposed; renumbers the stale disclosures packet #34→#45. | issues → self |
-| `#46` | 2026-08-10 | design session, Fable 5 | QR-4 proposed to make filename-date packet ordering standing after a batch-scoped mtime/filename disagreement; RULED ADOPTED the same day; runner bumped to v6. | — |
-| `#45` | 2026-08-06 | design session, Fable 5 | The drafting-disclosures skill ruled into existence at docs/skills/drafting-disclosures/SKILL.md; v1 scope limited to validated POC behavior; upgrade protocol recorded. | — |
-| `runner 8` | 2026-08-09 | QUEUE-RUNNER runner line | Two packets processed; H1/H2/H4/H5/H6 entered; a same-day correction finds the T3 kickoff authorization doc missing from `inbox/`, opening KICK-1. | issues → self |
-| `#44` | 2026-08-09 | design-side advisory session, typed; Fable 5 (heading hedges "believed") | P1 environment completed by Michael's hand (WSL2, CUDA verified); T3 kickoff launched with preflight 6/7 green; Michael rules a narrow audio-row exception. | — |
-| `#43` | 2026-08-09 | design session, Fable 5 | Slack integration recommended against for now; Claude Tag logged as a paralegal-era watch item pending privilege/PHI and plan-tier review; nothing ruled. | — |
-| `#42` | 2026-08-09 | Code session, Opus 5, ThinkPad P1 Gen 8 | Phase 0 environment stood up on the P1 (torch/NeMo stack, CUDA proven end to end); preflight 6/7 green, audio row RED; Stage 1 scoring held, authorization partly spent. | — |
-| `runner 7` | 2026-08-08 | QUEUE-RUNNER runner line | Two packets processed (QR3-Checkout-Gate, MM1-Multi-Machine); the runner jumps v3→v5 in one pass; the checkout gate's own failure case caught by hand before it existed. | issues → self |
-| `#41` | 2026-08-08 | design session, typed | MM-1 ruled yes in all four parts: one runner at a time, packet destinations name the machine, user-level runner copies deleted, bootstrap addendum; runner to v5. | — |
-| `#40` | 2026-08-08 | design session, typed | QR-3 ruled yes: Step 0 now fetches origin and confirms the checkout is at HEAD before reading the runner or any packet; runner bumped to v4. | — |
-| `runner 6` | 2026-08-08 | QUEUE-RUNNER runner line | One packet stalled mid-reconciliation on a third CL2-AC-1 location conflict; Code flagged rather than obeyed; design resolved the same session, one line lifted per #13 R-4. | — |
-| `#39` | 2026-08-08 | design session, typed | QR-2 ruled yes: machine-local runner copies become pointers to docs/prompts/QUEUE-RUNNER.md; CL2-AC-1's duplicated queue text consolidated into the ID-bearing entry. | — |
-| `runner 5` | 2026-08-08 | QUEUE-RUNNER runner line | One packet processed (contact-directory-reframe); Probate Corpus.zip left untouched in `inbox/`; corpus containment verified via `git ls-files` before push; CD-1 issued clean. | — |
-| `#38` | 2026-08-08 | design session, mixed voice/typed | The contact directory reframed to supersede FE-1; CD-1 issued as a living spec; Slice A withdrawn; CL2-AC-1 direction-confirmed; CORPUS-HOME closed to the ARCHIVE project. | — |
-| `#37` | 2026-08-07 | design session close-out, Fable 5 | #36's doc routing reviewed and cleared at `89651e8`; QR-2 proposed (unruled) after the machine-local runner skill loaded stale twice in two runs. | — |
-| `#36` | 2026-08-07 | QUEUE-RUNNER batch, Code session, Opus 5 | Preflight failed on the wrong machine (LENOVO, 4 GB VRAM, no WSL2 — not the P1 Gen 8); the Phase 0/T3 authorization stays unspent; only three doc work orders routed. | — |
-| `#35` | 2026-08-07 | QUEUE-RUNNER batch, Code session, Opus 5 | The clone was stale and fast-forwarded four commits, picking up QUEUE-RUNNER v3; six doc work orders filed, adding the missing FE-1/FE-2/FE-3 queue rows. | — |
-| `#34` | 2026-08-07 | design session, Fable 5, dictated inputs | Seven rulings closed dictated: FE-1 provider directory, FE-2 entity-discovery sweep, PR-3 held for the ladder pass, QR-1 and RR-1 adopted, D-CL2-3 per-client rates, CL2-AC-1 issued. | — |
-| `#33` | 2026-08-06 | QUEUE-RUNNER batch, Code session, Opus 5 | Form-engine POC packet routed as a new §12; a git identity bootstrap gap found; BUILD-STATE Step 4 item 3 amended for BS-1 provenance and displace-don't-append. | issues → #31; issues → self |
-| `#32` | 2026-08-06 | design session, Fable 5 | Live POC drafts real 194.2(b)/195.5 disclosures by XML surgery on a shell .docx; the P1 Gen 8 provisioned with Claude Code and cross-machine rules restated. | issues → self |
-| `#31` | 2026-07-30 | QUEUE-RUNNER batch, Code session, Opus 5 | QBO future-modules capture filed to docs/specs; Probate Corpus.zip left untouched per Michael's ruling; the runner-prompt 120-vs-150-line cap contradiction flagged, not fixed. | received ← #33 |
-| `#30` | 2026-07-28 | design side, Fable 5 | Post-close-out capture: QuickBooks Online integration proposed (link-don't-rebuild, sandbox-only) and an unbuilt-territory roadmap map recorded; neither ruled nor built. | — |
-| `#29` | 2026-07-28 | Code session, Opus 5 | BS-1a closed (168→139 lines); CL-2 §5B built and migrated live; six defects found by exercising, including `toRow()` silently dropping cleared fields in Supabase mode. | issues → self; issues → self |
-| `#28` | 2026-07-28 | Code session, Opus 5 | AUTH-1 magic-link ruling exercised: schema.sql had zero GRANT statements, causing 401s under RLS; fixed via a grants migration; Michael signed in and created a case. | — |
-| `runner (unnumbered)` | 2026-07-28 | QUEUE-RUNNER batch, Code session, Opus 5 | Two packets processed (BS1 ledger split, CL2 dual-track reconciliation); the auth slice gated on unconfirmed AUTH-1; the BUILD-STATE ledger split delivered one line of headroom. | — |
-| `#27` | 2026-07-28 | Michael ruling, design session, Fable 5 | The sealed sequence unsealed: Michael rules AUTH FIRST over both Fable's and Opus's CL-2-first views; CL-2 authorized but queued behind auth; D-CL2-8 adopted as Michael's own. | — |
-| `#26` | 2026-07-28 | design session, Fable 5, blind per protocol | Blind Track F run: Fable recommends CL-2 first and CL-2 authorization yes, reconsiders ten D-CL2 rulings under unbounded latitude, affirms all with one addition. | — |
-| `#25` | 2026-07-27 | design session, Opus 5 | BS-1 ruled: the anti-resurrection ledger splits into its own file with a BUILD-STATE pointer line, the same-day 150-line cap raise having proved insufficient within one pass. | — |
-| `#24` | 2026-07-27 | design session, Opus 5 | Six-field correction issued against #23 — the dual-track protocol wrongly told Fable D-CL2-2a was open when Michael had already ruled it; CL2-C and BS-1 ruled. | issues → #23 |
-| `#23` | 2026-07-27 | design session, Opus 5 | CL-2 sequence ruling sealed pending Fable's blind pass; SUPA-1 closed (no live tables); Q-5 closed by replacement; the six-field correction format codified with three self-corrections. | issues → self; issues → self; issues → self; received ← #24 |
-| `#22` | 2026-07-27 | design session, Opus 5 | model-routing-plan.md filed UNRULED; a QUEUE-RUNNER defect surfaced (merges lose question text, destroying Q-5's wording); Supabase RLS and Outlook-interval corrections recorded. | issues → unnamed target (RLS reading); issues → unnamed target (Outlook interval claim) |
-| `#21` | 2026-07-27 | Michael request, Code session | Archived project history rebuilt day by day, 07-21 → 07-26, with session counts and model usage; model attribution found unrecorded for the first four days. | — |
-| `#20` | 2026-07-26 | Code session, APP CODE CHANGED | First live Outlook push succeeds after fixing two blocking defects (redirect-URI/router collision, MSAL v5 popup-contract change); Michael hits the one-way sync seam within the hour. | issues → self |
-| `#19` | 2026-07-26 | Michael, Code session | INSTR-3 closed: Michael confirms project instructions v4 pasted into project settings; `inbox/` already cleared of the staged v4 draft before this session ran. | — |
-| `#18` | 2026-07-26 | design session, Opus 5 | Blockers re-analyzed: auth is the true root blocking both edge functions; magic link stays the proposed default; the CL-2 authorization brief staged for Fable, with bias disclosed. | — |
-| `#17` | 2026-07-26 | design session 3, Opus 5 | Client model completed: five rulings closed (D-CL2-5/6/7/8/9); the CL-1 justification struck as Michael rarely files split-UM cases; Insurance Code ch. 1952 read, not verified. | — |
-| `#16` | 2026-07-26 | design session 2, Opus 5 | Five rulings on the client model: the entity renamed client with a posture field, profile model adopted, case-level limitations retired, expenses split evenly at entry. | issues → same-day earlier entry (claude/ cite-fix) |
-| `#15` | 2026-07-26 | design session, Opus 5 | V17 ruled (a): probate is its own practice area, linked not parented; the claimant dimension ruled in (case owns occurrence, claimant owns damages); conflicts ruled advisory. | — |
-| `#14` | 2026-07-26 | QUEUE-RUNNER, Code session | Queue run finds zero zips; project-instructions v4 fact-checked against the repo tree and everything verified present; INSTR-3 stays open pending Michael's paste. | — |
-| `#13` | 2026-07-26 | design session, Opus 5 | Four record items reconciled: R-1 practice-area wording applied, R-2 three carried files verified absent, R-3 BUILD-SESSION-NOTES clearing confirmed, R-4 stale D3/H8 line corrected. | issues → prop-code-53-28-deadline-engine-design.md (R-4); issues → BUILD-STATE.md carried line (R-3) |
-| `#12` | 2026-07-26 | Michael ruling, Code session | Michael corrects the practice areas to four — PI, civil litigation, criminal defense, probate — after Code's #10 and #11 dropped civil litigation. | issues → #10; issues → #11 |
-| `#11` | 2026-07-26 | Code session | PR-3 opened: the probate case type is mis-parented under Personal Injury; FAM-1 closed no-op; a §4.5 contradiction resolved in favour of no rename in raw captures. | issues → design side (probate furniture claim); issues → work order/packet (T1 rename expectation); received ← #12 |
-| `#10` | 2026-07-26 | QUEUE-RUNNER batch, Code session, Opus 5 | Third batch: est352-cprc71 then probate-scope-rename-d3h8 rev2 executed; probate-line-s1 superseded; the source check finds probate furniture mis-parented, family furniture absent. | issues → design side (§4.3 furniture assumptions); issues → packet (CLAUDE.md T1 senses); received ← #12 |
-| `#9` | 2026-07-26 | design session, Opus 5 | PR-1 and PR-2 ruled — independent uncontested administration is the probate spine; D3/H8 closed as shared spine plus per-consumer facets; family law removed as a practice line. | issues → self |
-| `#8` | 2026-07-26 | design session, Opus 5 | Est. Code ch. 352 and CPRC ch. 71 read in full: the probate fee row is misclassified, §352.052 is missing entirely, and the fee-basis enum decomposes into five fields (O6 ruled). | issues → time-tracker-fee-basis-profiles-design.md §6; issues → self |
-| `#7` | 2026-07-26 | QUEUE-RUNNER batch, Code session | Second batch executes one packet: CourtListener rate figures corrected, queue conventions flipped to standing, and the Q-7 slash-command location bug resolved. | — |
-| `—` | 2026-07-26 | design session, Opus 5 | Michael rules Q-1 (queue mechanism) and Q-2 (docs/prompts) as standing conventions, approves v3 instructions, connects CourtListener live; the majority-opinion rule adopted after a near-miss. | issues → registry-courtlistener-integration-design.md; issues → self; issues → self |
-| `#6` | 2026-07-26 | QUEUE-RUNNER batch, Code session | First QUEUE-RUNNER run processes the queue-mechanism bootstrap packet end to end; docs/prompts/QUEUE-RUNNER.md created and inbox/.gitignore hygiene items land cleanly. | — |
-| `—` | 2026-07-26 | design session | Designs the inbox/QUEUE-RUNNER queue mechanism so Michael can keep working on Opus 5 between Fable resets; this packet is itself the test run. | — |
-| `#5` | 2026-07-26 | Michael ruling, Code session | Michael rules the FLP/CourtListener promo deadline of 2026-08-06 not a problem; the clock item carried across 10+ entries is closed. | — |
-| `#4` | 2026-07-26 | design session, Opus 5 | Migration to the new build project completed; repo connected with selective sync excluding src/; kickoff verified against BUILD-STATE commit `7f3dbf5`; trigger #6 fired. | — |
-| `#3` | 2026-07-26 | design session, Opus 5 | Michael directs migration to a fresh project; the old project redesignated LEGAL AUTHORITY ARCHIVE, K-3 closed by designation, Go_Live_Gates and the statute design doc merged forward. | — |
-| `#2` | 2026-07-26 | design session, Opus 5 | The case authority index replaced with a locator-only manifest once registry docs became readable; five content errors found (A-3 Huntress, McMillan, Ahmed, Sheppard, Primoris). | issues → same-day earlier entry (case-authority-index draft); issues → earlier entry (withdrawn routing criticism) |
-| `—` | 2026-07-26 | design session, Opus 5 | Project knowledge at 81% capacity; measured token load finds reference corpora dominate; the case authority index and working-set-policy doc drafted and staged for Code. | issues → self |
-| `—` | 2026-07-26 | design session, Opus 5 | Prop. Code ch. 53 and ch. 28 read in full; §53.156's may→shall date misstated as 2021, actually 2011; the full Servpro deadline-engine buildout ruled gated. | issues → time-tracker-fee-basis-profiles-design.md §6/§7 and attorney-review-queue.md |
-| `—` | 2026-07-26 | design session, Opus 5 | First sustained verification pass: 8 opinions and 5 statutes read against drafted registry entries; Rohrmoos proof elements corrected to four, not five; Entry 2 redrafted. | issues → fee-basis design (Rohrmoos element count) |
-| `—` | 2026-07-25 | text session, Opus 5, design space | APIL course-book mining passes 2 and 3 completed; pass 1's article map found to have missed four chapters (Ch. 11, 12, 20, 23); register extended to H83. | issues → apil-2025-course-book-mining-pass1.md; issues → case-heartbeat-design.md |
-| `—` | 2026-07-25 | design session, mixed voice/text, Opus 5 | Deposition no-dates ladder, mediation cadence, DCO ingester and a software-wide audit log walked; APIL course book pass 1 ingested, four chapters bearing on rulings. | issues → case-heartbeat-design.md §8.10 (process-server name); issues → self |
-| `—` | 2026-07-25 | voice walkthrough, Fable 5 → Opus 5 | Default-judgment thread walked end to end including post-judgment TRAP 26.1/329b and TRAP 30 clocks; H32 no-answer fork closed both ways; the deficiency engine parked. | — |
-| `—` | 2026-07-25 | design-side walkthrough, voice + text, Fable 5 | H14 service-chase stage closed with per-defendant fan-out and difficulty profiles; TRCP 99(b) read; the answer-received stage and opposing-counsel letter touch walked. | — |
-| `—` | 2026-07-25 | voice/mixed session, Fable 5 | Heartbeat walkthrough resumed at H14 suit-filed; H23 limitations master clock and H24 hard six-month filing buffer confirmed; the pre-service citation arming chain walked. | — |
-| `—` | 2026-07-25 | design session, mixed voice/text, Opus 5 | The case-heartbeat design doc created covering PI stages 1–9; stages 6–9 walked (records, demand, negotiation as a parallel track); TRCP deadline skeleton extracted. | — |
-| `—` | 2026-07-25 | Code session | Second handoff applied: Items B/C/D/E built (editable classification, declared case-type ladders, itemLabel fixes, party-patch guard); Items A/F verified already present in the tree. | — |
-| `—` | 2026-07-25 | design session | BUILD-SESSION-NOTES.md triaged for the first time since 07-21 (five items closed, six carried); sync scope ruled to include src/db/docs and exclude lockfiles, node_modules and dist. | — |
-| `—` | 2026-07-25 | Code session | Medical-walkthrough handoff Items 0–8 applied: benchmark.ts schedule-selection bug fixed (the attorney picks the fee schedule), reseed migration backup, billed-lines disclosure, implicated-rule flagging. | issues → CLAUDE.md push-verification wording; issues → CLAUDE.md stale "no test runner" line |
-| `—` | 2026-07-25 | design-side | First attorney walkthrough of the billing module on real TX PFS data: ProCare confirmed 3.98x, a Central Texas facility bill 21.77x with the hard caveat firing; five defects staged. | issues → earlier draft of go-live gate 8; issues → the sync reminder wording |
-| `—` | 2026-07-25 | same Code session | Project-knowledge GitHub sync diagnosed as stale and over-broad (surfacing raw source files, missing BUILD-STATE content); Michael advised to trim scope and force a re-sync. | — |
-| `—` | 2026-07-25 | Code session | Build-status claims stripped from the master spec and README (four files flagged for re-upload); a PRECEDENCE note added distinguishing designed from built authority. | — |
-| `—` | 2026-07-25 | Code session | The existing build-state snapshot converged to the prompt's stricter template and renamed BUILD-STATE.md; CLAUDE.md de-duplicated so status has one source of truth. | — |
-| `—` | 2026-07-25 | same Code session | Design side found 32 commits behind because of a blocked push; build-state.md snapshot created plus a binding end-of-session log + refresh + push rule. | — |
-| `—` | 2026-07-25 | Code session | A4 section-removed flag built for repealed/renumbered statutes (verified live, 177 tests); the DRAFT time-tracker fee-basis profiles doc written; the Citizens handoff routed. | — |
-| `—` | 2026-07-25 | design session, Fable 5 | Michael settles the Citizens Medical Center account at $5,000 full-and-final after the design side reverse-engineers their 48.94% inpatient-methodology figure against an outpatient ER bill. | — |
-| `—` | 2026-07-25 | Michael feedback, same Code session | A code-then-chapter cascading dropdown and keyword search over chapter/section titles built for the Statutes page, replacing the free-text cite box per Michael's feedback. | — |
-| `—` | 2026-07-25 | Code session | T3 (bill-text statute matcher, bill lifecycle flags, LegiScan poller, tracked-bills UI) and T4 (unified worklist) built, completing the in-app statute-tracking design slices. | — |
-| `—` | 2026-07-25 | Code session | T2 built: a chapter-HTML parser with per-section content hashes, a statute viewer with deep-linked cites, and the A4 hash tripwire for re-verification, verified live end to end. | — |
-| `—` | 2026-07-25 | Code session | Recovered from a Claude Desktop crash with no work lost; §9 decisions resolved — O1 (LegiScan key as a Supabase secret), O2 (twelve-code working set), O3 (dashboard card). | — |
-| `—` | 2026-07-25 | Code session | The statute-tracking design docs filed; the T1 cite parser/resolver built and 28 code abbreviations live-verified; the .gov site found to require fetching via tcss.legis.texas.gov. | — |
-| `—` | 2026-07-25 | Code session | The OAA parser tuned against a real Uvalde order with an OCR text layer (single-space labels, wrapped offense rows, checkboxes); every field now extracts correctly. | — |
-| `—` | 2026-07-25 | Code session | OAA template detection tuned against Michael's first real scanned Medina County order using structural form-family anchors; the HCRPDO appointee-name question flagged for Michael. | — |
-| `—` | 2026-07-25 | Code session | OAA Tier 1 intake built end to end: label-anchored parser, attorney hard-stop and duplicate-cause checks, upload-to-review-to-create-matter UI, verified live with a fictional fixture. | — |
-| `—` | 2026-07-25 | Code session | The prior entry's verification caveat closed by re-confirming the Office-notes click-through in demo mode: inbox count dropped, note filed, record page rendered correctly. | — |
-| `—` | 2026-07-25 | Code session | Michael rules the §10 decisions (confirm-only filing, Windows + WSL2, non-case recordings to a personal store); 13 real pilot recordings wired as test fixtures, all passing. | — |
-| `—` | 2026-07-24 | Code session | Michael provides a probate system prompt plus a 1.8 MB corpus for building probate as a practice area; the corpus kept out of the repo and routed to design. | — |
-| `—` | 2026-07-25 | Code session | The transcript-sort-and-route design filed and T1 (inbox data model/UI) and T2 (routing engine with spoken-number and fuzzy-name matching) built; vitest added as the first test runner. | — |
-| `—` | 2026-07-24 | Code session | The feature-intake design handoff filed verbatim; item D and item A examples flagged for containing live-matter data and that commit held local pending Michael's call. | — |
-| `—` | 2026-07-24 | design session | Dictation session capturing new feature ideas (recorder/transcription/routing next, CourtListener API adoption, subrogation as a document-extraction pattern, email intake); no code written. | — |
-| `—` | 2026-07-24 | Code session | The 2026-07-24 design handoff applied; a duplicate-committed doc renamed to its canonical name and stale staged items already built reconciled (UI primitives, Phase 1a, Outlook push). | — |
-| `—` | 2026-07-24 | chat session | The 2026-07-23 handoff confirmed pushed; Michael's v0.1 feedback reviewed (all features approved, two UI items promoted); Phase 1a unblocked. | — |
-| `—` | 2026-07-24 | Code session, design-space-directed | The CourtListener/FLP citation-graph integration design doc committed and cross-referenced in the master spec and CLAUDE.md; nothing built, two decisions left to Michael. | — |
-| `—` | 2026-07-24 | Code session | Outlook calendar push Phase 1 built end to end: CalendarEvent entity, Graph push layer, Calendar tab on case detail; verified live, demo store bumped v3→v5. | — |
-| `—` | 2026-07-23 | Code session | A shared phone-masking input added across 12 fields and a filterable combobox replacing three long-list selects; the Phase 1a settlement-gate audit delta closed. | — |
-| `—` | 2026-07-23 | Code session | Three routed design-space items executed: the round-trip state-line rule, a registry-verification entry, and the Ch. 146 correction; a duplicate registry doc renamed via git mv. | issues → docs/spec-feedback.md (Ch. 146 characterization) |
-| `—` | 2026-07-23 | design space, chat session | Part 7 verification list worked; Michael pulled Ch. 146 text and loaded 17 full opinions; a spec mischaracterization, a McMillan mis-cite and an LOP tension found. | — |
-| `—` | 2026-07-23 | Code session | Ten draft registry entries committed with per-proposition source flags and Michael's sign-off checklist; the wrong seeded Ch. 146 proposition deliberately left unedited. | — |
-| `—` | 2026-07-23 | Michael walkthrough | Michael walks Phase 1a live and approves the slice; the line-item menu, benchmark intro copy and a label collision fixed; disclaimer wording approved as v1. | — |
-| `—` | 2026-07-23 | Code session | Real 2026 Medicare PFS data pulled for the Rest-of-Texas locality from CMS; the 99203 rate validated against the CMS look-up tool exactly. | — |
-| `—` | 2026-07-23 | Code session | The overnight Phase 1a build audited against a six-point instruction list, three deltas found; ProviderBillingProfile and a stale-analysis flag built to close two gaps. | — |
-| `—` | 2026-07-23 | Code session, design-space-directed | Form engine spec captured: wizard-driven doc generation, token substitution against a real .docx skeleton, a verbatim variant library, the mental-health variant gated pending decision. | — |
-| `—` | 2026-07-23 | Code session | The revised OAA-based criminal intake spec committed with a two-tier extraction model and hearing auto-detect; Michael's GitHub-uploaded drafts merged into the tracked spec. | — |
-| `—` | 2026-07-23 | Code session, overnight session | Billing module Phase 1a built end to end: Medical tab, per-bill workspace, Legal Rule Registry infrastructure and Benchmarks page; the Supabase schema extended in parallel. | — |
-| `—` | 2026-07-23 | phone dictation session | Phone dictation from courtroom use captures fixes; three specs drafted — criminal intake enhancements, mandatory Outlook one-way push, exploratory email intake with a HIPAA constraint. | — |
-| `—` | 2026-07-22 | Michael walkthrough | Michael walks v0.1 live and signs off as-is; five backlog items captured — district court directory, deeper intake, structured addresses, insurer type-ahead. | — |
-| `—` | 2026-07-21 | Code session | The codebase re-reviewed; not-found/error pages added, role/side pickers unified, db/schema.sql RLS hardened on file_counters; a prior test-harness observation withdrawn as an artifact. | issues → BUILD-SESSION-NOTES.md (Enter-key-submit finding) |
-| `—` | 2026-07-21 | Code session | Everything actionable from the review fixed: UTC date-opened bug, tab routing, versioned localStorage store; PI flags and policy fields made editable; BUILD-SESSION-NOTES corrected. | issues → BUILD-SESSION-NOTES.md (file-number year, README characterization) |
-| `—` | 2026-07-21 | Code session | Node.js LTS installed, the app run in demo mode and the full codebase read; BUILD-SESSION-NOTES.md findings written — UTC date bug, Supabase auth gap, frozen classification. | — |
-| `—` | 2026-07-21 | Code session | The git repo initialized, .env protected, specs committed under docs/specs/, CLAUDE.md created merging conventions with generated structure, and pushed to private GitHub. | — |
-| `—` | 2026-07-21 | PARTIAL — type not stated in heading or body | The build ruled to move to Claude Code while design stays in the Project space; CLAUDE.md's project-conventions block drafted covering spec canonicity and registry discipline. | — |
-| `—` | 2026-07-22 | PARTIAL — type not stated in heading or body | All eight Part 6 billing decisions resolved with Michael; the Citizens MRF dry run completed on the real 55 MB file, confirming the negotiated-rate evidence tier. | issues → medical-billing-analysis-module-synthesis.md (dry-run findings) |
-| `—` | 2026-07-22 | PARTIAL — type not stated in heading or body | Claude's memory capabilities discussed versus project docs; THIS LOG CREATED as the practical equivalent, with a deliberate decision not to backfill old chat history. | — |
 
 ## PARTIAL rows
 
-Three entries state no session type in either heading or body. Rather than infer one from the
-project's model-routing conventions, they are marked `PARTIAL — type not stated in heading or body`:
-the two 2026-07-22 entries and the 2026-07-21 "build moves to Claude Code" entry. Several other
-entries name an interface or actor but no model (`#14`, `#19`, `#20`, `#21`, `#38`, `#39`, `#40`,
-`#41`); the model is omitted there rather than guessed. `#44`'s own heading hedges its attribution
-("Fable 5 **believed**") and that hedge is carried through rather than resolved.
+**NO ROW IN THIS INDEX IS PARTIAL ANY LONGER, AND THAT IS AN ARTIFACT OF THE SPLIT RATHER THAN A
+RESOLUTION.** Three entries state no session type in either heading or body — the two 2026-07-22
+entries and the 2026-07-21 "build moves to Claude Code" entry — and were marked `PARTIAL — type not
+stated in heading or body` in every edition through the twenty-sixth. **All three are dated before the
+2026-08-13 cutoff, so all three are archived**, and their rows carry that mark, frozen, in
+`docs/archive/session-log-archive-2026-07-21_2026-08-12.md`. **Nothing was inferred, resolved, or
+tidied away: the entries stand exactly as written and their rows read exactly as they did.** The same
+is true of the related hedges the earlier editions recorded — the entries that name an interface or
+actor but no model (`#14`, `#19`, `#20`, `#21`, `#38`, `#39`, `#40`, `#41`) and `#44`'s heading, which
+hedges its own attribution ("Fable 5 **believed**"). **Every one of those is numbered below `#65` and
+is therefore archived too.** A reader who wants the PARTIAL apparatus wants the archive's frozen index.
 
-No other row is PARTIAL. **The first edition could say "the full-text read reached every entry";
-no edition since can say it of the rows it added** — and each says so in Method above instead.
+**If a future entry states no session type, the mark returns to this file** — the convention is not
+retired, it simply has nothing to mark right now. **The first edition could say "the full-text read
+reached every entry"; no edition since can say it of the rows it added** — and each says so in
+*Basis of this read* instead.
 
 ## What this document is not
 
@@ -514,17 +415,25 @@ no edition since can say it of the rows it added** — and each says so in Metho
 - Not verification of any legal proposition, count, or claim summarised here.
 - Not a ruling on its own upkeep — **but two of the three are now Michael's answers rather than
   this file's questions.** **`TOC-4` (regeneration cadence) was RULED 2026-08-18: every runner
-  batch**, written into QUEUE-RUNNER v11 Step 4 item 1, and it stands at **nineteen** firings —
+  batch**, written into QUEUE-RUNNER v11 Step 4 item 1, and it stands at **twenty-two** firings —
   **this edition IS one of them**, being produced by a queue-runner batch on `TOC-4`'s own trigger.
-  *(The firing figure has gone stale in this footer twice before, publishing "tenth" through three
-  consecutive regenerations and "thirteenth" through two more — **the exact self-contradiction this
-  file's header warns readers about, in the file that does the warning.** It is re-derived at each
-  refresh now rather than carried: editions 12/13/14/15 map to firings 10/11/12/13; editions 18 and
-  19 were NOT firings; edition 20 was the sixteenth firing, edition 21 the seventeenth, edition 22 the eighteenth, **edition 23 was NOT a firing** (a build session acting on a prompt's instruction), and this one is the nineteenth.)*
+  *(The firing figure has now gone stale in this footer THREE times, publishing "tenth" through three
+  consecutive regenerations, "thirteenth" through two more, and **"nineteenth" through editions 25 and
+  26, whose own banners said twenty and twenty-one two screens above it** — **the exact
+  self-contradiction this file's header warns readers about, in the file that does the warning, inside
+  the paragraph that already confesses to it twice.** It is derived at each refresh now rather than
+  restated: editions 12/13/14/15 map to firings 10/11/12/13; editions 18 and 19 were NOT firings;
+  edition 20 was the sixteenth firing, edition 21 the seventeenth, edition 22 the eighteenth,
+  **edition 23 was NOT a firing** (a build session acting on a prompt's instruction), edition 24 the
+  nineteenth, edition 25 the twentieth, edition 26 the twenty-first, and this one is the
+  twenty-second.)*
   **`TOC-6` (whether a Code session takes the next `#nn`) was RULED 2026-08-18: `#nn` is
   DESIGN-ONLY**, and the rule now lives in the session log's own preamble. **`TOC-5`** — whether a
-  file this size should sync into project knowledge at all — **remains Michael's and unruled**,
-  and this edition, larger again, is evidence for it rather than an answer to it.
+  file this size should sync into project knowledge at all — **remains Michael's and unruled, and the
+  split changes its terms rather than answering it.** This edition is **smaller** than its predecessor
+  for the first time in the file's history, the live log it indexes having shed 543,336 bytes; but the
+  archive's frozen index is a second copy of 141 rows living in the repo, and whether THAT file should
+  sync is `Q-CAP-3`, which is Michael's hand and not yet done.
   *(Both 2026-08-18 stamps above are left exactly as ruled: `#101` records that those rulings were
   in fact made the evening of 2026-08-17 Central, and that the stamps are **deliberately not
   restamped**. The date on the ruling is the date the record carries.)*
