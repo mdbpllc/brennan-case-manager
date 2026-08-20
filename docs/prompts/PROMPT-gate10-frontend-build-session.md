@@ -148,7 +148,7 @@ on these tables."** That is false in the same way and for the same reason — **
 privileges. It is **out of pattern for every `anon`-anchored sweep**, which is why it was found by
 reading rather than by grep (task C1, 2026-08-19).
 
-**WHETHER THE SLICE'S §7 ITEM 6 GROWS TO COVER IT IS OPEN AND IS MICHAEL'S.** *(Naming: it is the
+**IT IS NO LONGER OPEN: `G10-6` WAS RULED IN BY MICHAEL ON 2026-08-19** — *"rule G10-6 in — repair both sentences in the front-end slice"* — **and the slice's §7 item 6 at HEAD has been amended to name both sentences.** Both of the tests the branch below describes are therefore satisfied. **Repair BOTH.** *(The branch is left standing rather than deleted, because it states how to check rather than what the answer is, and you must still verify at YOUR HEAD: read §7 item 6 and find the ruling — do not take this paragraph's word for it.)* *(Naming: it is the
 **slice's** item 6. `G10-5` is a single yes/no queue row and has no items — a first draft of this
 prompt wrote "`G10-5` item 6" in one breath and "§7 item 6" in the next. BUILD-STATE has it right.)*
 

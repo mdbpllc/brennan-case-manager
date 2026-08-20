@@ -39,9 +39,13 @@ verifiable by the authorized build session at its own HEAD:
 - The Supabase adapter's `listParties()`, `getParty()` and `getParties()` are all `select('*')`.
 - The `sensitive` flag masks the **display** in list views only (`src/components/fieldWidgets.tsx`,
   `•••–••–` + last four). It has no effect on storage.
-- `src/components/RlsProbePanel.tsx:73` renders *"anon is granted nothing by design"* to the screen
-  on a signed-out probe run — the false sentence of the 2026-08-19 privilege finding, standing in
-  the UI because repairing it is a build act. **It is repaired in this slice** (§7 item 6).
+- `src/components/RlsProbePanel.tsx` renders **TWO** false sentences in the same
+  `<p className="notice bad">` privilege-wall paragraph, two lines apart: *"The role has no SQL
+  privilege on these tables"* and, on a signed-out run, *"anon is granted nothing by design"* —
+  both false on the 2026-08-19 privilege finding, standing in the UI because repairing them is a
+  build act. **BOTH are repaired in this slice** (§7 item 6, amended on Michael's `G10-6` ruling
+  2026-08-19). *(The first was found only by READING — it is out of pattern for every
+  `anon`-anchored sweep, so no sweep of that shape will ever return it.)*
 
 **So SSN and licence numbers go into `parties.fields` today and ride every party read.** The child
 table is only excluded while nothing joins it — and while nothing keeps writing the values into the
@@ -135,14 +139,39 @@ keys again tomorrow, and keeps doing so until this slice lands. So:
    `getPartyPii` / `savePartyPii`; local-store version bump with backup (§3).
 4. Visibility per §4 as ruled. No reveal log.
 5. Pre-flip §5 report, both lists, labelled; STOP-and-flag on any hit.
-6. `src/components/RlsProbePanel.tsx:73` — the signed-out message becomes the surviving sentence:
-   *"anon holds none of the four DML privileges"* (adopted wording, 2026-08-19); it must not say
+6. **`src/components/RlsProbePanel.tsx` — BOTH false sentences in the privilege-wall paragraph.
+   `G10-6` RULED IN by Michael 2026-08-19; this item was amended by that ruling and previously named
+   only (a).** **Locate them BY TEXT, never by line number** — `src/` is not append-only and a line
+   cite goes wrong the first time anything above it is edited (CITE-STABILITY).
+   **(a)** the signed-out clause reading *"anon is granted nothing by design"* becomes
+   *"anon holds none of the four DML privileges"* — **adopted wording, 2026-08-19**; it must not say
    "granted nothing."
+   **(b)** the sentence **two lines above it in the same block**, reading *"The role has no SQL
+   privilege on these tables"* — **false in the same way and for the same reason: `anon` holds
+   `TRUNCATE`, `REFERENCES`, `TRIGGER` and `MAINTAIN` on all 37 tables, and lacks only the four DML
+   privileges.** Proposed replacement, parallel to (a) and **NOT separately adopted — the wording is
+   Michael's to override**: *"The role holds none of the four DML privileges on these tables."*
+   **(c) Two mechanical warnings, both earned on this record.** (b) **wraps across a source line
+   break** — `The` ends one line and `role has no SQL privilege…` begins the next — so an
+   exact-match edit anchored on the whole sentence returns **zero** on correct input: normalize
+   whitespace before matching. And **repairing (a) while leaving (b) is the exact failure this item
+   was amended to prevent** — they render in the same paragraph, and (b) is out of pattern for every
+   `anon`-anchored sweep.
 7. Tests: registry destination routing, write-guard (a `fields` object carrying `ssn` never
    persists it), adapter parity in both modes, masked-by-default rendering, probe-panel text.
 8. Health per CLAUDE.md (`npm test` / `build` / `lint` — a build session never takes the
    `QR-6(f)` skip limb). BUILD-STATE full rewrite; unnumbered session-log entry (TOC-6); verified
    push (`git ls-remote`).
 
-**DESIGN-COMPLETE (proposed):** §§2, 3, 5, 6, 7 as written. **RULED:** §4. **AWAITING MICHAEL:**
-the build authorization itself (`G10-5`) — and nothing else in this document.
+**DESIGN-COMPLETE (proposed):** §§2, 3, 5, 6, 7 as written. **RULED:** §4, **and §7 item 6's scope
+— `G10-6`, ruled IN 2026-08-19**. **AWAITING MICHAEL:** the build authorization itself (`G10-5`) —
+and nothing else in this document.
+
+*(**Amended 2026-08-19** on Michael's `G10-6` ruling — *"rule G10-6 in — repair both sentences in
+the front-end slice."* §7 item 6 previously read* "`src/components/RlsProbePanel.tsx:73` — the
+signed-out message becomes the surviving sentence: *"anon holds none of the four DML privileges"*
+(adopted wording, 2026-08-19); it must not say "granted nothing."" *— naming ONE sentence and one
+line number. It now names both sentences and cites them by text. The §1 bullet was conformed in the
+same act.* **NOTHING UNDER `src/` WAS TOUCHED BY THIS AMENDMENT** — *the repair itself is a build
+act inside this slice, and this slice still fires only on `G10-5`, which remains OPEN. Amending the
+work list is not authorizing the work.)*
