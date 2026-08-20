@@ -74,8 +74,17 @@ export interface PartyRecord {
   partyType: string; // key into the party-type registry
   kind: PartyKind;
   displayName: string; // computed convenience field for lists/search
-  /** Field values keyed by field key from the registry. Repeating fields hold arrays of objects. */
+  /** Field values keyed by field key from the registry. Repeating fields hold arrays of objects.
+   *
+   *  GATE 10: this blob no longer carries `dob`, `ssn`, `dlNumber` or `dlState`.
+   *  Those have declared storage destinations in the registry and are stripped
+   *  from every write by `domain/partyPii.ts`. Do not reintroduce them here. */
   fields: Record<string, unknown>;
+  /** Gate 10 §2 — `parties.date_of_birth`. An ordinary typed column that rides
+   *  every party read BY DESIGN: DOB is read constantly and rendered inline.
+   *  This is deliberately NOT in the child table (schema slice §6 rejected
+   *  "all three in the child table" for costing a join on the common case). */
+  dateOfBirth?: string | null;
   /** CD-1 §3.4 — multi-valued directory role tags. Position 0 mirrors
    *  `partyType`. See domain/directory.ts. */
   roleTags: string[];

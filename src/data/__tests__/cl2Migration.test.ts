@@ -15,7 +15,7 @@ const mem = new Map<string, string>();
   clear: () => mem.clear(),
 };
 
-const { migrateV9ToV10, migrateV10ToV11, STORE_VERSION } = await import('../localAdapter');
+const { migrateV9ToV10, migrateV10ToV11 } = await import('../localAdapter');
 
 const t = '2026-07-01T00:00:00.000Z';
 
@@ -179,7 +179,12 @@ describe('CL-2 demo-store migration (v9 → v10)', () => {
     const v10 = run();
     const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
 
-    expect(v11.version).toBe(STORE_VERSION);
+    // Literal 11, for exactly the reason the v9→v10 test above states about
+    // ITS step: this function produces a v11 store. This assertion read
+    // STORE_VERSION and passed only while that constant happened to be 11 —
+    // gate 10's bump to 12 broke it, which is the assertion doing its job.
+    // The migration was pinned to a literal at the same time.
+    expect(v11.version).toBe(11);
     // CL-2's derived work survived the second step...
     expect(v11.clients.length).toBe(v10.clients.length);
     expect(v11.clients.length).toBeGreaterThan(0);

@@ -39,9 +39,13 @@ export function seedData(): {
   const parties: PartyRecord[] = ([
     {
       id: 'p-client-garcia', partyType: 'client', kind: 'individual', displayName: 'Maria Garcia',
+      // Gate 10 §2 - the TYPED column, not a `dob` key in the blob. The seed
+      // plants what a migrated database holds, so demo mode shows the same
+      // shape live mode does. No fixture carries SSN or licence data at all.
+      dateOfBirth: '1988-04-12',
       fields: {
         firstName: 'Maria', lastName: 'Garcia', phone: '2545550143', email: 'mgarcia@example.com',
-        address: '1207 Oakhill Dr, Killeen, TX 76541', dob: '1988-04-12',
+        address: '1207 Oakhill Dr, Killeen, TX 76541',
         preferredContact: 'Text', language: 'Spanish', healthInsurer: 'BlueCross BlueShield of Texas',
         medicareMedicaid: 'No',
         priorMVCs: [{ date: '2019-06-01', detail: 'Minor rear-end, no treatment' }],
@@ -51,9 +55,10 @@ export function seedData(): {
     },
     {
       id: 'p-client-boyd', partyType: 'client', kind: 'individual', displayName: 'Terrence Boyd',
+      dateOfBirth: '1996-11-02',
       fields: {
         firstName: 'Terrence', lastName: 'Boyd', phone: '2545550188',
-        address: '44 Cedar Loop, Belton, TX 76513', dob: '1996-11-02', medicareMedicaid: 'Unknown',
+        address: '44 Cedar Loop, Belton, TX 76513', medicareMedicaid: 'Unknown',
         priorCriminal: [{ disposition: 'Dismissal', offense: 'Theft (Class B)', date: '2017-03-10', familyViolence: 'No' }],
         priorRecordVerified: false,
       },

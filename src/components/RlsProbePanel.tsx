@@ -68,9 +68,9 @@ export default function RlsProbePanel({ context }: { context: 'signed-out' | 'si
             <p className="notice bad">
               Every table was refused at the <strong>table-privilege</strong> layer, not by RLS —
               the policies were never reached, so nothing here says anything about them. The
-              role has no SQL privilege on these tables. Run{' '}
+              role holds none of the four DML privileges on these tables. Run{' '}
               <code>db/migrations/2026-07-28-api-role-grants.sql</code> in the Supabase SQL editor.
-              {context === 'signed-out' && ' (Signed out, this is also the expected result: anon is granted nothing by design.)'}
+              {context === 'signed-out' && ' (Signed out, this is also the expected result: anon holds none of the four DML privileges.)'}
             </p>
           )}
           {unexpectedMissing.length === 0 && (

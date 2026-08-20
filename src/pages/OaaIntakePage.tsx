@@ -245,9 +245,13 @@ export default function OaaIntakePage() {
           partyType: 'client',
           kind: 'individual',
           displayName: `${defFirst} ${defLast}`.trim(),
+          // Gate 10 §2 — the machine-extracted date of birth writes the TYPED
+          // column, not a `dob` key in the blob. The adapter's write-guard would
+          // strip the blob key anyway; routing it here means the value LANDS
+          // rather than being silently dropped on its way through.
+          dateOfBirth: defDob || null,
           fields: {
             firstName: defFirst, lastName: defLast,
-            ...(defDob ? { dob: defDob } : {}),
             ...(defPhone ? { phone: defPhone.replace(/\D/g, '') } : {}),
             ...(defAddress ? { address: defAddress } : {}),
           },

@@ -7,6 +7,9 @@ import type {
 } from '../domain/types';
 import type { ContactEdge } from '../domain/contactEdges';
 import { withDirectoryDefaults } from '../domain/directory';
+import {
+  splitPartyFields, stripDestinationKeys, isEmptyPii, type PartyPii,
+} from '../domain/partyPii';
 import { backfillRosterAttributes, summarizeBackfill } from '../domain/rosterBackfill';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
@@ -32,7 +35,8 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 11; // v11: CD-1 contact directory (role tags, typed
+export const STORE_VERSION = 12; // v12: gate 10 PII promotion (dob typed, party_pii
+// child records out of the fields blob). v11: CD-1 contact directory (role tags, typed
 // aliases, deceased fact; roster four-attribute links with capacity and
 // history; roster backfill flags; contact edges). v10 was CL-2.
 
@@ -45,6 +49,11 @@ interface Store {
   contactEdges: ContactEdge[];
   /** CD-1 — roster facts the backfill could not derive. Never guessed. */
   rosterFlags: RosterBackfillFlag[];
+  /** Gate 10 §3 — the local-mode equivalent of the `party_pii` child table.
+   *  Kept as its own collection rather than a property of the party record so
+   *  that a party read cannot carry it by accident: `listParties` returns
+   *  `store.parties`, and these values are not in there. */
+  partyPii: PartyPii[];
   clients: CaseClient[];
   clientFlags: ClientBackfillFlag[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
@@ -278,7 +287,14 @@ export function migrateV10ToV11(old: Partial<Store>, raw: string): Store {
 
   const migrated: Store = {
     ...(old as Store),
-    version: STORE_VERSION,
+    // Literal 11, NOT STORE_VERSION - the same defect this file already
+    // documents on the v9->v10 step, which is why that one says "Literal 10".
+    // This step produces a v11 store and nothing more. It read STORE_VERSION
+    // and was correct only while that constant happened to be 11; gate 10's
+    // bump to 12 made it stamp a v11 store as v12, which would have made the
+    // v10 chain SKIP the v11->v12 migration entirely and leave SSNs in the
+    // blob. Caught by the bump that caused it; fixed here.
+    version: 11,
     parties,
     links,
     rosterFlags,
@@ -287,7 +303,7 @@ export function migrateV10ToV11(old: Partial<Store>, raw: string): Store {
 
   const s = summarizeBackfill(results);
   const summary =
-    `Store migrated v10→v${STORE_VERSION} (CD-1 contact directory). `
+    `Store migrated v10→v11 (CD-1 contact directory). `
     + `Tagged ${parties.length} contact(s) from their existing party type; processed `
     + `${s.linksProcessed} roster link(s): ${s.alignmentsDerived} caption alignment(s) derived `
     + `mechanically, ${s.nonPartiesDerived} marked non-party, ${s.flagged} FLAGGED for attorney `
@@ -296,6 +312,74 @@ export function migrateV10ToV11(old: Partial<Store>, raw: string): Store {
   migrated.reviewLog = [...(old.reviewLog ?? []), {
     id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
     user: 'system (CD-1 migration)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
+/** v11 → v12: gate 10's PII promotion, FORWARD IN PLACE.
+ *
+ *  The front-end half of gate 10 (slice §§2-3, authorized by `G10-5`
+ *  2026-08-19). Demo mode runs the same promotion the live schema ran, so what
+ *  Michael clicks in demo mode is what a migrated database does.
+ *
+ *  For every contact: `dob` leaves the `fields` blob for the typed
+ *  `dateOfBirth`; `ssn`, `dlNumber` and `dlState` leave it for a `partyPii`
+ *  record. **The blob keys are REMOVED, not copied** — a value left behind in
+ *  the blob is exactly the exposure the slice exists to close, and "migrated"
+ *  would then mean "duplicated."
+ *
+ *  NOTHING IS GUESSED AND NOTHING IS DROPPED: every value that leaves the blob
+ *  lands somewhere, the counts are reported, and a full pre-migration backup is
+ *  written first — the CL-2 and CD-1 pattern, for the same reason. If the split
+ *  is ever questioned, the original store is still readable.
+ *
+ *  A contact with no PII gets NO `partyPii` record. An empty record is not a
+ *  fact about a person. */
+export function migrateV11ToV12(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v11`, raw);
+
+  const partyPii: PartyPii[] = [];
+  let dobMoved = 0;
+  let piiContacts = 0;
+
+  const parties = (old.parties ?? []).map((p) => {
+    const rec = p as PartyRecord;
+    const split = splitPartyFields(rec.fields ?? {});
+    if (split.dateOfBirth) dobMoved += 1;
+    if (!isEmptyPii(split.pii)) {
+      piiContacts += 1;
+      partyPii.push({ partyId: rec.id, ...split.pii });
+    }
+    return {
+      ...rec,
+      fields: split.fields,
+      // `??` not `||`: an existing typed value wins over an absent blob one, and
+      // a blob value of '' must not overwrite a real stored date.
+      dateOfBirth: split.dateOfBirth ?? rec.dateOfBirth ?? null,
+    };
+  });
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 12, for the reason the v9->v10 and v10->v11 steps both give:
+    // this function produces a v12 store, not "whatever the constant is now".
+    version: 12,
+    parties,
+    partyPii,
+  };
+
+  const summary =
+    `Store migrated v11→v12 (gate 10 PII promotion). `
+    + `Promoted ${dobMoved} date(s) of birth to the typed column and moved SSN / licence `
+    + `values for ${piiContacts} contact(s) into ${partyPii.length} party_pii record(s). `
+    + `The four keys were REMOVED from every fields blob, not copied. Full pre-migration `
+    + `backup at localStorage key "${KEY}-backup-v11".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (gate 10 PII migration)', timestamp: stamp, reason: summary,
   }];
   console.warn(summary);
   localStorage.setItem(KEY, JSON.stringify(migrated));
@@ -311,14 +395,24 @@ function load(): Store {
       if (parsed.version === STORE_VERSION) return parsed;
       // v9 can be migrated forward without losing anything — do that instead
       // of reseeding. Older stores fall through to the reseed path below.
-      if (parsed.version === 10) return migrateV10ToV11(parsed, raw);
+      //
+      // EACH STEP RE-SERIALIZES FOR THE NEXT STEP'S BACKUP, so `-backup-v10`
+      // really holds v10 text and `-backup-v11` really holds v11 text. Passing
+      // the ORIGINAL raw down the chain would label every backup with the
+      // oldest store's contents — the bug this comment exists to prevent, and
+      // the reason the v9 path already re-serialized before gate 10 added a
+      // third step.
+      if (parsed.version === 11) return migrateV11ToV12(parsed, raw);
+      if (parsed.version === 10) {
+        const v11 = migrateV10ToV11(parsed, raw);
+        return migrateV11ToV12(v11, JSON.stringify(v11));
+      }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
-      // reached CL-2's migration must not lose it to CD-1's bump. The v10
-      // store is re-serialized for the second step's backup so that
-      // `-backup-v10` really holds v10 data, not the v9 text.
+      // reached CL-2's migration must not lose it to CD-1's bump.
       if (parsed.version === 9) {
         const v10 = migrateV9ToV10(parsed, raw);
-        return migrateV10ToV11(v10, JSON.stringify(v10));
+        const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
+        return migrateV11ToV12(v11, JSON.stringify(v11));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
@@ -329,6 +423,9 @@ function load(): Store {
   }
   const seeded: Store = {
     version: STORE_VERSION,
+    // Gate 10 §3 - empty by design. No demo fixture carries SSN or licence
+    // data, and none should: the seed is fictional and stays that way.
+    partyPii: [],
     runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
@@ -438,8 +535,16 @@ export class LocalAdapter implements DataAdapter {
 
   async createParty(data: PartyCreate): Promise<PartyRecord> {
     const store = load();
+    const base = withDirectoryDefaults(data);
     const rec: PartyRecord = {
-      ...withDirectoryDefaults(data), id: uid(), createdAt: now(), updatedAt: now(),
+      ...base,
+      // Gate 10 §2, THE WRITE-GUARD AT THE SEAM - the same guard the Supabase
+      // adapter applies, so the two modes cannot diverge on the one behaviour
+      // the slice exists to deliver. Belt and braces: the UI routes by
+      // destination and this strips the keys again regardless.
+      fields: stripDestinationKeys(base.fields),
+      dateOfBirth: base.dateOfBirth ?? null,
+      id: uid(), createdAt: now(), updatedAt: now(),
     };
     store.parties.push(rec);
     save(store);
@@ -451,9 +556,40 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     const idx = store.parties.findIndex((p) => p.id === id);
     if (idx === -1) throw new Error('Party not found');
-    store.parties[idx] = { ...store.parties[idx], ...patch, id, updatedAt: now() };
+    // Gate 10 §2 - guard the blob on update as well as create.
+    const guarded: PartyPatch = patch.fields !== undefined
+      ? { ...patch, fields: stripDestinationKeys(patch.fields) }
+      : patch;
+    store.parties[idx] = { ...store.parties[idx], ...guarded, id, updatedAt: now() };
     save(store);
     return store.parties[idx];
+  }
+
+  // ---- Gate 10 §3: the excluded PII record, on demand and never in a list read ----
+
+  async getPartyPii(partyId: string): Promise<PartyPii | null> {
+    return load().partyPii.find((r) => r.partyId === partyId) ?? null;
+  }
+
+  async savePartyPii(partyId: string, patch: Omit<PartyPii, 'partyId'>): Promise<PartyPii | null> {
+    const store = load();
+    const idx = store.partyPii.findIndex((r) => r.partyId === partyId);
+    if (isEmptyPii(patch)) {
+      // Delete rather than store a row of nulls - the Supabase adapter does the
+      // same, so "does this contact have PII" answers identically in both modes.
+      if (idx >= 0) store.partyPii.splice(idx, 1);
+      save(store);
+      return null;
+    }
+    const rec: PartyPii = {
+      partyId,
+      ssn: patch.ssn ?? null,
+      driversLicense: patch.driversLicense ?? null,
+      driversLicenseState: patch.driversLicenseState ?? null,
+    };
+    if (idx >= 0) store.partyPii[idx] = rec; else store.partyPii.push(rec);
+    save(store);
+    return rec;
   }
 
   // ---- CD-1 contact directory ----

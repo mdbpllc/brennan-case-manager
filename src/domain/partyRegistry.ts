@@ -14,6 +14,23 @@ export type FieldType =
   | 'repeating'
   | 'partyLink'; // reference to another party record
 
+/** Gate 10 §2 — where a field's value is STORED, as against where it is rendered.
+ *
+ *  A field with no `destination` behaves exactly as every field always has: its
+ *  value lives in the `parties.fields` jsonb blob. A field WITH one is written to
+ *  a typed column instead, and the blob never receives that key again — enforced
+ *  centrally in `src/domain/partyPii.ts`, not at each call site.
+ *
+ *  The registry stays the single source of what a party form renders, which is
+ *  the property that made the `G10-3` read possible; only the landing place moves. */
+export interface FieldDestination {
+  /** `parties` = a typed column on the party row itself (rides every party read,
+   *  by design for DOB). `party_pii` = the excluded child table, fetched on
+   *  demand and NEVER joined into a list read (§3). */
+  table: 'parties' | 'party_pii';
+  column: string;
+}
+
 export interface FieldDef {
   key: string;
   label: string;
@@ -24,6 +41,8 @@ export interface FieldDef {
   linkTypes?: string[]; // for partyLink: which party types are valid targets
   hint?: string;
   sensitive?: boolean; // SSN-class fields: masked in lists
+  /** Gate 10 §2. Absent = the `parties.fields` blob, unchanged. */
+  destination?: FieldDestination;
 }
 
 export interface PartyTypeDef {
@@ -91,10 +110,14 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       ...PERSON_NAME,
       { key: 'aliases', label: 'Aliases / maiden names', type: 'text', hint: 'For records requests' },
       ...CONTACT,
-      { key: 'dob', label: 'Date of birth', type: 'date' },
-      { key: 'ssn', label: 'Social Security number', type: 'text', sensitive: true },
-      { key: 'dlNumber', label: "Driver's license number", type: 'text' },
-      { key: 'dlState', label: 'DL state of issuance', type: 'text' },
+      // Gate 10 §2: these four leave the `fields` blob. DOB is an ordinary typed
+      // column on `parties` (read constantly, rides every party read BY DESIGN);
+      // the other three live in the excluded child table. Do not re-flatten the
+      // split in either direction — schema slice §5, front-end slice §2.
+      { key: 'dob', label: 'Date of birth', type: 'date', destination: { table: 'parties', column: 'date_of_birth' } },
+      { key: 'ssn', label: 'Social Security number', type: 'text', sensitive: true, destination: { table: 'party_pii', column: 'ssn' } },
+      { key: 'dlNumber', label: "Driver's license number", type: 'text', sensitive: true, destination: { table: 'party_pii', column: 'drivers_license' } },
+      { key: 'dlState', label: 'DL state of issuance', type: 'text', destination: { table: 'party_pii', column: 'drivers_license_state' } },
       { key: 'preferredContact', label: 'Preferred contact method', type: 'select', options: ['Phone', 'Text', 'Email', 'Mail'] },
       { key: 'language', label: 'Preferred language', type: 'text' },
       { key: 'emergencyContact', label: 'Emergency contact', type: 'textarea' },
@@ -252,7 +275,10 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     fields: [
       ...PERSON_NAME,
       ...CONTACT,
-      { key: 'dob', label: 'Date of birth', type: 'date' },
+      // Gate 10 §2 — the SAME destination as the client type's `dob`. Both party
+      // types that declare it write the typed column; a destination declared on
+      // one and not the other is how a blob copy survives a slice like this.
+      { key: 'dob', label: 'Date of birth', type: 'date', destination: { table: 'parties', column: 'date_of_birth' } },
       { key: 'whoTheyAre', label: 'Who they are / why they matter', type: 'textarea' },
       { key: 'pncStatus', label: 'Intake funnel status', type: 'select', options: ['—', 'PNC', 'Client', 'Declined', 'Referred out'] },
       { key: 'pncOutcomeDate', label: 'Funnel outcome date', type: 'date' },

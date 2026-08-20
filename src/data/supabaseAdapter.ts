@@ -7,6 +7,7 @@ import type {
 } from '../domain/types';
 import { withDirectoryDefaults } from '../domain/directory';
 import { validateEdge, type ContactEdge } from '../domain/contactEdges';
+import { stripDestinationKeys, isEmptyPii, type PartyPii } from '../domain/partyPii';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -57,6 +58,40 @@ interface PartyRow {
   aliases?: unknown[] | null;
   deceased?: boolean | null;
   deceased_date?: string | null;
+  // Gate 10 §2. Same reasoning: optional so a pre-migration database still reads.
+  date_of_birth?: string | null;
+}
+
+/**
+ * Gate 10 §3 — the explicit column list that replaces `select('*')` on `parties`.
+ *
+ * `select('*')` is the mechanism by which blob contents ride every read, and the
+ * schema half alone does not close it: a `select *` on `parties` cannot return a
+ * `party_pii` column (that IS the schema's protection), but it does return the
+ * blob, which carries whatever was written before this slice landed and whatever
+ * a future regression writes into it.
+ *
+ * `party_pii` columns are ABSENT from this list and must stay absent. There is
+ * no join here and there is not meant to be one — §3, and the DO-NOT list.
+ */
+const PARTY_COLUMNS =
+  'id, party_type, kind, display_name, fields, role_tags, aliases, deceased, deceased_date, ' +
+  'date_of_birth, created_at, updated_at';
+
+interface PartyPiiRow {
+  party_id: string;
+  ssn?: string | null;
+  drivers_license?: string | null;
+  drivers_license_state?: string | null;
+}
+
+function partyPiiFromRow(r: PartyPiiRow): PartyPii {
+  return {
+    partyId: r.party_id,
+    ssn: r.ssn ?? null,
+    driversLicense: r.drivers_license ?? null,
+    driversLicenseState: r.drivers_license_state ?? null,
+  };
 }
 
 interface LinkRow {
@@ -133,6 +168,8 @@ function partyFromRow(r: PartyRow): PartyRecord {
   return withDirectoryDefaults({
     id: r.id, partyType: r.party_type, kind: r.kind as PartyRecord['kind'],
     displayName: r.display_name, fields: r.fields ?? {},
+    // Gate 10 §2 — the typed column, read on every party read by design.
+    dateOfBirth: r.date_of_birth ?? null,
     roleTags: r.role_tags ?? undefined,
     aliases: (r.aliases ?? undefined) as PartyRecord['aliases'] | undefined,
     deceased: r.deceased ?? undefined,
@@ -280,19 +317,19 @@ export class SupabaseAdapter implements DataAdapter {
   }
 
   async listParties(): Promise<PartyRecord[]> {
-    const res = await this.sb.from('parties').select('*').order('display_name');
+    const res = await this.sb.from('parties').select(PARTY_COLUMNS).order('display_name');
     return SupabaseAdapter.unwrap(res as never as { data: PartyRow[] | null; error: { message: string } | null }).map(partyFromRow);
   }
 
   async getParty(id: string): Promise<PartyRecord | null> {
-    const res = await this.sb.from('parties').select('*').eq('id', id).maybeSingle();
+    const res = await this.sb.from('parties').select(PARTY_COLUMNS).eq('id', id).maybeSingle();
     if (res.error) throw new Error(res.error.message);
-    return res.data ? partyFromRow(res.data as PartyRow) : null;
+    return res.data ? partyFromRow(res.data as unknown as PartyRow) : null;
   }
 
   async getParties(ids: string[]): Promise<PartyRecord[]> {
     if (ids.length === 0) return [];
-    const res = await this.sb.from('parties').select('*').in('id', ids);
+    const res = await this.sb.from('parties').select(PARTY_COLUMNS).in('id', ids);
     return SupabaseAdapter.unwrap(res as never as { data: PartyRow[] | null; error: { message: string } | null }).map(partyFromRow);
   }
 
@@ -301,27 +338,65 @@ export class SupabaseAdapter implements DataAdapter {
     const res = await this.sb.from('parties')
       .insert({
         party_type: full.partyType, kind: full.kind, display_name: full.displayName,
-        fields: full.fields,
+        // Gate 10 §2, THE WRITE-GUARD AT THE SEAM. Belt and braces on purpose:
+        // the UI routes by destination, and this strips the keys again whatever
+        // the caller hands over. Build it even where you believe no caller can
+        // reach it — that is what it is for.
+        fields: stripDestinationKeys(full.fields),
+        date_of_birth: full.dateOfBirth ?? null,
         role_tags: full.roleTags, aliases: full.aliases,
         deceased: full.deceased, deceased_date: full.deceasedDate ?? null,
       })
-      .select().single();
+      .select(PARTY_COLUMNS).single();
     if (res.error) throw new Error(res.error.message);
-    return partyFromRow(res.data as PartyRow);
+    return partyFromRow(res.data as unknown as PartyRow);
   }
 
   async updateParty(id: string, patch: PartyPatch): Promise<PartyRecord> {
     assertPartyPatchKeys(patch);
     const row: Record<string, unknown> = {};
     if (patch.displayName !== undefined) row.display_name = patch.displayName;
-    if (patch.fields !== undefined) row.fields = patch.fields;
+    // Gate 10 §2 — the write-guard, on the update path as well as the insert.
+    if (patch.fields !== undefined) row.fields = stripDestinationKeys(patch.fields);
+    if ('dateOfBirth' in patch) row.date_of_birth = patch.dateOfBirth ?? null;
     if (patch.roleTags !== undefined) row.role_tags = patch.roleTags;
     if (patch.aliases !== undefined) row.aliases = patch.aliases;
     if (patch.deceased !== undefined) row.deceased = patch.deceased;
     if ('deceasedDate' in patch) row.deceased_date = patch.deceasedDate ?? null;
-    const res = await this.sb.from('parties').update(row).eq('id', id).select().single();
+    const res = await this.sb.from('parties').update(row).eq('id', id).select(PARTY_COLUMNS).single();
     if (res.error) throw new Error(res.error.message);
-    return partyFromRow(res.data as PartyRow);
+    return partyFromRow(res.data as unknown as PartyRow);
+  }
+
+  // ---- Gate 10 §3: the excluded child row, on demand and never joined ----
+
+  async getPartyPii(partyId: string): Promise<PartyPii | null> {
+    const res = await this.sb.from('party_pii')
+      .select('party_id, ssn, drivers_license, drivers_license_state')
+      .eq('party_id', partyId).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? partyPiiFromRow(res.data as PartyPiiRow) : null;
+  }
+
+  async savePartyPii(partyId: string, patch: Omit<PartyPii, 'partyId'>): Promise<PartyPii | null> {
+    if (isEmptyPii(patch)) {
+      // An all-empty patch DELETES rather than storing a row of nulls. An empty
+      // PII record is not a fact about a person, and leaving one behind makes
+      // "does this contact have PII" unanswerable.
+      const del = await this.sb.from('party_pii').delete().eq('party_id', partyId);
+      if (del.error) throw new Error(del.error.message);
+      return null;
+    }
+    const res = await this.sb.from('party_pii')
+      .upsert({
+        party_id: partyId,
+        ssn: patch.ssn ?? null,
+        drivers_license: patch.driversLicense ?? null,
+        drivers_license_state: patch.driversLicenseState ?? null,
+      }, { onConflict: 'party_id' })
+      .select('party_id, ssn, drivers_license, drivers_license_state').single();
+    if (res.error) throw new Error(res.error.message);
+    return partyPiiFromRow(res.data as PartyPiiRow);
   }
 
   // ---- CD-1 contact directory ----

@@ -8,6 +8,7 @@ import { db } from '../data';
 import { Combobox } from './Combobox';
 import { PhoneInput } from './phone';
 import { formatPhone } from '../domain/phone';
+import { maskValue } from '../domain/partyPii';
 
 /* ================= INPUT ================= */
 
@@ -157,7 +158,14 @@ export function FieldDisplay({ def, value }: { def: FieldDef; value: unknown }) 
     );
   }
   if (def.type === 'phone') return <span>{formatPhone(String(value))}</span>;
-  if (def.sensitive) return <span>•••–••–{String(value).slice(-4)}</span>;
+  // Gate 10 §4 — masked EVERYWHERE by default, lists and detail views alike.
+  // The mask is keyed on the field so a licence number is not rendered in SSN
+  // punctuation: a licence shown as •••–••–1234 reads as an SSN.
+  //
+  // This is a DISPLAY property and never a storage one. That was all the
+  // `sensitive` flag ever meant; what gate 10 changed is that it is no longer
+  // the only protection — the values are not in the blob or in a list read.
+  if (def.sensitive) return <span>{maskValue(def.key, value)}</span>;
   return <span style={{ whiteSpace: 'pre-wrap' }}>{String(value)}</span>;
 }
 

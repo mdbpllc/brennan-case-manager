@@ -3,6 +3,7 @@ import type {
 } from '../domain/types';
 import type { ContactEdge } from '../domain/contactEdges';
 import type { DirectoryFields } from '../domain/directory';
+import type { PartyPii } from '../domain/partyPii';
 
 /** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
  *  defaulted by the adapters (`withDirectoryDefaults`), so callers that predate
@@ -14,7 +15,11 @@ export type PartyCreate =
 
 /** What may be edited on an existing contact. Party type and kind stay frozen. */
 export type PartyPatch = Partial<
-  Pick<PartyRecord, 'displayName' | 'fields' | 'roleTags' | 'aliases' | 'deceased' | 'deceasedDate'>
+  Pick<PartyRecord,
+    'displayName' | 'fields' | 'roleTags' | 'aliases' | 'deceased' | 'deceasedDate'
+    // Gate 10 §2. `party_pii` values are deliberately absent — they move through
+    // savePartyPii, never through a party patch.
+    | 'dateOfBirth'>
 >;
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import type { CalendarEvent } from '../domain/calendar';
@@ -43,6 +48,11 @@ const MUTABLE_PARTY_KEYS = new Set([
   // CD-1 directory fields. `partyType` and `kind` stay OUT deliberately: the
   // type drives which fields the registry renders, and roleTags[0] mirrors it.
   'roleTags', 'aliases', 'deceased', 'deceasedDate',
+  // Gate 10 §2 — the typed DOB column. It is mutable for the same reason the
+  // blob is: the party form edits it. The `party_pii` values are NOT here and
+  // never will be: they are written through savePartyPii, so that the one write
+  // path which touches the child table is the one that knows it exists.
+  'dateOfBirth',
 ]);
 
 export function assertPartyPatchKeys(patch: Record<string, unknown>): void {
@@ -74,6 +84,19 @@ export interface DataAdapter {
   /** displayName, fields, and the CD-1 directory fields are mutable — party
    *  type/kind stay frozen at creation. */
   updateParty(id: string, patch: PartyPatch): Promise<PartyRecord>;
+
+  // ---- Gate 10 §3: the excluded PII child row, fetched ON DEMAND ----
+  /** The `party_pii` row for one contact, or null if it has none.
+   *
+   *  **NEVER joined into a list read**, and there is deliberately no
+   *  `listPartyPii`: the whole point of the child table is that a party read
+   *  cannot carry these values, and a bulk fetch would recreate the exposure
+   *  the table exists to remove. One party, on demand, behind the §4 reveal. */
+  getPartyPii(partyId: string): Promise<PartyPii | null>;
+  /** Upsert the child row. A patch whose values are all empty DELETES the row
+   *  rather than storing a row of nulls — an empty PII record is not a fact
+   *  about a person, and leaving one behind would make "has PII" unanswerable. */
+  savePartyPii(partyId: string, patch: Omit<PartyPii, 'partyId'>): Promise<PartyPii | null>;
 
   // ---- CD-1 contact directory (docs/specs/contact-directory.md) ----
   /** §5 contact-to-contact edges. NEVER case-to-case — the CL-1 firewall (§5.3):

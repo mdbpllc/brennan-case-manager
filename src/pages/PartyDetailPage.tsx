@@ -5,6 +5,7 @@ import type { ProviderBillingProfile } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { ALIAS_KIND_LABELS } from '../domain/directory';
 import { FieldDisplay } from '../components/fieldWidgets';
+import { mergePartyFields, piiFieldKeys, type PartyPii } from '../domain/partyPii';
 import { db } from '../data';
 
 export default function PartyDetailPage() {
@@ -13,6 +14,11 @@ export default function PartyDetailPage() {
   const [links, setLinks] = useState<CasePartyLink[]>([]);
   const [cases, setCases] = useState<Record<string, CaseRecord>>({});
   const [profile, setProfile] = useState<ProviderBillingProfile | null>(null);
+  /** Gate 10 §4 — the child row is fetched ONLY when Michael asks. Opening a
+   *  contact does not pull an SSN across the wire on the chance he might look. */
+  const [pii, setPii] = useState<PartyPii | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [revealing, setRevealing] = useState(false);
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading');
 
   useEffect(() => {
@@ -41,13 +47,34 @@ export default function PartyDetailPage() {
   }
   if (!party) return <div className="muted">Loading…</div>;
   const def = PARTY_TYPE_MAP[party.partyType];
+  const piiKeys = piiFieldKeys();
 
-  // Only show fields that have values, plus always-show basics
-  const populated = def?.fields.filter((f) => {
-    const v = party.fields[f.key];
+  // Gate 10 §2 — the flat field set the registry renders is REASSEMBLED from
+  // the blob plus the typed DOB (and, once revealed, the child row). The split
+  // is a storage fact and is deliberately invisible above this line.
+  const shown = mergePartyFields(party.fields, party.dateOfBirth, revealed ? pii : null);
+
+  const reveal = async () => {
+    if (!id) return;
+    setRevealing(true);
+    try {
+      setPii(await db.getPartyPii(id));
+      setRevealed(true);
+    } finally {
+      setRevealing(false);
+    }
+  };
+
+  // Only show fields that have values, plus always-show basics. PII fields are
+  // partitioned out entirely: they get their own block behind the reveal, so an
+  // un-revealed contact shows no trace of them either way.
+  const visibleDefs = def?.fields.filter((f) => !piiKeys.includes(f.key)) ?? [];
+  const populated = visibleDefs.filter((f) => {
+    const v = shown[f.key];
     return v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && v.length === 0);
-  }) ?? [];
-  const empty = def?.fields.filter((f) => !populated.includes(f)) ?? [];
+  });
+  const empty = visibleDefs.filter((f) => !populated.includes(f));
+  const piiDefs = def?.fields.filter((f) => piiKeys.includes(f.key)) ?? [];
 
   return (
     <div>
@@ -147,7 +174,7 @@ export default function PartyDetailPage() {
           {populated.map((f) => (
             <div key={f.key} style={{ display: 'contents' }}>
               <dt>{f.label}</dt>
-              <dd><FieldDisplay def={f} value={party.fields[f.key]} /></dd>
+              <dd><FieldDisplay def={f} value={shown[f.key]} /></dd>
             </div>
           ))}
         </dl>
@@ -160,6 +187,31 @@ export default function PartyDetailPage() {
           </details>
         )}
       </div>
+
+      {piiDefs.length > 0 && (
+        <div className="card">
+          <h3>Identifying numbers</h3>
+          <div className="muted small">
+            Stored apart from the rest of the contact record and never loaded with a
+            list. Masked by default; showing them is a deliberate step.
+          </div>
+          {!revealed ? (
+            <button className="btn secondary" type="button" onClick={reveal} disabled={revealing}
+              style={{ marginTop: 8 }}>
+              {revealing ? 'Loading…' : 'Show identifying numbers'}
+            </button>
+          ) : (
+            <dl className="kv" style={{ marginTop: 8 }}>
+              {piiDefs.map((f) => (
+                <div key={f.key} style={{ display: 'contents' }}>
+                  <dt>{f.label}</dt>
+                  <dd><FieldDisplay def={f} value={shown[f.key]} /></dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+      )}
     </div>
   );
 }
