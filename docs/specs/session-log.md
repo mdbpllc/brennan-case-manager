@@ -16,6 +16,109 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-EIGHTH invocation) — one docs-only packet, ONE routing row: gate 9's evidence day filed, the signup toggle found ON, and the queue deliberately NOT touched on a standing scope ruling
+
+**One zip in `inbox/`, executed:** `push-to-code_gate9-evidence-125_2026-08-20.zip` (**6,430 B, mtime `2026-08-20 17:04:05 −05:00`, sha256 `35fff0ea6ef212fd…`**). Identity pinned at Step 1 per QR-6(c), **re-pinned byte-for-byte after the STOP and unchanged**, and deleted by explicit name at Step 4 item 5 against that pin. **Both orders were still computed (QR-4) and are trivially identical** — one packet admits no ordering — and the filename date parses cleanly, so no unparseable-date flag was owed. Michael confirmed at the Step 1 STOP; nothing was executed on silence.
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`3020dfd`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 / 0** and `git status --short --branch` showing a clean tree on `master`. Neither the behind-limb nor the ahead-stop arose. **The packet's §1 expressly declined to claim anything about origin and left it to this gate** — the right posture, and the gate settled it.
+- **BOTH QR-5 CARRY-FORWARD LIMBS WERE CLEAR, AND EACH WAS LEARNED THE ONLY WAY THIS BATCH COULD LEARN IT.** `git merge-base --is-ancestor 3020dfd origin/master` returns true and **`3020dfd` IS batch 77's own commit**, so **batch 77's push DID land** — that entry is barred from asserting it. And **`inbox/` held EXACTLY ONE zip and it was NOT batch 77's**: `ls inbox/push-to-code_gate3-reconcile-124_2026-08-20.zip` returned *No such file or directory*, checked by explicit name rather than inferred from a count — **which is the only way this batch could learn that batch 77's DELETION ran**, barred by the same rule. **Nothing was carried into this line.** Step 0 items 1–4 were already satisfied: `inbox/` exists, `.gitignore:16` carries `inbox/`, CLAUDE.md:349 carries the note, and `Bash(rm -f inbox/*)` is present in `.claude/settings.local.json`.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE, AND IT HAD TO BE A CONTENT PROBE — WITH A SECOND LIMB THE SPLIT MADE NECESSARY.** The packet's sole act is an APPEND INTO AN EXISTING FILE, so no path's absence could mean anything. Probed by content instead: **`#125` occurred 0 times in the live log** and design high-water stood at **`#124`**, so `#125` was free and no renumber was owed — **and it was also probed against `docs/archive/session-log-archive-2026-07-21_2026-08-12.md`, which returned 0**, a limb that did not exist before the `Q-CAP-1` split and which any future numbering probe now owes. The committed-but-unpushed limb was excluded by the Step 0 result rather than by assumption — `HEAD` and `origin/master` are the same commit, so there was nothing at `HEAD` for `origin` to be missing.
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** The skip needs `§5` NONE **and** no `src/`, `db/`, `supabase/` or build-tooling path routed. **Both limbs hold**: §5 reads `— **NONE.**` in terms, and the routing table reaches exactly one path, `docs/specs/session-log.md`. `npm test` / `npm run build` / `npm run lint` could prove nothing about a batch that changed no code. **No health figure is asserted anywhere in this entry; a skipped check is not a pass.**
+- **THE CONFLICT RULE DID NOT FIRE AND HAD NOTHING TO REACH — ONE PACKET, ONE ROUTING ROW, the thinnest packet the runner has taken. Nothing was superseded and nothing was skipped as already built.** `#125` was filed **BY BYTE COPY** — 7,370 B, 0 CR, confirmed present exactly once and byte-exact — and **per TOC-6 this runner line mints no `#nn`**, carrying only the invocation ordinal. The packet minted `#125` design-side, as its §3 says.
+- **THE QUEUE WAS NOT TOUCHED AT ALL, AND THAT IS `QR-6(b)`'s CONDITIONAL HALF CORRECTLY DECLINED RATHER THAN AN OMISSION — WHICH IS EXACTLY THE THING THAT LOOKS LIKE A MISS AND IS NOT.** Two independent authorities agree: the packet's §6 bars creating rows and says in terms that **no Status-header sentence is owed unless the queue is touched**, and the queue's OWN Status header already records the **2026-08-19 scope ruling** keeping **gate 9's §4 remainder gates-side and out of that file**. **The precedent was verified rather than assumed: the header's reconcile chain runs `…#120, #121, #124` — `#122` and `#123` carry NO sentence**, batches 75 and 76 having stood in this same posture. **Row-anchored open rows re-derived at HEAD on the file's own matcher (`lstrip()` then `- ⬜`) and UNMOVED at 350**; `git status` shows the file byte-untouched by this batch.
+- **THE ROW-LESS `§7` SERIES WAS VERIFIED TO HAVE HOMES RATHER THAN TRUSTED TO HAVE THEM, WHICH IS THE ONLY THING THAT MAKES "NO NEW ROWS" COMPLIANCE INSTEAD OF LOSS.** QR-1's rationale is that the packet is deleted, so a question with no filed home dies with it. Every one of the six was checked at HEAD by opening the file: **`docs/smtp-setup.md` (10,907 B) carries the outside-mailbox requirement and the later-day repeats at its §4 items 4 and 5, and the optional DMARC `p=none` at its §2**; **`Go_Live_Gates.md` (16,012 B) carries the gates re-check as floor item (5)**; and **the two items with no prior home anywhere — the signup-toggle ruling and the 16:47 link's click-or-lapse — take `#125` itself as their permanent home**, filed by this batch, which is precisely why filing it mattered more than a row would have.
+- **THE DAY'S SECURITY FINDING IS CARRIED FORWARD RATHER THAN LEFT INSIDE ONE BULLET: "Allow new users to sign up" WAS MEASURED ON.** With magic-link auth and 36 byte-identical `using (true)` policies, ON means the set of authenticatable users is not closed — **which is the condition the gate-3 run record's §10 framing silently assumed**, and is context for `Q-G3-4` at the re-check rather than a correction of that record. **The recommendation (OFF for the solo phase) is put; the ruling and the execution are Michael's hand in the dashboard and were PENDING at the entry's stamp. This batch changed no live configuration and could not have.**
+- **THE `§6` NO-CREDENTIAL RULE WAS CHECKED AGAINST THE STAGED TEXT, NOT ASSUMED FROM THE PACKET'S SAY-SO.** The entry reproduces **no URL, no token value and no email body** — it carries `Authentication-Results` header facts only (`spf=pass`, the two `dkim=pass` results, `dmarc=bestguesspass`, `compauth=pass`, the `SCL`/`CAT`/`DIR` stamps and the Received chain), which the runbook's own §4.2 treats as the evidence to read. **Nothing this batch wrote carries a credential of any kind.**
+- **THE TOC RIDES THIS COMMIT AT ITS TWENTY-NINTH EDITION AND IS A GENUINE `TOC-4` FIRING — THE TWENTY-FOURTH.** The pointer-stanza census term was applied **before** the edit as well as after: going in, **130 `## ` headings − 1 pointer stanza = 129 entries against 129 rows**, so nothing had landed unindexed since batch 77's same-day edition; as written, **132 − 1 = 131 against 131.** Buckets re-derived on the position-anchored matcher and summing exactly: **numbered 60 → 61** (`#125`; range `#65`–`#125`, gapless), **runner ordinals 55 → 56** (`runner 78`; range 23–78, no gaps), **`other` 14 and the unnumbered-runner bucket 0, both UNMOVED** — **61 + 56 + 0 + 14 = 131.**
+- **`DT-1` WAS READ AND THE DIVERGENT WINDOW DID NOT APPLY, FOR A FOURTH CONSECUTIVE BATCH.** PowerShell, the authority, read **`2026-08-20 17:11 −05:00`** (`Central Standard Time`) against a UTC **`2026-08-20 22:11`** — **the same calendar day.** Every date written this batch is the Central **2026-08-20**, which is also what the packet's §0 stamped.
+- **NO PACKET-ADDED ACT AROSE THIS BATCH (QR-6(e)), AND SAYING SO IS THE POINT.** The packet's §8 restates the runner's own Step 4 obligations — byte copy, the 150-cap rewrite with counts recomputed, the TOC census term, a push verified by bare `git ls-remote`, delete-by-explicit-filename — and **asks for nothing outside a routing row or a Step 4 item**. Its close line is the runner's own, unmodified.
+- **WHAT DID NOT HAPPEN, STATED SO THE RECORD CANNOT INFLATE IT.** **Gate 9 was NOT closed** — it closes at the gates re-check on the §4 evidence, not here — and **`Go_Live_Gates.md` and `docs/smtp-setup.md` were READ but NOT EDITED**, which is how the homes above were verified. **No queue row was added or closed and no Status-header sentence was written.** The gate-3 protocol, its run record and `docs/prompts/` were not touched; `QUEUE-RUNNER.md` was not amended. **§5 is NONE, so no `src/`, `db/` or `supabase/` path was written** — several were read, which is how the counts in BUILD-STATE are re-derived rather than carried. **Nothing was written to, read from, or connected to the live database.** **No registry entry was set to verified.** **No sync or picker claim of this batch's own is made anywhere** — a Code session can neither read nor change that setting — and `#125`'s pending items were **left exactly as stamped**, per §6, because an entry states its stamp time's truth.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's routing — the `#125` byte copy, the twenty-ninth TOC edition, and the BUILD-STATE refresh. **Still open and still Michael's, merged from the packet's §7:** **(1)** rule and execute **signups → OFF** (his hand, dashboard; the day's security finding) · **(2)** state the **outside mailbox's provider and folder**, which completes §4.4's outside half · **(3)** the **16:47 link** — click it to consume, or let it lapse · **(4)** **§4.5 later-day repeats**, tomorrow and once more, from a fresh browser profile · **(5)** optional **DMARC `p=none`**, still deliberately outside the go-live window · **(6)** the **gates re-check sweep**, the last floor sitting, now carrying `#125`'s three additions — the §4.4 invite-template substitution, the §4.5 fresh-profile form, and the signup-toggle finding as `Q-G3-4` context — on top of everything carried at `#121`–`#124`.
+
+## 2026-08-20 (#125) — `Q-CAP-3` CLOSED BY MEASUREMENT (85.1%), batch 77 verified, and gate 9's evidence day: §4.2 PASSES ON THE RECEIVER'S OWN VERDICT, the outside-mailbox invite arrived, THE SIGNUP TOGGLE IS FOUND ON — and three pasted-link incidents are recorded with their disposals (design session, Cowork, Fable 5; bridge reads at `3020dfd`)
+
+**`Q-CAP-3` IS CLOSED, AND BY MEASUREMENT, NOT REPORT.** After Michael's hand added the exclusion
+and re-synced: the project's sync filters now carry `/docs/archive/": "exclude"`, and
+`knowledge_size` fell **1,856,462 → 1,701,643 — 92.8% → 85.1%**, ~155K tokens freed. The day's full
+series: **91.9 → 92.3 → 92.8 → 85.1**. All three `Q-CAP` acts are now ruled, executed, and
+verified. Calibration datum for the `#124` correction: the archive lever's byte-derived estimate
+(~167K) ran ~7% high against the measured ~155K — same instrument, tolerable error, no further
+correction; the instrument's bias is now on the record twice with signs both ways named.
+
+- **BATCH 77 SPOT-VERIFIED DESIGN-SIDE at `3020dfd`** — placement and counts, not a full-text
+  re-read: `#124` present exactly once at the top under the runner-77 line; the `LE-1` evidence
+  append present exactly once with open rows unmoved at 350; TOC census 129/129; BUILD-STATE at
+  exactly 150 non-blank (one-hundred-sixteenth refresh); `inbox/` empty; no stranded lock.
+- **GATE 9, §4.2 — HEADERS: PASS, ON THE RECEIVER'S OWN VERDICT.** From the 16:47 Central
+  signin@ message's internet headers, read via Outlook's message-details dialog:
+  `spf=pass` (`smtp.mailfrom=pm-bounces.brennanstx.com` — the envelope rides the Postmark bounce
+  subdomain; the root SPF record was never in play) · `dkim=pass` TWICE — `header.d=pm.mtasv.net`
+  and **`header.d=brennanstx.com`**, selector `20260820071052pm`, signed as
+  `signin@brennanstx.com` — the firm-domain pass §4.2 requires, explicit ·
+  `dmarc=bestguesspass action=none` — Microsoft's no-record-published-but-would-pass verdict,
+  inside §4.2's "pass, or none" band · `compauth=pass` · and the filter's own delivery stamp
+  `SCL:1 … CAT:NONE … DIR:INB`. The Received chain shows Postmark end-to-end
+  (`production-pmta…postmarkapp.com` → `mta215a-ord.mtasv.net` → `mail.protection.outlook.com`),
+  TLS on every hop — §4.3's headers-show-the-provider evidence now from the receiving side too.
+  **Corroboration via the M365 connector (scope named below): all three signin@ messages today
+  carry `mtasv.net` message-ids.** Sender display name is live as "Michael D. Brennan, PLLC."
+- **§4.4, JUNK HALF: PASS** — inbox, stated by Michael and confirmed by the receiver's `DIR:INB`
+  stamp. **§4.4, OUTSIDE-MAILBOX HALF: ARRIVAL PROVEN, DETAILS OWED.** Shape: with the runbook's
+  literal round trip unavailable-by-design (next bullet), an **admin invite** was sent from the
+  dashboard to a non-tenant mailbox Michael controls — admin invites ride the same
+  Supabase → Postmark → recipient pipeline and ignore the signup toggle. **The invite ARRIVED**
+  (proven, in fact, by the incident below). The invited `auth.users` row was then **DELETED by
+  Michael's hand** — the mark on live auth is cleaned and the invite link invalidated. Still owed
+  before the re-check rules this half: **which provider the outside mailbox is and which folder
+  the invite landed in** (its own header line optional). The invite-template-for-magic-link
+  substitution is FLAGGED for the re-check, per the runbook's own "Recommended" framing. NOTE for
+  the working set: the runbook's Gmail reference is an *example* ("e.g."); Michael uses Outlook /
+  Microsoft 365 and no Google mailbox exists in this practice — the requirement is and was
+  "a non-M365 mailbox you control."
+- **THE SIGNUP TOGGLE IS ON — THE DAY'S SECURITY FINDING.** Michael read the dashboard:
+  **"Allow new users to sign up" is ON.** With magic-link auth, permissive `using (true)`
+  policies, and broad grants, ON means anyone who can reach the auth endpoint can mint an
+  authenticated user with full read/write. **RECOMMENDATION PUT: turn it OFF for the solo phase**
+  — Michael's existing account is unaffected, and later staff onboarding is by admin invite,
+  which ignores the toggle. **RULING AND EXECUTION PENDING at this entry's stamp** (his hand,
+  dashboard-only, no repo act). This finding also CONDITIONS the gate-3 run record's §10 framing:
+  "`using (true)` grants every authenticated user every row, by design, in a solo practice" is
+  sound only while the set of authenticatable users is closed — with signups ON it is not. That
+  is context for `Q-G3-4` at the re-check, not a correction of the run record, which stated its
+  scope accurately.
+- **THREE PASTED-LINK INCIDENTS, EACH WITH ITS DISPOSAL — recorded because credential-adjacent
+  material entered chat three times in one sitting, and the rule needs a record, not a memory.**
+  (1) A magic-link URL pasted from an email body; **triaged via connector metadata as
+  already-consumed** — its token matched neither the only unclicked message; a used link is dead;
+  no action. (2) An **invite link pasted while LIVE** — an unaccepted invitation is a
+  mint-an-account key; **killed by deleting the invited user row** (confirmed "Deleted").
+  (3) The 16:47 message's **magic-link token pasted while live**; disposal = Michael clicks it
+  himself (consuming it) or it lapses at the project's configured OTP window — one hour by
+  default, unverified here; **completion his hand, pending at stamp.** THE RULE, RESTATED FOR THE
+  RECORD: **email bodies and their links never enter chat, any chat; the header dialog
+  (`Authentication-Results` and kin) is safe wholesale.** No prior instance of this class is on
+  the record; the countermeasure that worked all three times was connector-verified triage plus
+  kill-at-the-source disposal.
+- **CONNECTOR SCOPE, NAMED:** the M365 connector was used design-side to search signin@ message
+  metadata and read ONE message body for token triage; it cannot return internet headers, which
+  came from Michael's hand via the message-details dialog after the direct OWA link route. No
+  mailbox content beyond that scope was read.
+- **COSMETIC, OPEN, UNMINTED:** both auth emails use Supabase's default templates ("Your sign-in
+  link" / "You've been invited"); customization is optional and unruled. **§4.5 (later-day
+  repeats) is tomorrow's by definition** — plan: fresh browser profile against the dev server,
+  since the app is localhost-only and a phone cannot reach it; that form is put as the honest
+  reading of "fresh browser/device" until deployment, for the re-check to accept. **Optional
+  DMARC (`p=none`) not addressed today; open, optional.**
+
+**Staged for Code:** this entry — one packet, one act.
+**Awaiting/Returned from Code, unreviewed:** this batch's handback.
+**Still open and still Michael's:** signups-OFF execution (+ the ruling it records) · the outside
+mailbox's provider + folder statement · the 16:47 link's click-or-lapse · §4.5 tomorrow and a
+later-day repeat · optional DMARC · the gates re-check sweep per `#124` (now also carrying: the
+§4.4 substitution ruling, the §4.5 fresh-profile form, and the signup-toggle finding as `Q-G3-4`
+context) · `Q-CAP-5` (capacity cadence — the split bought weeks, not a solution).
+
 ## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-SEVENTH invocation) — one docs-only packet: the gate-3 run's four handed-back items CLEARED design-side, and the queue's `LE-1` row gains its decisive CRLF evidence WITHOUT gaining a status
 
 **One zip in `inbox/`, executed:** `push-to-code_gate3-reconcile-124_2026-08-20.zip` (**9,114 B, mtime `2026-08-20 15:50:46 −05:00`, sha256 `edcd19022a945905…`**). Identity pinned at Step 1 per QR-6(c), **re-pinned byte-for-byte after the STOP and unchanged**, and checked by explicit name at Step 4 item 5. **Both orders were still computed (QR-4) and are trivially identical** — one packet admits no ordering — and the filename date parses cleanly, so no unparseable-date flag was owed. Michael confirmed at the Step 1 STOP; nothing was executed on silence.
