@@ -16,6 +16,91 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-20 — QUEUE-RUNNER batch (runner line; SEVENTY-FOURTH invocation) — one docs-only packet: four rulings filed, the gate-3 kickoff staged unfired, and the pre-run audit's headline re-derived against the schema before a live run is authorized to touch anything
+
+**One zip in `inbox/`, executed:** `push-to-code_gate3-and-smtp-rulings_2026-08-20.zip` (**13,572 B, mtime `2026-08-20 01:41:55 −05:00`, sha256 `4a10d6e9ea6a0787…`**). Identity pinned at Step 1 per QR-6(c). **BOTH ORDERS WERE STILL COMPUTED (QR-4) AND ARE TRIVIALLY IDENTICAL** — one packet admits no ordering — **but the packet's §0 carried a DISCONFIRMABLE prediction and it held**: *"Expect a single packet — batch 73 emptied `inbox/`."* A second zip would have contradicted it, so the agreement is evidence rather than a tautology. Michael confirmed at the Step 1 STOP.
+
+- **THE STEP 0 GATE CLEARED ON ALL FOUR LIMBS, EACH BY A COMMAND THAT COULD HAVE DISCONFIRMED IT (QR-6(a)).** A live `git fetch origin` plus a bare `git ls-remote origin refs/heads/master` returned **`2a6ae67`**, equal to local `HEAD`, with `git rev-list --left-right --count HEAD...origin/master` reading **0 / 0**, `git status --porcelain` empty, on `master`. Neither the behind-limb nor the ahead-stop arose. Step 0 items 1–4 were already satisfied: `inbox/` exists, `.gitignore:16` carries `inbox/`, and `Bash(rm -f inbox/*)` is present in `.claude/settings.local.json`. No `.git/index.lock`, none left behind.
+- **THE ALREADY-EXECUTED PROBE WAS NEGATIVE ON BOTH QR-5 LIMBS, AND THE THIRD ROUTED PATH NEEDED A CONTENT PROBE BECAUSE A FILENAME SWEEP CANNOT REACH IT.** The two new canonical paths — `docs/specs/gate3-protocol-preflight-audit-2026-08-20.md` and `docs/prompts/PROMPT-gate3-write-path-test.md` — were absent from the working tree, from `git ls-tree -r HEAD` **and** from `git ls-tree -r origin/master`, so neither the committed-and-pushed nor the committed-but-unpushed limb applied. **The third row routes surgical edits INTO an existing file**, where absence proves nothing: both OLD blocks occurred **exactly once** and both NEW annotations **zero** times.
+- **`#121` WAS FREE, ON A PROBE THAT COULD HAVE SAID OTHERWISE.** `#121` returned **0** hits across the whole of `docs/` at HEAD with `#120` returning **21** as a control. Design high-water at HEAD is `#120`, exactly as the packet's §1 predicted, so no renumber was owed. **Per TOC-6 this runner line mints no `#nn` and carries only the invocation ordinal.**
+- **THE PACKET'S OWN STOP LIMB DID NOT FIRE.** Its §1 directs a STOP if either D-SMTP row is already `✅` — a ruling recorded twice. Both were **`⬜` at HEAD**, so the limb was tested and passed rather than skipped.
+- **THE HEALTH CHECK WAS SKIPPED ON THE RULE, NOT BY OMISSION, AND THE REASON IS NAMED (QR-6(f)).** §5 is **NONE**, and the routing table touches `docs/specs/` and `docs/prompts/` **only** — no `src/`, no `db/`, no `supabase/`, no build tooling — so `npm test` / `npm run build` / `npm run lint` could prove nothing about this batch. **No health figure is asserted anywhere in this entry; a skipped check is not a pass.**
+- **THE CONFLICT RULE DID NOT FIRE AND HAD NOTHING TO REACH.** One packet, so no canonical path is claimed twice and no instruction is contradicted. **Nothing was superseded and nothing was skipped as already built.**
+- **THE TWO NEW DOCUMENTS WERE FILED BY BYTE COPY AND VERIFIED BY HASH, NEVER RETYPED.** `gate3-protocol-preflight-audit-2026-08-20.md` — **5,466 B, sha256 `437f343fb7d2286d…`** — and `PROMPT-gate3-write-path-test.md` — **4,654 B, sha256 `f7e15600121a7203…`** — each hashed at source and at destination and compared **byte-identical**, both pure LF.
+- **THE TWO RULING ANNOTATIONS ARE ADDITIONS ONLY, AND THE ONE COUNT THAT MOVED IS EXPLAINED SO IT IS NOT MISREAD AS AN EDIT.** `git diff --numstat -- docs/specs/gate3-write-path-test-protocol.md` reads **`7 0`** — the `−0` the edit order requires — file **22,052 → 22,609 B**, **0 CR on a binary read** before and after. Both OLD blocks were extracted **from the edit order by program** rather than retyped, each asserted to match **exactly once** before writing. **`Q-G3-3` and `Q-G3-5` are untouched and still OPEN; `Q-G3-4` is untouched but its mention count moves 2 → 3**, solely because the new `Q-G3-2` annotation names it as the still-open question about whether the gate closes anyway.
+- **THE AUDIT'S HEADLINE WAS RE-DERIVED RATHER THAN FILED ON TRUST — AND THAT IS WARRANTED HERE, BECAUSE IT IS THE LAST CHECK BEFORE FIXTURE ROWS TOUCH THE LIVE DATABASE.** Its §1 claims §5.2's fixture rule fails on **16 of 36 tables**, each carrying a required column whose CHECK is a literal `IN (…)` list. Re-derived independently against `db/schema.sql` at HEAD: **16 of 16 confirmed** — every one NOT NULL, no default, CHECK-IN-list — and the enumeration contains **exactly 16 names**. **MY FIRST PASS RETURNED 15 OF 16 AND THE MISS WAS MY INSTRUMENT'S, NOT THE AUDIT'S:** `routing_decisions.action` reads `check (…)` on a **continuation line**, which a one-line-per-column parser cannot see. Recorded rather than published as a finding — **a re-derivation that disagrees is a hypothesis about the classifier before it is a finding about the subject** — and it mirrors the audit's own disclosure of its parser's `numeric(12,2)` false positive.
+- **THE 36-VERSUS-37 DIFFERENCE BETWEEN THE AUDIT AND THE KICKOFF RECONCILES EXACTLY, AND NEITHER FILE WAS EDITED TO SAY SO.** The audit's denominator is **36**; the kickoff and protocol probe **all 37**. `db/schema.sql` carries **37 `create table` statements**, of which `file_counters` is the **deny control** the audit handles separately in its §3. **37 − 1 = 36.** Both figures are right about different sets; the packet bars any edit to either, so the reconciliation is recorded here instead.
+- **THE QUEUE ACT WAS THE TWO ACTS QR-6(b) REQUIRES, AND THE CLOSURES PRESERVE THE QUESTIONS THEY ANSWER.** **`D-SMTP-1` and `D-SMTP-2` are CLOSED `⬜ → ✅`**, each ruling **extracted verbatim from the packet's §4 by program** and appended as a dated note **beneath the full original question text, which is preserved in place rather than replaced by the answer** (QR-1). Plus the Status header's per-batch sentence, written to **#121**. **Row-anchored open rows 352 → 350**, re-derived at HEAD on the header's own matcher; `git diff --numstat` reads **3 insertions / 3 deletions**, the two rows rewritten in place and line 3 rewritten by the mandated header act. **No other row was touched.** **`Q-G3-1` and `Q-G3-2` were ruled and deliberately took NO rows** — Michael's batch-72 ruling — their record being `#121` plus the two protocol annotations.
+- **THE MATCHER ITSELF HAD TO BE FOUND BEFORE THE ARITHMETIC COULD BE TRUSTED, AND THREE PLAUSIBLE ONES WERE WRONG.** A line-anchored `- ⬜` count returns **336**, a contains-`⬜` count **364**, and a raw glyph count **390** — none of them the **352** the register and BUILD-STATE both state. The file's actual row-anchored matcher is **`lstrip()` then `- ⬜`**, which admits indented sub-bullets and returns **352** at HEAD. **Publishing any of the first three as "the count" would have manufactured a discrepancy out of nothing.**
+- **`QR-6(e)` DID NOT FIRE — every act sat in a routing-table row or a Step 4 item.** The packet adds no act outside them; nothing needed in-session authorization beyond the Step 1 order confirmation.
+- **EVERY §6 DO-NOT HONORED, CHECKED AGAINST THE DIFF RATHER THAN ASSERTED.** The changed paths are the **two new files**, `gate3-write-path-test-protocol.md`, and the four Step 4 targets — `attorney-review-queue.md`, `session-log.md`, `session-log-toc.md`, `BUILD-STATE.md` — **and nothing else.** **The gate-3 test was NOT run · NO database was connected to · `src/` not touched at all · `Go_Live_Gates.md` NOT edited and no gate moved · gate 9 NOT closed** — a ruling is not a configured sender — **· `Q-G3-3`–`Q-G3-5` and every §7 item left open · the protocol not edited beyond the two appends · no retraction-class text "fixed" anywhere · and NO CREDENTIAL — token, key or password — appears in any file this batch wrote.** The access-token handoff exists in the filed audit and kickoff **only as a described procedure**; no token value exists in the repo, and by the kickoff's own terms it never will.
+- **THE RUN IS AUTHORIZED AND THIS RUNNER IS BARRED FROM BEING IT — the CD-1 pattern, stated because the authorization and the executor sit in the same packet.** Michael's words are quoted in the filed kickoff (*"Let's do the three things right now,"* plus the two rulings); the run fires in **its own fresh Opus Code session by his hand**, after this batch lands, because the kickoff cites the audit **at HEAD**. **Filing a kickoff authorizes nothing and closing gate 3 is `Q-G3-4`, his, at the gates re-check.**
+
+**The packet's §7 open items, merged here so the top of the log stays truthful — all Michael's, none resolved by this batch:** `Q-G3-3`, `Q-G3-4` and `Q-G3-5` (unchanged, and `Q-G3-4` — whether a clean run closes the gate — is now the one the authorized run runs *toward*) · `Q-CAP-1` + `Q-CAP-3` (**still paired; the log split frees nothing without the picker exclusion**) · `Q-CAP-4` / `Q-CAP-5` · `GL1-1` · `LE-1` · `O-1` (**edge (1) of gate 10's closure is still owed to it**) · `G10-2` and `G10-4` · `Q-521-*` · `Q-DE-*` · `Q-PH-*` · the **eight-vs-six** omitted-clearance count · the `#118` preflight-re-run proposal (row `PF-2`) · and **`WS-P1`, whose substance is the sync-picker CLICK and not a ruling** — carried from the entry above this batch, not closed by it.
+
+**Staged for Code:** the gate-3 write-path run — **AUTHORIZED but expressly not this session's**, waiting in `docs/prompts/PROMPT-gate3-write-path-test.md` for a fresh Opus Code session fired by Michael. Nothing else; §5 is NONE.
+
+**Awaiting/Returned from Code, unreviewed:** everything this batch wrote — the `#121` entry, the pre-run audit, the kickoff prompt, the two protocol annotations, the two queue closures and the header sentence, the BUILD-STATE refresh and this TOC edition — **plus the whole of the sixty-sixth through seventy-third invocations' output**, which no design session has reviewed yet.
+
+## 2026-08-20 (#121) — FOUR RULINGS START THE LAUNCH-PATH CLOCK: Postmark, signin@ on a send subdomain, the gate-3 test runs LIVE and as written — and the Fable pre-run audit finds the fixture rule breaks on 16 of 36 tables before a row is ever written (design session, Cowork, **Fable 5** from mid-session; bridge reads at `2a6ae67`)
+
+**MODEL SWITCH ON THE RECORD:** this session ran as Opus 5 through `#120`; **Michael switched it to
+Fable 5 by `/model`** and asked whether Fable was the right tier for the three remaining floor
+items. **Answered by §7.2, act by act:** the adversarial pre-run audit and any screenshot
+walkthrough are Fable's; the gate-3 RUN is an Opus Code session by default; the rulings themselves
+are model-agnostic; the gates re-check + trigger-1 revision is Fable's **but structurally last** —
+blocked behind gates 9 and 3 and the 24–48h DNS clock. Everything from here attributes **Fable 5**;
+every convention binds identically. **DT-1: 2026-08-20 Central.**
+
+- **FOUR RULINGS, PUT WITH THE STAGED COMPARISONS AND ANSWERED IN SESSION (2026-08-20), each
+  recorded verbatim.** **`D-SMTP-1` → "Postmark"** — free 100/mo tier against a realistic tens/mo,
+  deliverability-first posture and a per-message activity log; the known friction (new-account human
+  review) accepted with the choice. **`D-SMTP-2` → "signin@ + send subdomain"** —
+  `signin@brennanstx.com` sending via a send subdomain (`mail.brennanstx.com`-shaped), the
+  provider-recommended reputation isolation; no M365 mail record is touched either way, per the
+  runbook's own §0/§2. **`Q-G3-1` → "Live Supabase project"** — the only run that answers gate 3's
+  actual question, the live grant state; fixture-only + verified teardown is what keeps gate 5
+  intact. **`Q-G3-2` → "Run as written"** — INSERT + verified teardown across all 37; the
+  UPDATE/DELETE gap stays NAMED in the report and whether the gate closes anyway is **`Q-G3-4`,
+  open, his, at the re-check.** `Q-G3-3` and `Q-G3-5` also remain open. **Gate-9 and gate-3
+  execution are now both unblocked; the DNS clock can start tonight by his hand.**
+- **THE FABLE ACT: AN ADVERSARIAL PRE-RUN AUDIT OF THE GATE-3 PROTOCOL, BY DERIVATION RATHER THAN
+  PROSE** (`docs/specs/gate3-protocol-preflight-audit-2026-08-20.md`). It derived every fixture the
+  protocol's Step 1 will derive, from `db/schema.sql` at HEAD. **HEADLINE: §5.2's rule — "fill
+  scalars with tagged fictional values" — FAILS ON 16 OF 36 TABLES**, each carrying a required
+  column whose CHECK is a literal `IN (...)` list; a tagged string there dies `23514` before RLS is
+  consulted, and **sixteen S-5 stops is a parade, not a sitting.** **The fix stays inside the
+  rule's own principle:** take the FIRST LITERAL from the CHECK's own list — schema-derived, never
+  invented — applied by the run session **as a labelled extension on evidence** (the as-built-keys
+  precedent); the ruled text is not edited. **SECOND FINDING, the gap nobody had named: HOW A CODE
+  SESSION GETS SIGNED IN.** Auth is magic-link only, no password to script, **no service-role key
+  on the machine — and a service-role run would bypass RLS and prove nothing.** Resolution named as
+  a Step 0 precondition: **Michael's browser sign-in, then a one-sitting ACCESS-TOKEN handoff** —
+  environment only, ~1h expiry, never a file, never a commit. **Also checked and clean:** every
+  UNIQUE constraint is satisfied by per-run tags + one-fixture-per-table; the five-tier FK order
+  re-verified; and **one of the audit's own flags was its parser's false positive**
+  (`numeric(12,2)`), recorded rather than hidden. **VERDICT: RUN — no protocol edit required; the
+  kickoff makes both findings expected instead of discovered.**
+- **THE KICKOFF IS FILED AND THE RUN IS AUTHORIZED — with the authorization quoted, not gestured
+  at.** `docs/prompts/PROMPT-gate3-write-path-test.md` carries his words (*"Let's do the three
+  things right now"* + the two rulings) and self-limits: **it does not close gate 3, remedy
+  anything, or outlive its STOPs.** Per §7.2 the run itself is an **Opus** Code session; the audit
+  it leans on is this session's Fable work, and work completed on any model stands.
+- **WHAT DID NOT HAPPEN, so the record cannot inflate it:** no database was connected to; no DNS
+  record was created; no queue row was closed by this session (the packet directs the runner to
+  close `D-SMTP-1`/`D-SMTP-2` with the rulings quoted — QR-6(b)'s two acts); gate 9 remains OPEN —
+  **a ruling is not a configured sender** any more than a runbook was; and the gates re-check
+  (floor item 5) is untouched, **Fable-reserved, and last by definition.**
+
+**Staged for Code:** the audit record · the kickoff prompt · the §9 ruling-annotation edit order for
+the protocol · this entry — all in one packet. **Awaiting/Returned from Code, unreviewed:** batch
+73's routing and the `Q-CAP-2` commit (`2a6ae67`), read only far enough to confirm HEAD and the
+D-SMTP/Q-G3 texts. **Still open and still Michael's:** `Q-G3-3`–`Q-G3-5` · `Q-CAP-1`+`Q-CAP-3`
+(paired) · `Q-CAP-4`/`Q-CAP-5` · `GL1-1` · `LE-1` · `O-1` · `G10-2` · `G10-4` · `Q-521-*` ·
+`Q-DE-*` · `Q-PH-*` · the eight-vs-six count · the `#118` preflight-re-run proposal — **plus his
+two hands tonight: the Postmark signup + §2 DNS records (starts the 24–48h clock), and firing the
+gate-3 kickoff in a fresh Opus Code session.**
+
 ## 2026-08-20 — CODE SESSION (direct ruling, recorded immediately after the seventy-third queue-runner batch; UNNUMBERED per TOC-6): `Q-CAP-2` RULED IN — `/docs/reference/` leaves the sync picker, and the ruling turns out to be the SECOND one on that directory
 
 Michael's words: ***"rule Q-CAP-2 in — drop /docs/reference/ from the picker."*** Ruled minutes after the batch that filed the measurement raising it, at `bfca144`.

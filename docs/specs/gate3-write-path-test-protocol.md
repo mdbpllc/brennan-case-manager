@@ -336,9 +336,16 @@ Michael. **This protocol writes fixture rows and deletes them. It changes nothin
   gate 1's backups now in place. A throwaway proves the *repo* is correct and proves nothing about
   the live grant state. **Michael's, and it is the first question because everything else follows
   from it.**
+  *(**RULED 2026-08-20 — "Live Supabase project."** Recorded at `#121`; the run is AUTHORIZED and the
+  kickoff is `docs/prompts/PROMPT-gate3-write-path-test.md`. Fixture-only plus verified teardown is
+  what keeps gate 5 intact; the Fable pre-run audit is
+  `docs/specs/gate3-protocol-preflight-audit-2026-08-20.md`.)*
 - **`Q-G3-2`** — **Does gate 3 close on INSERT alone, or must UPDATE and DELETE be exercised
   against `using (true)` too?** Gate 3's words are *"written and tested."* This protocol reads that
   as the write path; §8.2 names what that leaves. **Scope is Michael's.**
+  *(**RULED 2026-08-20 — "Run as written."** Recorded at `#121`. The UPDATE/DELETE gap stays NAMED in
+  the run report's did-NOT-establish list; whether the gate closes anyway is `Q-G3-4`, still OPEN,
+  his, at the gates re-check.)*
 - **`Q-G3-3`** — **What happens to a table whose minimal fixture row cannot be derived mechanically?**
   Options: hand-set the row and mark it as hand-set in the report; skip the table and record the skip
   with its reason; or stop the run. **A silent skip is not among them** — no silent caps.
