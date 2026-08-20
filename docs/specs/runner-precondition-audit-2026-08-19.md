@@ -208,3 +208,40 @@ is empty of it, and the runner's own Step 0 item 4 forbids staging it. **This ad
 file, is the record.** The narrowed push's first live exercise is the push of the commit carrying
 this addendum; **that result is reported to Michael in the session report and cannot be asserted
 here, because this file is committed before the push happens.**
+
+---
+
+## 12. SECOND ADDENDUM — appended 2026-08-19 (Central) by Michael's ruling; nothing above is edited
+
+**§6's candidate is APPLIED: `.claude/settings.local.json` is now ignored by the REPO'S OWN
+`.gitignore`.** §6 called it "a tracked-file edit and is Michael's call"; he made it.
+
+**The pattern is narrow by necessity, and the reason is worth keeping:** `.claude/` is **not** an
+ignorable directory here — **`.claude/commands/queue-runner.md` and `.claude/launch.json` are
+TRACKED**. A blanket `.claude/` would have been wrong. The stanza ignores the one file and carries a
+comment saying why.
+
+**Verified three ways, not asserted:**
+
+1. **`git check-ignore -v` now resolves to `.gitignore:21`** — the repo's own rule, taking
+   precedence over the global `C:\Users\Brennan/.config/git/ignore` that had been the only thing
+   holding it. **§6's finding is closed: the protection now travels with the repository**, so it
+   holds on a second machine under MM-1 instead of on this one only.
+2. **The two tracked files are unaffected** — `git check-ignore` returns nothing for either, and
+   both are still listed by `git ls-files .claude/`.
+3. **The hazard was TESTED rather than reasoned about: `git add -A --dry-run` stages `.gitignore`
+   and NOTHING ELSE.** That is the exact command §5 row 9 named as the danger under
+   `Bash(git add *)`, and it can no longer reach the permissions file.
+
+**Still not applied and still Michael's:** the **four** remaining narrowing candidates
+(`git add`, `git config`, `npm run`, `git fetch`) and the **ten dead entries**, entry 7's
+unzip-with-no-target among them. *(Of the three act-classes this audit proposed, two are now fully
+done — the addition and the `.gitignore` line — and the narrowing class stands at one of five.)*
+
+**Two line-ending facts from applying this, both measured by raw byte read, because this batch has
+now been bitten once already:** `.gitignore` is **CRLF** (37 CR / 37 LF after the edit) and the
+stanza was written in that convention, unchanged. And **THIS file's worktree copy is CRLF while its
+committed blob is LF** — `git checkout --` under `core.autocrlf=true` re-materialised it in CRLF
+when an earlier draft of this section had to be discarded. **git reports no diff between them**, so
+it is cosmetic — but a convention detected BEFORE a restore is not valid after one, and any editor
+that matches multi-line blocks has to re-detect.

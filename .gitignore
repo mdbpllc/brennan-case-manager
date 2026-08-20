@@ -15,6 +15,11 @@ dist-ssr
 # Queued push-to-code packets (transient freight; never committed)
 inbox/
 
+# Claude Code machine-local permissions. Untracked by design: QUEUE-RUNNER Step 0 item 4
+# edits this file and forbids staging it. NOT the whole .claude/ directory — commands/
+# and launch.json are tracked and must stay tracked.
+.claude/settings.local.json
+
 # Environment files (keep .env.example)
 .env
 .env.*
