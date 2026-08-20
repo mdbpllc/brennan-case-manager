@@ -132,7 +132,7 @@ render of one set to one target. Q-FE6-3.
 | Roster / role tags (CD-1) | **BUILT 2026-08-12**, live migration UNRUN | Supplies targets and the role tags items filter on. |
 | Template bank / `template_version` (§10) | Does not exist | FE-D1 creates a minimal editor and `template_version`. |
 | Format profiles (FE-10) | Does not exist; **IN FE-D1 from birth** | Owns the footer per FE-15's cross-link; the separate-mode footer carries `{{instrument_name}}`, which differs per document in separate mode. |
-| GRANTs / RLS / probe | `ALTER DEFAULT PRIVILEGES` **not set**; probe covers 36 tables | Every new table carries its own GRANT, RLS policy, and probe extension **in the same commit** — standing practice. |
+| GRANTs / RLS / probe | **This project issues no `ALTER DEFAULT PRIVILEGES`** — but the database carries one anyway (Supabase's bootstrap), and its withholding of the four DML privileges is what actually makes an ungranted table unreachable (C-2 as RESTATED 2026-08-19); probe covers **37** tables | Every new table carries its own GRANT, RLS policy, and probe extension **in the same commit** — standing practice. *(Conformed 2026-08-19: this cell read "`ALTER DEFAULT PRIVILEGES` **not set**; probe covers 36 tables" — the first half falsified by the `pg_default_acl` read, the second by gate 10's `party_pii`.)* |
 
 ---
 

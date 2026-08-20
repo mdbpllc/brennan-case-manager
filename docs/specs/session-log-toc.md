@@ -51,7 +51,13 @@ existing copy will silently drift. Canonical path is stable and unversioned for 
 **THE LOG WAS PURELY PREPENDED, AND THAT IS PROVED RATHER THAN ASSUMED.** The prior body is an
 **exact suffix** of the log as written — tested as a byte-level suffix, not inferred from a diff —
 and the file moves **1,318,624 → 1,331,815 bytes**, the second figure taken LAST, after every edit
-to the log. **The preamble compares byte-identical at all 2,770 bytes** between `HEAD` and the new
+to the log. *(**CORRECTED SAME DAY, and this is NOT a new edition and NOT a `TOC-4` firing:** after
+the batch was pushed, Michael authorized a follow-on repair of five unrouted `anon`/`ALTER DEFAULT
+PRIVILEGES` carriers, and the runner-71 entry took a bracketed same-day ADDENDUM. **The log is now
+1,333,301 bytes.** No `## ` heading was added, so the row set below is unchanged at 246 and no row
+moved; only this basis figure did. The edition count stays at TWENTY-ONE and the firing count at
+SEVENTEEN — incrementing either for a same-day correction would make both stop measuring what they
+exist to measure.)* **The preamble compares byte-identical at all 2,770 bytes** between `HEAD` and the new
 file. So the 244 rows carried from the twentieth edition describe entries that have not moved a
 byte, and they are carried on that evidence rather than on trust. **13,191 bytes were inserted at
 the top and nothing else changed.**

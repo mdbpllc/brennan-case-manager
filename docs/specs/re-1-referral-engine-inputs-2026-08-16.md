@@ -207,8 +207,10 @@ commercial_policy_involved · pi_flags · date_of_incident · date_opened · dat
 cause_number · notes · created_at · updated_at`.
 
 **Consequence, stated before anyone is asked to price it: any referral record of any kind creates its
-first table, and `ALTER DEFAULT PRIVILEGES` is not set — so a new table carries its own GRANT or it is
-unreachable** (`BUILD-STATE.md`, Data layer). Same cost `#85` and `#87` found.
+first table, and a new table carries its own GRANT or it is unreachable — because Supabase's own
+default ACL withholds the four DML privileges, not because no default exists** (C-2 as RESTATED
+2026-08-19; `BUILD-STATE.md`, Data layer). Same cost `#85` and `#87` found. *(Conformed 2026-08-19:
+formerly "`ALTER DEFAULT PRIVILEGES` is not set.")*
 
 ### 4.2 What the schema **does** hold that a referral decision would reach for
 
@@ -721,8 +723,9 @@ strips the fee rather than voiding the referral).**
 free. (a) `case_clients.fee_arrangement jsonb` — the only fee-shaped column in the database, currently
 `'{}'` with an explicit comment that it "does NOT close D-CL2-3," but it hangs off the CLIENT, and
 CL-2's ruled seam gives the client the damages while a fee division is a property of the engagement.
-(b) A new table — which under `ALTER DEFAULT PRIVILEGES` being unset must carry its own GRANT, and which
-would be the schema's first money-adjacent structure. (c) `contact_edges` with a new edge type — the
+(b) A new table — which must carry its own GRANT because the vendor's default ACL withholds the four
+DML privileges (C-2 as RESTATED 2026-08-19; conformed here from "under `ALTER DEFAULT PRIVILEGES` being
+unset"), and which would be the schema's first money-adjacent structure. (c) `contact_edges` with a new edge type — the
 file's own comment calls adding one "a SPEC-LEVEL act," and an edge carries a relationship but not a
 share, a basis, or a consent date. Does the answer wait on the undesigned money module, or does the
 referral record precede it?**

@@ -121,11 +121,16 @@ FE-17 is bound to the ITEM table, not this one.
 - **Role tags.** BUILD-STATE records that CD-1's role-tag vocabulary is *"DERIVED from the party
   registry so it cannot drift."* Anything FE-4 renders off role tags should read the same source
   rather than restating the vocabulary.
-- **GRANTs and RLS.** `ALTER DEFAULT PRIVILEGES` is **not** set: *"every new table must carry its
-  own GRANT or it is unreachable."* The RLS probe covers 36 tables and BUILD-STATE warns to keep
-  it in step *"or a missing GRANT hides."* Every table in §3.1 carries its own GRANT, its own RLS
-  policy, and a probe extension **in the same commit as the table** — the #28 / CL-2 / CD-1
-  lesson, now standing practice per `fe-d1-build-slice.md`.
+- **GRANTs and RLS.** Every new table must carry its own GRANT or it is unreachable — **because
+  Supabase's own default ACL withholds the four DML privileges, not because no default exists**
+  (C-2 as RESTATED 2026-08-19). The RLS probe covers **37** tables and BUILD-STATE warns to keep
+  it in step *"or a missing GRANT hides."* *(Conformed 2026-08-19: this bullet asserted
+  "`ALTER DEFAULT PRIVILEGES` is **not** set" and quoted a BUILD-STATE snapshot reading 36 tables.
+  The first was falsified by the 2026-08-19 `pg_default_acl` read — the vendor's bootstrap DID set
+  one, so the conclusion survives on a different warrant — and the second by gate 10's `party_pii`,
+  which took the probe list to 37 in the same commit as the table.)* Every table in §3.1 carries
+  its own GRANT, its own RLS policy, and a probe extension **in the same commit as the table** —
+  the #28 / CL-2 / CD-1 lesson, now standing practice per `fe-d1-build-slice.md`.
 
 ### 3.4 A dependency that does NOT exist
 

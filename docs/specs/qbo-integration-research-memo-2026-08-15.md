@@ -133,9 +133,14 @@ HEAD this session, not inferred:**
 
 So "link, don't rebuild" — the cheapest possible version, storing a QB id against a case — **creates
 its first table or its first column, and it would be the schema's first external-system linkage of any
-kind.** And `db/schema.sql`'s grants block is load-bearing: **`ALTER DEFAULT PRIVILEGES` is not set, so
-every new table must carry its own GRANT or it is unreachable** (`BUILD-STATE.md:56`). That is not an
+kind.** And `db/schema.sql`'s grants block is load-bearing: **every new table must carry its own GRANT
+or it is unreachable — because Supabase's own default ACL withholds the four DML privileges, not
+because no default exists** (C-2 as RESTATED 2026-08-19; `BUILD-STATE.md`, Data layer). That is not an
 argument against the constraint; it is the cost, stated before anyone is asked to price it.
+*(Conformed 2026-08-19: this passage read "`ALTER DEFAULT PRIVILEGES` is not set," falsified by the
+2026-08-19 `pg_default_acl` read — the vendor's bootstrap DID set one, so the conclusion survives on a
+different warrant. The `BUILD-STATE.md:56` line cite is replaced with a heading cite in the same pass:
+line cites into that wholesale-rewritten file are barred project-wide, ruled `#94`.)*
 
 ### 3.2 "Read-only first" — THE HEADLINE: the platform will not enforce it, and reads are the metered half
 

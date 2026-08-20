@@ -237,7 +237,7 @@ consequences; nothing here changes that memo and nothing there is re-decided.)
 | Roster / role tags | **CD-1 BUILT 2026-08-12**, live migration UNRUN | Supplies the responding party per set. |
 | `generated_documents` | Exists; `doc_type` CHECK admits one value | Same constraint noted in the FE-4 spec §3.2. |
 | Court-order record (Level 3 plan, 190.5 grants) | Does not exist | No case-event/CE table exists at all; CE1 is NOT AUTHORIZED (D-CL2-9). |
-| GRANTs / RLS / probe | `ALTER DEFAULT PRIVILEGES` **not set**; probe covers 36 tables | Every new table carries its own GRANT, RLS policy and probe extension **in the same commit**. |
+| GRANTs / RLS / probe | **This project issues no `ALTER DEFAULT PRIVILEGES`** — but the database carries one anyway (Supabase's bootstrap), and its withholding of the four DML privileges is what actually makes an ungranted table unreachable (C-2 as RESTATED 2026-08-19); probe covers **37** tables | Every new table carries its own GRANT, RLS policy and probe extension **in the same commit**. *(Conformed 2026-08-19: this cell read "`ALTER DEFAULT PRIVILEGES` **not set**; probe covers 36 tables" — the first half falsified by the `pg_default_acl` read, the second by gate 10's `party_pii`.)* |
 
 ---
 
