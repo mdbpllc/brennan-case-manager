@@ -35,8 +35,31 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-/** True when .env carries both Supabase values — i.e. we are NOT in demo mode. */
-export const usingSupabase = Boolean(url && key);
+/**
+ * The adapter-selection rule, as a pure function so it is testable without a
+ * live environment. This is the ONE seam: `db`, the sign-in gate, the footer
+ * banner and the statute fetcher all derive from the `usingSupabase` below.
+ *
+ * DEMO MODE MUST MEAN DEMO, whatever `.env` happens to hold. Vite loads `.env`
+ * in EVERY mode — `--mode demo` only layers an ADDITIONAL `.env.demo` on top —
+ * so when this rule was `Boolean(url && key)` alone, filling `.env` with real
+ * values (2026-08-20) made `npm run dev:demo` serve the SIGN-IN GATE instead of
+ * the demo app. The zero-setup demo path is a binding architecture rule, and it
+ * had been surviving only via a gitignored `.env.demo` that no fresh clone has.
+ * Mode therefore wins over env: an explicit `--mode demo` forces the local
+ * adapter. See docs/spec-feedback.md (the FE-D1 build's finding 1).
+ */
+export function resolveUsingSupabase(
+  envUrl: string | undefined,
+  envKey: string | undefined,
+  mode: string,
+): boolean {
+  return Boolean(envUrl && envKey) && mode !== 'demo';
+}
+
+/** True when we are NOT in demo mode: `.env` carries both Supabase values AND
+ *  the server/build was not started with `--mode demo`. */
+export const usingSupabase = resolveUsingSupabase(url, key, import.meta.env.MODE);
 
 /** Null in localStorage demo mode. Demo mode must keep working with zero setup. */
 export const supabase: SupabaseClient | null = usingSupabase
