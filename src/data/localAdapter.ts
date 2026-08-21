@@ -27,18 +27,24 @@ import type {
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
 import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
+import type {
+  FormTemplate, FormTemplateVersion, FormTokenDefinition, FormFormatProfile,
+} from '../forms/types';
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import { sortClients } from '../domain/client';
 import { seedData } from './seed';
+import { seedFormEngine } from '../forms/seed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 12; // v12: gate 10 PII promotion (dob typed, party_pii
-// child records out of the fields blob). v11: CD-1 contact directory (role tags, typed
-// aliases, deceased fact; roster four-attribute links with capacity and
-// history; roster backfill flags; contact edges). v10 was CL-2.
+export const STORE_VERSION = 13; // v13: FE-D1 form engine (template bank,
+// versioned template bodies, token registry, format profiles). v12: gate 10 PII
+// promotion (dob typed, party_pii child records out of the fields blob). v11:
+// CD-1 contact directory (role tags, typed aliases, deceased fact; roster
+// four-attribute links with capacity and history; roster backfill flags;
+// contact edges). v10 was CL-2.
 
 interface Store {
   version: number;
@@ -85,6 +91,12 @@ interface Store {
   watchTargets: WatchTarget[];
   trackedBills: TrackedBill[];
   billRefs: BillStatuteRef[];
+  /** FE-D1 §10 — templates are DATA, not code. The demo-mode equivalent of the
+   *  four form_* tables; the wizard must behave identically in both modes. */
+  formTemplates: FormTemplate[];
+  formTemplateVersions: FormTemplateVersion[];
+  formTokenDefinitions: FormTokenDefinition[];
+  formFormatProfiles: FormFormatProfile[];
 }
 
 /** Attorney work that must survive a version-bump reseed (go-live gate 8,
@@ -386,6 +398,56 @@ export function migrateV11ToV12(old: Partial<Store>, raw: string): Store {
   return migrated;
 }
 
+/** v12 -> v13: the FE-D1 form engine.
+ *
+ *  PURELY ADDITIVE. Four new collections arrive seeded with the template bank;
+ *  nothing existing is read, moved, or reshaped. That is why there is no
+ *  promotion pass here and no data loss to guard against — but the backup is
+ *  still written, because "additive" is a claim about the code and the backup is
+ *  a fact about the data.
+ *
+ *  The seed is applied to a MIGRATED store as well as a fresh one: a demo store
+ *  that migrates forward must end up with the same template bank a reseed would
+ *  give it, or demo mode would show an empty template picker to anyone whose
+ *  store predates this version. */
+export function migrateV12ToV13(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v12`, raw);
+
+  const seeded = seedFormEngine();
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 13, NOT STORE_VERSION - the defect this file has now warned about
+    // at three separate steps. `migrateV10ToV11` stamped the constant instead of
+    // a literal and was correct only while the constant happened to be 11; at 12
+    // it would have stamped a v11 store as v12 and skipped v11->v12 entirely,
+    // leaving SSNs in the blob. This function produces a v13 store and nothing
+    // more.
+    version: 13,
+    formTemplates: old.formTemplates ?? seeded.formTemplates,
+    formTemplateVersions: old.formTemplateVersions ?? seeded.formTemplateVersions,
+    formTokenDefinitions: old.formTokenDefinitions ?? seeded.formTokenDefinitions,
+    formFormatProfiles: old.formFormatProfiles ?? seeded.formFormatProfiles,
+  };
+
+  const summary =
+    `Store migrated v12\u219213 (FE-D1 form engine). Added the template bank: `
+    + `${migrated.formTemplates.length} template(s), `
+    + `${migrated.formTemplateVersions.length} version(s), `
+    + `${migrated.formTokenDefinitions.length} token definition(s), `
+    + `${migrated.formFormatProfiles.length} format profile(s). `
+    + `Purely additive - no existing collection was read or reshaped. Full `
+    + `pre-migration backup at localStorage key "${KEY}-backup-v12".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (FE-D1 form engine migration)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -402,17 +464,23 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 11) return migrateV11ToV12(parsed, raw);
+      if (parsed.version === 12) return migrateV12ToV13(parsed, raw);
+      if (parsed.version === 11) {
+        const v12 = migrateV11ToV12(parsed, raw);
+        return migrateV12ToV13(v12, JSON.stringify(v12));
+      }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
-        return migrateV11ToV12(v11, JSON.stringify(v11));
+        const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
+        return migrateV12ToV13(v12, JSON.stringify(v12));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
       if (parsed.version === 9) {
         const v10 = migrateV9ToV10(parsed, raw);
         const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
-        return migrateV11ToV12(v11, JSON.stringify(v11));
+        const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
+        return migrateV12ToV13(v12, JSON.stringify(v12));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
@@ -1299,5 +1367,124 @@ export class LocalAdapter implements DataAdapter {
     store.billRefs.push(...recs);
     save(store);
     return recs;
+  }
+
+  // ---- Form engine (FE-D1) ----
+  // Parity with the Supabase adapter is the point of the seam: the wizard must
+  // behave identically in zero-setup demo mode and against the live database.
+
+  async listFormTemplates(): Promise<FormTemplate[]> {
+    return load().formTemplates.slice().sort((a, b) =>
+      a.family.localeCompare(b.family) || a.key.localeCompare(b.key));
+  }
+
+  async getFormTemplateByKey(key: string): Promise<FormTemplate | null> {
+    return load().formTemplates.find((t) => t.key === key) ?? null;
+  }
+
+  async createFormTemplate(
+    data: Omit<FormTemplate, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTemplate> {
+    const store = load();
+    const rec: FormTemplate = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.formTemplates.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateFormTemplate(
+    id: string,
+    patch: Partial<Pick<FormTemplate, 'name' | 'provenance' | 'notes' | 'formatProfileId' | 'currentVersionId'>>,
+  ): Promise<FormTemplate> {
+    const store = load();
+    const idx = store.formTemplates.findIndex((t) => t.id === id);
+    if (idx === -1) throw new Error('Template not found');
+    store.formTemplates[idx] = { ...store.formTemplates[idx], ...patch, id, updatedAt: now() };
+    save(store);
+    return store.formTemplates[idx];
+  }
+
+  async listTemplateVersions(templateId: string): Promise<FormTemplateVersion[]> {
+    return load().formTemplateVersions
+      .filter((v) => v.templateId === templateId)
+      .sort((a, b) => b.versionNo - a.versionNo);
+  }
+
+  async getTemplateVersion(id: string): Promise<FormTemplateVersion | null> {
+    return load().formTemplateVersions.find((v) => v.id === id) ?? null;
+  }
+
+  async publishTemplateVersion(
+    templateId: string,
+    body: string,
+    settings: Record<string, string>,
+    changeNote?: string,
+  ): Promise<FormTemplateVersion> {
+    const store = load();
+    const existing = store.formTemplateVersions.filter((v) => v.templateId === templateId);
+    const versionNo = existing.reduce((n, v) => Math.max(n, v.versionNo), 0) + 1;
+    const rec: FormTemplateVersion = {
+      id: uid(), templateId, versionNo, body, settings, changeNote, createdAt: now(),
+    };
+    store.formTemplateVersions.push(rec);
+    const idx = store.formTemplates.findIndex((t) => t.id === templateId);
+    if (idx === -1) throw new Error('Template not found');
+    store.formTemplates[idx] = {
+      ...store.formTemplates[idx], currentVersionId: rec.id, updatedAt: now(),
+    };
+    save(store);
+    return rec;
+  }
+
+  async listTokenDefinitions(templateId?: string): Promise<FormTokenDefinition[]> {
+    const all = load().formTokenDefinitions;
+    // A global token (no templateId) belongs to every instrument — matching the
+    // Supabase adapter's `or(template_id.eq…,template_id.is.null)`.
+    const rows = templateId
+      ? all.filter((d) => d.templateId === templateId || d.templateId === undefined)
+      : all;
+    return rows.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async upsertTokenDefinition(
+    data: Omit<FormTokenDefinition, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTokenDefinition> {
+    const store = load();
+    const idx = store.formTokenDefinitions.findIndex(
+      (d) => d.name === data.name && d.templateId === data.templateId,
+    );
+    if (idx >= 0) {
+      store.formTokenDefinitions[idx] = {
+        ...store.formTokenDefinitions[idx], ...data, updatedAt: now(),
+      };
+      save(store);
+      return store.formTokenDefinitions[idx];
+    }
+    const rec: FormTokenDefinition = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.formTokenDefinitions.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listFormatProfiles(): Promise<FormFormatProfile[]> {
+    return load().formFormatProfiles.slice().sort((a, b) => a.key.localeCompare(b.key));
+  }
+
+  async upsertFormatProfile(
+    data: Omit<FormFormatProfile, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormFormatProfile> {
+    const store = load();
+    const idx = store.formFormatProfiles.findIndex((p) => p.key === data.key);
+    if (idx >= 0) {
+      store.formFormatProfiles[idx] = {
+        ...store.formFormatProfiles[idx], ...data, updatedAt: now(),
+      };
+      save(store);
+      return store.formFormatProfiles[idx];
+    }
+    const rec: FormFormatProfile = { ...data, id: uid(), createdAt: now(), updatedAt: now() };
+    store.formFormatProfiles.push(rec);
+    save(store);
+    return rec;
   }
 }

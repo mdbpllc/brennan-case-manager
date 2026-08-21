@@ -35,12 +35,36 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 37 schema tables with one policy-less exception', () => {
+  it('covers all 41 schema tables with one policy-less exception', () => {
     // 32 + the two CL-2 tables (case_clients, case_client_flags) + the two CD-1
-    // tables (case_roster_flags, contact_edges) + gate 10's party_pii. A table
-    // the probe does not list is a table whose missing GRANT nothing would catch.
-    expect(SCHEMA_TABLES).toHaveLength(37);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(36);
+    // tables (case_roster_flags, contact_edges) + gate 10's party_pii + FE-D1's
+    // four form-engine tables. A table the probe does not list is a table whose
+    // missing GRANT nothing would catch.
+    //
+    // The 37 this asserted until 2026-08-20 is the figure the gate-3 write-path
+    // run measured; FE-D1's four arrive after that run and are outside its
+    // 37x2 grid, carrying their own from-birth evidence instead.
+    expect(SCHEMA_TABLES).toHaveLength(41);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(40);
+  });
+
+  it('lists the FE-D1 form-engine tables, probed from birth (slice item 11)', () => {
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('form_format_profiles');
+    expect(names).toContain('form_templates');
+    expect(names).toContain('form_template_versions');
+    expect(names).toContain('form_token_definitions');
+  });
+
+  it('is sequence-identical to db/schema.sql\'s own create-table order', async () => {
+    // The list documents this invariant in its own header ("so this list can be
+    // diffed against `grep '^create table' db/schema.sql` without reconciling
+    // two orderings"). Asserting it mechanically is what keeps that true: a
+    // table added to the schema and forgotten here is exactly the table whose
+    // missing GRANT nothing would catch.
+    const { default: sql } = await import('../../../db/schema.sql?raw');
+    const declared = [...sql.matchAll(/^create table if not exists (\w+)/gm)].map((m) => m[1]);
+    expect(SCHEMA_TABLES.map((t) => t.name)).toEqual(declared);
   });
 
   it('lists the CD-1 tables, so their grants are probed from birth', () => {

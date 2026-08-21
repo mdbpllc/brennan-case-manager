@@ -16,6 +16,7 @@ import type { Charge } from '../domain/oaa';
 import { billingSeedData } from './billingSeed';
 import { transcriptSeedData } from './transcriptSeed';
 import { billsSeedData } from './billsSeed';
+import { formEngineSeedData } from '../forms/seed';
 
 const t = new Date().toISOString();
 const yy = String(new Date().getFullYear()).slice(-2);
@@ -31,7 +32,7 @@ export function seedData(): {
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
   charges: Charge[];
-} & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> & ReturnType<typeof billsSeedData> {
+} & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> & ReturnType<typeof billsSeedData> & ReturnType<typeof formEngineSeedData> {
   // CD-1: the seed writes contacts the way a pre-migration record looks, and
   // `withDirectoryDefaults` fills roleTags/aliases/deceased — the same helper
   // both adapters use. That keeps the seed honest about the backfill contract
@@ -297,5 +298,6 @@ export function seedData(): {
     ...billingSeedData(),
     ...transcriptSeedData({ cases, parties, links: backfilledLinks }),
     ...billsSeedData(),
+    ...formEngineSeedData(),
   };
 }

@@ -24,6 +24,9 @@ import type {
   RegistryVerificationSnapshot, WatchFlag,
 } from '../domain/statutes';
 import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
+import type {
+  FormTemplate, FormTemplateVersion, FormTokenDefinition, FormFormatProfile,
+} from '../forms/types';
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import { sortClients } from '../domain/client';
 
@@ -1048,5 +1051,91 @@ export class SupabaseAdapter implements DataAdapter {
       .insert(refs.map((r) => toRow({ ...r, trackedBillId }))).select();
     if (res.error) throw new Error(res.error.message);
     return ((res.data ?? []) as Record<string, unknown>[]).map((r) => fromRow<BillStatuteRef>(r));
+  }
+
+  // ---- Form engine (FE-D1) ----
+
+  async listFormTemplates(): Promise<FormTemplate[]> {
+    return this.rows<FormTemplate>('form_templates', (q) =>
+      q.select('*').order('family').order('key'));
+  }
+
+  async getFormTemplateByKey(key: string): Promise<FormTemplate | null> {
+    const rows = await this.rows<FormTemplate>('form_templates', (q) =>
+      q.select('*').eq('key', key).limit(1));
+    return rows[0] ?? null;
+  }
+
+  async createFormTemplate(
+    data: Omit<FormTemplate, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTemplate> {
+    return this.insertRow<FormTemplate>('form_templates', data);
+  }
+
+  async updateFormTemplate(
+    id: string,
+    patch: Partial<Pick<FormTemplate, 'name' | 'provenance' | 'notes' | 'formatProfileId' | 'currentVersionId'>>,
+  ): Promise<FormTemplate> {
+    return this.updateRow<FormTemplate>('form_templates', id, patch);
+  }
+
+  async listTemplateVersions(templateId: string): Promise<FormTemplateVersion[]> {
+    return this.rows<FormTemplateVersion>('form_template_versions', (q) =>
+      q.select('*').eq('template_id', templateId).order('version_no', { ascending: false }));
+  }
+
+  async getTemplateVersion(id: string): Promise<FormTemplateVersion | null> {
+    const rows = await this.rows<FormTemplateVersion>('form_template_versions', (q) =>
+      q.select('*').eq('id', id).limit(1));
+    return rows[0] ?? null;
+  }
+
+  /** Publishes a NEW version and repoints the template. Never edits in place —
+   *  see the interface comment; the served-document question depends on it. */
+  async publishTemplateVersion(
+    templateId: string,
+    body: string,
+    settings: Record<string, string>,
+    changeNote?: string,
+  ): Promise<FormTemplateVersion> {
+    const existing = await this.listTemplateVersions(templateId);
+    const versionNo = existing.reduce((n, v) => Math.max(n, v.versionNo), 0) + 1;
+    const created = await this.insertRow<FormTemplateVersion>('form_template_versions', {
+      templateId, versionNo, body, settings, changeNote,
+    });
+    await this.updateFormTemplate(templateId, { currentVersionId: created.id });
+    return created;
+  }
+
+  async listTokenDefinitions(templateId?: string): Promise<FormTokenDefinition[]> {
+    return this.rows<FormTokenDefinition>('form_token_definitions', (q) => (
+      templateId
+        // Global tokens (null template) are available to every instrument, so a
+        // per-template read must include them or half the registry vanishes.
+        ? q.select('*').or(`template_id.eq.${templateId},template_id.is.null`).order('name')
+        : q.select('*').order('name')
+    ));
+  }
+
+  async upsertTokenDefinition(
+    data: Omit<FormTokenDefinition, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTokenDefinition> {
+    const res = await this.sb.from('form_token_definitions')
+      .upsert(toRow(data), { onConflict: 'template_id,name' }).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<FormTokenDefinition>(res.data as Record<string, unknown>);
+  }
+
+  async listFormatProfiles(): Promise<FormFormatProfile[]> {
+    return this.rows<FormFormatProfile>('form_format_profiles', (q) => q.select('*').order('key'));
+  }
+
+  async upsertFormatProfile(
+    data: Omit<FormFormatProfile, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormFormatProfile> {
+    const res = await this.sb.from('form_format_profiles')
+      .upsert(toRow(data), { onConflict: 'key' }).select().single();
+    if (res.error) throw new Error(res.error.message);
+    return fromRow<FormFormatProfile>(res.data as Record<string, unknown>);
   }
 }

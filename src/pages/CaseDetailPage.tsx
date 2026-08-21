@@ -15,6 +15,7 @@ import { Combobox } from '../components/Combobox';
 import MedicalTab from './MedicalTab';
 import CalendarTab from './CalendarTab';
 import TranscriptsTab from './TranscriptsTab';
+import FormsTab from './FormsTab';
 
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,11 +25,12 @@ export default function CaseDetailPage() {
   // Tab lives in the URL so it survives navigation (e.g. returning from
   // "+ New party") and can be bookmarked.
   const path = useLocation().pathname;
-  const tab: 'overview' | 'parties' | 'medical' | 'calendar' | 'transcripts' =
+  const tab: 'overview' | 'parties' | 'medical' | 'calendar' | 'transcripts' | 'forms' =
     path.endsWith('/parties') ? 'parties'
     : path.endsWith('/medical') ? 'medical'
     : path.endsWith('/calendar') ? 'calendar'
     : path.endsWith('/transcripts') ? 'transcripts'
+    : path.endsWith('/forms') ? 'forms'
     : 'overview';
 
   /** Safety valve on the Medical-tab rule: a matter that already HAS bills keeps
@@ -78,6 +80,12 @@ export default function CaseDetailPage() {
         )}
         <button className={tab === 'calendar' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/calendar`)}>Calendar</button>
         <button className={tab === 'transcripts' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/transcripts`)}>Transcripts</button>
+        {/* FE-D1. Same rule as the Medical tab: the disclosures instrument is a
+            PI instrument, and a criminal or probate file has no use for it. The
+            engine is EXCLUDED from the GL-1 go-live floor either way. */}
+        {medicalVisible && (
+          <button className={tab === 'forms' ? 'active' : ''} onClick={() => nav(`/cases/${rec.id}/forms`)}>Forms</button>
+        )}
       </div>
 
       {tab === 'overview' && (
@@ -98,6 +106,15 @@ export default function CaseDetailPage() {
         ))}
       {tab === 'calendar' && <CalendarTab caseRec={rec} />}
       {tab === 'transcripts' && <TranscriptsTab caseRec={rec} />}
+      {tab === 'forms' && (medicalVisible
+        ? <FormsTab caseRec={rec} />
+        : (
+          <div className="notice">
+            <strong>No disclosures instrument on this matter.</strong> The plaintiff-side
+            194.2(b)/195.5 disclosures template is a personal-injury instrument.{' '}
+            <button className="btn-link" onClick={() => nav(`/cases/${rec.id}`)}>Back to overview</button>
+          </div>
+        ))}
     </div>
   );
 }

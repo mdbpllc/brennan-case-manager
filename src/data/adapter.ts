@@ -34,6 +34,9 @@ import type {
 } from '../domain/statutes';
 import type { WatchTarget, TrackedBill, BillStatuteRef } from '../domain/bills';
 import type {
+  FormTemplate, FormTemplateVersion, FormTokenDefinition, FormFormatProfile,
+} from '../forms/types';
+import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
   ProviderBillingProfile,
@@ -279,6 +282,42 @@ export interface DataAdapter {
   listTrackedBills(): Promise<TrackedBill[]>;
   /** Upsert keyed on legiscanBillId — polls re-deliver the same bill. */
   upsertTrackedBill(data: Omit<TrackedBill, 'id'>): Promise<TrackedBill>;
+
+  // ---- Form engine (FE-D1, docs/specs/fe-d1-build-slice.md) ----
+  /** The template bank. Templates are DATA, not code (§1). */
+  listFormTemplates(): Promise<FormTemplate[]>;
+  getFormTemplateByKey(key: string): Promise<FormTemplate | null>;
+  createFormTemplate(
+    data: Omit<FormTemplate, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTemplate>;
+  updateFormTemplate(
+    id: string,
+    patch: Partial<Pick<FormTemplate, 'name' | 'provenance' | 'notes' | 'formatProfileId' | 'currentVersionId'>>,
+  ): Promise<FormTemplate>;
+
+  listTemplateVersions(templateId: string): Promise<FormTemplateVersion[]>;
+  getTemplateVersion(id: string): Promise<FormTemplateVersion | null>;
+  /** The minimal in-app editor's write path (slice item 10). Publishes a NEW
+   *  version and repoints the template at it — it NEVER edits a version in
+   *  place, because "which text went out the door" has to stay answerable. */
+  publishTemplateVersion(
+    templateId: string,
+    body: string,
+    settings: Record<string, string>,
+    changeNote?: string,
+  ): Promise<FormTemplateVersion>;
+
+  /** §10's token registry. `templateId` omitted lists the global tokens too. */
+  listTokenDefinitions(templateId?: string): Promise<FormTokenDefinition[]>;
+  upsertTokenDefinition(
+    data: Omit<FormTokenDefinition, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormTokenDefinition>;
+
+  /** FE-10 format profiles. */
+  listFormatProfiles(): Promise<FormFormatProfile[]>;
+  upsertFormatProfile(
+    data: Omit<FormFormatProfile, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<FormFormatProfile>;
 
   listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]>;
   listAllBillRefs(): Promise<BillStatuteRef[]>;

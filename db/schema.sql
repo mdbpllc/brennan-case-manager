@@ -1168,6 +1168,219 @@ create policy "authenticated full access tracked_bills" on tracked_bills
 create policy "authenticated full access bill_statute_refs" on bill_statute_refs
   for all to authenticated using (true) with check (true);
 
+-- ============ FORM ENGINE (FE-D1, disclosures) ============
+-- Authorized by Michael 2026-08-12 (session log #63); scope at
+-- docs/specs/fe-d1-build-slice.md, design authority docs/specs/form-engine.md.
+--
+-- The §10 substrate: templates as DATA with versioned bodies, a token registry,
+-- and format profiles. Item 11 of the slice binds here and is honoured in this
+-- same block: RLS, GRANTs and the probe entry arrive WITH each table, not after
+-- it. That is the #28/CL-2/CD-1 lesson and it is now standing practice.
+--
+-- WHAT IS DELIBERATELY ABSENT: the §13 ITEM MODEL. Nothing in FE-D1 creates
+-- items — that is slice 2's core. FE-17's internal/outbound hard flag is
+-- annotated to ride whichever slice creates the item table, IN THE SAME COMMIT
+-- as that table, and it is recorded there rather than here so that slice cannot
+-- forget it. Do not add an items table to this block.
+
+-- FE-10 — format profiles.
+-- A profile describes an instrument CLASS, so it is its own record rather than
+-- columns on a template: several instruments share one profile.
+-- FLAGGED, NOT SETTLED: where the boundary sits between the format profile
+-- (fonts, label styles, indents, pagination) and the instrument definition
+-- (section order, which items exist, which repeat) is OPEN — the 2026-08-20
+-- REQ-CAPTURE §5 Q3 asks for it to be ruled "before the renderer is built" and
+-- it was not ruled before this build. The split here follows the slice's own
+-- item 6 wording and is the reversible choice. See docs/spec-feedback.md.
+create table if not exists form_format_profiles (
+  id uuid primary key default gen_random_uuid(),
+  key text not null unique,
+  name text not null,
+  -- Measured geometry and styling. jsonb rather than columns while the §5 Q3
+  -- boundary is unruled: pinning a column set to an unruled split is the more
+  -- expensive mistake to unwind.
+  spec jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- The template bank.
+create table if not exists form_templates (
+  id uuid primary key default gen_random_uuid(),
+  key text not null unique,
+  name text not null,
+  -- 'instrument' renders against a .docx skeleton; the other two are text
+  -- blocks the instrument draws on. No item model — see the block header.
+  family text not null check (family in ('instrument', 'expert-narrative-variant', 'stock-answer')),
+  -- FE-12, from birth: where the FORMAT came from. FE-7 adoption is what flips
+  -- 'proposed' to 'format-authoritative'; nothing else may.
+  provenance text not null default 'proposed'
+    check (provenance in ('format-authoritative', 'proposed')),
+  -- Which bundled skeleton this instrument renders against. The KEY only — the
+  -- bytes ship with the app. Document storage is gate-7 territory and this
+  -- slice builds none of it.
+  skeleton_key text,
+  format_profile_id uuid references form_format_profiles (id) on delete set null,
+  -- The version the wizard renders. Set null, not cascade: losing the pointer
+  -- must never take the versions with it.
+  current_version_id uuid,
+  notes text,
+  created_by uuid references auth.users (id),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Versions. The in-app editor writes a NEW ROW; it never edits one.
+-- §1 makes Michael's ownership of routine wording changes a settled principle,
+-- and an edit that overwrote history would make "which text went out the door"
+-- unanswerable — which is the question a served disclosure eventually raises.
+create table if not exists form_template_versions (
+  id uuid primary key default gen_random_uuid(),
+  template_id uuid not null references form_templates (id) on delete cascade,
+  version_no integer not null,
+  -- Template text in the CANONICAL {token} convention (FC-1, ruled 2026-08-18).
+  body text not null,
+  -- FE-2: per-spot formatting and the stock answers harvested from legacy
+  -- |default: filters on import. Settings, never token text.
+  settings jsonb not null default '{}'::jsonb,
+  change_note text,
+  created_by uuid references auth.users (id),
+  created_at timestamptz not null default now(),
+  unique (template_id, version_no)
+);
+
+create index if not exists form_template_versions_template_idx
+  on form_template_versions (template_id);
+
+-- The §10 token registry.
+create table if not exists form_token_definitions (
+  id uuid primary key default gen_random_uuid(),
+  -- Null template = a global token every instrument may use.
+  template_id uuid references form_templates (id) on delete cascade,
+  name text not null,
+  kind text not null check (kind in ('static', 'inflected', 'computed')),
+  description text not null default '',
+  source_path text,
+  -- §4 interview-card checklist compiling a computed token.
+  variant_checklist jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique nulls not distinct (template_id, name)
+);
+
+drop trigger if exists form_format_profiles_touch on form_format_profiles;
+create trigger form_format_profiles_touch before update on form_format_profiles
+  for each row execute function touch_updated_at();
+
+drop trigger if exists form_templates_touch on form_templates;
+create trigger form_templates_touch before update on form_templates
+  for each row execute function touch_updated_at();
+
+drop trigger if exists form_templates_set_created_by on form_templates;
+create trigger form_templates_set_created_by before insert on form_templates
+  for each row execute function set_created_by();
+
+drop trigger if exists form_template_versions_set_created_by on form_template_versions;
+create trigger form_template_versions_set_created_by before insert on form_template_versions
+  for each row execute function set_created_by();
+
+drop trigger if exists form_token_definitions_touch on form_token_definitions;
+create trigger form_token_definitions_touch before update on form_token_definitions
+  for each row execute function touch_updated_at();
+
+alter table form_format_profiles enable row level security;
+alter table form_templates enable row level security;
+alter table form_template_versions enable row level security;
+alter table form_token_definitions enable row level security;
+
+drop policy if exists "authenticated full access form_format_profiles" on form_format_profiles;
+create policy "authenticated full access form_format_profiles" on form_format_profiles
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access form_templates" on form_templates;
+create policy "authenticated full access form_templates" on form_templates
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access form_template_versions" on form_template_versions;
+create policy "authenticated full access form_template_versions" on form_template_versions
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access form_token_definitions" on form_token_definitions;
+create policy "authenticated full access form_token_definitions" on form_token_definitions
+  for all to authenticated using (true) with check (true);
+
+-- Per-table grants, belt-and-braces beside the `all tables` statement below.
+-- Redundant on a fresh run of THIS file and load-bearing in the migration that
+-- adds these tables to an existing database. Both paths are required.
+grant select, insert, update, delete on form_format_profiles to authenticated;
+grant select, insert, update, delete on form_templates to authenticated;
+grant select, insert, update, delete on form_template_versions to authenticated;
+grant select, insert, update, delete on form_token_definitions to authenticated;
+
+-- §10's generated-document record, and FE-8's retention half.
+--
+-- EXTENDED rather than forked into a second document table. §10 says
+-- "generated-document record", singular, and the slice says the as-generated
+-- retention IS that record. A parallel table would fork the concept and leave
+-- two answers to "what documents does this case have".
+--
+-- The FKs point at form_template_versions, so this sits AFTER that table rather
+-- than up in the billing block where the table is declared. Every column is
+-- nullable: the billing module's existing rows have none of them and are never
+-- invented one.
+--
+-- WHAT `docx_path` AND `pdf_path` ARE: metadata, not storage. Document storage
+-- is gate-7 territory and this slice builds none of it — the engine records
+-- where a document was filed and hands the bytes to the browser. §10 describes
+-- OneDrive paths; no OneDrive integration exists (the Graph registration holds
+-- Calendars.ReadWrite and nothing else). Recorded in docs/spec-feedback.md.
+alter table generated_documents
+  add column if not exists template_version_id uuid
+    references form_template_versions (id) on delete set null;
+alter table generated_documents add column if not exists skeleton_key text;
+alter table generated_documents add column if not exists docx_path text;
+alter table generated_documents add column if not exists pdf_path text;
+
+-- The full wizard-answer snapshot. This is what makes §2 item 9's
+-- supplementation replay possible: re-running for the same case replays these
+-- and asks only what changed.
+alter table generated_documents add column if not exists answers jsonb;
+
+-- FE-15, scoped to disclosures. Drives the instrument title, whether a
+-- certificate of service is included, and the footer instrument name — the
+-- three together. Nullable because the billing module's rows have no posture.
+alter table generated_documents add column if not exists instrument_posture text;
+alter table generated_documents drop constraint if exists generated_documents_instrument_posture_check;
+alter table generated_documents add constraint generated_documents_instrument_posture_check
+  check (instrument_posture is null
+         or instrument_posture in ('original', 'amended', 'supplemental'));
+
+-- The supplementation chain: which document this one supersedes. Self-
+-- referencing, set null on delete so losing a superseded draft never cascades
+-- into the served document that replaced it.
+alter table generated_documents
+  add column if not exists supersedes_document_id uuid
+    references generated_documents (id) on delete set null;
+
+-- doc_type widens to admit the disclosures instrument. The existing value is
+-- kept exactly as it was — this ADDS, it does not restate.
+alter table generated_documents drop constraint if exists generated_documents_doc_type_check;
+alter table generated_documents add constraint generated_documents_doc_type_check
+  check (doc_type in ('reasonable-value-report', 'trcp-194-2b-195-5-disclosures'));
+
+-- NOTE ON `privilege_tier`, deliberately UNTOUCHED. This table's CHECK reads
+-- ('attorney-client','work-product','non-privileged') while `transcripts` reads
+-- ('privileged','work-product','non-privileged'). The two vocabularies disagree;
+-- Q-COM-10 is OPEN and its convergence shape (Q-COM-10-A: three values plus a
+-- witness_statement boolean) is ruled but UNEXECUTED. This slice writes to this
+-- table, so it uses THIS table's vocabulary and resolves nothing. The engine
+-- leaves the column NULL — Q-COM-11 ruled (A): NULL means
+-- unclassified-must-classify, and writing 'work-product' would assert a
+-- privilege nobody chose. No creation-time classification UI is built here.
+
+create index if not exists generated_documents_template_version_idx
+  on generated_documents (template_version_id);
+
 -- ============ API ROLE PRIVILEGES ============
 -- ADDED 2026-07-28, auth slice §5A, after the first live run of this file found
 -- every request refused 401 / 42501 "permission denied for table": every table

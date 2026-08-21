@@ -270,15 +270,40 @@ export interface GeneratedDocument {
   id: string;
   caseId: string;
   runId?: string;
-  docType: 'reasonable-value-report';
+  /** FE-D1 (2026-08-20) widened this from a single value. The disclosures
+   *  engine writes the second; the billing module still writes the first. */
+  docType: 'reasonable-value-report' | 'trcp-194-2b-195-5-disclosures';
   audience: DocumentAudience;
   privilegeTier: PrivilegeTier;
   title: string;
-  /** Full report content (markdown) stored on the record for now — document storage arrives later. */
+  /** Full report content (markdown) stored on the record for now — document storage arrives later.
+   *  For a rendered .docx this holds the document's plain text, which is what
+   *  makes a generated instrument searchable without storing its bytes. */
   content: string;
   disclaimerVersion: string;
   generatedBy: string;
   generatedAt: string;
+
+  // ---- FE-D1 §10: the generated-document record + FE-8's retention half ----
+  // All optional: the billing module's rows have none of them and are never
+  // invented one.
+
+  /** Which template version produced this — stamped so a served document can
+   *  always be traced to the exact text that produced it. */
+  templateVersionId?: string;
+  /** Which bundled .docx skeleton it was rendered against. */
+  skeletonKey?: string;
+  /** WHERE THE FILE WAS FILED — metadata, not storage. Document storage is
+   *  gate-7 territory and this slice builds none of it. */
+  docxPath?: string;
+  pdfPath?: string;
+  /** The full wizard-answer snapshot, for §2 item 9's supplementation replay.
+   *  This IS FE-8's retention half; the attorney-edit DIFF is expressly OUT. */
+  answers?: unknown;
+  /** FE-15: drives title, certificate inclusion and the footer name together. */
+  instrumentPosture?: 'original' | 'amended' | 'supplemental';
+  /** The supplementation chain — which document this one supersedes. */
+  supersedesDocumentId?: string;
 }
 
 // ---------- Constants ----------

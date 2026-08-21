@@ -161,7 +161,14 @@ describe('v11 → v12: the demo-store PII promotion', () => {
     // and leave SSNs in the blob. Both are pinned to literals now.
     const old = v11Store();
     expect(migrateV11ToV12(old, JSON.stringify(old)).version).toBe(12);
-    expect(STORE_VERSION).toBe(12);
+    // STORE_VERSION moves with every bump; this step's OWN output must not.
+    // FE-D1 took the constant to 13 on 2026-08-20 and this line is what made
+    // that visible — which is the whole reason it is pinned to a literal here
+    // rather than compared against the constant.
+    expect(STORE_VERSION).toBe(13);
+    expect(STORE_VERSION).toBeGreaterThan(
+      migrateV11ToV12(old, JSON.stringify(old)).version,
+    );
   });
 
   it('writes a full pre-migration backup before changing anything', () => {

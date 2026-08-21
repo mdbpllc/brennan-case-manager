@@ -18,6 +18,7 @@ import TranscriptDetailPage from './pages/TranscriptDetailPage';
 import SignInPage from './pages/SignInPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import DiagnosticsPage from './pages/DiagnosticsPage';
+import TemplatesPage from './pages/TemplatesPage';
 import { usingSupabase } from './data';
 import { useAuth } from './auth/useAuth';
 
@@ -62,6 +63,7 @@ export default function App() {
           <NavLink to="/rules" className={({ isActive }) => (isActive ? 'active' : '')}>Legal rules</NavLink>
           <NavLink to="/statutes" className={({ isActive }) => (isActive ? 'active' : '')}>Statutes</NavLink>
           <NavLink to="/bills" className={({ isActive }) => (isActive ? 'active' : '')}>Bill tracking</NavLink>
+          <NavLink to="/templates" className={({ isActive }) => (isActive ? 'active' : '')}>Templates</NavLink>
           {usingSupabase && (
             <NavLink to="/diagnostics" className={({ isActive }) => (isActive ? 'active' : '')}>Diagnostics</NavLink>
           )}
@@ -87,6 +89,7 @@ export default function App() {
           <Route path="/cases/:id/medical" element={<CaseDetailPage />} />
           <Route path="/cases/:id/calendar" element={<CaseDetailPage />} />
           <Route path="/cases/:id/transcripts" element={<CaseDetailPage />} />
+          <Route path="/cases/:id/forms" element={<CaseDetailPage />} />
           <Route path="/cases/:caseId/transcripts/:transcriptId" element={<TranscriptDetailPage />} />
           <Route path="/cases/:caseId/bills/:billId" element={<BillWorkspacePage />} />
           <Route path="/inbox" element={<InboxPage />} />
@@ -97,6 +100,7 @@ export default function App() {
           <Route path="/statutes" element={<StatutesPage />} />
           <Route path="/statutes/:code/:chapter" element={<StatuteViewerPage />} />
           <Route path="/bills" element={<BillTrackingPage />} />
+          <Route path="/templates" element={<TemplatesPage />} />
           <Route path="/parties" element={<PartiesPage />} />
           <Route path="/parties/new" element={<PartyFormPage mode="new" />} />
           <Route path="/parties/:id" element={<PartyDetailPage />} />

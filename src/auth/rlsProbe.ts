@@ -79,6 +79,19 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'watch_targets', policy: true },
   { name: 'tracked_bills', policy: true },
   { name: 'bill_statute_refs', policy: true },
+  // FE-D1 (2026-08-20). Probed from birth, like CD-1's two and gate 10's one —
+  // slice item 11, which binds in full for tables this slice creates.
+  //
+  // These four arrive AFTER the 2026-08-20 gate-3 write-path run, so they are
+  // OUTSIDE that run's 37x2 grid and carry their own from-birth evidence: the
+  // migration's checks 2-4 (authenticated reaches all four, `anon` reaches
+  // none, RLS on with exactly one policy each). Q-G3-5's deferral — the
+  // standing WRITE probe stays at five — is about the existing 37 write paths
+  // and does not relax item 11 here.
+  { name: 'form_format_profiles', policy: true },
+  { name: 'form_templates', policy: true },
+  { name: 'form_template_versions', policy: true },
+  { name: 'form_token_definitions', policy: true },
 ];
 
 /**

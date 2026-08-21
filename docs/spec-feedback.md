@@ -967,6 +967,144 @@ reasoning should not be cited forward as written.** The gate 10 migration's own 
 carried the same claim and were corrected in place before it was pasted (commit `f44b3ec`,
 comment-only, executable lines verified identical before and after).
 
+## 2026-08-20 - FE-D1 disclosures engine build: eleven findings, none fixed in a spec
+
+Raised by the FE-D1 build session (Opus, `docs/prompts/PROMPT-fe-d1-build-session.md`). Nothing
+below was changed in any spec; each needs a decision or a refreshed snapshot from the design
+space. Ordered by how much they cost if left alone.
+
+**1. `npm run dev:demo` NO LONGER REACHES DEMO MODE, and BUILD-STATE says it does.**
+`usingSupabase = Boolean(url && key)`, and Vite loads `.env` in EVERY mode - so once `.env`
+carried real values (2026-08-20, `#122`) the `--mode demo` flag stopped mattering and
+`npm run dev:demo` landed on the sign-in page. There was no `.env.demo` to blank the two
+variables. **Measured, not inferred:** the demo server was started, served the sign-in gate, and
+served the app only after a `.env.demo` was created. That file is gitignored by `.env.*`, holds
+no secret by construction, and is LOCAL ONLY - it is not in this commit. BUILD-STATE's sentence
+"`npm run dev:demo` runs demo mode past a real `.env`" was true when the values were empty and is
+false now. **The zero-setup demo path is a binding architecture rule, and it was silently broken
+for anyone whose `.env` is filled.**
+
+**2. THE ANTI-RESURRECTION LEDGER DOES NOT CONTAIN FE-1.** Both
+`docs/prompts/PROMPT-fe-d1-build-session.md` (Step 1 item 6, "FE-1 is retired there") and
+`docs/specs/fe-d1-build-slice.md` ("the anti-resurrection ledger bars its reuse") assert it.
+Read at HEAD, `docs/specs/anti-resurrection-ledger.md` contains exactly three sections - the
+2026-07-27 moved bullet, K-6/K-7, and the scope note - and the string `FE-1` appears nowhere in
+it. The claim is FALSE as written. FE-1's retirement IS recorded, in `form-engine.md` §12.6
+("FE-1 SUPERSEDED by CD-1 ... The provider-directory build (Slice A) was withdrawn unbuilt"), so
+nothing is lost - but a reader sent to the ledger to confirm it finds nothing, which is the
+failure mode the ledger exists to prevent. **Either add FE-1 to the ledger or correct both
+sentences.**
+
+**3. A 2026-08-20 REQ-CAPTURE ARRIVED AFTER THE PROMPT AND CARRIES SIX UNRULED QUESTIONS, ONE OF
+WHICH SAYS IT MUST BE RULED "BEFORE THE RENDERER IS BUILT".** Michael supplied three files in
+answer to the §11.3 question: the master `.docx`, a structure map, and
+`REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md`, whose header routes it
+*drafting project -> Michael's hand -> design project -> reconciliation -> ruling*. It is INPUT
+TO A RULING THAT HAS NOT HAPPENED, and it is not a build authority - `fe-d1-build-slice.md` and
+`form-engine.md` at HEAD are. The build proceeded on those, under stated assumptions, rather than
+stopping: a newer unruled proposal does not revoke a ruled authorization. The four that bear on
+code:
+
+- **Q1, token syntax.** The fixture is written entirely in `{{snake_case}}` - 92 distinct tokens,
+  155 occurrences, ZERO single-brace, measured. FC-1 (RULED 2026-08-18) makes `{token}` canonical.
+  **Resolved without a new ruling, on FC-1's own limb 1:** the importer accepts legacy and emits
+  canonical, so the parser reads both, everything STORED and DISPLAYED is canonical, and the
+  `.docx` is left byte-exact because it is the geometry authority. `|default:` and `|optional:`
+  filters are harvested into template settings per FC-2 rather than discarded.
+- **Q1, second half - REGION syntax is genuinely unruled.** FC-1 governs SCALAR tokens only. The
+  fixture's `{{#each}}`, `{{#table}}`, `{{#select}}/{{#case}}` markers have no FC ruling, and the
+  REQ-CAPTURE itself says "the **regions** are the requirement", not the syntax. **The build
+  minted NO canonical region syntax.** The markers are read as delimiters of the structure §12.3's
+  span-capture-and-rebuild mechanic already handles, and the stored template bodies contain no
+  region syntax at all (the §9 variants and stock answers are scalars only). **Nothing needs
+  undoing if you rule a different form.**
+- **Q3, the format-profile / instrument-definition boundary.** The REQ-CAPTURE says this "has to
+  be ruled before the renderer is built". It was not. The build took the SEPARABLE reading -
+  `form_format_profiles` is its own table - on the slice's own item 6 wording ("format profiles +
+  render lint"), and kept the profile's payload as `jsonb` so a different split does not require
+  a migration. **Recorded as a choice made under an unruled question, not as a decision.**
+- **Q5, refuse-or-warn on a consistency mismatch.** Unruled, and the REQ-CAPTURE notes a hard
+  refusal mid-draft "would be worse than useless". **The lint refuses NOTHING** - it reports
+  severity and the caller decides. One exception, and it is not a judgment call: an unescaped
+  ampersand is an `error` because the file will not open (finding 8).
+
+**4. §9's TWELVE APPROVED VARIANTS AND THE MASTER'S FOUR ARCHETYPES ARE DIFFERENT LIBRARIES, AND
+NOTHING SAYS WHICH GOVERNS.** §9 is approved verbatim and carries twelve; the 2026-08-20 master
+carries four narrative archetypes (`treating_provider`, `imaging_interpreter`, `provider_group`,
+`custodian_of_records`) with DIFFERENT TEXT and a DIFFERENT TOKEN VOCABULARY (§9 says `{client}`
+and `{provider_dr_name}`; the master says `{{plaintiff_name}}` and `{{expert_short_name}}`).
+**The build followed §9, because §9 is the ruled one.** The archetype selects the paragraph SHELL
+- which supplies its `pPr`, and therefore its formatting - and §9's approved text supplies the
+WORDS, which is exactly §12.3's clone mechanic. The two vocabularies are reconciled by an alias
+map in the token registry; neither library was reworded. **If the four are meant to supersede the
+twelve, say so - that is a text decision and it is yours.**
+
+**5. §8 AND THE MASTER DISAGREE ABOUT THE FIRST-PAGE FOOTER.** §8 says "page 1 footer = bare PAGE
+field". The supplied master has `titlePg` with **footer2 (first) BLANK** and footer1 (default)
+carrying the short title plus live `PAGE`/`NUMPAGES` fields - read from the parts directly. The
+structure map agrees with the artifact. §8 appears to describe the older contaminated exemplar.
+**Minor, and worth correcting so §8 is not read as a spec the artifact fails.**
+
+**6. §11.3'S THREE FIXES WERE TWO-THIRDS ALREADY DONE IN THE SUPPLIED ARTIFACT.** Verified by
+reading `word/document.xml`: the caption table is **4680 + 360 + 4320 = 9360** (§8's 9900-vs-9360
+overhang is corrected) and there are **ZERO** vestigial tab stops at 720/4680/9360. The one item
+still outstanding was the **computed § column** - the master is frozen at twelve paragraphs per
+cell - and that is renderer work, which is where §8 says it belongs. **§11.3 should be marked
+substantially delivered by the artifact itself.**
+
+**7. §5 ITEM 3 READS AGAINST §5'S OWN BINDING INVARIANT.** §5's heading and the slice both say
+generated text is IDENTICAL regardless of gate state, "a binding invariant, not a preference".
+§5 item 3 then says the engine "appends the full retained package checklist ... rather than
+silently using treater language" - which IS a difference in generated text. **The build's reading:
+retained/non-retained is DATA on the expert record, not gate STATE.** The data selects content
+(as the variant choice does); the WARNING is what fires to say the switch is set. The invariant is
+tested in the form that can actually be tested - for a FIXED data context, output is byte-identical
+across every gate state and acknowledgement combination. **Yours to overrule.**
+
+**8. §2 ITEM 7 ASKS FOR A COMPUTED DEADLINE THAT THE REGISTRY DISCIPLINE FORBIDS.** §2 item 7 wants
+the 195.2 designation deadline "computed ... shown in-flow". CLAUDE.md's registry rule 1 is
+binding and system-wide: an unverified rule "may exist in the registry and drive
+warnings/placeholders, **never computed legal outcomes**". A designation deadline is a computed
+legal outcome and the 195.2 propositions are UNVERIFIED - and the deadline-engine rows carry a
+known 90/60-vs-60/90 course-book conflict on top. **Nothing is computed.** The wizard states the
+rule, names its UNVERIFIED status, shows the inputs, and asserts no date. **The spec and the
+discipline need reconciling; the discipline won here.**
+
+**9. §10 DESCRIBES ONEDRIVE STORAGE THAT DOES NOT EXIST, AND ONE-CLICK PDF IS NOT BUILDABLE IN A
+BROWSER.** §10 has the generated-document record holding "OneDrive path(s) (docx + pdf)". There is
+no OneDrive integration: the Graph registration holds `Calendars.ReadWrite` and nothing else, and
+adding a scope is a consent act on Michael's registration. Per the kickoff rider, document storage
+stays gate-7 territory, so `docx_path`/`pdf_path` are **metadata columns** and the bytes go to the
+browser as a download. Separately, **§2 item 8's "one-click PDF" is not deliverable**: converting
+.docx to PDF requires Word or LibreOffice, `pdfjs-dist` is a READER, and no in-browser path exists.
+The UI says so plainly rather than shipping a button that lies. **Both need a spec decision.**
+
+**10. `privilege_tier` WAS TOUCHED AND DELIBERATELY NOT RESOLVED (`Q-COM-10`, open).** This slice
+writes to `generated_documents`, whose CHECK reads
+`('attorney-client','work-product','non-privileged')` while `transcripts` reads
+`('privileged','work-product','non-privileged')`. Per the kickoff rider, the build **copied the
+vocabulary of the table it writes to, renamed nothing, and reconciled nothing.** Neither CHECK was
+altered. The engine leaves the column **NULL** - `Q-COM-11` ruled (A): NULL means
+unclassified-must-classify, and writing `'work-product'` would assert a privilege nobody chose.
+**No creation-time classification UI was built, so every document this engine files is
+unclassified until something classifies it.**
+
+**11. TOC-6 vs THE PROMPT'S OWN STEP 4.** The prompt (authored 2026-08-12) says the session-log
+entry takes "next free number - check the top". TOC-6 (ruled 2026-08-18) says Code sessions NEVER
+mint `#nn`. **The convention wins and this session's entry is UNNUMBERED**, per the prompt's own
+conflict clause ("If anything here conflicts with those docs at HEAD, the docs win and this prompt
+gets a correction"). **The prompt was NOT edited this session** - correcting it is a routing act,
+not a build act. It should be corrected before it is fired again.
+
+**Two smaller notes, recorded so they are not rediscovered.** §9's approved paragraphs carry
+markdown `**` emphasis around the opening name span; the seed stores them VERBATIM (including the
+markers, since §9 is verbatim) and the renderer strips them at the document boundary rather than
+reinterpreting them - if §9 is ever re-snapshotted, that is why the stored text differs from the
+rendered text. And the master annotates one region marker in the margin -
+`{{#table provider_charge_row}}  (one row per provider; TOTAL row = sum)` - so any parser that
+anchors a marker match at BOTH ends misses it and renders the marker into the served document;
+this one anchors at the start only.
+
 ## Resolved
 
 - ~~Data-hygiene check on feature-intake-2026-07-24.md~~ — the Code session
