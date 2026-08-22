@@ -214,11 +214,24 @@ coding sessions. The spec documents committed under `docs/specs/` are
   `db/schema.sql`, deltas from `git log`). If a design-side handoff
   arrives assuming a build state that isn't real, correct it in THIS
   file, not just in chat — chat never reaches the design side
-- `session-log.md` — dated session-to-session log. **The one exception to
-  read-only:** coding sessions should skim the latest entries at session
-  start and append a short dated entry at the top after substantive work,
-  per the instructions inside that file. Append entries; don't rewrite
-  history.
+- `session-log-head.md` — the **DERIVED, SYNCED head of the session log**, and
+  the only part of the record a design-side session can read. Carries the recent
+  entries verbatim, a compact index of every entry that exists, and pointers to
+  the rest. **Regenerated in full by the queue runner every batch — NEVER
+  appended to**; an entry written only there is destroyed at the next
+  regeneration. Cite it by heading or quoted sentence, never by line number.
+  Spec: `thin-constitution-restructure-2026-08-21.md` §3 (`TC-2`–`TC-5`, `TC-12`,
+  ruled 2026-08-21).
+- `docs/record/session-log.md` — the LIVE dated session-to-session log, and the
+  canonical record wherever it and the head file disagree. **BRIDGE-ONLY:**
+  tracked in the repo but excluded from the design-side sync picker (`TC-4`), so
+  it is reached over the device bridge or by a Code session, exactly as
+  `docs/archive/` already is — **its absence from design-side retrieval is BY
+  DESIGN and is never evidence of absence.** The full abstract index moved with
+  it, to `docs/record/session-log-toc.md`. **The one exception to read-only:**
+  coding sessions should skim the latest entries at session start and append a
+  short dated entry at the top after substantive work, per the instructions
+  inside that file. Append entries; don't rewrite history.
 
 **Read them; never rewrite them in a coding session** (except the
 session-log append rule above). If the build reveals a spec problem, note

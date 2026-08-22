@@ -3,7 +3,7 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v11, 2026-08-18. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v12, 2026-08-21. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
@@ -18,7 +18,10 @@
      2026-08-16 (QR-6(a)–(f) + OPEN-5(a), v9); Step 4 item 5 completed by Michael's authorization
      2026-08-16 (#95) — delete-by-explicit-filename, the QR-6(c) half the v9 amendment left at
      Step 1 only (v10); session-log-index regeneration added to Step 4 item 1 by Michael's ruling
-     2026-08-18 (TOC-4, v11). -->
+     2026-08-18 (TOC-4, v11); THE THIN-CONSTITUTION RESTRUCTURE — the live log and the full abstract
+     index move to docs/record/ (bridge-only), and Step 4 item 1 gains the regeneration of the
+     synced head file docs/specs/session-log-head.md — added by Michael's rulings 2026-08-21
+     (TC-2 through TC-5 and TC-12, v12). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -27,6 +30,19 @@ You are processing a QUEUE of push-to-code packets accumulated while Fable
 tokens were exhausted. Each packet is a standard push-to-code zip (manifest
 with §0–§8, plus staged deliverables). Follow the house conventions in
 CLAUDE.md throughout.
+
+**WHERE THE SESSION-LOG RECORD LIVES (TC-4, ruled 2026-08-21) — read this before Step 4.**
+Three files, three different jobs, and only one of them reaches the design side:
+
+| file | what it is | synced to the design side? |
+|---|---|---|
+| `docs/record/session-log.md` | THE LIVE LOG. Append-only, canonical, unbounded. | **NO** — `docs/record/` is excluded in the sync picker |
+| `docs/record/session-log-toc.md` | THE FULL ABSTRACT INDEX — one dense summary row per entry. | **NO** — same exclusion |
+| `docs/specs/session-log-head.md` | THE HEAD FILE — recent entries verbatim + a compact index of everything + pointers. **DERIVED; regenerated every batch.** | **YES** — this is the design side's only view |
+| `docs/archive/session-log-archive-*.md` | The CLOSED archive, entries older than the 2026-08-13 cutoff. **Did not move** (TC-6). | **NO** — `docs/archive/` excluded since 2026-08-20 |
+
+The live log is repo-only and bridge-reachable, exactly as the archive already is. **Nothing about
+the append-only rule changed — only where the file sits and who can read it without the bridge.**
 
 ## Step 0 — One-time setup (skip if already done)
 
@@ -67,6 +83,10 @@ queue from an unverified tree.
    allowlisted, so it prompts on every invocation. A session driven remotely — from a phone —
    cannot answer that prompt. Scope is deliberately narrow: `rm -f` under `inbox/` only,
    which Q-1 already rules is transient freight.**
+5. **Confirm `docs/record/` exists and that the live log is in it (TC-4, ruled 2026-08-21).**
+   If `docs/specs/session-log.md` still exists and `docs/record/session-log.md` does not, the
+   restructure packet has not run on this checkout — **STOP and tell Michael** rather than
+   appending to the old path. Both existing at once means a half-executed move: also STOP.
 
 ## Step 1 — Inventory and confirm order
 1. List every `*.zip` in `inbox/`, sorted by the date embedded in the filename,
@@ -131,8 +151,9 @@ AND RECORD THE SKIP EXPLICITLY in the runner line, naming the reason. On any oth
 it now and record the result. Never skip silently.**
 
 1. Append all collected session-log entries to the TOP of
-   docs/specs/session-log.md, ordered so the NEWEST packet's entry ends
-   up on top. Add one short runner entry above them all: which packets
+   **`docs/record/session-log.md`** (TC-4 — the live log moved out of `docs/specs/` on
+   2026-08-21; see the table at the head of this file), ordered so the NEWEST packet's entry
+   ends up on top. Add one short runner entry above them all: which packets
    ran, in what order, what was superseded, what was skipped as already
    built.
    **THE ENTRY MUST NOT ASSERT ANY POST-COMMIT ACTION (QR-5, ruled 2026-08-16).** It is
@@ -147,10 +168,40 @@ it now and record the result. Never skip silently.**
    **Format comes from THIS file's Step 4 rules — never copy format from a runner line authored
    under an earlier runner version (QR-6(d), ruled 2026-08-16 in dynamic form; a named static
    exemplar was proposed and rejected because it goes stale — the QR-5 shape).**
-   **Then REGENERATE `docs/specs/session-log-toc.md` over the log as just written (TOC-4, ruled
-   2026-08-18): regenerate in full per that file's own banner — never append rows — so the index
-   rides the same commit as the entries it indexes and is current at HEAD. Follow the index file's
-   own stated method and basis-row convention.**
+
+   **1a. Then REGENERATE `docs/record/session-log-toc.md` over the log as just written**
+   (TOC-4, ruled 2026-08-18; path amended by TC-4, ruled 2026-08-21): regenerate in full per
+   that file's own banner — never append rows — so the index rides the same commit as the
+   entries it indexes and is current at HEAD. Follow the index file's own stated method and
+   basis-row convention. **This is the FULL ABSTRACT INDEX and it is BRIDGE-ONLY: it is the
+   design side's substitute for a log it cannot read, so its per-entry summaries are the
+   point of it — do not thin them here.**
+
+   **1b. Then REGENERATE `docs/specs/session-log-head.md` IN FULL** (TC-2, TC-3, TC-5 and
+   TC-12, ruled 2026-08-21). **This file is the ONLY part of the session-log record that
+   reaches the design side. Its full specification is
+   `docs/specs/thin-constitution-restructure-2026-08-21.md` §3 — READ IT; do not reconstruct
+   the rule from memory, and where this summary and that spec disagree, THE SPEC GOVERNS.**
+   In brief:
+   - **§1 HEAD ENTRIES, VERBATIM.** In the log as just written, find the **four most recent
+     design `#nn` entries**. Copy that fourth-most-recent entry and **every entry above it**,
+     in log order, **byte-for-byte**. Whole entries only — never truncate one, and never
+     paraphrase. Runner lines and unnumbered Code entries interleaved among them come too:
+     they are what say *what landed*.
+   - **§2 COMPACT INDEX, EVERY ENTRY IN THE LIVE LOG**, newest first, one row each:
+     `| date | #nn or — | design / runner / code | first 90 characters of the heading text |`.
+     This is what tells a session with no bridge that an entry *exists*.
+   - **§3 POINTERS.** To `docs/record/session-log.md`, `docs/record/session-log-toc.md` and
+     `docs/archive/session-log-archive-*.md`, each named as **bridge-only** — plus the sentence
+     that their absence from design-side retrieval is BY DESIGN and is never evidence of absence.
+   - **200 KB HARD CEILING on the whole file.** If §1 + §2 + §3 would exceed it, drop the
+     **oldest whole entries from §1** until it fits — never truncate an entry, never cut §2 —
+     and **NAME THE SHORTFALL IN THE BANNER**: how many entries were dropped, and which design
+     `#nn` the head now reaches back to. *A truncated head that does not say it is truncated is
+     the exact failure this line exists to prevent.*
+   - **REGENERATE, NEVER APPEND.** It rides the same commit as the entries it derives from.
+     It is DERIVED — the log at HEAD is authoritative — and because it is rewritten wholesale
+     it is cited by heading or quoted sentence, never by line number (CITE-STABILITY).
 2. Merge the packets' §7 open-items tables into the runner entry so the
    top of the log stays truthful — Michael's items remain Michael's — AND
    into `docs/specs/attorney-review-queue.md`, which is the standing
@@ -176,7 +227,8 @@ it now and record the result. Never skip silently.**
    **Recompute at every refresh, never copy from a packet (OPEN-5(a), ruled 2026-08-16): the
    unreviewed-entries range comes from the log at HEAD (A-4) and the queue-reconciled-through
    pointer from that file's own header at HEAD (A-5); every count BUILD-STATE states is
-   re-derived, not carried.**
+   re-derived, not carried.** **The log is now at `docs/record/session-log.md` — recompute
+   from there (TC-4).**
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
    from an unchecked command. **If the push is rejected non-fast-forward
    (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
@@ -203,3 +255,6 @@ it now and record the result. Never skip silently.**
   verifies.
 - If any packet contradicts BUILD-STATE.md or CLAUDE.md, flag the
   contradiction to Michael; do not silently obey either side.
+- **Never append a session-log entry to `docs/specs/session-log-head.md`.** It is DERIVED and
+  regenerated; an entry written there and nowhere else is lost at the next batch. The entry
+  goes in `docs/record/session-log.md` and reaches the head file only by regeneration (TC-5).

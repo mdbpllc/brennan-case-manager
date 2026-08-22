@@ -21,10 +21,13 @@ BUILD-STATE counts recomputed at HEAD (OPEN-5(a)). The batch is docs-only — if
 skipped, record the skip and the reason (QR-6(f)).
 
 ## C-2 — Session-log TOC regeneration (Sonnet-eligible; docs only)
-`docs/specs/session-log-toc.md` is stale by fourteen-plus (its basis row reads `a5a95a97`; BUILD-STATE
+`docs/record/session-log-toc.md` (moved there from `docs/specs/` on 2026-08-21 by `TC-4`)
+is stale by fourteen-plus (its basis row reads `a5a95a97`; BUILD-STATE
 re-derived the figure at the fifty-second refresh). Regenerate it mechanically from
-`docs/specs/session-log.md` at HEAD per the TOC file's own stated regeneration method; update its
-basis row to the current commit. Derived file — no judgment columns. Full close-out: log entry
+`docs/record/session-log.md` at HEAD per the TOC file's own stated regeneration method; update its
+basis row to the current commit. **Then regenerate the synced head file
+`docs/specs/session-log-head.md`** per `docs/specs/thin-constitution-restructure-2026-08-21.md` §3 —
+it rides the same commit, and it is regenerated in full, never appended to. Derived file — no judgment columns. Full close-out: log entry
 (format from the runner text's own Step 4 rules, never copied from an earlier line — QR-6(d)),
 BUILD-STATE full rewrite under the 150 non-blank-line cap with the anti-resurrection-ledger pointer
 preserved, verified push, "Pushed at `<sha>` — click Sync now" line.

@@ -2,7 +2,7 @@ Case Management Software — Project Instructions
 
 These instructions capture the decisions, requirements, and working approach for building a custom legal case management application. Upload this file to the project so any new chat starts with full context. Update it as the design evolves.
 
-Also check docs/specs/session-log.md for a short dated recap of recent sessions (what happened, decisions made, what's next) — useful for picking up quickly without re-reading this whole document. Update it at the end of substantive sessions.
+Also check docs/specs/session-log-head.md — the synced, derived head of the session log; the live log itself is at docs/record/session-log.md, which is bridge-only — for a short dated recap of recent sessions (what happened, decisions made, what's next) — useful for picking up quickly without re-reading this whole document. Update it at the end of substantive sessions.
 
 PRECEDENCE (added 2026-07-25): this document is authoritative for what is DESIGNED — decisions, specs, scope. BUILD-STATE.md is authoritative for what is BUILT. This document makes no build-status claims; if a stray one survives below, BUILD-STATE.md wins.
 

@@ -82,7 +82,9 @@ policies, and the professional security review from the project instructions §1
 - `db/schema.sql` — Postgres schema incl. server-side gapless `YY-NNNN` file-number
   generation and RLS placeholders.
 - `docs/specs/` — read-only snapshots of the canonical specs from the design space
-  (see `CLAUDE.md` for the rules); `docs/specs/session-log.md` is the running
-  session-to-session log.
+  (see `CLAUDE.md` for the rules); `docs/specs/session-log-head.md` is the synced,
+  derived head of the session log — the running log itself lives at
+  `docs/record/session-log.md`, which is tracked but excluded from the design-side
+  sync.
 - What is built vs. pending: `docs/specs/BUILD-STATE.md` (single source of truth);
   sequence and standing gates: `CLAUDE.md`.
