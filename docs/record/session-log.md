@@ -17,6 +17,631 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-22 — QUEUE-RUNNER batch (runner line; EIGHTY-FIRST invocation) — one docs-only packet, TWO routing rows: THE BACKFILL — five design sessions that existed nowhere but project knowledge are put on the record at the numbers batch 80 reserved for them, the disclosures `H` collision is caught one step before it would have closed two unrelated heartbeat items, and the numbered series is GAPLESS again
+
+**THE PACKET.** `push-to-code_backfill_2026-08-22.zip`, identity pinned at Step 1 per QR-6(c) — **44,795 B, mtime 2026-08-22 13:44:41 Central, sha256 `a337f38ce14ce667bd01d40b87029c90c7a24321cd0d24bf5f7465a2821ef573`**. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in the manifest's order, §4.1 then §4.2.
+
+**STEP 0 GATE PASSED ON LIVE EVIDENCE, NOT ON A TRACKING REF (QR-6(a)).** `git fetch origin` then `git ls-remote origin master` put origin at `5017113377cfd50e1f81d5dbdac2569c83763649`, equal to HEAD, with `git rev-list --left-right --count HEAD...origin/master` reading `0  0`, tree clean and on `master`. **That is the same commit the packet's §1 names as its bridge read** — hours old rather than days — so no reconcile delta existed against it. **Step 0 item 5 (TC-4) also held:** `docs/record/session-log.md` exists and `docs/specs/session-log.md` does not, so the thin-constitution move is complete rather than half-executed and this batch appended to the live path.
+
+**HEALTH CHECK SKIPPED, AND RECORDED RATHER THAN SILENT (QR-6(f)).** Docs-only batch: §5 is **NONE**, and no `src/`, `db/`, `supabase/` or build-tooling path was written — the routed files are `docs/record/session-log.md` and `docs/specs/attorney-review-queue.md`, joined at close-out by the two derived files and BUILD-STATE. `npm test` / `npm run build` / `npm run lint` would prove nothing about a batch that changed no code, so the trio was not run and **no health figure is claimed here.**
+
+**THE ALREADY-EXECUTED CHECK RAN AND CAME BACK CLEAN (QR-5).** `grep -c -F` against the log at HEAD returned **0** for each of `(#127)`, `(#128)`, `(#129)`, `(#130)`, `(#131)`, `(#133)` and `(#134)`, and **1** for `(#132)`; `H12-v` returned **0** in the review queue. The packet was therefore neither already executed nor committed-but-unpushed — the two states QR-5 tells the runner to distinguish — and the reserved gap was still open at execution time.
+
+- **ROW 1 — SEVEN ENTRIES PREPENDED AS ONE BLOCK, AND THE VERBATIM CLAIM IS A BYTE CLAIM RATHER THAN AN ASSURANCE.** `SESSION-LOG-BACKFILL_127-134.md` (88,592 B) had its instruction header stripped at the first standalone `---` — **1,450 B removed, 87,142 B prepended** — and the remainder was inserted by **byte slice**, never retyped, so no character of the entries passed through a keyboard. Log **1,066,068 → 1,153,210 B**, the delta equalling the block exactly; the block occurs in the file **exactly once**; the prepended bytes contain **zero CR**. Order as filed, top down: **`#134`, `#133`, `#131`, `#130`, `#129`, `#128`, `#127`**, then the pre-existing `runner 80` and `#132`. **`## ` headings 138 → 145.** All **five FILING NOTES** landed with their entries.
+- **THE LOW-NUMBERS-ON-TOP SHAPE IS THE POINT, NOT A SORT ERROR.** `#127`–`#131` sit **above** `#132` because the log prepends and these five were filed late into numbers `runner 80` deliberately reserved. A low number resting above a high one in a newest-first log is the only visible mark that they were filed out of time; positional insertion between `#126` and `#132` was named and rejected as a violation of append-only. **The dates in the index therefore run non-monotonically at the top, and that is correct.**
+- **THE NUMBERED SERIES IS GAPLESS AGAIN — `#65`–`#134`, RE-DERIVED AND NOT CARRIED.** The thirty-first TOC edition recorded the live series' *first deliberate gap*; **this batch closes it by execution rather than by abandonment.** Census over the log as written: **145 `## ` headings − 1 pointer stanza = 144 entries**, of which **70 numbered + 58 runner ordinals + 16 other = 144**, zero duplicate numbers, zero overlap between buckets. With this runner line the entry count is **145** and the runner bucket **59**.
+- **ROW 2 — THE QUEUE MERGE, BOTH ACTS (QR-6(b)), AND NOTHING CLOSED.** `docs/specs/attorney-review-queue.md` took the Status header's per-batch reconcile sentence naming **`#134`**, **one new row `H12-v`** with its full question text in bold per QR-1, and **one note** — not a row, no ⬜ and no ✅ — recording the disclosures `H` → `HD` renumber beneath the existing `H` → `HK` note. **Open rows 356 → 357, exactly the one addition; closed ✅ rows 124 → 124, unmoved.** The whole diff removes **one** line — the old header line 3, replaced by its extended self — and adds 62.
+- **THE TRAP THE PACKET NAMED AS ITS LARGEST WAS LIVE, AND WAS NOT SPRUNG.** The authoring session had been ordered to close `H21` and `H12` as ruled-but-open on the strength of the disclosures captures. **Both belong to the case-heartbeat `H` series, not the disclosures one** — `H12` is snooze duration and one-tap dismissal, `H21` is the service-diligence cite whose row asks whether to adopt *Tanner*. Neither was touched: the *Tanner* residual row was compared against `git show HEAD:` by `cmp` and is **byte-identical**, and the ✅ count above proves no row anywhere was closed.
+- **ONE PLACEMENT INSTRUCTION CONTRADICTED THE FILE AND IS REPORTED RATHER THAN RESOLVED SILENTLY.** The packet directs `H12-v` "**in the FE section**, adjacent to the `RECON-1` row." `RECON-1` does not live in the FE section — it sits under **`### Thin constitution and knowledge capacity (TC series)`**, entered there by batch 80. The two directions cannot both be obeyed. **Adjacency to `RECON-1` was taken as governing** — it is the specific anchor, it is checkable, and the packet's own parenthetical gives the reason ("they are the same thread's two open halves") — so `H12-v` sits immediately below `RECON-1` in the TC section. **Michael's to move if he wants it in FE.**
+- **TWO OF THE PACKET'S OWN PREDICTIONS WERE RECOMPUTED AND BOTH MISSED, WHICH IS PRECISELY WHY OPEN-5(a) FORBIDS CARRYING FIGURES.** Its §8 predicted the head file's §2 would go **137 → 144** and that §1 would reach back to **`#131`**. Recomputed at HEAD: **§2 carries 145 rows**, because the runner line is itself an entry and takes a row — the packet counted the seven and not the eighth it was asking for. And **§1 reaches back to `#130`**: the four most recent design `#nn` entries are `#134`, `#133`, `#131`, `#130`, so `TC-2`'s "fourth-most-recent entry and every entry above it" takes in `#130` and this runner line, **five entries, not four.** *Neither figure was wrong by carelessness; both were written before the thing they describe existed.*
+- **DO-NOTs HONORED, CUMULATIVELY.** Nothing was built and no `src/` file was read or written. **No entry among the five backfilled was edited to be true today** — the superseded rulings, the old `docs/specs/session-log.md` path inside their own text, the doubled `claude_claude_` filename, `#131`'s "v25" line and `#128`'s "v24 is confirmed pasted" all stand as written, exactly as their FILING NOTES provide. No entry was renumbered, reordered, truncated or paraphrased. **`FE-18`–`FE-22` and `CD-14` were not minted**; `RECON-1` was not touched; `SK-v2` was not closed. The `H` → `HD` renumber was **not** applied to the five backfilled entries, to `case-heartbeat-design.md`, or to any existing queue row — it is forward-going only. **No act was taken on the FE-D1 migration.** `brennan-case-manager-project-instructions-v27.md` was **not** added to the repo — project instructions are Michael's and are not a repo file. **No `#nn` was minted for this runner line** (TOC-6), and nothing was written to `docs/specs/session-log-head.md` by hand — it is derived and regenerated (TC-5).
+- **THE HEAD FILE'S SEVEN-BYTE SELF-MEASUREMENT ARTIFACT IS GONE, AND IT WAS FIXED MECHANICALLY RATHER THAN RULED.** `#134` flagged that the previous banner claimed *“Whole file: 113,525 bytes”* against a file of **113,532**, and expressly proposed no correction because *a generator cannot count bytes it has not written.* **It can, in two passes.** This edition renders the banner with a placeholder, measures the assembled file, substitutes the measured value, and repeats until the figure is stable — so the number counts itself and converged on the first iteration. **The queue row was NOT closed and nothing was ruled**: the item as `#134` framed it is Michael's judgment about what to do, and this only removes the arithmetic reason it existed. If he wants the banner to carry a figure some other way, that is still his.
+- **NO PACKET-ADDED ACT NEEDED AUTHORIZATION (QR-6(e)).** Every act performed appears in the routing table or in a Step 4 item; the packet's §8 adds no step of its own beyond the runner's.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's handback — the seven entries as filed, the three queue edits, the thirty-second edition of the abstract index, the regenerated head file, and this BUILD-STATE refresh.
+
+**Still open and still Michael's (the packet's §7, merged so the top of the log stays truthful):** **`H12-v` is the new one and it has a hard gate** — the disclosures model call runs on the firm's own BAA-covered account, the payload is the unmodified chronology, and **no real record moves until a BAA is signed**; Bedrock leads, OpenAI is BAA-eligible but zero-data-retention-constrained, Anthropic direct was rejected on cost, and **the local-model-on-the-P1 fallback was never rejected and must be preserved** · **`RECON-1`** the disclosures REQ-CAPTURE **first application, not edit**, expressly the next design session's work and the stated resume point · **`FE-18`–`FE-22` and `CD-14`** six proposed durable IDs, **unminted**, minting is his at `RECON-1` · **`SK-v2` closure** staged design-side at `#129` and never packaged, still owed · **the FE-D1 migration** `db/migrations/2026-08-20-fe-d1-form-engine.sql`, run and eight verification checks, his hand — repo-side arithmetic is consistent with UNRUN and the live database is not reachable from here either · **`R11`** gated on his TRCP 195.2 verification, the cheapest unblock in the disclosures thread · **`TC-OPEN-1`** the two deferred growers, with new measurements at `#134` · **`TC-OPEN-2`** move 3, the superseded-specs audit, not started · **`TC-OPEN-5`** the `/docs/record/` picker exclusion, believed closed and worth one confirming look · **the head-file banner's byte figure**, which reports 113,525 against a file of 113,532 because a generator cannot count bytes it has not yet written — flagged at `#134` with no correction proposed, and **his judgment call** · and **the `H` → `HD` prefix itself**, ruled and changeable in one line if he wants different letters.
+
+## 2026-08-22 (#134) — THE BACKFILL: five unfiled design sessions put on the record, an H-series collision found three deep and ruled, six corrections landed, and the review queue reconciled (design session, typed, Opus 5; **BRIDGE GRANTED — every repo claim below is a full-text read at HEAD `5017113`**)
+
+A repair session. Its object was to get five design sessions onto the record whose rulings existed
+nowhere but in nine files in project knowledge, and to land six corrections owed from the 2026-08-21
+thin-constitution restructure. **Nothing was built and nothing entered the build queue as a build
+act; §5 of this session's packet is NONE.** CC-1 hands-on queue stated at open: **EMPTY**, and it is
+empty at close — no question this session raised was better answered with the product in front of
+Michael.
+
+**CHECKOUT GATE PASSED, AND THE COMMANDS ARE NAMED (QR-6(a)).** `git rev-parse HEAD` and
+`git ls-remote origin master` both returned `5017113377cfd50e1f81d5dbdac2569c83763649`;
+`git rev-list --left-right --count origin/master...HEAD` returned **`0  0`**; branch `master`;
+`inbox/` **empty**. Batch 80 landed and pushed. All reads lock-free (`GIT_OPTIONAL_LOCKS=0` or plain
+file reads); **no `.git/index.lock` was stranded** and none was found. **Knowledge meter read
+directly by the session: 1,451,615 / 2,000,000 = 72.6%** — below `Q-CAP-5(a)`'s 90% flag, so no
+capacity pass was owed. *(That the session can read its own meter at all is correction 6 below.)*
+
+- **THE FIVE UNFILED SESSIONS ARE FILED, VERBATIM, AT `#127`–`#131`.** Re-derived at HEAD rather than
+  taken from the prompt that ordered this session: `#127`–`#131` return **zero** occurrences in the
+  live log, `#132` returns one, `#133` zero, against 63 numbered entries and 138 `## ` headings. The
+  five are the 2026-08-20 disclosures REQ-CAPTURE reconciliation and the four 2026-08-21 sittings.
+  **Their entries are filed as their authoring sessions wrote them** — each carries a bracketed
+  FILING NOTE naming what has since been overtaken, and **not one word of the entries themselves was
+  edited to be true today.**
+- **AUTHORING ORDER WAS DERIVED FROM CONTENT, NOT FROM UPLOAD ORDER**, because upload order is not
+  evidence and the filenames actively mislead (the base file is the *second* session; `_Voice` is the
+  first). Each session's own in-session DT-1 clock check settles it: **10:25 → 14:27 → 16:14 → 17:56
+  CDT.** Corroborated three ways — the fold-in says it "opened from the 2026-08-21 voice-walk
+  capture," `_Voice2` calls itself "third session stamped 2026-08-21," `_Voice3` calls itself "the
+  third handoff of the day." Upload order happens to agree; it was not relied on.
+- **THE NUMBERING WAS PUT TO MICHAEL AND HE RULED THE GAP FILLED — AND THE RECOMMENDATION PUT TO HIM
+  WAS THE REVERSE OF THE ONE THIS SESSION WAS ORDERED TO MAKE.** The ordering prompt recommended
+  taking `#133`+ on the ground that filling the gap "implies these entries were filed in sequence
+  when they were not." **Two findings at HEAD defeated that.** First, the reservation is already on
+  the record in two places, so `#133`+ would strand a five-number hole that BUILD-STATE and `#132`
+  both call reserved — *more* record repair, not less. Second, **the log prepends**, so filled
+  numbers land above `#132` where their late arrival is self-evident; the prompt's stated cost
+  assumed positional insertion. **The option was also really two options and was split before the
+  recommendation was made** (CC-1(a)): prepended vs inserted positionally. Michael ruled prepended.
+- **AN `H`-SERIES COLLISION, THREE SERIES DEEP, FOUND BEFORE IT DID DAMAGE — AND THIS IS THE ENTRY'S
+  SHARPEST POINT.** This session was ordered to close `H21` and `H12` in `attorney-review-queue.md`
+  as ruled-but-open, on Michael's own words extracted from the disclosures captures. **Both rows are
+  a different `H` series.** At HEAD, `case-heartbeat-design.md` carries **`H12` = "Snooze duration
+  set, and what a legitimate one-tap dismissal looks like (§5)"** and **`H21` = "Service-diligence
+  rule — needs its own registry entry with a case-law cite"**, the latter's queue row reading *"do
+  you adopt* Tanner *as the H21 cite?"* **Executing the instruction would have closed a snooze-duration
+  question and a service-diligence cite using text about BAA-covered model calls and medical-provider
+  grain — two unrelated open items destroyed in the register whose entire job is knowing what is
+  open.** **AND IT IS NOT TWO IDs — IT IS TEN, EVERY ONE CHECKED INDIVIDUALLY AT HEAD.** `H1` (two
+  clocks or one), `H2` (outcome-with-defaults vs set-interval-by-hand), `H3` (urgency model after
+  intake), `H12` (snooze duration), **`H16` (medical chronology — third-party product or in-system
+  feature?)**, `H17` (negotiation-track pulse cadence), **`H18` (the cascade exception to the
+  anti-list rule)**, `H20` (five-day post-demand check-in), `H21` (service-diligence cite) and `H22`
+  (registry queue arithmetic) **each carry a disclosures meaning in the captures and a DIFFERENT
+  heartbeat meaning at HEAD.** **`H16` and `H18` were MISSED on the first pass and caught by this
+  session's own RE-SWEEP AFTER FIX** — on a claim three finished documents were already carrying.
+  **Two of the ten are worse than the other eight and are named separately.** **`H16` is the
+  dangerous one, because BOTH meanings are about the medical chronology** — the heartbeat asks
+  whether it is a third-party product or an in-system feature; the disclosures `H16` is the rename
+  slice `#129` routes work to. A collision between unrelated topics gets caught by context; **a
+  collision between two plausible readings of the same topic does not.** **`H22` is the other: BOTH
+  are already RULED, and differently** — heartbeat `H22` ruled 2026-08-13 (`#66`, interleave by build
+  urgency), disclosures `H22` ruled at `#130` (the practice-name check warns and never blocks). **The
+  project has been here before and wrote it down:** the T3/Phase 0 advisory series was renamed
+  `H1`–`H6` → `HK-1`–`HK-6` on 2026-08-13 for this exact reason, and the queue's note at that
+  renumber records the heartbeat collision — **naming `H8` and `H22` specifically** — as *"flagged
+  rather than renumbered."* **Flagging it a third time was available and was named as an option;
+  Michael rejected it.**
+- **`HD-1`–`HD-22` — RULED. The disclosures `H` series is renamed, numerals preserved, forward-going
+  only.** Same shape as the 2026-08-13 `H`→`HK` act. **The five backfilled entries keep their original
+  `H` IDs** — they file verbatim, and their FILING NOTES name the collision specifically rather than
+  leaving it as a general caution. Every reference from this entry forward uses `HD-`. *The prefix was
+  named in the option Michael adopted; if he wants different letters it is a one-line change at
+  execution and nothing downstream depends on the choice.*
+- **SIX CORRECTIONS LANDED AS `#133`**, all six from the 2026-08-21 restructure, actor **Opus 5** on
+  every one. Two of them were re-proved by this session rather than accepted from the order that
+  raised them — see `#133` itself.
+- **THE QUEUE MERGE IS TWO ACTS AND BOTH ARE IN THE PACKET (QR-6(b)).** One new row, `H12-v` —
+  the disclosures model-call **vendor route**, genuinely open and genuinely Michael's (whether AWS
+  will sign a BAA for a solo firm; where the malpractice carrier lands), carrying the **BAA hard
+  gate** and the **full question text** per QR-1. **It had no row anywhere** — the same
+  disappearing-carrier problem that put `RECON-1` in the file on 2026-08-21, whose row records the
+  reason in terms: *"it had been carried packet-to-packet, and packets are deleted."* **No rows were
+  minted for the closed rulings** — put to Michael and ruled: a filed log entry is a ruling's home,
+  and the queue registers what is open. The Status-header per-batch reconcile sentence is updated as
+  its own act, and its wording is deliberate — see the DO-NOT list in the packet.
+- **A CARRIED CAVEAT DISCHARGED WITH THE EXACT COMMAND THAT ENTRY NAMED.** The 08-21 fold-in entry
+  (now `#129`) recorded `H18` on a RAG read and wrote its own escape hatch: *"`grep -in provider
+  db/migrations/2026-08-20-fe-d1-form-engine.sql` settles it at HEAD."* **This session ran that
+  command. Zero matches.** The migration creates four `form_*` tables and no object it creates or
+  alters carries the word. `#129` therefore files with its caveat **answered rather than carried** —
+  which is the first time in this thread a bridge-less session's own stated check has been executed
+  by the session that filed it.
+- **THE ROUND-TRIP LINE WAS RE-VERIFIED INSTEAD OF CARRIED A THIRD TIME — AND THE HONEST ANSWER IS
+  THAT IT CANNOT BE VERIFIED FROM HERE.** `db/migrations/2026-08-20-fe-d1-form-engine.sql` exists at
+  HEAD (13,171 bytes) and creates **4** tables; `db/schema.sql` carries **41** `create table`
+  statements against BUILD-STATE's **37 live**; 41 − 37 = 4 = FE-D1's four. **Consistent with UNRUN.
+  It is not a verification** — the live database is not reachable over the device bridge, so no
+  command available to this session could have produced a disconfirmation, and QR-6(a) says a command
+  that cannot disconfirm is not evidence. **Carried as BUILD-STATE-derived, labelled as such, with
+  the eight verification checks still Michael's hand.**
+- **THREE CLAIMS IN THIS SESSION'S OWN ORDERING PROMPT DID NOT SURVIVE CHECKING, AND THE PROMPT SAID
+  TO CHECK.** (1) *"Three of the four 2026-08-21 handoffs say **Next: Michael pastes v25**"* — **one
+  does.** The walk says v24 is confirmed pasted; the fold-in says "Next: voice session on H20";
+  `_Voice2` says "Next: reconcile today's rulings." The FILING NOTES name what is actually overtaken
+  in each. (2) The `H21`/`H12` queue claim, above. (3) The stated cost of gap-filling, above.
+  **Recorded because a prompt is not a source**, and this is the second consecutive sitting in which
+  the instruction to verify rather than trust the instrument was load-bearing.
+- **RECON-1 IS EXPRESSLY NOT THIS SESSION'S WORK AND IS SAID SO HERE SO IT IS NOT LOST AGAIN.** REQ-1
+  requires a REQ-CAPTURE be reconciled against BUILD-STATE and the session log **before** anything is
+  staged; reconciling before this backfill landed would have reconciled against a false baseline.
+  **It is owed by the session after this one.** Its queue row exists and is unchanged. **The six
+  unminted IDs — `FE-18`, `FE-19`, `FE-20`, `FE-21`, `FE-22`, `CD-14` — stay unminted**; confirmed at
+  HEAD to appear nowhere but in the restructure doc's own phrase *"unminted IDs."* Minting is
+  Michael's act at reconciliation.
+- **RECORDED, NOT RULED, AND BELONGING TO `TC-OPEN-1`:** `attorney-review-queue.md` is **627,495
+  bytes / 1,070 non-blank** — at the measured 3.49 bytes per meter unit, roughly **9% of the
+  2,000,000-token budget in a single file**. And `BUILD-STATE.md` is **132,925 bytes at exactly 150
+  non-blank lines**, up **2,179 bytes** from the 130,746 recorded in instructions v26 at the *same*
+  line count. **The line cap still cannot see the growth.** `TC-OPEN-1` was not started; this is its
+  material, set down where the sitting that takes it will find it.
+- **A MINOR SELF-MEASUREMENT ARTIFACT, FLAGGED AND DELIBERATELY NOT CORRECTED.** The head file's
+  banner states *"Whole file: 113,525 bytes"*; the file is **113,532**. A generator cannot count bytes
+  it has not written yet — the same honest limit the banner already acknowledges about not being able
+  to name its own commit. Named for Michael's judgment; no correction proposed.
+
+**Next:** Michael pastes **instructions v27** (trigger 3 — corrections 3, 4 and 6 touch the
+instructions), then a **fresh chat**, because knowledge added after a chat starts is invisible to it.
+**The next session takes RECON-1 first.** The eight 2026-08-21 handoff/capture files become
+TRANSIT-eligible **only once this batch is at HEAD** — flagged in this session's closing report,
+specifically and by name, and **not moved**.
+
+**Staged for Code:** this entry; `#133` (the six corrections); `#127`–`#131` (the backfill); the queue
+merge (`H12-v` row + Status-header reconcile sentence). **One packet, docs-only. No build
+authorization, no `src/` change, no migration, no registry entry.**
+
+**Awaiting/Returned from Code, unreviewed:** this batch's handback. The FE-D1 migration line is
+addressed above on its own evidence rather than carried — **read that bullet, not this line.**
+
+---
+
+## 2026-08-22 (#133) — CORRECTION ENTRY, SIX PARTS: the log's entry count, the picker-order rule's first origin exhibit, TRANSIT's wrong actor, the captures' ruled destination, the five-point estimate that was 1.57, and a capability the instructions describe as absent (design session, typed, Opus 5; all six actor **Opus 5**, the 2026-08-21 thin-constitution restructure)
+
+Six corrections owed from the 2026-08-21 THIN-CONSTITUTION RESTRUCTURE, drafted as one entry per the
+2026-07-27 correction-entry rules, **each carrying all six required fields.** **The actor on all six
+is Opus 5** — the restructure session — recorded without inferring the model from session type; that
+session stated its own model. **Corrections 3, 4 and 6 touch the project instructions and fire trigger
+3; v27 is drafted and travels with this packet.** Nothing here reopens any ruling: `TC-7`'s and
+`TC-8`'s substance survives every correction below.
+
+### Correction 1 — the live log held 135 entries, not 136
+
+- **What was asserted:** that the live session log held **136 entries**, stated in
+  `docs/specs/thin-constitution-restructure-2026-08-21.md` §1.2 and again in entry `#132`.
+- **What is true instead: 135.** The log's foot stanza — `## ARCHIVED: entries older than the
+  2026-08-13 cutoff` — is a `## ` heading and is **not an entry**, and it was counted as one.
+  **Evidence, read at HEAD this session:** the stanza sits at `docs/record/session-log.md` line 7605;
+  the file carries **138** `## ` headings; 138 − 1 = **137 entries now**; queue-runner batch 80
+  appended exactly two (entry `#132` and its runner line); **137 − 2 = 135** at the moment of the
+  restructure's measurement. **The queue runner did not make the same mistake** — the head file's §2
+  carries **137 rows**, verified by count this session, correctly excluding the stanza. That
+  divergence is what makes this a counting error rather than a definitional dispute: two instruments
+  measured the same file the same day and one of them excluded the non-entry.
+- **Which entry it corrects:** `#132`, and the §1.2 table in the restructure record. **Both stand as
+  written.**
+- **The actor:** **Opus 5**, the 2026-08-21 restructure session.
+- **The failure class: a counting rule left implicit.** The same class as the raw-vs-non-blank
+  line-count ambiguity **ruled 2026-08-13 after it bit twice in one day** — there, the fix was to
+  define that "lines" means non-blank unless labelled "raw." Here the undefined term is what counts as
+  an *entry* when the parse is on `## `. **Prior instance named as the rules require.**
+- **What changed as a result:** corrected on the record here. **Nothing is corrected in place** — the
+  log is append-only and both source statements stand. No count anywhere is recomputed from 136,
+  because nothing downstream consumed it: the runner derived its own figure from the file.
+
+### Correction 2 — the picker-order note now has an origin exhibit, written by the session that wrote the rule
+
+- **What was asserted:** instructions v26's operational note states only that picker-exclusion order
+  matters — *"Code pushes first, the picker exclusion happens second, and syncing before excluding
+  simply pulls the content in at its new path for no saving."* A rule with no exhibit attached.
+- **What is true instead: it has an exhibit, and it is the rule's own first execution.** In the
+  `TC-4` move the sync was clicked **before** `/docs/record/` was excluded, pulling **1,232,427
+  bytes** back in at the new path and driving the meter to roughly **92%** before the exclusion landed
+  and took it to **72.6%**. **The session that authored the rule is the session that demonstrated
+  it**, within hours, on the only directory the rule had ever applied to.
+  *This session's cross-check, recorded rather than smoothed:* at the measured 3.49 bytes per meter
+  unit, 1,232,427 bytes ≈ 353,000 units ≈ **17.7 points**, which against a settled 72.6% implies
+  ≈ **90.3%**, not 92%. The gap is inside the stated roughness of "roughly 92%" plus ratio variance
+  (3.49 was measured on prose deletion, and repo content need not tokenize identically). **Named
+  because a figure carried without its arithmetic checked is how the other five of these happened.**
+- **Which entry it corrects:** none — this **enriches** v26's operational note and `#132`. It is a
+  correction in the sense that a rule stated without its evidence understates what is known.
+- **The actor:** **Opus 5**, the restructure session — as the actor of the exhibit, not of an error.
+- **The failure class: not an error class.** The ordering was known and written down; the execution
+  ran ahead of the writing. Closest kin on the record is the general class of *a rule authored and
+  then immediately violated by its own author's next act*, which has no prior instance here.
+- **What changed as a result:** the exhibit is added to the operational note in **v27**. The rule's
+  text is unchanged — it was already right.
+
+### Correction 3 — TRANSIT names the wrong actor for a step Michael cannot perform
+
+- **What was asserted:** `TC-8`, in v26 and in the standing TRANSIT convention, says a capture
+  *"leaves for the LEGAL AUTHORITY ARCHIVE project, **by Michael's hand**, once BOTH conditions
+  hold."*
+- **What is true instead: it cannot be his hand alone, because the interface offers no download path
+  out of project knowledge — only add and delete.** The relocation is a **THREE-STEP act**: a design
+  session extracts the file's content via the Projects tool and delivers it as a file; **Michael
+  saves it**; a design session then deletes it from project knowledge. Step one is not available to
+  him. **The rule's substance is entirely right** — both conditions, verified at HEAD, or the file
+  stays; relocated, never deleted; anything unlanded flagged by name. **Only the actor on step one is
+  wrong**, and it is wrong in the direction that matters: a future session reading `TC-8` literally
+  would wait for Michael to do something he has no way to do, which is how a self-executing rule
+  becomes the drawer it was written to prevent.
+- **Which entry it corrects:** `#132` and instructions v26's TRANSIT convention. **`#132` stands as
+  written.**
+- **The actor:** **Opus 5**, the restructure session.
+- **The failure class: a convention specifying an actor without checking the actor's available
+  affordances.** Kin to the 2026-08-16 finding that an allowlist entry is *necessary, not
+  sufficient* — in both, a rule was written against an assumed capability rather than an observed
+  one. **Prior instance named.**
+- **What changed as a result:** **v27 rewrites the TRANSIT sentence to name the three steps and their
+  actors.** No capture moves in this session regardless — the eight 2026-08-21 files are not
+  TRANSIT-eligible until this batch is at HEAD.
+
+### Correction 4 — the fifteen captures' ruled destination is Michael's machine, not the ARCHIVE project
+
+- **What was asserted:** `TC-7` named the **LEGAL AUTHORITY ARCHIVE project** as the destination of
+  the fifteen landed captures.
+- **What is true instead: Michael ruled the destination as his own machine**, 2026-08-21, under
+  `#107`'s second limb — *"the ARCHIVE project **or his machine**, never the repo."* The disjunction
+  is his, and he exercised it. **`TC-7` recorded one branch of a two-branch ruling as though it were
+  the whole ruling.**
+- **Which entry it corrects:** `#132` and `TC-7` as recorded. **Both stand as written.** **It also
+  makes instructions v26's start-of-session rule 4 wrong** where it says relocated captures *"live
+  there and are not searchable from here"* — they live on his machine, where they are reachable over
+  the device bridge, which is a materially different fact for any session trying to find one.
+- **The actor:** **Opus 5**, the restructure session.
+- **The failure class: collapsing a disjunctive ruling to one branch.** Kin to the CC-1(a) family —
+  recording a ruling in the shape the session expected rather than the shape it was given — though
+  here the narrowing happened in the *writing down*, not in the asking. No exact prior instance on
+  the record.
+- **What changed as a result:** **v27 corrects both the TRANSIT destination and start-of-session rule
+  4.** The practical consequence is the one worth stating: a relocated capture is **bridge-reachable**,
+  so "not searchable from here" was discouraging a session from a read that is in fact available.
+
+### Correction 5 — the fifteen captures were 1.57% of the budget, not ~5 points
+
+- **What was asserted:** the fifteen landed captures were estimated at **~5 percentage points** of
+  the knowledge budget — `thin-constitution-restructure-2026-08-21.md` §1.3, **labelled on its face
+  as the table's one estimate.**
+- **What is true instead: 109,868 bytes ≈ 31,481 meter units ≈ 1.57%** — measured on extraction,
+  about **a third** of the estimate. The estimate was honestly marked as one; it was simply high.
+- **Which entry it corrects:** `#132` and the §1.3 table. **Both stand as written.**
+- **The actor:** **Opus 5**, the restructure session.
+- **The failure class: an estimate that was labelled and then reasoned from as though measured** —
+  the mild form of the class the SOURCING convention addresses at *"currency is never inferred from a
+  document."* The labelling is what keeps this minor.
+- **What changed as a result:** **the `TC-7` ruling stands entirely unaffected** — it was made to
+  preserve the granular layer, not to move the meter, and a ruling made for a non-capacity reason is
+  not disturbed by a capacity figure moving. **The real consequence is directional: `TC-OPEN-1` is
+  proportionally MORE important than §1.3's table implies.** If the captures were only 1.57%, the
+  budget pressure sits somewhere else — and this session measured where: the review queue at ~9% and
+  BUILD-STATE growing under a cap that cannot see it. Both recorded at `#134` for the `TC-OPEN-1`
+  sitting.
+
+### Correction 6 — the knowledge meter is readable by a running session; the usage meter is not
+
+- **What was asserted:** instructions v26, MODEL USAGE, practical notes: *"the running model cannot
+  read the usage meter — Michael checks it."*
+- **What is true instead: that is true of the USAGE meter and NOT of the KNOWLEDGE meter.** The
+  weekly Fable and all-models bars are genuinely Michael's to read. But a design session can read
+  `knowledge_size` and `max_knowledge_size` **directly** — this session did, at open, without being
+  told: **1,451,615 / 2,000,000 = 72.6%.** The two meters were conflated under one sentence.
+- **Which entry it corrects:** none — **this is a capability finding, not an error by anyone.** No
+  session asserted the knowledge meter was unreadable; the instructions sentence simply did not
+  distinguish two things that needed distinguishing. Recorded in the correction entry because its
+  consequence is a standing rule's behaviour.
+- **The actor:** **not attributable as error.** The sentence entered with the v17 economics refresh
+  and was accurate about what it was written about.
+- **The failure class: one sentence covering two unlike things**, which is the same shape as
+  correction 1's implicit counting rule and as the `docs/record/` vs `docs/archive/` naming caution
+  that `TC-6` was ruled to prevent. **Three instances of this shape now sit within two days of each
+  other.**
+- **What changed as a result: `Q-CAP-5(a)` becomes SELF-EXECUTING.** A design session can check its
+  own capacity at open and stage a capacity pass at or above 90% without waiting to be told — this
+  session did exactly that and found 72.6%, so nothing was owed. **v27 gains the distinction rather
+  than replacing the sentence**, because the sentence is right about the usage meter and that half
+  still binds.
+
+**Staged for Code:** this entry, in the `#134` packet. **Awaiting/Returned from Code, unreviewed:**
+nothing new from this entry.
+
+---
+
+> **[FILING NOTE — added 2026-08-22 by the backfill session; NOT part of the entry below.]**
+> **Session ran:** 2026-08-21 Central (voice; DT-1 verified at close-out, container 22:56 UTC /
+> Michael 17:56 CDT). **Filed:** 2026-08-22 Central, in queue-runner batch 81 — the fourth and last
+> of the four 2026-08-21 sittings.
+> **Number:** the entry instructed *"take the next available design `#nn` at append time."* At append
+> time Michael ruled the reserved gap filled, so it takes **`#131`**, the last of `#127`–`#131`. The
+> `#nn` was inserted into the heading's house-format slot; **no other character of the entry was
+> altered.**
+> **Since overtaken:** (1) *"Michael pastes the v25 project instructions"* — **v25 was superseded by
+> v26 the same day**, and **v27** is now pending on this batch's corrections 3, 4 and 6. This is the
+> **only** one of the four 2026-08-21 handoffs that carries a v25 line. (2) The routing table names
+> `docs/specs/session-log.md`; the log **moved to `docs/record/session-log.md`** on 2026-08-21 by
+> `TC-4` — a change of address, not of content. (3) *"The next design session … takes RECON-1 first"*
+> — the next design session was **this** one, which expressly did **not** take RECON-1: reconciling
+> before the backfill landed would have reconciled against a false baseline. **RECON-1 is owed by the
+> session after this one** and its queue row is unchanged.
+> **⚠ H-SERIES COLLISION — READ BEFORE GREPPING.** This entry's `H2`, `H17`, `H20`, `H21` are the
+> **disclosures** series. At HEAD, `case-heartbeat-design.md` carries a different `H2` (outcome
+> defaults), `H17` (negotiation-track pulse cadence) and `H21` (service-diligence cite). Michael ruled
+> 2026-08-22 that the disclosures series is renamed **`HD-1`–`HD-22`**, numerals preserved, **forward
+> only** — on the 2026-08-13 `H`→`HK` precedent. **This entry keeps its original IDs because it files
+> verbatim.** Read every bare `H` below as `HD`.
+
+## 2026-08-21 (#131) — Design, VOICE, Opus 5: disclosures ruling session — H20-a/H20-b ruled, FE-19 moved upstream to provider records, H2/H17 ruled, H21 closed four ways, CC-1 ruled as a binding convention with three limbs; trigger 3 fired
+
+A voice ruling session continuing the disclosures expert-designation thread. Its object was to close what the previous sitting left hanging, not to produce build work. **Nothing entered the build queue, nothing was staged for Code, and no packet exists.** Limits held throughout and stated at open: no `src/` read, no device bridge, no legal proposition verified, and R11 — the TRCP 195.2 designation deadline — gated and never shown, proposed, or computed.
+
+- **H20-a — CONFIRMED. The app holds returned paragraphs as prose, whole.** Nothing takes them apart; nothing looks inside them. They land in the Word document as written. Michael expressed no preference on mechanics, bounding the delegation with three constraints in his own words: whatever is easiest and most practical, HIPAA compliance, and the paragraph ending up in the Word document. The app's responsibility ends at getting the text into the generated document. **This is a delegation on mechanics only** — if the practical answer later requires structured storage for an unrelated reason, that is a fresh question, not a reversal.
+- **H20-b — CONFIRMED, NO.** There is no in-app editing surface for returned paragraph text. *"If any editing is gonna be done to that word document before I serve it, it's gonna be editing that I'm gonna do once I open the word document itself."* A real scope reduction, and it closed the question without its being asked separately.
+- **FE-19 — CONFIRMED, MOVED UPSTREAM.** Because nothing inspects returned text, the entity-in-the-designee-slot lint cannot run on it. Ruled: the designee-type check runs on the **provider records going in**, surfaced as another line in the H1 ambient panel — same surface, same live-read-at-every-render behaviour, no new machinery. Reasoning put to Michael and accepted: a facility in a designee slot is a bad record, not a bad paragraph; fix it at the record and it stays fixed everywhere. A layer picking apart drafted prose would generate nuisance warnings on perfectly good text. **Nothing lints drafted text at all.**
+- **H2 — CONFIRMED.** The provider block's top line is name plus credential suffix — M.D., D.O., whatever the provider carries. Nothing about the provider's role in the case appears there. Claude's stated consequence, not Michael's words and marked as inference: the suffix wants its own field on the contact record so the app is not parsing it out of a name string.
+- **H21 — CLOSED, four ways.** (a) The providers-to-designate list on the disclosures screen is ordered **oldest treatment first**. (b) **The disclosures panel mirrors the medical tab's granularity and computes nothing** — visit-by-visit where a chronology auto-populated it, one line where it did not, mixed within a single case expected and fine. (c) **The panel is deliberately thin**: providers and a selection control, not a data display; detail lives one click away in the medical tab. (d) **Same doctor at two facilities is two entries**, each designated with its own place of business, following from the ruled naming split — the designation ties a person to a place, so two places make two designations.
+- **H17 — CONFIRMED.** "Provider block" is the name everywhere; "provider identification paragraph" retires and should be noted as the old name so no future reader takes it for a different thing.
+- **CC-1 — CONFIRMED. Binding convention, three limbs. TRIGGER 3 FIRED.**
+
+The H21(b) ruling deserves its own note because of how it arrived. Claude framed the expanding-summary question as a two-way choice, then honestly widened it to three mid-exchange when the middle option forked on whether a model call was involved — visit list, mechanical rollup, or drafted summary — and recommended the rollup. Michael answered with none of the three: make the disclosures panel simply mirror whatever the medical tab holds, since the medical tab's own rule already distinguishes chronology-populated visit rows from a single line where no chronology exists. The panel gets no independent shape. That answer eliminated the summary question entirely and, together with his thin-panel point in the same turn, removed a whole class of follow-ups.
+
+**CC-1 in full.** Limb (a): options are a way of asking, never a menu — the expected answer is often outside them, a composite or something adjacent that changes other things, and Claude's job is to take what Michael actually says, work out what it means for the build, and re-ask narrower rather than forcing an answer back into the offered set. Five instances across two sittings support it — H21, H1 and H3 on 2026-08-20, and the mirror ruling and thin-panel point tonight — and each time the answer outside the options was better, because he was seeing the workflow and Claude was seeing the schema. Limb (b): where a question is better answered with the running product in front of him than in the abstract, Claude says so and holds it rather than pressing. Limb (c), which Michael added on the read-back and is the operative half: held questions go on a named **hands-on queue** carried across sessions and stated at the top of every typed session; **Claude calls the voice session unprompted** when the queue is worth an hour; and that session runs long and wide — the whole queue plus anything adjacent that is ripe — because the expensive part is the mode switch, not the questions. New questions surfacing mid-session are taken there, not deferred back to typing. His reason, recorded because it sets the shape: *"when I get on a roll, and I'm sitting here talking, the ideas are flowing. I wanna stay here and talk about this and rule as much as I can while I've got it fresh."*
+
+**A Claude overreach on CC-1 was corrected by Michael and the correction stands.** Claude proposed a harder second limb — that a question Michael cannot rule on from the product should not be put to him as a ruling at all — and went further, characterising some schema rulings already on the record as possibly recommendation-nods rather than real rulings, and suggesting a retrospective review pass. Michael rejected it on the merits: the recommendations got the build from nothing to a semi-usable product, he accepted them knowing that is what he was doing, and *"those are real decisions."* The usable state is precisely what now makes hands-on ruling possible. **Nothing already ruled is reopened by CC-1; the rule is forward-looking.** The proposed review pass is WITHDRAWN, not deferred — it should not be re-proposed. Claude accepted the correction on the record.
+
+Two threads were opened and deliberately left. **H12-v, the vendor route** for the model call — Bedrock vs. OpenAI vs. the local model on the P1 — was not pushed at all; Michael said plainly it waits on two things that are his, whether AWS will sign a BAA for a solo firm and where his malpractice carrier lands. Bedrock still leads; the BAA remains a hard gate before any real record moves. And **RECON-1**, raised at session open and still owed: the reconciliation table in the `_Voice2` handoff describes the disclosures REQ-CAPTURE addendum as needing *editing* to carry the H12 text and the silent-phone posture, but a grep against the copy in project knowledge shows it carries neither. **The scope is first application, not edit** — the exact wording lives in the fold-in capture and in the walk capture at ruling 7.
+
+**Next:** Michael pastes the v25 project instructions (trigger 3, same day). Both `claude_` files go into project knowledge one at a time, then a fresh chat. The next design session states the hands-on queue at the top — currently empty — and takes RECON-1 first.
+
+**Staged for Code:** none — nothing enters the queue until the disclosures reconciliation is done and a packet is ruled.
+
+**Awaiting/Returned from Code, unreviewed:** FE-D1's migration `db/migrations/2026-08-20-fe-d1-form-engine.sql` remains UNRUN, Michael's hand. Read from BUILD-STATE by retrieval — **treat as assumption and verify at HEAD**, and check the entry that would have cleared it before carrying this line forward again.
+
+---
+
+> **[FILING NOTE — added 2026-08-22 by the backfill session; NOT part of the entry below.]**
+> **Session ran:** 2026-08-21 Central (voice; DT-1 checked twice in-session, container 21:14 UTC /
+> Central 16:14 CDT). **Filed:** 2026-08-22 Central, batch 81 — the third of the four 2026-08-21
+> sittings.
+> **Number:** the entry expected `#128` and expressly marked it **conditional** — *"the earlier
+> 2026-08-21 handoff expects `#127` and has not been filed, so if it lands after this one the numbers
+> swap … do not treat `#128` as reserved."* **That caution was correct and it is why this entry is
+> `#130`, not `#128`.** Filing all five together in authoring order resolved the conditional: the
+> 2026-08-20 reconciliation takes `#127`, and each 2026-08-21 sitting follows in clock order. The
+> `#nn` was inserted into the heading's house-format slot; **no other character was altered.**
+> **Since overtaken:** (1) the routing table names `docs/specs/session-log.md`; the log **moved to
+> `docs/record/session-log.md`** on 2026-08-21 by `TC-4`. (2) *"Next: reconcile today's rulings into
+> the disclosures addendum … before anything else"* — **not done, and deliberately not done here**;
+> that is `RECON-1`, owed by the session after this one, and the next sitting (`#131`) found the
+> scope is **first application, not edit**, which supersedes this entry's RECONCILIATION REQUIRED
+> table. (3) *"the unasked items: H2, H17"* — **both were ruled the same evening at `#131`.**
+> **⚠ H-SERIES COLLISION:** this entry's `H1`, `H2`, `H3`, `H12`, `H20`, `H21`, `H22` are the
+> **disclosures** series and collide with the heartbeat register at HEAD — `H12` there is snooze
+> duration, `H21` is the service-diligence cite, `H1`/`H2`/`H3`/`H17` likewise differ. Ruled
+> 2026-08-22: the disclosures series becomes **`HD-1`–`HD-22`**, forward only. This entry keeps its
+> original IDs because it files verbatim. **Read every bare `H` below as `HD`.**
+
+## 2026-08-21 (#130) — Design, VOICE, Opus 5: H12 REVERSED — app calls the model on a BAA-covered account; H20, H21, H22, H1, H3 ruled; provider block established as a rendering of the contact record; yesterday's silent-phone-omission corrected
+
+Third session stamped 2026-08-21 Central (DT-1 checked twice in-session: container `Fri Aug 21 21:14 UTC`, Central `Fri Aug 21 16:14 CDT`). Expected `#128` — **conditional**: the earlier 2026-08-21 handoff expects `#127` and has not been filed, so if it lands after this one the numbers swap. The runner re-verifies at HEAD; do not treat `#128` as reserved.
+
+A ruling session that was supposed to close the disclosures return path and instead reversed the architecture underneath it. The opening question — "you're back in the app with the paragraphs, what happens next?" — was answered not with a workflow but with a rejection of the premise: Michael does not want the chat step to be outside the app at all. That opened a compliance question, which opened a procurement question, which consumed the middle third of the session, and which resolved favorably. The disclosures items were then worked to completion.
+
+**No packet. Nothing staged for Code. Nothing to `inbox/`.** No `src/` read, no bridge granted, no legal proposition verified, R11 gated throughout.
+
+### Headline decisions
+
+- **H12 — REVERSED. CONFIRMED.** Yesterday's ruling (app assembles a bundle; Michael carries it into a chat by hand; no client medical content reaches a model API) is superseded. The app calls the model directly, on the firm's own BAA-covered API account. Michael's reason is a staffing reason, not a convenience one: *"I'm gonna have a paralegal logging in and using that function. She's gonna be using my tokens, but she's not gonna be logging into my Claude system."* The hand-carry design cannot deliver that — it requires his login.
+- **Payload — CONFIRMED.** The full medical chronology goes, unmodified. No scrubbing, no thinning. The BAA is what makes it lawful; content engineering is not.
+- **Vendor route — OPEN, Bedrock leading.** AWS Bedrock serves Claude models and its HIPAA business associate addendum is self-accepted in AWS Artifact — no sales call, no seat minimum, per-token billing. OpenAI's API is BAA-eligible without an enterprise agreement (emailed request, case-by-case review) but is a different model and the paragraph quality is unproven for this task. Anthropic's direct route requires Enterprise, which Michael rejected on cost.
+- **BAA is a hard gate — CONFIRMED.** No real record moves through the API call until it is signed.
+- **H20 — CONFIRMED.** Supplementation is purely additive. Treatment already disclosed is fixed history: *"you're not changing what happened in the past."* The only change is a new provider giving different treatment and therefore testifying to different things. The app learns what is already served by reading the most recent saved disclosures document for the matter — *"just call on the most current version of the disclosures that are saved in the files."* Providers absent from it are the new blocks. No served/not-served flag, no ledger, no diffing inside paragraph text.
+- **H21 — CONFIRMED, and it is Michael's third option, not either offered.** One row per provider is the default. Per-visit rows exist **only** when a medical chronology is available to auto-populate them. Same table, two grains, selected by whether a chronology was plugged in. The objection that produced this: *"we have to hand key all of that information. It's gonna be pretty burdensome, and I can see a situation where things are just not gonna get keyed in."* Nobody hand-keys visit rows, ever.
+- **H22 — CONFIRMED.** The practice-name check (P.A./PLLC in the expert slot) **warns and never blocks**. Reason: a solo practitioner's entity legitimately is his own name — *"when you write a check out to him, the check just goes to John Johnson MD"* — so the pattern the checker looks for is not reliably a defect.
+- **H1 — CONFIRMED after being asked across three sessions, and it is a third shape.** Not a mid-draft interrupt and not a production gate. A **live warning area inside section two (providers to designate)**, positioned side or bottom, listing by provider what is missing: this one needs an address, that one a phone, that one has no treating physician recorded. Its purpose is to send the user back to the **Medical tab to fix the source data**, not to fix anything in the form. It never interrupts and never blocks.
+- **H1 addendum — CONFIRMED.** The panel is live in both directions. Fix the record on the Medical tab, return to the forms tab, and the line is simply gone — *"it's already gone."* No refresh button, no re-run. Implementation consequence: the panel reads provider records at every render rather than caching what it found when the form opened.
+- **H3 — CONFIRMED, and wider than the question asked.** Affiliation history with dates lives on the **contact record**, for every contact type — *"whether it's a doctor or a radiologist or an insurance adjuster... the contact keeps a history of where they've been."* The provider block reads from it: where he was at the time of treatment, and where he is now. This is not a disclosures feature.
+- **Provider block = a rendering of the contact record. CONFIRMED.** *"The provider block is basically just calling that same information that is there for every single contact that we have saved."* The block owns no data. This is why fixing the Medical tab clears the warning, and why an address is never edited inside the form.
+
+### Correction — yesterday's silent phone omission
+
+Six-field form, per the correction-entry rules.
+
+- **What was asserted:** ruling 7 of the 2026-08-21 walk capture — the provider block omits the phone line **silently** when the saved contact has no phone.
+- **What is true instead:** the missing phone is **flagged** in the section-two warning panel. The rendered output is unchanged — the line is still absent from the document, and the document still generates — but the user is told rather than not told.
+- **Which entry it corrects:** ruling 7 in `claude_Disclosures_Expert_Designation_Walk_Capture_2026-08-21.md`. That entry stands as written.
+- **The actor:** Michael. He ruled the silent version yesterday and reversed it today when the H1 warning panel made the inconsistency visible.
+- **The failure class:** not an error class — a genuine change of mind on encountering a consequence. Recorded because the two rulings are otherwise contradictory in the record. Michael's reasoning for the original: some providers are *"a separate entity that was just created for billing purposes, and it's not really someone to reach out to"* — there is genuinely no number to have. That reasoning survives; it is the argument for **not blocking**, which is preserved.
+- **What changed as a result:** the addendum text staged yesterday must be edited, not appended to. See RECONCILIATION REQUIRED.
+
+### The compliance detour, and why it is in the record
+
+Michael's first compliance theory was that a chronology carrying only provider names, facility names, treatment dates and treatment described — with no personal health identifiers — could be sent to a model API safely: *"for all that Claude knows... we gotta put a designation paragraph together for this provider. Knows nothing about the client."*
+
+Claude pushed back and Michael abandoned the theory. **Recorded as a REJECTED APPROACH so it is not re-proposed:** dates of service are themselves on HIPAA's identifier list, and a chronology tied to a matter with exactly one plaintiff is re-identifiable; de-identification has a formal standard rather than being satisfied by name removal. Michael's own conclusion: *"it actually would be more helpful if I went and got an API account that was HIPAA compliant."*
+
+**Claude flags its own exposure here.** The HIPAA propositions Claude stated as background — the eighteen-identifier set, dates of service being among them, safe-harbor and expert determination as the two de-identification routes — are **UNVERIFIED legal propositions**. The posture for this session was that Claude verify none, and Claude did not route them to the registry. They were offered as background to a compliance-posture question Claude expressly declined to answer. If any of them becomes load-bearing in the build, it needs registry treatment with a cite and Michael's verification. Flagged rather than left implicit.
+
+The session then nearly died on price. Michael hit Anthropic's Enterprise tier and said *"that defeats the whole purpose... I didn't wanna have to pay five hundred dollars a month or whatever it is to run a software."* Claude offered three fallbacks — revert to yesterday's hand-carry H12; run a local model on the P1, which has no BAA question at all and no per-token cost; or give the paralegal her own consumer account. Michael took none and asked whether other vendors existed. **The local-model fallback was never rejected and remains available if the BAA path fails — preserve it.**
+
+A web search then produced the finding that revived the ruling: the enterprise wall is one vendor's one route, not the market's shape. **Vendor facts are search-derived and were not verified against the vendors' own pages** — no page was fetched, and BAA terms and pricing move. Treat as a lead, not as settled procurement.
+
+### Cross-cutting
+
+**"Expect composites, not selections" is now demonstrated a third time, and in this session three times over.** H21, H1 and H3 each produced an answer that was not among the options Claude held. H21 came back as a conditional depending on whether a chronology exists. H1 came back as an ambient panel — neither the mid-draft interrupt nor the production gate. H3 came back widened from provider blocks to the whole contact directory. In every case the offered menu was narrower than the real answer. **PROPOSED for promotion to a standing convention: in ruling sessions, offered options are framing devices for eliciting the answer, never the answer set — and a session that forces a composite answer back into a menu loses the ruling.** Unruled; Michael has not been asked.
+
+**New operational fact: Michael can read Claude's text during a voice session.** He said so explicitly at the read-back — *"I know you're reading through this, but I can actually see what you typed out. So I've read through it all and I'm in agreement."* This changes read-back economics: a written read-back is directly verifiable by him and does not depend on his hearing it aloud. It also means the "never read an option list aloud" rule addresses hearing, not visibility.
+
+**Read-back accepted, and ratified in writing.** Yesterday's declination is not repeated — this session's rulings were read back and Michael confirmed. That makes this capture the first disclosures capture verified against him.
+
+**Claude process defect, recorded.** After Michael ratified the read-back, Claude re-read H21, H22, H1 and H3 a second time, redundantly, as though the first read-back had not happened. Minor, no harm done, recorded because the record-integrity culture here treats "nobody was hurt" as insufficient reason to omit.
+
+### Side threads opened and abandoned
+
+- **Token cost per matter.** Claude offered to sketch what the metered call would actually cost per matter so the decision ran against a number rather than a fear. Michael did not take it up. Unestimated.
+- **AWS Artifact click path.** Claude gave the shape (create account → AWS Artifact → agreements → accept the HIPAA business associate addendum → designate accounts and services in scope → enable Claude models in Bedrock for the region) and **declined turn-by-turn detail** on the grounds that console layout moves and this is a compliance document. Michael to read AWS's own page.
+- **ZDR constraint.** If the OpenAI route is taken instead, the BAA covers only zero-data-retention-eligible endpoints; calls not so configured are uncovered even with the paper signed. This becomes a build constraint if that route wins. Search-derived, unverified.
+- **Windows microphone.** Session opened with a mic-permission problem; resolved by Michael. No design content.
+
+**Next:** reconcile today's rulings into the disclosures addendum (see below) before anything else. Then the unasked items: H2, H17, and the H20/H21 residue. Then — separately and on Michael's own clock — the two confirmations that gate H12: whether AWS will sign for a solo firm, and what the malpractice carrier says about AI-assisted drafting on client medical records.
+
+**Staged for Code:** none. No packet exists. Nothing enters the queue until the disclosures addendum is reconciled and Michael rules it ready.
+
+**Awaiting/Returned from Code, unreviewed:** the FE-D1 migration (`db/migrations/2026-08-20-fe-d1-form-engine.sql`) remains pending, Michael's hand, UNRUN as of the last retrieval — design-side view, lags HEAD, treat as an assumption.
+
+---
+
+> **[FILING NOTE — added 2026-08-22 by the backfill session; NOT part of the entry below.]**
+> **Session ran:** 2026-08-21 Central (typed; DT-1 clock-checked in-session, container 19:27 UTC /
+> Central 14:27 CDT). **Filed:** 2026-08-22 Central, batch 81 — the second of the four 2026-08-21
+> sittings. **Despite its filename** (`claude_Handoff_Session_Log_2026-08-21.md`, the un-suffixed
+> "base" file) **this is the SECOND session of the day, not the first** — it opens from the morning
+> voice-walk capture that is now `#128`.
+> **Number:** the entry's heading was drafted `(#127 expected)` and its own numbering note said *"the
+> runner re-verifies at HEAD before minting."* **It re-verified: `#127` was claimed by TWO documents**
+> — this heading and the 2026-08-20 addendum's — and the 2026-08-20 session is chronologically first,
+> so `#127` went there and this entry takes **`#129`**. **The heading's `(#127 expected)` token was
+> replaced with `(#129)` and nothing else in the entry was altered.** The handoff's separate numbering
+> blockquote was runner guidance rather than entry content and is not carried into the log; its
+> substance is recorded here.
+> **Since overtaken:** (1) the routing table names `docs/specs/session-log.md`; the log **moved to
+> `docs/record/session-log.md`** by `TC-4`. (2) *"Next: voice session on `H20` … then `H21` if there
+> is room"* — **both happened the same evening**, at `#130` and `#131`; `H21` closed four ways.
+> (3) `H12` as ruled here (option B, the app does **not** call a model) was **REVERSED hours later at
+> `#130`** — the app calls the model on a BAA-covered account. **This entry states the superseded
+> ruling and stands as written; `#130` governs.** (4) The routing table's
+> `claude_claude_REQ-CAPTURE_…` filename carries a doubled `claude_` prefix; the file's actual project-
+> knowledge path is `claude/claude_REQ-CAPTURE_disclosures-expert-designation_DRAFT_2026-08-20.md`.
+> **DISCHARGED, NOT OVERTAKEN — and this is the useful one.** The `H18` bullet carried its own
+> escape hatch: *"RAG read, no bridge — `grep -in provider db/migrations/2026-08-20-fe-d1-form-engine.sql`
+> settles it at HEAD."* **The backfill session ran that exact command at HEAD `5017113`: zero
+> matches.** The migration creates four `form_*` tables and no object it creates or alters carries the
+> word. **`H18`'s premise-reframing holds; the caveat is answered rather than carried forward.**
+> **⚠ H-SERIES COLLISION — AND THIS ENTRY IS THE WORST-AFFECTED OF THE FIVE.** Its `H1`, `H3`, `H11`,
+> `H12`, `H16`, `H18`, `H20`, `H21` and `H22` are the **disclosures** series; every one of them also
+> exists in the heartbeat register at HEAD with a different meaning. **Two are acute here.**
+> **`H18` is this entry's headline ruling** ("run it now, unchanged") and the heartbeat `H18` is *"the
+> cascade exception to the anti-list rule (§7.6)"* — a reader who greps `H18` after this entry lands
+> gets a migration ruling and a notification-design question with equal billing. **`H16`, which this
+> entry routes two consequences to, is the dangerous one: the heartbeat `H16` is *"Medical
+> chronology — third-party product or in-system feature?"*, so BOTH `H16`s are about the medical
+> chronology.** Ruled 2026-08-22: **`HD-1`–`HD-22`**, forward only. Entry keeps its original IDs
+> because it files verbatim. **Read every bare `H` below as `HD`.**
+
+## 2026-08-21 (#129) — TWO RULINGS THAT SHRINK THE SLICE: the unrun FE-D1 migration runs UNCHANGED after its stated collision was checked and did not exist, and the disclosures engine WILL NOT CALL A MODEL — plus the 08-21 fold-in, ten RR-1 findings, a seven-finding PF-1 whose primary-source half could not run, and the SK-v2 closure staged (design session, typed, Opus 5; **NO BRIDGE — every repo claim is RAG**)
+
+Typed session opened from the 2026-08-21 voice-walk capture on a four-task order: fold the 08-21 rulings into the REQ-CAPTURE addendum; run RR-1, PF-1 and RE-SWEEP; stage the SK-v2 closure; stop before packaging. Two rulings were to be raised before packaging — **both were raised and both were ruled.** **DT-1 clock-checked: container UTC 19:27, Central 14:27 CDT; every stamp 2026-08-21 Central.** **No legal proposition was verified or retrieved — Michael barred it for this session.**
+
+- **`H18` RULED — "Run it now, unchanged."** `db/migrations/2026-08-20-fe-d1-form-engine.sql` is neither amended nor held; **the run stays Michael's hand** and its eight verification checks are still answered in words. **THE QUESTION WAS REFRAMED BEFORE IT WAS PUT, AND THAT IS THE ENTRY'S POINT:** the walk capture's premise — *"today's rename changes names that migration establishes"* — was checked and did not hold. The migration creates four `form_*` tables, extends `generated_documents` with seven nullable columns, and sets RLS and grants; **no object it creates or alters carries the word `provider`.** The three `provider_party_id` columns are on tables migrated live 2026-07-28 and are not in the file; the 23 token rows are seeded by the app from `src/forms/variants.ts`, not by the migration. **Caveat carried: RAG read, no bridge — `grep -in provider db/migrations/2026-08-20-fe-d1-form-engine.sql` settles it at HEAD.** **CORRECTION, six-field, recorded in the capture PART 1:** actor **Opus 5** (the 08-21 voice session); failure class **asserting a dependency from category resemblance without opening the file** — the same class as that session's own SKILL.md correction, **twice in two days**; the 08-21 walk capture's H18 row stands as written. **Consequence rides to `H16`:** the rename slice's migration plan now covers the seeded token rows and the `variants.ts` regeneration, not only the three columns.
+- **`H12` RULED — option B: THE APPLICATION DOES NOT CALL A MODEL.** The app **assembles** the bundle (provider records, case facts, skeleton, style cues); Michael drafts in a practice-project chat by hand; **no client medical content leaves the browser / Supabase / Microsoft perimeter by the app's action and no new vendor enters the design.** **A framing correction was made before the question was put:** the no-real-client-data convention bars client data from the repo, fixtures and handoff artifacts — **not** from the running application, which exists to hold it; the real category change was directional, the first outbound transmission of privileged health content to a third-party model API. **Claude expressly declined** to state what Michael's confidentiality obligations require or whether any vendor's terms satisfy them — the attorney's judgment, nothing verified. **A remains available as a later ruling; the vendor question is deferred, not answered.** **Three consequences, all landing in the draft: R1 SHRINKS** (generative composition does not happen inside the app; FE-20 still makes the bundle intelligible but no longer writes the paragraphs); **addendum §8's Q1 answer is SUPERSEDED, not reconciled**; **R13 matters more, not less** — text arriving from outside is exactly what needs generated → reviewed → approved state. `H11` survives much smaller: bundle contents and format, not transmission.
+- **THE FOLD-IN IS WRITTEN AND APPLIED TO NOTHING.** §2 is **rewritten** to record the rename ruling against its own rejected recommendation, preserving the reasoning that overturned it — *the blast radius did not change; the thing it was weighed against did* — and gaining a **scope limit** so no Code session reads the rename as license to touch §9's twelve approved paragraphs. §1.6 is **reconciled, not stacked**: the charges table stays **facility-keyed**, and the designee's 195.5(a)(1) contact reads from **the facility** at the far end of the edge; `parties.kind` is untouched. **Widget A is recorded as a SOFT adoption** — FE-18 adopted in substance, **its wording expressly not ratified**, standing as Claude's translation of a ruled intent. Rulings 1, 2, 6, 7, 8, 9 and 10 fold in as CONFIRMED with what each supersedes named — **ruling 8 REOPENS `Q9`**, which the addendum had treated as answered.
+- **`RR-1` RETURNED TEN FINDINGS.** The load-bearing ones: **§8's Q1 contradicted ruling 9 outright** (now resolved in the app's direction by `H12`, but the text still says the old thing and needs rewriting rather than annotating); **§6's "ship gate, never mid-draft" is presented as reconciled and is NOT ruled** — that is `H1`, the walk's own resume point, and §6 must be re-marked PROPOSED; **`CD-14` has no time limb** and `H3` requires one; and **rulings 1–2 create a requirement no R-number covers** — the provider record itself, with treatment dates, an expandable summary and sorting. **Not minted:** widget G is untouched and minting durable IDs is Michael's act.
+- **`PF-1` FIRED AND ITS DEFINING LIMB COULD NOT RUN, WHICH IS REPORTED RATHER THAN GLOSSED.** PF-1 checks against **primary sources**; this session had no bridge, no Knowledge Repo, no statute corpus, and verification was barred. **The primary-source half is OWED at packet-ship time.** The characterization half returned seven, the material ones being: **TRCP 195.2's allocation stated flat** while the record carries an unresolved 90/60-vs-60/90 conflict flag on that exact proposition; **the deadline's authority list is Level-2-only** while the design contemplates a DCO override; **§ 18.001's own flag doesn't travel to §8's Q3, which builds on it**; ***Baylor Medical Plaza v. Kidd* enters with a pinpoint and a holding parenthetical, unread** — a **characterization**, which `V-9` says requires the court's own document and which Part 7's blanket UNVERIFIED label does not cover; and **`FE-19` signal 2 will BLOCK a solo physician practicing as "John Johnson, M.D., P.A."** — an individual whose own name carries a corporate suffix, a case ruling 2 makes *more* likely. That last is minted as **`H22`** with a proposed demotion to WARN, **and it was never put for ruling.**
+- **`RE-SWEEP AFTER FIX` RAN ON THIS SESSION'S OWN FIXES AND FOUND A FOURTH RENAME SURFACE.** `provider_billing_profiles` is a **table name** carrying the word, and ruling 4's accepted cost enumerated three **columns** — **reported, not decided**, and routed to `H16`. Also caught: the phrase *"named that way everywhere"* over-reaching into approved prose, bounded before it shipped anywhere. And confirmed by check rather than assumption: `renders-care-at` carries neither word and survives the rename unchanged.
+- **`SK-v2`'s CLOSURE TEXT IS STAGED AND UNPACKAGED** (capture PART 7). The remaining limb is discharged — v2 landed 2026-08-11 citing spec HEAD `13f736a`, and Michael read the version line in his uploaded copy on 2026-08-21 and confirmed **v2**. **Closing it also discharges the standalone hand-upload item absorbed from `#45`.**
+- **THE SESSION STOPPED MID-ITEM, BY MICHAEL'S CHOICE, AND THE PATTERN IS NOW EVIDENCE.** An agreed six-item running order got through two; **`H20` was put as a four-option picker and Michael moved to voice instead** — the second demonstration in two days of the walk capture's cross-cutting pattern 1 (*widget read-outs do not land; he speaks workflow and Claude translates*). **That pattern remains PROPOSED and unruled.** Before the switch, Claude raised that this chat held three things existing nowhere on disk and offered package-first or go-now; **Michael took package-first.** Items 4 (`H22`), 5 (`H1`) and 6 (widgets B–H) were never reached, and `H21` was drafted and never put.
+- **A NOTE WORTH KEEPING: TWO CONSECUTIVE SITTINGS HAVE MADE THE DISCLOSURES SLICE SMALLER.** Ruling 10 took two of four tracks out entirely; `H12` took generative composition out of the application. In a project where design passes usually add, that is the observation to carry.
+
+**Next:** voice session on **`H20` — the return path**, then `H21` if there is room. Package the voice session afterward (voice writes nothing to disk on its own). Only then the typed packet, which files the REQ-CAPTURE for the first time — **and `PF-1`'s primary-source half is owed before it ships.**
+
+**Staged for Code:** none — **nothing enters the queue until `H20` is ruled and Michael orders a packet.** The SK-v2 closure text is staged design-side and unpackaged.
+
+**Awaiting/Returned from Code, unreviewed:** unchanged by this session — no Code session ran and no packet was assembled.
+
+---
+
+> **[FILING NOTE — added 2026-08-22 by the backfill session; NOT part of the entry below.]**
+> **Session ran:** 2026-08-21 Central (voice walkthrough; DT-1 confirmed in-session at 10:25 AM
+> Central). **Filed:** 2026-08-22 Central, batch 81 — **the FIRST of the four 2026-08-21 sittings**,
+> notwithstanding that its file (`…_Voice.md`) was uploaded before the un-suffixed "base" file and
+> that its suffix suggests otherwise. Order established from content: the session now filed as `#129`
+> states it "opened from the 2026-08-21 voice-walk capture," i.e. from this one.
+> **Number:** the entry as drafted carried **no `#nn` at all** — the only one of the four in that
+> state. It takes **`#128`**. The `#nn` was inserted into the heading's house-format slot; **no other
+> character was altered.**
+> **Since overtaken:** (1) *"**v24** of these instructions is confirmed pasted"* — **v24 was
+> superseded by v25 and then v26 on 2026-08-21**, and **v27** is pending on this batch. *This is the
+> only one of the four 2026-08-21 handoffs that names v24; none of the other three names v25 except
+> `#131`.* (2) The routing table names `docs/specs/session-log.md`; the log **moved to
+> `docs/record/session-log.md`** by `TC-4`. (3) **Ruling 7 — the silently omitted phone line — was
+> CORRECTED by Michael at `#130`**: the absence is **flagged** in the section-two panel. Rendered
+> output is unchanged; the posture is not. **This entry stands as written and `#130` carries the
+> six-field correction.** (4) *"The model-call question was never raised at all … flagged by Claude,
+> not by Michael"* — **raised and ruled at `#129`** (option B, no model call), then **REVERSED at
+> `#130`** (the app calls the model on a BAA-covered account). (5) *"An ordering problem is
+> time-sensitive: `db/migrations/2026-08-20-fe-d1-form-engine.sql` is still UNRUN, so the names
+> today's ruling changes could be amended before that migration ever runs"* — **the premise was
+> checked at `#129` and did not hold**, and the backfill session re-confirmed it at HEAD: the
+> migration contains the word `provider` **zero** times. **The window this entry calls time-sensitive
+> was never open.** (6) The routing table's `claude_claude_REQ-CAPTURE_…` filename carries a doubled
+> `claude_` prefix; the real path is `claude/claude_REQ-CAPTURE_disclosures-expert-designation_DRAFT_2026-08-20.md`.
+> **⚠ H-SERIES COLLISION:** the disclosures `H` series below collides with the heartbeat register at
+> HEAD. Ruled 2026-08-22: **`HD-1`–`HD-22`**, forward only. Entry keeps its original IDs.
+
+## 2026-08-21 (#128) — Design, voice walkthrough, Opus 5: disclosures expert-designation walk; Medical-tab defect located one layer upstream; naming split ruled against recommendation; chronology drop-in finding; three-track split; Supabase signup closed; gate 9 §4.4/§4.5 evidence
+
+A voice walkthrough run from `claude/claude_PROMPT_voice-walkthrough-disclosures_2026-08-21.md`, intended to rule widgets A–H on the facility-as-expert defect in the FE-D1 disclosures generator. It ruled two of the eight and produced three findings that were not on the agenda. Section 1 of seven was the only section reached. DT-1 date confirmed 2026-08-21 Central at 10:25 AM; Q-CAP-5 meter read 88%, under the flag threshold, so no capacity pass was owed.
+
+The live-app walk closed without its evidence. On the only matter present (James v. Burns — the prompt's seeded Garcia matter was not there) the Forms tab existed but the matter had no bills, so the provider picker could not be exercised at all. Michael then reported that the Medical tab has nowhere to add a medical provider for treatment in the first place: it shows a client filter, a bills section with analyze/add, and a case roll-up of total billed, total outstanding and confirmed benchmark ratio, and nothing else. **The picker's actual behaviour remains unobserved and is not asserted here.**
+
+- **The Medical tab is bills-only, and that is the defect's source — CONFIRMED.** Providers exist only as the billing entity on a bill; there is no treatment record, no dates of treatment, and nowhere an individual clinician can exist. Michael: *"I would say that that's a fair statement."* The REQ-CAPTURE located the defect at the designee slot; it is really one layer up, which makes FE-18's slot typing necessary but insufficient — there is no individual in the system to put in the slot.
+- **What the Medical tab must hold — CONFIRMED, Michael's own specification.** A provider record in its own right, carrying both the facility (his examples: Longhorn Imaging, Medina Healthcare System) and the individual clinician at it (Dr. John Johnson, radiologist), on the same record; dates of treatment; a brief treatment summary in a cell that expands so a longer description stays readable — *"it shouldn't be burdensome for me to try to see it"*; all providers listed and sortable, chronological among the sorts.
+- **Widget A (FE-18) — ADOPTED, softly.** Michael: *"I guess we adopted"* — immediately qualified by *"whenever you read those little widgets out, I just don't really understand exactly what you're getting at there."* Recorded as an adoption that does not warrant he followed the wording; the text is reproduced in the capture for re-putting in plain language.
+- **Widget C — RULED, against the recommendation. CONFIRMED.** The addendum's §2 advised keeping the word `provider` on the billing columns and typing the slot only. Michael ruled the naming split instead: **`facility` means the facility, `provider` means the person, named that way everywhere** — *"I like it that way, the way you just said it."* The reasoning that overturned §2: that section assumed `provider` is correctly named on the billing side, but once a person and a facility must coexist on one record, a column named `provider` that means facility is actively ambiguous in the one place a human reads it. The blast radius did not change; what it was weighed against did.
+- **One slice, not two — CONFIRMED BY DELEGATION.** Michael: *"whichever you think is cleaner."* Claude ruled the rename folds into the provider-record migration rather than shipping as its own — a standalone rename migration is pure churn followed by a second migration adding the real thing, i.e. two chances to get the data wrong for no benefit. Marked delegated, not Michael's own reasoning.
+- **"Provider block" — CONFIRMED.** Michael named the terminology gap himself and chose the name for the short paragraph carrying person, facility and address, which he had been calling *"those little designations"* — colliding with the expert designation paragraphs. Anatomy, his words: person's name on top, then facility name, then address always; phone pulled from the saved contact and the line silently omitted when the contact has none.
+
+**The chronology finding — CONFIRMED, and it reframes the medical side of the build.** Michael described the workflow he actually uses: medical records go through a separate third-party chronology generator; the chronology plus his disclosures form plus the case style go into a Claude chat; Claude builds both the provider blocks and the designation paragraphs from that. Those outputs *"have actually been really good"* — while the built engine's paragraphs, reviewed the previous night, *"were not good. They were too stale, and they were nothing compared to what was being created actually in that project in Claude."* Put back to him as *the input the engine actually needs isn't the bills table at all, it's the chronology*, he answered: *"Yes. That's the honest picture."* This matters because the chronology is where individual clinicians, treatment dates and treatment detail live — the exact three things the Medical tab is missing. It is not a convenient input; it is the only place the required data currently exists. His design for it, CONFIRMED: a drop-in window in the disclosures build flow that takes the full chronology and generates the blocks and paragraphs off it, *"basically have a little Claude back engine in there."*
+
+**The three-track split — CONFIRMED, and it shrinks the slice.** Treating providers: chronology drop-in. Retained experts: Michael creates the party by hand in the Parties tab, the builder pulls their contact details and then prompts him for that expert's designation paragraph — asked whether anything more was needed, *"No. I believe that's it."* Fact witnesses and the conditional sections (settlement agreements to disclose, witness statements to disclose): **good as built, no work.** Two of four tracks need nothing.
+
+Roll-ins discharged in-session: the Supabase **"allow new users to sign up"** toggle, measured ON at `#125`, was **turned off and saved** by Michael's hand — closing a hole where anyone reaching the auth endpoint could mint an account. **v24 of these instructions is confirmed pasted.** Gate 9 gained two pieces of evidence: a **later-day magic-link repeat from a fresh Chrome profile** completed this morning, signing him in as michael@brennanstx.com (the Firefox-goes-straight-through behaviour he noticed alongside it is a persisted session cookie behaving correctly, not a defect); and the **§4.4 outside-mailbox statement is now specific — ProtonMail, regular inbox, not junk, successful.** **SK-v2 also closed, after a Claude error:** the session reported the `drafting-disclosures` skill copy as still owed because Michael's uploaded copy is stamped 2026-08-11 at 22:00, which Claude called earlier than v2. It is not — **v2 was authored and landed 2026-08-11** (`STATUS: v2, 2026-08-11`, citing spec HEAD `13f736a`), so the timestamp is the same day. Michael then read the version line in his uploaded copy and confirmed **v2**: the re-upload had already happened the evening v2 was written. That discharges SK-v2's last limb, which means the `attorney-review-queue.md` entry itself is now closable — a repo edit, and it travels by packet.
+
+Side threads that would otherwise be lost. **Affiliation is time-bounded** — Michael raised it himself (*"that facility is always gonna have different doctors, and maybe some doctors could leave"*), Claude began framing the consequence that a 2024 case must not silently reflect a clinician's later move, and the thread was overtaken by the chronology discussion and never resolved; whether the `renders-care-at` edge carries an effective period is open. **The provider block's top line** — name only, or name with credentials and role — was asked and redirected past. **The model-call question was never raised at all:** Michael's chronology drop-in has the application sending real client medical records to a model, which touches the no-real-client-data conventions and the go-live gates directly, and it needs an explicit ruling before it is built; it is flagged by Claude, not by Michael. And **an ordering problem is time-sensitive**: `db/migrations/2026-08-20-fe-d1-form-engine.sql` is still UNRUN, so the names today's ruling changes could be amended before that migration ever runs — a window that closes the moment Michael runs it.
+
+Process notes. **The widget format did not work in voice and Michael said so**: he asked to describe what is missing in his own terms and have Claude *"feed it in in your language however you need to put it to where it gets added."* Five minutes of that produced more than twenty minutes of widget read-outs; whether it becomes a standing convention for adjudication sittings is his to rule and is PROPOSED, unruled. **The mandatory end-of-session read-back was offered and declined** (*"No. I think we've got it sorted"*), so the capture is the only verification pass over today's rulings and has not been read back to him. **Two Claude errors are recorded, both Opus 5.** First: it twice proposed ending the conversation as too long when it had barely started, and Michael corrected it — failure class, false self-assessment of session state asserted without checking; nothing was lost. Second: it reported SK-v2 as still owed on the strength of a file timestamp that was in fact the same date v2 landed, when the decisive check — the version line inside the file — was one look away; failure class, asserting from the consistent signal rather than the decisive one, the same class as the operational note about diagnosing a leftover `inbox/` zip with `git rev-parse` unrun. The error was caught before either file was transferred, and both were corrected rather than shipped and amended.
+
+**Next:** fresh typed chat; fold today's rulings into the REQ-CAPTURE addendum marked RULED 2026-08-21, reconciling FE-18's text against the rename rather than stacking them; RR-1; PF-1 preflight; RE-SWEEP AFTER FIX; then assemble the packet. Resume the walk at the FE-19 lint question (ship gate vs mid-draft), which was asked twice and never answered. Widgets B, D, E, F, G and H remain wholly untouched, as do walkthrough sections 2 through 6. Carried: close the SK-v2 entry in `attorney-review-queue.md` (its last limb is discharged); one further later-day magic-link repeat for gate 9; R11 still GATED on Michael's TRCP 195.2 verification; DMARC deferred past go-live per `#126`.
+
+**Staged for Code:** none. Nothing entered the build queue today — the rulings must be folded into the REQ-CAPTURE addendum and preflighted before any packet is assembled, and the fold-in has not happened.
+
+**Awaiting/Returned from Code, unreviewed:** nothing new from this session. (This line is copy-forward-prone — verify against the entry that cleared each item rather than carrying it.)
+
+---
+
+> **[FILING NOTE — added 2026-08-22 by the backfill session; NOT part of the entry below.]**
+> **⚠ THIS ENTRY WAS NOT WRITTEN BY THE SESSION IT DESCRIBES. It was DRAFTED on 2026-08-22 by the
+> backfill session, in house format, from that session's reconciliation addendum.** The distinction is
+> load-bearing and must not be smoothed away: the other four entries in this block are their own
+> sessions' words filed verbatim; **this one is a later session's summary of an earlier session's
+> written output.** The 2026-08-20 session produced a reconciliation addendum and a §10 routing
+> statement but **no session-log entry block anywhere** — confirmed by full read of
+> `claude/claude_REQ-CAPTURE_disclosures-expert-designation_DRAFT_2026-08-20.md`. Every factual claim
+> below is drawn from that addendum; nothing is inferred beyond it, and where the addendum is the only
+> source for a figure it is said so.
+> **Session ran:** 2026-08-20 Central (typed, Cowork, **Fable 5** — *not* Opus 5; the addendum states
+> its own model). **DT-1 applied by that session and worth preserving:** stamped 2026-08-20 Central,
+> clock-checked 21:56 CDT, *"container UTC read 2026-08-21 and was NOT used."*
+> **Filed:** 2026-08-22 Central, batch 81. **Number:** the addendum's own heading says
+> **`#127 expected`**, and `#127` was one of the five numbers batch 80 reserved. It takes **`#127`** —
+> the claim resolved in its favour over the competing `#127 expected` in the session now filed as
+> `#129`, on chronology.
+> **Since overtaken:** (1) **`H12`/`H18` and the naming split were all ruled AFTER this session**, at
+> `#128`–`#131`; §2's rename recommendation was **overturned by Michael at `#128`** and §8's Q1 answer
+> **superseded at `#129`**. This entry records the state as of 2026-08-20 and stands as written.
+> (2) The addendum describes itself as reconciled against the live log at **`docs/specs/session-log.md`**;
+> the log **moved to `docs/record/session-log.md`** by `TC-4` on 2026-08-21. (3) The six proposed
+> durable IDs remain **UNMINTED** — re-verified at HEAD `5017113`, where they appear nowhere but in the
+> restructure doc's own phrase *"unminted IDs."* Minting is Michael's act at `RECON-1`.
+
+## 2026-08-20 (#127) — THE DISCLOSURES REQ-CAPTURE RECONCILED: the facility-as-expert defect traced to three places in the spec, `Q9` answered NO CHRONOLOGY IMPORT EXISTS, six durable IDs proposed and none minted, and the wholesale schema rename recommended AGAINST (design session, typed, Cowork, **Fable 5**; bridge granted; **entry DRAFTED 2026-08-22 by the backfill session — see the filing note above**)
+
+The seventh REQ-CAPTURE through the REQ-1 channel and the second from CIVIL LIT on the disclosures instrument in two days. Reconciled per REQ-1 **before anything was staged** — against `BUILD-STATE.md` at `57699a7` (the "one hundred twentieth refresh," read in full through the device bridge), the live log's top entries (latest design entry `#126`; latest Code entries the FE-D1 build and the `dev:demo` fix, both 2026-08-20), `db/schema.sql` at HEAD, `form-engine.md`, `contact-directory.md`, `fe-d1-build-slice.md`, `spec-feedback.md`, the attorney-review queue's FE / CD / IN / DL sections, and the four registry files. **Bridge reads were lock-free (`GIT_OPTIONAL_LOCKS=0`); no `.git/index.lock` was stranded; `inbox/` on `mdb-pllc` was empty at session start. No `src/` file was read** — the working-set rule — so every statement about what the built engine DOES is a statement about what the SPEC it was built from requires, and is labelled so. **Nothing was staged for Code, no packet was assembled, and every ID, answer and recommendation in the addendum is PROPOSED until Michael rules it.**
+
+- **TWO THINGS FOUND AT THE GATE AND REPORTED BEFORE ANYTHING ELSE.** (a) **The three never-do rules were not on this project's record at all.** A repo-wide search for `ND-1`/`ND-2`/`ND-3`'s substance returns nothing in `docs/`; they were ruled in CIVIL LIT, which cannot see this project. They are RECORDED — not proposed — as Michael's rulings of record as of 2026-08-20, with their origin stated: individuals are designated, never facilities; the facility appears only as the individual's affiliation; no two providers share one stock paragraph. **`ND-1` and `ND-2` are ACTIVELY VIOLATED by current output.** (b) **A sibling capture is missing from the repo.** `spec-feedback.md` records that `REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md` was supplied to the FE-D1 build session, which acted on four of its six questions and committed the master `.docx` and its skeleton map — **but the REQ-CAPTURE file itself is nowhere in the tree.** It is unreconciled through REQ-1 and unfiled. **Per H5 this session did not search Michael's machine for it.**
+- **`Q9` ANSWERED, AND THE ANSWER IS NEITHER OF THE TWO OFFERED: THERE IS NO CHRONOLOGY IMPORT AT ALL.** The question asked whether the import carries encounter-level records or only billing rows. `db/schema.sql` at HEAD — **41 tables in the file, 37 live** — has no encounter, visit, treatment or chronology table, no import or field-mapping layer, and no fact table. The only provider linkage in the database is `medical_bills.provider_party_id → parties`; the Medical tab is a **bill ledger keyed to the billing entity**. **A treating individual exists in the system only if someone hand-enters it.** The chronology feed the capture specifies describes a pipeline that does not exist, and `R15` is therefore pipeline work at the intake slice **plus** the slot typing now.
+- **THE DEFECT PATH IS THREE PLACES IN THE SPEC, NONE REQUIRING A SOURCE READ.** `form-engine.md` §2 step 2 draws the provider checklist from the Medical/parties data, whose provider is the billing entity; §3 and §9's header have **one party record supply both the designee name and the facility contact block** — the capture's diagnosis stated as a design rule; and §9.1–9.9 carry **no facility token at all**, so a facility selected at step 2 can only bind to `{provider_name}`. **Whether the built picker filters on `parties.kind` is not knowable design-side and is not asserted either way** — what is asserted is that nothing in the spec requires it.
+- **RENDERER CHANGE OR PIPELINE CHANGE? BOTH, SEQUENCED — AND THE NEAR HALF IS SMALL.** The substrate already exists (`parties.kind` live, `contact_edges` with a 19-type controlled vocabulary live). What is missing is a rule binding the designee slot to an individual or person-role, an edge type meaning *individual renders care at facility*, and a contact block that reads from the edge target. **The defect is dischargeable now even though `R15` is not.**
+- **THE WHOLESALE SCHEMA RENAME IS RECOMMENDED AGAINST, WITH THE BLAST RADIUS MEASURED AT HEAD.** Three live columns on tables migrated 2026-07-28 are correctly named for what they key — the capture itself says the billing side *is legitimately entity-keyed*. The role-tag vocabulary derives from the party-type registry; §9's twelve approved paragraphs carry the word inside their tokens and are drift-tested; FC-1's canonical token form, the 23 seeded token rows, the SKILL and roughly every FE/CD queue row would all take it. **Recommendation: adopt the capture's principle at the SLOT, where the defect lives, and rename nothing that is correctly named.** *(Overtaken 2026-08-21 — see the filing note.)*
+- **SIX DURABLE IDs PROPOSED AND NOT ONE MINTED, BECAUSE MINTING IS MICHAEL'S ACT.** `FE-18` (typed designee slot + affiliation edge), `CD-14` (the `renders-care-at` edge type, a spec-level act on `contact-directory.md` §5), `FE-19` (the entity-in-designee lint), `FE-20` (sentence-slot composition, with the §9-as-seeding-unit conflict **flagged, not resolved**), `FE-21` (the instrument as bound response objects) and `FE-22` (charge-weighted gap detection). Four requirements fold into existing IDs rather than minting parallel ones — `R3`→`FE-11`, `R6`→`IN-2`, `R10`→`FE-20`, `R13`→`IN-4`+`FE-8` — and three are **satisfied by construction** (`R8`, `R14`) or already built as a data switch (`R9`).
+- **`R11` IS GATED ON MICHAEL, AND IT IS THE CHEAPEST UNBLOCK IN THE CAPTURE.** The FE-D1 build computed no designation deadline because CLAUDE.md's registry rule bars an UNVERIFIED proposition from driving a computed legal outcome, and **TRCP 195.2 has no registry entry** — only a playbook row carrying an unresolved 90/60-vs-60/90 conflict flag. *"A proposal for confirmation is still a computed date."* **Michael's verification is the gate.**
+- **PART 7'S PROPOSITIONS CHECKED AGAINST THE REGISTRY, AND MOST DO NOT EXIST THERE.** Entries exist for TRCP 193.5, 194.5, 194.2(b)(9) and TRCP 194 initial disclosures, all VERIFIED. **No registry entry exists for TRCP 195.5 in any limb, 195.2, 195.1, 193.6, 192.3(c)/*Axelson*, *Baylor Medical Plaza v. Kidd*, TRE 902(10), or TRCP 190.3(b)(1)(A).** § 18.001 / § 41.0105 / *Haygood* sit in DRAFT files only. **Nothing was drafted here** — drafting registry entries is its own act — and **no validation logic proposed anywhere in the addendum computes from any of them**; `FE-19` is a data-kind check, not a legal one.
+- **ALL TEN OPEN QUESTIONS ANSWERED OR RE-SCOPED, EVERY ANSWER PROPOSED.** `Q4` recommends attorney-set order defaulting to treatment-chronological, one order across all three renderings, mismatch as a ship-gate block. `Q7` restates `ND-3` as a **derivation** rule rather than a text-similarity rule — *"no paragraph is rendered without consuming the evidence the record holds for its provider"* — because a naive similarity lint would fire on Michael's own approved document, where two custodian paragraphs differ by a single clause. `Q10` recommends BLOCK above the `FE-22` threshold and automatic degradation below it, gap flag raised and persisted either way.
+- **ONE APPROVED PARAGRAPH NEEDS MICHAEL'S EYE UNDER `ND-1` AND WAS NOT CHANGED.** §9.10 (Pharmacy) makes the entity the grammatical subject, with the testifying persons role-designated inside the sentence; §9.11 (Custodian-only) puts the person-role in the subject and is compliant. **Whether 9.10 needs a subject-first rewording is a text act on approved-verbatim prose and is Michael's.**
+
+**Next:** the eight ruling widgets in §5 — `FE-18`'s wording, the §9-as-slot-library fork, the rename, §9.10, `ND-4`–`ND-9`, `R13`'s hard gate, the ID table, and `Q1`–`Q10` — put to Michael. Hand in the missing sibling capture. `R11` waits on his TRCP 195.2 verification; the retained-expert narrative waits on a real retained capture.
+
+**Staged for Code:** none. No packet was assembled; the REQ-CAPTURE's canonical repo path `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` **is still empty and the eventual packet files it for the first time.** *(Re-verified at HEAD `5017113` on 2026-08-22: the file does not exist; six other REQ-CAPTUREs do.)*
+
+**Awaiting/Returned from Code, unreviewed:** nothing new from this session.
+
 ## 2026-08-21 — QUEUE-RUNNER batch (runner line; EIGHTIETH invocation) — one docs-only packet, THIRTEEN routing rows: THE THIN CONSTITUTION EXECUTED — the live log and the full abstract index leave `docs/specs/` for `docs/record/`, a derived head file is born as the design side's only view of the record, and the runner itself goes v11 → v12
 
 **THE PACKET.** `push-to-code_thin-constitution-move-1_2026-08-21.zip`, identity pinned at Step 1 per QR-6(c) — **29,912 B, mtime 2026-08-21 19:32:10 Central, sha256 `fbae89df2d33e42d2eff89d6e1c3f4531b8aa14fe9b0d65b677245086ae601e8`**. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in the manifest's dependency order §4.1 → §4.2 → §4.3 → §4.4/§4.5 → §4.6.
