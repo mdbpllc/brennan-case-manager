@@ -17,6 +17,483 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-23 — QUEUE-RUNNER batch (runner line; EIGHTY-SECOND invocation) — one docs-only packet, ONE routing row that writes: the three unfiled 2026-08-22 design sessions reach the record at `#135`–`#137`, the packet's own entry-count prediction is recomputed and misses for the second batch running, and the queue takes its header sentence and not one row
+
+**THE PACKET.** `push-to-code_file-three-unfiled-2026-08-22-sessions_2026-08-22.zip`, identity pinned at Step 1 per QR-6(c) — **22,258 B, mtime 2026-08-22 17:58:42 Central, sha256 `5dc3c9c2c85db6f4727309cf3140c04671186e8c15c5f013ed4e55ea2cf0f143`**. One manifest, 597 lines / 53,058 B, **no separate staged deliverables** — the three entries live inside the manifest's own fenced blocks. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in the manifest's order, §4.1 then §4.2.
+
+**STEP 0 GATE PASSED ON LIVE EVIDENCE, NOT ON A TRACKING REF (QR-6(a)).** `git fetch origin` then `git ls-remote origin refs/heads/master` put origin at `eefc0a67100e9b0fee1be2379e8496e081aecdb3`, equal to HEAD, with `git rev-list --left-right --count HEAD...origin/master` reading `0  0`, tree clean and on `master`. **That is the same commit the packet's §1 names as its bridge read**, so no reconcile delta existed against it — the second consecutive batch in that posture. **Step 0 item 5 (TC-4) held:** `docs/record/session-log.md` exists and `docs/specs/session-log.md` does not, so the thin-constitution move is complete rather than half-executed. **Step 0 item 4 held without an edit:** `Bash(rm -f inbox/*)` was already in `.claude/settings.local.json`.
+
+**HEALTH CHECK SKIPPED, AND RECORDED RATHER THAN SILENT (QR-6(f)).** Docs-only batch: **§5 is NONE**, and no `src/`, `db/`, `supabase/` or build-tooling path was written — the routed files are `docs/record/session-log.md` and `docs/specs/attorney-review-queue.md`, joined at close-out by the two derived files and BUILD-STATE. `npm test` / `npm run build` / `npm run lint` would prove nothing about a batch that changed no code, so the trio was not run and **no health figure is claimed here.**
+
+**THE ALREADY-EXECUTED CHECK RAN, AND IT WAS RUN AGAINST A FLATTENED COPY BECAUSE THE HEADINGS IT HAD TO FIND ARE HARD-WRAPPED (QR-5).** A line-anchored grep cannot see a phrase broken across a line ending, and every heading in this packet is wrapped, so the log was normalized to one line and searched with `grep -o -F`: **0 hits on each of eight distinguishing phrases** — "RECON-1 floor ruled", "widget B becomes voice examples", "selection unit moved from person to FACILITY", "REQ-CAPTURE verified ABSENT", "disclosures REQ-CAPTURE verified ABSENT at origin/master", "FIRM-LEVEL RECURRING OBLIGATIONS", "third-copy backup requirements gathered", "CloudLex corrected to be the ORIGIN" — against a **positive control on the same flattened file that fired**: "THE BACKFILL" 2, "CORRECTION ENTRY, SIX PARTS" 1, "EIGHTY-FIRST invocation" 1. The packet was therefore neither already executed nor committed-but-unpushed, the two states QR-5 tells the runner to distinguish.
+
+- **ROW 1 — THREE ENTRIES PREPENDED, AND THE VERBATIM CLAIM IS A BYTE CLAIM RATHER THAN AN ASSURANCE.** Each entry was cut from the manifest **by line slice between its own fences** (manifest lines 66–180, 186–303, 309–525) and **never retyped**. The only change is the minted number, applied as a **PURE INSERTION** of `(#nnn) — ` — **11 bytes** — immediately after `## 2026-08-22 `, asserted by two checks that could have failed: the output length equals the input length plus exactly 11, and the bytes after the insertion point are **byte-identical to the source**. Sizes: `#135` 8,542 → 8,553 B, `#136` 8,817 → 8,828 B, `#137` 16,961 → 16,972 B. **Zero CR in any of the three.** Order as filed, top down: **this runner line, `#137`, `#136`, `#135`**, then the pre-existing `runner 81` line and `#134`.
+- **THE NUMBERS THE PACKET EXPECTED HELD, AND THEY WERE STILL MINTED AT HEAD RATHER THAN TAKEN FROM IT.** `grep` for the highest `(#nn)` in the log returned **`#134`**, exactly what §1 predicted, so `#135`/`#136`/`#137` were minted in the order §2 directs — §3.1 first, §3.3 last and therefore on top. **The series runs `#65`–`#137` and is GAPLESS.**
+- **THE PACKET'S OWN ENTRY-COUNT PREDICTION WAS RECOMPUTED AND MISSED — THE SECOND CONSECUTIVE BATCH IN WHICH THAT HAPPENED, WHICH IS WHY OPEN-5(a) FORBIDS CARRYING FIGURES.** Its §1 item 3 predicted **148 entries** after landing. The true figure is **149**: the log held 146 `## ` headings less the one `## ARCHIVED:` pointer stanza = **145 entries**, and this batch adds **four** — the three entries *and this runner line, which is itself an entry and takes a row everywhere entries are counted*. **The packet counted the three it was asking for and not the fourth its own execution creates.** Batch 81 recorded the identical miss against batch 80's packet. *Neither was carelessness; both were written before the thing they describe existed.*
+- **THE THREE ENTRIES CARRY HARD-WRAPPED HEADINGS AND THE WRAP WAS PRESERVED, WHICH IS A DELIBERATE CHOICE AND NOT AN OVERSIGHT.** Every other entry in this log carries its heading on ONE line, however long — 778 characters at the widest. These three wrap at ~85 characters, so in each the `## ` line ends mid-phrase and the remainder renders as body text. Unwrapping was available, would have changed no word, and was **DECLINED**: §4.1 says the *only* change the runner makes is the minted number, and §6 forbids editing any entry text. **Michael's to normalize in three lines if he wants house shape**; nothing downstream breaks, because entry parsing anchors on `## ` and both indexes take their text from the first line.
+- **THE ID-SERIES COLLISION CHECK WAS RE-RUN AT THIS HEAD RATHER THAN ACCEPTED FROM §1.** `grep -rnE '\b(FO|BR|DA)-[0-9]' docs db supabase CLAUDE.md README.md BUILD-SESSION-NOTES.md` → **zero hits**, against a positive control of `\bTC-[0-9]` on the live log returning **32**. **`FO-`, `BR-` and `DA-` are collision-clear. That clears them; it does not mint them, and no design-doc home was created for any of them.**
+- **ROW 2 — THE QUEUE TOOK THE HEADER SENTENCE AND NOT ONE ROW, AND THE SPLIT IS REPORTED RATHER THAN RESOLVED SILENTLY (QR-6(b)).** The packet's §2 and §6 both say **no queue row is added, closed or edited**, and reserve every §7 item to Michael — so **no row was written**: open rows on that file's own matcher (`^\s*- ⬜`) **357 → 357** and closed **124 → 124**, both unmoved. The Status header **did** take its per-batch sentence, naming **`#137`** and stating on its face that nothing was minted and why. **The two available precedents point opposite ways and the choice is named:** batch 78 declined the sentence outright on a batch that touched the queue not at all, while that header's own words are *"keep it current or the pointer lies."* The sentence was written because silence here is the more misleading of the two — a later reader finds three new entries full of open items with no queue trace and cannot tell whether it was decided or forgotten.
+- **AND THE THING THAT IS GENUINELY OPEN AFTER THIS BATCH IS NAMED, BECAUSE THE PACKET'S OWN RULE PUTS IT BEYOND A RUNNER.** `DA-3` — the PHI boundary on phone-in-public document access — is recorded in `#137` as **asked twice and answered never**, and `FO-6`, `FO-7`, `DA-1` and `DA-4` sit beside it. **None has a queue row anywhere.** QR-1 exists precisely because a question with no row survives only as long as someone remembers it, and the packet is explicit that minting these is Michael's act, not the runner's. **Flagged here so the gap is on the record rather than in a deleted zip.**
+- **DO-NOTs HONORED, CUMULATIVELY.** Nothing was ruled and nothing built; no `src/` file was read or written. **No TRCP 195.2 designation deadline was computed, displayed or proposed** — `R11` stayed gated. **RECON-1 and the disclosures addendum were not touched, and filing these three entries does not discharge the fold-in.** `H21` and `H12` were not closed; no queue row was touched at all. **No entry was edited to be true today** — the doubled `(#nnn) — (` shape in each heading, the `Fable 5` actor in `#136`, the stale `docs/specs/session-log.md` path named inside `#135`'s own text, and every PROPOSED marking stand exactly as written. **No `#nn` was minted for this runner line** (TOC-6). **`FO-3`'s QuickBooks limb was NOT treated as verified**, and §1 item 5's report of a research memo plus a future-module staging is carried as a report and not as a discharge. Nothing was written to `docs/specs/session-log-head.md` by hand — it is derived and regenerated (TC-5). No `claude_` capture was relocated, deleted or added.
+- **NO PACKET-ADDED ACT NEEDED AUTHORIZATION (QR-6(e)).** Every act performed appears in a §2 routing row or in a Step 4 item; the packet's §8 adds no step of its own beyond the runner's.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** this batch's handback — the three entries as filed, the one queue header sentence, the thirty-third edition of the abstract index, the regenerated head file, and this BUILD-STATE refresh.
+
+**Still open and still Michael's (the packet's §7, merged so the top of the log stays truthful):** **`RECON-1`** the disclosures REQ-CAPTURE first application — **OWED and UNSTARTED**, expressly not discharged by this batch · **`RC-1`/`RC-2`/`RC-3`** the form of the floor (the voice session's resume point), minting widget G's ID, and the collective inflection of the causation line · **`RF-2`** hand in `REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md`, his hand under H5 · **`RF-3`** fold-in before RC-1, **RECOMMENDED and UNRULED** — Michael's answer to it was "Refresh chat," which is not agreement · **`RF-5`** relabel the draft's "Canonical repo path" to "WHEN FILED" · **`RF-7`** regenerate the RC-1 voice prompt after the fold-in · **`SK-v2` closure** staged design-side at `#129` and never packaged · **`FO-1`/`FO-2`/`FO-3` first limb** firm-level recurring obligations — RULED 2026-08-22, **no design-doc home ruled and none created** · **`FO-3` second limb / `FO-7`** the QuickBooks hook, **CONDITIONAL and UNVERIFIED**, whether a research memo and a future-module staging satisfy the condition being his call · **`FO-6`** calendar distinguishability and the failure-mode edge · **`BR-1`…`BR-5`** the third-copy backup requirement set — BAA a hard filter, Microsoft-independent and restorable without M365, ~1 TB ceiling, $50/month, vendor now and self-hosted later as RECORDED INTENT; **all vendor facts UNVERIFIED** · **`DA-1`/`DA-2`/`DA-4`** document access, mobile the trigger, every document, readability on a phone · **`DA-3`** the PHI boundary, **asked twice and answered never** · **the CC-1 hands-on queue**, EMPTY until he accepts the four proposed items · **`INS-1`** the voice-mode note that refresh-chat cannot be run from voice at all · **`H12-v`** the disclosures model-call vendor route, whose row exists · **`MIG-1`** the FE-D1 migration reported unrun, **carried unverified and not re-asserted** · **`R11`** gated on his TRCP 195.2 verification · the refresh-chat skill's routing template, which still names `docs/specs/session-log.md` after TC-4 moved the log · and **the 0-byte `.git/objects/maintenance.lock`** the authoring session's bridge `git fetch` stranded, his hand if git ever objects to it.
+
+## 2026-08-22 (#137) — (Voice design session finished in typed mode, Opus 5: the disclosures
+fold-in work order set aside by Michael; THREE rulings on FIRM-LEVEL RECURRING
+OBLIGATIONS — the software carries them, they stay lit until done, thin by default
+with a QuickBooks limb expressly conditional on a HEAD verification; third-copy backup
+requirements gathered complete with BAA as a hard filter and Microsoft-independence as
+the threat model; mobile found to be the real trigger for document access; CloudLex
+corrected to be the ORIGIN and OneDrive the mirror; a Claude capability error made and
+corrected in session)
+
+A voice sitting that opened with the typed disclosures fold-in work order pasted into
+it and was redirected away from it by Michael before any of it was taken up. THE
+FOLD-IN WAS NOT PERFORMED: no fold-in work was done, no RECON-1 item was ruled, R11
+stayed gated throughout — no TRCP 195.2 designation deadline was computed, displayed or
+proposed — and nothing was staged for Code. RF-1 (state the Fable meter) was WITHDRAWN
+by Michael, "don't worry about usage, let's just get into it." RF-2 and RF-3 were never
+taken, so the fold-in-before-RC-1 sequencing remains RECOMMENDED, UNRULED and nothing
+below it was licensed. The CC-1 hands-on queue was EMPTY at open. The session was
+finished in typed mode after a capability error (below) made the wrap impossible in
+voice.
+
+Michael ruled the session's scope in place of the work order: "All I wanna do is take
+care of the stuff that you said is not pushed to code yet... talk to you real quick,
+get through some items, some more design items here, and then make sure that everything
+is not just sitting in project knowledge that actually something happens with it."
+Scope is the three unfiled 2026-08-22 sessions reaching HEAD — not a queue sweep, not a
+hunt for old open items. He also asked for instructions for a Cowork session that could
+"go back through and find what's been open and package all that up"; Claude proposed and
+Michael accepted that such a session is ASSEMBLE-AND-REPORT ONLY — it files entries, it
+rules nothing.
+
+- **RULED (FO-1) — the software carries FIRM-LEVEL RECURRING OBLIGATIONS, not just
+  matter-scoped ones.** Michael: "The software should probably carry firm level
+  recurring obligations." Backup verification is the origin case — it attaches to no
+  matter, and neither does bar dues, insurance renewal, or CLE. Named at ruling time so
+  it is not discovered later: a firm-level obligation HAS NO MATTER TO HANG ON, and the
+  existing deadline machinery presumably keys off one (client, court, docket). This is a
+  new SCOPE for obligations, not a new type — that is the substance of the ruling. Two
+  consequences flagged: the calendar view must make firm obligations and matter
+  deadlines DISTINGUISHABLE and filterable out when looking at one case; and firm
+  obligations are the natural home for the heavy items — bar dues, malpractice renewal,
+  IOLTA reconciliation, CLE hours — a much weightier set than backup checks, and the
+  door this ruling opens.
+- **RULED (FO-2) — they STAY LIT UNTIL DONE. No snooze.** Michael, asked whether these
+  are dismissible the way a case reminder is: "it should stay lit till it's done"; and
+  on the heavy set: "those are hard deadlines... those are, like, do or die." This makes
+  them BEHAVIOURALLY DISTINCT from case reminders, which are snoozable. Design edge
+  named, PROPOSED and unruled: a court deadline and a bar-dues deadline FAIL
+  DIFFERENTLY — miss a filing date and there is a sanction or a dead claim in one
+  matter; miss your dues and every matter stops at once, because you cannot practise.
+  Arguably the firm-level ones are the MORE consequential class, which is the opposite
+  of how they would get built if nobody said it out loud.
+- **RULED (FO-3), IN TWO PARTS, AND THE SPLIT IS THE POINT — thin by default; the
+  QuickBooks limb is CONDITIONAL and unverified.** Three levels were laid out: thin
+  (date + name, software never knows the amount), middle (also carries expected amount
+  and payee — cashflow visibility), heavy (connects to the books and reconciles). Michael
+  ruled thin, then attached a second limb: he had seen a QuickBooks Online reference in
+  a build slice earlier in the week and wanted the integration dived into and made as
+  easy as possible if the software is already leaning that way. CLAUDE SPLIT THE RULING
+  RATHER THAN RECORDING IT WHOLE, and Michael confirmed the split ("Yeah. So it's
+  right."). FIRM: thin is the default — a firm obligation is a date, a name, and it stays
+  lit until done. CONDITIONAL, NOT RULED: IF a QuickBooks integration is genuinely in the
+  build or spec'd, THEN the firm-obligation record carries whatever hook makes the
+  expense side trivial rather than staying deliberately ignorant of it — and THE
+  CONDITION IS VERIFIED AT HEAD BEFORE ANYONE BUILDS ON IT. Recorded because the
+  reasoning is the durable part: Michael's recollection of a screen is a BUILD-STATE
+  claim, this session could not read BUILD-STATE, and letting the ruling rest on it is
+  precisely the failure the record took two days ago. The split preserved the ruling and
+  quarantined the premise. Reconcile against the QBO integration already staged as a
+  future module (link-don't-rebuild, read-only first) rather than building alongside it.
+- **THE DOCUMENT REQUIREMENT MOVED, and the answer came from outside the offered set —
+  CC-1(a) exhibit, the seventh.** Claude decomposed "mirror OneDrive" into three
+  genuinely different products (read-only window / true bidirectional mirror / app
+  authoritative with OneDrive as storage) and put the fork as desktop-versus-app.
+  Michael answered with a third thing: "It's necessary when I'm using Cloudlex on my
+  phone, when I'm using the mobile app. That's when it's one hundred percent necessary.
+  And I wanna be able to access every single document that's for that file that lives in
+  OneDrive." CONFIRMED: the trigger is MOBILE, not documents-in-the-app — on the desktop
+  Explorer and OneDrive are right there and the app adds nothing; on the phone there is
+  no usable file system, so the app becomes the SOLE ACCESS PATH in that context. And the
+  scope is deliberately EVERY document for the matter, not a curated subset, which kills
+  the short-list-of-what-matters design outright: on the phone Michael does not know in
+  advance what he will need. Two consequences named, both PROPOSED: mobile-first
+  relocates the hard problem from the mirror to DOCUMENT READABILITY ON A PHONE (a
+  fifty-page scanned PDF over cell signal); and "every document" collides with the PHI
+  boundary, sharpened by the phone-in-public context. THE PHI-BOUNDARY QUESTION WAS
+  ASKED TWICE AND ANSWERED NEVER — it is open.
+- **ARCHITECTURE CORRECTED BY MICHAEL IN ONE SENTENCE: CloudLex is the ORIGIN, OneDrive
+  is the mirror.** Documents are created in CloudLex, live on CloudLex's servers, and
+  CloudLex pushes every document it creates to Michael's OneDrive as a redundancy copy.
+  Claude had it inverted, and every inference drawn from "mirroring OneDrive" was
+  downstream of a premise Michael had never stated and Claude had never asked about.
+  Consequence drawn, PROPOSED and unruled: a mobile file view in Michael's own software
+  would be reading THE BACKUP OF A VENDOR'S SYSTEM, not a mirror; if
+  brennan-case-manager is the case manager then documents get created in it and IT does
+  the pushing — ownership of the document lifecycle, not a viewer feature, and it makes
+  the OneDrive copy his rather than a vendor's courtesy.
+- **THIRD-COPY BACKUP — full requirement set gathered, five questions answered.**
+  Michael: "I would like to have some sort of thing built up where I have double
+  redundancy." (1) VOLUME: CloudLex total storage is 6.87 GB today; ~1 TB wanted as a
+  future-proof ceiling — small enough that this is a cheap, boring problem and PRICE
+  SHOULD NOT BE THE DECIDING FACTOR, correctness should. (2) MACHINE: no always-on
+  desktop; the ThinkPad P1 is on most of the time but is a laptop that sleeps and
+  travels. (3) BAA: "The third copy would do the [BAA], obviously" — a HARD FILTER that
+  rules out the consumer tier entirely (Dropbox personal, Google Drive personal, iCloud
+  will not sign), leaving business-tier storage and backup vendors who sign as a matter
+  of course. (4) THREAT MODEL: not user error — "if Microsoft fails, what am I gonna
+  do?" Two requirements follow: the third copy must be GENUINELY INDEPENDENT OF
+  MICROSOFT, and a vendor quietly running on Azure gives the illusion of separation and
+  none of the substance — not visible from a pricing page, it requires checking where
+  bytes actually sit; and it must be RESTORABLE WITHOUT MICROSOFT IN THE LOOP, since if
+  the only path back is re-syncing through M365 the problem is not solved. Noted:
+  outright data loss by Microsoft is unlikely, but LOSS OF ACCESS — billing lapse,
+  account lock, tenant problem — is far likelier and does identical damage; same fix
+  either way. (5) CEILING: $50/month, given at close after four asks — generous headroom
+  at this volume, which is useful because it lets the search filter on correctness and
+  let price break ties only. A second consumer cloud was REJECTED and the reason encodes
+  a rule: same class of risk, a second BAA to chase, more exposure, little added
+  resilience. Object storage (Backblaze, an AWS bucket) was the shape favoured — a vault,
+  not a workspace. Overlap noted: Michael is already going to AWS for the Bedrock BAA
+  question on the disclosures model call, so both could ride one vendor relationship.
+  ALL VENDOR FACTS HERE ARE SEARCH-DERIVED AND UNVERIFIED against the vendors' own
+  pages; flagged in session and again in the research prompt.
+
+MICHAEL CHANGED POSITION UNDER PUSHBACK, BY REASONING RATHER THAN DEFERENCE, and the
+exchange is recorded because the conclusion is now his. He opened: "If the vendor messes
+up, it loses all my stuff. That's their insurance that's gonna pay for all the mess ups.
+I'm not too terribly concerned about making sure that they've been taking care of my
+data." Claude pushed back rather than letting it into the prompt. Michael then reasoned
+to it himself: "I guess there would be a liability cap somewhere... where the rest of
+the liability would fall on me. Right?" Two points established: vendor insurance covers
+the VENDOR'S CAPPED liability to Michael — typically a refund of recent fees, measured
+in dollars at 7 GB — and DOES NOT RESTORE FILES; and Michael's liability to his clients
+DOES NOT TRANSFER, because if a matter's documents are gone the duty to safeguard was
+his and the client and the State Bar look to him. The point of the third copy, in the
+form worth keeping: Michael never has to make the call where the answer is "my vendor
+lost it."
+
+RECORDED INTENT, EXPRESSLY NOT A RULING — vendor now, self-hosted server later. Michael:
+"Just chase the vendor, but make sure that we've got something noted here that when we
+wrap all this up and get it pushed to code, this gets canonized. That is something that
+I want to do in the future. I wanna get my whole server." A self-hosted third copy is
+the destination; a managed vendor is the interim; and THE REASON THE INTERIM WINS IS
+MICHAEL'S ATTENTION, NOT THE MONEY — that reasoning is the part worth preserving so it
+is not rebuilt from scratch in six months. Home-server risks named and kept for when the
+intent is executed: it is hardware he maintains forever; in his office it sits in the
+same building as everything else, which is no protection against fire or theft; and THE
+LIKELIEST FAILURE IS SILENT — a drive dies, a sync job breaks after an update, the
+service does not come back after a reboot — producing the worst outcome, believing you
+have a third copy for eight months when you don't. Its one genuine win: nobody can lock
+you out of it.
+
+CONFIRMED — BACKUP VERIFICATION IS TWO HABITS, NOT ONE. A HEARTBEAT answers "did the
+copy run" — last successful copy, shout if that is more than a few days ago. A RESTORE
+TEST answers "can the data actually come back" — pull a handful of files, confirm they
+open; roughly 20 minutes quarterly at 7 GB. The first tells you the pipe is alive, the
+second tells you the copy is real, and doing only the first is the common failure.
+FLAGGED EXPLICITLY, and it is why this is a hard requirement rather than a preference:
+THE MONITORING REQUIREMENT APPLIES TO THE VENDOR TOO, NOT JUST THE SERVER — written only
+next to the server idea it gets dropped at the switch. It enters the research prompt as
+a hard requirement.
+
+ONE CLAUDE ERROR, made and corrected in session, recorded with correction-entry
+substance on the precedent of this date's typed session; nothing reached the record.
+WHAT WAS ASSERTED: in voice mode Claude said "Let me run the wrap now," then "Give me a
+moment to write the three files," then, on Michael's go-ahead, "Understood — writing
+them now." WHAT IS TRUE: the claude.ai VOICE surface has no file-delivery path — no
+present_files, and the container is not a place Michael can retrieve anything from; had
+the call ended there he would have come back to nothing. HOW IT WAS CAUGHT: Claude
+stopped mid-sentence on the third assertion and corrected before Michael dropped off,
+told him the wrap must be run in typed mode, and read the three rulings back verbatim
+in-channel so they would survive even if the transcript did not; he switched and the
+wrap ran. ACTOR: Opus 5, read from the session environment, not inferred from session
+type. FAILURE CLASS: capability asserted from pattern without a read — the
+verify-before-asserting family, THIRD INSTANCE IN THREE DAYS, the prior two being this
+date's typed session error (1) (bridge availability asserted, then found absent by
+tool-list read) and #133's correction 3 (an actor named for a step he cannot perform).
+AGGRAVATED: this session had already run an explicit bridge-capability check at
+preflight precisely because of that failure class, and then made the same class of error
+about a different capability forty minutes later — CHECKING ONE CAPABILITY IS NOT
+CHECKING THE SURFACE. WHAT CHANGED: the offer was withdrawn the same turn it was found
+false; cost was one mode switch. FALLING OUT OF IT, PROPOSED AND UNRULED: the existing
+operational note ("VOICE SESSIONS WRITE NOTHING TO DISK ON THEIR OWN... Run refresh-chat
+at the end of every voice session without being asked") is incomplete in a way that
+matters — REFRESH-CHAT CANNOT BE RUN FROM VOICE AT ALL; the wrap requires a mode switch
+to typed, and CC-1(c) is designed to produce more voice sittings, not fewer, so this
+recurs every time. Carried as an instructions touch-up, not a trigger-3 fire — it is an
+operational note, not a binding convention.
+
+PROVENANCE CAUTION CARRIED ON THIS ENTRY'S FACE, DELIBERATELY. This session had NO
+DEVICE BRIDGE (tool inventory checked in-session, not remembered: CourtListener,
+Microsoft 365, Chrome, a sandboxed container; no device_request_folder_access,
+device_bash or device_stage_files) and COULD NOT READ BUILD-STATE.md OR
+session-log-head.md IN FULL — only RAG fragments, from which the log was seen to run
+#65–#134 gapless with 145 index rows, 70 design / 59 runner / 16 code. The three rulings
+are real and were made knowingly, but they were made WITHOUT a BUILD-STATE read, and
+FO-3's second limb is expressly conditional on a fact nobody in the session could
+verify. ID SERIES CAUTION: FO-, BR- and DA- are PROPOSED IDs, not minted ones — per
+#133, an ID is not an identity until the row is read, and when a series is found to
+collide the WHOLE series is enumerated before the fix is scoped. Each must be
+collision-checked repo-wide before filing.
+
+**Next:** Michael uploads the two _Voice2 files to project knowledge one at a time; the
+Cowork packaging session files THIS entry plus the two earlier 2026-08-22 entries in ONE
+packet, assemble-and-report only; a Claude Code queue-runner session then runs it on the
+machine whose inbox received the zip. Then the vendor research, whose output is a
+proposal and rules nothing. Carried and untouched: the entire disclosures fold-in work
+order (RF-2, RF-3, RF-5, RC-2, SK-v2 closure, RF-7, the RECON-1 open list) — FILING
+THESE THREE ENTRIES DOES NOT DISCHARGE IT; the entries record what was ruled, the fold-in
+is what puts those rulings into the REQ-CAPTURE. Also carried: the H12-v vendor-route
+queue row; the refresh-chat skill's routing-template path fix.
+
+**Staged for Code:** none — nothing entered the queue and nothing may until Michael rules
+a packet ready. No packet exists.
+
+**Awaiting/Returned from Code, unreviewed:** none new. (Carried, unverified, NOT
+re-asserted: MIG-1 — the FE-D1 migration reported unrun — is retrieval-derived; check at
+HEAD, and check the entry that would have cleared it, before carrying it again.)
+
+## 2026-08-22 (#136) — (Typed design session, Fable 5: disclosures REQ-CAPTURE verified ABSENT
+at origin/master — fetch + ls-tree, positive control fired; §0.2's master-skeleton
+orphan re-verified from origin, so TWO disclosures REQ-CAPTUREs are unfiled; a Claude
+bridge-capability error made and corrected in session; fold-in-before-RC-1 sequencing
+RECOMMENDED, unruled)
+
+A typed session that opened with the v27 instructions and the RC-1 voice prompt pasted
+into it, flagged the mismatch (the prompt addresses a fresh VOICE chat), and became a
+verification-and-sequencing sitting instead. Michael never designated it as either the
+fold-in or the RC-1 session, and neither was performed: no fold-in work was done, no
+RECON-1 item was ruled, R11 stayed untouched, and nothing was staged for Code. The
+CC-1 hands-on queue was EMPTY at open and is EMPTY at close.
+
+- **VERIFIED — the disclosures REQ-CAPTURE does not exist at HEAD.** Michael ran, in a
+  Claude Code session at Claude's dictation:
+  `git fetch origin && git ls-tree -r --name-only origin/master docs/specs/ | grep -i req-capture`.
+  Result: SIX REQ-CAPTURE files on origin/master, all dated 2026-08-11/12
+  (attorney-edit-roundtrip, deficiency-handling, roster-mining-pass,
+  trucking-multidefendant-first-sets, uim-udja-petition-transform,
+  uvalde-docket-worksheet). `REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md`
+  is NOT among them. The command reads origin's tree, not the worktree — chosen
+  deliberately over worktree reads (LE-1's false-dirty wall; a worktree read is never
+  evidence about origin). Caveat stated, not smoothed: the result reached this session
+  as Code's formatted relay, not raw stdout.
+- **CORROBORATED from an independent record: six filed plus one unfiled equals seven.**
+  The draft's own header calls itself the "Seventh REQ-CAPTURE through the channel."
+  Two records written independently agree on the count. The other 2026-08-20 orphan
+  does not disturb the arithmetic — §0.2 records the master-skeleton capture as never
+  having entered REQ-1 at all.
+- **VERIFIED — the negative has a positive control.** Second command, whole-tree:
+  `git ls-tree -r --name-only origin/master | grep -i disclosur` returned exactly
+  three paths — `docs/skills/drafting-disclosures/SKILL.md` (the control, which
+  fired), `src/forms/skeletons/disclosures-plaintiff-v1.docx`, and
+  `src/forms/skeletons/disclosuresSkeleton.ts`. Nothing under `docs/specs/` carries
+  the word in a filename. The only copy of the addendum content anywhere is the
+  project-knowledge draft.
+- **VERIFIED — §0.2 re-confirmed from origin, two days later, by a different command
+  that was not looking for it.** The two `src/forms/skeletons/` hits are exactly the
+  shape §0.2 recorded from a checkout `find` on 2026-08-20: the FE-D1 build committed
+  the master .docx and its skeleton map while
+  `REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md` itself went nowhere. TWO
+  disclosures REQ-CAPTUREs are therefore unfiled: the expert-designation draft (in
+  project knowledge) and the master-skeleton capture (location unconfirmed; per H5 no
+  machine search without Michael's direction). §0.2's hand-in ask remains unanswered —
+  its Q3 and Q5 bear on R2 and R16, and the build acted on it under stated assumptions.
+- **EVIDENCE-CHAIN REPAIR, recorded because the corrected form is the citable one.**
+  An answer relayed into this session reasoned "nothing since the 2026-08-21 read
+  should have changed it: no packet exists." That bridge is FALSE — the queue runner's
+  eighty-first invocation (THE BACKFILL) ran and pushed on 2026-08-22. What actually
+  carries the inference across that batch is the batch's own DO-NOTs line at HEAD:
+  "RECON-1 was not touched," §5 NONE, staged-for-Code none. The session treated the
+  relayed "verified 2026-08-21 by full-text read" claim as a claim to test, not
+  evidence to adopt — its provenance was not this session's to assert.
+- **PROPOSED — relabel the draft's "Canonical repo path:" header line.** On an unfiled
+  draft that line reads as an address when it is an intention; at least four sessions
+  have read it. Proposal: "Canonical repo path WHEN FILED" (or DESTINATION) on the
+  disclosures draft and as the format convention for future REQ-CAPTURE drafts.
+  Unruled; folds into the fold-in.
+- **RECOMMENDED, UNRULED — the next session is the typed Opus fold-in, and RC-1 is
+  unbundled from it.** The fold-in folds rulings already taken and waits on nothing;
+  every session run before it grows a reconciliation surface already seven captures
+  deep. Its packet would: file the addendum for the first time (the path becomes an
+  address), fold 2026-08-21 as first application and 2026-08-22 as the
+  rewrite-not-annotate pass (widgets B/D/F, ND-3, §8 Q1/Q9), apply the header relabel,
+  close SK-v2, file the two unfiled 2026-08-22 entries with numbers verified at HEAD,
+  then RR-1, PF-1, RE-SWEEP, stopping for Michael's ruling before the zip closes.
+  RC-1 is separately argued to be Fable-class (a schema fork: floor-as-emitted-text
+  vs floor-as-checked-content, upstream of the hard stops and HD-20-b) — but Fable
+  means typed; voice runs Opus; the routing is Michael's, and it turns on a usage-meter
+  reading he has not yet given (asked twice this session, unanswered). Michael's
+  response to the recommendation was "Refresh chat" — NOT agreement; the
+  recommendation is on the record as a recommendation only.
+
+TWO CLAUDE ERRORS, both Fable 5, both caught in session, neither reaching the record —
+recorded here with correction-entry substance, on the voice-session precedent for
+in-session errors. (1) WHAT WAS ASSERTED: that the device bridge was available —
+"grant the bridge on the checkout and I'll read HEAD directly," followed by an
+instruction to come to the keyboard so the folder request could fire. WHAT IS TRUE:
+no device-bridge tool exists in this session; the claude.ai chat surface carries
+CourtListener, Microsoft 365, Chrome, and a sandboxed container that cannot see
+Michael's machine — verified by tool-list read and tool_search AFTER the offer, when
+the decisive check was available before it. WHAT IT CORRECTS: nothing filed; caught
+before any record entry carried it. ACTOR: Fable 5. FAILURE CLASS: capability
+asserted from pattern without a read — verify-before-asserting family, kin to #133's
+correction 3 (an actor named for a step that cannot be performed) and to the
+consistent-signal-over-decisive-check note; aggravated by being made in the same
+breath as flagging an unverified inference in someone else's text. WHAT CHANGED: the
+offer was withdrawn the same turn it was found false, the decisive origin-read
+command was handed to Michael for a Code session, and the finding above rests on that
+command instead. Cost: one trip to the keyboard. (2) WHAT WAS ASSERTED: in offering
+to draft correction (1), Claude named its own actor "Opus 5." WHAT IS TRUE: this
+session runs on Fable 5. FAILURE CLASS: inferring the model from session type — the
+precise inference the correction-entry rules forbid. Caught at capture-writing;
+corrected before anything was filed.
+
+Process declines, logged because the reasoning is part of the record. Code offered to
+grep src/ CONTENTS for the FE-D1 engine and relay the results; DECLINED — design
+sessions do not read src/, and a relay through Code is the exclusion with one extra
+step in it; BUILD-STATE remains the design side's only authority on what is built.
+Code's relay also rendered repo paths as claude.ai/epitaxy/... links — harmless in
+chat, flagged as a bad-cite shape (same class as claude/<filename>) that must not
+enter captures or the record; paths only. A model-usage observation, recorded not
+ruled: this session ran on Fable while its work (verification relay, sequencing,
+capture assembly) is execution-class under §7.2; the fold-in is routed Opus.
+
+**Next:** Michael rules the sequencing (fold-in next, or otherwise); states the Fable
+meter reading before routing RC-1; decides whether to hand in the master-skeleton
+REQ-CAPTURE so the fold-in reconciles both. Then the fold-in session per its standing
+order. Carried: RC-1 voice prompt regeneration as a fold-in deliverable (its state
+paragraph goes stale the moment the fold-in files things); the refresh-chat skill's
+routing-template path fix (still names docs/specs/session-log.md; TC-4 moved the log).
+
+**Staged for Code:** none — nothing entered the queue and nothing may until Michael
+rules the fold-in packet ready. No packet exists.
+
+**Awaiting/Returned from Code, unreviewed:** none new. (Carried, unverified, NOT
+re-asserted: MIG-1 — the FE-D1 migration reported unrun — is retrieval-derived; check
+at HEAD, and check the entry that would have cleared it, before carrying it again.)
+
+## 2026-08-22 (#135) — (Voice design session, Opus 5: RECON-1 floor ruled — three mandatory
+elements over free-varying prose; three engine hard stops; R13 retired; widget B
+becomes voice examples; four provider shapes; chronology ruled a model input and the
+selection unit moved from person to FACILITY)
+
+RECON-1's first substantive ruling sitting, run in voice. Fourteen rulings taken,
+one at a time, on the disclosures / expert-designation module. Nothing was staged for
+Code and no packet exists; the fold-in is a typed session after this one. R11 stayed
+gated throughout — no TRCP 195.2 deadline was computed, displayed or proposed. The
+hands-on queue was EMPTY at open (CC-1(c)) and tonight's volume came from RECON-1's
+own open set.
+
+- **CONFIRMED — paragraph wording varies over a verbatim floor.** Michael: "it's fine
+  if they vary paragraph to paragraph so long as each one is accurate and reads well.
+  However, there are some lines in there that need to be in there." A composite, not a
+  selection from the two branches offered — CC-1(a) exhibit six.
+- **CONFIRMED — three mandatory elements.** (1) BASIS: the physician testifies based on
+  personal treatment of the client, review of the medical records, and personal
+  knowledge gained from education, training, experience and research. (2) CAUSATION:
+  that the injuries treated were, within a reasonable degree of medical probability,
+  caused by the incident occurring on [incident date]. (3) CUSTODIAN: an "and/or
+  custodian of records" line in the provider BLOCK, positioned between the treating-
+  provider names and the facility name, plus one sentence in the paragraph on what the
+  custodian testifies to. Michael ruled the custodian line DEFAULT ON — "let's just make
+  it default" — which makes it unconditional, i.e. a third mandatory element rather than
+  a conditional one, stated as such in session and not dissented from.
+- **CONFIRMED — three engine HARD STOPS, not warnings.** Never emit a paragraph missing
+  the causation line; never emit a date that disagrees with the matter record; never emit
+  a provider paragraph with no facility. Michael: "those are hard stops. You can't
+  violate those ones." This SUPERSEDED the earlier ruling in the same session that the
+  date check would be a warning naming the provider on the HD-22 precedent.
+- **CONFIRMED — four provider shapes** where the addendum had one plus exceptions:
+  treating (floor as written); radiologist (basis limb swaps personal treatment for
+  personal interpretation of the imaging studies; causation line kept AS WRITTEN but
+  EXPRESSLY PROVISIONAL); prehospital EMS (treating shape — they examined on scene,
+  treated, did diagnostics, transported); and pharmacy (records-and-billing only — no
+  basis line, no causation line, because nobody there examined client or image).
+- **CONFIRMED — widget B: the twelve §9 variants become VOICE EXAMPLES.** They no longer
+  seed and no longer produce output; the model composes and hits the floor, borrowing
+  register from the samples. ND-3's near-identical-paragraph lint is REMOVED with it.
+- **CONFIRMED — widget F / R13 RETIRED, not answered.** FE-8's diff half stays deferred;
+  RECON-1 is not its consumer after all, which reverses the addendum's recommendation.
+- **CONFIRMED — the chronology.** One drop zone in the Medical tab, source-agnostic
+  (vendor PDF/Excel/JSON/CSV or hand-built Word/Excel); an in-app text box was proposed
+  and REJECTED. Two production tracks split by case economics: a token-based third-party
+  service (one token per MATTER, unlimited regeneration) on treatment-heavy cases, and
+  hand-built on the routine ones.
+- **CONFIRMED — the chronology IS a model input, correcting Claude in session.** Claude
+  asserted twice that nothing reads it; Michael corrected with evidence from a workflow
+  he has already run by hand. The split: the MEDICAL TAB decides WHO is designated
+  (legal judgment); the CHRONOLOGY supplies WHAT IS SAID about them.
+- **CONFIRMED — the selection unit is the FACILITY, and the model extracts the
+  individuals.** Michael selects facilities; the model reads the chronology and builds
+  the provider block from every named person it finds there. Reconciled expressly against
+  ND-1/ND-2: the facility is HOW HE PICKS, individuals remain WHO IS DESIGNATED. In his
+  words, the point of the module is that "what's gonna be automated is picking all the
+  individuals out of the records."
+- **CONFIRMED — no review step on the extracted list; over-inclusion is deliberate.**
+  "Just put everyone on the block… I don't care how long the provider block is. If we
+  list everyone in there, doesn't hurt me at all. Could only potentially help me."
+- **CONFIRMED — one paragraph per FACILITY**, covering its individuals collectively;
+  same shape singular when a facility has one person.
+
+The reason the causation line is load-bearing, in Michael's words and recorded because
+it is the point of the module: "That's the line. That gives us medical causation… we
+need a medical expert to be able to give us causation… expert medical testimony that the
+injuries that my client is claiming to have sustained in the wreck were caused within a
+reasonable degree of medical probability by that wreck or that fall or whatever the
+personal injury incident was."
+
+CC-1(a) fired a sixth time and in a NEW FORM worth naming: two widgets were DISSOLVED
+rather than answered, because their premises did not hold. R13 presumed a per-paragraph
+review state the software has no way to observe — Michael: "isn't the software just gonna
+produce the Word document and generate it, and then I'm gonna download it?" — and widget
+D presumed the pharmacy was a provider. Neither answer was on any option list. When a
+widget resists, check its premise before pressing.
+
+THREE CLAUDE ERRORS, all caught in session and all logged in the capture's PART 8.
+(1) Claude asserted twice that the chronology was inert and nothing read it; Michael
+corrected it. Failure class: asserting a design consequence from a partial ruling instead
+of asking — and doing so in answer to a question Michael had raised precisely as a check.
+(2) Claude offered "warning on the wording, hard stop on the date" as though a
+wording/date split had been ruled; no such split existed. Michael caught it — "what was
+the exact wording that I've said to give a warning on?" — and Claude retracted. Failure
+class: manufacturing a prior ruling to make a new question tidier; adjacent to
+sycophantic drift, different shape, same cost. (3) Claude asserted that several
+2026-08-22 captures already existed in project knowledge and that a filename suffix was
+needed; a directory listing at close showed ZERO. Failure class: VERIFY BEFORE ASSERTING,
+the same class logged repeatedly on repo state, now on project-knowledge state.
+
+Side threads opened and not closed: the FORM of the floor — fixed text the engine emits
+versus a required-content check over model-composed prose — was asked and cut off
+mid-sentence and is the resume point; the causation line's ruled wording is SINGULAR and
+one-paragraph-per-facility makes it collective, which nobody has resolved; widget G was
+approved in principle but NO ID WAS ACTUALLY MINTED; and Michael's "CPRC eighteen dot
+zero zero one" for the reasonable-and-necessary predicate is RECORDED UNVERIFIED as a
+registry candidate — Claude asserted no cite and confirmed none.
+
+The design has moved materially away from the 2026-08-20 addendum. Its shape was: twelve
+templates produce paragraphs, the person is the unit, a review gate protects the render.
+All three are now false. RR-1 forward: §8 Q1, §8 Q9, §9's framing, ND-3, R13 and widget D
+must be REWRITTEN, NOT ANNOTATED.
+
+**Next:** typed Opus 5 fold-in session. `RC-1` (the form of the floor) goes first, then
+`RC-2` (mint widget G's ID), `RC-3` (collective inflection of the causation line), then
+the untouched widgets A, E-remainder and H, then the 2026-08-21 residue (HD-20-b,
+HD-20-c, HD-21-med, CD-14's time limb).
+
+**Staged for Code:** none — nothing enters the queue until the addendum is folded in and
+Michael rules a packet ready. No packet exists. The addendum is STILL not at its canonical
+repo path; the eventual packet files it for the first time.
+
+**Awaiting/Returned from Code, unreviewed:** none from this session. (Carried, unverified,
+NOT re-asserted here: `MIG-1` — the FE-D1 migration reported unrun — is retrieval-derived
+and must be checked at HEAD, not carried forward as fact.)
+
 ## 2026-08-22 — QUEUE-RUNNER batch (runner line; EIGHTY-FIRST invocation) — one docs-only packet, TWO routing rows: THE BACKFILL — five design sessions that existed nowhere but project knowledge are put on the record at the numbers batch 80 reserved for them, the disclosures `H` collision is caught one step before it would have closed two unrelated heartbeat items, and the numbered series is GAPLESS again
 
 **THE PACKET.** `push-to-code_backfill_2026-08-22.zip`, identity pinned at Step 1 per QR-6(c) — **44,795 B, mtime 2026-08-22 13:44:41 Central, sha256 `a337f38ce14ce667bd01d40b87029c90c7a24321cd0d24bf5f7465a2821ef573`**. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in the manifest's order, §4.1 then §4.2.
