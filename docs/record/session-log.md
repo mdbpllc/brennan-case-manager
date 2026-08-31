@@ -17,6 +17,217 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-31 — QUEUE-RUNNER batch (runner line; EIGHTY-THIRD invocation) — one docs-only packet, and four files that had never existed anywhere in git reach HEAD together: the disclosures REQ-CAPTURE is FILED AT ITS CANONICAL PATH FOR THE FIRST TIME, the hardened audit and the first `TC-OPEN-2` survey land beside it, `SK-v2` closes, and Michael rules ADD NONE and DO NOTHING on the packet's two conditional rows
+
+**THE PACKET.** `push-to-code_recon1-disclosures-fold-in_2026-08-25.zip`, identity pinned at Step 1 per QR-6(c) — **108,712 B, mtime 2026-08-25 15:40:30 Central, sha256 `bfb23b6807d84e510996dd514c305c3d721a654965fe282ada60c15422d8f450`**. One manifest, 424 lines / 46,722 B, plus **four staged deliverables totalling 225,504 B** — the largest freight any batch has carried. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in routing order — rows 1, 2, 7, 8 (the four files), then 3 and 4 (the queue), then 5 (this log). **Rows 6 and 9 are the conditional pair and both resolved to their stated defaults, on Michael's answer in session rather than on the runner's own reading.** Nothing is carried forward from batch 82: its commit `edea20b` is on origin and its zip is gone from `inbox/`, so neither of QR-5's two carry-forward conditions fired.
+
+**STEP 0 GATE PASSED ON LIVE EVIDENCE, NOT ON A TRACKING REF (QR-6(a)).** `git fetch origin` then `git ls-remote origin refs/heads/master` put origin at `edea20b8e7ee082903293562d2a24c13c0eea881`, equal to `git rev-parse HEAD`, with `git rev-list --left-right --count origin/master...HEAD` reading `0  0`, the tracked tree clean and on `master`. **That is the same commit the packet's §1 names as its live bridge read**, so no reconcile delta existed against it — the third consecutive batch in that posture. **Step 0 item 5 (TC-4) held:** `docs/record/session-log.md` exists and `docs/specs/session-log.md` does not, so the thin-constitution move is complete rather than half-executed. **Step 0 item 4 held without an edit:** `Bash(rm -f inbox/*)` was already in `.claude/settings.local.json`.
+
+**HEALTH CHECK SKIPPED, AND RECORDED RATHER THAN SILENT (QR-6(f)).** Docs-only batch: **§5 is NONE and says so in terms**, and no `src/`, `db/`, `supabase/` or build-tooling path is written by any routing row — the routed paths are four new `docs/` files, `docs/specs/attorney-review-queue.md` and this log, joined at close-out by the two derived files and BUILD-STATE. `npm test` / `npm run build` / `npm run lint` would prove nothing about a batch that changed no code, so the trio was not run and **no health figure is claimed here.**
+
+**THE ALREADY-EXECUTED CHECK RAN AND FOUND NEITHER OF THE TWO STATES QR-5 SEPARATES.** Each of the four destinations was tested **twice and independently** — `git ls-tree -r --name-only HEAD -- <path>` for "at HEAD," and a filesystem test for "in the working tree" — and all eight came back absent, so the packet was neither already executed nor committed-but-unpushed. The REQ-CAPTURE got the packet's own command form re-run rather than carried: `git ls-tree -r --name-only HEAD docs/ | grep -i req-capture` returned **six**, all dated 2026-08-11/12, with `REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` not among them, **against a positive control on the same command that fired** (`grep -i session-log-head` → one hit). The packet's §1 instructed a STOP if the path were occupied; it was not.
+
+- **ROW 1 — THE FILE THAT HAD NEVER EXISTED IS AT HEAD.** `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md`, **153,103 B, zero CR**, copied whole and **not edited by one word** per §4.1 — the file carries Michael's verbatim in Parts 1–8, roughly forty further direct quotations, eight DO-NOT-ATTRIBUTE guards and a supersession ledger whose accuracy depends on the sections it names being exactly as written, so a tidy-up would have been a corruption. **The claim is a byte claim, not an assurance: `cmp` against the packet copy returned equal.** The `2026-08-20` filename stamp is preserved and was not restamped to the landing date. **Its "Canonical repo path" line has been an INTENTION for eleven days and is an ADDRESS as of this batch.**
+- **ROW 2 — the RC-1 voice prompt**, `docs/prompts/PROMPT-rc1-voice-the-form-of-the-floor.md`, **14,057 B, zero CR, `cmp`-equal**. **The filename changed on landing** exactly as §4.2 directs: the packet copy carries a date stamp and the `claude_`-style underscore form, the repo copy takes the `docs/prompts/PROMPT-<topic>.md` shape. `docs/prompts/` is the ruled home for cross-interface prompts (Q-2), and it held no RC-1 prompt.
+- **ROWS 7 AND 8 — the two evidence-only passes, both filed, both adjudicating nothing.** `docs/specs/attorney-review-queue-audit-HARDENED-2026-08-25.md` (**36,000 B**) and `docs/specs/superseded-specs-candidates-2026-08-25.md` (**22,344 B**), each `cmp`-equal and zero-CR. The hardened file is a **second, later, evidentiary layer** over `attorney-review-queue-audit-2026-08-24.md` and does not replace it — which is a live distinction here, because **the file it layers over is not in git at all** (see the last bullet). Neither method caveat on the survey's face was smoothed away.
+- **ROW 3 — `SK-v2` CLOSED, and the edit is arithmetic rather than assertion.** Found by its text, not by the line number the packet gave (it was in fact still line 1241). Two acts on one line: the leading `⬜` flipped to `✅`, and the §4.3 closure sentence **extracted from the manifest by line slice and never retyped**, appended after the existing `#45` parenthetical with nothing already there changed. **The row grew by exactly 884 bytes, which is the closure sentence plus one joining space** — so no trailing content was lost to a `rstrip` — and **every other line in the 636 KB file was verified byte-identical.** The closure also discharges the standalone hand-upload item absorbed from `#45`. It is ROUTED, not decided: the evidence is Michael's from 2026-08-21 and the closure was staged design-side at `#129`.
+- **ROW 4 — the Status-header reconcile sentence, the act QR-6(b) exists because sessions drop.** Written for this batch rather than copied from batch 82's. **Counts were MEASURED with a matcher that sees all three markers and not asserted from the packet: 357 → 356 `⬜`, 124 → 125 `✅`, 5 → 5 `🟡`, 486 marked rows unmoved** — the single expected move and nothing else. **The open figure is stated both ways — 356 `⬜`, or 361 open-in-substance — because the file's own Convention line documents only TWO markers where the file uses THREE**, so the two obvious regexes silently drop `HK-6`, the GPU-telemetry posture item, `V-5`, `V-6` and `V-7`. **The Convention line was NOT repaired.** No routing row in the packet reaches it and QR-6(e) reserves an unrouted act to Michael; it is named in the header and here, and it is a small standing hazard for every future reconcile sentence.
+- **ROW 6 — NO QUEUE ROW WAS ADDED, and the default was CONFIRMED rather than assumed.** §4.5 makes the row half conditional on Michael having named specific rows; he named none, and **he was asked in session and answered ADD NONE.** The roughly forty open items in the filed REQ-CAPTURE's §18 — the `RC` series, the ELEVEN unminted `§18.B` seams, the `HD` residue, `R11` — stay his to mint. **What changes is that §18 is now AT HEAD, so that question text has a durable home for the first time instead of living only in a zip that gets deleted**, which is the precise failure QR-1 was ruled to prevent.
+- **ROW 9 — THE TWO UNTRACKED FILES WERE LEFT EXACTLY WHERE THEY ARE, ON MICHAEL'S ANSWER.** ⛔ `docs/specs/attorney-review-queue-audit-2026-08-24.md` (27,133 B) and `docs/specs/id-collision-report.md` (54,218 B) **are in the working tree and are not in git** — they are the only two untracked files in the repository, both carry *"Canonical repo path WHEN FILED"* on their faces, and neither was ever filed. `id-collision-report.md` holds findings existing nowhere else, including the heartbeat register's true `H1`–`H83` range where this record had assumed `H1`–`H23`. **Both are one `git clean` from destruction.** He was asked in session and ruled **DO NOTHING**; they were not added, not moved, not deleted, and not `git clean`ed. **They stay at risk by his choice and not by anyone's oversight — which is the only reason this bullet exists.**
+- **MEASURED, NOT CARRIED (OPEN-5(a)), AND THE PACKET SAID SO ITSELF.** §4.6 predicted BUILD-STATE's entry count would be N+2 and instructed the runner not to carry it — **two consecutive batches had missed their own prediction for exactly that reason.** Measured at HEAD after this batch's two entries: **151 `##` headings in the live log; 74 design `#nn` entries, `#65`–`#138`, gapless and with no duplicate; 60 runner lines.** `attorney-review-queue.md` **639,189 B / 1,130 non-blank**, up 3,652 B on two edited lines. The four new files add **225,504 B** to `docs/`.
+
+**WHAT THIS BATCH DID NOT DO, because the packet's §6 bars each of them and each had a live way to go wrong here:** no ID was minted — not `RC-2`'s provider-record ID, not the eleven `§18.B` seams, not `FE-18`–`FE-22`, not `CD-14`; `HD-20-b` was left flagged and not adjudicated; **no TRCP 195.2 designation deadline was computed, displayed or proposed** and `R11` stayed gated; `form-engine.md` and `contact-directory.md` were not opened; **no `src/` file was read or written**; `db/migrations/2026-08-20-fe-d1-form-engine.sql` was not run and remains Michael's hand under `HD-18`; no `claude_` capture was relocated, deleted or added; no `H` → `HD` renumber was applied to anything; and `docs/specs/session-log-head.md` was regenerated wholesale rather than written to by hand.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** the four files filed by this batch — the disclosures REQ-CAPTURE above all, whose §18 is the design side's first durable copy of that question set. *(Carried, unverified and NOT re-asserted: `MIG-1`, the FE-D1 migration, still reported unrun.)*
+
+## 2026-08-25 (#138) — (Typed design session, Cowork, Opus 5, DEVICE BRIDGE GRANTED: RECON-1 DISCHARGED —
+the disclosures REQ-CAPTURE is FILED FOR THE FIRST TIME, rewritten not annotated at ten sections, with
+RC-1/RC-2/RC-3/R11 left visibly open; RF-3's 2026-08-24 sequencing ruling reaches the record; ELEVEN NEW
+SEAMS surfaced by the fold-in itself, none of them minted; the RC-1 voice prompt regenerated and SK-v2 closed —
+PLUS the 2026-08-24 audit HARDENED and TC-OPEN-2 surveyed, both evidence-only, which together found that
+the 2026-08-24 audit and its collision report ARE NOT AT HEAD)
+
+RECON-1's first application, owed since 2026-08-20 and named UNSTARTED on batch 82's own face. Seven
+project-knowledge captures were read in parallel and reconciled centrally against the 2026-08-20 draft,
+against BUILD-STATE at HEAD, and against the live log at `docs/record/`. THE FOLD-IN RAN AND SHIPPED.
+Nothing was ruled, minted or retired by this session, and no open QUESTION was closed — the one
+queue row that closes, `SK-v2`, closes on evidence Michael gave on 2026-08-21, was staged design-side at
+`#129`, and is ROUTED by this packet rather than decided by it. No TRCP 195.2 designation deadline was
+computed, displayed or proposed; `R11` stayed gated throughout; no `src/` file was read or written; and
+no `claude_` capture was relocated, deleted or added. The CC-1 hands-on queue was FORMALLY EMPTY at open
+and at close — sixteen items are proposed and unaccepted, four of them ripe now.
+
+- **RULED 2026-08-24, and it reaches the record here because it exists nowhere at HEAD — `RF-3`: THE
+  FOLD-IN RUNS FIRST; `RC-1` STAYS SEPARATE.** The two had travelled as one act since the 2026-08-22
+  voice handoff and were unbundled deliberately: the fold-in folds rulings ALREADY TAKEN and waits on
+  nothing, while `RC-1` is a FORK — floor-as-emitted-text vs floor-as-checked-content — that decides what
+  a paragraph is in the schema. Recorded on 2026-08-22 as RECOMMENDED and UNRULED, Michael's answer then
+  having been "Refresh chat," which is not agreement. **PROVENANCE STATED RATHER THAN SMOOTHED: no capture
+  exists for the 2026-08-24 sitting and no verbatim was carried into this session; the ruling reaches this
+  entry through the work order that opened the session, not through a capture. If the wording matters
+  later, it is not on the record and Michael is the only source.**
+- **FILED FOR THE FIRST TIME — `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md`.**
+  Verified ABSENT at this HEAD by `git ls-tree -r --name-only HEAD docs/ | grep -i req-capture` (six
+  returned, all 2026-08-11/12; positive control fired) — the same command form that proved it on
+  2026-08-22, re-run rather than carried, because the finding was dated and this packet is designed to
+  change it. **The "Canonical repo path" line on its face has been an INTENTION for five days and becomes
+  an ADDRESS with this batch.**
+- **REWRITTEN, NOT ANNOTATED, at ten sections.** `#135`'s standing instruction was explicit — and it is the
+  CAPTURE'S wording, i.e. Claude's, not Michael's: "The addendum's shape was: twelve templates produce
+  paragraphs; the person is the unit; a review gate protects the render. All three are now false." What is
+  Michael's is each of the rulings that made them false. Rewritten: §1.2/§1.4 (the defect sits one layer upstream;
+  the chronology is the engine's real input), §1.6 (FE-18 facility-keyed, wording NOT ratified), §2 (the
+  rename RULED IN, this section's own recommendation REJECTED), §3, §4 (ND-3's lint REMOVED, unit re-based
+  to the facility; ND-8 elevated to load-bearing), §5, §6 (FE-19 moved upstream onto provider records and
+  never blocks), §7 (re-scoped by TRACK — two of four tracks need no work), §8, §10. **No superseded text
+  is reproduced beside its replacement and no parallel disclosures spec was created**; a supersession
+  ledger on the file's face names every rewritten section and what rewrote it.
+- **A DEFECT IN THIS SESSION'S OWN DRAFT, CAUGHT BY ITS RE-SWEEP AND FIXED BEFORE SHIPPING (RE-SWEEP AFTER
+  FIX, `#118`).** Three sections cross-referenced a `§12.4` that did not exist, and behind the dead pointer
+  sat a real hole: **widget B's ruling — the twelve `form-engine.md` §9 variants become VOICE EXAMPLES, the
+  single largest change to the module's shape — had no home section, and neither of Michael's two verbatims
+  for it appeared anywhere in the file.** A four-word paraphrase pointing at a missing section was
+  protecting it. `§11.7` now carries the ruling with both quotations and the three references point there.
+  **The fix pass got its own check, which is the whole point of the rule.**
+- **§§11–19 ADDED, carrying the content the addendum had no section for:** the FLOOR and its three
+  mandatory elements; the three engine HARD STOPS; the FOUR provider shapes; the chronology; the selection
+  unit and paragraph granularity; the model call and return path; the Medical tab, provider record and
+  provider block; the open list; and `RF-5`. Michael's verbatim throughout, with all SIX capture-time
+  DO-NOT-ATTRIBUTE guards preserved as marked, and TWO MORE ADDED where this fold-in found a design
+  conclusion stated flatly with no capture behind it — eight in all.
+- **LEFT VISIBLY OPEN, DELIBERATELY, and no section presupposes an answer:** `RC-1` (the RESUME POINT),
+  `RC-2` (widget G's ID, approved in principle and never assigned), `RC-3` (the causation line is singular
+  and one-paragraph-per-facility makes it collective), and `R11`. Where a section had to lean to be
+  coherent — §3's FE-20 row and §8's Q1 both lean on `RC-1` — **the dependency is flagged in place rather
+  than resolved.**
+- **ELEVEN NEW SEAMS SURFACED BY THE FOLD-IN ITSELF, at §18.B, ALL UNMINTED.** These are not new questions;
+  each is a collision between things already ruled, visible only once they sat in one document — which is
+  what a fold-in is for. The two that matter most: **(B1)** three enforcement postures now coexist — the
+  ambient panel never blocks, `HD-22` warns and never blocks, the hard stops say "you can't violate those
+  ones" — and Michael's own sentence inside the `HD-1` ruling reads a fourth way; **(B2)** the radiologist's
+  causation object is ruled BOTH ways by Michael, on 2026-08-20 (Part 3 rule 5: track the provider's actual
+  work product, "the most legally consequential generation error available") and on 2026-08-22 (keep the
+  causation line as written; the narrower findings/mechanism form declined). **Both are his and they point
+  opposite ways. This session chose neither and did not let the later ruling silently overwrite the
+  earlier one just because it is later.** And **(B11)**, found by this session's own re-sweep rather than
+  by any ruling: *"nothing lints the drafted text"* and *"nothing takes returned paragraphs apart"* — both
+  ruled 2026-08-21 — would, at their widest reading, foreclose the CHECK branch of `RC-1` and answer it by
+  implication, while hard stop 1, ruled the day after, points the other way. **The lean is NAMED at §11.6
+  rather than left silent, which is the whole reason `RC-1` had to be swept for leans and not merely left
+  unanswered.**
+- **A DISCREPANCY IN THE RECORD, FOUND AND FLAGGED, NOT ADJUDICATED (the filed file's §18.B3).** `HD-20-b` — does Michael
+  edit returned paragraphs inside the app — is recorded RULED in his own words in the 2026-08-21 voice3
+  capture ("If any editing is gonna be done to that word document before I serve it, it's gonna be editing
+  that I'm gonna do once I open the word document itself") and carried as NOT REACHED by the later
+  2026-08-22 RECON-1 capture, which appears to have copied it forward from the earlier residue list. The
+  filed file treats it as RULED on the strength of the verbatim AND flags the conflict, because the cost of
+  being wrong runs one way: Michael should not be re-asked a question he has answered.
+- **`SK-v2` CLOSED** — its remaining limb (upload `SKILL.md` v2 as the claude.ai skill copy) is discharged:
+  v2 landed 2026-08-11 and Michael confirmed the version line in his uploaded copy on 2026-08-21. Closing
+  it also discharges the standalone hand-upload item absorbed from `#45`. Staged design-side at `#129` and
+  never packaged until now.
+- **`RF-7` DISCHARGED — the RC-1 voice prompt regenerated** at `docs/prompts/`, its state paragraph written
+  to be true AFTER this batch lands and carrying an explicit instruction to stop if it has not. It states
+  the whole ruled set so nothing already decided is re-asked, and it names the hands-on queue for a long
+  and wide sitting per CC-1(c).
+- **`RF-5` PUT, NOT ASSUMED, AND IT SPLIT INTO TWO.** For THIS file the problem dissolves at filing — the
+  path becomes an address. What remains open is the CONVENTION for future REQ-CAPTURE drafts, and that is
+  Michael's. Recorded as a small CC-1(a) instance: an offered option turned out to be two.
+- **`queue-rows-draft-2026-08-24.md` DOES NOT EXIST** anywhere in the checkout or at HEAD, though the work
+  order that opened this session named it and said twenty-four rows were drafted there. Per H5 no search of
+  Michael's machine was made. Nothing in this packet depends on it. **Flagged rather than reconstructed.**
+- **MEASUREMENTS, re-derived at this HEAD and recorded without ruling anything:** knowledge meter
+  **1,484,557 / 2,000,000 = 74.23%** — below the Q-CAP-5(a) 90% threshold, read directly by the session and
+  not stated by Michael, so the limb executed itself. `attorney-review-queue.md` **635,537 B / 1,130
+  non-blank**, up from 627,495 / 1,070 three days earlier — **roughly 9% of the budget in one uncapped
+  file.** `BUILD-STATE.md` **138,640 B at exactly 150 non-blank lines**, up 5,715 B from 2026-08-22 **at the
+  identical line count** — the line-cap-is-not-a-size-cap finding, third consecutive measurement, still
+  deliberately NOT RULED and still belonging to the TC-1 / TC-OPEN-1 deferral.
+
+- **THE 2026-08-24 AUDIT'S 108 DISPOSITION CANDIDATES WERE HARDENED — EVIDENCE ONLY, ADJUDICATING
+  NOTHING** (`docs/specs/attorney-review-queue-audit-HARDENED-2026-08-25.md`). That audit's own §9 recorded
+  that no auditor cross-checked another's slice and that **the adversarial verify pass never ran, the Fable
+  allowance having been exhausted.** This session ran the EVIDENTIARY half of it — five checkers, the closed
+  archive staged because most cited rulings predate the live log's `#65` floor. **Of 58 closure-class
+  candidates, 19 verify clean and 39 need Michael's eye; ELEVEN would destroy an open question if acted on
+  as written.** The audit's substance is sound and hardening narrowed it in one consistent direction: **it
+  read cross-references, shared blockers and scope-inclusion cites as identity.** Headline findings: **NOT
+  ONE of the ten "duplicates" is one question in two rows** — two are different questions, and merging
+  either deletes text existing nowhere else in the register (`WESTLAW-5` holds two V-9 provenance facts;
+  `Q-RE-8`/`Q-STAT-5` share a BLOCKER, not a question). **Three rows the audit would close are the only
+  home for an open question** — `RE-1` (the word "overflow" occurs exactly once in the whole 635 KB
+  register, in that row), `FE-10`/`FE-12`, and `V-7`. **`RE-1`'s quoted ruling is from the wrong ruling
+  entirely** — byte-offset verified as limb (3) of the family-law deletion. **`P-COM-2`/`-3`/`-4` return
+  ZERO in both logs.** **`Q-DES-5`'s quoted string does not exist and its ruling belongs to `V-8`, an
+  already-closed row.** **The v23-paste row is PREMISE-INTACT and it matters: `PF-1` and `FC-14`'s SOURCING
+  fourth channel are ABSENT from the live v27 instructions** — `PF-1` is being run as though standing while
+  not being written down. **The deferred-in-words sweep found FOUR rows, not the one the audit flagged.**
+  And **the `H43` warning was right while the companion collision report is WRONG** — it cleared `H43` as
+  not a collision when the live log had already recorded *"one ID, two propositions."*
+- **THE CROSS-SLICE SWEEP FOUND WHAT NINE PARALLEL READERS COULD NOT.** **`FE-8` is classified nowhere in
+  the audit** — zero hits against a firing control — and sits at a slice boundary in the identical posture
+  to `FE-10`/`FE-12`, its ruled half BUILT. **`R11`'s unblock — "the cheapest unblock in the disclosures
+  thread" — ALREADY HAS TWO REGISTER ROWS**, both classified LIVE, and nobody connected them. **Twenty-seven
+  open rows are named nowhere in the audit at all**, including `Q-WF-4` (an unnamed upstream node two other
+  rows hang on) and **`TC-OPEN-2` itself.** The world-state-stale count is **ten, not eleven — and the tenth
+  is not an FE row**, so no FE sweep would have found it.
+- **`TC-OPEN-2` SURVEYED FOR THE FIRST TIME — CANDIDATES ONLY**
+  (`docs/specs/superseded-specs-candidates-2026-08-25.md`). Four readers over all 131 files in the
+  `docs/specs/` working tree. **⛔ ITS FIRST FINDING OUTRANKS THE SURVEY: there is NO RULED HOME for a
+  retired spec** — `docs/archive/` is CLOSED, `docs/record/` means live-but-unsynced, deletion loses the
+  record. **`TC-OPEN-2` is two questions and only the second is a sweep.** Five clean retire-candidates
+  found, each with the specific string that holds it; six superseded-in-place; and several files saved from
+  candidacy by reading a queue row rather than a banner. **Nine repo-resident RAW CAPTURES raise a category
+  question TC-8 does not answer** — does TC-8 reach captures already in the repo, or only project knowledge?
+  That would reclassify nine files at once and it is Michael's.
+- **⛔ AND THE FINDING NOBODY WAS LOOKING FOR: THE 2026-08-24 AUDIT AND `id-collision-report.md` ARE NOT AT
+  HEAD.** Both exist in the `docs/specs/` working tree and **neither is in git** — no commit contains them,
+  nothing points at either, and they are the only two untracked files in the directory. Both carry
+  *"Canonical repo path WHEN FILED"* on their faces and **neither was ever filed.** `id-collision-report.md`
+  holds findings existing nowhere else, including the heartbeat register's true range (`H1`–`H83`, where the
+  record had assumed `H1`–`H23`). **Both are one `git clean` from destruction. This is "a capture is not a
+  filing" in repo form — the same class that left five design sessions unfiled for two days — and it was
+  found by a survey that was not looking for it.** Filing them is Michael's act, not this packet's; the
+  routing row is CONDITIONAL and its default is DO NOTHING.
+- **DEFECTS FOUND IN REPO FILES, reported and NOT repaired:** `fe-5-interrogatory-budget-spec-2026-08-15.md`
+  is **headless and was BORN headless** — it landed that way in its first commit `883d915`, so no revert
+  recovers it, and its two same-batch siblings both carry the full house head. `go-live-runbook.md`'s line
+  pointers **no longer resolve** — it says gate 3 is at L24; L24 is a mid-gate-1 append and gate 3 is at
+  L61 — and the file's own status line already calls itself *"a defect"* where it differs.
+  `criminal-offense-playbooks.md` has **no status line and no markdown headings at all.**
+  `registry-v5-v6-v7-wording-execution-2026-08-16.md`'s status line is **FALSE at HEAD.** The
+  `apil-2025-course-book-mining` series is **3 of 4** with the shortfall on no file's face. **Twelve files
+  carry no status line.** **BUILD-STATE's only pointer to a spent file is itself stale** — the `GL1-1`
+  append landed and BUILD-STATE still says it did not, which is the `H21`/`H12` failure class in its
+  file-path form. And **the Outlook edit/cancel defect has NO QUEUE ROW** while BUILD-STATE carries it.
+- **A THIRD FILE BELONGS IN THE TC-1 / TC-OPEN-1 DEFERRAL AND IS NOT NAMED THERE:**
+  `pi-case-playbooks.md`, **227,273 bytes**, ~3.3% of the budget in one synced file, under no cap.
+
+Process notes, logged because the reasoning is part of the record. The device-bridge folder dialog did NOT
+time out this session — both folders granted on the first request, which is the counter-case to the
+2026-08-22 double timeout and worth recording so the note is read as "can time out," not "does." ONE CLAUDE ERROR, MADE AND CAUGHT IN
+SESSION BEFORE ANYTHING WAS FILED, recorded with correction-entry substance on the `#136`/`#137`
+precedent. WHAT WAS ASSERTED: that the 0-byte `.git/objects/maintenance.lock` in the checkout might have
+been stranded by this session's own bridge `git fetch`, and that this session's lock and the one `#137`
+records "cannot be told apart." WHAT IS TRUE: `stat` reads its mtime as **2026-08-22 22:53 UTC**, three
+days before this session ran, and `#137` records precisely this artifact — "the 0-byte
+`.git/objects/maintenance.lock` the authoring session's bridge `git fetch` stranded." **This session
+stranded nothing, and the two could be told apart by one command that was available and was not run.**
+ACTOR: Opus 5, read from the session environment, not inferred from session type. FAILURE CLASS: DIAGNOSE
+FROM THE DECISIVE CHECK, NOT THE CONSISTENT ONE — the project's own named class, whose prior instances are
+the leftover-`inbox/`-zip diagnosis and `#133`'s ID-matching near-miss; aggravated here because the claim
+took the form of asserting that no decisive check existed. WHAT CHANGED: corrected before filing; the lock
+is `#137`'s, already on the record, and remains Michael's hand if git ever objects to it. Phase 2 (hardening the 2026-08-24 audit's 108 disposition candidates) and Phase 3
+(the TC-OPEN-2 superseded-specs table) were IN SCOPE for this session and WERE NOT RUN — the session was
+paused by Michael and resumed with the fold-in as the priority, and both remain owed and unstarted. The
+2026-08-24 audit file IS present in the checkout untracked, so Phase 2 needs nothing from Michael to run.
+
+**Staged for Code:** the two new files, the `SK-v2` closure, and this entry — nothing else.
+
+**Awaiting/Returned from Code, unreviewed:** none new. (Carried, unverified, NOT re-asserted: `MIG-1` — the
+FE-D1 migration reported unrun — was re-read at this HEAD and is still unrun; `HD-18` ruled it runs now,
+unchanged, by Michael's hand.)
+
 ## 2026-08-23 — QUEUE-RUNNER batch (runner line; EIGHTY-SECOND invocation) — one docs-only packet, ONE routing row that writes: the three unfiled 2026-08-22 design sessions reach the record at `#135`–`#137`, the packet's own entry-count prediction is recomputed and misses for the second batch running, and the queue takes its header sentence and not one row
 
 **THE PACKET.** `push-to-code_file-three-unfiled-2026-08-22-sessions_2026-08-22.zip`, identity pinned at Step 1 per QR-6(c) — **22,258 B, mtime 2026-08-22 17:58:42 Central, sha256 `5dc3c9c2c85db6f4727309cf3140c04671186e8c15c5f013ed4e55ea2cf0f143`**. One manifest, 597 lines / 53,058 B, **no separate staged deliverables** — the three entries live inside the manifest's own fenced blocks. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in the manifest's order, §4.1 then §4.2.
