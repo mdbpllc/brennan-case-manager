@@ -1,24 +1,24 @@
 # REQ-CAPTURE — disclosures expert designation: the facility-as-expert defect, the generator spec, and sixteen requirements
 
-**Canonical repo path WHEN FILED:** `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` — NEW file, **filed for the first time by the packet that carries this text.**
+**Canonical repo path:** `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` — **AT HEAD since `7a7f797` (batch 83, 2026-08-31). This edition is the SECOND FOLD-IN, a wholesale REWRITE carried by the 2026-08-31 packet; the file is replaced, not annotated.**
 **Channel:** REQ-1 — CIVIL LIT practice project → Michael's hand → this design project → reconciliation → ruling. Seventh REQ-CAPTURE through the channel; the second from CIVIL LIT on the disclosures instrument in two days (see addendum §0.2 on its unfiled sibling).
 **Source (client-clean by construction):** a real, approved, served plaintiff's-side combined TRCP 194.2(b) / 195.5 disclosures instrument designating seven provider groups in a motor-vehicle personal-injury matter. No party, provider, cause number, amount, or date of occurrence appears below.
 **Status of Parts 1–8:** UNRULED INPUT from the drafting side as delivered by Michael 2026-08-20 (Central) — no design rulings, no build claims. Everything is PROPOSED until ruled, except the three never-do rules Michael states he has already ruled (Part 5, ND-1–ND-3), which the addendum RECORDS on this project's record for the first time.
-**DT-1:** Parts 1–8 and the addendum's original text are stamped 2026-08-20 Central (clock-checked 21:56 CDT; container UTC read 2026-08-21 and was NOT used). **Every stamp added by the 2026-08-25 fold-in is 2026-08-25 Central, clock-checked 13:02 CDT against a container UTC of 2026-08-25 18:02 — the same calendar day, so the divergent window did not apply.**
+**DT-1:** Parts 1–8 and the addendum's original text are stamped 2026-08-20 Central (clock-checked 21:56 CDT; container UTC read 2026-08-21 and was NOT used). Every stamp added by the 2026-08-25 fold-in is 2026-08-25 Central (clock-checked 13:02 CDT). **Every stamp added by the 2026-08-31 fold-in is 2026-08-31 Central — the sitting opened at 18:53 CDT and ran past the 19:00 rollover, so the container clock read 2026-09-01 for most of it and was NOT used; the bridge read on Michael's machine (20:46 CDT, 2026-08-31) is the clock of record.**
 
 ---
 
 ## HOW THIS FILE IS LAYERED — read this before reading anything else
 
-This file has **never existed at its canonical path until now.** It was verified ABSENT at `origin/master` on 2026-08-22 (`#136`) and **re-verified ABSENT at HEAD `edea20b` on 2026-08-25** by `git ls-tree -r --name-only HEAD docs/ | grep -i req-capture` — six REQ-CAPTUREs returned, all 2026-08-11/12, this one not among them, against a positive control that fired. Everything it contains lived only in project knowledge until this packet.
+This file reached its canonical path for the first time at `7a7f797` (batch 83, 2026-08-31), after being verified ABSENT at `origin/master` on 2026-08-22 (`#136`) and re-verified ABSENT at HEAD `edea20b` on 2026-08-25. **This edition is its second fold-in.** On 2026-08-31 — a typed Fable 5 sitting, Cowork, bridge granted, opened on the file at HEAD rather than on captures — Michael ruled `RC-1` and, one question at a time, everything downstream of it: twenty-one ruling exchanges (some forty-nine discrete rulings) in all, recorded in §§11–18 in his words. **The first fold-in's text was REWRITTEN where those rulings moved it; nothing was set beside its replacement.**
 
 It is layered in three:
 
 | Layer | What it is | Status |
 |---|---|---|
 | **PARTS 1–8** | Michael's capture, **VERBATIM**, 2026-08-20 | **UNCHANGED, and never to be changed.** These are his words. |
-| **RECONCILIATION ADDENDUM §0–§10** | Opened 2026-08-20 (Fable 5, typed, Cowork; filed at `#127`). **REWRITTEN IN PART 2026-08-25.** | Sections that the design has since moved past carry a **`REWRITTEN`** banner naming the date, the ruling, and — in one line — what the section used to say. **The superseded text is NOT reproduced here.** It lives in the session log at `#127` and in the captures. |
-| **§11–§19** | New sections carrying rulings taken **after** the addendum was authored — 2026-08-21, 2026-08-22 and 2026-08-24 | The operative spec of what a designation paragraph must contain. |
+| **RECONCILIATION ADDENDUM §0–§10** | Opened 2026-08-20 (Fable 5, typed, Cowork; filed at `#127`). **REWRITTEN IN PART 2026-08-25 and again 2026-08-31.** | Sections that the design has since moved past carry a **`REWRITTEN`** banner naming the date, the ruling, and — in one line — what the section used to say. **The superseded text is NOT reproduced here.** It lives in the session log (`#127`, `#138`, and the 2026-08-31 entry) and in the captures. |
+| **§11–§19** | Sections carrying rulings taken **after** the addendum was authored — 2026-08-21, 2026-08-22, 2026-08-24 and **2026-08-31** | The operative spec of what a designation paragraph must contain — **and, since 2026-08-31, of how the engine builds one (§11.6–§11.8, §15.6).** |
 
 **THIS IS A REWRITE, NOT AN ANNOTATION.** The instruction comes from the 2026-08-22 capture's own RR-1-forward pass (`#135`) — **these are the CAPTURE'S words, i.e. Claude's, not Michael's**, and they are quoted because they state the warrant plainly: *"The addendum's shape was: twelve templates produce paragraphs; the person is the unit; a review gate protects the render. **All three are now false.**"* **What is Michael's is each of the rulings that made them false**, and every one of those is quoted in its own place below. Where a section moved, **its superseded text was replaced, not set beside its replacement** — nowhere in this file does an old account of a ruling sit next to the new one. *(Two things that are NOT that failure and appear deliberately. **First**, a ruling may be STATED in a rewritten §§0–10 section and DEVELOPED at length in §§11–19 — §1.5/§13.4 and §8 Q4/§17.2 are two such pairs; one account at two depths, the short form pointing to the long one. **Second, a SUPERSEDED ruling is recorded beside its correction wherever the SEQUENCE is itself the record** — §12.2 (warning → hard stop), §13.2 (Part 3 rule 5 against the 2026-08-22 radiologist ruling, both Michael's), §14.0/§16.1 (`HD-12` ruled and then reversed), §17.3 (an answer reversed inside one exchange) and §17.6 (silent phone omission → flag it). **Those pairs are not two live accounts; they are one ruling and the record of how it got there, and flattening them would destroy the more useful half.**)* **No parallel disclosures spec exists or should be created** — `form-engine.md` remains the engine spec, this file remains the requirements capture, and where they disagree the later ruling governs and the disagreement is named.
 
@@ -36,12 +36,27 @@ It is layered in three:
 | §7 | re-scoped **by track**, not only by requirement | 2026-08-21 (walk, ruling 10) |
 | §8 | Q1, Q4, Q5, Q7, Q9, Q10 all moved | 2026-08-21 / 2026-08-22 |
 | §10 | the to-Code list | 2026-08-25 |
+| **§2** (B5) | the `provider_billing_profiles` table name renames in the same slice | **2026-08-31** |
+| **§3** | FE-18's wording RATIFIED; CD-14 limb (ii) ruled; the provider record minted **`R17`**; FE-20's `RC-1` lean resolved; finding 7 ruled; `HD-10` closed | **2026-08-31** |
+| **§4** | ND-4, ND-5, ND-6, ND-7(a)(b), ND-9 ADOPTED; ND-7(c) held for hands-on; ND-8's `RC-3` closed | **2026-08-31** |
+| **§5** | widgets A, E, G, H resolved | **2026-08-31** |
+| **§6** | the panel is one of THREE TIERS (§12.3); §6.4's template-output question dissolved (B9) | **2026-08-31** |
+| **§8** | Q2 by consequence; Q3, Q6, Q8 ruled; Q4's order limb closed; Q5, Q10 held | **2026-08-31** |
+| **§10** | the to-Code list, second edition | **2026-08-31** |
+| **§11.5–§11.8** | **`RC-1` RULED: the app places the fixed sentences; the model writes around them; app assembly; four slots; two fixed lists; the custodian sentence is the writer's, four limbs required** | **2026-08-31** |
+| **§12.3** | the three postures become three TIERS; hard stops STOP AND TELL; the operative conditions are three absences | **2026-08-31** |
+| **§13** | the four shapes SUBSUMED by PROVIDER TYPE; the radiologist's line is 9.2 as written (B2 closed, `RC-6` closed); the chiropractor moves to medical probability; EMS keeps its own line; `RC-5` by consequence | **2026-08-31** |
+| **§14.1** | `RC-7` ruled — formats and versioning | **2026-08-31** |
+| **§15** | `RC-3` closed (plural tokens); the radiologist-only split; explain-each-then-pair; the rider is the composite | **2026-08-31** |
+| **§16** | the model returns PARTS, plain text; `HD-20-b` confirmed; `HD-20-c` ruled | **2026-08-31** |
+| **§17** | `R17` minted with two new fields; the type mechanism; `HD-21-med`, `HD-21-b`, `CD-14`(ii) ruled; "provider block" the one term | **2026-08-31** |
+| **§18** | rewritten whole: what closed, what is held on the hands-on queue, what remains | **2026-08-31** |
 
-**WHAT THIS FOLD-IN DELIBERATELY DID NOT DO.** `RC-1` (the FORM of the floor), `RC-2` (widget G's unminted ID), `RC-3` (the causation line's singular-vs-collective inflection) and `R11` (the TRCP 195.2 designation deadline) are **left visibly open.** No text below presupposes an answer to any of them; where a sentence had to lean one way to be coherent, **the dependency is flagged in place rather than resolved.** No TRCP 195.2 deadline is computed, displayed, or proposed anywhere in this file.
+**WHAT REMAINS OPEN AFTER THE SECOND FOLD-IN.** `R11` (the TRCP 195.2 designation deadline) is **still GATED on Michael's verification** — its two unblock rows sit on the register (§18.E), `HD-10` closed by pointing at them, and **no TRCP 195.2 deadline is computed, displayed, or proposed anywhere in this file.** `RC-4` narrows to the `CPRC § 18.001` registry candidate, UNVERIFIED. `H12-v` and its `HD-12-w`…`z` limbs are Michael's. The five 2026-08-31 hands-on items and the sixteen older ones now sit on the **CC-1 HANDS-ON QUEUE, which Michael accepted whole on 2026-08-31** (§18.F). `RF-2`, `MIG-1`, `HD-3`'s prior-art claim, `RF-5`, and the §3 sixteen-ID minting act (widget G's 2026-08-20 sense) are unchanged and named at §18. **`RC-1`, `RC-2`, `RC-3`, `RC-5`–`RC-10`, and seams B1–B5, B9–B11 are CLOSED and say so in place.**
 
 **ID SERIES NOTE.** The disclosures `H` series was renamed **`HD-1`–`HD-22`** on 2026-08-22, **FORWARD-GOING ONLY**, on the 2026-08-13 `H`→`HK` precedent. This file uses `HD-` for every disclosures item. **Backfilled log entries, `case-heartbeat-design.md`, and existing queue rows keep their original `H` strings and are NOT retroactively renumbered.** Where a bare `H` appears in a quoted line it is quoted, not adopted. **`H5` in this file always means the binding convention (Michael answers first; no unprompted machine sweeps), never a disclosures item** — that string collides and the collision has already cost this project two nearly-destroyed queue rows (`#133`).
 
-**`§9` IS AMBIGUOUS IN THIS FILE'S SOURCE MATERIAL AND IS DISAMBIGUATED HERE.** The addendum's own **§9** is the registry census. **`form-engine.md` §9** is the twelve approved paragraph variants. Where the 2026-08-22 capture speaks of *"§9's twelve-variant framing"* (its supersession header) and *"§9's framing"* (its RR-1-forward line at PART 8.5), it means **`form-engine.md` §9** in both places. Every reference below names which. **Nothing in this file edits `form-engine.md` §9's twelve paragraphs** — they are Michael-approved verbatim and their text is untouched by every ruling folded in here.
+**`§9` IS AMBIGUOUS IN THIS FILE'S SOURCE MATERIAL AND IS DISAMBIGUATED HERE.** The addendum's own **§9** is the registry census. **`form-engine.md` §9** is the twelve approved paragraph variants. Where the 2026-08-22 capture speaks of *"§9's twelve-variant framing"* (its supersession header) and *"§9's framing"* (its RR-1-forward line at PART 8.5), it means **`form-engine.md` §9** in both places. Every reference below names which. **Nothing in this file edits `form-engine.md` §9's twelve paragraphs on Claude's initiative** — they are Michael-approved verbatim. **ONE EDIT TO THEM IS RULED, BY MICHAEL, 2026-08-31, and travels as a packet work order, not as text in this file:** §9.4's causation sentence loses *"chiropractic probability"* for *"medical probability"* and its note's *"chiropractic (not medical) probability — settled"* goes with it — his words: *"Get rid of chiropractic probability and replace with medical probability."* Every other sentence in §9 is untouched by every ruling folded in here. **And since 2026-08-31 §9 has a second job:** its basis and causation sentences are the SOURCE TEXT of the app's fixed-sentence table (§11.8), so an edit to one of them is an edit to what the engine emits.
 
 ---
 
@@ -346,7 +361,7 @@ Do not overstate rules. Where you are unsure, ask me.
 
 Reconciled per REQ-1 against BUILD-STATE (`57699a7`, "one hundred twentieth refresh", read in full through the device bridge), the live session log's top entries (latest design entry `#126`; latest Code entries the FE-D1 build and the `dev:demo` fix, both 2026-08-20), `db/schema.sql` at HEAD, `form-engine.md`, `contact-directory.md`, `fe-d1-build-slice.md`, `spec-feedback.md`, the attorney-review queue's FE / CD / IN / DL sections, and the four registry files — BEFORE anything was staged. Bridge reads were lock-free (`GIT_OPTIONAL_LOCKS=0`); no `.git/index.lock` was stranded; `inbox/` on `mdb-pllc` was empty at session start. No `src/` file was read (the working-set rule; `Q-PR3-1` unruled) — every statement about what the built engine DOES is therefore a statement about what the SPEC it was built from requires, and is labelled so.
 
-**RE-RECONCILED 2026-08-25 (Opus 5, Cowork, typed, device bridge granted on the checkout and on `Documents\Knowledge Repo`) against BUILD-STATE at HEAD `edea20b` — the one hundred twenty-third refresh, written by queue-runner batch 82 — `CLAUDE.md`, `docs/specs/session-log-head.md`, and the live log and full abstract index at `docs/record/`, read at HEAD over the bridge.** Verified at that HEAD and stated rather than carried: **FE-D1 is BUILT (2026-08-20), code-complete, exercised in a browser ON FIXTURES ONLY, EXCLUDED from the GL-1 floor, and its migration `db/migrations/2026-08-20-fe-d1-form-engine.sql` (13,171 B) is STILL UNRUN** — `MIG-1` carried unverified and **not re-asserted as fact**; the live database holds 37 tables against 41 in `db/schema.sql`, which is the honest state. `docs/skills/drafting-disclosures/SKILL.md` **v2 remains the live drafting path.** Nothing in this fold-in is a build authorization.
+**RE-RECONCILED 2026-08-25 (Opus 5, Cowork, typed, device bridge granted on the checkout and on `Documents\Knowledge Repo`) against BUILD-STATE at HEAD `edea20b` — the one hundred twenty-third refresh, written by queue-runner batch 82 — `CLAUDE.md`, `docs/specs/session-log-head.md`, and the live log and full abstract index at `docs/record/`, read at HEAD over the bridge.** Verified at that HEAD and stated rather than carried: **FE-D1 is BUILT (2026-08-20), code-complete, exercised in a browser ON FIXTURES ONLY, EXCLUDED from the GL-1 floor, and its migration `db/migrations/2026-08-20-fe-d1-form-engine.sql` (13,171 B) is STILL UNRUN** — `MIG-1` carried unverified and **not re-asserted as fact**; the live database holds 37 tables against 41 in `db/schema.sql`, which is the honest state. `docs/skills/drafting-disclosures/SKILL.md` **v2 remains the live drafting path.** Nothing in either fold-in is a build authorization.
 
 **Ruling posture of this addendum:** every ID, answer, and recommendation below is PROPOSED until Michael rules. Where the table says "RULED" it cites the entry that ruled it. ND-1–ND-3 are Michael's own rulings, relayed by the capture, and are RECORDED here (§4) rather than proposed.
 
@@ -395,11 +410,11 @@ Whether the built picker filters on `parties.kind` is **not knowable design-side
 >
 > **`form-engine.md` §9.10's TEXT IS UNCHANGED and remains Michael-approved verbatim.** What changed is what governs the pharmacy paragraph's *content*, which is now the floor (§11) as it applies to shape 4. Whether §9.10's own wording still serves that shape is a text act on an approved paragraph and remains **Michael's alone.** Not changed here.
 
-**§1.6 The fix as a design ruling — REWRITTEN 2026-08-25.** *FE-18 was **ADOPTED IN SUBSTANCE 2026-08-21** (widget A). Michael: "I guess we adopted." **Its WORDING IS NOT RATIFIED**, and he said why in the same breath:*
+**§1.6 The fix as a design ruling — REWRITTEN 2026-08-25; WORDING RATIFIED 2026-08-31.** *FE-18 was **ADOPTED IN SUBSTANCE 2026-08-21** (widget A). Michael: "I guess we adopted." Its wording was NOT ratified then, and he said why in the same breath:*
 
 > *"but whenever you read those little widgets out, I just… I don't really understand exactly what you're getting at there. I just wanna make sure that what I'm saying is missing. I wanna make sure that you are feeding it in in your language however you need to put it to where it gets added."*
 
-**FE-18's operative text below is therefore Claude's translation of a ruled intent, not text Michael warranted. ANY LATER ACT THAT TURNS ON FE-18'S EXACT WORDS RE-PUTS THEM IN PLAIN LANGUAGE FIRST.** That is not a formality: **ruling 4, later the same sitting, materially changed FE-18's terms** — FE-18 as first drafted said nothing gets renamed, and the rename is now ruled in (§2). The two are reconciled below rather than stacked.
+**FE-18's operative text below was Claude's translation of a ruled intent, and on 2026-08-31 it was RE-PUT TO MICHAEL IN PLAIN LANGUAGE, as this section required, and RATIFIED — *"Ratify that as the rule's wording."*** The plain-language form he ratified: *a designation always names a person — an individual, or "the Custodian of Records for [facility]" — never a business; the person's address and phone in the designation come from the facility where they render care, through a link on the contact record whose name is still provisional; the charges table keys on the facility; the form-engine spec's connective wording is amended to say so, without rewording the twelve paragraphs; the code changes ride a separate authorization; and the hand-drafting skill gets a line saying the same rule.* **The block below is the operative text and now carries his ratification.** Ruling 4 of 2026-08-21 had materially changed FE-18's terms — FE-18 as first drafted said nothing gets renamed, and the rename is ruled in (§2) — and the two are reconciled below rather than stacked. `RC-8` CLOSED.
 
 > **FE-18 — The designee slot is typed.** A 195.5 designation's designee is a contact of `kind = 'individual'` or a person-role ("Custodian of Records for {facility}"); never an organization. The designee's 195.5(a)(1) address and telephone are read from **the facility** at the far end of a `renders-care-at` affiliation edge (name provisional; adding it is a spec-level act on `contact-directory.md` §5), case-scoped or world-fact per CD-1 §5. **The charges table stays FACILITY-keyed** — the billing side is unchanged in substance and renamed in fact (§2, ruled 2026-08-21): it keys a `facility`, and calling that key a `provider` is precisely the ambiguity the rename removes. One provider SET, two key types, three renderings (R3). `form-engine.md` §2 step 2, §3's contact-block sentence, §9's header sentence, and §10 are amended to say so; **`form-engine.md` §9's twelve paragraphs are not reworded.** FE-D1's picker, token registry, and lint are amended under a new authorization (§19). `docs/skills/drafting-disclosures/SKILL.md` takes a v3 line making the same rule explicit for hand drafting.
 >
@@ -419,7 +434,7 @@ Whether the built picker filters on `parties.kind` is **not knowable design-side
 
 **The cost, enumerated and ACCEPTED by Michael at ruling time.** Three live columns — `medical_bills.provider_party_id`, `code_mappings.provider_party_id`, `provider_billing_profiles.provider_party_id` — on tables migrated live 2026-07-28; the CD-1 role-tag vocabulary, derived from the `party_type` registry and retained by ruling `#62`; the approved `{provider_name}` / `{provider_dr_name}` / `{provider_his_her}` / `{provider_they}` / `{referring_provider}` tokens; FC-1's canonical token form; the 23 seeded `form_token_definitions` rows; and `docs/skills/drafting-disclosures/SKILL.md`. **This is build work, not a rename in passing.**
 
-**A FOURTH SURFACE THE COST LIST DOES NOT NAME, found by re-sweep 2026-08-21 and still open.** `provider_billing_profiles` is a **TABLE NAME** containing the word; ruling 4's accepted cost enumerated three *columns*. Left unstated, a Code session reads the table name in or out at its own discretion. **Reported, not decided — Michael's, and it belongs in the rename slice's migration plan (`HD-16`).**
+**A FOURTH SURFACE THE COST LIST DID NOT NAME — found by re-sweep 2026-08-21, RULED 2026-08-31.** `provider_billing_profiles` is a **TABLE NAME** containing the word; ruling 4's accepted cost enumerated three *columns*. Put to Michael as B5: rename it in the same slice, or leave the table name? **His ruling: *"Rename it in the same slice."*** The table renames with the three columns, in the one migration §2's sequencing paragraph describes, and it is the fourth surface in `HD-16`'s migration plan. *(B5 CLOSED.)*
 
 **SCOPE LIMIT, stated so a Code session cannot read the rename wider than it was ruled.** `provider` in `form-engine.md` §9's approved PROSE **already means the person** and is therefore already correct. **No approved paragraph is reworded.** The rename reaches tokens, columns, vocabulary and the SKILL — **not the sentences.** `form-engine.md` §9's own header bars the alternative, and this limit exists because without it the rename reads as a licence to touch text Michael approved.
 
@@ -429,44 +444,45 @@ Whether the built picker filters on `parties.kind` is **not knowable design-side
 
 **Consequence — `HD-18` RULED 2026-08-21: the FE-D1 migration is neither amended nor held. Michael's pick, verbatim from the option list: "Run it now, unchanged (recommended)."** It runs **by Michael's hand**; no Code session is authorized to execute it, and its eight verification checks are still answered in words. *Status at HEAD `edea20b`, 2026-08-25: **STILL UNRUN.** `MIG-1` remains carried and unverified; this file does not assert it either way.*
 
-## §3 — Durable IDs (Part 8 item 3) — PROPOSED disposition table, **REWRITTEN 2026-08-25**
+## §3 — Durable IDs (Part 8 item 3) — PROPOSED disposition table, **REWRITTEN 2026-08-25 and 2026-08-31**
 
-**NOTHING IN THIS TABLE IS MINTED. Minting is Michael's act, and `RC-2` records that the one ID he approved in principle was never actually assigned — see the widget G row and §18.**
+**ONE ID IN THIS TABLE IS MINTED — `R17`, the provider record, on 2026-08-31 (Michael: *"use that"*). Every other proposed ID is still PROPOSED. Minting the rest — the 2026-08-20 sense of widget G, §3's IDs item by item or as a group — remains Michael's act and is put with the 2026-08-31 packet, not taken by this file.**
 
 Series precedent: FE-1…FE-17 exist (FE-17 is the last minted), CD-1…CD-13, IN-1…IN-7, DL-INPUT plus un-ID'd `[DL-memo Q1–Q5]` and `Q-DE-1..6`. One home per question (CL2-AC-1). Duplicates are folded, not re-minted.
 
 | Packet-local | Proposed durable | Disposition |
 |---|---|---|
-| R15 + R4 | **FE-18** (new) | The typed designee slot and the affiliation edge — §1.6's text. R4 is R15's data-model statement; one home. The edge TYPE itself is a spec-level act on `contact-directory.md` §5 and is filed as **CD-14** (below). **ADOPTED IN SUBSTANCE 2026-08-21; WORDING NOT RATIFIED.** Priority NOW. |
-| — | **CD-14** (new) | Add an individual-renders-care-at-organization edge type (name provisional: `renders-care-at`) to the controlled `contact_edges` vocabulary, case-scoped or world-fact. Adding an edge type is a spec-level act (CD-1 §5; cf. CD-7/CD-8, which forbid Code "fixing" the vocabulary). **CD-14 NOW CARRIES TWO QUESTIONS, NOT ONE.** (i) does the SAME edge carry the verification state R6 needs, or does verification live on the IN-2 fact row that asserts the affiliation? (ii) **ADDED — does `renders-care-at` carry an EFFECTIVE PERIOD?** *Michael raised the underlying problem himself and then widened it past the disclosures module entirely — see §17.3. **The (ii) limb is arguably answered by that ruling and is NOT treated as answered here**, because what he ruled was where affiliation history lives, not what this edge type does. Flagged, not resolved.* |
+| R15 + R4 | **FE-18** (new) | The typed designee slot and the affiliation edge — §1.6's text. R4 is R15's data-model statement; one home. The edge TYPE itself is a spec-level act on `contact-directory.md` §5 and is filed as **CD-14** (below). **ADOPTED IN SUBSTANCE 2026-08-21; WORDING RATIFIED 2026-08-31** — put to Michael in plain language (§1.6) and ruled *"Ratify that as the rule's wording."* **The `form-engine.md` connective amendment (§2 step 2, §3, the §9 header, §10) is therefore UNBLOCKED and rides the 2026-08-31 packet as a work order.** Priority NOW. |
+| — | **CD-14** (new) | Add an individual-renders-care-at-organization edge type (name provisional: `renders-care-at`) to the controlled `contact_edges` vocabulary, case-scoped or world-fact. Adding an edge type is a spec-level act (CD-1 §5; cf. CD-7/CD-8, which forbid Code "fixing" the vocabulary). **CD-14 carries TWO limbs.** (i) does the SAME edge carry the verification state R6 needs, or does verification live on the IN-2 fact row that asserts the affiliation? — **still open.** (ii) **RULED 2026-08-31: `renders-care-at` DOES carry an EFFECTIVE PERIOD** — from and to, blank meaning current. Michael: *"yes,"* on the recommendation that affiliation history is periods and a physician who moved facilities needs the facility current at the dates of treatment. **The spec act on `contact-directory.md` §5 — the edge type and its period — rides the 2026-08-31 packet as a work order.** |
 | R16 | **FE-19** (new) | **REDEFINED 2026-08-21/22 — this row's 2026-08-20 disposition described a render-blocking lint over the designee VALUE at the ship gate. It is now a check on provider RECORDS that never blocks.** Spec at §6. Priority NOW. |
-| R1 + R5 | **FE-20** (new) | **NARROWED 2026-08-22.** Its 2026-08-20 disposition made role-keyed sentence slots the composition engine, with `form-engine.md` §9's twelve as the seed of the slot library. **Widget B was ruled the other way: the twelve are VOICE EXAMPLES and the model composes over a floor (§11, §12).** What survives of FE-20 is real and smaller: **grammatical inflection driven by designee count** (R10, ND-8 — now load-bearing, §15.4), the role→shape selection (§13), and the app's structured fallback. **FE-20 is no longer the thing that writes the paragraphs.** *This row leans on `RC-1` and the lean is flagged: if the floor turns out to be FIXED TEXT the engine emits, FE-20 regains a text-producing role for exactly those three sentences. **Do not build either way until `RC-1` is ruled.*** |
+| R1 + R5 | **FE-20** (new) | **NARROWED 2026-08-22.** Its 2026-08-20 disposition made role-keyed sentence slots the composition engine, with `form-engine.md` §9's twelve as the seed of the slot library. **Widget B was ruled the other way: the twelve are VOICE EXAMPLES and the model composes over a floor (§11, §12).** What survives of FE-20 is real and smaller: **grammatical inflection driven by designee count** (R10, ND-8 — now load-bearing, §15.4), the role→shape selection (§13), and the app's structured fallback. **FE-20 is no longer the thing that writes the paragraphs.** *This row's `RC-1` lean is RESOLVED 2026-08-31: the floor IS fixed text the app places, so **FE-20 regains a text-producing role for exactly the fixed sentences** — the basis and causation sentences of §11.8's table, in singular and plural, selected by provider type — and for nothing else. The writer composes the rest (§11.6).* |
 | R2 + R12 | **FE-21** (new) | **NARROWED 2026-08-21.** The instrument as an assembly of bound response objects — one per 194.2(b) subsection and per 195.5 designation — each carrying data source and fill state. **The SUPPLEMENTATION-AS-DIFF half is superseded:** supplementation is purely ADDITIVE (§16.3), and the most recent saved disclosures document is the source of truth, so there is no diff of objects against a served snapshot and no served/not-served ledger. Cross-links: FE-6, FE-15 (posture, disclosures half BUILT in FE-D1), IN-4 (lifecycle), FE-8 (retention half BUILT; **diff half stays DEFERRED — see the R13 row**). Priority NOW (R2). |
 | R3 | **extend FE-11, no new ID** | FE-11 is "compare a document to the ROSTER" (OUT of FE-D1, discovery slice; the `#63` disposition says in terms that FE-D1's lint does not absorb it). R3's ordering lint across the three provider renderings is the same class applied to the provider set. The canonical ORDER is Q4 — **partly ruled 2026-08-21, see §8.** |
 | R6 | **extend IN-2, no new ID** | IN-2's ruled home (`contact-directory.md` §7) is the case-scoped fact row `{fact_id, value, source_document, source_field, extraction_method, verified_by_attorney}`; the provider→facility attribution is such a fact, and **`contact-directory.md` §12.7** already rules every machine-generated attribution UNVERIFIED until the attorney confirms it. *(That is CD-1's §12.7 — this file has no §12.7.)* **R6 MATTERS MORE UNDER THE 2026-08-22 RULINGS, NOT LESS:** the model now extracts individuals and their facility attributions from the chronology (§14, §15), and Michael's own standing caution is that his chronology vendor has already attributed a treating physician to a facility where he does not practice. Nothing built; IN-2's fact table does not exist. |
 | R7 | **FE-22** (new) | Charge-weighted designation-gap detection: a custodian-only designation whose facility's charges rank high or exceed a share of past medicals raises a persistent GAP flag. **Its SURFACE moved 2026-08-21:** the disclosures panel is deliberately THIN — providers and a selection control, not a data display (§17.2) — so a charge-weighted display in the form builder is against that ruling unless it rides the ambient missing-information line (§6). Trigger is Q5, still open. Priority SOON. |
 | R8 | **satisfied by construction — CONFIRM, no ID** | FE-D1 seeds the instrument and each `form-engine.md` §9 variant as SEPARATE `form_templates` rows, each with its own `form_template_versions` chain (23 templates). Preamble and per-provider paragraph are therefore separately versioned today. Carried to the verification list for the next Code session to confirm **by reading the seed**, not asserted from the spec alone. |
-| R9 | **existing — §5 gate 3 + spec-feedback finding 7; no ID** | The retained/non-retained switch is specced and BUILT as data on the expert record (finding 7: "retained/non-retained is DATA, not gate STATE" — **that reading is unruled and Michael's**). The retained FIELD list is TRCP 195.5(a)(3)–(4) as restated in the playbook E2 row, UNVERIFIED, and the branch is unexercised by any capture. Q6 governs. **NOTE: the retained-expert track was ruled NEEDS BUILD (small) 2026-08-21 — see §7.** |
-| R10 | **extend FE-20; no ID** | The grammar/pronoun engine is BUILT in FE-D1 (inflection from party counts). R10 adds DESIGNEE COUNT as a flex source. **ELEVATED 2026-08-22:** one paragraph per FACILITY covering its individuals collectively (§15.3) makes number agreement load-bearing rather than cosmetic — **the floor's own sentences must work plural**, which is exactly what `RC-3` is about. |
-| R11 | **extend DL-INPUT / the deadline-engine spec; no ID — and GATED** | `form-engine.md` §2 item 7 specs the in-flow 195.2 deadline; the FE-D1 build computed NOTHING (spec-feedback finding 8) because CLAUDE.md registry rule 1 bars an UNVERIFIED proposition from driving a computed legal outcome, and **TRCP 195.2 has no registry entry** (only the playbook E1 row, which carries the 90/60-vs-60/90 conflict flag). A "proposal for confirmation" is still a computed date. **R11 IS GATED ON MICHAEL VERIFYING TRCP 195.2 — his act, and still the cheapest unblock in this capture. NOTHING IN THIS FILE COMPUTES, DISPLAYS OR PROPOSES A DESIGNATION DEADLINE.** Keyed to end-of-discovery-period: FE-5's prerequisite "no discovery-level field on `cases`" is the same missing substrate. **Whether the 195.2 verification is staged as its own registry item is `HD-10`, never raised with him.** |
+| R9 | **existing — §5 gate 3 + spec-feedback finding 7; no ID** | The retained/non-retained switch is specced and BUILT as data on the expert record. **Finding 7's reading — "retained/non-retained is DATA, not gate STATE" — RULED 2026-08-31 with ND-6: Michael, *"adopt both."*** The retained FIELD list is TRCP 195.5(a)(3)–(4) as restated in the playbook E2 row, UNVERIFIED; **Q6 RULED 2026-08-31 (§8): the fields are specced now from the rule text as a checklist, the retained paragraph waits for his capture.** The retained-expert track was ruled NEEDS BUILD (small) 2026-08-21 — see §7. |
+| R10 | **extend FE-20; no ID** | The grammar/pronoun engine is BUILT in FE-D1 (inflection from party counts). R10 adds DESIGNEE COUNT as a flex source. **ELEVATED 2026-08-22 and SETTLED 2026-08-31:** one paragraph per FACILITY covering its individuals collectively (§15.3) makes number agreement load-bearing — and `RC-3` CLOSED on Michael's *"That is the collective form"*: **the fixed sentences take their PLURAL-TOKEN form for a same-type group** (§15.3). |
+| R11 | **extend DL-INPUT / the deadline-engine spec; no ID — and GATED** | `form-engine.md` §2 item 7 specs the in-flow 195.2 deadline; the FE-D1 build computed NOTHING (spec-feedback finding 8) because CLAUDE.md registry rule 1 bars an UNVERIFIED proposition from driving a computed legal outcome, and **TRCP 195.2 has no registry entry** (only the playbook E1 row, which carries the 90/60-vs-60/90 conflict flag). A "proposal for confirmation" is still a computed date. **R11 IS GATED ON MICHAEL VERIFYING TRCP 195.2 — his act, and still the cheapest unblock in this capture. NOTHING IN THIS FILE COMPUTES, DISPLAYS OR PROPOSES A DESIGNATION DEADLINE.** Keyed to end-of-discovery-period: FE-5's prerequisite "no discovery-level field on `cases`" is the same missing substrate. **`HD-10` CLOSED 2026-08-31 by pointing at the two register rows that already carry the verification act (§18.E) — Michael: *"Close it by pointing at them."* No new registry item.** |
 | R13 | **RETIRED 2026-08-22 — no ID, no consumer** | *This row's 2026-08-20 disposition recommended UN-DEFERRING FE-8's diff half, on the ground that R13 was its first real consumer.* **Ruled the opposite way (`#135`, 5.3): R13 goes away.** Michael on the review gate: *"I don't know how the software is gonna know that I only read six of them because isn't the software just gonna produce the Word document and generate it, and then I'm gonna download it?"* — and on per-paragraph checkboxes: **"No. I don't want the busy work."** There is no reading detector, and the gate presumed a per-paragraph review-state control nobody had ruled he wanted. **FE-8's diff half STAYS DEFERRED. RECON-1 is not its consumer after all.** Widget F was **dissolved, not answered.** Part 3 decision rule 10 — *"Every generated paragraph is a draft until I read it"* — **is Michael's and stands as a drafting posture; what is retired is the machinery that tried to enforce it.** |
-| R14 | **SATISFIED BY CONSTRUCTION by CD-1 — no ID** | A facility is a `parties` row (`kind = 'organization'`), firm-wide, editable in case context with a linked-case count, read live by the pointer model. "Populated outside the chronology and reused across matters" is the directory's definition. **BUT SEE §17.1: a requirement no R-number covers was ruled 2026-08-21 — the PROVIDER RECORD, carrying facility AND individual AND dates of treatment AND an expandable summary, sortable. R14 does not contain it, and IT HAS NO ID.** Michael approved minting one in principle on 2026-08-22 and none was assigned. **`RC-2` is the open QUESTION of what ID to mint, not the ID itself.** |
+| R14 | **SATISFIED BY CONSTRUCTION by CD-1 — no ID** | A facility is a `parties` row (`kind = 'organization'`), firm-wide, editable in case context with a linked-case count, read live by the pointer model. "Populated outside the chronology and reused across matters" is the directory's definition. **BUT SEE §17.1: a requirement no R-number covered was ruled 2026-08-21 — the PROVIDER RECORD. R14 does not contain it. IT IS NOW `R17` (below).** |
+| — | **`R17`** — **MINTED 2026-08-31** | **THE PROVIDER RECORD.** Facility **with its TYPE** (set by Michael's hand on the Medical tab); the individuals under it, each with a **ROLE MARKER defaulting to the facility's type**; dates of treatment; **one expandable summary per individual**; sortable, **oldest treatment first**. Michael's 2026-08-21 specification (§17.1) plus the two fields the 2026-08-31 rulings added (§17.1a). Put with the proposed string and ruled *"use that"* — **`RC-2` CLOSED; B4's second sense discharged.** The 2026-08-20 sense of widget G (this table's other IDs) is still untaken. |
 
-## §4 — The never-do rules (Part 8 item 4) — **REWRITTEN 2026-08-25 at ND-3 and ND-8**
+## §4 — The never-do rules (Part 8 item 4) — **REWRITTEN 2026-08-25 at ND-3 and ND-8; REWRITTEN 2026-08-31 at ND-4–ND-9 (`RC-9` walked and CLOSED)**
 
 **Recorded as Michael's rulings of record (origin CIVIL LIT; relayed 2026-08-20; first appearance on this project's record):** ND-1 individuals are designated, never facilities or businesses; ND-2 the facility appears only as the individual's affiliation, never as the subject of the designation; ND-3 no two providers share one stock paragraph. **ND-1 and ND-2 were expressly RECONCILED against the 2026-08-22 facility-selection ruling and they HOLD — see §15.2. They are not re-ruled and should not be.**
 
 **ND-3 — REWRITTEN. Its lint is REMOVED and its unit is re-based.**
 *Its 2026-08-20 treatment restated ND-3 under Q7 as a derivation rule enforced by a lint that fires when a paragraph is rendered without consuming available evidence.* **Ruled 2026-08-22 (`#135`, 5.2): the near-identical-paragraph lint is REMOVED.** Michael: **"Sure."** The reason is structural — if wording varies freely over a floor (§11) and the model draws register from a shared example corpus (§11.7), **two similar paragraphs are not a defect.** And, from 6.6: **ND-3 must be RE-READ, because "no two providers share one stock paragraph" was written when the unit was the PERSON, and the unit is now the FACILITY.** ND-3 survives as **Michael's rule against stock paragraphs**; what is gone is the machine test that was proposed to enforce it, and the unit it was written about. **The re-based operative form is not drafted here — that is a text act on one of his own never-do rules and is his.**
 
-| Rule | Enforceable how | Recommendation (PROPOSED) |
+| Rule | Enforceable how | Status — **all five walked 2026-08-31, one at a time, each with its recommendation and its check-vs-judgment classification put in plain language** |
 |---|---|---|
-| **ND-4** person-role fallback, never the entity | **CHECK on the record** — FE-19 signal 1 (directory `kind`), plus the person-role template (`form-engine.md` §9.11) as the only lawful fallback output | **Adopt.** §9.11 already complies. The person-role wording — *"The Custodian of Records for [facility]"* — is **Michael's own approved, served work, which is the strongest available basis and is NOT rule-derived. Labelled as what it is rather than treated as settled method.** |
-| **ND-5** no opinion the provider's records do not support | **JUDGMENT, with content guards** — no examination sentence where none is recorded; no diagnosis clause where the records name none; the causation OBJECT selected by shape (§13). A check can prove a paragraph had no evidence; it cannot prove an opinion is unsupported. | **Adopt as a drafting rule with the named guards; every paragraph stays a draft (Part 3 rule 10).** **NOT REACHED in any ruling sitting — `RC-9`.** |
-| **ND-6** retained fields never on a non-retained paragraph | **BY CONSTRUCTION** — retained fields render only under the retained flag | **Adopt**, and rule spec-feedback finding 7 with it. **NOT REACHED — `RC-9`.** |
-| **ND-7** every charges-table provider appears in every rendering, same order | **CHECK** — FE-11 extension (R3); set-equality is mechanical, order needs Q4's canonical rule | **Adopt.** Blocking vs warning is Q4 — **and see §6: nothing in this module blocks.** **NOT REACHED — `RC-9`.** |
-| **ND-8** number agreement across the block | **ENGINE INVARIANT — AND NOW LOAD-BEARING, NOT COSMETIC (2026-08-22, 6.6)** | **One paragraph per facility covering its individuals collectively means the floor's own sentences must work PLURAL.** This is no longer a tidiness rule; it is the mechanism by which the mandatory causation line survives contact with a twelve-name hospital. **`RC-3` is exactly this problem and it is OPEN.** |
-| **ND-9** study date never rendered as incident date, and vice versa | **CHECK BY TYPE, not by value** — `{study_date}` binds only to an encounter/study source, `{incident_date}` only to `cases.date_of_incident`; a VALUE-equality check would false-positive on same-day emergency imaging, which is common | **Adopt the type binding as the rule; value equality is an INFO flag only.** **Note the neighbour: hard stop 2 (§12) compares the causation line's date against the matter record. That is a different check on a different value and the two must not be merged.** **NOT REACHED — `RC-9`.** |
+| **ND-4** person-role fallback, never the entity | **CHECK on the record** — FE-19 signal 1 (directory `kind`), plus the person-role form (`form-engine.md` §9.11) as the only lawful fallback output | **ADOPTED 2026-08-31 — Michael: *"adopt it."*** A selected facility with no individual the model can name designates *"The Custodian of Records for [facility]"* — a person role — never the facility itself. **Under §11.6 that paragraph is the WRITER's, with the four-limb custodian sentence (§11.4) as its required content and §9.11 as the voice example.** The person-role wording is Michael's own approved, served work — the strongest available basis, and NOT rule-derived. |
+| **ND-5** no opinion the provider's records do not support | **JUDGMENT — a WRITER instruction** — no examination sentence where none is recorded; no diagnosis clause where the records name none. A check can prove a paragraph had no evidence; it cannot prove an opinion is unsupported. | **ADOPTED 2026-08-31 in the form put — Michael: *"adopt it."*** It governs the WRITER's parts only. **The FIXED SENTENCES ARE EXEMPT BY DESIGN:** they are placed by provider type regardless of the records — the pain/ortho/neuro/primary-care basis sentence says *"review of the medical records and diagnostic imaging"* in every such paragraph whether or not that provider reviewed imaging. That is what his own §9.5–§9.8 already do; fixed text makes it unconditional. **The consequence was stated to him before he answered.** Every paragraph stays a draft (Part 3 rule 10). |
+| **ND-6** retained fields never on a non-retained paragraph | **BY CONSTRUCTION** — retained fields render only under the retained flag | **ADOPTED 2026-08-31, AND spec-feedback finding 7 WITH IT — Michael: *"adopt both."*** Retained/non-retained is DATA on the expert record, not wizard gate STATE. |
+| **ND-7** every charges-table provider appears in every rendering, same order | **CHECK** — FE-11 extension (R3); set-equality is mechanical; order is now ruled | **(a) the set check ADOPTED — *"adopt."* (b) ORDER RULED — *"oldest first is the rule"*: ONE order, oldest treatment first, for all three renderings (charges table, interview cards / designation blocks, provider list), and NO per-matter override — Q4's order limb CLOSES (§8). (c) the POSTURE on a mismatch — a charges-table provider with no designation paragraph: warn or stop? — HELD FOR HANDS-ON at Michael's own doubt about the premise: *"Im not sure when this will become an issue. There is always a provider with a facility."* Build default while held: a PANEL LINE, never a stop, marked PROVISIONAL (§18.F).** |
+| **ND-8** number agreement across the block | **ENGINE INVARIANT — LOAD-BEARING (2026-08-22, 6.6)** | **One paragraph per facility covering its individuals collectively means the floor's own sentences must work PLURAL — and they do: `RC-3` CLOSED 2026-08-31 on the plural-token form (§15.3).** |
+| **ND-9** study date never rendered as incident date, and vice versa | **BY CONSTRUCTION for the incident date; WRITER instruction for the study date** — the fixed causation sentence's date binds only to the matter record; the writer is told never to describe an imaging study's date as the incident date or vice versa; **no value-equality flag** | **ADOPTED 2026-08-31 on Michael's stated condition, which the form satisfies by design — his words: *"Imaging could be conducted, and many times is when there is ER treatment. If your proposal works with that, adopt."*** The value-equality info flag was dropped precisely because same-day ER imaging is routine; nothing fires on a same-day scan; the writer may describe imaging performed that day freely. Nothing reads the writer's prose (§6). *(Hard stop 2's old "compare the causation line's date against the matter record" has no work left to do — under §11.6 the app FILLS that date from the matter record; see §12.3.)* |
 
 ## §5 — Ruling widgets — **REWRITTEN 2026-08-25: STATUS OF EACH**
 
@@ -474,14 +490,14 @@ Series precedent: FE-1…FE-17 exist (FE-17 is the last minted), CD-1…CD-13, I
 
 | Widget | 2026-08-20 subject | Disposition |
 |---|---|---|
-| **A** | FE-18's wording (§1.6) — adopt / reject / edit | **ADOPTED IN SUBSTANCE 2026-08-21. WORDING NOT RATIFIED** (§1.6). Carried as `RC-8` for the wording. |
+| **A** | FE-18's wording (§1.6) — adopt / reject / edit | **ADOPTED IN SUBSTANCE 2026-08-21; WORDING RATIFIED 2026-08-31** — *"Ratify that as the rule's wording."* `RC-8` CLOSED (§1.6). |
 | **B** | FE-20 vs `form-engine.md` §9's verbatim unit | **RULED 2026-08-22: the twelve become VOICE EXAMPLES** (§11.7). Neither offered option — the answer was outside the set. |
 | **C** | The schema rename | **RULED IN 2026-08-21** (§2). The recommendation offered here was REJECTED. |
 | **D** | `form-engine.md` §9.10 Pharmacy under ND-1 | **DISSOLVED 2026-08-22, not answered** (§1.5, §13 shape 4). The premise did not hold. |
-| **E** | ND-4–ND-9 | **PARTLY DISCHARGED 2026-08-22** — it produced **three engine HARD STOPS** (§12) that none of ND-4–ND-9 describes. **ND-4, ND-5, ND-6, ND-7 and ND-9 were never walked** — `RC-9`. ND-8 was elevated by consequence (§4). |
+| **E** | ND-4–ND-9 | **DISCHARGED 2026-08-31** — ND-4, ND-5, ND-6, ND-7(a)(b) and ND-9 ADOPTED one at a time; ND-7(c) HELD for hands-on; ND-8 settled with `RC-3` (§4). `RC-9` CLOSED. *(The 2026-08-22 sitting had already produced the three engine HARD STOPS, §12.)* |
 | **F** | R13's hard gate | **DISSOLVED 2026-08-22, not answered** — R13 RETIRED (§3, R13 row). The premise did not hold. |
-| **G** | *This file's 2026-08-20 text: "The IDs in §3 — item by item or as a group."* | **⚠ LABEL COLLISION, SURFACED AND NOT RESOLVED.** The 2026-08-22 sitting used "widget G" to mean **a different act entirely** — minting an ID for the provider record carrying facility + individual + dates of treatment + expandable summary, sortable (§17.1). Michael's **"No objection"** attaches to **that** sense. **Two different acts under one letter.** `RC-2` ASKS for an ID against the 2026-08-22 sense and has never been acted on; **check the letter before minting anything, and note that the 2026-08-20 sense — minting §3's IDs — is ALSO still untaken.** |
-| **H** | Q1–Q10 | **PARTLY REACHED** — Q1, Q4 (in part), Q7 and Q9 moved by consequence; Q2, Q3, Q5, Q6, Q8 and Q10 not walked. `RC-10`. |
+| **G** | *This file's 2026-08-20 text: "The IDs in §3 — item by item or as a group."* | **TWO ACTS UNDER ONE LETTER, and one of them is now taken.** The 2026-08-22 sense — minting the provider record's ID — **DONE 2026-08-31: `R17`** (§3, §17.1); `RC-2` CLOSED. **The 2026-08-20 sense — minting §3's other IDs, item by item or as a group — is STILL UNTAKEN** and is put with the 2026-08-31 packet. |
+| **H** | Q1–Q10 | **DISCHARGED 2026-08-31** — Q2 by consequence; Q3, Q6, Q8 ruled; Q4's order limb closed under ND-7; Q5 and Q10 HELD for hands-on by name (§8, §18.F). `RC-10` CLOSED. |
 
 **Two of eight widgets were DISSOLVED rather than answered, and that is a finding worth carrying forward: when a widget resists, check whether its PREMISE holds before pressing for an answer.** Widget D presumed the pharmacy is a provider entry. Widget F presumed a per-paragraph review-state control Michael wants. Neither premise held.
 
@@ -514,7 +530,7 @@ His ruling, verbatim:
 
 No refresh button, no re-run. **Implementation consequence stated by Claude and unobjected: the panel reads provider records at every render rather than caching what it found when the form opened.**
 
-> **⚠ A TENSION INSIDE `HD-1`, SURFACED RATHER THAN SMOOTHED.** Michael's own words include ***"we need to fix this before we generate the disclosures document."*** The ruling as recorded is that the panel **never blocks.** Those two do not obviously agree, and the capture did not reconcile them. **Two readings are available and neither is adopted here:** the sentence is the panel's *text* (what it tells the user) rather than a description of enforcement; or he intends a genuine bar on generation. **This is put to Michael as its own question — carried at §18 with full question text and NO ID, because minting is his act and this fold-in mints nothing. Nothing is built either way.** *This matters more than it looks: `HD-22` and the three hard stops (§12) each answer a "does it stop me" question differently, so the module now has three distinct enforcement postures and it must be clear which governs here.*
+> **THE TENSION INSIDE `HD-1` — his *"we need to fix this before we generate the disclosures document"* against a panel that never blocks — was surfaced by the first fold-in and RESOLVED on 2026-08-31 (B1, §12.3).** The panel's three lines — address, phone, treating physician — **flag and never block, exactly as ruled here.** The sentence *"we need to fix this before we generate"* turned out to describe a DIFFERENT class: the conditions the app cannot build a paragraph without, which **STOP the generate and tell him what to fix first.** The panel is the lowest of three tiers; §12.3 carries the ruling and his words.
 
 ### §6.2 — What the check does, restated for the new object
 
@@ -541,7 +557,7 @@ The defect this closes was found by reasoning, not by law: as originally specced
 
 The **BLOCK branch and its dismissal-memory rule are gone** — there is no block to dismiss. **The four string heuristics no longer run over drafted text at all.** The two lawful resolutions — supply the individual, or degrade to the person-role — **survive as panel CONTENT and as ND-4, not as gate offers.** The invariants the old spec promised not to break are preserved trivially: **a check that never writes into the document cannot violate "gates never write into the document."**
 
-> **⚠ ONE THING THE 2026-08-21 RULING DID NOT REACH, and it is flagged rather than assumed.** The ruling and its reasoning are about **model-returned paragraph text**. Whether the same "nothing lints the drafted text" absolute covers **template-rendered, non-model output** — the `form-engine.md` §9 path FE-D1 uses today — was never put. **Not resolved here.**
+> **ONE THING THE 2026-08-21 RULING DID NOT REACH — whether "nothing lints the drafted text" covers template-rendered, non-model output — DISSOLVED on 2026-08-31 (B9).** Under §11.6 the only template-rendered text in a paragraph is the app's own fixed sentences, and those are DATA the app places, not drafted text: there is nothing for a lint to read and none is proposed. The no-lint rule's object is the writer's prose, and only that. *(Stated to Michael as a consequence with a stop-me line; not objected.)*
 
 ## §7 — R1–R14 against BUILD-STATE (Part 8 item 5) — **REWRITTEN 2026-08-25: RE-SCOPED BY TRACK**
 
@@ -571,27 +587,27 @@ The **BLOCK branch and its dismissal-memory rule are gone** — there is no bloc
 | R13 | **RETIRED 2026-08-22** | §3, R13 row. |
 | R14 | **BUILT (CD-1, complete 2026-08-19) — but does not contain the provider record** | §17.1; `RC-2`. |
 
-## §8 — Q1–Q10 — **REWRITTEN 2026-08-25 at Q1, Q4, Q5, Q7, Q9 and Q10**
+## §8 — Q1–Q10 — **REWRITTEN 2026-08-25 at Q1, Q4, Q5, Q7, Q9 and Q10; REWRITTEN 2026-08-31 at Q1, Q2, Q3, Q4, Q5, Q6, Q8 and Q10 (`RC-10` CLOSED)**
 
-**Q1 — REWRITTEN. SUPERSEDED, not reconciled.** *Its 2026-08-20 answer put model-drafted prose into a reviewable draft object inside the module and **confined that prose to named nullable slots** (`care_episode_descriptor`, `diagnosis_list` phrasing), diffable and testable as `form-engine.md` §9's seed is drift-tested.* **All three limbs are gone.** The model composes the **whole paragraph** over a verbatim content floor (§11), variation is free paragraph to paragraph, and the app makes the call itself on the firm's own BAA-covered account (§16). Confinement to named nullable slots is not the design. **What replaces the versioned-and-diffable property is `RC-1` and it is OPEN:** if the floor is FIXED TEXT the engine emits, the three sentences stay versioned template data and only the surrounding prose is model-composed; if it is a REQUIRED-CONTENT CHECK, nothing about the paragraph is template data and the invariant is an assertion over output. **The whole schema shape of a paragraph turns on that fork. It is not answered here and must not be assumed by a build slice.**
+**Q1 — REWRITTEN TWICE. SUPERSEDED 2026-08-22, then ANSWERED 2026-08-31.** *Its 2026-08-20 answer put model-drafted prose into a reviewable draft object inside the module and confined that prose to named nullable slots, diffable and testable.* The 2026-08-22 rulings dissolved that: the model composes over a verbatim floor, variation is free, and the app makes the call itself (§16). **`RC-1` then decided what a paragraph IS, on 2026-08-31 (§11.6): the app places the FIXED SENTENCES — versioned template data, selected by provider type (§11.8) — and ASSEMBLES the paragraph from the WRITER's returned PARTS, in a ruled four-slot order.** So the versioned-and-diffable property survives for exactly the fixed sentences, and the writer's parts are prose the app never inspects. The schema shape of a paragraph is an ORDERED SEQUENCE OF SLOTS, each FIXED or WRITER. A build slice reads §11.6–§11.8 and §15.6 for it.
 
-**Q2 → both, at the intake slice; the import layer does not exist.** Imported artifact (the chronology file, provenance recorded) AND a derived encounter set. Identities go to the directory; facts with provenance go to the IN-2 fact table (ruled home, unbuilt); the R6 gate rides the fact row. **RELOCATED 2026-08-22: the drop-in point is ONE drag-and-drop zone, and Michael put it "probably in the medical tab somewhere"** (§14.1) — his hedge, not a hard ruling on location. **A prose-PARSING layer is barred** by the same reasoning that barred an in-app text box. No build authorized by this answer.
+**Q2 → ANSWERED BY CONSEQUENCE 2026-08-31 (stated to Michael with a stop-me line; not objected).** The chronology is a **VERSIONED IMPORTED ARTIFACT** — provenance is the drop (§14.1, `RC-7`) — sent WHOLE to the model (§16.2). **The only data derived from it is the individual NAMES the model extracts, attached to the facilities Michael selected (§15.1, §17.1a).** No field-mapping layer; **a prose-PARSING layer stays barred** (2026-08-22). Identities still go to the directory; the IN-2 fact table remains the ruled home for attribution facts with provenance (R6) and is unbuilt. No build authorized by this answer.
 
-**Q3 → separate track, rendered into the 195.5 block at Michael's option.** Custodian-only designations assert no medical opinion; model them as a records-predicate/affiant track keyed to the ORGANIZATION, which also feeds the § 18.001 affidavit tracker and TRE 902(10). Whether a matter renders them inside the 195.5 block (his approved practice) or separately is a rendering choice on FE-21's object, not a data-model fork. **§ 18.001 IS FLAGGED HERE, AT THE POINT OF USE, AND NOT ONLY IN §9:** no verified registry entry exists; its text was pulled 2026-07-26; it sits in the medical-billing DRAFT file and the FC-13 drafts. **And it acquired a second, independent flag on 2026-08-22 — see §13 shape 4 and `RC-4`.** Nothing here relies on the drafting project's treatise reading. **NOT WALKED in any ruling sitting.**
+**Q3 → RULED 2026-08-31 — Michael: *"Adopt."*** Custodian-only designations are a **separate records-predicate track keyed to the FACILITY, rendered INSIDE the 195.5 block by default** — his approved, served practice; **the § 18.001 affidavit tracker is a separate banked item, not this module.** Whether a matter renders them separately remains a rendering choice on FE-21's object, not a data-model fork. **§ 18.001 IS FLAGGED HERE, AT THE POINT OF USE, AND NOT ONLY IN §9:** no verified registry entry exists; its text was pulled 2026-07-26; it sits in the medical-billing DRAFT file and the FC-13 drafts, and it carries `RC-4`'s independent flag (§13 shape 4). Nothing here relies on the drafting project's treatise reading.
 
-**Q4 — REWRITTEN IN PART. One rendering ruled; the rest still open.** **RULED 2026-08-21 (`HD-21(a)`): the providers list on the DISCLOSURES SCREEN, section two, is ordered OLDEST TREATMENT FIRST.** Michael: **"That sounds good."** He scoped it himself mid-exchange — *"we're talking about just the medical tab, right?"* — and **the Medical tab's own ordering was raised, overtaken by the mirror ruling (§17.2), and never separately answered: `HD-21-med`, OPEN.** Still open from the 2026-08-20 answer: the attorney-set per-matter override, and whether one order applies to all three renderings. **The 2026-08-20 answer made an ordering mismatch a ship-gate BLOCK; that verdict cannot stand beside §6's ruled posture and is withdrawn to open.** Charge-descending remains a useful SORT for the gap flag, not a canonical order.
+**Q4 — CLOSED 2026-08-31.** The order: **RULED 2026-08-21 (`HD-21(a)`) for the disclosures-screen list — OLDEST TREATMENT FIRST, "That sounds good"** — and **generalized 2026-08-31 under ND-7(b) to ALL THREE RENDERINGS, with NO per-matter override — Michael: *"oldest first is the rule."*** The Medical tab's own list follows it too — `HD-21-med`, *"Yes, same order there"* (§17.2). The mismatch posture — a charges-table provider with no designation paragraph — is ND-7(c), **HELD FOR HANDS-ON** at his own doubt about the premise (§4). Charge-descending remains a useful SORT for the gap flag, not a canonical order.
 
-**Q5 — REWRITTEN. The surface moved; the trigger is still open.** Trigger — absolute dollar, percentage, rank, or attorney-set — **NOT WALKED.** What changed is where it can appear: **the disclosures panel is deliberately THIN (`HD-21(c)`, §17.2) — "I just need the providers"** — so a charge-weighted display in the form builder is against that ruling. **The available home is the ambient missing-information line (§6.1), which is where the designee-type check went for the same reason.** Persistent state on the FE-21 object, not a transient notice, survives.
+**Q5 — HELD FOR HANDS-ON 2026-08-31, by name.** Trigger — absolute dollar, percentage, rank, or attorney-set — is a *"what feels right in use"* question of the same family as ND-7(c); Michael: *"Confirm the hold."* Its surface is settled: **the disclosures panel is deliberately THIN (`HD-21(c)`, §17.2)**, so a charge-weighted display in the form builder is against that ruling and **the available home is the ambient missing-information line (§6.1).** Persistent state on the FE-21 object, not a transient notice, survives. On the CC-1 hands-on queue (§18.F).
 
-**Q6 → rule text for the FIELDS, a capture for the NARRATIVE.** 195.5(a)(3)–(4)'s retained list is restated in the playbook E2 row and can be specced now — UNVERIFIED, so it drives a checklist and no computed outcome. The retained paragraph's slot grammar should wait for a real retained-expert capture. **The retained TRACK's build shape was ruled 2026-08-21 and is small (§7); that ruling does not supply the paragraph's content, which is what Q6 asks about.** NOT WALKED.
+**Q6 → RULED 2026-08-31 — Michael: *"Adopt."*** The retained-expert **FIELDS are specced now from the rule text** — 195.5(a)(3)–(4) as restated in the playbook E2 row, UNVERIFIED, driving a checklist and no computed outcome. **The retained PARAGRAPH waits for a real, client-clean retained-expert capture from a matter where he designated a life-care planner or an economist — his hand, through CIVIL LIT under REQ-1.** The retained TRACK's build shape was ruled 2026-08-21 and is small (§7).
 
 **Q7 — REWRITTEN. The lint is gone.** *Its 2026-08-20 answer restated ND-3 as a derivation rule enforced by a lint firing when a paragraph was rendered without consuming available evidence, with proposed operative wording.* **Ruled 2026-08-22 (5.2): removed.** Michael: **"Sure."** See §4, ND-3. The proposed wording is withdrawn with it — **re-basing ND-3 is a text act on Michael's own never-do rule and is his.**
 
-**Q8 → combined is the house standard by construction; separability preserved.** FE-D1's skeleton is Michael's own master — one instrument, expert block embedded. Recommend combined as the standard, with FE-21's objects keeping the halves renderable separately so a per-matter split is a later ruling, not a rebuild. **Please confirm, since you authored the master.** NOT WALKED.
+**Q8 → CONFIRMED 2026-08-31 — Michael, who authored the master: *"Combined form is the house standard."*** One served instrument — 194.2(b) and 195.5 with the expert block between subsections (5) and (6) — with FE-21's objects keeping the halves renderable separately, so a per-matter split is a later ruling and not a rebuild.
 
 **Q9 — REWRITTEN. See §1.2.** Correct about what exists at HEAD; superseded as scope. The chronology IS the input and the model extracts the individuals from it.
 
-**Q10 — REWRITTEN.** *Its 2026-08-20 answer was BLOCK above the FE-22 threshold, AUTOMATIC below it.* **The BLOCK limb cannot stand beside §6 and is withdrawn.** The AUTOMATIC limb and the persisted GAP flag survive. **And the framing narrows: for the PHARMACY shape (§13, shape 4) custodian-only is the DESIGNED shape — "this is its whole content" — not a degradation and not a gap.** Part 3 rule 9's "custodian-only is a fallback, not a choice" governs genuinely unresolvable individuals and does not reach the pharmacy. **The threshold question itself is NOT WALKED.**
+**Q10 — HELD FOR HANDS-ON 2026-08-31, by name.** *Its 2026-08-20 answer was BLOCK above the FE-22 threshold, AUTOMATIC below it.* The BLOCK limb cannot stand beside §6 and is withdrawn; the AUTOMATIC limb and the persisted GAP flag survive. **For the PHARMACY (§13) custodian-only is the DESIGNED shape — "this is its whole content" — not a degradation and not a gap;** Part 3 rule 9's "custodian-only is a fallback, not a choice" governs genuinely unresolvable individuals and does not reach the pharmacy. **The threshold itself is held with Q5 and ND-7(c) — the same family — on Michael's *"Confirm the hold."*** On the CC-1 hands-on queue (§18.F).
 
 ## §9 — Part 7 against the registry (what exists, what does not)
 
@@ -605,25 +621,25 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 
 **Nothing is drafted here** — drafting entries is its own act (the FC-13 precedent), and PF-1 would run on that packet. Every proposition in Part 7 stays UNVERIFIED; **no validation logic anywhere in this file computes from any of them.** FE-19 is a data-kind check, not a legal one; hard stop 2 (§12) compares a date against the matter record, not against a rule.
 
-**ROUTE-C:** no divergence between a registry proposition and operative text was found by this fold-in, because **no primary source was retrieved and none was asked for.** No conforming wording is drafted and no cite change is proposed. **Retrieval is not verification and neither is this file. Only Michael verifies.**
+**ROUTE-C:** no divergence between a registry proposition and operative text was found by either fold-in, because **no primary source was retrieved and none was asked for.** No conforming wording is drafted and no cite change is proposed. **Retrieval is not verification and neither is this file. Only Michael verifies.**
 
-## §10 — What goes to Code and what stays design-side — **REWRITTEN 2026-08-25**
+## §10 — What goes to Code and what stays design-side — **REWRITTEN 2026-08-25 and 2026-08-31**
 
-**TO CODE (this packet — DOCS-ONLY, NO BUILD AUTHORIZATION):** this file at its canonical path, **created for the first time**; the session-log entry; the SK-v2 closure in `docs/specs/attorney-review-queue.md`; and the queue merge for the open items at §18, **carrying FULL QUESTION TEXT per QR-1** — **only the rows Michael rules in.**
+**TO CODE (the 2026-08-31 packet — DOCS-ONLY, NO BUILD AUTHORIZATION):** this file, **REPLACED WHOLE at its canonical path** (second fold-in); the session-log entry; **three work orders now UNBLOCKED by ratification or ruling** — the `form-engine.md` amendments (§9.4's causation sentence and note, by Michael's ruling; the FE-18 connective amendments at §2 step 2, §3, the §9 header and §10, wording ratified; *"provider contact block"* → *"provider block"*, `HD-17`/B10), the `contact-directory.md` §5 act (CD-14: the `renders-care-at` edge type and its effective period), and a SPENT banner on `docs/prompts/PROMPT-rc1-voice-the-form-of-the-floor.md`; the `RECON-1` queue-row closure on the record's own evidence (`#138`, batch 83); and the Status-header reconcile sentence. **No queue row is minted for anything ruled tonight — a filed log entry is a ruling's home (2026-08-22).**
 
-**NOT IN THIS PACKET, and each for its own reason:** any edit to `form-engine.md` — amending §2 step 2, §3, the §9 header and §10 is the FE-18 spec act and ships as its own packet once FE-18's wording is ratified (§1.6); any edit to `contact-directory.md` (CD-14, now two-limbed); **any `src/` change whatever** — a FE-D1 amendment slice is its own authorization on the CD-1/FE-D1 pattern and the queue runner is BARRED from it; any registry entry (drafting entries is its own act — the FC-13 precedent — and PF-1 runs on that packet); any `SKILL.md` v3 line; **and the FE-D1 migration, which is Michael's hand and unrun (`HD-18`, `MIG-1`).**
+**NOT IN THAT PACKET, and each for its own reason:** **any `src/` change whatever** — the rename slice, the provider record (`R17`), the fixed-sentence table as data, the parts-return contract and the model call are a FE-D1 amendment slice on the CD-1/FE-D1 pattern, its own authorization, and the queue runner is BARRED from it; any registry entry (drafting entries is its own act — the FC-13 precedent — and PF-1 runs on that packet); any `SKILL.md` v3 line; **the FE-D1 migration, which is Michael's hand and unrun (`HD-18`, `MIG-1`)**; and the §3 sixteen-ID minting act, which is his and is put with the packet rather than executed by it.
 
-**STAYS DESIGN-SIDE:** every open item at §18; the master-skeleton hand-in (§0.2, `RF-2`); **the TRCP 195.2 verification, which is R11's gate and Michael's act**; the retained-expert capture (Q6); `SKILL.md` v3.
+**STAYS DESIGN-SIDE:** every open item at §18; the master-skeleton hand-in (§0.2, `RF-2`); **the TRCP 195.2 verification, which is R11's gate and Michael's act**; the retained-expert capture (Q6); `SKILL.md` v3; the five hands-on items and the CC-1 hands-on sitting they wait for (§18.F).
 
-**NOTHING IN THIS FILE AUTHORIZES A BUILD.** It records requirements and rulings. Every ID in §3 is PROPOSED and unminted.
+**NOTHING IN THIS FILE AUTHORIZES A BUILD.** It records requirements and rulings. One ID in §3 is minted (`R17`); the rest are PROPOSED.
 
 ---
 
 # §11–§19 — THE RULINGS TAKEN AFTER THIS ADDENDUM WAS AUTHORED
 
-*Written 2026-08-25 (Opus 5, Cowork, typed, bridge granted). These sections carry rulings of **2026-08-21** (FOUR sittings: a voice walkthrough, a typed fold-in, and two further voice sittings) and **2026-08-22** (RECON-1's first substantive ruling sitting, fourteen rulings put one at a time). **They are not a second account of §§1–10 — they are the content §§1–10 has no section for.** Where they bear on a rewritten section above, that section names them.*
+*Written 2026-08-25 (Opus 5, Cowork, typed, bridge granted) and REWRITTEN 2026-08-31 (Fable 5, Cowork, typed, bridge granted — the session's model is recorded from the environment, which reported `claude-fable-5` after Michael's switch; a session-configuration line in the same context still read `claude-opus-5`, and the discrepancy is recorded rather than resolved by inference). These sections carry rulings of **2026-08-21** (FOUR sittings: a voice walkthrough, a typed fold-in, and two further voice sittings), **2026-08-22** (RECON-1's first substantive ruling sitting, fourteen rulings put one at a time) and **2026-08-31** (the `RC-1` sitting: twenty-one ruling exchanges (some forty-nine discrete rulings) put one at a time, typed, on the file at HEAD). **They are not a second account of §§1–10 — they are the content §§1–10 has no section for.** Where they bear on a rewritten section above, that section names them.*
 
-**Michael's words are quoted verbatim throughout, because the wording is the ruling.** Where a sentence is Claude's restatement or inference rather than his, **it is marked as such in place.** Six such guards were flagged at capture time — five in the 2026-08-22 capture and one in the 2026-08-21 voice3 sitting — **and all six survive here**, at §11.3, §13.3, §14.2, §14.5, §15.5 and §17.4. **This fold-in added two more of its own, at §13.5 and §17.2, where a design conclusion was being stated flatly with no capture behind it — eight `MARKED` blocks in all.**
+**Michael's words are quoted verbatim throughout, because the wording is the ruling.** Where a sentence is Claude's restatement or inference rather than his, **it is marked as such in place.** Six such guards were flagged at capture time and survive at §11.3, §13.3, §14.2, §14.5, §15.5 and §17.4; the first fold-in added two at §13.5 and §17.2; **the 2026-08-31 rewrite adds guards wherever a ruling was his SELECTION of a description Claude wrote** — §11.6 (the two-way description he chose "Option 1" from), §15.6 (the rider examples), §17.1a (the type mechanism, a Claude proposal adopted in terms) — **because a ruling made by choosing among Claude's words is his ruling, but the words around it are not his and must not be quoted as such.**
 
 ## §11 — THE FLOOR: what every designation paragraph must contain
 
@@ -631,7 +647,7 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 
 > *"it's fine if they vary paragraph to paragraph so long as each one is accurate and reads well. **However, there are some lines in there that need to be in there.**"*
 
-**This is a MANDATORY-CONTENT requirement, not a template.** Free variation on the prose; a verbatim floor beneath it. **It is a class of engine invariant that none of the existing ND rules describes**, which is why it needed its own section rather than a row in §4.
+**This is a MANDATORY-CONTENT requirement, not a template — as ruled on 2026-08-22. On 2026-08-31 `RC-1` decided HOW the floor is delivered: the basis and causation sentences are FIXED TEXT the app places, and the prose varies around them (§11.6).** Free variation on the prose; a verbatim floor beneath it, two of whose three sentences the app itself supplies. **It is a class of engine invariant that none of the existing ND rules describes**, which is why it needed its own section rather than a row in §4.
 
 *Recorded because it is the sixth exhibit for CC-1(a): this was a **COMPOSITE**, not a selection. The two branches offered were "predictable every time" and "free variation." He took neither and produced the thing underneath both.*
 
@@ -647,7 +663,7 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 | 2 | review of the medical records |
 | 3 | personal knowledge gained from **education, training, experience, and research** |
 
-**Where it appears:** in the **paragraph** (prose). **No position within the paragraph was ruled, and none is invented here.**
+**Where it appears:** in the **paragraph** — **since 2026-08-31, as SLOT 2 of four, FIXED TEXT the app places after the writer's opening** (§11.6); its wording is the provider type's entry in §11.8.
 
 ### §11.3 — MANDATORY ELEMENT 2 — CAUSATION. This is the load-bearing one.
 
@@ -657,11 +673,11 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 
 > *"That's the line. That gives us medical causation. … the big thing is that we need a medical expert to be able to give us causation. When we say causation, we need the expert to be able to give expert medical testimony that the injuries that my client is claiming to have sustained in the wreck were caused within a reasonable degree of medical probability … by that wreck or that fall or whatever the personal injury incident was."*
 
-**Where it appears:** in the **paragraph**. No position ruled.
+**Where it appears:** in the **paragraph** — **since 2026-08-31, as SLOT 4 of four, FIXED TEXT the app places as the LAST sentence** (§11.6); its wording is the provider type's entry in §11.8, and the date in it is filled from the matter record.
 
 > **MARKED AS CLAUDE'S RESTATEMENT, NOT MICHAEL'S WORDS:** *"Without this sentence you have a treating physician who can describe treatment and nothing that connects it to the defendant."* That framing drew no objection at capture time. **It is not his and must not be quoted as his.**
 
-**⚠ THE RULED WORDING IS SINGULAR — "that physician … the injuries that THEY treated" — AND §15.3 MAKES THE PARAGRAPH COLLECTIVE.** One paragraph per facility, covering its individuals together, means this sentence must work for a twelve-name hospital. **How it inflects for a group was raised by the ruling that created the problem and was NEVER PUT TO MICHAEL. That is `RC-3` and it is OPEN. Nothing in this file inflects it.**
+**THE RULED WORDING IS SINGULAR — "that physician … the injuries that THEY treated" — AND §15.3 MAKES THE PARAGRAPH COLLECTIVE.** One paragraph per facility, covering its individuals together, means this sentence must work for a twelve-name hospital. **How it inflects for a group was `RC-3`, raised by the ruling that created the problem, and RULED 2026-08-31: the plural-token form of the fixed sentence — "That is the collective form" (§15.3, §11.8).** Since 2026-08-31 this sentence is also FIXED TEXT the app places (§11.6), selected by provider type (§11.8).
 
 ### §11.4 — MANDATORY ELEMENT 3 — CUSTODIAN. Two pieces, both DEFAULT ON.
 
@@ -670,7 +686,7 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 | Piece | Where | Content |
 |---|---|---|
 | **Block line** | in the provider **BLOCK**, positioned **between the treating-provider names and the facility name** | *"and/or custodian of records"* |
-| **Paragraph sentence** | in the **paragraph** | what the custodian can testify to as to those records — kept, true and correct, in the regular course of business |
+| **Paragraph sentence** | in the **paragraph** — **WRITTEN AND PLACED BY THE WRITER (2026-08-31), anywhere in its parts before the causation line** | what the custodian can testify to as to those records — **all four limbs, every time (§11.6):** made and kept in the regular course of business; by persons with knowledge of the acts and events recorded; at or near the time; the charges and their reasonableness |
 
 **Defaulting both ON is what makes them a THIRD MANDATORY ELEMENT rather than a conditional one.** That consequence was stated plainly in session and Michael did not dissent — **recorded as an undissented consequence, not as a separate ruling.**
 
@@ -678,33 +694,52 @@ Read at HEAD across the four registry files and the playbooks. **Entries EXIST f
 
 > *"I've seen some people add custodian of records in that provider block. Actually, the first firm that I worked at, we would always put it in there. I don't know why. Maybe it's for a reason."*
 
-**The actual predicate LANGUAGE of the paragraph sentence is not drafted here** — it is `RC-4`, and it is tied to an UNVERIFIED cite (§9, §13 shape 4).
+**The paragraph sentence's REQUIRED CONTENT is the four limbs above, ruled 2026-08-31 (§11.6); its exact wording is the writer's each time.** What remains of `RC-4` is the UNVERIFIED cite behind the predicate — `CPRC § 18.001` (§9, §13 shape 4) — and only Michael verifies it.
 
 *Note against the 2026-08-20 text: Part 3's CONTACT BLOCK already carried a custodian line — "And/or Custodian(s) of Records", number tracking the count of named individuals — as a **token**. The 2026-08-22 ruling makes it **unconditional** and fixes its **position**. The wording differs between the two records (Part 3's capitalised form vs Michael's spoken "and/or custodian of records"); **the difference is noted, not resolved — it is a text act and it is his.***
 
-### §11.5 — What is CHECKED, and what deliberately is not (RULED 2026-08-22)
+### §11.5 — What is CHECKED, and what deliberately is not (RULED 2026-08-22; the check's WORK REMOVED BY CONSTRUCTION 2026-08-31)
 
-**The DATE inside the causation line is the only checked piece. Nothing on the basis line is checked at all.**
+**The DATE inside the causation line was the only checked piece. Nothing on the basis line is checked at all.**
 
 Michael approved Claude's recommendation — *"Okay."* — on a stated reason worth preserving: the basis line is boilerplate, and if the model drops it he will see it; a phrase-match on it **"just teaches him to ignore warnings."**
 
-**The check is a COMPARISON, not a phrase-match:** the incident date already exists on the matter record, so the app compares the rendered date against it. That is the only piece in either line the model can get factually wrong in a way Michael might skim past. **It was subsequently escalated from a warning to a HARD STOP — see §12.**
+**The check was a COMPARISON, not a phrase-match:** the incident date already exists on the matter record, so the app compared the rendered date against it. It was escalated from a warning to a HARD STOP the same day (§12). **Under §11.6 the comparison has nothing left to compare:** the app FILLS the causation sentence's date from the matter record itself, so the rendered date cannot disagree with it. What survives of the ruling is its posture — **the date is the one piece of the floor the app guarantees from the record** — and the one failure that remains is ABSENCE, which §12.3 makes a stop. The 2026-08-22 ruling stands as written; the 2026-08-31 structure discharged its work.
 
-### §11.6 — ⛔ `RC-1` — THE FORM OF THE FLOOR IS UNRULED, AND IT IS THE RESUME POINT
+### §11.6 — `RC-1` — THE FORM OF THE FLOOR: RULED 2026-08-31. THE APP PLACES THE SENTENCES; THE WRITER WRITES AROUND THEM; THE APP ASSEMBLES.
 
-**The question:** *is the floor **FIXED TEXT the engine emits**, regardless of provider — or a **REQUIRED-CONTENT CHECK** over model-composed prose?*
+**The question as put:** *is the floor **FIXED TEXT the engine emits**, regardless of provider — or a **REQUIRED-CONTENT CHECK** over model-composed prose?* — carried into the room with the §18.B11 caveat (the 2026-08-21 no-lint rulings, at their widest, would have foreclosed the check branch) and with the composite shape named as a way of asking, not a menu.
 
-**It was asked, cut off mid-sentence by a turn boundary, and never answered.** The hard stops of §12 **constrain it but do not settle it: an invariant can be satisfied either by emitting the line or by detecting it.**
+**Michael first asked what was being decided — *"Are we talking about the disclosure paragraphs?"* — and, told yes, the expert-designation paragraphs, one per facility, the three required sentences inside each, RULED:**
 
-**Why it is not a detail.** It decides **what a paragraph IS in the schema** — invariant-as-DATA versus invariant-as-ASSERTION. It sits upstream of the three hard stops, upstream of `HD-20-b`, and upstream of what the chronology extraction has to hand back. §8's Q1 and §3's FE-20 row both lean on it and **both say so in place rather than resolving it.**
+> ***"The app puts the sentences in there with the model writing the rest around them."***
 
-**NO SECTION OF THIS FILE ADOPTS EITHER BRANCH. A build slice that reads this file must stop here and ask.**
+**FIXED TEXT.** The check branch is gone. Three consequences follow at once and were stated to him: **B11 dissolves** — nothing ever has to look inside the writer's prose to satisfy the floor, so the 2026-08-21 rulings need no narrowing; **hard stop 1 becomes STRUCTURAL** — the causation line cannot be missing because the app is the one placing it; and **the fixed wording of each sentence became a text act of his**, discharged the same night by §11.8.
 
-> **⚠ BUT ONE LEAN EXISTS AND IT IS NAMED HERE RATHER THAN LEFT SILENT — FOUND BY THIS FOLD-IN'S OWN RE-SWEEP, NOT BY A RULING.** §6 says **"nothing lints the drafted text"** and §16.4 says **"nothing takes returned paragraphs apart; nothing looks inside them."** Both are **RULED** on 2026-08-21 — **but those two sentences are THIS FILE'S GLOSSES, not Michael's words, and saying so is not pedantry here.** What he actually said is quoted in place: at §6, *"Yeah. Let's go with that,"* approving a recommendation whose three grounds are Claude's; at §16.4, *"I just wanna see that paragraph end up in the word document."* **The glosses are faithful to what was ruled. They are not quotations — and the whole lean turns on how WIDE those rulings reach, which is exactly the question a gloss cannot settle.** **But the CHECK branch of `RC-1` is inspection of drafted text** — detecting whether the causation line is present means reading the paragraph. **Taken at their widest, those two rulings would foreclose the check branch and leave only fixed text.**
->
-> **This file does NOT draw that conclusion, for a reason that is on the record: the 2026-08-21 rulings and their stated reasoning are about MODEL-RETURNED PROSE and the nuisance-warning risk of parsing Michael's own wording** (§6, ground 2), **not about whether the engine may satisfy its own invariant.** Hard stop 1 — *never emit a paragraph missing the causation line* — was ruled the day AFTER, and an engine that cannot look at what it is about to emit cannot honour it by any means except emitting the line itself. **So either the rulings are narrower than their widest reading, or `RC-1` is already answered by implication.**
->
-> **THAT IS EXACTLY THE QUESTION AND IT IS MICHAEL'S. It is put at §18.B, unminted, alongside B1 and B9, which are the same seam seen from two other angles.**
+**Then the question was re-asked narrower, because "the model writing the rest around them" can be built two ways, and the two ways are different schemas.** Both were described to him — **the descriptions below are CLAUDE's words; his ruling is the selection:**
+
+> **MARKED — CLAUDE'S TWO DESCRIPTIONS, NOT MICHAEL'S WORDS.** *(1) The model never touches the fixed sentences: it is told what they say so its prose flows into them, writes only its own pieces, and the APP assembles the paragraph by slotting the fixed sentences in — what comes back from the model is PARTS. (2) The model is handed the sentences as untouchable text, returns the whole paragraph with them embedded, and the app confirms its own sentences came back word-for-word — a match on the app's text, not a reading of the model's wording — and refuses the paragraph if they did not.*
+
+**Michael: *"Option 1."***
+
+**APP ASSEMBLY.** A paragraph in the schema is an **ORDERED SEQUENCE OF SLOTS, each FIXED (the app's text) or WRITER (a returned part)** — invariant-as-data, completely. **The model returns PARTS, never a paragraph** (§16.4). Nothing anywhere byte-matches or inspects model output against the floor. The writer is told what the fixed sentences say so its parts read into them.
+
+**THE SLOT ORDER — RULED.** Derived from his own `form-engine.md` §9 skeleton — *"who they are → what they did for the client → testimony basis → testimony scope → damages elements → causation"* — in which every treating variant puts the basis sentence SECOND and the causation sentence LAST; put to him as four slots and confirmed: ***"The four slot order matches."***
+
+| Slot | Who writes it | Content |
+|---|---|---|
+| 1 | **WRITER** | opening — who they are, what they did for the client (for a mixed facility, what EACH one did — §15.6) |
+| 2 | **APP — FIXED** | the BASIS sentence for the paragraph's provider type (§11.8) |
+| 3 | **WRITER** | middle — what they will testify about; the damages elements; **future care and its reasonable cost live here** (see the note below) |
+| 4 | **APP — FIXED** | the CAUSATION sentence for the paragraph's provider type (§11.8) — **always the LAST sentence** |
+
+**THE CUSTODIAN SENTENCE IS THE WRITER'S — WRITTEN AND PLACED BY THE MODEL, NOT THE APP.** Asked where it goes, Michael: ***"the custodian sentence can go wherever the ai writer wants to put it."*** That answer was outside the offered set and changed who writes it, so it was re-put with rendered examples (all fictional; four were shown — the four slots exploded; the app's custodian sentence at the end; the app's sentence at a writer-chosen spot; a writer-written sentence). **Michael: *"I like example 1 but we also need the custodian sentence in there like example 4."*** Example 4 was the writer-written one, shown to him with the warning that free composition drops predicate limbs. **So the app's FIXED SET is TWO sentences — basis and causation. The custodian sentence is a REQUIRED INSTRUCTION to the writer, placed anywhere within its parts before the causation line, and nothing guarantees it** (§6): a miss shows on the page, as he accepted for the basis wording on 2026-08-22. **The block line *"and/or Custodian of Records"* is untouched — still the app's token, default on, positioned per §11.4.**
+
+**WHAT THE WRITER IS TOLD THE CUSTODIAN SENTENCE MUST CONTAIN — RULED: *"All four limbs required every time."*** The four, from his own §9.11: (1) the records were made and kept in the regular course of business; (2) by persons with knowledge of the acts and events recorded; (3) at or near the time of the acts and events recorded; (4) the charges reflected in those records and their reasonableness. *Required of the writer by instruction; not checked by the app. The legal sufficiency of the predicate and the `CPRC § 18.001` candidate behind it are `RC-4` — his verification, unchanged.*
+
+> **NOTE ON FUTURE CARE — stated to Michael with a stop-me line; not objected; NOT a separate ruling.** `form-engine.md` §9.5–§9.8 fold *"need for future medical care and its reasonable cost"* INTO the causation sentence. In the examples he approved it sits in the WRITER's middle part, so the fixed causation line stays clean. He was told he could have it back inside the fixed line and did not take that up.
+
+**Why this settles what the first fold-in said it would.** §8's Q1 and §3's FE-20 row leaned on `RC-1` and now resolve (FE-20 regains a text-producing role for exactly the fixed sentences). `HD-20-b` is downstream and confirmed (§16.4). What the chronology extraction hands back is NAMES (§17.1a). And `RC-3`, which the 2026-08-22 one-paragraph-per-facility ruling created, becomes a question about the plural form of fixed text — closed at §15.3.
 
 ### §11.7 — WHAT COMPOSES THE PROSE OVER THE FLOOR: the twelve variants become VOICE EXAMPLES (widget B, RULED 2026-08-22)
 
@@ -722,9 +757,47 @@ Michael approved Claude's recommendation — *"Okay."* — on a stated reason wo
 
 **Two consequences already recorded elsewhere and named here so the chain is visible:** ND-3's near-identical-paragraph lint is **REMOVED** (§4, §8 Q7) — if register comes from a shared corpus, similarity is not evidence of a stock paragraph. And **FE-20 is no longer the thing that writes the paragraphs** (§3).
 
-*This section is downstream of `RC-1`: whether the floor's three sentences are emitted by the engine or checked over what the model composed decides how much of a paragraph the model actually authors. Ruling `RC-1` does not disturb widget B; it decides what widget B leaves to the model.*
+*This section is downstream of `RC-1`, and `RC-1` is now ruled: the app places the basis and causation sentences (§11.6), so **what widget B leaves to the model is the opening, the middle, and the custodian sentence** — everything in the paragraph except the two fixed lines. Widget B is undisturbed. **But §9 acquired a second job on 2026-08-31 that widget B did not give it:** its basis and causation sentences are the SOURCE TEXT of the fixed-sentence table below. As voice examples the twelve are untouched; as the source of the app's fixed sentences, §9.4 carries one edit by Michael's ruling (§11.8).*
 
-## §12 — THE THREE ENGINE HARD STOPS — and the three enforcement postures that now coexist
+### §11.8 — THE FIXED SENTENCES, AS DATA: two lists keyed by PROVIDER TYPE (RULED 2026-08-31)
+
+**Fixed text forces a closed list — the app must hold every basis and causation sentence it can place and know which to place for whom.** Both lists were read out of his approved library in `form-engine.md` §9 and put to him against the four-shape ruling of 2026-08-22 (§13), which did not line up with the library. **He ruled the LIBRARY'S lists, keyed by provider type, with two edits.**
+
+**THE CAUSATION LIST.** Put as the library's five: (1) the medical-probability line, *"the injuries treated were, within a reasonable degree of medical probability, caused by the incident"* — emergency medicine, pain management, ortho, neuro, primary care; (2) the chiropractor's *"reasonable degree of chiropractic probability"*, whose note says *"settled"*; (3) the EMTs' *"consistent with"* line, which the library note calls deliberate, *"qualification-fight avoidance"*; (4) the physical therapist's *"functional limitations and impairments observed during treatment were consistent with the injuries"*; (5) the radiologist's 9.2, *"the findings shown in the imaging are, within a reasonable degree of medical probability, consistent with and caused by the incident."*
+
+> ***"#2 needs to be "reasonable degree of medical probability"; #4 "collision" is only for motor vehicle collisions, and premises injuries should read "incident"; the rest is apporved."*** *(sic)*
+
+| Provider type | Causation sentence the app places | Source |
+|---|---|---|
+| emergency medicine · pain management · orthopedic surgery · neurosurgery · primary care · **chiropractic** | the medical-probability line — *"the injuries treated were, within a reasonable degree of medical probability, caused by the incident of {incident_date}"* | §9.1 / §9.5–§9.8; **§9.4 by the 2026-08-31 edit** — the chiropractor's sentence becomes IDENTICAL to this one |
+| prehospital EMS (EMT / paramedic) | the EMT line — *"consistent with the {incident_type} that occurred on {incident_date}"* | §9.3, approved as written |
+| physical therapy | the PT line — *"functional limitations and impairments … consistent with the injuries … sustained in the incident of {incident_date}"* | §9.9, approved as written |
+| radiologist / imaging interpreter | **§9.2 as written** — the FINDINGS object AND the medical-probability phrase | §9.2, approved as written — **B2 CLOSED, `RC-6` CLOSED** (§13.2) |
+| pharmacy · custodian-only · mid-level rider | **none** | §9.10 / §9.11 / §9.12 carry no causation sentence |
+
+**Four distinct sentences, not five: with the chiropractor moved to medical probability his sentence is the treating line.** Two things named to Michael as consequences, not ruled by him separately: the 2026-08-22 *"EMS is a treating shape"* ruling is **SUPERSEDED as to the causation sentence** by tonight's approval of the EMT line — the earlier ruling stands as written, today's governs; and `form-engine.md` §9.4's note *"chiropractic (not medical) probability — settled"* is overtaken. **He then ruled the §9.4 text itself edited: *"Get rid of chiropractic probability and replace with medical probability."*** — a packet work order, not this file's act.
+
+**THE EVENT NOUN.** The `{incident_type}` token, wherever a fixed sentence or the writer's opening names the event: **"collision" only for motor vehicle collisions.** Put narrower — everything non-MVC, or premises only? — **Michael: *"Let's make "incident" the word for everything not a collision. I can always change those on my own if I want to later."*** *(The word "collision" had appeared in Claude's rendering of the EMT sentence, where the library's token is `{incident_type}`; his "#4" label is read as a token rule, not as an edit to any one sentence. The causation lines' literal *"the incident of {incident_date}"* is his approved text and is left alone.)*
+
+**THE BASIS LIST.** Put as the library's six — (i) emergency medicine: personal examination and treatment, review of the medical records, *medical* knowledge from education, training, experience and research (§9.1); (ii) pain/ortho/neuro/primary care: the same, but *"medical records and diagnostic imaging"* (§9.5–§9.8); (iii) chiropractor: records and imaging, *"knowledge"* rather than *"medical knowledge"* (§9.4); (iv) physical therapist: *"personal evaluation and treatment,"* records, *"knowledge"* (§9.9); (v) EMT: *"at the scene and during transport,"* no review of records (§9.3); (vi) radiologist: *"review and interpretation of the diagnostic imaging"* in place of treatment (§9.2) — against the 2026-08-22 ruling's three (treating as written, the radiologist swap, EMS as written). **Michael: *"This is correct."* — the library's six, keyed by provider type.**
+
+| Provider type | Basis sentence the app places | Source |
+|---|---|---|
+| emergency medicine | examination and treatment · review of medical records · *medical* knowledge | §9.1 |
+| pain · ortho · neuro · primary care | examination and treatment · records **and diagnostic imaging** · *medical* knowledge | §9.5–§9.8 |
+| chiropractic | examination and treatment · records and diagnostic imaging · *"knowledge"* | §9.4 (basis unchanged by the edit) |
+| physical therapy | *"personal evaluation and treatment"* · records · *"knowledge"* | §9.9 |
+| prehospital EMS | *"personal examination and treatment … at the scene and during transport"* · **no review of records** · *medical* knowledge | §9.3 |
+| radiologist | *"review and interpretation of … diagnostic imaging"* · review of records · *medical* knowledge | §9.2 |
+| pharmacy · custodian-only · mid-level rider | **none** | — |
+
+**PLURAL FORMS.** Each sentence exists in singular and plural — the plural-token form of §9's own header rule, *"Group versions = same template with plural tokens"* — and the plural is what a same-type group gets (`RC-3`, §15.3).
+
+**WHAT THIS MEANS FOR §13.** The four SHAPES of 2026-08-22 are SUBSUMED: **PROVIDER TYPE is the key for BOTH fixed sentences**, and the type vocabulary is the library's (emergency medicine, pain management, orthopedic surgery, neurosurgery, primary care, chiropractic, physical therapy, prehospital EMS, radiologist, pharmacy, custodian-only, mid-level). The §13 table stands as written and is read through this section. *(The CD-1 role vocabulary named in `HD-16`'s migration plan is reconciled to this list by the build; not ruled tonight.)*
+
+**A TEXT ACT DISCHARGED.** The fixed wording of each sentence was, at the moment `RC-1` was ruled, a text act of Michael's — the 2026-08-22 verbatims are spoken, and template text must be approved text. **Both tables above are built from sentences he approved verbatim in §9, plus his one ruled edit — which is why the discharge took one exchange.** A build slice generates the table from §9's text with a drift test, exactly as FE-D1 already generates `variants.ts` from the spec.
+
+## §12 — THE THREE ENGINE HARD STOPS — and the three enforcement postures, now THREE TIERS (RULED 2026-08-31)
 
 ### §12.1 — The three invariants (RULED 2026-08-22)
 
@@ -744,37 +817,49 @@ The date check was **first ruled a WARNING naming the provider**, on the `HD-22`
 
 > **AND ONE THING CLAUDE ASSERTED IN THAT EXCHANGE WAS NEVER RULED AND WAS RETRACTED IN SESSION.** Claude offered *"warning on the wording and hard stop on the date"* as though a wording/date split had already been decided. **Michael: *"What was the exact wording that I've said to give a warning on?"*** No such distinction was ever made; the only check on the table was ever the date. **Retracted in session. Actor: Opus 5. Failure class: manufacturing a prior ruling to make a new question tidier — a member of the verify-before-asserting family. Recorded because the record matters more than looking right.**
 
-### §12.3 — ⚠ THREE DIFFERENT ENFORCEMENT POSTURES NOW COEXIST, AND WHICH GOVERNS A GIVEN FAILURE WAS NEVER PUT AS ONE QUESTION
+### §12.3 — THE THREE POSTURES ARE THREE TIERS. Hard stops STOP THE GENERATE AND TELL HIM WHAT TO FIX (B1, RULED 2026-08-31)
 
-| Posture | Object | Behaviour | Ruled |
+**The seam the first fold-in surfaced** — the panel never blocks, `HD-22` warns and never blocks, the hard stops say *"you can't violate those ones,"* and his `HD-1` sentence *"we need to fix this before we generate the disclosures document"* read a fourth way — **was put as one question once `RC-1` had made it concrete.** Under §11.6 the app needs two things from the record before it can build a paragraph: the incident date from the matter record, for the causation sentence, and the facility's name, for the block. If either is missing a hard stop fires and the engine will not produce that paragraph. **What he sees, and whether he can generate the rest?**
+
+> ***"Stop and tell me what to do first."***
+
+| Tier | Object | Behaviour | Ruled |
 |---|---|---|---|
-| **Ambient panel** (§6.1) | provider RECORDS — missing address, phone, treating physician | flags, lists per provider, live in both directions, **never blocks** | 2026-08-21 |
-| **`HD-22`** (§6.3) | the designee NAME's corporate suffix | **warns, never blocks** — "let me go ahead" | 2026-08-21 |
-| **Hard stops** (§12.1) | what the ENGINE EMITS | **"you can't violate those ones"** | 2026-08-22 |
+| **Ambient panel** (§6.1) | provider RECORDS — missing address, phone, treating physician | flags, lists per provider, live in both directions, **never blocks** | 2026-08-21 — **unchanged** |
+| **`HD-22`** (§6.3) | the designee NAME's corporate suffix | **warns, never blocks** — "let me go ahead" | 2026-08-21 — **unchanged** |
+| **HARD STOPS** (§12.1) | what the app cannot BUILD a paragraph without | **the generate STOPS and names what to fix first** | **2026-08-31** |
 
-**They are reconcilable on one reading and not on another, and this fold-in adopts neither.** The reading that works: the hard stops bind the ENGINE's output, while the panel and `HD-22` bind what the USER is stopped from doing — the engine simply never produces a paragraph in those three states, and no user-facing gate is involved. **The reading that does not work is hard stop 3 against the panel.** Hard stop 3 is *"never emit a provider paragraph with no facility"* — the capture's own wording, carrying Michael's *"you can't violate those ones."* **And here the file must be careful about what it does and does not know.** The panel's ruled contents are the three things Michael named himself — **a missing address, a missing phone, a missing treating physician** (§6.1) — and on all three it flags and lets him generate. **Whether a MISSING FACILITY would be a fourth line in that panel was never put to him.** So the collision is not two rulings answering one question two ways; it is this: **hard stop 3 says the engine may not emit that paragraph, and nothing ruled says what the user sees when it fires, or whether he can proceed.** *(Stated in this file's words, not quoted — there is no sentence of Michael's covering it, and one is not manufactured to make the seam look tidier.)*
+**His `HD-1` sentence turned out to describe the top tier, not the panel.** The panel's three lines flag and let him generate, exactly as ruled 2026-08-21; the conditions the app cannot build without are the ones that stop him.
 
-**Add Michael's own sentence inside the `HD-1` ruling — *"we need to fix this before we generate the disclosures document"* — and there is a third possibility, that he does intend a bar on generation in some cases.**
+**WHAT CAN FIRE A HARD STOP UNDER FIXED TEXT — three ABSENCES, and only absences.** Hard stop 1 (*never emit a paragraph missing the causation line*) is STRUCTURAL and has no user-facing case: the app places the line. Hard stop 2 (*never emit a date that disagrees with the matter record*) cannot occur as written: the app FILLS the date from the matter record — only its ABSENCE can. Hard stop 3 (*never emit a provider paragraph with no facility*) is the facility NAME's absence. **And a THIRD absence was created the same night and ruled into the same tier:** a selected facility with **NO TYPE SET** (§17.1a) — without it the app cannot choose which fixed sentences to place. Put as *"same as the other two?"* — **Michael: *"stop and tell me."***
 
-**THE QUESTION, PUT AND UNANSWERED, CARRIED AT §18 WITH NO ID:** *when the engine cannot satisfy a hard stop because the underlying record is incomplete — no facility, or a date the matter record contradicts — what does the user see, and can he generate anyway? The three rulings above answer it three different ways and none of them was put alongside the others.*
+| Must-fix condition | Why the app cannot build | Ruled |
+|---|---|---|
+| the matter has **no incident date** | the fixed causation sentence cannot be rendered | 2026-08-31 |
+| a selected facility has **no name** | the provider block cannot be rendered | 2026-08-31 |
+| a selected facility has **no type** | no fixed pair can be chosen (§11.8) | 2026-08-31 |
 
-**Nothing is built either way. This is not a defect in any ruling; it is a seam between three rulings taken in two sittings, and it surfaced only when they were folded into one document — which is what a fold-in is for.**
+**§12.1's table stands as written — those are the invariants; this table is what a user can actually run into.**
 
-## §13 — THE FOUR PROVIDER SHAPES (RULED 2026-08-22)
+> **HELD FOR HANDS-ON, named (§18.F): the SHAPE of the stop** — a must-fix tier inside the `HD-1` panel, or a dialog on the generate button. Not decided here; not defaulted silently.
 
-**Where the 2026-08-20 addendum had one shape plus exceptions, there are FOUR.**
+## §13 — THE FOUR PROVIDER SHAPES (RULED 2026-08-22) — SUBSUMED BY PROVIDER TYPE (2026-08-31)
+
+**Where the 2026-08-20 addendum had one shape plus exceptions, the 2026-08-22 sitting ruled FOUR. On 2026-08-31, once the floor became fixed text, the key for both fixed sentences became PROVIDER TYPE with his library's variants (§11.8), and the four shapes are read through that table.** The table below stands as written; where it and §11.8 differ, §11.8 governs and the difference is named in the row.
 
 | Shape | Basis limb | Causation line | Custodian | Note |
 |---|---|---|---|---|
-| **1. Treating provider** | as written (§11.2) | yes | yes | the default |
-| **2. Radiologist / imaging interpreter** | swaps *personal treatment* → **personal interpretation of the imaging studies**; review of records **where held**; education/training/experience/research retained | **yes, AS WRITTEN — ⚠ EXPRESSLY PROVISIONAL** | yes | §13.2 |
-| **3. Prehospital (EMS / ambulance)** | as written | yes | yes | a treating shape |
-| **4. Pharmacy** | **NONE** | **NONE** | yes — **this is its whole content** | §13.4 |
+| **1. Treating provider** | as written (§11.2) — **six library variants by type, §11.8** | yes — **the medical-probability line for EM, pain, ortho, neuro, primary care and chiropractic; the PT's own "consistent with" line** | yes — **the writer's sentence, four limbs (§11.6)** | the default |
+| **2. Radiologist / imaging interpreter** | swaps *personal treatment* → **interpretation of the imaging**; review of records; education/training/experience/research retained | **§9.2 AS WRITTEN — no longer provisional (§13.2)** | yes | §13.2 |
+| **3. Prehospital (EMS / ambulance)** | §9.3 — at the scene and during transport, no review of records | **the EMT "consistent with" line — SUPERSEDING the 2026-08-22 "treating shape" as to causation (§13.3)** | yes | §13.3 |
+| **4. Pharmacy** | **NONE** | **NONE** | yes — **this is its whole content** | §13.4 — **no fixed slots at all** |
 
 ### §13.1 — Shape 1, treating provider
-All three floor limbs unmodified. Nothing swapped, nothing omitted.
+All three floor limbs present; the basis and causation sentences are the type's entries in §11.8; the custodian sentence is the writer's (§11.6).
 
-### §13.2 — Shape 2, radiologist — CONFIRMED BUT PROVISIONAL BY MICHAEL'S EXPRESS TERMS
+### §13.2 — Shape 2, radiologist — CONFIRMED 2026-08-22 AS PROVISIONAL; SETTLED 2026-08-31 ON HIS OWN §9.2
+
+**The 2026-08-22 ruling, and its express provisional terms:**
 
 > *"for right now, **until further notice**, let's go ahead and just keep putting the … 'within a reasonable degree of medical probability caused by the incident' line in there. **Until I figure out a better way to do it.**"*
 
@@ -782,23 +867,21 @@ All three floor limbs unmodified. Nothing swapped, nothing omitted.
 
 > *"truth be told, I have never had a case ever where we were planning on calling the radiologist because … if it's that serious and we're dealing with radiology, we're gonna be talking to the surgeon themselves, and the surgeon is really the one that's gonna go and look at the imaging himself or herself."*
 
-**The radiologist is designated for completeness; the surgeon carries causation.** A narrower alternative — *"findings consistent with the mechanism of injury"* — was offered and **DECLINED FOR NOW. Preserved as a rejected proposal that may return.** **Do not harden this shape. `RC-6`.**
+**The radiologist is designated for completeness; the surgeon carries causation.** A narrower alternative — *"findings consistent with the mechanism of injury"* — was offered on 2026-08-22 and declined.
 
-> **⚠⚠ THIS RULING RUNS HEAD-ON INTO MICHAEL'S OWN PART 3 DECISION RULE 5, AND THE CONFLICT IS SURFACED, NOT RESOLVED.**
+> **THE CONFLICT THE FIRST FOLD-IN SURFACED — B2 — AND HOW IT CLOSED.** **Part 3 rule 5 (his words, 2026-08-20):** *"The causation object tracks the provider's actual work product — injuries treated vs. findings identified. **This is the most legally consequential generation error available**, because getting it wrong claims an opinion the provider cannot give."* The 2026-08-22 ruling kept *"the 'within a reasonable degree of medical probability caused by the incident' line"* — which the first fold-in read as the injuries-treated object, opposite to rule 5. **Put back to him on 2026-08-31 with the observation that his own approved §9.2 sentence contains BOTH — the medical-probability phrase he asked to keep AND the "findings shown in the imaging" object rule 5 requires** — as the fifth entry of the causation list: **"the rest is approved."** Then, asked directly whether approving 9.2 lifts *"until I figure out a better way"*: ***"9.2 approval lifts it. I may make a change later after actually using it, but let's keep it that way for now."***
 >
-> **Part 3 rule 5 (his words, 2026-08-20):** *"The causation object tracks the provider's actual work product — injuries treated vs. findings identified. **This is the most legally consequential generation error available**, because getting it wrong claims an opinion the provider cannot give."* Part 3's role table implements it: for an imaging interpreter, **S8 object = "THE FINDINGS [they] IDENTIFIED."**
->
-> **The 2026-08-22 ruling (his words):** the radiologist keeps the causation line **as written** — *the injuries treated … caused by the incident* — and the findings/mechanism alternative was expressly declined.
->
-> **Both are Michael's. They point opposite ways on the exact object Part 3 calls the most legally consequential thing in the module.** He may not have had rule 5 in front of him on 2026-08-22. **This fold-in does not choose between them, and it does not let the later ruling silently overwrite the earlier one just because it is later.** It is carried at §18 as a question in his own two sets of words. **His `RC-6` "until I figure out a better way" may already be him noticing the same thing.**
+> **B2 CLOSED and `RC-6` CLOSED: his two sets of words reconcile on §9.2's sentence.** The radiologist's causation sentence is §9.2 as written, no longer provisional. His stated intent to possibly revisit after real use is recorded as intent, not as an open item.
 
-### §13.3 — Shape 3, prehospital EMS — a treating shape
+### §13.3 — Shape 3, prehospital EMS — a treating shape for BASIS; its OWN causation line since 2026-08-31
 
 > the EMTs/paramedics *"personally examine the client on the scene and gave emergency medical treatment, did diagnostics, and sometimes transported them."*
 
 > **MARKED AS CLAUDE'S ADDITION, UNOBJECTED, NOT MICHAEL'S WORDS:** that their distinctive value is *observation of the mechanism and the immediate presentation, which nobody downstream saw.*
 
-### §13.4 — Shape 4, pharmacy — records-and-billing, not a provider
+**SUPERSESSION, named rather than smoothed (2026-08-31).** The 2026-08-22 ruling made EMS *"a treating shape,"* which under the floor as then ruled meant the medical-probability causation line. His library's §9.3 deliberately says *"consistent with"* — *"qualification-fight avoidance"* — and when the two were put side by side in the causation list he approved §9.3's line as written (§11.8). **As to the CAUSATION sentence the 2026-08-31 ruling governs and the 2026-08-22 ruling stands as written; as to the BASIS sentence EMS takes its own §9.3 variant (at the scene and during transport, no review of records).** Nothing about the EMS shape's custodian or its treating character changed.
+
+### §13.4 — Shape 4, pharmacy — records-and-billing, not a provider — and, since 2026-08-31, NO FIXED SLOTS
 
 > *"all that we need to know from the pharmacy. We need someone to testify that the records that they produced are **true and correct**, and … testify **as to the bills**, and they have to testify that they're … **reasonable and necessary**."*
 
@@ -808,7 +891,7 @@ All three floor limbs unmodified. Nothing swapped, nothing omitted.
 
 **This is what DISSOLVED widget D (§1.5, §5).** It also **narrows Part 3 rule 9** — *"custodian-only is a fallback, not a choice"* — which governs genuinely unresolvable individuals and **does not reach the pharmacy, where custodian-only is the designed shape and not a gap.**
 
-**OPEN: does this shape take a basis line at all? §13.4 implies no, but it was never squarely put. `RC-5`.**
+**`RC-5` — does this shape take a basis line at all? — ANSWERED BY CONSEQUENCE 2026-08-31.** The library has no pharmacy basis sentence and no pharmacy causation sentence (§11.8), so under fixed text **the pharmacy paragraph has no fixed slots: it is entirely the writer's, with the four-limb custodian sentence (§11.6) as its required content and §9.10 as the voice example.** Stated to Michael with a stop-me line; not objected.
 
 ### §13.5 — NOT a fifth shape: the imaging facility
 
@@ -854,7 +937,7 @@ All three floor limbs unmodified. Nothing swapped, nothing omitted.
 3. The assistant already knows Word and Excel; nothing new to learn.
 4. Every chronology becomes the same kind of object regardless of source — one attachment on the matter, replaceable when records come in. **The vendor's token model already works this way.**
 
-**OPEN — `RC-7`, NEVER ASKED:** which formats are accepted, and what happens when a new chronology is dropped over an old one — replace, version, or keep both?
+**`RC-7` — RULED 2026-08-31 — Michael: *"Adopt both."*** **Formats:** anything the model can read — the list he named on 2026-08-21 (PDF, Excel, JSON, CSV, Word) plus plain text, under the principle put to him; **a scanned or image-only PDF is FLAGGED at the drop as unreadable, never silently sent.** **A new chronology dropped over an old one is VERSIONED:** the earlier drops are kept and the newest is the one that goes to the model — mirroring §16.5's *"supplementation is additive; the most recent saved document is the source of truth."*
 
 ### §14.2 — Two production tracks, split by CASE ECONOMICS
 
@@ -892,7 +975,7 @@ All three floor limbs unmodified. Nothing swapped, nothing omitted.
 
 > **MARKED AS CLAUDE'S ADDITION, UNOBJECTED:** that *the chronology is scoped by Michael's selection, not searched wholesale.*
 
-## §15 — THE SELECTION UNIT AND PARAGRAPH GRANULARITY (RULED 2026-08-22)
+## §15 — THE SELECTION UNIT AND PARAGRAPH GRANULARITY (RULED 2026-08-22; the collective form, the one split, the mixed paragraph and the rider RULED 2026-08-31)
 
 ### §15.1 — Michael selects FACILITIES. The model extracts the INDIVIDUALS.
 
@@ -917,14 +1000,18 @@ Put to him directly — *is the facility just HOW you pick, with individuals sti
 
 **ND-1 and ND-2 HOLD UNCHANGED.** The facility is a selection layer, not a designee. **Nothing here re-rules them and nothing should.**
 
-### §15.3 — ONE PARAGRAPH PER FACILITY, covering its individuals collectively
+### §15.3 — ONE PARAGRAPH PER FACILITY, covering its individuals collectively — with ONE ruled exception
 
 Asked whether a hospital with twelve names gets twelve paragraphs or one — **Michael: *"Hospital … with twelve names, one paragraph covering the [whole]."*** For a facility with one person, same shape, singular — **"Yep."**
 
+**THE COLLECTIVE FORM — `RC-3` CLOSED 2026-08-31.** The fixed sentences are singular as ruled (*"that physician … the injuries that they treated"*) and the paragraph is collective. Put to him with his own §9 header rule — *"Group versions = same template with plural tokens"* — so that three ER physicians at one facility get *"Drs. A, B and C will testify based on their personal examination …"* and the causation line in the plural: ***"That is the collective form."*** Every fixed sentence in §11.8 therefore exists in singular and plural, and a same-type group takes the plural.
+
+**THE ONE SPLIT — the RADIOLOGIST (RULED 2026-08-31).** Fixed sentences keyed by type meet a mixed facility — the ER physician, two radiologists and a PA on one hospital block — with no single basis-and-causation pair to place. His 9.1 note, written before the twenty-second, had the engine splitting such a facility into an emergency-medicine paragraph and a radiology paragraph under one shared contact block. Put: does that split survive one-paragraph-per-facility? ***"For a mixed facility, let's give the radiologist their own paragraph."*** Then, narrower — the only split, or the general rule, decided by a chiropractic clinic with a DC and a PT on one block, whose fixed sentences differ? ***"Radiologist is the only split."*** **He had the PT case in front of him: a non-radiologist individual of a different type rides the facility paragraph and its fixed sentences. Recorded as accepted, not as an oversight.** *(Reading, stated to him with a stop-me line: one facility block, two paragraphs beneath it — the treating paragraph and the radiology paragraph — per the 9.1 note's shared block. Not objected.)*
+
 ### §15.4 — Three consequences, all of them live
 
-1. **ND-8 (number agreement) becomes LOAD-BEARING, not cosmetic.** Inflection is driven by designee count and **the floor's own sentences must work plural.** (§4, §3's R10 row.)
-2. **⛔ The CAUSATION LINE must be expressible for a GROUP, and its ruled wording is SINGULAR. UNRESOLVED — `RC-3`, raised by this ruling and never put to Michael.** (§11.3.)
+1. **ND-8 (number agreement) is LOAD-BEARING, not cosmetic** — and satisfied: the floor's own sentences work plural by the ruling above. (§4, §3's R10 row.)
+2. **The CAUSATION LINE for a group is its plural-token form.** `RC-3` CLOSED (§11.3, §11.8).
 3. **ND-3 must be RE-READ.** *"No two providers share one stock paragraph"* was written when the unit was the PERSON. **The unit is now the FACILITY.** (§4.)
 
 ### §15.5 — NO review step on the extracted list. Over-inclusion is DELIBERATE.
@@ -941,6 +1028,26 @@ And, from the hand-run:
 
 *Consistent with §11.4: default it on, don't make him decide per case.*
 
+> **RECONCILED 2026-08-31 AGAINST THE ROLE MARKER (§17.1a).** The list is not reviewed for INCLUSION — everyone the model names stays on the block, exactly as ruled here. What §17.1a adds is an ATTRIBUTE he may set on an individual already on the block (flipping an imaging reader to "Radiologist"), by his hand, because he asked for *"a way for me to designate them."* An act available to him is not a review step required of him. **Nothing here is re-ruled.**
+
+### §15.6 — THE MIXED PARAGRAPH AND THE RIDER (RULED 2026-08-31)
+
+**A mixed non-radiologist facility — the DC and the PT on one block — is ONE paragraph, and Michael ruled its SHAPE, outside both things offered** (a facility type that everyone inherits; a per-individual type with a rule for which wins):
+
+> ***"DC and PT should be combined. Explain what each one did then pair them together for the rest of the paragraph."***
+
+**The four-slot structure is unchanged; the WRITER's OPENING gains a rule for the mixed case:** it explains what EACH individual did, separately, and from the basis sentence onward the individuals are PAIRED — the fixed sentences in the plural covering both, the writer's middle about them together, the fixed causation in the plural. **Which type's fixed sentences the pair gets is the FACILITY's type (§17.1a)** — in the rendered example he was shown, a clinic set as chiropractic gives the PT the chiropractor's basis and causation lines. *(The rule is stated for the mixed case; same-type groups are plural throughout per §15.3, and the explain-each rule is not generalized here beyond what he said.)*
+
+**THE MID-LEVEL RIDER.** Asked whether, under one paragraph per facility, a PA still gets `form-engine.md` §9.12's short rider paragraph beneath the treating paragraph or is just a name on the block: ***"PA gets the rider paragraph."*** Then, asked for the rider's form with examples — **the three examples were CLAUDE's renderings, fictional; his ruling is the selection:**
+
+> **MARKED — CLAUDE'S THREE RENDERINGS, NOT MICHAEL'S WORDS.** *(A) the app places §9.12's text whole, with tokens — and beneath a COLLECTIVE paragraph its `{supervising_provider}` token has no single value, so it was shown filled with the group; (B) the writer composes the rider from the chronology — richer, but the "within the scope of" cap becomes prompt-required and unguaranteed; (C) the composite — the writer says what the PA actually did, then the app places the fixed scope sentence.*
+
+**Michael: *"Example C is good."***
+
+**THE RIDER IS TWO SLOTS: WRITER → FIXED.** The writer's opening says what the PA or NP actually did, from the chronology; the app then places the fixed scope sentence drawn from the back half of §9.12 — *"{midlevel_he_she} will testify consistent with, and within the scope of, the testimony described above regarding {supervising_provider}, based on {midlevel_his_her} personal participation in {client}'s care"* — so the scope cap is app-guaranteed the way the causation line is. §9.12's first half (*"participated in the care and treatment of {client} under the supervision of …"*) is overtaken as OUTPUT by the writer's opening; its TEXT stands as a voice example, unedited.
+
+> **HELD FOR HANDS-ON, named (§18.F): what the scope sentence's `{supervising_provider}` names beneath a COLLECTIVE paragraph** — the group, or a supervisor Michael designates by the same hand mechanism as the radiologist mark. Build default while held: **GROUP FILL, marked PROVISIONAL.**
+
 ## §16 — THE MODEL CALL AND THE RETURN PATH
 
 ### §16.1 — `HD-12` REVERSED: THE APP CALLS THE MODEL DIRECTLY (RULED 2026-08-21, voice2)
@@ -951,7 +1058,7 @@ And, from the hand-run:
 
 > *"I would like you to **develop those paragraphs inside the software**. So for instance, it's gonna be running off of my Claude account with my tokens, but I'm not gonna be giving my — **I'm gonna have a paralegal logging in and using that function. She's gonna be using my tokens, but she's not gonna be logging into my Claude system.**"*
 
-**The app calls the model on the firm's own BAA-covered API account. The paralegal works inside the software and never touches Michael's Claude login. Paragraphs return into the app as data.**
+**The app calls the model on the firm's own BAA-covered API account. The paralegal works inside the software and never touches Michael's Claude login. The writer's PARTS return into the app as data and the app assembles the paragraph (§11.6, §16.4).**
 
 > **THIS REVERSED A RULING TAKEN EARLIER THE SAME DAY, and the supersession is recorded rather than smoothed.** In the typed sitting of 2026-08-21, `HD-12` was ruled **option B — "B — app assembles, you paste (recommended)"** — the app assembling a bundle and Michael drafting in a chat by hand, with no model call from the app at all. **The voice sitting later that day reversed it on the staffing ground above. The later ruling governs; the earlier entry stands as written.**
 >
@@ -985,19 +1092,19 @@ And, from the hand-run:
 
 **Nothing takes returned paragraphs apart; nothing looks inside them. They enter the Word document as written.**
 
+> **WHAT "RETURNED" MEANS SINCE 2026-08-31 (§11.6, "Option 1").** The model returns **PARTS** — the writer's opening, its middle, and wherever it placed the custodian sentence — **as PLAIN TEXT** (`HD-20-c`, §16.6); the app ASSEMBLES the paragraph by slotting its own fixed sentences between them. **`HD-20-a`'s object is therefore the ASSEMBLED paragraph:** nothing takes the writer's parts apart, nothing looks inside them, and the assembled paragraph enters the Word document as built. This is a consequence of `RC-1`, not a reversal of anything here; the mechanics delegation below covers it.
+>
 > **SCOPE LIMIT, EXPRESS: this is a delegation on MECHANICS ONLY, bounded by (1) whatever is easiest and most practical and (2) HIPAA compliance. If the practical answer later requires structured storage for some unrelated reason, that is A FRESH QUESTION, NOT A REVERSAL.**
 >
 > **THE COST WAS NAMED AT RULING TIME:** opaque storage forgoes any lint inside the returned text, any supplementation diff inside text, and the ordering check on it. **That cost is why the designee-type check moved upstream onto records (§6) rather than being abandoned.**
 
-**`HD-20-b` — NO IN-APP EDITING of returned paragraph text.**
+**`HD-20-b` — NO IN-APP EDITING of returned paragraph text. RULED 2026-08-21; CONFIRMED 2026-08-31.**
 
 > *"**If any editing is gonna be done to that word document before I serve it, it's gonna be editing that I'm gonna do once I open the word document itself.**"*
 
 Open the document, edit in Word, serve. **This is a real scope reduction: there is no in-app editing surface for model-returned paragraph text, and there is therefore nothing for the app to diff against a generation.**
 
-> **⚠ A DISCREPANCY IN THE RECORD, SURFACED AND NOT ADJUDICATED — FOUND BY THIS FOLD-IN.** The **2026-08-22** RECON-1 capture carries `HD-20-b` as **"NOT REACHED (08-21 residue)"** — *"Does Michael edit returned paragraphs inside the app, or does the app hold the final only?"* — while the **2026-08-21 voice3** capture records the ruling above, in Michael's own words, on the same question. **The later capture appears to have carried the item forward from the earlier residue list without noticing that the intervening sitting had closed it.**
->
-> **This file treats `HD-20-b` as RULED, on the strength of his verbatim, AND FLAGS THE DISCREPANCY rather than burying it.** The consequence of getting this wrong runs one way only: **Michael should not be re-asked a question he has already answered.** If he says the RECON-1 capture is right and voice3 misread him, this section is wrong and the correction goes in the log.
+> **THE DISCREPANCY THE FIRST FOLD-IN SURFACED — B3 — CLOSED.** The 2026-08-22 RECON-1 capture had carried `HD-20-b` as *"NOT REACHED"* while the 2026-08-21 voice3 capture recorded the ruling above in his words. Put to him on 2026-08-31 as a confirm, not a re-litigation — *edits to the returned document happen only in Word, never inside the app* — **Michael: *"confirm."*** The voice3 record stands; the RECON-1 capture's residue line is overtaken. *(His *"I can always change those on my own if I want to later,"* said the same night about the event noun, reads the same way.)*
 
 ### §16.5 — Supplementation is purely ADDITIVE (RULED 2026-08-21, voice2)
 
@@ -1013,11 +1120,11 @@ Open the document, edit in Word, serve. **This is a real scope reduction: there 
 
 ### §16.6 — What §16 deleted, named so nobody rebuilds it
 
-**R12's "supplemental instruments generated as a diff" is superseded.** **FE-21's diff limb goes with it (§3).** **FE-8's diff half STAYS DEFERRED — RECON-1 is not its consumer, and R13, which was named as that consumer, is retired (§3, §5).** **`HD-20-c` — whether returned text needs bold/italic/paragraph shape preserved, or is plain text the app formats — is OPEN and was never asked; it is partly moot on the return path and live as an output-rendering question.**
+**R12's "supplemental instruments generated as a diff" is superseded.** **FE-21's diff limb goes with it (§3).** **FE-8's diff half STAYS DEFERRED — RECON-1 is not its consumer, and R13, which was named as that consumer, is retired (§3, §5).** **`HD-20-c` — RULED 2026-08-31 — Michael: *"adopt."* The writer's parts come back as PLAIN TEXT and the app applies the formatting when it assembles the paragraph, per `form-engine.md` §8's formatting skeleton.** Under app assembly that is the natural answer, since the app is the one building the paragraph.
 
-## §17 — THE MEDICAL TAB, THE PROVIDER RECORD, AND THE PROVIDER BLOCK (RULED 2026-08-21, except §17.1's minting approval — 2026-08-22)
+## §17 — THE MEDICAL TAB, THE PROVIDER RECORD, AND THE PROVIDER BLOCK (RULED 2026-08-21; minting approved 2026-08-22; **minted `R17`, the type mechanism, `HD-21-med`, `HD-21-b`, `CD-14`(ii) and the one name — 2026-08-31**)
 
-### §17.1 — THE PROVIDER RECORD: a requirement no R-number covers, approved in principle, **ID NEVER MINTED**
+### §17.1 — THE PROVIDER RECORD: a requirement no R-number covered, approved in principle 2026-08-22, **MINTED `R17` 2026-08-31**
 
 **Michael's own specification of what the Medical tab must hold**, given unprompted at the wall where the walkthrough failed (*"we don't have any medical providers and… or any bills listed in here"*):
 
@@ -1029,9 +1136,21 @@ Open the document, edit in Word, serve. **This is a real scope reduction: there 
 
 **This is what makes §1.2's defect fixable at all: today there is no individual clinician anywhere in the system to place in a designee slot.**
 
-> **⛔ `RC-2` — APPROVED IN PRINCIPLE, DEFECTIVE IN EXECUTION.** Michael was asked whether to mint a durable ID for this requirement and said **"No objection."** **No ID was actually assigned** — the session said *"Numbered, then"* and assigned nothing. **The requirement therefore has Michael's approval and no identity, which is exactly the state QR-1 exists to prevent. Minting it is his act and this fold-in does not do it.**
->
-> **⚠ AND THE WIDGET LETTER IS AMBIGUOUS — see §5.** "Widget G" means one thing in the 2026-08-20 text (mint §3's IDs) and a different thing in the 2026-08-22 sitting (mint THIS requirement's ID). **Michael's "No objection" attaches to THIS sense. Read the row before minting anything against the letter.**
+> **`RC-2` — CLOSED 2026-08-31.** On 2026-08-22 Michael was asked whether to mint a durable ID for this requirement and said **"No objection"** — and no ID was assigned. On 2026-08-31 it was put with the contents as grown that night and the next requirement ordinal, `R17`: ***"use that."*** **`R17` is minted** (§3). The widget-G letter collision (§5) is resolved for this sense; the 2026-08-20 sense — §3's other IDs — is still his and still untaken.
+
+### §17.1a — THE TWO FIELDS THE 2026-08-31 RULINGS ADDED, AND THE TYPE MECHANISM (a Claude proposal, ADOPTED IN TERMS)
+
+**Fixed sentences keyed by provider type (§11.8) need the type to come from somewhere, and the radiologist split (§15.3) needs the app to know which names on a block are radiologists.** Two rulings and one adopted mechanism:
+
+**WHO IDENTIFIES THE RADIOLOGISTS — his hand, never the model's tag.** The model is already the one extracting the individuals from the chronology, so it could have tagged the imaging readers as it went; the alternative was a mark on the Medical tab. His OBGYN ruling (§14.4) says the model never decides WHO is on the block; this would have been the model deciding a structural attribute of someone already on it. **Michael: *"Let's figure out a way for me to designate them."***
+
+**THE MECHANISM — proposed by Claude, put once more alone after four attempts got no answer, and ADOPTED:** every facility on the Medical tab carries a **TYPE** Michael sets once (emergency, pain management, chiropractic, physical therapy, orthopedic surgery, and so on — the §11.8 vocabulary); the individuals the model extracts appear as a list under their facility, **each with a ROLE MARKER that defaults to the facility's type**; a mixed non-radiologist paragraph takes the **facility type's** fixed sentences; a hospital's imaging readers are **flipped to "Radiologist" by his hand** and the app splits them into their own paragraph; **the model populates NAMES and nothing else.**
+
+> ***"Yes, that is how it should work."***
+
+> **MARKED — the mechanism's description is CLAUDE's; the adoption is Michael's.** Every specific in it (type on the facility; marker per individual defaulting to the facility type; names-only from the model) was in the description he adopted in terms, and is recorded as ruled on that footing.
+
+**Consequences.** Provider type is **always assigned by a person, never by the writer.** `R17`'s contents grow by exactly these two fields — the facility's TYPE and the per-individual ROLE marker. A selected facility with **no type set** is a must-fix stop (§12.3). The §15.5 no-review-step ruling is untouched — the marker is an act available to him, not a gate.
 
 ### §17.2 — The disclosures panel: it MIRRORS the Medical tab and computes nothing
 
@@ -1047,7 +1166,7 @@ Open the document, edit in Word, serve. **This is a real scope reduction: there 
 
 **Providers and a selection control. NOT a data display.** *(This is what moved FE-22's charge-weighted gap surface — §8 Q5, §3.)*
 
-**`HD-21(a)` — RULED. Ordered OLDEST TREATMENT FIRST**, on the disclosures screen, section two, providers-to-designate. Michael: **"That sounds good."** He scoped it himself mid-exchange — *"we're talking about just the medical tab, right?"* — and **whether the Medical tab's own ordering must match was raised, overtaken by the mirror ruling, and never separately answered: `HD-21-med`, OPEN, small.**
+**`HD-21(a)` — RULED. Ordered OLDEST TREATMENT FIRST**, on the disclosures screen, section two, providers-to-designate. Michael: **"That sounds good."** He scoped it himself mid-exchange — *"we're talking about just the medical tab, right?"* — and the Medical tab's own ordering was raised, overtaken by the mirror ruling, and left open as `HD-21-med`. **`HD-21-med` — RULED 2026-08-31: the Medical tab's own provider list is oldest treatment first too — *"Yes, same order there."*** With ND-7(b)'s *"oldest first is the rule"* (§4) the one order now governs every rendering and both tabs.
 
 **`HD-21(d)` — RULED. Same doctor at two facilities = TWO ENTRIES.** On a client who saw one doctor first at one clinic and later at a second location — Michael: **"Put two separate facilities in there."** **Two rows, each designated with its own place of business: the designation ties a PERSON to a PLACE, so two places means two designations.**
 
@@ -1067,7 +1186,7 @@ Open the document, edit in Word, serve. **This is a real scope reduction: there 
 
 > **⚠ HIS PRIOR-ART CLAIM — *"I believe that we talked before about this"* — IS UNVERIFIED.** No design-side check confirms it. **CD-1 input; put to him.**
 >
-> **This does NOT by itself answer CD-14's second limb (§3).** What he ruled is *where affiliation history lives*; whether the `renders-care-at` EDGE TYPE carries an effective period is a different question about a different object. **Flagged, not folded.**
+> **This did NOT by itself answer CD-14's second limb — what he ruled here is *where affiliation history lives*, not what the `renders-care-at` edge type does. The limb was put separately on 2026-08-31 and RULED: the edge carries an EFFECTIVE PERIOD, from and to, blank meaning current — Michael: *"yes."*** (§3, CD-14 row; the `contact-directory.md` §5 act rides the 2026-08-31 packet.)
 
 ### §17.4 — `HD-2`: the provider block top line is NAME + CREDENTIAL SUFFIX
 
@@ -1085,7 +1204,7 @@ Michael first raised it himself — *"What should we call that paragraph that ha
 
 **"Provider identification paragraph" RETIRES. It should be noted as the OLD NAME in `form-engine.md` so no future reader takes it for a different thing.**
 
-> **⚠ THREE NAMES, ONE OBJECT, ONLY ONE EXPRESSLY RETIRED.** Part 3 of this file calls it the **CONTACT BLOCK**; `form-engine.md` §3 calls it the **provider contact block**; §9's header calls it the **provider identification paragraph**. **`HD-17` retires only the third by name.** The other two are live terms for the same object and their disposition was not put. **Flagged.**
+> **THREE NAMES, ONE OBJECT — RESOLVED 2026-08-31 (B10).** Part 3 of this file calls it the **CONTACT BLOCK**; `form-engine.md` §3 calls it the **provider contact block**; §9's header calls it the **provider identification paragraph**. `HD-17` retired the third by name; the other two were put — retire both in favour of "provider block" at the next edit? **Michael: *"Provider block at next edit."*** Part 3 is his verbatim and is not edited; **`form-engine.md` §3's term changes by work order in the 2026-08-31 packet**, and the §9 header's old name is noted as the old name per `HD-17`.
 
 ### §17.6 — Provider block anatomy, and the missing-phone posture CORRECTED
 
@@ -1117,7 +1236,7 @@ Michael first raised it himself — *"What should we call that paragraph that ha
 
 *Note the distinction against §14.4: the chronology auto-populates **visit rows for facilities Michael has already selected**. It never populates **which providers are in the case**. Those are different acts and only the first is permitted.*
 
-**OPEN — `HD-21-b` residue: is the expanding summary cell one per provider, or one per visit? Never asked.**
+**`HD-21-b` residue — RULED 2026-08-31: the expanding summary cell is ONE PER INDIVIDUAL — Michael: *"per individual."*** It is the "what each one did" the writer's opening is drawn from (§15.6); visits are detail inside it.
 
 ### §17.8 — THE PROVIDER BLOCK OWNS NO DATA
 
@@ -1125,74 +1244,91 @@ Michael first raised it himself — *"What should we call that paragraph that ha
 
 **Two consequences:** fixing the Medical tab makes the §6.1 warning disappear by itself, because it is the same underlying record; and **an address is never edited inside the form.**
 
-## §18 — WHAT IS OPEN
+## §18 — WHAT IS OPEN, WHAT CLOSED ON 2026-08-31, AND WHAT IS HELD — **REWRITTEN WHOLE 2026-08-31**
 
-**FULL QUESTION TEXT IS CARRIED HERE PER QR-1, because the captures that hold it are `claude_`-prefixed project-knowledge files and this file is the only durable home the questions will have once they are relocated. NOTHING BELOW IS MINTED, RULED, OR CLOSED BY THIS FILE.**
+**FULL QUESTION TEXT IS CARRIED HERE PER QR-1 for everything still open. Closures below cite the section that carries Michael's words; nothing is closed by this section alone. NOTHING BELOW IS MINTED BY THIS FILE except as §3 records (`R17`).**
 
-### §18.A — The `RC` series (minted 2026-08-22)
+### §18.A — The `RC` series (minted 2026-08-22) — disposition after the 2026-08-31 sitting
 
-| ID | FULL QUESTION TEXT | Status |
+| ID | Question | Status |
 |---|---|---|
-| **`RC-1`** | **Is the floor FIXED TEXT the engine emits, or a REQUIRED-CONTENT CHECK over model-composed prose?** Asked, cut off mid-sentence, never answered. The hard stops constrain but do not settle it: an invariant can be satisfied either by emitting the line or by detecting it. | **⛔ OPEN — THE RESUME POINT. Put it first.** |
-| **`RC-2`** | Widget G's ID was never actually minted — the provider record carrying facility + individual + dates of treatment + an expandable summary, sortable (§17.1). Michael said "No objection"; nothing was assigned. | OPEN — defect. **Check the widget letter first (§5).** |
-| **`RC-3`** | **The causation line's ruled wording is SINGULAR** ("that physician … the injuries that they treated"). One-paragraph-per-facility makes it COLLECTIVE. **How does the mandatory line inflect for a group?** | OPEN — raised by the ruling that created it; **never put to Michael** |
-| **`RC-4`** | The custodian sentence — the actual predicate language, and Michael's "CPRC eighteen dot zero zero one." | OPEN — **UNVERIFIED. Registry candidate; only Michael verifies.** |
-| **`RC-5`** | Does the custodian-only / pharmacy shape take a basis line at all? §13.4 implies no, but it was never squarely put. | OPEN |
-| **`RC-6`** | The radiologist's causation line is **provisional by Michael's express terms** — "until I figure out a better way." The narrower "consistent with the mechanism of injury" alternative is preserved, rejected for now. | OPEN — provisional. **See §13.2: it now also carries a conflict with Part 3 rule 5.** |
-| **`RC-7`** | Chronology drop zone: accepted formats, and what happens when a new chronology is dropped over an old one — replace / version / keep both? | OPEN — never asked |
-| **`RC-8`** | Widget A — FE-18's wording (§1.6): adopt / reject / edit. **Adopted in substance; the wording is unratified and any act turning on its exact words re-puts them first.** | NOT REACHED |
-| **`RC-9`** | Widget E remainder — **ND-4, ND-5, ND-6, ND-7 and ND-9, one at a time**, with the check-vs-judgment classification for each (§4 carries a recommendation for all five). | NOT REACHED |
-| **`RC-10`** | Widget H — Q1–Q10. Q1, Q4 (in part), Q7 and Q9 answered by consequence; **Q2, Q3, Q5, Q6, Q8 and Q10 not walked** (§8). | PARTLY REACHED |
+| **`RC-1`** | Is the floor FIXED TEXT the engine emits, or a REQUIRED-CONTENT CHECK over model-composed prose? | **CLOSED 2026-08-31** — fixed text; app assembly; four slots; two fixed lists; the custodian sentence the writer's with four limbs required. §11.6–§11.8. |
+| **`RC-2`** | Widget G's ID — the provider record — was never actually minted. | **CLOSED 2026-08-31** — **`R17`**, "use that." §3, §17.1. |
+| **`RC-3`** | The causation line's ruled wording is SINGULAR; one paragraph per facility makes it COLLECTIVE. How does it inflect for a group? | **CLOSED 2026-08-31** — the plural-token form, "That is the collective form." §15.3. |
+| **`RC-4`** | The custodian sentence — the actual predicate language, and Michael's "CPRC eighteen dot zero zero one." | **NARROWED 2026-08-31.** The predicate language is now the four limbs REQUIRED of the writer (§11.6). **What remains is the `CPRC § 18.001` registry candidate — UNVERIFIED; only Michael verifies.** OPEN on that limb alone. |
+| **`RC-5`** | Does the pharmacy shape take a basis line at all? | **ANSWERED BY CONSEQUENCE 2026-08-31** — no fixed slots; the writer's paragraph with the custodian sentence. §13.4. |
+| **`RC-6`** | The radiologist's causation line is provisional — "until I figure out a better way." | **CLOSED 2026-08-31** — "9.2 approval lifts it." §13.2. |
+| **`RC-7`** | Chronology drop zone: accepted formats, and what happens when a new chronology is dropped over an old one? | **CLOSED 2026-08-31** — "Adopt both": any format the model reads, unreadable scans flagged at the drop; versioned, newest goes to the model. §14.1. |
+| **`RC-8`** | Widget A — FE-18's wording: adopt / reject / edit. | **CLOSED 2026-08-31** — "Ratify that as the rule's wording." §1.6, §3. |
+| **`RC-9`** | Widget E remainder — ND-4, ND-5, ND-6, ND-7, ND-9, one at a time. | **CLOSED 2026-08-31** — all five walked; ND-7(c) held for hands-on by name. §4. |
+| **`RC-10`** | Widget H — Q1–Q10; Q2, Q3, Q5, Q6, Q8, Q10 were not walked. | **CLOSED 2026-08-31** — Q2 by consequence; Q3, Q6, Q8 ruled; Q5, Q10 held for hands-on by name. §8. |
 
-### §18.B — NEW, SURFACED BY THIS FOLD-IN. **UNMINTED — minting is Michael's act.**
+### §18.B — The eleven seams the first fold-in surfaced — disposition
 
-**These are not new rulings and not new questions Claude invented. Each is a seam between two things already ruled, visible only once they sit in one document.**
-
-| # | FULL QUESTION TEXT | Where |
+| # | Seam | Status |
 |---|---|---|
-| **B1** | **When the engine cannot satisfy a hard stop because the underlying record is incomplete — no facility, or a date the matter record contradicts — what does the user see, and can he generate anyway?** Three postures now coexist and none was put alongside the others: the ambient panel never blocks; `HD-22` warns and never blocks; the hard stops say "you can't violate those ones." And Michael's own sentence inside the `HD-1` ruling — *"we need to fix this before we generate the disclosures document"* — reads a fourth way. | §6.1, §12.3 |
-| **B2** | **The radiologist's causation object: "the injuries treated" or "the findings identified"?** Part 3 decision rule 5 (Michael, 2026-08-20) says the causation object tracks the provider's actual work product and calls getting it wrong *"the most legally consequential generation error available."* The 2026-08-22 ruling (Michael) keeps the causation line **as written** for the radiologist and expressly declined the narrower findings/mechanism form. **Both are his and they point opposite ways.** | §13.2 |
-| **B3** | **Is `HD-20-b` ruled or open?** The 2026-08-21 voice3 capture records it RULED in his words; the 2026-08-22 RECON-1 capture carries it as NOT REACHED. **This file treats it as ruled and flags the conflict.** | §16.4 |
-| **B4** | **"Widget G" names two different acts.** 2026-08-20: mint §3's IDs. 2026-08-22: mint the provider-record requirement's ID. **Michael's "No objection" attaches to the second. The first is also still untaken.** | §5, §17.1 |
-| **B5** | **`provider_billing_profiles` is a TABLE NAME containing the renamed word**, and ruling 4's accepted cost enumerated three COLUMNS. Left unstated, a Code session reads it in or out at its own discretion. **Belongs in `HD-16`'s migration plan.** | §2 |
-| **B6** | **Part 3 decision rule 3** — *"No diagnosis language, and no 'medical knowledge', outside licensure scope"* — depends on Texas scope-of-practice law **absent from Part 7's list**. Either it joins the list or the rule drops to drafting judgment. | §9 |
-| **B7** | **Part 7's *Baylor Medical Plaza v. Kidd* parenthetical is a CHARACTERIZATION, not merely a cite**, and Part 7's blanket UNVERIFIED label does not cover the difference. Under V-9 it cannot be characterized without the court's own document, a paginated vendor copy stating authorship, or Michael's identification. **None was obtained.** | header note, §9 |
-| **B8** | **Part 7's deadline authority list is incomplete for what R11 would compute** — TRCP 190.3(b)(1)(A) is the Level 2 period only, while the design contemplates a DCO override and Levels 1 and 3 end by a different instrument. **Incompleteness flag, not a legal opinion.** | §9 |
-| **B9** | **Does "nothing lints the drafted text" reach TEMPLATE-RENDERED output?** The 2026-08-21 ruling and its reasoning are about model-returned prose. The `form-engine.md` §9 path FE-D1 uses today is not model output. **Never put.** | §6.4 |
-| **B10** | **Three names, one object.** `HD-17` retires "provider identification paragraph." Part 3's "CONTACT BLOCK" and `form-engine.md` §3's "provider contact block" are live terms for the same thing and their disposition was not put. | §17.5 |
-| **B11** | **Do the 2026-08-21 rulings already answer `RC-1` by implication?** *"Nothing lints the drafted text"* (§6) and *"nothing takes returned paragraphs apart; nothing looks inside them"* (§16.4) are both ruled — and **the CHECK branch of `RC-1` IS inspection of drafted text.** Taken at their widest they leave only fixed text. **But hard stop 1 was ruled the day AFTER, and an engine that may not look at what it is about to emit cannot honour it except by emitting the line itself.** So either those rulings are narrower than their widest reading, or `RC-1` is answered already. **This file draws neither conclusion.** The same seam as B1 and B9, from a third angle. | §11.6, §6, §16.4 |
+| **B1** | When the engine cannot satisfy a hard stop because the record is incomplete, what does the user see, and can he generate anyway? | **CLOSED 2026-08-31** — "Stop and tell me what to do first." Three tiers; three must-fix absences. §12.3. |
+| **B2** | The radiologist's causation object: "the injuries treated" or "the findings identified"? | **CLOSED 2026-08-31** — §9.2 as written carries both his rule 5 object and his 2026-08-22 phrase. §13.2. |
+| **B3** | Is `HD-20-b` ruled or open? | **CLOSED 2026-08-31** — "confirm." §16.4. |
+| **B4** | "Widget G" names two different acts. | **HALF CLOSED** — the provider-record sense minted (`R17`); **the 2026-08-20 sense, §3's other IDs, is STILL UNTAKEN and is Michael's** (§18.G). |
+| **B5** | `provider_billing_profiles` is a TABLE NAME containing the renamed word. | **CLOSED 2026-08-31** — "Rename it in the same slice." §2, `HD-16`. |
+| **B6** | Part 3 decision rule 3 depends on Texas scope-of-practice law absent from Part 7's list. Either it joins the list or the rule drops to drafting judgment. | **OPEN — not put 2026-08-31.** Registry question; his. |
+| **B7** | Part 7's *Baylor Medical Plaza v. Kidd* parenthetical is a CHARACTERIZATION and under V-9 cannot stand without the court's own document, a paginated vendor copy stating authorship, or Michael's identification. | **OPEN — not put 2026-08-31.** His identification or the document. |
+| **B8** | Part 7's deadline authority list is incomplete for what R11 would compute (TRCP 190.3(b)(1)(A) is the Level 2 period only). | **OPEN — an incompleteness flag riding R11's gate, not a legal opinion.** |
+| **B9** | Does "nothing lints the drafted text" reach TEMPLATE-RENDERED output? | **DISSOLVED 2026-08-31** — the only template-rendered text is the app's own fixed sentences, which are data. §6.4. |
+| **B10** | Three names, one object. | **CLOSED 2026-08-31** — "Provider block at next edit." §17.5. |
+| **B11** | Do the 2026-08-21 rulings already answer `RC-1` by implication? | **DISSOLVED 2026-08-31** — fixed text needs no inspection of prose; the 2026-08-21 rulings need no narrowing. §11.6. |
 
-### §18.C — `HD` residue and neighbours
+### §18.C — `HD` residue and neighbours — disposition
 
-| ID | FULL QUESTION TEXT | Status |
+| ID | Question | Status |
 |---|---|---|
-| **`HD-10`** | Whether R11's TRCP 195.2 verification is staged as its own registry item. | OPEN — **never raised with Michael** |
-| **`H12-v`** *(**the row's actual ID string is `H12-v`, NOT `HD-12-v`** — the rename is forward-going only and this row predates it; do NOT renumber it)* | Vendor route for the model call — Bedrock vs OpenAI vs a local model on the P1. Waits on AWS's willingness to sign a BAA for a solo firm and on the malpractice carrier's position. Bedrock leading; **all vendor facts UNVERIFIED.** | **OPEN — MICHAEL'S. DO NOT PUSH.** Has its own queue row since 2026-08-22. |
+| **`HD-10`** | Whether R11's TRCP 195.2 verification is staged as its own registry item. | **CLOSED 2026-08-31** — "Close it by pointing at them": the two register rows at §18.E ARE the verification act. No new item. |
+| **`H12-v`** *(the row's actual ID string is `H12-v`, NOT `HD-12-v` — the rename is forward-going only; do NOT renumber it)* | Vendor route for the model call — Bedrock vs OpenAI vs a local model on the P1. Waits on AWS's willingness to sign a BAA for a solo firm and on the malpractice carrier's position. Bedrock leading; **all vendor facts UNVERIFIED.** | **OPEN — MICHAEL'S. DO NOT PUSH.** Not raised 2026-08-31. Has its own queue row since 2026-08-22. |
 | **`HD-12-w`** | Will AWS sign a BAA for a solo law firm? | OPEN — Michael's to confirm |
 | **`HD-12-x`** | The malpractice carrier's position on AI-assisted drafting over client medical records. | OPEN — Michael's, long-standing |
 | **`HD-12-y` / `HD-12-z`** | Token cost per matter (offered, never taken up, unestimated); ZDR endpoint configuration (live only if the OpenAI route wins). | OPEN |
-| **`HD-16`** | The rename slice needs a written migration plan: three columns, **the `provider_billing_profiles` table name (B5)**, the CD-1 role vocabulary, `form-engine.md` §9's tokens, FC-1's canonical form, the 23 seeded token rows, the SKILL, and `variants.ts` regeneration. | OPEN — consequence of §2 |
-| **`HD-20-c`** | Does returned text need bold/italic/paragraph shape preserved, or is it plain text the app formats? | OPEN — live as an output-rendering question |
-| **`HD-21-med`** | Is the Medical tab's own provider ordering also oldest-treatment-first? | OPEN — raised, overtaken, never separately answered |
-| **`HD-21-b` residue** | Is the expanding summary cell one per provider, or one per visit? | OPEN — never asked |
-| **`CD-14` limb (ii)** | Does `renders-care-at` carry an EFFECTIVE PERIOD? **Not answered by `HD-3`, which ruled where affiliation history lives, not what this edge type does.** | OPEN |
-| **`HD-3` prior-art** | Michael's claim that contact affiliation history was discussed before. | **UNVERIFIED** — CD-1 input |
-| **`RF-2`** | Hand in `REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md` so both unfiled disclosures captures reconcile together; its Q3 and Q5 bear on R2 and R16. **H5: no machine search without his direction.** | OPEN — Michael's |
-| **`MIG-1`** | The FE-D1 migration `db/migrations/2026-08-20-fe-d1-form-engine.sql` is reported UNRUN. **Ruled `HD-18`: run it now, unchanged, Michael's hand. Carried unverified and NOT re-asserted here.** | PENDING — Michael's hand |
+| **`HD-16`** | The rename slice needs a written migration plan: three columns, **the `provider_billing_profiles` table (RULED IN, B5)**, the CD-1 role vocabulary (**to be reconciled to §11.8's type list**), `form-engine.md` §9's tokens, FC-1's canonical form, the 23 seeded token rows, the SKILL, and `variants.ts` regeneration — **and now the fixed-sentence table (§11.8), `R17`'s two new fields (§17.1a), and the parts-return contract (§16.4).** | OPEN — a Code-side plan, its own authorization; nothing here authorizes it. |
+| **`HD-20-c`** | Does returned text need bold/italic/paragraph shape preserved, or is it plain text the app formats? | **CLOSED 2026-08-31** — plain text; the app formats. §16.6. |
+| **`HD-21-med`** | Is the Medical tab's own provider ordering also oldest-treatment-first? | **CLOSED 2026-08-31** — "Yes, same order there." §17.2. |
+| **`HD-21-b` residue** | Is the expanding summary cell one per provider, or one per visit? | **CLOSED 2026-08-31** — "per individual." §17.7. |
+| **`CD-14` limb (ii)** | Does `renders-care-at` carry an EFFECTIVE PERIOD? | **CLOSED 2026-08-31** — "yes." §3, §17.3. **Limb (i) — where R6's verification state lives — is still OPEN.** |
+| **`HD-3` prior-art** | Michael's claim that contact affiliation history was discussed before. | **UNVERIFIED** — CD-1 input; not put 2026-08-31. |
+| **`RF-2`** | Hand in `REQ-CAPTURE_disclosures-master-skeleton_2026-08-20.md` so both unfiled disclosures captures reconcile together; its Q3 and Q5 bear on R2 and R16. **H5: no machine search without his direction.** | OPEN — Michael's hand. |
+| **`MIG-1`** | The FE-D1 migration `db/migrations/2026-08-20-fe-d1-form-engine.sql` is reported UNRUN. **Ruled `HD-18`: run it now, unchanged, Michael's hand. Carried unverified and NOT re-asserted here.** | PENDING — Michael's hand. |
+| **`RF-5`** | The header label ("Canonical repo path WHEN FILED") and the convention question underneath it (§19). | OPEN — put at `#136`, not reached since. This file's own header now reads "Canonical repo path" because the file is at HEAD; the convention question stands. |
 
-### §18.D — 2026-08-20 questions still untaken
+### §18.D — The 2026-08-20 questions — disposition
 
-**Q2** (where the chronology lives in the data model — partly relocated by §14.1, the parsing layer barred, the field-mapping layer unruled) · **Q3** (custodian-only on the expert track or a separate records-predicate/affiant track; § 18.001 flagged at the point of use) · **Q5** (the gap flag's trigger; its surface moved, the trigger never walked) · **Q6** (a retained-expert capture, or is rule text enough for the fields) · **Q8** (is the combined 194.2(b)/195.5 instrument the house standard — *please confirm, since you authored the master*) · **Q10** (the custodian-degradation threshold; the BLOCK limb is withdrawn, the threshold itself never walked) · **the §0.2 master-skeleton capture's own Q3 and Q5**, which are DIFFERENT QUESTIONS sharing the same numbering (§0.2).
+**Q2** answered by consequence (§8) · **Q3** RULED (§8) · **Q5** HELD for hands-on (§8, §18.F) · **Q6** RULED (§8) · **Q8** CONFIRMED (§8) · **Q10** HELD for hands-on (§8, §18.F) · **the §0.2 master-skeleton capture's own Q3 and Q5**, which are DIFFERENT QUESTIONS sharing the same numbering, wait on `RF-2`.
 
 ### §18.E — GATED, and it stays gated
 
-**`R11` — the TRCP 195.2 designation deadline.** **GATED on Michael's verification of TRCP 195.2.** No registry entry exists; the playbook E1 row carries an unresolved 90/60-vs-60/90 conflict flag, and that flag must ride the number at every point of use. **NOTHING IN THIS FILE — AND NOTHING IN ANY SITTING SINCE 2026-08-20 — HAS COMPUTED, DISPLAYED, OR PROPOSED A DESIGNATION DEADLINE.** A "proposal for confirmation" is still a computed date. **His act, and still the cheapest unblock in this capture.**
+**`R11` — the TRCP 195.2 designation deadline.** **GATED on Michael's verification of TRCP 195.2.** No registry entry exists; the playbook E1 row carries an unresolved 90/60-vs-60/90 conflict flag, and that flag must ride the number at every point of use. **NOTHING IN THIS FILE — AND NOTHING IN ANY SITTING SINCE 2026-08-20, THE 2026-08-31 SITTING INCLUDED — HAS COMPUTED, DISPLAYED, OR PROPOSED A DESIGNATION DEADLINE.** A "proposal for confirmation" is still a computed date. **His act, and still the cheapest unblock in this capture.**
 
-> **⚠ ADDED 2026-08-25, AND IT MAKES THE UNBLOCK CHEAPER STILL — found by this session's cross-slice sweep of the review queue, not by the disclosures thread.** Every entry since `#127` has carried `R11` as *"no row anywhere."* **`R11` itself has no row. Its UNBLOCK has two, and both are already in the register, classified LIVE:**
+> **THE UNBLOCK IS ALREADY ON THE REGISTER (found 2026-08-25; `HD-10` closed onto it 2026-08-31).** `R11` itself has no row. Its UNBLOCK has two, both in the register, classified LIVE:
 > - *"`TRCP 195.2(a) and (b)` — **the most expensive thing on this list to miss.** Are the 90-day and 60-day offsets from the discovery-period end correct?"*
 > - `[DL-memo Q4]` — *"Rule 195.2's 'later of … 30 days after the request is served' floor is **GONE** from the July 2026 text… Do you verify that the floor is gone?"*
 >
-> **Nobody had connected them to `R11`.** Verifying those two rows discharges the gate — **and the second one is news the disclosures thread never had: the floor this module would have computed against may not exist any more.** Recorded here so the next sitting does not go looking for a verification act that is already sitting on the register with its full question text.
+> **Verifying those two rows discharges the gate** — and the second one is news the disclosures thread never had: the floor this module would have computed against may not exist any more. Michael, 2026-08-31, on staging a separate item: *"Close it by pointing at them."*
+
+### §18.F — HELD FOR HANDS-ON — on the CC-1 HANDS-ON QUEUE, which is NO LONGER EMPTY
+
+**On 2026-08-31 Michael accepted the whole proposed set onto the CC-1 hands-on queue — *"Accept all of them onto the queue"* — TWENTY-ONE items.** Sixteen pre-existing: `#137`'s four (`DA-1`, `DA-3`, `DA-4`, `FO-6`) and the 2026-08-24 audit's twelve (`CL2-AC-1`, `CL2-CHECK-1`, `FE-§11.4`, the bill-label pre-fill, `CR-7`, `CR-CONSTRAINT`, `Q-FE6-5`, `Q-FE4-1`, `Q-FE5-3`, `Q-IN2-7`, `Q-IN1-1`, `Q-IN3-6`). **And five from this file's own thread, each held with its full question:**
+
+| Held item | The question | Build default while held |
+|---|---|---|
+| **the stop's SHAPE** (§12.3) | When a must-fix condition fires — no incident date, no facility name, no facility type — is the stop a must-fix tier inside the `HD-1` panel, or a dialog on the generate button? | none needed to build the rule; the surface is his |
+| **ND-7(c)** (§4) | A provider on the charges table has no designation paragraph: warn (panel tier) or stop (must-fix tier)? Michael: *"Im not sure when this will become an issue. There is always a provider with a facility."* | a PANEL LINE, never a stop — PROVISIONAL |
+| **Q5** (§8) | The gap flag's trigger — absolute dollar, percentage of the damages total, rank, or attorney-set? | none; the flag's surface (the ambient line) is settled |
+| **Q10** (§8) | The custodian-degradation threshold (FE-22). | none; the automatic limb and the persisted gap flag survive |
+| **the rider's supervisor** (§15.6) | Beneath a COLLECTIVE paragraph, what does the fixed scope sentence's `{supervising_provider}` name — the group, or a supervisor Michael designates by hand? | GROUP FILL — PROVISIONAL |
+
+**CC-1(c) was discharged in session: Claude said unprompted that the queue is worth an hour, that it needs the product in front of him, and that it is a SEPARATE sitting.** Nothing on this list is decided by a build slice; the defaults above are named so a slice can proceed without deciding them silently.
+
+### §18.G — Still Michael's, unchanged by the 2026-08-31 sitting
+
+**§3's sixteen durable IDs** (widget G's 2026-08-20 sense — item by item or as a group; put with the 2026-08-31 packet) · **`RF-2`** · **`MIG-1`** · **`H12-v` and its limbs** · **`HD-3`'s prior-art claim** · **B6, B7, B8** · **`RC-4`'s registry candidate** · **`CD-14` limb (i)** · **`RF-5`** · **the TRCP 195.2 verification** (§18.E) · **the retained-expert capture** (Q6).
 
 ## §19 — `RF-5`: the header label, and the convention question underneath it
 
@@ -1200,12 +1336,12 @@ Michael first raised it himself — *"What should we call that paragraph that ha
 
 **Two questions were travelling as one, and they separate cleanly:**
 
-**(1) This file.** The moment the packet carrying this text runs, **the path becomes an address and the problem dissolves for this document.** The header above reads "**Canonical repo path WHEN FILED**" because it was written before that happened; it stays true afterward and costs nothing. **No ruling needed.**
+**(1) This file.** The packet carrying the first fold-in ran at `7a7f797` (batch 83, 2026-08-31), **the path became an address, and the problem dissolved for this document.** The header of this second edition therefore reads "**Canonical repo path**" without the qualifier — true, because the file is at HEAD. **No ruling was needed and none was taken.**
 
-**(2) The convention for FUTURE REQ-CAPTURE drafts — this is the actual open question, and it is Michael's.** Should every REQ-CAPTURE draft carry "**Canonical repo path WHEN FILED**" (or "**DESTINATION**") until it is filed, as a format convention? **PROPOSED at `#136`, UNRULED, and PUT rather than assumed here.**
+**(2) The convention for FUTURE REQ-CAPTURE drafts — this is the actual open question, and it is Michael's.** Should every REQ-CAPTURE draft carry "**Canonical repo path WHEN FILED**" (or "**DESTINATION**") until it is filed, as a format convention? **PROPOSED at `#136`, UNRULED, not reached on 2026-08-31, and PUT rather than assumed here.**
 
 *Recorded because it is a small instance of the general pattern: an offered option turned out to be two, and saying so before recommending is CC-1(a).*
 
 ---
 
-**END OF FILE.** Nothing below the line was ruled by this fold-in; this document records rulings, it does not make them.
+**END OF FILE.** Nothing below the line was ruled by either fold-in; this document records rulings, it does not make them. **Second edition, 2026-08-31.**

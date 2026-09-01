@@ -124,13 +124,22 @@ tables with links") resolves as **separate tables with links — the shape alrea
    (employer/employee, owner-entrustor/driver, lessor/lessee, parent/subsidiary, affiliate/group,
    insurer/insured, insurer-of-adverse-party, principal-of, registered-agent-of, heir-of,
    representative-of-estate-of, next-of-kin-of, spouse/household, contractor/premises-owner,
-   manufacturer/retailer, platform/driver, attorney/client, bailor/bailee, joint-enterprise).
+   manufacturer/retailer, platform/driver, attorney/client, bailor/bailee, joint-enterprise;
+   **individual-renders-care-at-facility — `renders-care-at`, name provisional — ADDED by CD-14,
+   ruled 2026-08-31 for the disclosures designee slot, FE-18**).
    Adding a type is a spec-level act. Reason: downstream selectors (§6) and relationship-bearing
    boilerplate can only key off values the system knows; free text yields "employer," "Employer,"
    and "works for" as three relationships.
 3. **The CL-1 firewall, named:** contact-to-contact edges (this spec) and case-to-case links
    (CL-1, `case_links`) **never merge, never share a structure, and neither ever holds the other's
    kind of link.** The D-CL1 queue items stay untouched and unruled; this names the boundary only.
+4. **An edge may carry an EFFECTIVE PERIOD — from and to, blank meaning current (CD-14 limb (ii),
+   RULED 2026-08-31, Michael: "yes").** Ruled for `renders-care-at`: affiliation history is periods,
+   and a physician who moved facilities needs the facility that was current at the dates of
+   treatment (the provider block reads where he was on the treatment dates and where he is now —
+   `HD-3`, REQ-CAPTURE §17.3). Whether other edge types use the period is UNRULED; the field exists
+   on the structure and is meaningful for this type. CD-14 limb (i) — whether R6's verification
+   state lives on this edge or on the IN-2 fact row — remains OPEN.
 
 ## §6 Form-engine interface — RULED
 

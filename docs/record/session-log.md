@@ -17,6 +17,177 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-08-31 — QUEUE-RUNNER batch (runner line; EIGHTY-FOURTH invocation) — one docs-only packet, eleven exact-string edits and a whole-file replacement land clean, `RECON-1` closes one batch after the act that discharged it, and the runner's OWN two findings are refuted by its own adversarial pass before either reaches the record
+
+**THE PACKET.** `push-to-code_rc1-sitting-fold-in_2026-08-31.zip`, identity pinned at Step 1 per QR-6(c) — **86,352 B, mtime 2026-08-31 21:17:06 Central, sha256 `27e317ab937a9c7de84c7560f45cf9133cf1ec259d67fe1a20256684e5aadee5`**. One packet, so the filename-date order and the pure-mtime order agree trivially and no ordering question arose. Its two staged files matched the manifest's §9 hashes exactly on independent measurement: the REQ-CAPTURE **184,820 B / `9af8db6a…`**, the WORK-ORDERS **12,786 B / `2fcbfa4d…`**.
+
+**STEP 0 GATE PASSED ON LIVE EVIDENCE, NOT ON A TRACKING REF (QR-6(a)).** `git fetch origin` then `git ls-remote origin master` returned `7a7f797d25626ca6013dd914854966d4e5fcbd85`, equal to `git rev-parse HEAD`; on `master`, no tracked modifications, neither ahead nor behind. `.git/index.lock` absent by `ls`. `docs/record/session-log.md` present and `docs/specs/session-log.md` absent, so the TC-4 restructure is intact on this checkout. **Batch 83's close-out left nothing to carry:** its push landed (origin is at its commit) and its zip is gone from `inbox/`, so no failed post-commit action is carried forward into this line.
+
+**STEP 1's ALREADY-EXECUTED CHECK FIRED AND CAME BACK NEGATIVE — the useful outcome, not a formality.** `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` DOES exist at HEAD, which is what the check looks for — but at **153,103 B / `6dab5026…`**, batch 83's first edition, against the staged **184,820 B**. A genuine whole-file replacement, not a re-run of a packet that survived its own execution. Every other size the manifest's §1 asserts was re-measured and every one held: the RC-1 prompt 14,057 B, the hardened audit 36,000 B, the specs survey 22,344 B, the head file 102,161 B, BUILD-STATE 139,428 B, `contact-directory.md` 15,802 B, and the queue at **356 ⬜ / 125 ✅ / 5 🟡 = 486** on the three-marker matcher.
+
+**HEALTH CHECK SKIPPED, AND RECORDED RATHER THAN SILENT (QR-6(f)).** §5 is **NONE** and says so in terms; no `src/`, `db/`, `supabase/` or build-tooling path is written by any routing row, so `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. Skipped for that reason and no other.
+
+**WHAT LANDED — nine rows, in the §8 order.** **Row 1:** the REQ-CAPTURE replaced whole, byte for byte, landing at 184,820 B / 938 non-blank / zero CR with sha256 equal to the staged copy's. **The §4.1 invariant was checked and HOLDS:** the region from `## PARTS 1–8 — MICHAEL'S CAPTURE, VERBATIM` to `# RECONCILIATION ADDENDUM` is byte-identical across the HEAD copy and the landed one — sha256 `eaeec76bc0593c86568677d0c6f7bbe69a8d502d072886ea68224d893ec51f4f`, 21,838 B on both sides. **Michael's own captured words survived the second rewrite untouched, and that was measured rather than assumed.** **Rows 3–5:** eleven exact-string edits — nine to `form-engine.md` (WO-A1–A9), two to `contact-directory.md` (WO-B1/B2), the SPENT banner to the RC-1 prompt. **Every one of the eleven OLD strings was confirmed to occur EXACTLY ONCE before anything was written**, and every NEW string was extracted programmatically from the fenced blocks of the WORK-ORDERS file and never retyped. **Row 6:** the `RECON-1` row read in full before being touched (it is the disclosures-application row — its body names the `_Voice2` handoff table and the H12 text, as §4.6 said it would), then flipped `⬜` → `✅` with the closure sentence appended by line slice; **the row grew by exactly 697 bytes, the sentence plus one joining space, and not one other line of the 1,282-line file changed.** **Row 7:** the Status-header reconcile sentence. **Row 8:** this line and `#139`. **Row 9:** the three regenerations.
+
+**`RECON-1` OUTLIVED ITS OWN DISCHARGE BY ONE BATCH, WHICH IS WHY IT NEEDED CLOSING BY HAND.** It was DISCHARGED at `#138` and the file it demanded reached HEAD at batch 83 — but batch 83's routing touched only `SK-v2`, so nothing closed the row. Closed here **ROUTED on the record's own evidence, not decided by the runner**, and Michael was put to it at the packet's STOP and ruled the packet ready as presented ("zip it"). Queue counts MEASURED after: **356 → 355 `⬜`, 125 → 126 `✅`, 5 → 5 `🟡`, 486 marked rows unmoved**; 355 open, or **360 open-in-substance**, the Convention line still documenting two markers where the file uses three and still NOT repaired (unrouted; QR-6(e); Michael's act).
+
+**THE BATCH WAS ADVERSARIALLY VERIFIED BEFORE COMMIT, AND THE PASS EARNED ITS COST BY REFUTING THE RUNNER.** Fourteen agents over six independent lenses — the Parts 1–8 invariant, WO-A1–A8, §9's twelve approved paragraphs, the WO-A9 append, rows 4–5, and the whole §6 DO-NOT list — each finding then put to refuters instructed to default to refuted. **Result on what landed: ZERO defects and ZERO DO-NOT violations.** §9's other eleven approved paragraphs are byte-identical to HEAD; §2 step 7 and the `Build position` line are untouched; no `src/`, `db/` or tooling path is modified; the two untracked 2026-08-24 files are untouched and still untracked; nothing minted, no registry entry drafted, no TRCP 195.2 deadline computed.
+
+**⛔ TWO OF THE RUNNER'S OWN FINDINGS WERE WRONG AND ARE CORRECTED HERE, BEFORE THE RECORD CARRIED THEM.** **(1) The line-ending finding was FALSE.** The runner reported at the Step 1 STOP that the WORK-ORDERS' sentence *"the staged copy at HEAD carries zero CR"* did not hold, having measured 364 CRLF in the working-tree `form-engine.md`. **The packet was right and the runner was wrong:** this repo has `core.autocrlf=true` (system gitconfig, no `.gitattributes`), the HEAD **blob** is **54,959 B with ZERO CR**, and the working tree's CRLF is a checkout artifact of that filter. The sentence speaks of the git object and is true of it. *(Consequence, stated because it is what makes the error harmless: the three WO-A9 bullets were written CRLF to match their neighbourhood, and autocrlf normalizes them back to LF in the committed blob, so the commit carries the file's own convention either way.)* **(2) The `renders-care-at` count was NOT a packet error.** The runner counted three raw substrings against a predicted two and called the prediction wrong. **The packet names its command — `grep -c "renders-care-at"` — which counts MATCHING LINES, and that returns exactly 2, one in item 2 and one in item 4, precisely as predicted.** The third "occurrence" is a substring of a different and longer token, the vocabulary name `individual-renders-care-at-facility`. A substring count was used where a line count was specified. **Both corrections are the adversarial pass's, not the runner's own, and both are recorded because a runner's error about a packet is exactly as damaging to the record as a packet's error.**
+
+**⛔ ONE PACKET-PREDICTION ERROR SURVIVES REFUTATION, AND IT IS A TRAP FOR THE NEXT RUNNER.** WO-A's verification foot and manifest §4.3 both predict `grep -c "chiropractic probability" docs/specs/form-engine.md` → **0**. **The true and REQUIRED value is 1**, because WO-A2's own mandated replacement text quotes Michael's ruling verbatim — *"Get rid of chiropractic probability and replace with medical probability"* — and that quotation carries the two-word phrase. The landed edit is correct: `reasonable degree of chiropractic probability` is **0** and the §9.4 causation sentence now reads "medical probability," byte-identical to the treating line. **A runner obeying the stated count literally would read 1 as a failure and could be tempted to mutilate authorized text to force it to 0.** The work order's own parenthetical shows the author reasoned about this and stopped one word short — it notes the single word "chiropractic" survives "in WO-A2's note" without noticing that the note carries the two-word phrase too.
+
+**⛔ THE PACKET'S §4.7 DIRECTED THE HEADER SENTENCE TO OVERTAKE WORDING THAT IS NOT IN THAT HEADER.** It told the runner to overtake *"the header's 'EMPTY until he accepts the four proposed items'"* about the `CC-1` hands-on queue. **`CC-1` occurs ZERO times in `attorney-review-queue.md`;** that sentence lives in the runner-82 line of this log and in its derived echo in the head file, neither of which a runner rewrites. Written as directed it would have put a false statement about the file into the file. **The fact was recorded instead of the mis-attribution:** the header now carries the CC-1 queue as **TWENTY-ONE ACCEPTED** with the mis-attribution named, and the header's real overtaken words — `RC-1`–`RC-3` "living in the log entries alone" — are marked overtaken rather than edited out.
+
+**A CONTENT NOTE ON THE STAGED FILE, REPORTED AND DELIBERATELY NOT FIXED.** Inside the landed REQ-CAPTURE the same 2026-08-31 ruling is quoted two ways: verbatim with Michael's typo and an explicit *(sic)* at §13.2, and as a silently spell-corrected back-reference — *"the rest is approved."* — later in the file. **The runner did not touch it and could not:** §4.1 says "do not edit a word" and §6 says the file is "never edited by hand," so normalizing either occurrence would itself have been the violation. It is design-side content about how Michael's own words are quoted, and it is his and the design side's to settle.
+
+**DT-1 READ, AND THE DIVERGENT WINDOW DID APPLY — which is the whole reason for measuring rather than carrying.** PowerShell, the authority, read **2026-08-31 21:44:31 −05:00 (Central Standard Time)** while UTC already read **2026-09-01 02:44**. Every stamp in this batch is 2026-08-31 Central.
+
+**Staged for Code:** none. **Awaiting/Returned from Code, unreviewed:** the second fold-in of the disclosures REQ-CAPTURE and the three edited files, now at HEAD.
+
+**Still open and still Michael's (the packet's §7, merged so the top of the log stays truthful):** **the v28 instructions paste** — drafted 2026-08-31 from the verbatim fragments at `fable-adjudication-record-2026-08-18.md` §3 and `fc-adjudication-record-2026-08-18.md` FC-14, restoring `PF-1` and FC-14's SOURCING fourth channel that v24 dropped when it superseded v23 unpasted; **until it lands v27 is in force**, and no Code session can tell him whether the paste has happened · **the hands-on sitting for the TWENTY-ONE accepted `CC-1` items** — `#137`'s four (`DA-1`, `DA-3`, `DA-4`, `FO-6`), the 2026-08-24 audit's twelve (`CL2-AC-1`, `CL2-CHECK-1`, `FE-§11.4`, the bill-label pre-fill, `CR-7`, `CR-CONSTRAINT`, `Q-FE6-5`, `Q-FE4-1`, `Q-FE5-3`, `Q-IN2-7`, `Q-IN1-1`, `Q-IN3-6`) and the sitting's own five (the hard stop's shape, ND-7(c), Q5, Q10, the rider's supervisor beneath a collective paragraph) — a SEPARATE sitting needing the running product in front of him · **§3's sixteen durable IDs**, put to him with this packet and NOT answered · **`RF-2`** the master-skeleton hand-in · **`MIG-1`** the FE-D1 migration, still unrun and still carried unverified · **`H12-v`** and `HD-12-w`…`z` · **`HD-3`'s** prior-art claim · **B6, B7, B8** · **`RC-4`'s** `CPRC § 18.001` registry candidate, UNVERIFIED · **`CD-14` limb (i)** · **`RF-5`** · **the TRCP 195.2 verification** (R11's gate; its two register rows) · **the retained-expert capture (Q6)** · **the two untracked 2026-08-24 files**, still one `git clean` from destruction by his own DO-NOTHING ruling · **the queue's Convention line** · **`HD-16`'s migration plan** and **the FE-D1 amendment slice**, both Code-side and both needing their own authorization.
+
+## 2026-08-31 (#139) — (Typed design session, Cowork, Fable 5 — the model per the environment line after Michael's
+`/model` switch; DEVICE BRIDGE GRANTED: THE RC-1 SITTING — the form of the floor RULED in his words, "The app puts
+the sentences in there with the model writing the rest around them," and the whole ripe disclosures residue taken
+behind it ONE QUESTION AT A TIME: twenty-one ruling exchanges (some forty-nine discrete rulings); RC-1, RC-2, RC-3, RC-5–RC-10 CLOSED; B1–B5 and B9–B11 closed
+or dissolved; `R17` MINTED; FE-18's wording RATIFIED; CD-14(ii) ruled; the four-shape ruling SUBSUMED by provider
+type on his own library's sentences; five items HELD for hands-on by name and the CC-1 HANDS-ON QUEUE ACCEPTED WHOLE
+— twenty-one items, no longer empty; the fold-in REWRITTEN a second time; instructions trigger #6 fired on the v23
+loss and v28 drafted; nothing built, nothing computed for R11)
+
+The sitting Michael's "Synced. Let's move on your next recommendation" opened, read under CC-1(a) as RC-1 typed —
+Fable cannot run in voice — and put narrowly before opening rather than assumed. It ran on the REQ-CAPTURE at HEAD
+`7a7f797`, not on captures, exactly as the RF-7 prompt's gate required. Every question was put in prose, one at a
+time, options as a way of asking; four answers came back OUTSIDE the offered set and each was re-asked narrower.
+Two rulings were selections among descriptions Claude wrote ("Option 1"; "Example C") and one adopted a Claude
+proposal in terms; all three are marked in the REQ-CAPTURE so the words around the ruling are never quoted as his.
+DT-1: the sitting opened 18:53 CDT and ran past the container's rollover; every stamp is 2026-08-31 Central by the
+bridge clock. Knowledge meter at close 1,552,263 / 2,000,000 = 77.6% (Q-CAP-5(a), self-executing; no pass staged).
+The CC-1 hands-on queue was FORMALLY EMPTY at open, sixteen proposed; it is TWENTY-ONE ACCEPTED at close.
+
+- **`RC-1` — THE FORM OF THE FLOOR — RULED: "The app puts the sentences in there with the model writing the rest
+  around them."** FIXED TEXT; the check branch is gone; B11 dissolves (the 2026-08-21 no-lint rulings need no
+  narrowing because nothing ever reads the writer's prose to satisfy the floor); hard stop 1 becomes structural.
+  He asked first what was being decided — "Are we talking about the disclosure paragraphs?" — and was told yes.
+- **RE-ASKED NARROWER, and it is the schema: APP ASSEMBLY — "Option 1."** Two ways were described (the model
+  never touches the fixed sentences and returns PARTS the app assembles; or the model returns a whole paragraph
+  with the sentences embedded and the app byte-matches its own text). A paragraph is an ORDERED SEQUENCE OF SLOTS,
+  each FIXED or WRITER; the model returns parts, never a paragraph; nothing inspects or matches model output.
+- **THE SLOT ORDER — "The four slot order matches."** Derived from his own `form-engine.md` §9 skeleton (every
+  treating variant: basis second, causation last): writer opening → fixed BASIS → writer middle → fixed CAUSATION,
+  always last. Future care sits in the writer's middle (stated with a stop-me; not objected; not a separate ruling).
+- **THE CUSTODIAN SENTENCE IS THE WRITER'S — "the custodian sentence can go wherever the ai writer wants to put
+  it," then, on four rendered fictional examples, "I like example 1 but we also need the custodian sentence in there
+  like example 4."** Example 4 was the writer-written one, shown with the warning that free composition drops
+  predicate limbs. The app's fixed set is TWO sentences — basis and causation; the custodian sentence is a required
+  instruction to the writer, unguaranteed, placed anywhere before the causation line. The block's "and/or Custodian
+  of Records" token is untouched. **Its required content — "All four limbs required every time"**: made and kept in
+  the regular course of business; by persons with knowledge; at or near the time; the charges and their
+  reasonableness (his §9.11). `RC-4` narrows to the `CPRC § 18.001` registry candidate, UNVERIFIED, his.
+- **THE CAUSATION LIST — his library's, keyed by PROVIDER TYPE, with two edits: "#2 needs to be 'reasonable degree
+  of medical probability'; #4 'collision' is only for motor vehicle collisions, and premises injuries should read
+  'incident'; the rest is apporved" [sic].** Four distinct sentences: medical probability (EM, pain, ortho, neuro,
+  primary care, and now chiropractic — its sentence becomes the treating line); the EMT "consistent with" line;
+  the PT "consistent with" line; the radiologist's §9.2 as written. **B2 CLOSED on §9.2** — it carries both his
+  Part 3 rule 5 findings object and the medical-probability phrase he kept on 2026-08-22. **SUPERSESSION, named:
+  the 2026-08-22 "EMS is a treating shape" ruling is superseded as to the causation sentence; the earlier ruling
+  stands as written, today's governs.** The word "collision" had appeared in Claude's rendering of the EMT sentence
+  where the library's token is `{incident_type}`; his "#4" is recorded as a TOKEN rule, not an edit to one
+  sentence — a rendering imprecision, actor Fable 5, named here; nothing wrong reached the record.
+- **THE EVENT NOUN, narrowed: "Let's make 'incident' the word for everything not a collision. I can always change
+  those on my own if I want to later."**
+- **`RC-6` CLOSED: "9.2 approval lifts it. I may make a change later after actually using it, but let's keep it
+  that way for now."** Recorded as his intent to possibly revisit after use, not as an open item.
+- **THE BASIS LIST — his library's six, keyed by provider type (EM; pain/ortho/neuro/PCP; DC; PT; EMT;
+  radiologist): "This is correct."** The four shapes of 2026-08-22 are SUBSUMED — provider type is the key for
+  both fixed sentences, on sentences he already approved verbatim, which is why the text act the ruling created
+  was discharged in one exchange. `RC-5` answered by consequence: the pharmacy paragraph has no fixed slots.
+- **`RC-3` CLOSED — "That is the collective form":** the plural-token form of the fixed sentences for a same-type
+  group (his §9 header rule). **THE ONE SPLIT — "For a mixed facility, let's give the radiologist their own
+  paragraph," then "Radiologist is the only split"** with the DC-plus-PT clinic in front of him: a non-radiologist
+  of a different type rides the facility paragraph and its fixed sentences, accepted, not overlooked.
+- **THE MIXED PARAGRAPH — outside both things offered: "DC and PT should be combined. Explain what each one did
+  then pair them together for the rest of the paragraph."** The writer's opening explains each; from the basis
+  sentence on they are paired, the fixed sentences plural.
+- **THE MID-LEVEL RIDER — "PA gets the rider paragraph," and on three rendered examples, "Example C is good":**
+  two slots, writer opening (what the PA actually did) → the app's fixed scope sentence from the back half of §9.12.
+  What that sentence names as supervisor beneath a COLLECTIVE paragraph is HELD for hands-on; build default GROUP
+  FILL, provisional.
+- **WHO MARKS THE RADIOLOGISTS — "Let's figure out a way for me to designate them."** His hand, never the
+  model's tag. **THE MECHANISM — a Claude proposal, put alone after four unanswered puttings, ADOPTED IN TERMS:
+  "Yes, that is how it should work."** Every facility on the Medical tab carries a TYPE he sets once; the
+  individuals the model extracts appear under it with a ROLE MARKER defaulting to the facility's type; a mixed
+  paragraph takes the facility type's sentences; imaging readers are flipped to "Radiologist" by hand and split;
+  the model populates NAMES and nothing else. Type is always assigned by a person. The 2026-08-22 no-review-step
+  ruling is untouched — the marker is an act available, not a gate.
+- **B1 — THE ENFORCEMENT SEAM — "Stop and tell me what to do first."** Three tiers: the ambient panel flags and
+  never blocks (unchanged); `HD-22` warns and never blocks (unchanged); a HARD STOP blocks the generate and names
+  what to fix. Under fixed text only ABSENCES can fire one — no incident date on the matter; a selected facility
+  with no name; and, created and ruled the same night, **a selected facility with no type — "stop and tell me."**
+  The stop's SHAPE (panel tier vs dialog) is HELD for hands-on.
+- **B3 / `HD-20-b` — "confirm":** edits only in Word, never in the app. The voice3 record stands.
+- **ND-4 "adopt it" · ND-5 "adopt it"** (a writer instruction; the fixed sentences exempt by design — the
+  "records and diagnostic imaging" basis sentence is unconditional for pain/ortho/neuro/PCP, stated before he
+  answered) · **ND-6 + finding 7 "adopt both"** (retained/non-retained is data, not gate state) · **ND-7(a)
+  "adopt"; (b) "oldest first is the rule"** — one order, all three renderings, no per-matter override; Q4's order
+  limb CLOSES and `HD-21(a)` generalizes · **ND-7(c) HELD** at his own doubt: "Im not sure when this will become an
+  issue. There is always a provider with a facility." — build default a panel line, never a stop, provisional ·
+  **ND-9 ADOPTED on his condition, satisfied by design: "Imaging could be conducted, and many times is when there
+  is ER treatment. If your proposal works with that, adopt."** — type binding by construction, writer instruction,
+  no value-equality flag (dropped precisely because same-day ER imaging is routine). **`RC-9` CLOSED.**
+- **`RC-7` "Adopt both"** — any format the model reads (his 2026-08-21 list plus plain text), unreadable scans
+  flagged at the drop; versioned, newest to the model · **`HD-20-c` "adopt"** — plain text, the app formats ·
+  **`HD-21-b` "per individual"** · **`HD-21-med` "Yes, same order there."**
+- **`RC-8` "Ratify that as the rule's wording"** — FE-18 re-put in plain language, as §1.6 required, and ratified;
+  the `form-engine.md` connective amendment is UNBLOCKED (row 3) · **`CD-14`(ii) "yes"** — the `renders-care-at`
+  edge carries an effective period (row 4) · **`RC-2` "use that" — `R17` MINTED**, the provider record with its
+  two new fields · **B10 "Provider block at next edit"** (row 3) · **§9.4 "Get rid of chiropractic probability and
+  replace with medical probability"** (row 3, WO-A1/A2 — the one edit to an approved paragraph, his).
+- **Q3 "Adopt"** — custodian-only designations a separate records-predicate track keyed to the facility, rendered
+  inside the 195.5 block by default; the § 18.001 affidavit tracker a separate banked item · **Q6 "Adopt"** — the
+  retained fields from rule text now, UNVERIFIED checklist; the retained paragraph waits for his capture via CIVIL
+  LIT · **Q8 "Combined form is the house standard"** · **Q5 + Q10 "Confirm the hold"** — hands-on with ND-7(c) ·
+  **`HD-10` "Close it by pointing at them"** — the two register rows ARE the verification act; no new item; **R11
+  stays GATED and nothing was computed, displayed or proposed** · **Q2** answered by consequence (versioned artifact;
+  names only derived) · **B9** dissolved (template-rendered text is the app's own data) · **B5 "Rename it in the
+  same slice"** — the `provider_billing_profiles` table, into `HD-16`'s migration plan.
+- **THE CC-1 HANDS-ON QUEUE — "Accept all of them onto the queue" — TWENTY-ONE:** `#137`'s four (`DA-1`, `DA-3`,
+  `DA-4`, `FO-6`); the 2026-08-24 audit's twelve (`CL2-AC-1`, `CL2-CHECK-1`, `FE-§11.4`, the bill-label pre-fill,
+  `CR-7`, `CR-CONSTRAINT`, `Q-FE6-5`, `Q-FE4-1`, `Q-FE5-3`, `Q-IN2-7`, `Q-IN1-1`, `Q-IN3-6`); and tonight's five —
+  the stop's shape; ND-7(c); Q5; Q10; the rider's supervisor beneath a collective paragraph — each carried with its
+  full question at the REQ-CAPTURE's §18.F. CC-1(c) was discharged unprompted: the queue is worth an hour, needs the
+  product in front of him, and is a SEPARATE sitting (screenshot-driven walkthroughs are Fable's per §7.2).
+- **INSTRUCTIONS TRIGGER #6 FIRED — and it is the v23 loss.** v27 contradicts BUILD-STATE: BUILD-STATE says `PF-1`
+  (#105) and FC-14's SOURCING fourth channel (#106) "ride the v23 paste"; the live v27 carries neither, its trigger-3
+  history runs v22 → v24, and the record's own same-day note at #106 says "no v23 DOCUMENT exists — only the three
+  verbatim fragments staged in the adjudication record's §3." v24 superseded v23 unpasted and did not carry them.
+  Michael: "Yes" to a v28 draft. **v28 was assembled tonight from the verbatim fragments at
+  `fable-adjudication-record-2026-08-18.md` §3 and `fc-adjudication-record-2026-08-18.md` FC-14, delivered to him
+  as a .md to paste; the paste is his hand, and until it lands v27 remains in force.**
+- **WHAT SHIPPED (this packet, docs-only):** the REQ-CAPTURE REPLACED WHOLE (second fold-in — §11.6–§11.8, §12.3,
+  §15.6, §17.1a and §18 new or rewritten; Parts 1–8 byte-identical; eleven `MARKED` guards, three of them new);
+  nine exact-string edits to `form-engine.md`; two to `contact-directory.md`; the SPENT banner on the RC-1 prompt;
+  the `RECON-1` row closed on `#138` and batch 83's own evidence; the header sentence; this entry.
+- **WHAT DID NOT HAPPEN, each because a rule bars it:** nothing built; no `src/` file read or written; the FE-D1
+  migration not run (`HD-18`, `MIG-1`, his hand); no registry entry drafted (PF-1's trigger (a) therefore did NOT
+  fire — no legal characterization and no proposed registry entry is in this packet, and the skip is recorded
+  rather than silent); no TRCP 195.2 deadline computed, displayed or proposed; no `claude_` capture relocated,
+  deleted or added beyond the two this session wrote; no queue row minted; `H12-v` not pushed and not renumbered;
+  §3's sixteen durable IDs not minted (put to Michael with this packet, his act); the queue's Convention line not
+  repaired (unrouted, QR-6(e)); `form-engine.md` §2 step 7's computed-deadline text not touched (a separate act,
+  not put); Part 3's "CONTACT BLOCK" not edited (his verbatim).
+- **PROCESS NOTES, recorded because they set the shape of the next sitting:** the type mechanism was put four times
+  inside compound questions before it was answered, and answered at once when put ALONE — a numbered multi-ask
+  gets the numbered items answered and the un-numbered tail dropped; and every ruling was written into a running
+  ledger in the container within the exchange it was made, so the capture at close was a copy, not a reconstruction.
+
+**Staged for Code:** none beyond this packet. **Awaiting/Returned from Code, unreviewed:** the second fold-in and the
+three edited files, once landed. **Still open and still Michael's:** the v28 paste · `RF-2` · `MIG-1` · `H12-v` and
+its limbs · `HD-3`'s prior-art claim · B6, B7, B8 · `RC-4`'s registry candidate · `CD-14` limb (i) · `RF-5` · the
+TRCP 195.2 verification (R11's gate; its two register rows) · the retained-expert capture (Q6) · §3's sixteen IDs ·
+the hands-on sitting for the twenty-one accepted items · the two untracked 2026-08-24 files · the Convention line.
+
 ## 2026-08-31 — QUEUE-RUNNER batch (runner line; EIGHTY-THIRD invocation) — one docs-only packet, and four files that had never existed anywhere in git reach HEAD together: the disclosures REQ-CAPTURE is FILED AT ITS CANONICAL PATH FOR THE FIRST TIME, the hardened audit and the first `TC-OPEN-2` survey land beside it, `SK-v2` closes, and Michael rules ADD NONE and DO NOTHING on the packet's two conditional rows
 
 **THE PACKET.** `push-to-code_recon1-disclosures-fold-in_2026-08-25.zip`, identity pinned at Step 1 per QR-6(c) — **108,712 B, mtime 2026-08-25 15:40:30 Central, sha256 `bfb23b6807d84e510996dd514c305c3d721a654965fe282ada60c15422d8f450`**. One manifest, 424 lines / 46,722 B, plus **four staged deliverables totalling 225,504 B** — the largest freight any batch has carried. One packet, so **no conflict rule fired and nothing was superseded**; nothing was skipped as already built. Executed in routing order — rows 1, 2, 7, 8 (the four files), then 3 and 4 (the queue), then 5 (this log). **Rows 6 and 9 are the conditional pair and both resolved to their stated defaults, on Michael's answer in session rather than on the runner's own reading.** Nothing is carried forward from batch 82: its commit `edea20b` is on origin and its zip is gone from `inbox/`, so neither of QR-5's two carry-forward conditions fired.

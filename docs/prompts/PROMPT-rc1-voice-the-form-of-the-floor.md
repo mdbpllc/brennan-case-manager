@@ -1,3 +1,5 @@
+> **SPENT — 2026-08-31.** `RC-1` was ruled in a TYPED Fable 5 sitting on 2026-08-31, not in voice — "The app puts the sentences in there with the model writing the rest around them" — together with the whole ripe residue this prompt's §4 lists. The ruling is at `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` §11.6 and in the session-log entry of that date. **This prompt is retained as the record of how the question was scripted; do not run it.** Its §6 close-out warning (refresh-chat cannot run from voice) remains true and standing.
+
 # VOICE SESSION PROMPT — RC-1: THE FORM OF THE FLOOR
 
 **Regenerated 2026-08-25 (Central) per `RF-7`. Supersedes `claude_PROMPT_voice-walkthrough-disclosures_2026-08-21.md` for the RC-1 sitting.**
