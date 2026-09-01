@@ -298,6 +298,17 @@ watch flags. Entity definition: synthesis doc, Part 4. Rules:
   **locally** on Michael's GPU machine by design — this is a privilege/PHI
   posture, not a hosting shortcut. Do not introduce cloud AI processing of
   case documents without an explicit decision from Michael.
+  *(Conforming note, 2026-08-31 — Michael's ruling `AS-Q1`,
+  `docs/specs/fe-d1-amendment-slice.md` §2. One explicit decision is on the
+  record for this bullet: the disclosures module's model call, ruled 2026-08-21 (`#130`; `H12` reversed) —
+  the app calls the model on the firm's own BAA-covered API account, from a
+  SERVER-SIDE function holding the credential as a Supabase secret, the
+  paralegal never touching Michael's Claude login. It is GATED: no real record
+  moves through that path until a BAA is signed (`H12-v`, OPEN — the vendor is
+  Michael's), and until then the only writer in the app is a FIXTURE writer
+  that makes no network call; the local P1 model remains the preserved
+  fallback. The bullet above otherwise stands. Record: the REQ-CAPTURE's
+  §16.1–§16.3; the slice's §7.5.)*
 - A professional security review is required before multi-user / live use.
   Claude is not a substitute for it. Do not represent any build as
   production-ready for privileged data.

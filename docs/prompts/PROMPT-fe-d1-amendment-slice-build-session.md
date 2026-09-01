@@ -1,0 +1,108 @@
+# PROMPT — FE-D1 AMENDMENT SLICE Build Session
+
+**Canonical repo path:** `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md`
+**Authored:** 2026-08-31 Central, design session (Cowork, Fable 5; device bridge granted), against repo state `ed1ddf6` (batch 84). Filed UNFIRED by the packet that carries the slice.
+
+> ## THIS PROMPT FIRES ONLY ON MICHAEL'S `FE-D1A-1` AUTHORIZATION, RECORDED IN THE SESSION LOG.
+>
+> **The prompt existing authorizes nothing.** `FE-D1A-1` — *"Does Michael authorize the FE-D1 AMENDMENT SLICE at `docs/specs/fe-d1-amendment-slice.md`, scope IN (§3) and OUT (§4) as written, defaults (§10) as named, to be built by a fresh Opus Code session fired from `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md`, the queue runner BARRED, fixture-only, migrations written and not run?"* (one text, identical in the slice's §15, the queue row and here) — is an **OPEN** row in `docs/specs/attorney-review-queue.md` and the slice it points at is **PROPOSED, NOT BUILD AUTHORIZED**, and says so on its own face.
+>
+> **If you are reading this and `FE-D1A-1` has not been ruled AFFIRMATIVELY: STOP. Do not build. Tell Michael the prompt is staged and waiting on his ruling.** This is the `#115` pattern — the kickoff prompt is written ahead of the authorization so that authorizing becomes ONE act.
+>
+> **THE TEST IS "RULED YES," NOT "RULED."** A ruling of NO satisfies "is ruled" while forbidding everything below. **Check it yourself and know what each check can establish** (QR-6(a)): reading the `FE-D1A-1` row at HEAD, an **open glyph (⬜) DISCONFIRMS** — it has not fired. **A closed glyph (✅) does NOT confirm** — the queue closes deferred and ruled-negative items too. **Only a session-log entry at HEAD recording Michael's affirmative words, naming the slice document, establishes it.** Find that entry in `docs/record/session-log.md`, quote his words into your own entry, and name the entry you found them in. **If you cannot produce that quotation and that entry, you do not have the authorization — this session ends here and you say so.**
+
+**What this is:** the kickoff prompt for the FE-D1 amendment slice — the disclosures generator as ruled on 2026-08-31 (`RC-1` and the late sitting's eighteen). It is a **POINTER, not a spec copy** (QR-2 principle): every scope statement lives in the authorities read at Step 1. **If anything here conflicts with those documents at HEAD, the documents win and this prompt gets a correction.**
+
+Michael: once `FE-D1A-1` is ruled YES and recorded, open a fresh Claude Code session (Opus by default per the standing model routing; check `/usage` first and state the reading), then say "run docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md".
+
+**Sequencing.** This build does not depend on any migration having run — it is exercised in demo mode on fixtures. But its own migration presupposes FE-D1's (`MIG-1`, unrun, your hand), and the file is written to refuse if that order is broken. Nothing here runs a migration or connects to the live database.
+
+---
+
+You are running the **FE-D1 AMENDMENT SLICE build** for brennan-case-manager. FE-D1 built the disclosures engine on 2026-08-20 as a template-fill wizard over twelve approved variants (per the build entry); on 2026-08-31 Michael ruled the form of the floor — *"The app puts the sentences in there with the model writing the rest around them"* — and everything downstream of it, and BUILD-STATE's own words are that what is built is now behind the spec. **This slice rebuilds the provider side and the paragraph generator to the ruled design: a case-scoped provider record on the Medical tab, a versioned text chronology, an extraction call, app assembly of a lead plus four slots over fixed sentences keyed by provider type, three enforcement tiers, one order everywhere, the rename, and the shape of a model call that has no vendor yet.** It builds NO vendor, runs NO migration, and stays fixture-only.
+
+## Step 0 — Checkout gate (QR-3 pattern) + MM-1 bar + the authorization
+
+`git fetch origin`, then confirm: **clean working tree, on `master`, HEAD == `origin/master`.** Behind-but-clean fast-forwards and continues. **Dirty, diverged, off-master, or AHEAD of origin STOPS — tell Michael.** Verify with commands that could disconfirm (QR-6(a)): use `git ls-remote origin refs/heads/master`, never the local tracking ref alone.
+
+Then check `inbox/`: **if any packet zip is present, STOP — the queue runs first (MM-1), and this build session never doubles as the queue runner.**
+
+**Then confirm, and record, that `FE-D1A-1` is RULED AFFIRMATIVELY — quoting Michael's own words and naming the session-log entry they appear in** (see the header box). **If you cannot produce that quotation and that entry, this session ends here and you say so.** The same entry mints FE-18–FE-22 and CD-14 (his 2026-08-31 ruling: "mint the six with the authorization"); until you have found it, every one of those IDs is "proposed".
+
+## Step 1 — Read, in this order, all at HEAD
+
+1. **`docs/specs/fe-d1-amendment-slice.md` — IN FULL. This is the authority for HOW the slice builds.** All of it: §0 (the four provenance classes and what you do with each), §2 (the eighteen rulings — his selections, quoted; the option texts are Claude's), §3–§4 (IN / OUT), §5 (the data model and the migration, including its hard gate), §6 (the paragraph schema and the fixed-sentence source map), §7 (extraction, generation, the writer interface, the fixture writer, the Edge Function's shape), §8 (the tiers, the panel's line set, the order), §9 (the Medical tab and the wizard), **§10 (sixty-five NAMED DEFAULTS — build each exactly as named and report each you took, by number, in your entry)**, §11 (the thirty tests you owe), **§12 (DO NOT — read it twice)**, §13 (your ordered work list), §14 (what BUILD-STATE says on landing), §15 (the items PROPOSED for the hands-on queue and the four questions `AS-Q14`–`AS-Q17`, each carried with the default you build — build the defaults, decide nothing; `FE-D1A-1` does not put them and a YES to it neither accepts nor declines them).
+2. **`docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` §11–§18** — the design authority for WHAT a paragraph must contain, in Michael's words. Where the slice cites it, the cite is the reason. **Its §18.F is the CC-1 hands-on queue: five items HELD with build defaults — build the defaults, decide nothing.**
+3. **`docs/specs/form-engine.md`** — §1 (binding invariants), §2, §3 (as edited at batch 84), §9 (the twelve — VERBATIM, never reworded; the source of the fixed sentences per the slice's §6.4), §10, §12.1–§12.5 and §12.9–§12.11 (the docx mechanics you are extending). **The header's "Build position: NOT the next slice" line predates FE-D1 and is overtaken by the authorization you are running on** (recorded, not corrected — a docs act).
+4. **`docs/specs/contact-directory.md` §5, §7, §8** — the edge structure you extend and the promotion gate the slice honours.
+5. **`docs/specs/BUILD-STATE.md`** — in full; the sole authority on what is built. **Note it is at the 150-non-blank cap.**
+6. **`CLAUDE.md`** — binding build conventions. Its Data-hygiene bullet carries (or, if the docs packet has not yet landed, will carry) a conforming note recording the 2026-08-21 model-call decision and its BAA gate; **the fixture writer keeps that bullet true as written either way.**
+7. **`docs/specs/anti-resurrection-ledger.md`** — check before building anything that appears absent. FE-1's retirement is recorded at `form-engine.md` §12.6 (and, once the docs packet lands, by a pointer in the ledger); this slice is FE-D1's amendment, not FE-1 returning.
+8. **`docs/spec-feedback.md`, the 2026-08-20 FE-D1 section** — the eleven findings; the slice's §4, §10 and §12 dispose of every finding that bears on this build (#2, #3 Q1, #4, #7, #8, #9, #10); do not re-decide them.
+9. **`docs/specs/fe-d1-build-slice.md`** — item 11 (RLS + GRANTs + probe entry from birth, same commit) is the rule the slice's §5 restates, and the slice follows this file's shape.
+10. **`db/migrations/2026-08-20-fe-d1-form-engine.sql`** — the file the amendment migration's gate tests for, and the check-pattern (checks at the foot, answered in words) the amendment file follows.
+
+## Step 2 — Re-verify the slice's `src/` premises at YOUR HEAD before building on them
+
+The slice was written by a design session that **read no source**. Its statements about the built engine are quoted from the FE-D1 build entry (`docs/record/session-log.md`, 2026-08-20) and BUILD-STATE. **You are the session that can check them, and you must, before relying on any:** the `variants.ts` generator and its drift test (is the generator in the tree, or was it a one-off script?); the grammar/pronoun engine's plural mechanics; the §12.3 clone mechanic and the four master archetypes; the `resolveUsingSupabase` mode seam; the store version (13) and the pinned literals; the probe list's order test; the "still needed" list; the §5 gates' keying; the answer snapshot's shape; **the flat case-type definitions and PI flags that D-10 keys on** (`src/domain/caseTypes.ts` — the membership of `MOTOR_VEHICLE_CASE_TYPES` is yours to set and report); the `**`-marker → bold-run mechanic (the LEAD depends on it); the clone mechanic's ability to place TWO narrative paragraphs plus a rider under one block (the split); the LOP flag's current home (D-15 moves it); **how the template bank and token rows reach a Supabase database** (the seed path — if it is SQL, the amendment migration must carry the seed rows and its checks gain a row count); **how `medical_bills.client_id` is populated on a one-client case** (D-54); the name of the build's date-only formatter (invariant 4); pdfjs availability under vitest (invariant 13); the `Provider business` registry key and where its label lives (D-4). **A detail that differs is a correction to record, not a reason to stop. A PREMISE that has changed — the generator does not exist, the archetypes are not four, the seam is not one — is a stop: report it and put it to Michael, because the slice was specified against it.**
+
+**Also run the baseline health trio BEFORE any change** (`npm test` / `npm run build` / `npm run lint`, exit codes read off `npm` itself, never through a pipe). **EXPECT zero or one pre-existing red — the §9 drift test, on §9.4's sentence edited at batch 84, if the generator's comparison moved with the edit** — record whichever you find as the baseline. **A red that is NOT the §9 drift test is a stop to report before you write a line.**
+
+## Step 3 — The work list is the slice's §13, items 1–15, in that order
+
+§13 is the authority on each; the notes below are the only places this prompt adds anything.
+
+- **§13.2 (regenerate `variants.ts`).** By program, never by retyping — "verbatim" is enforceable only mechanically. §9.4's change ships as a NEW template version with a `change_note` quoting Michael's ruling; v1 stays readable.
+- **§13.3 (the migration).** Its FIRST statement is the hard gate (slice §10 D-37). Write it; **do not run it; do not connect to any database.** Fold it into `db/schema.sql` in the same commit; new tables go AFTER the FE-D1 block and BEFORE the `API ROLE PRIVILEGES` block, in FK order (slice §5); the STEP 0 pre-run counts in the file's header; RLS + policy + GRANT + probe entry in the same commit as every new table; the ten verification checks in the file's foot, answered in words by Michael when he runs it. **The slice's §5 names a consequence he must hear: until BOTH migrations run, the live Medical tab fails on the renamed column — say it again in your hand-back.**
+- **§13.6 (`R17`).** Case-scoped (his AS-Q3 selection). **The model never creates a contact or an edge**; promotion is Michael's one click. TYPE is nullable and never DERIVED — not from the vocabulary, a specialty string or a role tag; the only pre-fill is D-32's last-case query, which writes the value with its "carried from" note; a never-typed facility is NULL, the must-fix condition.
+- **§13.7 (the chronology).** Text per version, bytes not retained (his AS-Q4 selection). `readable = false` (D-62's threshold) is flagged at the drop and never sent; other extensions are refused (D-43); extraction fires at the readable drop and at Michael's "Pull individuals" click and at no other moment (D-44), never for a `pharmacy` or `custodian-only` facility (D-46).
+- **§13.8 (the writer).** The `ParagraphWriter` interface, the FIXTURE writer in both modes, the Edge Function stub that refuses without its ONE vendor-neutral secret (`DISCLOSURES_WRITER_CREDENTIAL`, D-38 — the only credential slot, never set). **No vendor SDK, key, endpoint or model name anywhere** — the slice's §11 invariant 19 is a test you ship.
+- **§13.9 (assembly).** LEAD → opening → basis → middle → causation, causation last; the shapes table of §6.2; the source map of §6.4 is the drift test's target; **nothing reads inside a part** (§11 invariant 3 is a test you ship, in all three forms). **No rider without a treating paragraph to ride** (D-16; `AS-Q15`'s default). **The block reads the SELECTED facility** (D-8).
+- **§13.10 (the tiers).** The three stops are the only stops; the surface is §10 D-1, PROVISIONAL; the panel's eighteen lines; signal 5 NOT built.
+- **§13.11 (the Forms tab).** The four interview cards do not render for treating facilities (his AS-Q9 selection); the retained step is small and hand-typed; **the 195.2 panel is UNCHANGED from the FE-D1 build — it states the rule, names its UNVERIFIED status and asserts no date; you write no new rule text anywhere.**
+- **§13.12 (tests).** All thirty invariants of §11. The untestable list in §11 is stated in your entry, not tested.
+- **§13.14 (exercise by clicking).** In demo mode, on the §10 D-35 fixtures — every shape, every stop, the supplement path, a two-client case. Record defects honestly. **Spec problems go to `docs/spec-feedback.md`, never fixed silently in a spec.**
+
+## Step 4 — Defaults are reported, not hidden
+
+Every §10 default you build is a decision the record did not make and the design session named so you would not make it silently. **Your session-log entry lists every default taken, by number**, and any default you found you could not build as named is a STOP to report, not a substitution.
+
+## Step 5 — Health check
+
+**Run it.** This batch touches `src/`, `db/` and a migration, so `QR-6(f)`'s skip limb does not apply — **a build session never takes it.** Report all three figures against the Step 2 baseline, and **read the exit codes off `npm` itself, never through a pipe.**
+
+---
+
+## DO NOT
+
+The slice's §12 is the DO-NOT list and binds in full. Restated here so it cannot be missed:
+
+- **Do not inspect, lint, byte-match or parse the writer's parts or the assembled paragraph** — for anything.
+- **Do not build a review gate, paragraph checkboxes, an in-app paragraph editor, a chronology text box, a second drop zone, or a prose-parsing layer.**
+- **Do not scrub or thin the chronology payload.**
+- **Do not let the model create a facility, a contact or an edge, or assign a type or a role marker; do not pre-fill TYPE from a specialty string or a role tag** — D-32's last-case query is the only pre-fill.
+- **Do not compute, display or propose a TRCP 195.2 deadline.**
+- **Do not add a fourth stop; do not make any panel line block.**
+- **Do not reword, retire or edit any `form-engine.md` §9 paragraph; do not rename any token that appears in §9's text.**
+- **Do not write NEW rule text anywhere** — the 195.2 panel keeps its as-built text and the retained checklist shows `form-engine.md` §5.3's labels headed UNVERIFIED (D-52); **do not draft or insert a registry entry.**
+- **Do not wire a vendor** — no SDK, key, endpoint, model name or vendor credential slot beyond the stub's ONE vendor-neutral secret name (D-38), which stays unset. **No real record through the model-call path until a BAA is signed.**
+- **Do not run either migration; do not connect to the live database; do not fold or amend `MIG-1`.**
+- **Do not retain chronology bytes; do not build a file store.**
+- **Do not write a `privilege_tier` value; do not build a classification UI.**
+- **Do not build one-click PDF, OneDrive storage, the charge-weighted gap trigger, the "affiliation unverified" line or a `verified` column on `contact_edges`, or the "mark as served" upload.**
+- **Do not emit a rider with no treating paragraph to ride** (D-16); **do not substitute an edge's facility for the selected one in the block** (D-8); **do not fire an extraction on adding a facility** (D-44); **do not add a dependency for any reader** (D-43).
+- **Do not touch `case_clients`, `case_parties`, `case_roster_flags`, `party_pii`**, or CL-2 / CD-1 / gate-10 walked ground beyond the `contact_edges` change the slice expressly authorizes.
+- **Do not edit `docs/skills/drafting-disclosures/SKILL.md`, `docs/specs/Go_Live_Gates.md`, or any spec in `docs/specs/`** (`BUILD-STATE.md` excepted — its full rewrite is required below); spec problems go to `docs/spec-feedback.md`.
+- **Do not regenerate `docs/record/session-log-toc.md`** — TOC-4's trigger is a queue-runner batch (the FE-D1 build entry's own precedent).
+- **Do not mint an `#nn`** (TOC-6), **any queue row, or any ID.**
+- **Do not double as the queue runner** (Step 0).
+- **Do not read "walked" as "live."** Fixture-only; EXCLUDED from the GL-1 floor.
+
+## Before you end the session
+
+1. **Append a session-log entry at the TOP of `docs/record/session-log.md`** (the live log — `docs/record/`, not `docs/specs/`, since TC-4). **Per TOC-6, Code sessions never mint `#nn` — leave it unnumbered.** Record in terms: the authorization entry you quoted; the Step 2 re-verification deltas; the baseline red and its resolution; every §10 default taken, by number; the migration WRITTEN AND NOT RUN with its gate; the fixture-only posture; the health figures before and after; the untestable list acknowledged.
+2. **Rewrite `docs/specs/BUILD-STATE.md` in full.** It is at the 150-non-blank cap: **displace, do not append.** Preserve the anti-resurrection-ledger pointer. **Recompute every count from the files at HEAD — never copy a figure from this prompt or from the slice** (OPEN-5(a)). Say what the slice's §14 item 3 says, in this session's own measured terms: the wizard no longer selects variants; app assembly; the fixture writer; `R17` on the Medical tab; the three tiers; store v14; the table count in the file; **"TWO migrations pending, in order"** while `MIG-1` is unrun, with the §5 consequence named (the live Medical tab fails on the renamed column until both run); the drift test's before/after.
+3. **Do NOT regenerate `docs/record/session-log-toc.md`** — `TOC-4`'s trigger is a queue-runner batch, the FE-D1 build entry's own precedent ("TOC-4's trigger is a queue-runner batch, which this is not"); the next batch's census detects the unindexed entry by design, and your entry says so. **Do not write to `docs/specs/session-log-head.md`** — it is the queue runner's derived file and is regenerated at the next batch (TC-5).
+4. **Push, and VERIFY with a bare `git ls-remote origin refs/heads/master`.** Never report "pushed" from an unchecked command. **An allowlist entry is necessary, not sufficient** — the auto-mode classifier has refused an allowlisted bare `git push` on both shells before, and a close-out can strand between the commit and the push. **Your log entry may assert no post-commit action** (QR-5(a)): report the push result to Michael in session; a stranded push is his hand.
+5. Tell Michael in one line: **"Pushed at `<sha>` — click Sync now on the repo in the Claude project."**
+6. **Then tell him what is still his:** run `MIG-1`, then the amendment migration, each pasted alone, checks answered in words — **in the SAME sitting as pulling this build, before opening a live matter, because until both run the live Medical tab fails on the renamed column (slice §5)**; the hands-on sitting (the CC-1 queue plus the items the slice PROPOSED for it in §15, `AS-Q14`–`AS-Q17` among them — carried as PROPOSALS, each his item by item there; the authorization did not put them); `H12-v` and the BAA before any real record; the REQ-CAPTURE's third fold-in (an Opus design session); `SKILL.md` v3.

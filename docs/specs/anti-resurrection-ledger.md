@@ -55,3 +55,7 @@ was already gone from BUILD-STATE before the ruling — the removal is recorded 
 attorney review queue's §2 "Still to pull" entry, where family law is struck as out of
 scope by the 2026-07-26 ruling. **No candidate list is carried forward. This section is
 history, not a pending question.**
+
+## FE-1 — RETIRED (superseded by CD-1, 2026-08-08); POINTER ADDED 2026-08-31 (Michael's ruling, `AS-Q12(b)`)
+
+`FE-1` — the provider-directory scout, Slice A — was SUPERSEDED by CD-1 on 2026-08-08 and withdrawn unbuilt. The record of its retirement is `docs/specs/form-engine.md` §12.6 and the queue's `FE-1` row; nothing about it is reconstructed here. Two documents — `docs/specs/fe-d1-build-slice.md` and `docs/prompts/PROMPT-fe-d1-build-session.md` — send readers to THIS file for it (spec-feedback 2026-08-20, finding 2, open since); this pointer is what they now find. The `FE-1` string is retired with the item; the disclosures engine's slices are `FE-D1` and its amendment (`docs/specs/fe-d1-amendment-slice.md`).
