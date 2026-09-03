@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "vitest run",
+    "generate:forms": "node scripts/generate-form-text.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

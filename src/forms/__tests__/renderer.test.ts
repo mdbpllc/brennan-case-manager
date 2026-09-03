@@ -188,8 +188,10 @@ describe('region expansion', () => {
 describe('the approved §9 library supplies the narrative words', () => {
   it('renders the §9 chiropractic variant, including its ruled probability standard', async () => {
     const { plainText } = await renderFixture();
-    // §9.4's settled point: CHIROPRACTIC probability, not medical.
-    expect(plainText).toContain('reasonable degree of chiropractic probability');
+    // §9.4's standard is MEDICAL probability — RULED 2026-08-31, superseding the
+    // chiropractic standard this assertion used to carry.
+    expect(plainText).toContain('reasonable degree of medical probability');
+    expect(plainText).not.toContain('chiropractic probability');
   });
 
   it('renders the §9 radiologist variant, which never claims personal treatment', async () => {

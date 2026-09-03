@@ -331,9 +331,15 @@ describe('§9 approved variant library', () => {
     }
   });
 
-  it('keeps §9.4\'s CHIROPRACTIC probability standard', () => {
-    expect(variantByKey('disclosures-variant-chiropractor')!.body)
-      .toContain('reasonable degree of chiropractic probability');
+  // RULED 2026-08-31 (Michael: "Get rid of chiropractic probability and replace
+  // with medical probability"), superseding the earlier chiropractic standard
+  // this test used to hold shut. The edit landed in the spec at batch 84 and
+  // reaches the seed through the generator; §9.4's causation sentence is now
+  // byte-identical to §9.1's, which the generator asserts.
+  it('keeps §9.4\'s MEDICAL probability standard, as ruled 2026-08-31', () => {
+    const chiro = variantByKey('disclosures-variant-chiropractor')!.body;
+    expect(chiro).toContain('reasonable degree of medical probability');
+    expect(chiro).not.toContain('chiropractic probability');
   });
 
   it('keeps §9.3\'s deliberate "consistent with" causation', () => {
