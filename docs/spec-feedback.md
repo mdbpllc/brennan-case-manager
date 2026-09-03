@@ -1203,3 +1203,13 @@ slice's rename list (§3 item 11) names "three columns, the table, index/policy/
 'Provider business', both adapters, TS types, the probe list, the store". Renaming the
 `DataAdapter` contract for no schema reason seemed the wrong call to make silently, so it is
 raised instead. Cosmetic; Michael's if he wants it consistent.
+
+## 2026-09-03 — after the migration run: three findings from the design side (`#147`)
+
+Raised by the design session that recorded Michael's run of `MIG-1` and the amendment migration. Not fixed in a spec here; each has its home.
+
+**1. The amendment migration's check 6, third limb, cannot pass as written.** It asks for every constraint, index and policy whose NAME contains "provider" and expects zero — but the same file creates `case_providers`, `case_provider_individuals`, `case_provider_visits` and a `case_provider_id` column, whose auto-named constraints, indexes and policies all contain the word, and the constraint limb never filters by schema, so Supabase's `auth` schema (`custom_oauth_providers`, `saml_providers`, `sso_providers`) answers too. It read 47 / 11 / 3 on the live project; filtered to `public` and excluding the four new tables it reads zero. Home: the fix migration's verification block (the CONTINUATION box in the kickoff prompt).
+
+**2. Check 8 FAILED on the live project, and the cause is a named constraint.** The CD-1 migration (2026-08-12, lines 188–190) named the `contact_edges` vocabulary CHECK `contact_edges_type_check`; the amendment dropped `contact_edges_edge_type_check` with `if exists` — a silent no-op — and added its own under that name. Two CHECKs now stand; the old one rejects `renders-care-at`. `db/schema.sql` carries the CHECK inline and unnamed, so the auto-name the slice assumed (§5.2) is right for a fresh project and wrong for the live one. Home: `#147` correction B; the fix migration; slice §5.2 corrected in place.
+
+**3. `db/schema.sql` is not the live database's authority on constraint NAMES; the migration history is.** A migration that drops or renames a constraint must take the name from the migration that created it (or from the catalog), never from `schema.sql`'s inline form. The same file already did this correctly for the unnamed unique key (D-7) and for the provider-named constraints; the CHECK was the exception. Home: a candidate line for CLAUDE.md's migration conventions at the next design packet that touches it — recorded here, not written there.

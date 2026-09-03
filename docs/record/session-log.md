@@ -17,6 +17,190 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-09-03 — QUEUE-RUNNER batch (runner line; EIGHTY-NINTH invocation) — one docs-only packet, and the batch that RECORDED TWO MIGRATIONS RUN BY MICHAEL'S HAND WITHOUT TOUCHING A DATABASE: `MIG-1` eight of eight and the amendment nine of ten, check 8 failed on a CHECK the amendment could not see; six exact-string edits land on every predicted uniqueness; three rows are minted and none closes; the 2026-09-03 build entry is INDEXED for the first time; and the runner's own findings are four — a regex the register's own stated method invites and that miscounts, a `CAP-2` CLASS column that carries `—` on rows this runner had to judge, a stale `QR-6(e)` firing count corrected in BUILD-STATE, and a `CAP-4` displacement that this batch pays for the second consecutive time
+
+**Packet:** `push-to-code_fe-d1a-continuation_2026-09-03.zip` — 46,817 B, sha256 `b5c6333d…f8d5`, mtime 2026-09-03 11:50:31 −0500, identity pinned at Step 1 per `QR-6(c)`. **ONE packet, so no ordering question arose: filename order and pure-mtime order agree trivially (`QR-4`).** Runner v13 read at HEAD from `docs/prompts/QUEUE-RUNNER.md`, unamended; the `/queue-runner` command is a pointer (`QR-2`) and was not relied on.
+
+**Step 0 gate (`QR-3`), and the evidence rule applied (`QR-6(a)`).** `git fetch origin`, then `git rev-parse HEAD` = `aa132f2dd0fbb519a8934e6ce115cd509cce5079` and **`git ls-remote origin master`** returning the same sha — the live remote read, not the local tracking ref, which is not evidence about origin. `git rev-list --left-right --count HEAD...origin/master` = `0 0`. On `master`. **`git status --porcelain` was NOT empty and saying so matters:** three `??` lines — `Claude outputs/`, `docs/specs/attorney-review-queue-audit-2026-08-24.md`, `docs/specs/id-collision-report.md` — all three already on the record as Michael's, DO NOTHING; no tracked modification. Step 0 items 1–5 all satisfied: `inbox/` exists, `.gitignore` line 16, `Bash(rm -f inbox/*)` present in `.claude/settings.local.json`, `docs/record/session-log.md` present and `docs/specs/session-log.md` absent (`TC-4`, no half-executed move).
+
+**Step 1, and the already-executed test came back NO on the decisive form (`QR-5`).** `docs/record/fe-d1a-continuation-2026-09-03/` did not exist in the working tree or at HEAD, so this is neither a pushed re-run nor the committed-but-unpushed case the forty-second invocation turned out to be. The packet's own reconcile expectation was independently confirmed: the newest design entry in the live log was `#146`, so `#147` is the correct ordinal and no renumber fired.
+
+**Health check SKIPPED ON THE RULE, and the skip is recorded rather than passed off (`QR-6(f)`).** §5 is **NONE** in the only packet and no `src/`, `db/`, `supabase/` or build-tooling path is routed — every write lands under `docs/record/`, `docs/specs/` or `docs/prompts/` — so `npm test` / `npm run build` / `npm run lint` would have proved nothing about this batch. Nothing about the tree's health is asserted here either way; the last measured trio is the build tranche's 452/452, build 0, lint 0 at `aa132f2`.
+
+**What landed, in the packet's own routing order.** Row 3: three exact-string edits to `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md` — the CONTINUATION box inserted after the canonical-path line (WO-1), the "the generator does not exist" stop retired (WO-2), the Sequencing paragraph rewritten for two migrations that have now run (WO-3). Row 4: three to `docs/specs/fe-d1-amendment-slice.md` — the third-edition citation (WO-4), §5.2's CHECK name (WO-5, correction B), §6.2's split premise (WO-6). **Every OLD string was counted before it was replaced and every one returned exactly 1**; the WO-1 insert block returned 0, proving the box was not already there. Row 6: a dated section appended to `docs/spec-feedback.md`, **written CRLF** because that file is CRLF and the other four are LF — both conventions re-measured this batch by a raw bytes read, never by `grep`, which strips CR. Rows 7–9: three `EVIDENCE`-class files copied to `docs/record/fe-d1a-continuation-2026-09-03/` and **verified byte-identical to the zip's copies by sha256**, never in `docs/specs/` (`CAP-2`). Row 5: the three-act queue merge, below. Row 10: BUILD-STATE, below. Rows 1 and 11 file nothing.
+
+**FINDING 1 — THE REGISTER'S OWN STATED COUNTING METHOD, TAKEN LITERALLY, MISCOUNTS, AND IT IS THE MOST USEFUL THING THIS BATCH FOUND.** The runner and BUILD-STATE both name the method `^\s*- (⬜|✅|🟡)`. Run as written with `re.M`, `\s*` matches **across newlines**, so a blank line preceding a marker line lets the match start at the blank line and consume the row — which then cannot be matched again at its own line start. Applied to the synced register it returned **11 ✅ and, separately, 3 "indented ✅" that do not exist**; a per-line matcher anchored as `^[ \t]*- (…)` returns the true figures. **The published counts were nevertheless RIGHT** — 11 top-level ✅ in the synced file, 119 in the closed one, total 130, conserved — because the artifact happens to cancel on this data. **It will not always cancel, and the method sentence is the thing at fault, not the numbers.** Recorded here, not edited into the ruled text: the method is named in `CAP-3` and in the runner, and changing it is Michael's.
+
+**FINDING 2 — THE `CAP-2` CLASS COLUMN LEFT FOUR ROWS TO THIS RUNNER'S JUDGMENT, AND THE JUDGMENT IS NAMED RATHER THAN BURIED.** `CAP-2` says a row with no CLASS is a `QR-6(e)` act. The packet's rows 3, 4, 6 and 10 carry `—` and each of them WRITES to a repo file — but each **edits an existing canonical file** rather than placing a new one, and the rule's own exemption is for "rows that place no file in the repo." The runner read them as exempt and executed them; only rows 7–9, which create files, carry `EVIDENCE`. **The alternative reading would have skipped four routine edits as unrouted acts.** Whether `CAP-2`'s exemption should say "creates no NEW file" is a wording question for the next packet that touches it.
+
+**FINDING 3 — A STALE `QR-6(e)` FIRING COUNT WAS CARRIED INTO BUILD-STATE BY THE BUILD SESSION AND IS CORRECTED HERE.** BUILD-STATE at `aa132f2` read *"`QR-6(e)` DID NOT FIRE THIS BATCH EITHER — SIX FIRINGS IN TWENTY-THREE BATCHES."* **Batch 88 fired it** — Michael's in-session authorization to move the register's falsified split-count block — and its own runner line says so. The build session rewrote BUILD-STATE in full and re-emitted the sentence unchanged, which is precisely the failure batch 88's own lesson names: *"rewrite in full" is satisfied by re-emitting a stale line.* Corrected in this refresh to **seven firings in twenty-four batches**, with batch 89 itself firing none. **No log entry is edited** — the correction lives in BUILD-STATE, which is rewritten wholesale, and here.
+
+**FINDING 4 — `CAP-4` BOUND FOR THE SECOND CONSECUTIVE BATCH AND WILL BIND EVERY BATCH FROM HERE.** BUILD-STATE stood at 99,943 B with 57 bytes of headroom. The content refresh took it to **101,658 B**; **four paragraphs were paid** to bring it to **99,093 B / 141 non-blank / 155 raw**. This is exactly the mechanism `CAP-OPEN-4` — minted this batch from Michael's *"Carry it to the next design packet (Recommended)"* — proposes to change, and until he rules, `CAP-4` as written governs: the originals ride this line verbatim, below.
+
+**The three-act queue merge (`CAP-3`, `QR-1`, `QR-6(b)`), all three acts done.** (i) **THREE NEW ⬜ ROWS, FULL QUESTION TEXT, none closing**: `FE-SEED-1` and `HD-23` into *Form engine (FE series)* — `HD-23` there because **no `HD-` row remains in the synced register**, every one having moved ✅ to the closed one — and `CAP-OPEN-4` into *Capacity pass (CAP series)*. (ii) The Status paragraph's current sentence replaced with **"Reconciled again to session-log #147 on 2026-09-03 (queue-runner batch 89, one packet — the FE-D1A CONTINUATION)."** (iii) Its predecessor, the `#146` sentence, **appended verbatim to the END of the RECONCILE HISTORY block** in `docs/record/attorney-review-queue-closed.md`. **No row flipped ✅, so the third act's MOVE half had nothing to carry.** Register after the merge, both files measured by the per-line matcher: `docs/specs/attorney-review-queue.md` **429,208 B — 368 ⬜, 5 🟡, 11 ✅ parents held back with indented open children (`CAP-OPEN-2`)**; `docs/record/attorney-review-queue-closed.md` **248,081 B — 119 ✅**. **Total ✅ 130, conserved. 368 open, 373 open-in-substance.**
+
+**Regenerations (`TOC-4`, `TC-2`/`TC-5`).** `docs/record/session-log-toc.md` regenerated over the log as written — **three new rows, not two, and the third is the point**: the 2026-09-03 build entry had never been indexed by any edition, because `TOC-4`'s trigger is a queue-runner batch and that was a Code session fired directly by Michael. Census after this batch: **167 entries to 167 rows** — 83 numbered (`#65`–`#147`, gapless, no duplicates), 67 runner ordinals (23–89, gapless), 17 unnumbered. `docs/specs/session-log-head.md` regenerated IN FULL, never appended — **and its 200 KB ceiling bound again, with the cause named rather than absorbed. §1 carries FIVE whole entries and reaches back only to `#146`: TWO design entries where `TC-2` asks for four. ONE entry is responsible — the `runner 87` line is **113,194 bytes, 55% of the head file's entire ceiling**, because `CAP-4` sent 42,828 bytes of displaced BUILD-STATE text into it verbatim. Batch 88 lost two entries to the same mechanism and reached `#144`; this batch loses three and reaches `#146`. Nothing was truncated and §2 was not cut. **That is `CAP-OPEN-4`'s whole case, measured rather than argued.**
+
+**Nothing was built, and each omission has a rule behind it.** No migration written or run and no database connected — the fix file is the CONTINUATION build session's first commit under `FE-D1A-1`, and this runner is barred from the slice by that ruling's own text. `src/` was not read at all (the packet's §6), so every `src/`-derived figure in BUILD-STATE is **carried and marked as carried** rather than passed off as measured. `form-engine.md` §9.3 untouched — that ruling is applied by the continuation. No row flipped, no ID minted beyond the three rows, no registry file touched, no legal characterization made, and **`PF-1` did not fire — recorded so the skip is not silent.**
+
+**§7 open items, merged so the top of the log stays truthful — all Michael's, none Code's.** Open the continuation build session (`/usage` first, a FRESH Opus Code session on the corrected kickoff prompt) · run the fix migration when that session hands it over and answer check 8 in **both** halves · `FE-SEED-1` (the live-mode template-bank seed, three paths carried) · `CAP-OPEN-4` (displaced BUILD-STATE text → an EVIDENCE file; a `CAP-4` amendment, trigger 3 if ruled) · `HD-23` (the bold LEAD, held for the hands-on sitting, build default named) · `H12-v` and its limbs, BAA a hard gate · `CAP-OPEN-1` / `-2` / `-3` · CC-1, the hands-on sitting — **twenty-one accepted, fifteen proposed** · `TFI-1` / `TFI-2` / `TFI-3` and `CD-14` limb (i) · `RF-2`, `RC-4` · the CRLF-after-checkout operational note, for the next instructions revision and not a trigger · the loose staging folder, the two untracked 2026-08-24 files (DO NOTHING), and the `#137` Voice2 pair's FO/BR/DA home.
+
+**Carried into the NEXT batch's runner line, because a close-out cannot truthfully report its own tail (`QR-5`):** whether the push landed and whether the packet zip was deleted are reported to Michael in-session, not asserted here. **Also carried from batch 88 and still true: `inbox/` holds a leftover UNZIPPED directory, `push-to-code_fe-d1-amendment-slice_2026-08-31/`, whose zip batch 88 deleted.** It is not a queued packet, a directory-scoped delete is outside the narrow `rm -f inbox/*` allowlist, and it was left alone as `QR-6(e)` requires.
+
+### DISPLACED FROM BUILD-STATE (CAP-4)
+
+Four paragraphs, verbatim as they stood in the one hundred thirtieth refresh. Every one is narrative or method; **not one is an existence claim.**
+
+(line 133 of the prior edition)
+- **THE ADJUDICATION AND CORRECTION SERIES: QR-6 (#94) · WORDING (#95) · V-EXEC (#96) · TASK 19 WORKLIST (#97) · SIGN-OFF WALK (#98) · TOC REGENERATION (C-2, unnumbered) · CHAT-DISPATCH v3 (#99) · FABLE (#100) · DT-1 CORRECTION (#101) · CHAT-DISPATCH v4 CHAIN (#102) · AUDIT CORRECTIONS (#103) · AUTHORITY READ (#104) · SPEND-DOWN (#105) · FC BLOCK (#106).** **Six structural firsts in that run — `#98`, `C-2`, `#100`, `#101`, `#103`, `#106` — are DISPLACED to batch 88's runner line (`CAP-4`) and live in those entries themselves.** **`docs/prompts/CHAT-DISPATCH-v3.md` and `-v4.md` were NOT edited at #100–#106; amending a repo-tracked prompt is yours**
+
+(line 132 of the prior edition)
+- **CRIMINAL OPINIONS READ (#102, T-27, CORRECTED #103) — AND THE CORRECTION RAN AGAINST THE CLIENT.** The read stands: **eight of the nine never mention art. 102.073**, only *Middleton* touches it and only as the State's argument expressly not decided. **BUT *LaPorte* DOES NOT SPLIT BY PAGE.** Both halves are on **415**, in adjacent paragraphs — so **the instruction "Never cite 415" is WITHDRAWN**, having barred counsel from the very sentence stating the rule. **The corrected remedy is a parenthetical — *"overruled on other grounds by Ex parte Carter"*** (`Q-RL6-3`). Two more: ***Carter*'s reaffirmation is a FOUR-vote plurality and dictum** against **five** votes for the overruling; and **"may be raised at any time" was NARROWED, not overruled**. **And FOUR, not five, are "DO NOT PUBLISH"** (`Q-RL6-5`). **Four of the nine remain author-unidentifiable under V-9 and are flagged, never staged**
+
+(line 155 of the prior edition)
+- **THE CLASSIFIER CAN REFUSE AN ALLOWLISTED BARE COMMAND.** The v20 note (#94) recorded the forty-seventh invocation's **bare** allowlisted `git push origin master` refused on **both** shells. **The SIXTIETH invocation then stranded exactly as predicted: it committed and never pushed, and 613 insertions across six files sat invisible to the design side until the SIXTY-FIRST batch's Step 0 ahead-stop caught it.** **The QR-3 ahead-stop is the proven catch and it is the ONLY one — a runner that skipped it would have built a second invisible layer on the first. Never conclude a batch landed without `git ls-remote`**
+
+(line 27 of the prior edition)
+- **THREE PLACES WHERE READING A GATE ALONE GIVES THE WRONG ANSWER (#92 — recorded, NOT corrected).** Gate 2 read alone OVER-BLOCKS; gate 3 read alone looks satisfiable and is not (gate 6 is a hard prerequisite, and the dependency is recorded at gate 6); gate 9's trigger fires on *reliance*, not on real data. **The three explanations are DISPLACED to batch 88's runner line.**
+
+## 2026-09-03 (#147) — (Typed design session, Cowork, Fable 5 per the environment — the SAME chat as `#146`, resumed
+in the morning; DEVICE BRIDGE on the checkout and `Downloads`: THE MORNING AFTER THE AUTHORIZATION — batch 88's
+commit-hold report reviewed and its one flagged question RULED in-session (the register's Status paragraph keeps intro
+plus current sentence only); the first build tranche's report VERIFIED AT HEAD `aa132f2` and its nine findings
+triaged; **BOTH MIGRATIONS RUN BY MICHAEL'S HAND — `MIG-1` eight of eight checks, the amendment NINE OF TEN, check 8
+FAILED on a CHECK the CD-1 migration had NAMED and the amendment dropped by a guessed auto-name; the §5 window is
+CLOSED**; four rulings; TWO CORRECTIONS filed; nothing built, no spec edited here, no ID beyond three new register
+rows)
+
+The sitting is the continuation of `#146`'s chat, resumed after batch 88 and the first build tranche had both run
+overnight. Verified over the bridge before anything was said: HEAD `aa132f2` = the local origin ref; batch 88 at
+`7d57421` executed the Status-block ruling (the block reads 0 in the synced register, 1 in the closed one) and
+moved `FE-D1A-1` ✅ to the closed register; the four build commits `71539f6` → `f01efd1` → `93be13f` → `aa132f2`
+touch no prompt and no head file; `inbox/` holds no zip; no `.git/index.lock`. The synced project still showed
+batch 87's view until Michael clicked Sync. Every date is Central (DT-1); the ledger ran inside each exchange and
+is filed as this packet's EVIDENCE.
+
+- **BATCH 88's COMMIT-HOLD REPORT, REVIEWED — and the one question in it RULED.** Its five findings were read against
+  the record: the 163-versus-162 is the known `## ARCHIVED:` pointer (v29's own note); the stale "runner v12,
+  unamended" line and the TOC's three stale figures are regeneration-time repairs of files rewritten wholesale (no
+  correction entry owed; the runner line names them); the CRLF re-materialization is a NEW OPERATIONAL NOTE for the
+  next instructions revision, not a trigger — `git checkout` on Michael's machine writes LF record files back as
+  CRLF (`core.autocrlf=true`, no `.gitattributes`), and because `CAP-4` deliberately measures the working tree, a
+  post-checkout measurement is inflated by exactly the line count: convert back, or never checkout mid-batch. **The
+  fifth was his: the Status paragraph's batch-87 split-count block, falsified by the three flips.** Put with the
+  alternatives (keep-and-refresh each batch; leave and queue a row); **his pick, verbatim: *"Move it to the closed
+  register now (Recommended)"*** — the synced Status paragraph keeps its intro plus the CURRENT reconcile sentence
+  only, the block moves VERBATIM to the closed register's RECONCILE HISTORY beside batch 87's superseded sentence.
+  An APPLICATION of `CAP-3` §3.3 as ruled, not a change — no trigger 3. Executed in batch 88 as a packet-added act on
+  his in-session authorization (QR-6(e)); the relay instruction is filed as EVIDENCE. The same report's shape —
+  eleven displaced BUILD-STATE originals riding the runner line verbatim, pushing the head file past its 200 KB
+  ceiling and costing two whole entries (the head reaches back to `#144`, three design entries, not TC-2's four) —
+  produced a PROPOSAL, carried by his pick *"Carry it to the next design packet (Recommended)"*: route displaced
+  text to an EVIDENCE file under `docs/record/<batch-slug>/` with the runner line carrying a pointer — a `CAP-4`
+  amendment, trigger 3 if ruled. It is `CAP-OPEN-4` below. BUILD-STATE will displace every batch from here; the
+  first build tranche then did the same into its own entry, the second consecutive entry carrying displaced prose.
+- **THE FIRST BUILD TRANCHE, VERIFIED AT HEAD AND ACCEPTED.** §13 items 1–4 and the generator half of 5 landed:
+  `scripts/generate-form-text.mjs` (the §9 generator — which had NEVER existed; correction A below), the
+  fixed-sentence table with its drift test, the D-45 vocabulary with an SQL↔TS guard, the migration written and not
+  run, the rename through both adapters, the probe (46) and store v13→v14 with a regression test; trio 452/452,
+  build 0, lint 0; the Medical tab click-verified in demo. Items 5–14 did not land; three of thirty invariants
+  ship; BUILD-STATE says so in those terms. The build's two judgment calls were right — writing the generator on
+  the slice's authority over the prompt's stop (the documents win), and stopping at a green boundary rather than
+  half-building the assembly engine. Its nine findings, triaged: **build defaults the continuation takes** — the
+  split and the rider by cloning the archetype's own `<w:p>` per paragraph (§12.3 applied per paragraph; the slice's
+  §6.2 premise corrected by WO-6); both `midlevel` tokens resolved (`{midlevel_short_name}` for the rider's opening,
+  `{midlevel_name}` in §9.12 — different things, both needed); the second stale `rlsProbe` comment fixed in passing;
+  and, PROPOSED as a default with his veto open, the four `*Provider*` DataAdapter methods renamed to Facility.
+  **Michael's, ruled below** — §9.3's one `{s}`; the bold LEAD. **Queued below** — the live-mode template-bank seed
+  (`FE-SEED-1`). **Packet mechanics** — the prompt correction (WO-2), the slice's authority line (WO-4). The
+  slice's third-edition citation is noted, not a defect: the third fold-in landed at batch 86 before the tranche
+  ran, and the build read the third.
+- **BOTH MIGRATIONS RUN — Michael's hand, the live Supabase project, in one sitting, before any live matter.**
+  His first paste was the file's PATH, not its contents (Postgres: syntax error at "db" — nothing ran); the file
+  was then pasted whole. STEP 0 counts were taken AFTER `MIG-1` and BEFORE the amendment — equivalent, because
+  `MIG-1` never mentions the three tables (verified from the file) — and read **0 / 0 / 0**, so the amendment's
+  check 7 is satisfied trivially and the rename is proven by catalog, not by rows. **`MIG-1`
+  (`2026-08-20-fe-d1-form-engine.sql`): EIGHT OF EIGHT** — four names; `true` ×4; `false` ×4; four rows rls=true,
+  policies=1; 7; the probe insert with `cases` = 1 (a real pass, not vacuous); NULL, NULL; 41. **The amendment
+  (`2026-09-03-fe-d1-amendment.sql`): NINE OF TEN** — the gate passed (1); five names and `client_id` (2); `true`
+  ×5 (3); `false` ×5 (4); five rows rls=true pol=1 (5); old table NULL / new table present, `facility_party_id` on
+  exactly four tables, `provider_party_id` on none (6a–6c); 0/0/0 (7); both new families accepted in a rollback (9);
+  46 (10). **Check 6's third limb read 47 / 11 / 3 against an expected 0 / 0 / 0 — a defect in the CHECK'S TEXT, not
+  the schema, proven by the decisive form:** every hit is either on the file's OWN new tables (`case_providers`,
+  `case_provider_individuals`, `case_provider_visits`, `generated_document_paragraphs.case_provider_id` — born with
+  "provider" in their names) or in Supabase's `auth` schema (the constraint limb never filtered by schema; the index
+  and policy limbs did); filtered to `public` and excluding the four, the answer is ZERO rows. Two verification-text
+  corrections ride the fix file. **CHECK 8 FAILED — a real defect:** inserting `renders-care-at` raised
+  `contact_edges_type_check` (23514). The live catalog, listed by `pg_get_constraintdef`, shows THREE CHECKs on
+  `contact_edges`: the amendment's new `contact_edges_edge_type_check` (twenty values), `not_self`, and the OLD
+  `contact_edges_type_check` (nineteen values, no `renders-care-at`) — which the CD-1 migration of 2026-08-12 had
+  NAMED (its lines 188–190), and which the amendment's `drop constraint if exists contact_edges_edge_type_check`
+  therefore never touched. The two date columns landed (the failing row shows them). Live effect today: none — no
+  code path inserts a `renders-care-at` edge until item 6 is built. The file's own rule stopped the run there;
+  check 8's second half is moot until the old CHECK is gone. **The §5 window is CLOSED**: the live app and database
+  agree on `facility_party_id`; the one thing still open on the live schema is that old CHECK.
+- **CORRECTION A — "sliced out by program."** *Asserted:* the FE-D1 build entry (Code session, 2026-08-20) and the
+  header of `src/forms/variants.ts` say the variants were generated by program. *True instead:* no generator was
+  ever committed — `git log --all -- scripts/` shows only `build-toc-fixtures.mjs`; the generator first exists at
+  `71539f6` (2026-09-03), and the kickoff prompt was written on the false premise (its Step 2 listed "the generator
+  does not exist" as a stop). *Corrects:* the 2026-08-20 FE-D1 build entry, which stands as written. *Actor:* the
+  FE-D1 build Code session of 2026-08-20 — its model as that entry's own header records it, not inferred here.
+  *Failure class:* a mechanism asserted in the record but never committed — the "a capture is not a filing" class
+  (work that existed only in a session, `#127`–`#131`), in its build form. *What changed:* the generator is
+  committed; `variants.ts` is now genuinely generated; the prompt's stop line is retired by WO-2.
+- **CORRECTION B — the CHECK's name.** *Asserted:* the amendment slice §5.2: the `edge_type` CHECK "is dropped by
+  its auto-generated name `contact_edges_edge_type_check` and re-added"; the migration implemented that sentence
+  faithfully. *True instead:* on the live database the CHECK is NAMED `contact_edges_type_check` by the CD-1
+  migration (2026-08-12, lines 188–190); `db/schema.sql` carries it inline and unnamed, so the auto-name is right
+  for a FRESH project and wrong for the live one — schema.sql is not the live database's constraint-name authority,
+  the migration history is. Evidence: the CD-1 file at HEAD and the live `pg_constraint` listing above. *Corrects:*
+  `docs/specs/fe-d1-amendment-slice.md` §5.2 (in place, WO-5; the document is a spec, not a log entry) and the
+  reasoning the migration inherited. *Actor:* Fable 5 — the 2026-08-31 late design session that authored the slice
+  (`#140`). *Failure class:* drop-by-guessed-name — the D-7 rule the SAME sentence applied to the unique key ("by
+  catalog lookup, never by a guessed name") and not to the CHECK; compounded by an `if exists` drop treated as done,
+  the QR-6(a) class (a command that cannot disconfirm). *What changed:* the fix migration is the continuation's
+  first act (below); WO-5 corrects the slice; the amendment file's check text is corrected in the fix file.
+- **FOUR RULINGS — his picks verbatim from option sets put one at a time, alternatives named (CC-1(a)).** (1) The
+  old CHECK: *"Follow-up migration file (Recommended)"* — the continuation writes
+  `db/migrations/2026-09-03-fe-d1-amendment-fix.sql`, dropping the old CHECK by CATALOG LOOKUP and folding the same
+  into `db/schema.sql`; Michael runs it by hand; check 8, both halves, re-runs after. Not taken: the one-line drop
+  now. (2) §9.3's `{s}` serving a noun and a verb: *"Second token, build names it (Recommended)"* — `{s}` keeps the
+  noun's plural s; a new verb token, named by the build, carries the verb's singular s; §9.3's approved wording is
+  otherwise untouched; the continuation applies the edit to `form-engine.md` §9.3 under this ruling — the ONLY
+  spec edit the continuation is authorized to make — then regenerates and drift-tests. Not taken: hold. (3) The
+  bold LEAD against a master whose narrative runs are already bold: *"Hold for the hands-on sitting
+  (Recommended)"* — CC-1(b); build default meanwhile: the LEAD as its own bold run, the body exactly as the master
+  supplies it, reported as a default taken; `HD-23` below carries it. Not taken: body roman now; keep body bold with
+  no LEAD emphasis. (4) The live-mode template-bank seed — nothing seeds the `form_*` tables in live mode and the
+  gap predates the slice: *"Queue a register row (Recommended)"* — `FE-SEED-1` below, three options carried; the
+  continuation stays fixture-only as authorized. Not taken: rule app-side now; rule a seed migration now.
+- **WHAT SHIPPED (this packet, docs-only):** this entry; six exact-string work orders — the kickoff prompt's
+  CONTINUATION box (WO-1), its stop-line correction (WO-2) and its Sequencing paragraph (WO-3); the slice's
+  authority line (WO-4), §5.2 (WO-5) and §6.2 (WO-6); three register rows with full question text — `FE-SEED-1`,
+  `CAP-OPEN-4`, `HD-23`; a dated `spec-feedback.md` section; three EVIDENCE files under
+  `docs/record/fe-d1a-continuation-2026-09-03/` — this sitting's ruling ledger, the migration-run record, and the
+  batch-88 relay instruction. **PF-1 did not fire — no legal characterization and no registry entry; the ruling
+  on §9.3 is a grammar token in approved wording, not a legal proposition — recorded so the skip is not silent.**
+  **RR-1:** every work order's OLD string was read at HEAD `aa132f2` and checked unique before the zip closed.
+- **WHAT DID NOT HAPPEN, each because a rule bars it:** nothing built; no migration written here (the fix file is
+  Code's act under `FE-D1A-1`); no spec edited by this session (every change travels as a work order); no live
+  database touched by any session but Michael's hand; no ID minted beyond the three rows; no held item decided —
+  the hands-on queue stays at twenty-one accepted, and its proposals rise to fifteen with `HD-23`; `MIG-1` and the
+  amendment were RUN by Michael, not by Code; the registry untouched.
+
+**Next:** the queue runs this packet on `mdb-pllc` (batch 89); then a FRESH Opus Code session fires the corrected
+kickoff prompt — `/usage` first — and its first commit is the fix migration, which Michael runs by hand and
+answers before the session goes on to §13 items 5–14; then the hands-on sitting (voice) once the generator renders.
+
+**Staged for Code:** none beyond this packet. **Awaiting/Returned from Code, unreviewed:** the six work orders, the
+three rows, the spec-feedback section and the evidence directory once landed; the fix migration once written.
+**Still open and still Michael's:** run the fix migration when the continuation writes it, and answer check 8 both
+halves · open the continuation build session after batch 89 lands · `H12-v` and its limbs · `CAP-OPEN-1`,
+`CAP-OPEN-2`, `CAP-OPEN-3`, `CAP-OPEN-4` · `FE-SEED-1` · the hands-on sitting (twenty-one plus fifteen) ·
+`TFI-1`, `TFI-2`, `TFI-3` / `CD-14` limb (i) · `RF-2` · `RC-4` · the loose staging folder (his hand) · the two
+untracked 2026-08-24 files (DO NOTHING) · the `#137` Voice2 pair's FO/BR/DA home · the CRLF operational note at
+the next instructions revision.
+
 ## 2026-09-03 — CODE SESSION (Opus 5, fresh, fired from `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md` on Michael's `FE-D1A-1` authorization) — THE FE-D1 AMENDMENT SLICE, FIRST TRANCHE: the §9 generator finally exists and closes the standing red, the fixed-sentence table is generated and drift-tested, the provider type vocabulary lands, and the migration is WRITTEN AND NOT RUN with the rename carried through code and the store — four of §13's fifteen items done, eleven NOT, and the session says which
 
 **THE AUTHORIZATION, QUOTED AND NAMED (Step 0).** `FE-D1A-1` is ruled AFFIRMATIVELY. The entry is **`## 2026-09-02 (#146)`** in this file, and Michael's words in it, verbatim at 23:44 CDT, are ***"YES — as written (Recommended)"*** on the option text *"Scope §3/§4, defaults §10, fresh Opus Code session, runner barred, fixture-only, migrations written not run. Mints FE-18–FE-22 and CD-14 in the same act."* That entry names `docs/specs/fe-d1-amendment-slice.md` and says the prompt's Step-0 test "is satisfied by THIS entry and by nothing else." The queue row is ✅ in `docs/record/attorney-review-queue-closed.md`, which per `QR-6(a)` confirms nothing on its own — the entry is what establishes it, and the entry was read at HEAD. **Step 0's other two limbs:** `git ls-remote origin refs/heads/master` returned `7d574217f3601fd59ea5e97e11034665745b6e90`, equal to HEAD, on `master`, no tracked modifications (the tracking ref was not used as evidence); and **MM-1 did not fire — `inbox/` holds NO packet zip**, only the loose `push-to-code_fe-d1-amendment-slice_2026-08-31/` staging directory that `#146` and batch 88 both record as deliberately left in place and Michael's hand.

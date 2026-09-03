@@ -19,6 +19,8 @@
 
 **This is the first batch under `CAP-3`, and the register is now TWO files:** the one-time split moved **115 ✅ blocks (162,425 B) and 66 superseded reconcile sentences (73,026 B)** to `docs/record/attorney-review-queue-closed.md` — repo-only, bridge-reachable, append-only — leaving this file with ⬜ and 🟡 rows plus **eleven ✅ parents held here because each has an indented open child (`CAP-OPEN-2`)**; bytes and row counts conserved, verified by the script before it wrote. **FIVE rows added**, each carrying its FULL question text per `QR-1` — `CAP-OPEN-1` (the retirement sweep), `CAP-OPEN-2` (the eleven held parents), `CAP-OPEN-3` (the emptied section headings), `CAP-CARRY-1` and `CAP-CARRY-2`. **ONE row was closed and moved:** `TC-OPEN-1`, the two deferred growers, answered in both limbs by `CAP-3` and `CAP-4`. **ONE row was annotated and left open:** `TC-OPEN-2`, whose stated destination (“move to ARCHIVE”) `CAP-1` supersedes — its own question, WHICH files retire, is untouched and is now also carried as `CAP-OPEN-1`. **No other existing row was closed, flipped, annotated, merged, renumbered or reworded.** Counts by the register's own leading-marker method, measured and never carried: this file ⬜ 368, ✅ 11, 🟡 5; the closed register ✅ 116; total ✅ 127. **The Convention line was REPAIRED this batch by `CAP-3a` (WO-10)** — it now documents 🟡 and the split, after five batches of being named and not fixed.
 
+**Reconciled again to session-log #146 on 2026-09-03** (queue-runner batch 88, one packet — the FE-D1A-1 AUTHORIZATION and TRANSIT).
+
 ## CLOSED ROWS — under their register headings (level-2 and level-3 headings reproduced; the register's H1 is not)
 
 ## 1 — COURT OPINIONS
