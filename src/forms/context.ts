@@ -21,7 +21,7 @@ import type { CaseClient } from '../domain/client';
 import type { RenderContext, RegionItem } from './renderer';
 import type { WizardAnswers } from './types';
 import {
-  pronouns, pronounSetFromFields, pluralS, joinNames, currency,
+  pronouns, pronounSetFromFields, pluralS, verbS, joinNames, currency,
   treatmentClause, futureCareClause, longDateCentral,
 } from './grammar';
 import { variantByKey } from './variants';
@@ -306,8 +306,14 @@ export function buildRenderContext(bundle: CaseBundle, answers: WizardAnswers): 
       specialty_descriptor: field(p, 'specialtyDescriptor'),
       physician_or_specialist: field(p, 'physicianOrSpecialist') || 'physician',
       referring_provider: field(p, 'referringProvider'),
-      plural_s: '',
-      s: '',
+      // The two flex points, from the same count so they can never disagree.
+      // This FE-D1 wizard path designates ONE provider per card and carries no
+      // individual count, so the count is 1 and stated as such rather than left
+      // as two bare '' literals — which is what let `{s}` render "specialize"
+      // beside "Technician" until 2026-09-03 (#147; grammar.ts verbS).
+      plural_s: pluralS(1),
+      s: pluralS(1),
+      verb_s: verbS(1),
     };
 
     // The approved §9 paragraph, if one is selected, rendered through the alias

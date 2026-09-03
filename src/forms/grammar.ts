@@ -62,6 +62,23 @@ export function pluralS(count: number): string {
   return count === 1 ? '' : 's';
 }
 
+/**
+ * The VERB flex point `{verb_s}` — the mirror of `pluralS`, and the reason it
+ * has to exist at all.
+ *
+ * `form-engine.md` §9.3 carries both jobs in one sentence: the NOUN "Emergency
+ * Medical Technician{s}" wants its s when there are MANY, and the verb
+ * "specialize{verb_s}" wants its s when there is ONE. A single token cannot
+ * serve both — whatever value it took, one of the two read wrong, and it read
+ * wrong in the shipped engine, where both flex points were pinned to "" and the
+ * singular rendered "specialize". Michael ruled the split on 2026-09-03 (`#147`,
+ * "second token, build names it"): `{s}` keeps the noun's plural s, and the
+ * build names the verb's. The approved sentence's WORDS did not change.
+ */
+export function verbS(count: number): string {
+  return count === 1 ? 's' : '';
+}
+
 /** "A", "A and B", "A, B, and C" — the serial comma is the firm's own usage. */
 export function joinNames(names: string[]): string {
   const clean = names.filter((n) => n.trim() !== '');

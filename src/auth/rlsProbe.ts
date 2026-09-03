@@ -2,7 +2,12 @@ import { supabase } from '../data/supabaseClient';
 
 /**
  * RLS probe — the instrument for the auth slice's third unexercised thing:
- * the first real test of the schema's 31 policies against an authenticated user.
+ * the first real test of the schema's policies against an authenticated user.
+ * The schema now carries 45 of them across 46 tables — file_counters is the one
+ * deliberate omission (see the negative control below). It read "31" from the
+ * auth slice until 2026-09-03; the count has moved four times since and will
+ * move again, so the number lives in the list below, which is test-asserted
+ * against db/schema.sql, rather than in a prose line nothing checks.
  *
  * METHODOLOGY, stated because the honest reading of the results depends on it:
  *

@@ -18,7 +18,7 @@ import {
   harvestFilters, convertBrackets, BRACKET_ALLOWLIST,
 } from '../tokens';
 import {
-  pronouns, pronounSetFromFields, pluralS, joinNames, currency,
+  pronouns, pronounSetFromFields, pluralS, verbS, joinNames, currency,
   treatmentClause, futureCareClause, longDateCentral,
 } from '../grammar';
 import { lintRender, lintNumbering, lintPartyConsistency, lintXmlSafety } from '../lint';
@@ -346,6 +346,46 @@ describe('§9 approved variant library', () => {
     const emt = variantByKey('disclosures-variant-emt-paramedic')!.body;
     expect(emt).toContain('consistent with');
     expect(emt).not.toContain('reasonable degree of medical probability');
+  });
+
+  // RULED 2026-09-03 (#147, "second token, build names it"). §9.3 carried ONE
+  // `{s}` doing two opposite jobs; the build names the verb's. These assertions
+  // are over the GENERATED body, so they also prove the spec edit travelled by
+  // program rather than by hand.
+  describe("§9.3's two flex points, ruled apart 2026-09-03", () => {
+    const emt = () => variantByKey('disclosures-variant-emt-paramedic')!.body;
+
+    it('keeps the NOUN on {s} and puts the VERB on {verb_s}', () => {
+      expect(emt()).toContain('Emergency Medical Technician{s}');
+      expect(emt()).toContain('specialize{verb_s}');
+      // The defect: one token cannot serve both. If {s} ever comes back on the
+      // verb, the singular renders "specialize" again.
+      expect(emt()).not.toContain('specialize{s}');
+    });
+
+    it('is the ONLY paragraph carrying either flex point, and carries one of each', () => {
+      const bodies = DISCLOSURE_VARIANTS.map((v) => v.body).join('\n');
+      expect((bodies.match(/\{s\}/g) ?? []).length).toBe(1);
+      expect((bodies.match(/\{verb_s\}/g) ?? []).length).toBe(1);
+    });
+
+    it('renders both correctly at each count — the whole point of the split', () => {
+      const fill = (n: number) =>
+        emt().replace(/\{s\}/g, pluralS(n)).replace(/\{verb_s\}/g, verbS(n));
+
+      expect(fill(1)).toContain('is an Emergency Medical Technician who');
+      expect(fill(1)).toContain('specializes in responding');
+
+      expect(fill(3)).toContain('is an Emergency Medical Technicians who');
+      expect(fill(3)).toContain('specialize in responding');
+    });
+
+    it('pins verbS as the mirror of pluralS', () => {
+      expect(pluralS(1)).toBe('');
+      expect(verbS(1)).toBe('s');
+      expect(pluralS(2)).toBe('s');
+      expect(verbS(2)).toBe('');
+    });
   });
 
   it('has NO mental-health variant, and says so on purpose', () => {
