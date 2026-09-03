@@ -8,6 +8,7 @@ import type {
 import type { ContactEdge } from '../domain/contactEdges';
 import type {
   CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+  GeneratedDocumentParagraph,
 } from '../domain/caseProviders';
 import { validateCaseProvider } from '../domain/caseProviders';
 import { withDirectoryDefaults } from '../domain/directory';
@@ -79,6 +80,7 @@ interface Store {
   caseProviderIndividuals: CaseProviderIndividual[];
   caseProviderVisits: CaseProviderVisit[];
   caseChronologyVersions: CaseChronologyVersion[];
+  generatedDocumentParagraphs: GeneratedDocumentParagraph[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
   bills: MedicalBill[];
   lineItems: BillLineItem[];
@@ -622,6 +624,7 @@ export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
     caseProviderIndividuals: old.caseProviderIndividuals ?? [],
     caseProviderVisits: old.caseProviderVisits ?? [],
     caseChronologyVersions: old.caseChronologyVersions ?? [],
+    generatedDocumentParagraphs: old.generatedDocumentParagraphs ?? [],
   };
 
   const summary =
@@ -704,7 +707,7 @@ function load(): Store {
     partyPii: [],
     runs: [], resultLines: [], reviewLog: [], documents: [], facilityProfiles: [],
     caseProviders: [], caseProviderIndividuals: [], caseProviderVisits: [],
-    caseChronologyVersions: [],
+    caseChronologyVersions: [], generatedDocumentParagraphs: [],
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
     oaaIntakes: [],
@@ -1060,6 +1063,28 @@ export class LocalAdapter implements DataAdapter {
     store.caseProviderVisits.push(...rows);
     save(store);
     return rows;
+  }
+
+  async createDocumentParagraph(
+    data: Omit<GeneratedDocumentParagraph, 'id' | 'createdAt'>,
+  ): Promise<GeneratedDocumentParagraph> {
+    const store = load();
+    const rec: GeneratedDocumentParagraph = { ...data, id: uid(), createdAt: now() };
+    store.generatedDocumentParagraphs.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async listDocumentParagraphs(documentId: string): Promise<GeneratedDocumentParagraph[]> {
+    return load().generatedDocumentParagraphs
+      .filter((p) => p.documentId === documentId)
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  }
+
+  async listParagraphsForCase(caseId: string): Promise<GeneratedDocumentParagraph[]> {
+    const store = load();
+    const ids = new Set(store.documents.filter((d) => d.caseId === caseId).map((d) => d.id));
+    return store.generatedDocumentParagraphs.filter((p) => ids.has(p.documentId));
   }
 
   async listRosterFlags(): Promise<RosterBackfillFlag[]> {

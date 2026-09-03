@@ -6,6 +6,7 @@ import type { DirectoryFields } from '../domain/directory';
 import type { PartyPii } from '../domain/partyPii';
 import type {
   CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+  GeneratedDocumentParagraph,
 } from '../domain/caseProviders';
 
 /** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
@@ -375,6 +376,18 @@ export interface DataAdapter {
     individualId: string,
     visits: Omit<CaseProviderVisit, 'id' | 'createdAt' | 'individualId'>[],
   ): Promise<CaseProviderVisit[]>;
+
+  /** The per-designation PARAGRAPH RECORD (AS-Q13a). One row per PARAGRAPH:
+   *  a split writes two, each rider its own, a mental-health facility NONE —
+   *  a block is not a paragraph. There is no update method by design: a served
+   *  paragraph is a record of what went out, not a working document. */
+  createDocumentParagraph(
+    data: Omit<GeneratedDocumentParagraph, 'id' | 'createdAt'>,
+  ): Promise<GeneratedDocumentParagraph>;
+  listDocumentParagraphs(documentId: string): Promise<GeneratedDocumentParagraph[]>;
+  /** Every paragraph across a case — the supplement screen reads this to say
+   *  which facilities were already designated and when (D-47). */
+  listParagraphsForCase(caseId: string): Promise<GeneratedDocumentParagraph[]>;
 
   listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]>;
   listAllBillRefs(): Promise<BillStatuteRef[]>;

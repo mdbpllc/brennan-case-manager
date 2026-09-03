@@ -10,7 +10,7 @@ import { validateEdge, type ContactEdge } from '../domain/contactEdges';
 import {
   validateCaseProvider,
   type CaseChronologyVersion, type CaseProvider, type CaseProviderIndividual,
-  type CaseProviderVisit,
+  type CaseProviderVisit, type GeneratedDocumentParagraph,
 } from '../domain/caseProviders';
 import { stripDestinationKeys, isEmptyPii, type PartyPii } from '../domain/partyPii';
 import type {
@@ -1172,6 +1172,26 @@ export class SupabaseAdapter implements DataAdapter {
     if (res.error) throw new Error(res.error.message);
     return ((res.data ?? []) as Record<string, unknown>[])
       .map((r) => fromRow<CaseProviderVisit>(r));
+  }
+
+  async createDocumentParagraph(
+    data: Omit<GeneratedDocumentParagraph, 'id' | 'createdAt'>,
+  ): Promise<GeneratedDocumentParagraph> {
+    return this.insertRow<GeneratedDocumentParagraph>('generated_document_paragraphs', data);
+  }
+
+  async listDocumentParagraphs(documentId: string): Promise<GeneratedDocumentParagraph[]> {
+    return this.rows<GeneratedDocumentParagraph>('generated_document_paragraphs', (q) =>
+      q.select('*').eq('document_id', documentId).order('sort_order'));
+  }
+
+  async listParagraphsForCase(caseId: string): Promise<GeneratedDocumentParagraph[]> {
+    const docs = await this.sb.from('generated_documents').select('id').eq('case_id', caseId);
+    if (docs.error) throw new Error(docs.error.message);
+    const ids = ((docs.data ?? []) as { id: string }[]).map((r) => r.id);
+    if (ids.length === 0) return [];
+    return this.rows<GeneratedDocumentParagraph>('generated_document_paragraphs', (q) =>
+      q.select('*').in('document_id', ids).order('sort_order'));
   }
 
   async listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]> {
