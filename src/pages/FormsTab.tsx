@@ -171,6 +171,13 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
 
   /** The Medical tab's list for this client — SAME SET, SAME ORDER (§9.2). */
   const forClient = useMemo(() => {
+    // On a MULTI-client case with no plaintiff chosen, show NOTHING. The
+    // alternative is what the walk-through showed: the "choose a plaintiff"
+    // notice above a list that already carried both plaintiffs' rows — which
+    // on a shared facility means the SAME facility twice, with no way to tell
+    // whose row is whose. One Generate is one instrument for one plaintiff
+    // (D-61), so the list has no meaning until one is chosen.
+    if (multiClient && !clientId) return [];
     const scoped = activeClientId
       ? providers.filter((p) => p.clientId === activeClientId || p.clientId == null)
       : providers;
@@ -188,7 +195,7 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       },
       (p) => facilityNames[p.facilityPartyId] ?? '',
     );
-  }, [providers, individuals, visits, bills, activeClientId, facilityNames]);
+  }, [providers, individuals, visits, bills, activeClientId, facilityNames, multiClient, clientId]);
 
   const clientVersions = useMemo(
     () => versions.filter((v) => (v.clientId ?? null) === (activeClientId ?? null)),
