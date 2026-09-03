@@ -13,7 +13,7 @@
 
 import { describe, it, expect } from 'vitest';
 import specText from '../../../docs/specs/form-engine.md?raw';
-import { FIXED_SENTENCES, fixedSentence, FIXED_PAIR_SOURCE_TYPES } from '../fixedSentences';
+import { FIXED_SENTENCES, fixedSentence, FIXED_SENTENCE_TYPES } from '../fixedSentences';
 import { variantByKey } from '../variants';
 
 const BASIS_OPENERS = [
@@ -53,12 +53,12 @@ describe('the fixed-sentence table', () => {
   });
 
   it('covers exactly the types that own a fixed pair', () => {
-    expect(FIXED_PAIR_SOURCE_TYPES).toEqual([
+    expect(FIXED_SENTENCE_TYPES).toEqual([
       'emergency-medicine', 'pain-management', 'orthopedic-surgery', 'neurosurgery',
       'primary-care', 'chiropractic', 'physical-therapy', 'prehospital-ems',
       'radiologist', 'other-physician',
     ]);
-    for (const type of FIXED_PAIR_SOURCE_TYPES) {
+    for (const type of FIXED_SENTENCE_TYPES) {
       expect(fixedSentence('basis', type)).toBeDefined();
       expect(fixedSentence('causation', type)).toBeDefined();
     }

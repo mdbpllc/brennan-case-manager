@@ -419,8 +419,15 @@ export function fixedSentence(slot: FixedSentenceSlot, providerType: string): Fi
   return FIXED_SENTENCES.find((f) => f.slot === slot && f.providerType === providerType);
 }
 
-/** The types that own a fixed basis/causation pair, in source-map order. */
-export const FIXED_PAIR_SOURCE_TYPES = FIXED_SENTENCES
+/**
+ * The types this table holds a basis/causation pair for, in source-map order.
+ *
+ * NOT the same set as \`FIXED_PAIR_TYPES\` in \`./providerTypes\`, and the
+ * difference is \`radiologist\`: it owns §9.2's pair but is not a TREATING_TYPE,
+ * because an imaging facility is its own shape. \`providerTypes\` asserts the
+ * relation between the two so neither drifts.
+ */
+export const FIXED_SENTENCE_TYPES = FIXED_SENTENCES
   .filter((f) => f.slot === 'basis')
   .map((f) => f.providerType);
 `;
