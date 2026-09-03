@@ -9,7 +9,7 @@
 // whether a chronology's text left the machine, which is the whole of the BAA
 // posture while H12-v is unruled.
 
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { buildDesignations, blockPreview, type GenerateInput } from '../generate';
 import { evaluateTiers } from '../tiers';
 import { WriterCallError, type ParagraphWriter, type WriteInput } from '../writer';
@@ -105,7 +105,7 @@ describe('D-22 — ONE call per PARAGRAPH', () => {
     expect(writer.calls[0].shape).toBe('treating-single');
   });
 
-  it('calls three times for a split plus a rider — treating, radiology, rider', async () => {
+  it('calls three times for a split plus a rider — treating, its rider, then radiology', async () => {
     const writer = spyWriter();
     await buildDesignations(input({
       writer,
