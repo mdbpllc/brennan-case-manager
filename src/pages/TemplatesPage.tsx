@@ -143,6 +143,32 @@ export default function TemplatesPage() {
             </p>
           )}
 
+          {selected.family === 'fixed-sentence' && (
+            <p className="notice">
+              <strong>The app places this sentence itself.</strong> It is one of the two
+              sentences — basis and causation — that go into every designation paragraph for
+              this provider type, and the writer is shown them so its prose reads into them.
+              The text was sliced out of <code>docs/specs/form-engine.md</code> §
+              {String(selected.name).replace(/^§/, '').split(' ')[0]} rather than retyped.
+              You can publish a change and the app will place what you publish; the drift test
+              compares the spec against the generated table, not against this row, so your edit
+              will not break the suite — it will simply differ from the spec until the spec is
+              updated in the design space.
+            </p>
+          )}
+
+          {selected.family === 'writer-instructions' && (
+            <p className="notice">
+              <strong>These are the instructions handed to the paragraph writer, and the
+              wording is Claude’s, not yours yet.</strong> The version current when a document
+              is generated is stamped on every paragraph it produced, so a served paragraph can
+              always be traced to the exact instruction behind it. Nothing in the app checks
+              that the writer followed any of it — that was ruled deliberately, because a
+              phrase-match over returned prose just teaches you to ignore warnings. A miss shows
+              on the page and is fixed in Word.
+            </p>
+          )}
+
           {selected.family === 'instrument' && (
             <p className="notice">
               <strong>This template’s body is a pointer, not the document.</strong> The instrument

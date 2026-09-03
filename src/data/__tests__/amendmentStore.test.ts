@@ -72,7 +72,7 @@ describe('v13 → v14: the FE-D1 amendment bump', () => {
     // step stamp a v11 store as v12 and skip a migration entirely.
     const old = v13Store();
     expect(migrateV13ToV14(old, JSON.stringify(old)).version).toBe(14);
-    expect(STORE_VERSION).toBe(14);
+    expect(STORE_VERSION).toBe(15);
   });
 
   it('carries every bill through under the new key, with the same rows', () => {

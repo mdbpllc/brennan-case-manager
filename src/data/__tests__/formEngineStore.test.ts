@@ -55,7 +55,7 @@ describe('v12 → v13: the form-engine bump', () => {
     // leaving SSNs in the blob. Every step is pinned to a literal now.
     const old = v12Store();
     expect(migrateV12ToV13(old, JSON.stringify(old)).version).toBe(13);
-    expect(STORE_VERSION).toBe(14);
+    expect(STORE_VERSION).toBe(15);
   });
 
   it('is purely additive — nothing existing is read, moved or reshaped', () => {

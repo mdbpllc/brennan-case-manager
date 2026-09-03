@@ -15,6 +15,10 @@ import type {
   FormTemplate, FormTemplateVersion, FormTokenDefinition, FormFormatProfile,
 } from './types';
 import { DISCLOSURE_VARIANTS } from './variants';
+import { FIXED_SENTENCES } from './fixedSentences';
+import {
+  WRITER_INSTRUCTIONS_BODY, WRITER_INSTRUCTIONS_KEY, WRITER_INSTRUCTIONS_NAME,
+} from './writerInstructions';
 import { DISCLOSURES_SKELETON_KEY } from './skeletons/disclosuresSkeleton';
 
 const T = '2026-08-20T00:00:00.000Z';
@@ -256,6 +260,71 @@ export function formEngineSeedData(): {
       createdAt: T,
     });
   }
+
+  // ---- the FIXED SENTENCES the APP places (D-6, RC-1) ------------------
+  // `RC-1`: "The app puts the sentences in there with the model writing the
+  // rest around them." These are that text, as versioned data.
+  //
+  // The bodies come from FIXED_SENTENCES, which the generator slices out of
+  // `form-engine.md` §9 by anchor and a test re-reads the spec to check. So a
+  // fixed sentence cannot drift from Michael's approved text without the suite
+  // failing — and, per D-63, that test compares the GENERATED CONSTANT and
+  // never the store's current row, so Michael editing one here stays green and
+  // the app places what he edited.
+  for (const [i, f] of FIXED_SENTENCES.entries()) {
+    const versionId = `ftv-fixed-${i + 1}`;
+    formTemplates.push({
+      id: `ft-fixed-${i + 1}`,
+      key: f.key,
+      name: `§${f.sourceSection} ${f.slot} — ${f.providerType}`,
+      family: 'fixed-sentence',
+      // Same reasoning as the variants: §9's TEXT is approved verbatim, but
+      // FE-12's flag is about FORMAT provenance and none of these has been
+      // through FE-7 adoption.
+      provenance: 'proposed',
+      notes: `Placed by the APP, not the writer. Sliced from form-engine.md §${f.sourceSection}.`,
+      createdAt: T,
+      updatedAt: T,
+      currentVersionId: versionId,
+    });
+    formTemplateVersions.push({
+      id: versionId,
+      templateId: `ft-fixed-${i + 1}`,
+      versionNo: 1,
+      body: f.text,
+      settings: { slot: f.slot, providerType: f.providerType, sourceSection: f.sourceSection },
+      changeNote: `Seeded verbatim from form-engine.md §${f.sourceSection}.`,
+      createdAt: T,
+    });
+  }
+
+  // ---- the WRITER'S INSTRUCTIONS (AS-Q12(d), D-36) ---------------------
+  // Michael ruled the HOME — a versioned template row, stamped on every
+  // paragraph. The PROSE is Claude's and says so on its own face.
+  formTemplates.push({
+    id: 'ft-writer-instructions',
+    key: WRITER_INSTRUCTIONS_KEY,
+    name: WRITER_INSTRUCTIONS_NAME,
+    family: 'writer-instructions',
+    provenance: 'proposed',
+    notes:
+      'Claude\'s wording under Michael\'s rulings (D-36). Editable here; editing '
+      + 'publishes a new version, and the version current at generation is stamped '
+      + 'on every paragraph it produced. Nothing in the app checks that the writer '
+      + 'followed it — §11.5.',
+    createdAt: T,
+    updatedAt: T,
+    currentVersionId: 'ftv-writer-instructions-1',
+  });
+  formTemplateVersions.push({
+    id: 'ftv-writer-instructions-1',
+    templateId: 'ft-writer-instructions',
+    versionNo: 1,
+    body: WRITER_INSTRUCTIONS_BODY,
+    settings: {},
+    changeNote: 'Seeded 2026-09-03 under the FE-D1 amendment slice (AS-Q12(d), D-36).',
+    createdAt: T,
+  });
 
   const formTokenDefinitions: FormTokenDefinition[] = TOKENS.map((t, i) => ({
     id: `ftd-${i + 1}`,

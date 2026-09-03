@@ -40,7 +40,9 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 14; // v14: FE-D1 amendment - the provider/facility
+export const STORE_VERSION = 15; // v15: FE-D1 amendment second half - the
+// fixed-sentence and writer-instruction template rows, and the general fix for a
+// bank that never gained newly-seeded templates. v14: FE-D1 amendment - the provider/facility
 // rename inside stored rows, and section 9.4's ruled edit appended as a new
 // template version. v13: FE-D1 form engine (template bank,
 // versioned template bodies, token registry, format profiles). v12: gate 10 PII
@@ -554,6 +556,73 @@ export function migrateV13ToV14(old: Partial<Store>, raw: string): Store {
   return migrated;
 }
 
+/**
+ * v14 → v15 — the FE-D1 amendment slice's second half.
+ *
+ * TEMPLATE BANK: appends every SEEDED template the store does not already
+ * carry, by key, with its current version. That brings the 22 `fixed-sentence`
+ * rows and the one `writer-instructions` row (D-6, D-36) to a store that
+ * already exists.
+ *
+ * It also closes a general defect this migration is the first to hit: every
+ * earlier step carried the bank forward with `old.formTemplates ?? seeded`, so
+ * a store that already had a bank NEVER gained a newly-seeded template. That
+ * was invisible while the only additions were new VERSIONS of templates the
+ * store already held. It stops being invisible the moment a slice seeds a new
+ * FAMILY, because the app would look for a fixed sentence that is simply not
+ * there. Matching by KEY rather than by id is what makes it safe to re-run and
+ * safe against a store whose ids were generated rather than seeded.
+ *
+ * A template Michael has EDITED is never touched: the append is keyed on
+ * absence, so an existing row keeps its body, its versions and its
+ * currentVersionId.
+ */
+export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v14`, raw);
+
+  const seeded = seedFormEngine();
+  const templates = [...(old.formTemplates ?? [])];
+  const versions = [...(old.formTemplateVersions ?? [])];
+  const have = new Set(templates.map((t) => t.key));
+  const added: string[] = [];
+
+  for (const tpl of seeded.formTemplates) {
+    if (have.has(tpl.key)) continue;
+    const version = seeded.formTemplateVersions.find((v) => v.id === tpl.currentVersionId);
+    if (!version) continue;              // a seed with no body is not worth adding
+    templates.push({ ...tpl, createdAt: stamp, updatedAt: stamp });
+    versions.push({ ...version, createdAt: stamp });
+    have.add(tpl.key);
+    added.push(tpl.key);
+  }
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 15, NOT STORE_VERSION — the `migrateV10ToV11` lesson. This
+    // function produces a v15 store and nothing more.
+    version: 15,
+    formTemplates: templates,
+    formTemplateVersions: versions,
+  };
+
+  const summary =
+    `Store migrated v14→15 (FE-D1 amendment, second half). `
+    + (added.length > 0
+      ? `Added ${added.length} seeded template(s) the store did not carry, including the `
+        + `fixed sentences the app places and the writer instructions. `
+      : `Every seeded template was already present, so none was added. `)
+    + `No existing template was modified. Full pre-migration backup at localStorage key `
+    + `"${KEY}-backup-v14".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (FE-D1 amendment migration, v15)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -570,21 +639,28 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 13) return migrateV13ToV14(parsed, raw);
+      if (parsed.version === 14) return migrateV14ToV15(parsed, raw);
+      if (parsed.version === 13) {
+        const v14 = migrateV13ToV14(parsed, raw);
+        return migrateV14ToV15(v14, JSON.stringify(v14));
+      }
       if (parsed.version === 12) {
         const v13 = migrateV12ToV13(parsed, raw);
-        return migrateV13ToV14(v13, JSON.stringify(v13));
+        const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
+        return migrateV14ToV15(v14, JSON.stringify(v14));
       }
       if (parsed.version === 11) {
         const v12 = migrateV11ToV12(parsed, raw);
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
-        return migrateV13ToV14(v13, JSON.stringify(v13));
+        const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
+        return migrateV14ToV15(v14, JSON.stringify(v14));
       }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
-        return migrateV13ToV14(v13, JSON.stringify(v13));
+        const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
+        return migrateV14ToV15(v14, JSON.stringify(v14));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
@@ -593,7 +669,8 @@ function load(): Store {
         const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
-        return migrateV13ToV14(v13, JSON.stringify(v13));
+        const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
+        return migrateV14ToV15(v14, JSON.stringify(v14));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.

@@ -37,7 +37,20 @@ export type TemplateFamily =
   /** One §9 approved narrative paragraph. */
   | 'expert-narrative-variant'
   /** A per-item firm stock answer. */
-  | 'stock-answer';
+  | 'stock-answer'
+  /**
+   * One BASIS or CAUSATION sentence the APP places, keyed by provider type
+   * (D-6; `RC-1` — "The app puts the sentences in there"). Also the rider's
+   * scope sentence and §9.11 whole. Generated from `form-engine.md` §9 and
+   * drift-tested against it; never hand-typed.
+   */
+  | 'fixed-sentence'
+  /**
+   * The instructions handed to the paragraph writer, versioned so a served
+   * paragraph can be traced to the exact wording that produced it
+   * (`AS-Q12(d)`, D-36).
+   */
+  | 'writer-instructions';
 
 export interface FormTemplate {
   id: string;

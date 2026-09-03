@@ -165,7 +165,7 @@ describe('v11 → v12: the demo-store PII promotion', () => {
     // FE-D1 took the constant to 13 on 2026-08-20 and this line is what made
     // that visible — which is the whole reason it is pinned to a literal here
     // rather than compared against the constant.
-    expect(STORE_VERSION).toBe(14);
+    expect(STORE_VERSION).toBe(15);
     expect(STORE_VERSION).toBeGreaterThan(
       migrateV11ToV12(old, JSON.stringify(old)).version,
     );
