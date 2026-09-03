@@ -18,7 +18,7 @@ import {
   harvestFilters, convertBrackets, BRACKET_ALLOWLIST,
 } from '../tokens';
 import {
-  pronouns, pronounSetFromFields, pluralS, verbS, joinNames, currency,
+  pronouns, pronounSetFromFields, pluralS, verbS, subjectPronounSet, joinNames, currency,
   treatmentClause, futureCareClause, longDateCentral,
 } from '../grammar';
 import { lintRender, lintNumbering, lintPartyConsistency, lintXmlSafety } from '../lint';
@@ -370,8 +370,8 @@ describe('§9 approved variant library', () => {
     });
 
     it('renders both correctly at each count — the whole point of the split', () => {
-      const fill = (n: number) =>
-        emt().replace(/\{s\}/g, pluralS(n)).replace(/\{verb_s\}/g, verbS(n));
+      const fill = (n: number, set: 'he' | 'she' | 'they' | 'unknown' = 'he') =>
+        emt().replace(/\{s\}/g, pluralS(n)).replace(/\{verb_s\}/g, verbS(n, set));
 
       expect(fill(1)).toContain('is an Emergency Medical Technician who');
       expect(fill(1)).toContain('specializes in responding');
@@ -380,11 +380,20 @@ describe('§9 approved variant library', () => {
       expect(fill(3)).toContain('specialize in responding');
     });
 
-    it('pins verbS as the mirror of pluralS', () => {
+    it('agrees the VERB with the SUBJECT, not with a raw count', () => {
+      // The noun counts; the verb agrees. ONE technician with no pronoun on
+      // record speaks as "they", and "they specializes" is not English — which
+      // is why verbS reads the pronoun table rather than counting.
       expect(pluralS(1)).toBe('');
-      expect(verbS(1)).toBe('s');
+      expect(verbS(1, 'unknown')).toBe('');
+      expect(verbS(1, 'they')).toBe('');
+      expect(verbS(1, 'he')).toBe('s');
+      expect(verbS(1, 'she')).toBe('s');
+      // Two or more speak as "they" whatever their own pronouns are.
       expect(pluralS(2)).toBe('s');
-      expect(verbS(2)).toBe('');
+      expect(verbS(2, 'he')).toBe('');
+      expect(subjectPronounSet(2, 'he')).toBe('they');
+      expect(subjectPronounSet(1, 'she')).toBe('she');
     });
   });
 

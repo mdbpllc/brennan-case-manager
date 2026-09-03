@@ -306,14 +306,15 @@ export function buildRenderContext(bundle: CaseBundle, answers: WizardAnswers): 
       specialty_descriptor: field(p, 'specialtyDescriptor'),
       physician_or_specialist: field(p, 'physicianOrSpecialist') || 'physician',
       referring_provider: field(p, 'referringProvider'),
-      // The two flex points, from the same count so they can never disagree.
-      // This FE-D1 wizard path designates ONE provider per card and carries no
-      // individual count, so the count is 1 and stated as such rather than left
-      // as two bare '' literals — which is what let `{s}` render "specialize"
-      // beside "Technician" until 2026-09-03 (#147; grammar.ts verbS).
+      // The two flex points (#147). This FE-D1 wizard path designates ONE
+      // provider per card, so the NOUN takes the singular; the VERB agrees with
+      // the SUBJECT, which is this provider's own pronoun set — so an unknown
+      // pronoun renders "they specialize" and a known one "he specializes".
+      // Left as two bare '' literals, `{s}` rendered "specialize" beside
+      // "Technician" until 2026-09-03.
       plural_s: pluralS(1),
       s: pluralS(1),
-      verb_s: verbS(1),
+      verb_s: verbS(1, pronounSetFromFields(p?.fields as Record<string, unknown>)),
     };
 
     // The approved §9 paragraph, if one is selected, rendered through the alias
