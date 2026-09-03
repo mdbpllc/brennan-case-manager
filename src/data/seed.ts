@@ -17,6 +17,11 @@ import { billingSeedData } from './billingSeed';
 import { transcriptSeedData } from './transcriptSeed';
 import { billsSeedData } from './billsSeed';
 import { formEngineSeedData } from '../forms/seed';
+import { disclosureFixtures } from './disclosureFixtures';
+import type {
+  CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+  GeneratedDocumentParagraph,
+} from '../domain/caseProviders';
 
 const t = new Date().toISOString();
 const yy = String(new Date().getFullYear()).slice(-2);
@@ -32,6 +37,12 @@ export function seedData(): {
   fileCounters: Record<string, number>;
   events: CalendarEvent[];
   charges: Charge[];
+  // R17 and the chronology (D-35's walk fixtures).
+  caseProviders: CaseProvider[];
+  caseProviderIndividuals: CaseProviderIndividual[];
+  caseProviderVisits: CaseProviderVisit[];
+  caseChronologyVersions: CaseChronologyVersion[];
+  generatedDocumentParagraphs: GeneratedDocumentParagraph[];
 } & ReturnType<typeof billingSeedData> & ReturnType<typeof transcriptSeedData> & ReturnType<typeof billsSeedData> & ReturnType<typeof formEngineSeedData> {
   // CD-1: the seed writes contacts the way a pre-migration record looks, and
   // `withDirectoryDefaults` fills roleTags/aliases/deceased — the same helper
@@ -292,12 +303,31 @@ export function seedData(): {
     return { ...l, ...result.patch };
   });
 
+  // D-35 — the disclosures walk's fixtures. Every shape in §6.2 and every test
+  // in §11 that needs data, all fictional, plus a SECOND two-client matter so
+  // the per-plaintiff instrument and the per-client chronology are exercisable
+  // by clicking rather than only in a unit test.
+  const fx = disclosureFixtures(yy);
+
   return {
-    cases, parties, links: backfilledLinks, clients, clientFlags, rosterFlags,
-    contactEdges: [], fileCounters: { [yy]: 3 }, events, charges,
+    cases: [...cases, ...fx.cases],
+    parties: [...parties, ...fx.parties],
+    links: [...backfilledLinks, ...fx.links],
+    clients: [...clients, ...fx.clients],
+    clientFlags,
+    rosterFlags,
+    contactEdges: fx.contactEdges,
+    fileCounters: { [yy]: 4 },
+    events,
+    charges,
     ...billingSeedData(),
     ...transcriptSeedData({ cases, parties, links: backfilledLinks }),
     ...billsSeedData(),
     ...formEngineSeedData(),
+    caseProviders: fx.caseProviders,
+    caseProviderIndividuals: fx.caseProviderIndividuals,
+    caseProviderVisits: fx.caseProviderVisits,
+    caseChronologyVersions: fx.caseChronologyVersions,
+    generatedDocumentParagraphs: [],
   };
 }

@@ -706,8 +706,9 @@ function load(): Store {
     // data, and none should: the seed is fictional and stays that way.
     partyPii: [],
     runs: [], resultLines: [], reviewLog: [], documents: [], facilityProfiles: [],
-    caseProviders: [], caseProviderIndividuals: [], caseProviderVisits: [],
-    caseChronologyVersions: [], generatedDocumentParagraphs: [],
+    // R17, the chronology and the paragraph record all come from seedData()
+    // below — D-35's walk fixtures live there, so initialising them here would
+    // only shadow the seed for the length of one object literal.
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
     oaaIntakes: [],

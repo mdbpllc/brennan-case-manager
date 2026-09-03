@@ -215,7 +215,15 @@ export function planFacility(
   // about a person. When there is nothing to ride, the mid-level is not
   // designated and, by D-65, does not render on the block either.
   const treating = paragraphs.find(
-    (p) => p.shape !== 'radiology-split' && p.shape !== 'custodian-only',
+    (p) => p.shape !== 'radiology-split'
+      && p.shape !== 'custodian-only'
+      // An IMAGING facility's paragraph is a radiology paragraph in substance,
+      // so D-16's reason reaches it too: a rider under it would tie the PA's
+      // testimony scope to the radiologists' reads. And it reaches it by D-16's
+      // own words as well — at a facility typed `radiologist` the individuals'
+      // EFFECTIVE marker is `radiologist`, so "a facility whose only
+      // non-mid-level individuals are marked radiologist" is literally true.
+      && p.shape !== 'imaging-facility',
   );
   const ridersEmitted = treating ? midLevels : [];
   if (treating) treating.riders = midLevels;
