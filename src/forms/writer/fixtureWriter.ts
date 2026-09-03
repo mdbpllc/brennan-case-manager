@@ -33,6 +33,19 @@ const FIRST = ['Ines', 'Tobias', 'Marguerite', 'Devin', 'Priya', 'Callum', 'Neri
 const LAST = ['Vantwoud', 'Skarsgaard', 'Okonjo-Rell', 'Petrossian', 'Natarajan', 'Halvorsen',
   'Ferreira-Baptiste', 'Quillane'];
 
+/**
+ * A summary spliced mid-sentence after a name reads wrong carrying its own
+ * capital — "Sorrel Adeyemi-Rusk Responded to the scene" — which the first
+ * walk-through showed plainly. This is the FIXTURE's own prose being tidied,
+ * NOT a check over a real writer's output: nothing in this build reads inside
+ * a returned part, and this function runs before there is a part to read.
+ */
+function lowerFirst(text: string | undefined): string {
+  if (!text) return '';
+  const trimmed = text.replace(/\.$/, '');
+  return trimmed.charAt(0).toLowerCase() + trimmed.slice(1);
+}
+
 function name(seed: number, i: number): string {
   return `${FIRST[(seed + i) % FIRST.length]} ${LAST[(seed + i * 3) % LAST.length]}`;
 }
@@ -148,7 +161,7 @@ export class FixtureParagraphWriter implements ParagraphWriter {
           : `is a provider at ${facility} who evaluated and treated ${client}`;
         const each = plural
           ? ` Each of them saw ${client} in the course of that treatment: `
-            + `${input.individuals.map((i) => `${i.displayName} ${i.summary ? i.summary.replace(/\.$/, '') : 'participated in the care'}`).join('; ')}.`
+            + `${input.individuals.map((i) => `${i.displayName} ${lowerFirst(i.summary) || 'participated in the care'}`).join('; ')}.`
           : '';
         return {
           opening:

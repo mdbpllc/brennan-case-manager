@@ -159,11 +159,14 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
     () => Object.fromEntries(parties.map((p) => [p.id, p])),
     [parties],
   );
+  // EVERY party, not just the ones with a provider row: ND-7(a)'s line names a
+  // facility that has BILLS AND NO DESIGNATION, so by definition it has no
+  // provider row to take a name from. Keyed on providers only, that line read
+  // "A facility has bills on this matter" — true, unhelpful, and exactly the
+  // kind of thing that survives because it is not wrong.
   const facilityNames = useMemo(
-    () => Object.fromEntries(providers.map(
-      (p) => [p.facilityPartyId, partyById(p.facilityPartyId)?.displayName ?? ''],
-    )),
-    [providers, partyById],
+    () => Object.fromEntries(parties.map((p) => [p.id, p.displayName])),
+    [parties],
   );
 
   /** The Medical tab's list for this client — SAME SET, SAME ORDER (§9.2). */
@@ -315,6 +318,10 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       // transmits nothing.
       if (!tiers.canGenerate) throw new Error('Fix the must-fix items first.');
 
+      const clientParty = partyById(
+        clients.find((c) => c.id === activeClientId)?.partyId ?? '',
+      );
+
       const designations = await buildDesignations({
         writer: resolveParagraphWriter(usingSupabase),
         selected: chosen,
@@ -322,11 +329,13 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
         visits,
         chronologyVersions: clientVersions,
         facilityParties,
-        clientName: partyById(clients.find((c) => c.id === activeClientId)?.partyId ?? '')?.displayName
+        clientName: clientParty?.displayName
           ?? bundle.parties.find((p) => links.some(
             (l) => l.partyId === p.id && /plaintiff/i.test(l.role),
           ))?.displayName ?? '',
-        clientPronoun: undefined,
+        // From the RECORD, never guessed. A client with nothing on file reads
+        // "they", which is the only choice that is never wrong about a person.
+        clientPronoun: field(clientParty, 'pronouns') || field(clientParty, 'gender') || undefined,
         incidentDateIso: caseRec.dateOfIncident,
         caseType: caseRec.caseType,
         writerInstructions: writerInstructions.body,

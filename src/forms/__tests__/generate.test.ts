@@ -273,8 +273,17 @@ describe('the narratives handed to the renderer', () => {
     const narratives = out.itemNarratives['testifying_expert:0'];
     expect(narratives).toHaveLength(1);
     expect(narratives[0].lead).toBe('Ines Vantwoud, M.D.,');
-    // The lead is NOT inside the text — it is its own bold run at render time.
-    expect(narratives[0].text.startsWith('Ines Vantwoud, M.D., OPENING.')).toBe(true);
+    // The lead is NOT inside the text: the renderer places it as its own bold
+    // run, so a text that still carried it would print the name TWICE — which
+    // is exactly what the first walk-through produced ("Ines Vantwoud, M.D.,
+    // Ines Vantwoud, M.D., is a provider at…") and what this now holds shut.
+    expect(narratives[0].text.startsWith('OPENING.')).toBe(true);
+    expect(narratives[0].text).not.toContain('Ines Vantwoud, M.D.,');
+    // The RECORD still keeps the whole paragraph, lead included — the two are
+    // different things and both are needed.
+    const whole = out.paragraphs[0];
+    expect(whole.assembledText.startsWith('Ines Vantwoud, M.D., OPENING.')).toBe(true);
+    expect(whole.assembledText).toBe(`${whole.leadText} ${whole.bodyText}`);
   });
 
   it('puts the rider AFTER the paragraph it rides, with no lead of its own', async () => {
@@ -308,5 +317,35 @@ describe('the narratives handed to the renderer', () => {
     expect((await buildDesignations(input())).chronologyVersionId).toBe('v1');
     expect((await buildDesignations(input({ chronologyVersions: [] }))).chronologyVersionId)
       .toBeUndefined();
+  });
+});
+
+describe('the rider names the paragraph it RIDES, not itself', () => {
+  it('fills {supervising_provider} with the GROUP FILL, never the mid-level', async () => {
+    // The first walk-through rendered "consistent with, and within the scope
+    // of, the testimony described above regarding Priya Natarajan" — the PA
+    // cited as her own supervisor, in a served designation.
+    const out = await buildDesignations(input({
+      individuals: [
+        person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.', pronoun: 'she' }),
+        person({ displayName: 'Priya Natarajan', roleMarker: 'mid-level', pronoun: 'she' }),
+      ],
+    }));
+    const rider = out.paragraphs.find((p) => p.shape === 'midlevel-rider')!;
+    expect(rider.assembledText).toContain('Ms. Natarajan will testify consistent with');
+    expect(rider.assembledText).toContain('described above regarding Dr. Vantwoud');
+    expect(rider.assembledText).not.toContain('regarding Priya Natarajan');
+  });
+
+  it('names the whole GROUP when the paragraph it rides is a group', async () => {
+    const out = await buildDesignations(input({
+      individuals: [
+        person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' }),
+        person({ displayName: 'Tobias Skarsgaard', credentialSuffix: 'D.O.' }),
+        person({ displayName: 'Priya Natarajan', roleMarker: 'mid-level', pronoun: 'she' }),
+      ],
+    }));
+    const rider = out.paragraphs.find((p) => p.shape === 'midlevel-rider')!;
+    expect(rider.assembledText).toContain('regarding Drs. Vantwoud and Skarsgaard');
   });
 });

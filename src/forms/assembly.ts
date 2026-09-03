@@ -358,6 +358,9 @@ export function tokenValues(
   ctx: AssemblyContext,
   individuals: CaseProviderIndividual[],
   riderFor?: CaseProviderIndividual,
+  /** The individuals of the paragraph a RIDER rides — the GROUP FILL that
+   *  `{supervising_provider}` names. Ignored when there is no rider. */
+  ridesOver?: CaseProviderIndividual[],
 ): Record<string, string> {
   const n = individuals.length;
   const single = n === 1 ? individuals[0] : undefined;
@@ -389,9 +392,15 @@ export function tokenValues(
     values.midlevel_name = riderFor.displayName;
     values.midlevel_credential = riderFor.credentialSuffix ?? '';
     values.midlevel_his_her = pronouns(rset).possessive;
-    // GROUP FILL — the HELD default (§18.F, the rider's supervisor). Michael
-    // may make it a supervisor he designates by hand at the hands-on sitting.
-    values.supervising_provider = names.provider_dr_name || ctx.facilityName;
+    // GROUP FILL — the HELD default (§18.F, the rider's supervisor): the
+    // scope sentence names the provider(s) whose testimony is "described
+    // above", which is THE PARAGRAPH THE RIDER RIDES and never the mid-level
+    // themselves. The first walk-through rendered "consistent with … the
+    // testimony described above regarding Priya Natarajan" — the PA, cited as
+    // her own supervisor. Michael may make this a supervisor he designates by
+    // hand at the hands-on sitting.
+    const above = ridesOver && ridesOver.length > 0 ? renderNames(ridesOver) : undefined;
+    values.supervising_provider = above?.provider_dr_name || ctx.facilityName;
   }
 
   return values;
@@ -416,6 +425,17 @@ export interface AssembledParagraph {
   caseProviderId: string;
   individualIds: string[];
   leadText?: string;
+  /**
+   * The assembled paragraph WITHOUT its lead.
+   *
+   * Both forms are needed and they are not interchangeable. `assembledText` is
+   * the WHOLE paragraph and is what the record keeps, because that is what went
+   * out. `bodyText` is what the RENDERER places after the lead's own bold run —
+   * passing the whole thing there prints the lead twice, which is exactly what
+   * the first walk-through produced: "Ines Vantwoud, M.D., Ines Vantwoud,
+   * M.D., is a provider at…".
+   */
+  bodyText: string;
   parts: Record<string, string>;
   assembledText: string;
   fixedSentenceKeys: string[];
@@ -445,8 +465,9 @@ export function assembleParagraph(
   ctx: AssemblyContext,
   parts: Record<string, string>,
   rider?: CaseProviderIndividual,
+  ridesOver?: CaseProviderIndividual[],
 ): AssembledParagraph {
-  const values = tokenValues(ctx, plan.individuals, rider);
+  const values = tokenValues(ctx, plan.individuals, rider, ridesOver);
   const fixedKeys: string[] = [];
 
   const place = (slot: 'basis' | 'causation'): string | undefined => {
@@ -531,6 +552,9 @@ export function assembleParagraph(
     leadText,
     parts,
     assembledText: assembled,
+    bodyText: leadText && assembled.startsWith(leadText)
+      ? assembled.slice(leadText.length).trimStart()
+      : assembled,
     fixedSentenceKeys: fixedKeys,
     gapFlag: plan.gapFlag,
   };

@@ -208,7 +208,9 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
 
       const assembled = assembleParagraph(p, ctx, parts);
       paragraphs.push(assembled);
-      narratives.push({ lead: assembled.leadText, text: assembled.assembledText });
+      // bodyText, NOT assembledText: the renderer places the lead as its own
+      // bold run, so handing it the whole paragraph prints the lead twice.
+      narratives.push({ lead: assembled.leadText, text: assembled.bodyText });
 
       // The rider follows the paragraph it rides (§8.4), and only exists
       // because that paragraph does (D-16).
@@ -225,9 +227,11 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
             facilityName,
           );
         }
-        const riderOut = assembleParagraph(riderPlan, ctx, riderParts, rider);
+        // The rider's scope sentence names the paragraph it RIDES (the GROUP
+        // FILL default), never the mid-level themselves.
+        const riderOut = assembleParagraph(riderPlan, ctx, riderParts, rider, p.individuals);
         paragraphs.push(riderOut);
-        narratives.push({ text: riderOut.assembledText });
+        narratives.push({ text: riderOut.bodyText });
       }
     }
 
