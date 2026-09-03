@@ -21,6 +21,7 @@ import {
 import {
   mergeRuns, setParagraphRuns, dedupBookmarks, stripBookmarks,
   paragraphTexts, visibleText, escapeXmlText, DocxAssertionError,
+  setParagraphLeadAndBody, withKeepNext,
 } from './docx';
 import {
   parseRegionMarker, resolveTokens, harvestFilters, type TokenContext,
@@ -32,6 +33,21 @@ const DOCUMENT_PART = 'word/document.xml';
 /** One repeat item — a flat bag of token values scoped to this iteration. */
 export type RegionItem = Record<string, string>;
 
+/**
+ * ONE narrative paragraph under an item, with its own optional bold LEAD.
+ *
+ * A `testifying_expert` item can carry SEVERAL of these — a treating paragraph,
+ * a radiology split, a rider — and the renderer clones the archetype's own
+ * `<w:p>` once for each (`#147`). Kept out of `RegionItem` deliberately: an
+ * item's values are strings that get spliced into text nodes, and a narrative
+ * is not one of those.
+ */
+export interface NarrativeParagraph {
+  /** Rendered as its own explicitly-bold run, ahead of the text. */
+  lead?: string;
+  text: string;
+}
+
 export interface RenderContext {
   /** Document-scope scalars. */
   scalars: Record<string, string>;
@@ -42,6 +58,10 @@ export interface RenderContext {
   /** Per-item select choice, keyed `${regionName}:${index}` — the expert
    *  archetype varies per expert, not per document. */
   itemSelects?: Record<string, string>;
+  /** Per-item narrative paragraphs, keyed the same way. When present, the item's
+   *  archetype paragraph is cloned once per entry (the split and the rider,
+   *  `#147`); when absent, the item's `__narrative` string is used as before. */
+  itemNarratives?: Record<string, NarrativeParagraph[]>;
   /** Stock answers harvested from the master's `|default:` filters. */
   defaults?: Record<string, string>;
   /** Tokens whose absence drops the line (`|optional:`). */
@@ -174,22 +194,58 @@ function escapeValues(values: Record<string, string>): Record<string, string> {
  * from the document itself and only its `<w:t>` content changes, so this is the
  * §12.3 in-place text-node swap and not a rebuild.
  */
-function overrideNarrative(fragment: string, text: string): string {
+function overrideNarrative(fragment: string, text: string | NarrativeParagraph[]): string {
   const paras = paragraphRefs(fragment);
   for (const p of paras) {
     if (p.text.trim() === '') continue;
     if (parseRegionMarker(p.text)) continue;
     const original = fragment.slice(p.start, p.end);
-    return fragment.slice(0, p.start) + setParagraphRuns(original, [text]) + fragment.slice(p.end);
+    const replacement = typeof text === 'string'
+      ? setParagraphRuns(original, [text])
+      : renderNarrativeParagraphs(original, text);
+    return fragment.slice(0, p.start) + replacement + fragment.slice(p.end);
   }
   return fragment;
+}
+
+/**
+ * ONE archetype paragraph, cloned once per narrative paragraph (`#147`).
+ *
+ * The master renders ONE narrative per region item — a `testifying_expert` item
+ * is a provider block PLUS one narrative paragraph — so the radiologist split
+ * and the mid-level rider cannot be modelled as extra ITEMS: two items would
+ * print the facility's block twice, which `AS-Q7c`'s block design forbids.
+ *
+ * Michael's ruling is to clone the archetype's OWN `<w:p>` once per paragraph:
+ * §12.3 applied per paragraph rather than per record. Every paragraph emitted
+ * here is a copy of the master's own markup with its text nodes swapped — its
+ * `pPr`, its justification, its spacing, its run properties all come from the
+ * shell. **No XML is fabricated**, which is the whole point of the mechanic.
+ *
+ * `keepNext` on every paragraph but the last keeps a facility's block and its
+ * paragraphs on one page (§12.11).
+ */
+function renderNarrativeParagraphs(template: string, entries: NarrativeParagraph[]): string {
+  if (entries.length === 0) return setParagraphRuns(template, ['']);
+  return entries
+    .map((entry, i) => {
+      const body = entry.lead
+        ? setParagraphLeadAndBody(template, entry.lead, entry.text)
+        : setParagraphRuns(template, [entry.text]);
+      return i < entries.length - 1 ? withKeepNext(body) : body;
+    })
+    .join('');
 }
 
 /**
  * Expand a `#select` block inside an already-scoped fragment: keep the `#case`
  * whose value matches, drop the others and every marker.
  */
-function expandSelects(fragment: string, choice: string | undefined, narrative?: string): string {
+function expandSelects(
+  fragment: string,
+  choice: string | undefined,
+  narrative?: string | NarrativeParagraph[],
+): string {
   let out = fragment;
   for (;;) {
     const paras = paragraphRefs(out);
@@ -323,7 +379,8 @@ function expandEachRegion(
       // before substitution so it can never be treated as a value to splice
       // into a `<w:t>` node alongside the others.
       const { __narrative: narrative, ...values } = item;
-      const selected = expandSelects(specimen, choice, narrative);
+      const paragraphs = ctx.itemNarratives?.[`${regionName}:${index}`];
+      const selected = expandSelects(specimen, choice, paragraphs ?? narrative);
       const resolved = scopedResolve(selected, { ...ctx.scalars, ...values }, ctx);
       return dropEmptiedParagraphs(selected, resolved);
     })

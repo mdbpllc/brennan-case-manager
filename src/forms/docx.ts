@@ -315,3 +315,86 @@ export function paragraphTexts(xml: string): string[] {
 export function visibleText(xml: string): string {
   return paragraphTexts(xml).join('\n');
 }
+
+// ---------------------------------------------------------------------------
+// FE-D1 AMENDMENT (2026-09-03) — the three mechanics app assembly needs.
+// ---------------------------------------------------------------------------
+
+/**
+ * Force bold ON a copy of a run's own properties, changing nothing else.
+ *
+ * The master's narrative runs already carry `<w:b/>`, so on today's shell this
+ * is a no-op that keeps the run identical. It exists for the shell Michael may
+ * decide on: if the narrative body is ever made roman, the LEAD stays bold
+ * because it says so itself rather than inheriting it.
+ */
+function withBold(rPr: string | null): string {
+  if (rPr == null) return '<w:rPr><w:b/><w:bCs/></w:rPr>';
+  if (/<w:b\b[^>]*\/>|<w:b>/.test(rPr)) return rPr;
+  return rPr.replace(/^<w:rPr(\s[^>]*)?>/, (open) => `${open}<w:b/><w:bCs/>`);
+}
+
+/**
+ * Place a BOLD LEAD and a body in ONE paragraph, as two runs (`AS-Q8b`).
+ *
+ * The build default recorded at `#147`: **the LEAD is its own explicitly-bold
+ * run, and the body's run properties are exactly what the master supplies.**
+ * The second run is the master's OWN run, unchanged, carrying the body text —
+ * so no formatting decision is invented here. Michael holds the question of
+ * whether the narrative body should become roman (CC-1(b)); if he rules it, the
+ * shell changes and this function still does the right thing.
+ *
+ * Both runs are cloned from the paragraph's first run. No XML is fabricated
+ * beyond the `<w:b/>` toggle on the lead's copy of the run's own properties.
+ */
+export function setParagraphLeadAndBody(
+  template: string,
+  lead: string,
+  body: string,
+): string {
+  const runMatch = /<w:r(?: [^>]*)?>[\s\S]*?<\/w:r>/.exec(template);
+  if (!runMatch) {
+    throw new DocxAssertionError('template paragraph had no run', template.slice(0, 60));
+  }
+  const run = runMatch[0];
+  const rPr = /<w:rPr(?: [^>]*)?>[\s\S]*?<\/w:rPr>/.exec(run)?.[0] ?? null;
+
+  const oneRun = (props: string | null, text: string): string => {
+    const inner = `${props ?? ''}<w:t xml:space="preserve">${escapeXmlText(text)}</w:t>`;
+    return `<w:r>${inner}</w:r>`;
+  };
+
+  // A single space after the lead, matching the app's own D-2 join.
+  const replacement = oneRun(withBold(rPr), `${lead} `) + oneRun(rPr, body);
+  let out = template.slice(0, runMatch.index) + replacement
+    + template.slice(runMatch.index + run.length);
+
+  // Any further text node in the template would still carry its old words.
+  const tail = out.slice(runMatch.index + replacement.length);
+  out = out.slice(0, runMatch.index + replacement.length)
+    + tail.replace(/<w:t(?: [^>]*)?>[^<]*<\/w:t>/g, '<w:t xml:space="preserve"></w:t>');
+  return out;
+}
+
+/**
+ * §12.11 — keep a paragraph with the one after it.
+ *
+ * A provider block whose designation paragraph lands on the next page reads as
+ * two unrelated things. `keepNext` is applied to every paragraph of a facility
+ * except its last, so the block and its paragraphs travel together and the
+ * group can still break AFTER it.
+ */
+export function withKeepNext(paragraph: string): string {
+  if (/<w:keepNext\b/.test(paragraph)) return paragraph;
+  const pPr = /<w:pPr(?: [^>]*)?>/.exec(paragraph);
+  if (pPr) {
+    const at = pPr.index + pPr[0].length;
+    return `${paragraph.slice(0, at)}<w:keepNext/>${paragraph.slice(at)}`;
+  }
+  // No pPr: open one immediately after the paragraph's own start tag, which is
+  // where the schema requires it.
+  const open = /<w:p(?: [^>]*)?>/.exec(paragraph);
+  if (!open) return paragraph;
+  const at = open.index + open[0].length;
+  return `${paragraph.slice(0, at)}<w:pPr><w:keepNext/></w:pPr>${paragraph.slice(at)}`;
+}
