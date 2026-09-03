@@ -35,6 +35,12 @@ import {
   FACILITY_TYPE_KEYS, ROLE_MARKER_KEYS, markerIsDisplayOnly, providerTypeLabel,
   type ProviderTypeKey,
 } from '../forms/providerTypes';
+import { isExtractedType } from '../forms/providerTypes';
+import { newestReadableVersion, type CaseChronologyVersion } from '../domain/caseProviders';
+import { runExtraction } from '../forms/chronology/extraction';
+import { resolveParagraphWriter } from '../forms/writer';
+import { usingSupabase } from '../data';
+import ChronologyDropZone from './ChronologyDropZone';
 
 interface Props {
   caseRec: CaseRecord;
@@ -53,18 +59,21 @@ export default function ProvidersSection({
   const [visits, setVisits] = useState<CaseProviderVisit[]>([]);
   const [facilities, setFacilities] = useState<PartyRecord[]>([]);
   const [allProviders, setAllProviders] = useState<CaseProvider[]>([]);
+  const [versions, setVersions] = useState<CaseChronologyVersion[]>([]);
   const [showRemoved, setShowRemoved] = useState(false);
   const [adding, setAdding] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const refresh = useCallback(async () => {
-    const [rs, inds, vs, parties, all] = await Promise.all([
+    const [rs, inds, vs, parties, all, chron] = await Promise.all([
       db.listCaseProviders(caseRec.id),
       db.listProviderIndividuals(caseRec.id),
       db.listProviderVisits(caseRec.id),
       db.listParties(),
       db.listAllCaseProviders(),
+      db.listChronologyVersions(caseRec.id),
     ]);
+    setVersions(chron);
     setRows(rs);
     setIndividuals(inds);
     setVisits(vs);
@@ -116,6 +125,47 @@ export default function ProvidersSection({
     } finally { setBusy(false); }
   };
 
+  /**
+   * The extraction, for one facility or for all of them.
+   *
+   * The two triggers, and only these two (D-44): a READABLE drop calls this
+   * with no facility (so it runs for every extractable facility then on the
+   * tab, which is §17.7's "auto populate"), and Michael's "Pull individuals"
+   * click calls it with one. Adding a facility fires NOTHING.
+   */
+  const pullFor = useCallback(async (only?: CaseProvider) => {
+    const clientScope = selectedClientId ?? (clients.length === 1 ? clients[0].id : undefined);
+    const mine = await db.listChronologyVersions(caseRec.id);
+    const version = newestReadableVersion(
+      mine.filter((v) => (v.clientId ?? null) === (clientScope ?? null)),
+    );
+    if (!version) return;
+
+    const [current, inds, parties] = await Promise.all([
+      db.listCaseProviders(caseRec.id),
+      db.listProviderIndividuals(caseRec.id),
+      db.listParties(),
+    ]);
+    const scope = (only ? [only] : current).filter(
+      (p) => (p.clientId ?? null) === (clientScope ?? null) || p.clientId == null,
+    );
+    // A d/b/a form is what a chronology actually names (§7.1), so the alias
+    // NAMES go to the model — not the alias records, which carry a kind and a
+    // note the model has no use for.
+    const names = Object.fromEntries(parties.map((p) => [
+      p.id, { name: p.displayName, aliases: (p.aliases ?? []).map((a) => a.name) },
+    ]));
+
+    setBusy(true);
+    try {
+      await runExtraction(
+        db, resolveParagraphWriter(usingSupabase), version, scope, inds, names,
+      );
+      await refresh();
+      onChanged?.();
+    } finally { setBusy(false); }
+  }, [caseRec.id, clients, selectedClientId, refresh, onChanged]);
+
   const patchProvider = async (id: string, patch: Partial<CaseProvider>) => {
     setBusy(true);
     try {
@@ -163,6 +213,17 @@ export default function ProvidersSection({
           is one of the three things that stop a generate outright.
         </p>
       )}
+
+      {/* ONE drop zone (D-9), per client, at the TOP of this section. The wizard
+          shows a read-only pointer and never a second drop. */}
+      <ChronologyDropZone
+        caseId={caseRec.id}
+        clientId={selectedClientId ?? (clients.length === 1 ? clients[0].id : undefined)}
+        clientLabel={multiClient && selectedClientId
+          ? clients.find((c) => c.id === selectedClientId)?.id
+          : undefined}
+        onDropped={() => pullFor()}
+      />
 
       {adding && (
         <div className="fld" style={{ marginTop: 8 }}>
@@ -237,6 +298,22 @@ export default function ProvidersSection({
                     <option key={k} value={k}>{providerTypeLabel(k)}</option>
                   ))}
                 </select>
+                {/* D-44: Michael's click. One PHI-bearing model call per
+                    deliberate act — never fired by adding a facility. Absent
+                    for a pharmacy or custodian-only facility, which are never
+                    extracted at all (D-46). */}
+                {isExtractedType(row.providerType) && newestReadableVersion(
+                  versions.filter((v) => (v.clientId ?? null) === (row.clientId ?? null)),
+                ) && (
+                  <button
+                    className="btn small secondary"
+                    disabled={busy}
+                    onClick={() => pullFor(row)}
+                    title="Reads the current chronology and adds the people it names beneath this facility."
+                  >
+                    {row.lastExtractionVersionId ? 'Pull again' : 'Pull individuals'}
+                  </button>
+                )}
                 <button
                   className="btn small secondary"
                   disabled={busy}

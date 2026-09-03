@@ -5,7 +5,7 @@ import type { ContactEdge } from '../domain/contactEdges';
 import type { DirectoryFields } from '../domain/directory';
 import type { PartyPii } from '../domain/partyPii';
 import type {
-  CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+  CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
 } from '../domain/caseProviders';
 
 /** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
@@ -358,6 +358,23 @@ export interface DataAdapter {
   /** Visit rows. ONLY ever written by an extraction (§17.7) — no hand path
    *  exists, by ruling, which is why there is no create method for one. */
   listProviderVisits(caseId: string): Promise<CaseProviderVisit[]>;
+
+  /** The versioned chronology (AS-Q4). Text per version; the ORIGINAL BYTES
+   *  ARE NEVER STORED — not here, not anywhere. A file store is gate-7 work. */
+  listChronologyVersions(caseId: string): Promise<CaseChronologyVersion[]>;
+  createChronologyVersion(
+    data: Omit<CaseChronologyVersion, 'id' | 'createdAt' | 'versionNo'>,
+  ): Promise<CaseChronologyVersion>;
+  /** A SOFT removal (D-60): a mis-dropped chronology is PHI in the wrong
+   *  matter, so there has to be a way out — and the individuals it named keep
+   *  their rows, losing only the pointer. */
+  removeChronologyVersion(id: string): Promise<CaseChronologyVersion>;
+
+  /** Visit rows for one individual, replaced wholesale by an extraction. */
+  replaceProviderVisits(
+    individualId: string,
+    visits: Omit<CaseProviderVisit, 'id' | 'createdAt' | 'individualId'>[],
+  ): Promise<CaseProviderVisit[]>;
 
   listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]>;
   listAllBillRefs(): Promise<BillStatuteRef[]>;

@@ -7,7 +7,7 @@ import type {
 } from '../domain/types';
 import type { ContactEdge } from '../domain/contactEdges';
 import type {
-  CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+  CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
 } from '../domain/caseProviders';
 import { validateCaseProvider } from '../domain/caseProviders';
 import { withDirectoryDefaults } from '../domain/directory';
@@ -78,6 +78,7 @@ interface Store {
   caseProviders: CaseProvider[];
   caseProviderIndividuals: CaseProviderIndividual[];
   caseProviderVisits: CaseProviderVisit[];
+  caseChronologyVersions: CaseChronologyVersion[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
   bills: MedicalBill[];
   lineItems: BillLineItem[];
@@ -620,6 +621,7 @@ export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
     caseProviders: old.caseProviders ?? [],
     caseProviderIndividuals: old.caseProviderIndividuals ?? [],
     caseProviderVisits: old.caseProviderVisits ?? [],
+    caseChronologyVersions: old.caseChronologyVersions ?? [],
   };
 
   const summary =
@@ -702,6 +704,7 @@ function load(): Store {
     partyPii: [],
     runs: [], resultLines: [], reviewLog: [], documents: [], facilityProfiles: [],
     caseProviders: [], caseProviderIndividuals: [], caseProviderVisits: [],
+    caseChronologyVersions: [],
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
     oaaIntakes: [],
@@ -999,6 +1002,64 @@ export class LocalAdapter implements DataAdapter {
         .filter((i) => providerIds.has(i.caseProviderId)).map((i) => i.id),
     );
     return store.caseProviderVisits.filter((v) => individualIds.has(v.individualId));
+  }
+
+  async listChronologyVersions(caseId: string): Promise<CaseChronologyVersion[]> {
+    return load().caseChronologyVersions.filter((v) => v.caseId === caseId);
+  }
+
+  async createChronologyVersion(
+    data: Omit<CaseChronologyVersion, 'id' | 'createdAt' | 'versionNo'>,
+  ): Promise<CaseChronologyVersion> {
+    const store = load();
+    // version_no is per (case, client) and counts REMOVED versions too, so a
+    // removal never makes a later drop reuse a number that already appeared in
+    // the record.
+    const siblings = store.caseChronologyVersions.filter(
+      (v) => v.caseId === data.caseId && (v.clientId ?? null) === (data.clientId ?? null),
+    );
+    const rec: CaseChronologyVersion = {
+      ...data,
+      id: uid(),
+      versionNo: siblings.reduce((max, v) => Math.max(max, v.versionNo), 0) + 1,
+      createdAt: now(),
+    };
+    store.caseChronologyVersions.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async removeChronologyVersion(id: string): Promise<CaseChronologyVersion> {
+    const store = load();
+    const idx = store.caseChronologyVersions.findIndex((v) => v.id === id);
+    if (idx === -1) throw new Error('Chronology version not found');
+    store.caseChronologyVersions[idx] = {
+      ...store.caseChronologyVersions[idx], removedAt: now(),
+    };
+    // D-60: the individuals it named KEEP their rows and lose only the source
+    // pointer. Deleting them would destroy work Michael may have edited by hand.
+    store.caseProviderIndividuals = store.caseProviderIndividuals.map(
+      (i) => (i.chronologyVersionId === id ? { ...i, chronologyVersionId: undefined } : i),
+    );
+    save(store);
+    return store.caseChronologyVersions[idx];
+  }
+
+  async replaceProviderVisits(
+    individualId: string,
+    visits: Omit<CaseProviderVisit, 'id' | 'createdAt' | 'individualId'>[],
+  ): Promise<CaseProviderVisit[]> {
+    const store = load();
+    store.caseProviderVisits = store.caseProviderVisits.filter(
+      (v) => v.individualId !== individualId,
+    );
+    const stamp = now();
+    const rows = visits.map((v) => ({
+      ...v, id: uid(), individualId, createdAt: stamp,
+    }));
+    store.caseProviderVisits.push(...rows);
+    save(store);
+    return rows;
   }
 
   async listRosterFlags(): Promise<RosterBackfillFlag[]> {

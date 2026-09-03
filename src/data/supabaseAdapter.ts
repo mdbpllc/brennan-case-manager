@@ -9,7 +9,8 @@ import { withDirectoryDefaults } from '../domain/directory';
 import { validateEdge, type ContactEdge } from '../domain/contactEdges';
 import {
   validateCaseProvider,
-  type CaseProvider, type CaseProviderIndividual, type CaseProviderVisit,
+  type CaseChronologyVersion, type CaseProvider, type CaseProviderIndividual,
+  type CaseProviderVisit,
 } from '../domain/caseProviders';
 import { stripDestinationKeys, isEmptyPii, type PartyPii } from '../domain/partyPii';
 import type {
@@ -1127,6 +1128,50 @@ export class SupabaseAdapter implements DataAdapter {
     if (ids.length === 0) return [];
     return this.rows<CaseProviderVisit>('case_provider_visits', (q) =>
       q.select('*').in('individual_id', ids).order('sort_order'));
+  }
+
+  async listChronologyVersions(caseId: string): Promise<CaseChronologyVersion[]> {
+    return this.rows<CaseChronologyVersion>('case_chronology_versions', (q) =>
+      q.select('*').eq('case_id', caseId).order('version_no'));
+  }
+
+  async createChronologyVersion(
+    data: Omit<CaseChronologyVersion, 'id' | 'createdAt' | 'versionNo'>,
+  ): Promise<CaseChronologyVersion> {
+    // version_no is per (case, client) and counts REMOVED versions too, so a
+    // removal never lets a later drop reuse a number already in the record.
+    const existing = await this.sb.from('case_chronology_versions')
+      .select('version_no').eq('case_id', data.caseId);
+    if (existing.error) throw new Error(existing.error.message);
+    const mine = ((existing.data ?? []) as { version_no: number }[]);
+    const versionNo = mine.reduce((max, r) => Math.max(max, r.version_no), 0) + 1;
+    return this.insertRow<CaseChronologyVersion>('case_chronology_versions', {
+      ...data, versionNo,
+    });
+  }
+
+  async removeChronologyVersion(id: string): Promise<CaseChronologyVersion> {
+    const removed = await this.updateRow<CaseChronologyVersion>(
+      'case_chronology_versions', id, { removedAt: new Date().toISOString() },
+    );
+    // D-60: individuals it named KEEP their rows and lose only the pointer.
+    const res = await this.sb.from('case_provider_individuals')
+      .update({ chronology_version_id: null }).eq('chronology_version_id', id);
+    if (res.error) throw new Error(res.error.message);
+    return removed;
+  }
+
+  async replaceProviderVisits(
+    individualId: string,
+    visits: Omit<CaseProviderVisit, 'id' | 'createdAt' | 'individualId'>[],
+  ): Promise<CaseProviderVisit[]> {
+    await this.deleteRows('case_provider_visits', 'individual_id', individualId);
+    if (visits.length === 0) return [];
+    const res = await this.sb.from('case_provider_visits')
+      .insert(visits.map((v) => toRow({ ...v, individualId }))).select();
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as Record<string, unknown>[])
+      .map((r) => fromRow<CaseProviderVisit>(r));
   }
 
   async listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]> {
