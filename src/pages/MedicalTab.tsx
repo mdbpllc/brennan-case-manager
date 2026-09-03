@@ -12,6 +12,7 @@ import { isResolved, showsClientLayer, sortClients } from '../domain/client';
 import { computeAnalysis, runScheduleSelection } from '../analysis/benchmark';
 import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
+import ProvidersSection from '../components/ProvidersSection';
 import MarkdownLite from '../components/MarkdownLite';
 import { Combobox } from '../components/Combobox';
 
@@ -178,6 +179,18 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
           )}
         </div>
       )}
+
+      {/* R17 (AS-Q3). ABOVE the ledger by DEFAULT (D-29) — §17.1 rules the
+          record and the tab's layout is nowhere ruled, so the placement is
+          carried to the hands-on sitting rather than settled here. The ledger
+          below is UNCHANGED: no restructuring. */}
+      <ProvidersSection
+        caseRec={caseRec}
+        clients={clients}
+        selectedClientId={selectedClientId}
+        multiClient={multiClient}
+        bills={allBills}
+      />
 
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

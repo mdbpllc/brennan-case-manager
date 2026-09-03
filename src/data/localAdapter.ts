@@ -6,6 +6,10 @@ import type {
   CaseRecord, PartyRecord, CasePartyLink, RosterBackfillFlag,
 } from '../domain/types';
 import type { ContactEdge } from '../domain/contactEdges';
+import type {
+  CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+} from '../domain/caseProviders';
+import { validateCaseProvider } from '../domain/caseProviders';
 import { withDirectoryDefaults } from '../domain/directory';
 import {
   splitPartyFields, stripDestinationKeys, isEmptyPii, type PartyPii,
@@ -67,6 +71,13 @@ interface Store {
   partyPii: PartyPii[];
   clients: CaseClient[];
   clientFlags: ClientBackfillFlag[];
+  /** R17 (fe-d1-amendment-slice.md §3.1) — the CASE-SCOPED provider record and
+   *  what hangs beneath it. Case-scoped by ruling: a facility typed here is
+   *  typed for THIS case. The model never creates any of these rows except the
+   *  individuals and visits beneath a facility Michael already selected. */
+  caseProviders: CaseProvider[];
+  caseProviderIndividuals: CaseProviderIndividual[];
+  caseProviderVisits: CaseProviderVisit[];
   fileCounters: Record<string, number>; // per two-digit year — resets each January by keying on year
   bills: MedicalBill[];
   lineItems: BillLineItem[];
@@ -604,6 +615,11 @@ export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
     version: 15,
     formTemplates: templates,
     formTemplateVersions: versions,
+    // R17's collections. An ABSENT collection reads as `undefined` at every
+    // call site, which is a different bug from an empty one and a worse one.
+    caseProviders: old.caseProviders ?? [],
+    caseProviderIndividuals: old.caseProviderIndividuals ?? [],
+    caseProviderVisits: old.caseProviderVisits ?? [],
   };
 
   const summary =
@@ -685,6 +701,7 @@ function load(): Store {
     // data, and none should: the seed is fictional and stays that way.
     partyPii: [],
     runs: [], resultLines: [], reviewLog: [], documents: [], facilityProfiles: [],
+    caseProviders: [], caseProviderIndividuals: [], caseProviderVisits: [],
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
     oaaIntakes: [],
@@ -876,6 +893,112 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     store.contactEdges = store.contactEdges.filter((e) => e.id !== id);
     save(store);
+  }
+
+  // ---- R17: the case-scoped provider record ----------------------------
+
+  async listCaseProviders(caseId: string): Promise<CaseProvider[]> {
+    return load().caseProviders.filter((p) => p.caseId === caseId);
+  }
+
+  async listAllCaseProviders(): Promise<CaseProvider[]> {
+    return load().caseProviders;
+  }
+
+  async createCaseProvider(
+    data: Omit<CaseProvider, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProvider> {
+    const store = load();
+    // D-53, through the SAME function the Supabase adapter calls, so the two
+    // cannot drift on what a facility is allowed to be.
+    const facility = store.parties.find((p) => p.id === data.facilityPartyId);
+    validateCaseProvider(data, facility?.kind);
+    const stamp = now();
+    const rec: CaseProvider = { ...data, id: uid(), createdAt: stamp, updatedAt: stamp };
+    store.caseProviders.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateCaseProvider(id: string, patch: Partial<CaseProvider>): Promise<CaseProvider> {
+    const store = load();
+    const idx = store.caseProviders.findIndex((p) => p.id === id);
+    if (idx === -1) throw new Error('Provider record not found');
+    const next = { ...store.caseProviders[idx], ...patch, updatedAt: now() };
+    const facility = store.parties.find((p) => p.id === next.facilityPartyId);
+    validateCaseProvider(next, facility?.kind);
+    store.caseProviders[idx] = next;
+    save(store);
+    return next;
+  }
+
+  async deleteCaseProvider(id: string): Promise<void> {
+    const store = load();
+    // The cascade Postgres does for us. A served paragraph record keeps its
+    // rendered facility name and simply loses the pointer (D-53).
+    const individualIds = store.caseProviderIndividuals
+      .filter((i) => i.caseProviderId === id).map((i) => i.id);
+    store.caseProviderVisits = store.caseProviderVisits
+      .filter((v) => !individualIds.includes(v.individualId));
+    store.caseProviderIndividuals = store.caseProviderIndividuals
+      .filter((i) => i.caseProviderId !== id);
+    store.caseProviders = store.caseProviders.filter((p) => p.id !== id);
+    save(store);
+  }
+
+  async listProviderIndividuals(caseId: string): Promise<CaseProviderIndividual[]> {
+    const store = load();
+    const ids = new Set(store.caseProviders.filter((p) => p.caseId === caseId).map((p) => p.id));
+    return store.caseProviderIndividuals.filter((i) => ids.has(i.caseProviderId));
+  }
+
+  async createProviderIndividual(
+    data: Omit<CaseProviderIndividual, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProviderIndividual> {
+    const store = load();
+    const stamp = now();
+    const rec: CaseProviderIndividual = {
+      ...data, id: uid(), createdAt: stamp, updatedAt: stamp,
+    };
+    store.caseProviderIndividuals.push(rec);
+    save(store);
+    return rec;
+  }
+
+  async updateProviderIndividual(
+    id: string,
+    patch: Partial<CaseProviderIndividual>,
+  ): Promise<CaseProviderIndividual> {
+    const store = load();
+    const idx = store.caseProviderIndividuals.findIndex((i) => i.id === id);
+    if (idx === -1) throw new Error('Individual not found');
+    const next = { ...store.caseProviderIndividuals[idx], ...patch, updatedAt: now() };
+    store.caseProviderIndividuals[idx] = next;
+    save(store);
+    return next;
+  }
+
+  async softDeleteProviderIndividual(id: string): Promise<CaseProviderIndividual> {
+    // D-55. NOT a hard delete: his ruled act — "I can go through and delete
+    // anyone that I wanna delete" — has to survive the next chronology drop,
+    // and a hard delete would be undone by the very next extraction.
+    return this.updateProviderIndividual(id, { removedByHandAt: now() });
+  }
+
+  async restoreProviderIndividual(id: string): Promise<CaseProviderIndividual> {
+    return this.updateProviderIndividual(id, { removedByHandAt: undefined });
+  }
+
+  async listProviderVisits(caseId: string): Promise<CaseProviderVisit[]> {
+    const store = load();
+    const providerIds = new Set(
+      store.caseProviders.filter((p) => p.caseId === caseId).map((p) => p.id),
+    );
+    const individualIds = new Set(
+      store.caseProviderIndividuals
+        .filter((i) => providerIds.has(i.caseProviderId)).map((i) => i.id),
+    );
+    return store.caseProviderVisits.filter((v) => individualIds.has(v.individualId));
   }
 
   async listRosterFlags(): Promise<RosterBackfillFlag[]> {

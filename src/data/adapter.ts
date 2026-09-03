@@ -4,6 +4,9 @@ import type {
 import type { ContactEdge } from '../domain/contactEdges';
 import type { DirectoryFields } from '../domain/directory';
 import type { PartyPii } from '../domain/partyPii';
+import type {
+  CaseProvider, CaseProviderIndividual, CaseProviderVisit,
+} from '../domain/caseProviders';
 
 /** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
  *  defaulted by the adapters (`withDirectoryDefaults`), so callers that predate
@@ -318,6 +321,43 @@ export interface DataAdapter {
   upsertFormatProfile(
     data: Omit<FormFormatProfile, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<FormFormatProfile>;
+
+  // ---- R17: the case-scoped provider record (fe-d1-amendment-slice.md §3.1) ----
+  /** The FACILITY rows for a case. Case-scoped by ruling (`AS-Q3`) — a facility
+   *  typed here is typed for THIS case and nowhere else. */
+  listCaseProviders(caseId: string): Promise<CaseProvider[]>;
+  /** Every facility row across cases — D-32's last-case TYPE pre-fill reads
+   *  this, and it is the ONLY pre-fill that exists. */
+  listAllCaseProviders(): Promise<CaseProvider[]>;
+  /** Refuses a facility party that is not an organization (D-53), through the
+   *  same `validateCaseProvider` both adapters call. */
+  createCaseProvider(
+    data: Omit<CaseProvider, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProvider>;
+  updateCaseProvider(id: string, patch: Partial<CaseProvider>): Promise<CaseProvider>;
+  /** Removes the facility row and its individuals and visits (cascade). A
+   *  SERVED paragraph record survives it — `on delete set null` (D-53). */
+  deleteCaseProvider(id: string): Promise<void>;
+
+  /** The individuals beneath the facilities of a case. */
+  listProviderIndividuals(caseId: string): Promise<CaseProviderIndividual[]>;
+  createProviderIndividual(
+    data: Omit<CaseProviderIndividual, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProviderIndividual>;
+  /** A hand edit NAMES the fields it touched (D-51) so re-extraction can leave
+   *  them alone. The caller passes `handEditedFields`; the adapter stores it. */
+  updateProviderIndividual(
+    id: string,
+    patch: Partial<CaseProviderIndividual>,
+  ): Promise<CaseProviderIndividual>;
+  /** D-55: Michael's delete is a SOFT delete — the row hides, and no later pull
+   *  resurrects it. There is deliberately no hard delete for an individual. */
+  softDeleteProviderIndividual(id: string): Promise<CaseProviderIndividual>;
+  restoreProviderIndividual(id: string): Promise<CaseProviderIndividual>;
+
+  /** Visit rows. ONLY ever written by an extraction (§17.7) — no hand path
+   *  exists, by ruling, which is why there is no create method for one. */
+  listProviderVisits(caseId: string): Promise<CaseProviderVisit[]>;
 
   listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]>;
   listAllBillRefs(): Promise<BillStatuteRef[]>;

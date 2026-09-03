@@ -42,7 +42,9 @@ export type ContactEdgeType =
   | 'platform-for'
   | 'attorney-for'
   | 'bailee-of'
-  | 'joint-enterprise-with';
+  | 'joint-enterprise-with'
+  /** CD-14 (AS-Q11). Keep in step with db/schema.sql's own CHECK. */
+  | 'renders-care-at';
 
 export interface ContactEdgeTypeDef {
   key: ContactEdgeType;
@@ -77,6 +79,12 @@ export const CONTACT_EDGE_TYPES: ContactEdgeTypeDef[] = [
   { key: 'attorney-for', label: 'is attorney for', inverseLabel: 'is represented by', note: 'Attorney is a ROLE on the same directory (§2.2); who-represents-whom is this edge, not a separate structure.' },
   { key: 'bailee-of', label: 'holds property as bailee of', inverseLabel: 'placed property with' },
   { key: 'joint-enterprise-with', label: 'is in joint enterprise with', inverseLabel: 'is in joint enterprise with', symmetric: true, note: 'Staffing entity behind the driver (REQ-03).' },
+  // CD-14 (AS-Q11), 2026-09-03. A clinician renders care at a facility. Created
+  // ONLY at Michael's promote click or by hand — THE MODEL NEVER CREATES AN
+  // EDGE (§14.4, the OBGYN rule). Its PERIOD is what makes it usable: a doctor
+  // who left a practice and returned needs two of them, which is why
+  // effective_from joins the unique key (D-7).
+  { key: 'renders-care-at', label: 'renders care at', inverseLabel: 'is a facility where care is rendered by', note: 'Individual -> organization. Created at promotion from a case provider record, with dates Michael confirms. A blank "to" means current.' },
 ];
 
 export const CONTACT_EDGE_TYPE_MAP: Record<string, ContactEdgeTypeDef> = Object.fromEntries(
@@ -99,6 +107,15 @@ export interface ContactEdge {
   edgeType: ContactEdgeType;
   /** undefined = world fact. */
   caseId?: string;
+  /** CD-14's PERIOD. Both nullable; a blank `effectiveTo` means CURRENT.
+   *
+   *  A cleared `effectiveFrom` is NULL and means "current at every date" —
+   *  deliberately, and D-56 says why: filling it silently from the first visit
+   *  would assert that the affiliation BEGAN then, which is a fact about a real
+   *  person's employment that nobody has. The promote dialog pre-fills it,
+   *  shows it, and lets him clear it. */
+  effectiveFrom?: string;
+  effectiveTo?: string;
   note?: string;
   createdAt: string;
 }

@@ -7,6 +7,10 @@ import type {
 } from '../domain/types';
 import { withDirectoryDefaults } from '../domain/directory';
 import { validateEdge, type ContactEdge } from '../domain/contactEdges';
+import {
+  validateCaseProvider,
+  type CaseProvider, type CaseProviderIndividual, type CaseProviderVisit,
+} from '../domain/caseProviders';
 import { stripDestinationKeys, isEmptyPii, type PartyPii } from '../domain/partyPii';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
@@ -422,6 +426,11 @@ export class SupabaseAdapter implements DataAdapter {
       .insert({
         from_contact_id: data.fromContactId, to_contact_id: data.toContactId,
         edge_type: data.edgeType, case_id: data.caseId ?? null, note: data.note ?? null,
+        // CD-14's period. Explicit nulls, because this insert is written out
+        // column by column rather than going through toRow — a field omitted
+        // here simply would not be written, which is how a cleared "from"
+        // would silently become an absent one.
+        effective_from: data.effectiveFrom ?? null, effective_to: data.effectiveTo ?? null,
       })
       .select().single();
     if (res.error) throw new Error(res.error.message);
@@ -1031,6 +1040,93 @@ export class SupabaseAdapter implements DataAdapter {
       .upsert(toRow(data), { onConflict: 'legiscan_bill_id' }).select().single();
     if (res.error) throw new Error(res.error.message);
     return fromRow<TrackedBill>(res.data as Record<string, unknown>);
+  }
+
+  // ---- R17: the case-scoped provider record ----------------------------
+  // case_providers / case_provider_individuals / case_provider_visits map 1:1
+  // snake_case<->camelCase, so the generic row helpers serve them unchanged.
+  // The two child lists filter by the case's provider ids rather than joining,
+  // because the child tables carry no case_id — the facility row owns the case.
+
+  async listCaseProviders(caseId: string): Promise<CaseProvider[]> {
+    return this.rows<CaseProvider>('case_providers', (q) =>
+      q.select('*').eq('case_id', caseId));
+  }
+
+  async listAllCaseProviders(): Promise<CaseProvider[]> {
+    return this.rows<CaseProvider>('case_providers', (q) => q.select('*'));
+  }
+
+  async createCaseProvider(
+    data: Omit<CaseProvider, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProvider> {
+    // D-53, through the SAME function the local adapter calls (the validateEdge
+    // precedent) so the two cannot drift on what a facility is allowed to be.
+    const party = await this.sb.from('parties').select('kind')
+      .eq('id', data.facilityPartyId).single();
+    if (party.error) throw new Error(party.error.message);
+    validateCaseProvider(data, (party.data as { kind?: 'individual' | 'organization' })?.kind);
+    return this.insertRow<CaseProvider>('case_providers', data);
+  }
+
+  async updateCaseProvider(id: string, patch: Partial<CaseProvider>): Promise<CaseProvider> {
+    return this.updateRow<CaseProvider>('case_providers', id, patch);
+  }
+
+  async deleteCaseProvider(id: string): Promise<void> {
+    // Individuals and visits go with it by ON DELETE CASCADE; a served
+    // paragraph record keeps its rendered name and loses only the pointer.
+    await this.deleteRows('case_providers', 'id', id);
+  }
+
+  private async caseProviderIds(caseId: string): Promise<string[]> {
+    const res = await this.sb.from('case_providers').select('id').eq('case_id', caseId);
+    if (res.error) throw new Error(res.error.message);
+    return ((res.data ?? []) as { id: string }[]).map((r) => r.id);
+  }
+
+  async listProviderIndividuals(caseId: string): Promise<CaseProviderIndividual[]> {
+    const ids = await this.caseProviderIds(caseId);
+    if (ids.length === 0) return [];
+    return this.rows<CaseProviderIndividual>('case_provider_individuals', (q) =>
+      q.select('*').in('case_provider_id', ids).order('sort_order'));
+  }
+
+  async createProviderIndividual(
+    data: Omit<CaseProviderIndividual, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<CaseProviderIndividual> {
+    return this.insertRow<CaseProviderIndividual>('case_provider_individuals', data);
+  }
+
+  async updateProviderIndividual(
+    id: string,
+    patch: Partial<CaseProviderIndividual>,
+  ): Promise<CaseProviderIndividual> {
+    return this.updateRow<CaseProviderIndividual>('case_provider_individuals', id, patch);
+  }
+
+  async softDeleteProviderIndividual(id: string): Promise<CaseProviderIndividual> {
+    // D-55: a SOFT delete. A hard one would be undone by the next extraction.
+    return this.updateProviderIndividual(id, { removedByHandAt: new Date().toISOString() });
+  }
+
+  async restoreProviderIndividual(id: string): Promise<CaseProviderIndividual> {
+    // `undefined` through toUpdateRow becomes an explicit NULL, which is what
+    // clearing the soft delete means. That asymmetry with toRow is deliberate
+    // and is why updates never go through the insert mapper.
+    return this.updateProviderIndividual(id, { removedByHandAt: undefined });
+  }
+
+  async listProviderVisits(caseId: string): Promise<CaseProviderVisit[]> {
+    const providerIds = await this.caseProviderIds(caseId);
+    if (providerIds.length === 0) return [];
+    const ind = await this.sb.from('case_provider_individuals').select('id')
+      .in('case_provider_id', providerIds);
+    if (ind.error) throw new Error(ind.error.message);
+    const ids = ((ind.data ?? []) as { id: string }[]).map((r) => r.id);
+    if (ids.length === 0) return [];
+    return this.rows<CaseProviderVisit>('case_provider_visits', (q) =>
+      q.select('*').in('individual_id', ids).order('sort_order'));
   }
 
   async listBillRefs(trackedBillId: string): Promise<BillStatuteRef[]> {
