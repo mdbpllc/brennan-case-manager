@@ -1213,3 +1213,80 @@ Raised by the design session that recorded Michael's run of `MIG-1` and the amen
 **2. Check 8 FAILED on the live project, and the cause is a named constraint.** The CD-1 migration (2026-08-12, lines 188–190) named the `contact_edges` vocabulary CHECK `contact_edges_type_check`; the amendment dropped `contact_edges_edge_type_check` with `if exists` — a silent no-op — and added its own under that name. Two CHECKs now stand; the old one rejects `renders-care-at`. `db/schema.sql` carries the CHECK inline and unnamed, so the auto-name the slice assumed (§5.2) is right for a fresh project and wrong for the live one. Home: `#147` correction B; the fix migration; slice §5.2 corrected in place.
 
 **3. `db/schema.sql` is not the live database's authority on constraint NAMES; the migration history is.** A migration that drops or renames a constraint must take the name from the migration that created it (or from the catalog), never from `schema.sql`'s inline form. The same file already did this correctly for the unnamed unique key (D-7) and for the provider-named constraints; the CHECK was the exception. Home: a candidate line for CLAUDE.md's migration conventions at the next design packet that touches it — recorded here, not written there.
+
+## 2026-09-03 — FE-D1 amendment slice, second tranche: seven findings
+
+Raised by the Code session that built §13 items 5–14 on Michael's `FE-D1A-1`
+authorization (session log `#146`), continuing the first tranche. Nothing below
+was fixed in a spec. Items 1 and 2 are the ones that need Michael's eye.
+
+**1. THE LEAD'S TRAILING COMMA READS WRONG FOR A GROUP, AND FOR ANYONE WITHOUT A
+CREDENTIAL — and it is HIS ruled form, so it was NOT changed.** `AS-Q8b` puts a
+bold lead of `{provider_name}, {credential},` in front of slot 1, and D-42 rules
+that a NULL credential yields "the bold name followed by ONE comma". The writer's
+opening then continues after it. That renders correctly for one credentialled
+person — *"**Ines Vantwoud, M.D.,** is a provider at …"* is a clean appositive.
+It does not render correctly when there is no credential to close, which happens
+in two ordinary cases: a group, where D-21 folds credentials into the name and
+leaves `{credential}` empty — *"**Drs. Skarsgaard and Petrossian,** are providers
+at …"* — and any individual whose credential suffix is blank — *"**Jane Doe,** is
+a provider at …"*. The comma has nothing to close and reads as a dangling one.
+**The build did not "improve" this**, because D-42 rules ONE comma in terms and a
+slice does not get to reword a served form. **The question for Michael: should
+the lead drop its trailing comma when there is no credential?** It is a text act
+in a served document and belongs on the hands-on list beside D-64's N ≥ 2
+literal.
+
+**2. THE PROVIDER BLOCK READS `addressLine1` / `cityStateZip`; THE `providerBusiness`
+REGISTRY STORES ADDRESSES IN A REPEATING `locations` FIELD.** The master's block
+tokens are flat — `facility_address_line_1`, `facility_city_state_zip` — but the
+registry's facility type (`src/domain/partyRegistry.ts`) has no such fields: it
+carries `locations`, a repeating list of `{ label, address, phone }`. So a
+facility whose address was entered the way the contact form asks for it renders a
+block with NO address, and the ambient panel correctly reports the address as
+missing. Seen live on the walk: Central Texas Regional Medical Center, seeded
+with two `locations`, generated a block with only its phone. **This predates the
+amendment slice** — FE-D1's block had the same tokens — and it is not fixable
+from inside this slice, because which of several locations belongs in a
+designation block is a question about the record, not about the engine. Home: a
+design decision for Michael, likely alongside `RF-2`.
+
+**3. `pronounSetFromFields` READS `fields.pronouns` / `fields.gender`; THE `R17`
+INDIVIDUAL CARRIES A SINGLE `pronoun` COLUMN.** Caught in build, not by a test.
+Passing the wrong key made every pronoun in every generated paragraph resolve to
+"they" — never obviously broken and always wrong. Fixed in one place so one
+parser understands every spelling in both models. Recorded because the same trap
+exists for any future consumer of the R17 row: the column and the field are
+named differently on purpose (one is a typed column, one is a free-form bag) and
+nothing in the type system connects them.
+
+**4. `Pronouns.verbS` HAD EXISTED SINCE FE-D1 AND HAD NEVER BEEN READ.**
+`grammar.ts:29`, "Plural-aware verb suffix: specialize vs specializes." It is the
+correct source for `#147`'s new `{verb_s}` token and a count is not: ONE
+technician with no pronoun on record speaks as "they", and "they specializes" is
+not English. Noted so the design side knows the ruling was implemented against
+the pronoun rather than against the count, and why.
+
+**5. D-16's REASON REACHES AN IMAGING FACILITY, AND SO DOES ITS WORDING.** D-16
+bars a rider where "a facility whose only non-`mid-level` individuals are marked
+`radiologist`" — reasoned as "a rider there would tie the PA's testimony scope to
+the radiologists' reads". At a facility TYPED `radiologist` the individuals'
+EFFECTIVE marker IS `radiologist` (`coalesce(role_marker, facility type)`), so the
+words fit as well as the reason does. The build bars the rider there too.
+Recorded rather than assumed, because it is a reading of a default and Michael
+may read it the other way.
+
+**6. THE SLICE NAMES TWO DISJOINT FIXTURE UNIVERSES AS IF THEY WERE ONE.** D-35
+says "on the seeded MVC matter (the Garcia matter, per the build entry)" and
+lists "Halite Regional Hospital, Feldspar & Gneiss PLLC". Those two live only in
+`src/forms/fixtures.ts`, on a separate case whose plaintiff is Alba Quartzmoor;
+the SEEDED Garcia matter's facilities are ProCare Injury Specialists and Central
+Texas Regional Medical Center. The walk fixtures were built on the seeded matter
+and reuse its hospital. No action beyond noting that the design session could not
+see either file.
+
+**7. THE `dev` SERVER'S SCROLL RENDERING IS UNRELIABLE UNDER AUTOMATION, WHICH IS A
+NOTE ABOUT THE WALK AND NOT ABOUT THE APP.** Screenshots taken mid-scroll came
+back blank or with content displaced; `get_page_text` and `read_page` were
+accurate throughout, and every finding in the walk was reached through those.
+Recorded so a later session does not chase a rendering ghost.
