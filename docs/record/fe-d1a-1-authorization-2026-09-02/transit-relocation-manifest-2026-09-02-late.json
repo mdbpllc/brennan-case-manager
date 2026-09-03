@@ -1,0 +1,32 @@
+{
+  "zip": "brennan-case-manager_transit-sweep-doc-and-0902-pair_2026-09-02.zip",
+  "built": "2026-09-02 Central (23:47 CDT), in Michael's Chrome from the claude.ai project docs API (project 019f9fc8-cb72-770d-a0f5-4a6405e7650b)",
+  "rule": "TC-8 TRANSIT relocation, step 1. Names are the exact project-knowledge names; a claude/ folder in this zip mirrors the claude/ namespace of project knowledge and is NOT a repo path.",
+  "conditions": "Both TC-8 conditions verified at HEAD cae00ba (batch 87) before this zip was built: the sweep doc's content is at docs/record/queue-cleanup-evidence-2026-09-01/wave2_opus_sweep_evidence.md byte-identical (sha256 e8c94cbc…); its adjudication entry is #144; the 09-02 pair's entry is #145 and every file its routing table names exists at HEAD.",
+  "files": [
+    {
+      "name": "claude/claude_Capacity_Pass_Rulings_Capture_2026-09-02.md",
+      "uuid": "60bb8784-986e-4595-b323-517c68c9a8f0",
+      "created_at": "2026-09-02T22:59:10.287764Z",
+      "bytes": 18237,
+      "estimated_token_count": 5633,
+      "sha256": "234974a71f303b84d6b3dcfc68289f5a29baee9ed09bcb54fef5bdd358200e6c"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-09-02.md",
+      "uuid": "f065061d-df32-42f9-be21-1cc31e7c30a3",
+      "created_at": "2026-09-02T22:59:07.778713Z",
+      "bytes": 18732,
+      "estimated_token_count": 5740,
+      "sha256": "49115a10d540edcdc7a2a98cf814b2e9a7ada8756427856f5467242e429ae9dc"
+    },
+    {
+      "name": "claude/claude_Queue_Sweep_Evidence_Opus_2026-09-01.md",
+      "uuid": "0729a21c-711b-4981-bcd7-6b5a9f56ced3",
+      "created_at": "2026-09-01T22:14:09.029301Z",
+      "bytes": 435976,
+      "estimated_token_count": 147253,
+      "sha256": "e8c94cbcccaa5b77eeb30ffbb2dc45863754591b3b30b55b7aec81a852d16a82"
+    }
+  ]
+}

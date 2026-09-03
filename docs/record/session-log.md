@@ -17,6 +17,210 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-09-03 — QUEUE-RUNNER batch (runner line; EIGHTY-EIGHTH invocation) — one docs-only packet, and the batch that FILED A BUILD AUTHORIZATION WITHOUT BUILDING ANYTHING: `FE-D1A-1` is ruled, so the FE-D1 amendment slice is BUILD-AUTHORIZED and still entirely unbuilt, this runner being BARRED from it by the ruling's own text; three `EVIDENCE` files land under a ruling's slug for the first time; and the runner's own findings are five — a measurement trap that looked exactly like a defect, a stale claim BUILD-STATE had carried since the batch that falsified it, three separate staleness defects in the TOC, a `git checkout` that silently flipped three files to CRLF, and a falsified count left standing on purpose because correcting it is Michael's ruling and not a runner's
+
+**THE PACKET, AND THE ORDER.** ONE zip, so no ordering question arose and `QR-4`'s dual-order rule had nothing to disagree about: `push-to-code_fe-d1a-1-authorization_2026-09-03.zip` — 42,131 B, mtime 2026-09-03 00:14:46 −0500, sha256 `84b5332f59e1265f96309280e533c405bb2344b8082af976197cd92f9b2e6d61`, pinned at Step 1 (`QR-6(c)`). **Nothing was superseded** — a single packet cannot conflict with itself — and **nothing was skipped as already built.** Step 1 item 3 found `docs/record/fe-d1a-1-authorization-2026-09-02/` ABSENT and the `FE-D1A-1` row still ⬜ by leading-marker read, so the packet was neither pushed nor committed-unpushed. **The Step 1 STOP ran long — Michael first answered HOLD and then corrected it — so the packet identity was RE-PINNED before execution and the Step 0 gate re-read; both were unchanged. That re-pin is the whole point of `QR-6(c)`: a packet has in fact been swapped mid-STOP, and this STOP was longer than most.**
+
+**STEP 0 GATE.** `git fetch origin` then `git ls-remote origin refs/heads/master` returned `cae00ba259c529e14c56c87bca13d769346edf58`, equal to HEAD — not behind, not ahead, not diverged; on `master`; no tracked modifications. The tracking ref was not used as evidence (`QR-6(a)`). The two untracked 2026-08-24 files in `docs/specs/` and the loose `inbox/push-to-code_fe-d1-amendment-slice_2026-08-31/` staging directory were left untouched, as the packet's §6 directs.
+
+**HEALTH CHECK SKIPPED, AND THE SKIP IS RECORDED RATHER THAN SILENT (`QR-6(f)`).** §5 is NONE in the only packet, and no `src/`, `db/`, `supabase/` or build-tooling path is routed — every write this batch made lands under `docs/record/` or `docs/specs/`. `npm test` / `npm run build` / `npm run lint` would have proved nothing about this batch and were NOT run. **The test suite's standing RED prediction on the §9 drift test is therefore neither confirmed nor cleared here; it is the build session's first act to measure.**
+
+**EVERY FIGURE THE PACKET ASSERTED ABOUT THE REPO WAS CHECKED BEFORE A BYTE WAS WRITTEN, AND ALL OF THEM HELD.** The newest design entry was `#145`, so `#146` needed no renumber; the `FE-D1A-1` row was a single line of 3,024 B with no indented children, so it moved cleanly; `docs/specs/session-log-head.md` was 196,398 B and `docs/specs/BUILD-STATE.md` 99,971 B — **29 bytes under the `CAP-4` ceiling**, exactly as §1 predicted. All six §4 exact-strings were confirmed present EXACTLY ONCE and were EXTRACTED from the manifest's fenced blocks rather than retyped, with a non-ASCII audit on each showing straight ASCII apostrophes throughout (the curly-quote class). Both relocation manifests matched their stated sha256 — `094460eb…a1c373` and `c489b3e5…2336853b` — and the ruling ledger matched its stated 9,453 B. The §3 entry block in the manifest proved byte-identical to the zip's `session-log-entry-146.md` but for that file's trailing newline. **The slice's §14 item 2 was read AT SOURCE rather than taken from the manifest's quotation of it, and the manifest's rendering was correct.**
+
+**WHAT LANDED.** The `#146` entry, prepended whole and verbatim. Three `EVIDENCE`-class files to `docs/record/fe-d1a-1-authorization-2026-09-02/` — **the first `EVIDENCE` rows ever born under a RULING's slug rather than a pass's** (`CAP-2`). The three-act queue merge: `FE-D1A-1`, `CAP-CARRY-1` and `CAP-CARRY-2` each annotated, flipped ⬜ → ✅ and MOVED to `docs/record/attorney-review-queue-closed.md`, the Capacity-pass heading pair created there after the TC-series section as `CAP-3` provides; the Status paragraph's current reconcile sentence replaced and **its predecessor appended verbatim to the RECONCILE HISTORY block**; NO new row minted. The merge ran under conservation checks that refused to write on any mismatch — ⬜ 368 → 365, synced ✅ 11 unchanged, closed ✅ 116 → 119, total ✅ conserved at 130 — and every check passed on the first run.
+
+**FINDING 1 — A MEASUREMENT TRAP THAT LOOKED EXACTLY LIKE A DEFECT, AND WAS NOT.** `docs/record/session-log.md` carries **163 `## ` headings but only 162 ENTRIES** at HEAD, and the head file's §2 index carried 162 rows. Read carelessly that is a missing index row in a file whose whole purpose is to tell a bridge-less session that an entry EXISTS. It is not: the 163rd heading is **`## ARCHIVED: entries older than the 2026-08-13 cutoff`**, a pointer marker rather than an entry, so 162 was correct and batch 87's head file was right. **Recorded because the disconfirming read was one command away and the plausible read was wrong: any future count of this log that keys on `^## ` and does not exclude that marker will over-report by exactly one, and will do so while looking like arithmetic.** The generator written this batch excludes it by name.
+
+**FINDING 2 — A STALE CLAIM BUILD-STATE HAD BEEN CARRYING SINCE THE BATCH THAT FALSIFIED IT.** Its runner-discipline line read **"in force; runner v12 … unmoved, unamended"** — written by batch 87, the very batch that amended the runner v12 → v13 and then ran under its own amendment. Its own header banner said `v13` two screens above. **Corrected this refresh to v13 with the amendment named**, and `CAP-1`–`CAP-4` and the three-act merge added to the same line. **The class is worth naming: a file rewritten IN FULL every batch can still carry a false sentence, because "rewrite in full" is satisfied by re-emitting a stale line.**
+
+**FINDING 3 — THE TOC WAS STALE IN THREE SEPARATE WAYS, ALL FROM BATCH 87, AND ONE OF THEM IS THE FILE'S OWN MOST-REPEATED FINDING TURNING ON IT A FIFTH TIME.** Batch 87 added three rows and took the set 159 → 162, but left the census sentence reading **"159 entries indexed"**, left the arithmetic chain ending at **"THE THIRTY-SEVENTH ADDS FOUR: 155 + 4 = 159"**, and **wrote no edition bullet at all** — so the thirty-eighth edition exists in the row set and in the *Basis of this read* prose and nowhere else. All three are repaired at this edition. **The missing bullet is noted FORWARD and NOT back-written (`HK-7`'s shape), and the edition/firing counts are advanced on a STATED assumption** — that batch 87's regeneration was the thirty-eighth edition and its firing the thirty-third — resting on the row set and the Basis prose, not on any sentence batch 87 wrote about itself. If Michael reads the count differently, the correction belongs at the next edition and not in a rewritten history.
+
+**FINDING 4 — `git checkout` SILENTLY FLIPPED THREE FILES TO CRLF, AND THE BYTE COUNTS MOVED WITH THEM.** Mid-batch this runner reverted `session-log.md`, `session-log-toc.md` and `session-log-head.md` to HEAD in order to rewrite them once, in the right order, after BUILD-STATE's displacement set was settled. **They came back CRLF.** `core.autocrlf` is `true` on this machine and there is **no `.gitattributes`** — the condition batch 87 recorded as a hazard for a script it shipped, here striking the record files themselves. The tell was arithmetic and exact: each file grew by **precisely its own line count** — 1,475,660 → 1,485,415 against 9,755 LF; 248,248 → 248,752 against 504; 196,398 → 197,088 against 690. All three were converted back to LF and re-verified byte-identical to their pre-revert sizes, and `git diff --numstat` then reported them blob-identical to HEAD. **The lesson generalises past `git show`, which `CAP-4` already warns about: on this machine a file freshly restored by `git checkout` is not a safe thing to measure, and a runner that reverted-then-measured would have written inflated figures into BUILD-STATE while every command it ran returned success.**
+
+**FINDING 5 — RAISED TO MICHAEL MID-BATCH, RULED BY HIM, AND EXECUTED ON HIS IN-SESSION AUTHORIZATION (`QR-6(e)`).** The review register's Status paragraph carried batch 87's trailing description of the one-time split, ending with **present-tense counts this batch had falsified** — *"this file ⬜ 368, ✅ 11, 🟡 5; the closed register ✅ 116; total ✅ 127"* — against the true post-merge figures of **⬜ 365 / ✅ 11 / 🟡 5 synced and ✅ 119 closed, 130 total**. The packet's §4.4 set the DEFAULT as *leave it as it stands* and invited the runner to say which it did; the runner left it, flagged it, and put the tension to Michael — that a strict reading of `CAP-3` §3.3 item 4 (the paragraph carries its intro sentences and the current reconcile sentence **only**) says the block should go. **His ruling, verbatim from the option set put to him: *"Move it to the closed register now (Recommended)."*** **THE ACT RAN ON THAT AUTHORIZATION AND ON NOTHING ELSE.** It appears in NO routing row and NO Step 4 item, which is exactly what `QR-6(e)` governs, and it **APPLIES `CAP-3` §3.3 as already ruled — it changes no convention and mints no ID.** What ran: the 1,460-byte block was CUT from the synced Status paragraph, which now carries its intro sentence and exactly ONE `Reconciled` sentence, and APPENDED VERBATIM to the RECONCILE HISTORY at the head of the closed register, immediately after batch 87's superseded sentence, so the history reads that sentence followed by its own block. **Conserved and verified before the write: `docs/specs/attorney-review-queue.md` 426,544 → 425,083 B (1,461 out, the extra byte being the separating space); `docs/record/attorney-review-queue-closed.md` 246,483 → 247,945 B (1,462 in, the extra two being the blank-line separator) — so the block text itself is conserved at 1,460 bytes exactly; `first batch under` now counts ZERO in the synced file and ONE in the closed register; no other row, in either file, was touched.** **A SECOND QUESTION WAS PUT AND RULED THE OTHER WAY:** whether to queue the proposal that `CAP-4`'s displaced text should go to an `EVIDENCE` file rather than into a runner line — *"Carry it to the next design packet (Recommended)"*. **NO ROW IS MINTED THIS BATCH AND NO RUNNER BEHAVIOUR CHANGES**; the eleven blocks above stay where `CAP-4` puts them today.
+
+**DISPLACED FROM BUILD-STATE (`CAP-4`)** — the ceiling does not delete text, it moves it here. `CAP-4` bound at **99,971 B before → 99,834 B after**, still exactly 150 non-blank lines. **FIFTEEN paragraphs paid, every one narrative, method or a superseded conditional, and NOT ONE an existence claim.** *(Eleven paid at the first rewrite; four more — [L]–[O] — when the verification pass below sent repairs back into the file and pushed it over the ceiling again.)* Each original follows VERBATIM, named by what it was cut from:
+
+> **[A] — the adjudication and correction series' six structural firsts.** **#98 is the first session to move a registry Status line to VERIFIED**, and it moved twenty-four; **C-2 is the first Code session to decline a `#nn`**, which `TOC-6` has now made the rule; **#100 is the first to move a Status line the OTHER WAY**; **#101 is the first correction entry whose whole subject is a DATE**; **#103 is the first produced by an adversarial audit of a prior session's own output**; **#106 is the first whose ruling had to be folded into a spec a build slice will read before that slice runs.**
+
+> **[B] — the `Q-CAP` click-by-click history and the `/docs/reference/` lever row.** **`Q-CAP-2`'s click DID NOT PAY (`#124`: 91.9% → 92.3% → 92.8%, UP); `Q-CAP-3`'s `/docs/archive/` exclusion DID — `#125`: 1,701,643, 92.8% → 85.1%, ~155K freed. ALL THREE `Q-CAP` ACTS RULED, EXECUTED, VERIFIED.** Its `/docs/reference/` lever row **stays KNOWN-OVERSTATED, untouched**.
+
+> **[C] — the health-trio method lesson.** **THE BASELINE IS THE POINT — a trio run only at the end cannot tell a pre-existing failure from one you just wrote.** **AND THE LESSON HELD AGAIN THIS SESSION: `npm test` was GREEN while `tsc -b` had eight errors** — vitest does not type-check, so a green suite is not a green build, which is why all three run together.
+
+> **[D] — the `RlsProbePanel` replacement wordings.** **`RlsProbePanel.tsx`'s two false privilege sentences are REPAIRED 2026-08-19 (`G10-6` ruled IN, `G10-5` built it)** — signed-out now reads *"anon holds none of the four DML privileges"* (adopted wording); the privilege-wall sentence reads *"The role holds none of the four DML privileges on these tables"* — **that wording is PROPOSED, NOT separately adopted, and Michael's to override.**
+
+> **[E] — the FE-4/FE-5/FE-6 in-session repair.** *(**All THREE of FE-4/FE-5/FE-6 carried the falsified `ALTER DEFAULT PRIVILEGES` claim AND a stale "probe covers 36 tables" — found by this batch's re-derivation, in NO routing row, and REPAIRED on your in-session authorization, FE-4 only after an emphasis-tolerant second sweep caught what the first missed.**)*
+
+> **[F] — gate 1's eleven-backups evidence.** **GATE 1's RATIONALE IS HALF WRONG (dashboard, 2026-08-19): ELEVEN PHYSICAL backups span 12–19 August, BEFORE the Pro purchase, EACH WITH A RESTORE BUTTON. ONE LIMB IS UNCLOSEABLE: whether they were restorable FROM A FREE ACCOUNT on 18 August.** Gate 1 stays closed; the REASON was wrong.
+
+> **[G] — T-30's defeated argument.** **T-30's headline SURVIVED THE AUDIT BUT ITS ARGUMENT DID NOT:** the overlap it relied on is a **GENERAL cardinality property**, **so the argument defeats the three-value column already in the schema, and the PRIOR question — should `privilege_tier` be exhaustive at all? — had never been ruled** (`Q-COM-10-A`, since RULED at #105). **The 192.5(d) over-read is corrected** — the rule's *"For purposes of these rules"* qualifier was dropped (`Q-COM-10-B`).
+
+> **[H] — the TOC's two-numbering-systems detail (its superseded 159/159 figures are repaired, not preserved).** **regenerated every runner batch — 159 rows to 159 entries, `#65`–`#143` GAPLESS.** Its finding: **the log runs TWO independent numbering systems and neither covers every entry** — `#nn` and **runner ordinal** — **eight runner batches carry a `#nn` instead of an ordinal, one carries neither**. **NO ENTRY ANYWHERE CARRIES `#1`** (`TOC-1`).
+
+> **[I] — the `Q-STAT-6` standing drafting direction, in Michael's own words.** and their divergence lists produced a STANDING DRAFTING DIRECTION (#108, your words: *"Why are we making these language changes in the first place instead of simply staying with the actual language of the rules?"*): **registry Rule lines quote operative text VERBATIM where practicable**, condensing only where the rule is too long or the entry states one limb, **flagged as such**.
+
+> **[J] — the three gate-reading traps.** **Gate 2 read alone OVER-BLOCKS** (the 08-11 clarification is load-bearing). **Gate 3 read alone looks satisfiable and is not** — gate 6 is a hard prerequisite and **the dependency is recorded at gate 6, not at gate 3.** **Gate 9's trigger is a different SHAPE** — the others fire on real *data*, gate 9 on *reliance*, **so a checklist ordered by "when does real data arrive" schedules it too late**
+
+> **[K] — the gate-3 in-session authorization quotes.** authorized in session by `Q-G3-1` *"Live Supabase project"* and `Q-G3-2` *"run as written"*; closure appended with FIVE named edges)
+
+> **[L] — the retired-spec candidate breakdown (its "no ruled home" half is answered by `CAP-1`).** `superseded-specs-candidates-2026-08-25.md` (`TC-OPEN-2`, 131 spec files): **NO RULED HOME for a retired spec** — since ruled by **CAP-1**, leaving only the sweep; five clean retire-candidates, six superseded-in-place, **nine repo-resident RAW CAPTURES `TC-8` does not categorize**.
+
+> **[M] — the workbook's staleness sentence, in full.** **THE WORKBOOK IS STALE IN SEVEN IDENTIFIED WAYS AND CARRIES A BANNER SAYING SO (`D-3`).** Its **rows are untouched and deliberately so** — it remains **the numbering authority `V5-IDS` and `Q-T19-1` rest on**. **The staleness is disclosed, not repaired**
+
+> **[N] — the #93 exhibit behind *do not re-run this pass*.** *(Re-confirmed the hard way at #93: a session asserted the pass had never run, wrote a document on that premise, and withdrew it — **do not re-run this pass.**)*
+
+> **[O] — the glob-basis counting trap's worked example.** **SECOND TRAP, CARRIED AND STILL LIVE — THE BASIS IS TWO NAMED FILES, NOT A GLOB.** A `legal-rule-registry*` sum returns **74 / 57 / 12** by folding in `legal-rule-registry-discovery-and-carrier-duties.md` (22, all VERIFIED) and the medical-billing drafts; `registry-new-entry-drafts-2026-08-17.md` carries **six `**Status:** UNVERIFIED` lines of its own** — drafted entry TEXTS, not registry entries — and also matches
+
+**THE HEAD FILE'S CEILING BOUND TOO, AND ITS SHORTFALL IS NAMED IN ITS OWN BANNER.** The `TC-2` rule selected SEVEN entries reaching back to `#143`; the assembled file exceeded the 200 KB ceiling, so whole entries were dropped oldest-first until it fit — **TWO of them, `#143` and the batch-86 runner line** — leaving §1 with FIVE entries reaching back to `#144`. §2 and §3 were never cut: §2 still indexes all **164** entries, so nothing has disappeared from the design side's view of what EXISTS — only those two entries' full text has moved out of its reach, and both are whole and unchanged in the live log. **THE PRESSURE ON §1 IS OVERWHELMINGLY BATCH 87's, NOT THIS BATCH'S — a claim corrected before commit after an adversarial check measured it.** §1's five entries are **batch 88's runner line 18,245 B, `#146` 14,942 B, BATCH 87's RUNNER LINE 113,194 B, `#145` 13,819 B and `#144` 2,700 B**: batch 87's line alone is **6.2×** this one and **over 60%** of §1. **The two ceilings are coupled, and that coupling is the point: every byte `CAP-4` displaces out of BUILD-STATE lands in a runner line, every runner line lands in §1, and a batch that displaces 42,828 bytes (as 87 did) can push two older entries out of the design side's reach two batches later.** **Michael ruled the proposal to send `CAP-4` displacement to an `EVIDENCE` file instead — *"Carry it to the next design packet"* — and these figures are the strongest evidence for it yet measured.**
+
+**THE CLOSE-OUT WAS ADVERSARIALLY VERIFIED BEFORE IT WAS COMMITTED, AND THE VERIFICATION CHANGED THE RECORD (`RR-1`/`PF-1` shape, though `PF-1` itself does not fire on a runner).** Five independent lanes — runner-rule compliance, the §6 DO-NOT list, the two ceilings, the `CAP-3` merge, and the truth of every number asserted — read the uncommitted tree; each finding then went to a separate adjudicator instructed to REFUTE it. **Nine raised, four refuted, FIVE SURVIVED AND ALL FIVE ARE REPAIRED ABOVE.** The five: **(1) HIGH — BUILD-STATE asserted BOTH "37 entries" and "41" about the same probe array**, the 37 being pre-FE-D1 and stale; corrected to 41 on `db/schema.sql`'s 41 `create table` statements plus this file's own recorded test assertion that the probe list stays sequence-identical to it. **(2) MEDIUM — the TOC's *Coverage* section still published 160 headings / 159 entries / 79 numbered `#65`–`#143` / 64 runner ordinals** while the first bullet of the same section, rewritten by this batch, correctly read 164: two irreconcilable answers in adjacent bullets, with the wrong one wearing the *"re-derived here, not carried"* badge. Re-derived and repaired: **165 headings, 164 entries, 82 numbered `#65`–`#146` gapless, 66 runner ordinals 23–88 gapless, 0 unnumbered-runner, 16 other — 82 + 66 + 0 + 16 = 164, buckets disjoint.** **(3) MEDIUM — this runner line claimed its own 18 KB was "the largest single thing in §1"**; batch 87's runner line in the same §1 is **113,194 B, 6.2× larger and over 60% of §1**. Corrected, and the corrected figures are the strongest evidence yet for the very proposal Michael carried forward. **(4) LOW — BUILD-STATE re-emitted "this batch wrote `src/`, `db/` and a migration"**, true of the FE-D1 build batch and false of the batch rewriting the file; reworded. **(5) LOW — the packet's §7 open-items table had not been merged into this entry** as Step 4 item 2 requires; all eleven rows are now carried above. **THE FOUR REFUTED ARE RECORDED TOO, because a refuted finding is evidence the check is not a rubber stamp:** the `CAP-4` banner's "before" figure (arithmetic right, rule reading wrong — the spec's comparison is to the head file's form); the claim that the banner must name each displaced paragraph (the rule is comparative, not an enumeration); the CAP-series preamble said to be stale (it is prose, not a marker-bearing row); and an "unrouted artifact" in the repo root (`CAP-2` scopes CLASS to packet routing rows, not to every file on disk). **AND THE PASS COMMITTED A DO-NOT BREACH OF ITS OWN, REPORTED HERE RATHER THAN BURIED: one verifier READ `src/auth/rlsProbe.ts`**, which the packet's §6 bars in terms (*"Do not read `src/`"*). The instruction reached the fleet — the lane prompts quoted the DO-NOT list — and one agent read it anyway while chasing the 37-vs-41 contradiction. **The finding stands because it is independently provable without that read**, and the correction above is written on the `db/schema.sql` basis alone; but the breach is the runner's to own, since the runner dispatched the fleet. **A DO-NOT binds every agent a session spawns, and saying so in the prompt is evidently not the same as enforcing it.**
+
+**WHAT THIS RUNNER DID NOT DO, EACH BECAUSE A DO-NOT SAYS SO.** It did not build the slice, fire the kickoff prompt, edit that prompt, run `MIG-1` or any migration, read `src/`, mint any ID beyond the ruling's six, create rows for `FE-18`–`FE-22` or `CD-14`, touch `TFI-1`/`TFI-3`, move the twenty-one/fourteen hands-on counts, edit the eleven flagged ✅ parents or the empty section headings, retire any spec, or file the packet's capture and handoff copies anywhere in the repo. `PF-1` did not fire and the skip is stated: this batch carries no legal characterization and no proposed registry entry.
+
+**Staged for Code:** nothing — the next act is Michael's, and it is not this runner's. **Staged for Michael:** open a FRESH Opus Code session and say *"run docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md"*; that session's Step 0 reads his affirmative words in `#146` at HEAD. Then `MIG-1` by hand, unchanged, followed by the amendment migration the build writes — in that order, each pasted alone, **both in the same sitting as the pull and before a live matter is opened**, per the §5 consequence he heard before ruling. **THE PACKET'S §7 OPEN-ITEMS TABLE, MERGED HERE IN FULL so the top of the log stays truthful (Step 4 item 2) — eleven rows, every one Michael's and none closed by this batch:** open the build session (next); **`MIG-1`** by hand, then the amendment migration; **`H12-v`** the vendor route and its limbs, BAA a hard gate; **`CAP-OPEN-1`** the retirement sweep, per file, a typed Fable sitting of its own; **`CAP-OPEN-2`** the eleven ✅ parents with open children — stay or split; **`CAP-OPEN-3`** the emptied section headings, cosmetic; **`CC-1`** the hands-on sitting, 21 accepted plus 14 proposed, worth an hour and better after the slice lands; **`TFI-1` / `TFI-2` / `TFI-3`** — FE-18's operative wording, the §9 header's old name, `CD-14` limb (i), none answered by the mint; **`RF-2`** the master-skeleton hand-in and **`RC-4`** the `CPRC § 18.001` registry candidate, UNVERIFIED; the loose staging folder, the two untracked 2026-08-24 files and the `#137` Voice2 pair's FO/BR/DA home, all carried; and optionally filing the three relocation zips in `Downloads\` where the 2026-08-21 fifteen live. Also his, and still open: whether the two untracked 2026-08-24 audit files in `docs/specs/` belong under `docs/record/` as `CAP-2` would have them — raised, not taken. **Finding 5 is CLOSED by his ruling this session; the `CAP-4`-displacement proposal is CARRIED to the next design packet by his second.**
+
+## 2026-09-02 (#146) — (Typed design session, Cowork, Fable 5 per the environment; DEVICE BRIDGE GRANTED on the
+checkout and on `Downloads`; CLAUDE IN CHROME used for one act; A LATE SITTING — opened 23:42 CDT on the question,
+verbatim, "Let's keep moving. Do we need a Fable session or an Opus?", and CROSSED MIDNIGHT CENTRAL, so the ruling
+is stamped 2026-09-02 and the packet 2026-09-03: **`FE-D1A-1` RULED YES AS WRITTEN — THE FE-D1 AMENDMENT SLICE IS
+BUILD-AUTHORIZED, and `FE-18`, `FE-19`, `FE-20`, `FE-21`, `FE-22` and `CD-14` are MINTED by the same act**; THREE
+files left project knowledge by the three-step TRANSIT act — the spent wave-2 sweep doc and the 09-02
+capture/handoff pair, 158,626 units = 7.9 points, the meter 83.8% → 75.9%; a capability finding on the Projects
+tool's large-file read; nothing built, no migration run, no `src/` read, no registry file touched, no held item
+decided, no new ID beyond the six)
+
+The sitting opened on the synced head file and BUILD-STATE (batch 87 landed and synced: runner v13 at HEAD, the
+register split, BUILD-STATE under its first byte ceiling, v29 the LIVE instructions — read from the field this
+session), **the knowledge meter at 1,675,921 / 2,000,000 = 83.8%** (under the 90% trigger; `Q-CAP-5(a)` did not
+fire), and the CC-1 hands-on queue at TWENTY-ONE accepted plus FOURTEEN proposed, unchanged. Then on the bridge:
+HEAD `cae00ba` (batch 87), equal to the local origin ref — a bridge read, not a QR-3 pass, though the synced
+project already carried batch 87's BUILD-STATE, which is evidence origin has it; `inbox/` holding NO zips (only the
+loose 2026-08-31 staging folder, untouched); no `.git/index.lock`; the latest design entry `#145`, so this entry is
+`#146` — measured at HEAD, never assumed; the `FE-D1A-1` row ⬜ OPEN by leading-marker read. Every date is Central
+(DT-1): the sitting opened 2026-09-02 23:42 CDT, the ruling was made at 23:44 CDT, TRANSIT steps 1–2 ran 23:47–23:5x,
+step 3 ran at ~00:02 CDT on 2026-09-03, and packaging followed — so the entry keeps the date its session RAN and
+the packet's filename carries the date it was authored. Every ruling was written into a running ledger in the
+container within its exchange (the v28 operational note; the ledger is filed as this packet's EVIDENCE), so this
+entry is a copy, not a reconstruction.
+
+- **THE ROUTING QUESTION, ANSWERED FROM THE RECORD BEFORE ANY ACT.** Michael, verbatim: *"Let's keep moving. Do we
+  need a Fable session or an Opus?"* Answered by act, not by side (MODEL USAGE §7.2): the nearest act that moves
+  the program is `FE-D1A-1` — a BUILD AUTHORIZATION, Fable's act — and everything downstream of it is Opus's: the
+  batch that files the ruling, the slice build in its own fresh Code session (runner barred), `MIG-1` when he runs
+  it, and the hands-on sitting (voice, where Fable does not run). One Opus-grade housekeeping act was ripe on any
+  model: the wave-2 sweep doc (147,253 units) was SPENT the moment batch 87 landed the supplement and its
+  evidence. **His picks, verbatim from the option sets put (the option texts are Claude's; CC-1(a), the composite
+  invited):** next act — *"FE-D1A-1 here, plus TRANSIT (Recommended)"*; the weekly Fable bar, which the running
+  model cannot read — *"Mostly unspent"*. The sitting therefore stayed on Fable, and the packet was assembled on
+  Fable rather than handed to Opus (the push-to-code skill's offer was made once and declined by the pick).
+- **`FE-D1A-1` — PUT AS ONE TEXT, THE §5 CONSEQUENCE HEARD FIRST, AND RULED YES AS WRITTEN.** The question was put
+  in the one text that is identical in the slice's §15, the queue row and the kickoff prompt's header: *"Does
+  Michael authorize the FE-D1 AMENDMENT SLICE at `docs/specs/fe-d1-amendment-slice.md`, scope IN (§3) and OUT (§4)
+  as written, defaults (§10) as named, to be built by a fresh Opus Code session fired from
+  `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md`, the queue runner BARRED, fixture-only, migrations
+  written and not run?"* — with §3 (twenty IN items), §4 (the OUT list), §5 and §15 read IN FULL at HEAD `cae00ba`
+  over the bridge, and §10 counted (sixty-five defaults). **The consequence the slice's §5 says must be heard
+  BEFORE authorizing was quoted to him verbatim:** *"the renamed Supabase adapter selects `facility_party_id`; the
+  live database keeps `provider_party_id` until BOTH migrations have run. Between pulling this build and running
+  `MIG-1` and then the amendment file, the live app's Medical tab — the bill ledger and the chargemaster memory,
+  walked under CL-2 — FAILS on the renamed column. … the designed path is to run `MIG-1` and the amendment file, in
+  that order, in the SAME sitting as the pull, before a live matter is opened. A time-boxed dual-read instead is an
+  EDIT to this slice, his to make at `FE-D1A-1`."* Claude's read, put with the question: on the record go-live has
+  not happened (gate 9 is the one open floor item), so no live matter sits behind that tab yet and the window
+  closes when both migrations run in the sitting of the pull; YES as written was recommended, the dual-read edit
+  named as buying safety not yet needed at the cost of loosening invariant 14. Three answers were offered — YES as
+  written; YES with the time-boxed dual-read EDIT; NO / hold — and the composite invited. **Michael's ruling,
+  verbatim, 2026-09-02 23:44 CDT: *"YES — as written (Recommended)"*** — the option text he selected reading
+  *"Scope §3/§4, defaults §10, fresh Opus Code session, runner barred, fixture-only, migrations written not run.
+  Mints FE-18–FE-22 and CD-14 in the same act."* **EFFECT, on the slice's own terms (§15; `AS-Q13b`): the slice at
+  `docs/specs/fe-d1-amendment-slice.md` is BUILD-AUTHORIZED as written, no edit; `FE-18`, `FE-19`, `FE-20`, `FE-21`,
+  `FE-22` and `CD-14` are MINTED by this act; the other ten §3 IDs stay proposed; the kickoff prompt's Step 0 test —
+  his affirmative words in a session-log entry at HEAD naming the slice document — is satisfied by THIS entry and
+  by nothing else.** What the YES does NOT do, each because the slice says so: it neither accepts nor declines the
+  fourteen hands-on proposals (`AS-Q14`–`AS-Q17` and the ten default-shaped items — a spec cannot add to the queue
+  he accepted at `#139`); it does not answer `TFI-1` (FE-18's operative WORDING — minting the ID does not settle
+  which reading its sentence speaks in) or `TFI-3` / `CD-14` limb (i) (where R6's verification state lives — the
+  ID is minted, the limb stays open); it runs no migration and touches no live database; it authorizes NO vendor,
+  key, endpoint or model name (`H12-v`, the BAA gate); it does not put the slice inside the GL-1 floor.
+- **HOW THE BUILD NOW FIRES — sequencing that this entry states so no session infers it.** (1) This packet runs
+  through the queue first, because the build session's own Step 0 STOPS on any zip in `inbox/` (MM-1) and because
+  its authorization test reads THIS entry at HEAD — so the entry must be at origin, synced or not, before the build
+  session opens. (2) Michael opens a FRESH Claude Code session — Opus by default per §7.2; `/usage` first, reading
+  stated — and says *"run docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md"*. (3) That session quotes
+  his words from this entry, names this entry, and builds fixture-only: migration written, not run. (4) The
+  migration RUNS are his hand, `MIG-1` first and unchanged, the amendment file second, each pasted alone with its
+  checks answered in words — and, per the §5 consequence he heard, both in the same sitting as the pull, before a
+  live matter is opened.
+- **THREE FILES LEFT PROJECT KNOWLEDGE BY TRANSIT — steps 1–3 in one sitting, the second time since `#133`
+  corrected the actor.** The two-condition check was run at HEAD `cae00ba` for each: the sweep doc's adjudication
+  entry is `#144` and batch 87's runner line records the landing, and its content is at
+  `docs/record/queue-cleanup-evidence-2026-09-01/wave2_opus_sweep_evidence.md` VERBATIM — 435,976 B, sha256
+  `e8c94cbc…d16a82`, identical to the project-knowledge copy (it carried no TRANSIT line, having been born a working
+  document; TC-8 makes the condition a property of the content, not of the sentence); the 09-02 pair's entry is
+  `#145` and every file its routing table names exists at HEAD (thirteen paths, sizes recorded in the ledger).
+  Destination: his machine, by his standing direction of 09-02. Method: the lossless step-1 path — the project
+  docs API read in his own Chrome, a STORE zip built in-page with `MANIFEST.json`/`.md` (bytes, sha256, uuid,
+  tokens per file), downloaded on a fresh tab's first attempt (which worked, consistent with the 09-02 note),
+  permission asked and given first naming file, source and size — *"Yes, download it (Recommended)"*. **Zip:**
+  `brennan-case-manager_transit-sweep-doc-and-0902-pair_2026-09-02.zip`, 476,386 B, sha256
+  `0a8fba850d21b4a62e5caf98b205a45cd1db30f48ed74bd1ec8756d762916ade`, in `Downloads\`; verified over the bridge —
+  size and hash equal to the in-browser figures, `testzip` clean, all three entries byte- and sha256-identical to
+  the manifest, and the sweep-doc entry's hash equal to the repo copy's, so three independent sources agree (repo
+  file, Projects-tool read, docs API). **Step 3 on his word — *"Go — delete the 3 (Recommended)"* — three
+  `project_delete` calls, each `deleted: true`; the meter then read 1,517,295 = 75.9%, a drop of EXACTLY 158,626 =
+  the three files' `estimated_token_count` sum (147,253 + 5,633 + 5,740): the unit calibration holds to the unit a
+  third time.** Nine project docs remain: the `#137` Voice2 pair (flagged — FO/BR/DA have no design-doc home), the
+  acquisition list (live), the form-corpus capture (`TC-9`), README and `probate_system_prompt.md`, the three carried
+  files. The relocation manifests are filed as this packet's EVIDENCE, byte-identical to the copies inside the zip
+  (sha256 `094460eb…` and `c489b3e5…`). `CAP-CARRY-1` is discharged by this act; `CAP-CARRY-2` by the v29 read.
+- **A CAPABILITY FINDING, recorded because it changes the cost of the next relocation:** the Projects tool's
+  `project_read` of a LARGE document (above its inline-return threshold, ~30 KB) writes a LOCAL FILE that is
+  BYTE-EXACT — proven on the 435,976-byte sweep doc, whose local copy hashed identically to the repo file and to
+  the docs API's bytes. That is a second lossless step-1 path, needing no browser, for large captures; small
+  documents still return inline (a JSON string, not a file) and keep the Chrome/API path as the lossless method.
+  A finding, not a rule; the TRANSIT convention's text is unchanged.
+- **WHAT SHIPPED (this packet, docs-only):** this entry; the queue's three-act merge — `FE-D1A-1` annotated
+  AUTHORIZED and flipped ⬜ → ✅, its whole block MOVED to the closed register under its Form-engine heading;
+  `CAP-CARRY-1` and `CAP-CARRY-2` flipped and moved under a Capacity-pass heading created there; the Status
+  paragraph's current sentence replaced and its predecessor appended to the RECONCILE HISTORY; NO new row minted —
+  and three EVIDENCE-class files under `docs/record/fe-d1a-1-authorization-2026-09-02/`: the ruling ledger and
+  the two relocation manifests. BUILD-STATE's Forms-tab line and header take the slice's §14 item 2 text. **PF-1
+  did not fire — this packet carries no legal characterization and no registry entry; the ruling is a build
+  authorization and the relocation is housekeeping — recorded so the skip is not silent (the QR-6(f) pattern).**
+  **RR-1:** the manifest and both project-knowledge files were re-read against the ruling and the relocation
+  figures before the zip closed; nothing authored earlier in the sitting predates a later ruling, because the
+  ledger was written inside each exchange.
+- **WHAT DID NOT HAPPEN, each because a rule bars it:** nothing built and no build slice run by this packet — the
+  queue runner is BARRED from the slice by the ruling's own text; no migration run; no `src/` read; no ID minted
+  beyond the six the ruling mints; no registry file opened; no held item decided (the hands-on queue stays at
+  twenty-one plus fourteen); the eleven flagged ✅ parents untouched (`CAP-OPEN-2`); the empty section headings
+  untouched (`CAP-OPEN-3`); no spec retired (`CAP-OPEN-1` is a sitting of its own — adjudication, per the 09-02
+  capture's own routing); the loose staging folder and the two untracked 2026-08-24 files untouched; no scratch
+  written to any connected folder; no `git status` run, so no lock stranded. The Chrome tab was closed and its page
+  state cleared.
+- **PROCESS NOTES.** The Fable-or-Opus question was answered in one exchange from the head file, BUILD-STATE and
+  the 09-02 handoff, then the sitting did both acts it named — the queue-and-routing answer and the work are the
+  same hour when the bridge and Chrome are already up. The remote-devices bridge dropped and reconnected once,
+  between the download trigger and its verification, with no effect on the result. The head file stands at
+  196,398 B at HEAD, so the 200 KB ceiling will very likely BIND when this entry and the runner line are prepended
+  — the runner drops the oldest whole entries from §1 and NAMES THE SHORTFALL in the banner (TC spec §3); and
+  BUILD-STATE is 29 bytes under its 100,000-byte ceiling, so `CAP-4` displacement will bind at this refresh too.
+
+**Next:** the queue runs this packet on `mdb-pllc`; then Michael's hand — `/usage`, a FRESH Opus Code session, *"run
+docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md"*; then `MIG-1` and the amendment migration by his hand
+in one sitting, before any live matter; the hands-on sitting (twenty-one plus fourteen) is better taken AFTER the
+slice lands, because RC-1's five and all fourteen proposals are questions about the generator it builds;
+`CAP-OPEN-1` is its own typed Fable sitting.
+
+**Staged for Code:** none beyond this packet. **Awaiting/Returned from Code, unreviewed:** the `FE-D1A-1` closure
+and the two `CAP-CARRY` closures in both register files, the evidence directory, and BUILD-STATE's §14-item-2
+lines, once landed. **Still open and still Michael's:** opening the build session (his act, after this batch) ·
+`MIG-1` and then the amendment migration, in order, his hand · `H12-v` and its limbs · `CAP-OPEN-1`, `CAP-OPEN-2`,
+`CAP-OPEN-3` · the hands-on sitting (twenty-one plus fourteen) · `TFI-1`, `TFI-2`, `TFI-3` / `CD-14` limb (i) ·
+`RF-2` · `RC-4` · the loose staging folder `inbox/push-to-code_fe-d1-amendment-slice_2026-08-31/` (his hand) · the
+two untracked 2026-08-24 files (DO NOTHING) · the `#137` Voice2 pair's FO/BR/DA home · filing the three Downloads
+zips wherever he keeps the 2026-08-21 fifteen (optional).
+
 ## 2026-09-02 — QUEUE-RUNNER batch (runner line; EIGHTY-SEVENTH invocation) — two docs-only packets, and the batch that AMENDED THE RUNNER AND THEN RAN UNDER THE AMENDMENT: v13 lands, the review register SPLITS IN TWO, BUILD-STATE takes its first byte ceiling, and the runner's own findings are three environment traps and two of its own arithmetic errors, all caught before the commit
 
 **THE TWO PACKETS, identities pinned at Step 1 per `QR-6(c)` and RE-PINNED after a mid-batch pause.** `push-to-code_queue-cleanup-wave2-supplement_2026-09-01.zip` (**155,327 B, mtime 2026-09-01 17:22:05 Central, sha256 `31b4b4a89a864637abf5402f84b76bf51de9e2918c71d0d59c49bf347e5f790a`, three entries**) and `push-to-code_capacity-pass_2026-09-02.zip` (**55,603 B, mtime 2026-09-02 17:58:52, sha256 `012e4cbd6c918b697cc0deb052fbdeff7400676e76afa675e73ff77d05782073`, ten entries**). **The filename-date order and the pure-mtime order AGREE**, and packet 2's own §1 independently says packet 1 *"is OLDER by filename date and runs FIRST under `QR-4`"* — three independent statements of the same order, so no ordering question arose. Michael confirmed it at the Step 1 STOP. **The first packet is the FOURTH ZIP batch 86 recorded as arriving mid-batch and deliberately left unrun; its identity at this Step 1 is byte-for-byte the identity batch 86 pinned**, which is the check `QR-6(c)` exists to make possible.
