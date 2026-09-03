@@ -54,7 +54,7 @@ export function billingSeedData(): {
 
   const bills: MedicalBill[] = [
     {
-      id: 'mb-procare', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', providerPartyId: 'p-prov-procare',
+      id: 'mb-procare', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', facilityPartyId: 'p-prov-procare',
       label: 'ProCare — chiropractic course of treatment', billType: 1,
       claimType: 'professional', claimTypeSource: 'detected',
       serviceStart: '2026-03-18', serviceEnd: '2026-05-29',
@@ -63,7 +63,7 @@ export function billingSeedData(): {
       createdAt: t, updatedAt: t,
     },
     {
-      id: 'mb-ctrmc', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', providerPartyId: 'p-hosp-ctrmc',
+      id: 'mb-ctrmc', caseId: 'c-garcia-mvc', clientId: 'cc-garcia', facilityPartyId: 'p-hosp-ctrmc',
       label: 'Central Texas Regional — ER visit day of collision', billType: 2,
       claimType: 'facility', claimTypeSource: 'detected',
       serviceStart: '2026-03-14', serviceEnd: '2026-03-14',
@@ -122,27 +122,27 @@ export function billingSeedData(): {
 
   const codeMappings: CodeMapping[] = [
     {
-      id: 'cm-1', providerPartyId: 'p-prov-procare', rawDescription: 'MANUAL THERAPY TQ 1/> REGIONS 15 MIN',
+      id: 'cm-1', facilityPartyId: 'p-prov-procare', rawDescription: 'MANUAL THERAPY TQ 1/> REGIONS 15 MIN',
       cpt: '97140', mappingSource: 'attorney', confirmedBy: ATTORNEY_USER, confirmedDate: t,
       protectiveOrder: false, isActive: true, notes: 'Confirmed on a prior ProCare statement (demo).',
     },
     {
-      id: 'cm-2', providerPartyId: 'p-prov-procare', rawDescription: 'THERAPEUTIC EXERCISE 15 MIN',
+      id: 'cm-2', facilityPartyId: 'p-prov-procare', rawDescription: 'THERAPEUTIC EXERCISE 15 MIN',
       cpt: '97110', mappingSource: 'attorney', confirmedBy: ATTORNEY_USER, confirmedDate: t,
       protectiveOrder: false, isActive: true,
     },
     {
-      id: 'cm-3', providerPartyId: 'p-hosp-ctrmc', rawDescription: 'EMERGENCY DEPT VISIT LEVEL 4',
+      id: 'cm-3', facilityPartyId: 'p-hosp-ctrmc', rawDescription: 'EMERGENCY DEPT VISIT LEVEL 4',
       cpt: '99284', mappingSource: 'attorney', confirmedBy: ATTORNEY_USER, confirmedDate: t,
       protectiveOrder: false, isActive: true,
     },
     {
-      id: 'cm-4', providerPartyId: 'p-hosp-ctrmc', rawDescription: 'CT HEAD/BRAIN W/O CONTRAST',
+      id: 'cm-4', facilityPartyId: 'p-hosp-ctrmc', rawDescription: 'CT HEAD/BRAIN W/O CONTRAST',
       chargemasterCode: 'CTRMC-8802', cpt: '70450', mappingSource: 'attorney',
       confirmedBy: ATTORNEY_USER, confirmedDate: t, protectiveOrder: false, isActive: true,
     },
     {
-      id: 'cm-5', providerPartyId: 'p-prov-procare', rawDescription: 'MECHANICAL TRACTION THERAPY',
+      id: 'cm-5', facilityPartyId: 'p-prov-procare', rawDescription: 'MECHANICAL TRACTION THERAPY',
       cpt: '97012', mappingSource: 'attorney', confirmedBy: ATTORNEY_USER, confirmedDate: t,
       protectiveOrder: false, isActive: true,
     },

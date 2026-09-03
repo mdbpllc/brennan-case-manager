@@ -42,11 +42,11 @@ interface Suggestion {
 /** Best chargemaster-memory suggestion for a description. Same-provider mappings
  *  rank ahead of cross-provider ones; protective-order mappings are excluded
  *  from cross-case memory entirely (guardrail 4). */
-function suggestCpt(description: string, providerPartyId: string | undefined, mappings: CodeMapping[]): Suggestion | null {
+function suggestCpt(description: string, facilityPartyId: string | undefined, mappings: CodeMapping[]): Suggestion | null {
   const usable = mappings.filter((m) => m.isActive && !m.protectiveOrder);
   const ranked = rankByTrigram(
     description, usable, (m) => m.rawDescription,
-    (m) => (m.providerPartyId && m.providerPartyId === providerPartyId ? 1 : 0.8),
+    (m) => (m.facilityPartyId && m.facilityPartyId === facilityPartyId ? 1 : 0.8),
   );
   const best = ranked[0];
   if (!best || best.score < CONFIDENCE_FLOOR) return null;
@@ -54,7 +54,7 @@ function suggestCpt(description: string, providerPartyId: string | undefined, ma
     cpt: best.item.cpt,
     score: Math.min(1, best.score),
     fromDescription: best.item.rawDescription,
-    sameProvider: best.item.providerPartyId === providerPartyId,
+    sameProvider: best.item.facilityPartyId === facilityPartyId,
   };
 }
 
@@ -86,8 +86,8 @@ export default function BillWorkspacePage() {
       setSchedules(scheds); setRules(lrs); setClients(sortClients(cls));
       const cps = await db.getParties(cls.map((x) => x.partyId));
       setClientNames(Object.fromEntries(cps.map((p) => [p.id, p.displayName])));
-      if (b.providerPartyId) {
-        const p = await db.getParty(b.providerPartyId);
+      if (b.facilityPartyId) {
+        const p = await db.getParty(b.facilityPartyId);
         setProviderName(p?.displayName);
       }
       setLoadState('ready');
@@ -445,8 +445,8 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
   const suggestion = useMemo(
-    () => (draft.rawDescription.trim().length >= 4 ? suggestCpt(draft.rawDescription, bill.providerPartyId, mappings) : null),
-    [draft.rawDescription, bill.providerPartyId, mappings],
+    () => (draft.rawDescription.trim().length >= 4 ? suggestCpt(draft.rawDescription, bill.facilityPartyId, mappings) : null),
+    [draft.rawDescription, bill.facilityPartyId, mappings],
   );
 
   const addLine = async () => {
@@ -484,7 +484,7 @@ function LineItemsCard({ bill, lines, mappings, onChanged }: {
       cpt, mappingStatus: 'confirmed', mappingSource: source, confirmedBy: ATTORNEY_USER, confirmedDate: nowIso,
     });
     await db.createCodeMapping({
-      providerPartyId: bill.providerPartyId,
+      facilityPartyId: bill.facilityPartyId,
       rawDescription: line.rawDescription,
       chargemasterCode: line.chargemasterCode,
       cpt, mappingSource: source, confirmedBy: ATTORNEY_USER, confirmedDate: nowIso,
@@ -760,7 +760,7 @@ function AnalysisCard({ bill, caseRec, lines, runs, schedules, rules, providerNa
       oldValue: 'provisional', newValue: 'confirmed — eligible to feed settlement/lien math',
     });
     // Confirmed runs (and only confirmed runs) feed the provider's billing profile.
-    if (bill.providerPartyId) await recomputeProviderProfile(db, bill.providerPartyId);
+    if (bill.facilityPartyId) await recomputeProviderProfile(db, bill.facilityPartyId);
     onChanged();
   };
 

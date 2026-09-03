@@ -114,3 +114,41 @@ describe('the effective marker — coalesce(role_marker, facility type)', () => 
     expect(isTreatingType(null)).toBe(false);
   });
 });
+
+// "The vocabulary is stated once" is only true if something checks it. These
+// keys live in FOUR places — this file, the amendment migration, db/schema.sql,
+// and eventually a picker — and the two SQL copies are the ones no compiler
+// reads. A CHECK that drifts from the union does not fail a build; it fails an
+// INSERT, in live mode, on Michael's machine.
+describe('the SQL CHECK constraints agree with the TypeScript vocabulary', () => {
+  function checkValues(sql: string, column: string): string[] {
+    // Grab the `check (<column> in ( ... ))` body for the named column.
+    const at = sql.indexOf(`${column} text check (${column} in (`);
+    const start = at >= 0 ? at : sql.indexOf(`${column} text not null check (${column} in (`);
+    expect(start, `no CHECK found for ${column}`).toBeGreaterThan(-1);
+    const open = sql.indexOf('(', sql.indexOf(`${column} in (`));
+    let depth = 0;
+    let end = open;
+    for (let i = open; i < sql.length; i++) {
+      if (sql[i] === '(') depth++;
+      else if (sql[i] === ')') { depth--; if (depth === 0) { end = i; break; } }
+    }
+    return [...sql.slice(open, end).matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  }
+
+  it('the migration types a FACILITY with every key but mid-level', async () => {
+    const { default: sql } = await import('../../../db/migrations/2026-09-03-fe-d1-amendment.sql?raw');
+    expect(checkValues(sql, 'provider_type').sort()).toEqual([...FACILITY_TYPE_KEYS].sort());
+  });
+
+  it('the migration marks a PERSON with every key but pharmacy and custodian-only', async () => {
+    const { default: sql } = await import('../../../db/migrations/2026-09-03-fe-d1-amendment.sql?raw');
+    expect(checkValues(sql, 'role_marker').sort()).toEqual([...ROLE_MARKER_KEYS].sort());
+  });
+
+  it('db/schema.sql carries the same two lists as the migration', async () => {
+    const { default: schema } = await import('../../../db/schema.sql?raw');
+    expect(checkValues(schema, 'provider_type').sort()).toEqual([...FACILITY_TYPE_KEYS].sort());
+    expect(checkValues(schema, 'role_marker').sort()).toEqual([...ROLE_MARKER_KEYS].sort());
+  });
+});

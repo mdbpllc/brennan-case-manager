@@ -19,7 +19,7 @@ export interface MedicalBill {
    *  and never get an invented owner. */
   clientId?: string;
   /** Provider-business party this bill attaches to (bills live at the provider-business level, §10). */
-  providerPartyId?: string;
+  facilityPartyId?: string;
   /** Short human label, e.g. "ProCare — chiropractic course of treatment". */
   label: string;
   billType: BillType;
@@ -75,7 +75,7 @@ export interface BillLineItem {
 export interface CodeMapping {
   id: string;
   /** Provider-business party the mapping was learned from (cross-provider matches rank lower). */
-  providerPartyId?: string;
+  facilityPartyId?: string;
   rawDescription: string;
   chargemasterCode?: string;
   cpt: string;
@@ -184,9 +184,9 @@ export interface AnalysisResultLine {
  *  Part 4), attached to the existing party record. A computed projection over
  *  CONFIRMED runs only — recomputed on run confirmation, never hand-edited.
  *  Stores ratios and flags, never client identities (guardrail 7). */
-export interface ProviderBillingProfile {
+export interface FacilityBillingProfile {
   id: string;
-  providerPartyId: string;
+  facilityPartyId: string;
   /** Aggregate confirmed billed ÷ confirmed benchmark across the latest confirmed run per bill, cross-case. */
   avgBilledToMedicareRatio?: number;
   /** Auto-feeds from settlement billed-vs-final outcomes once the settlement module lands. */

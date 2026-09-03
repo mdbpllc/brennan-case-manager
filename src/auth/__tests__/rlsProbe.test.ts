@@ -35,17 +35,17 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 41 schema tables with one policy-less exception', () => {
+  it('covers all 46 schema tables with one policy-less exception', () => {
     // 32 + the two CL-2 tables (case_clients, case_client_flags) + the two CD-1
     // tables (case_roster_flags, contact_edges) + gate 10's party_pii + FE-D1's
-    // four form-engine tables. A table the probe does not list is a table whose
-    // missing GRANT nothing would catch.
+    // four form-engine tables + the FE-D1 amendment's five. A table the probe
+    // does not list is a table whose missing GRANT nothing would catch.
     //
     // The 37 this asserted until 2026-08-20 is the figure the gate-3 write-path
-    // run measured; FE-D1's four arrive after that run and are outside its
-    // 37x2 grid, carrying their own from-birth evidence instead.
-    expect(SCHEMA_TABLES).toHaveLength(41);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(40);
+    // run measured; everything added since arrives after that run and is
+    // outside its 37x2 grid, carrying its own from-birth evidence instead.
+    expect(SCHEMA_TABLES).toHaveLength(46);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(45);
   });
 
   it('lists the FE-D1 form-engine tables, probed from birth (slice item 11)', () => {
@@ -54,6 +54,24 @@ describe('expectedUnreachable', () => {
     expect(names).toContain('form_templates');
     expect(names).toContain('form_template_versions');
     expect(names).toContain('form_token_definitions');
+  });
+
+  it('lists the FE-D1 amendment tables, probed from birth (item 11 again)', () => {
+    // These five hold PHI — a chronology's extracted text above all — so an
+    // ungranted one is not merely unreachable, it is the table whose exposure
+    // the migration's check 4 calls a stop.
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('case_chronology_versions');
+    expect(names).toContain('case_providers');
+    expect(names).toContain('case_provider_individuals');
+    expect(names).toContain('case_provider_visits');
+    expect(names).toContain('generated_document_paragraphs');
+  });
+
+  it('carries the AS-Q11 rename: facility_billing_profiles, not provider_', () => {
+    const names = SCHEMA_TABLES.map((t) => t.name);
+    expect(names).toContain('facility_billing_profiles');
+    expect(names).not.toContain('provider_billing_profiles');
   });
 
   it('is sequence-identical to db/schema.sql\'s own create-table order', async () => {

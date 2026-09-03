@@ -11,7 +11,7 @@ import { stripDestinationKeys, isEmptyPii, type PartyPii } from '../domain/party
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
-  ProviderBillingProfile,
+  FacilityBillingProfile,
 } from '../domain/billing';
 import type { CalendarEvent } from '../domain/calendar';
 import type {
@@ -661,31 +661,31 @@ export class SupabaseAdapter implements DataAdapter {
     return this.insertRow<CodeMapping>('code_mappings', data);
   }
 
-  async listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]> {
-    return this.rows<MedicalBill>('medical_bills', (q) => q.select('*').eq('provider_party_id', providerPartyId));
+  async listBillsForProvider(facilityPartyId: string): Promise<MedicalBill[]> {
+    return this.rows<MedicalBill>('medical_bills', (q) => q.select('*').eq('facility_party_id', facilityPartyId));
   }
 
-  async getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null> {
-    const res = await this.sb.from('provider_billing_profiles').select('*').eq('provider_party_id', providerPartyId).maybeSingle();
+  async getProviderProfile(facilityPartyId: string): Promise<FacilityBillingProfile | null> {
+    const res = await this.sb.from('facility_billing_profiles').select('*').eq('facility_party_id', facilityPartyId).maybeSingle();
     if (res.error) throw new Error(res.error.message);
-    return res.data ? fromRow<ProviderBillingProfile>(res.data as Record<string, unknown>) : null;
+    return res.data ? fromRow<FacilityBillingProfile>(res.data as Record<string, unknown>) : null;
   }
 
-  async upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile> {
+  async upsertProviderProfile(data: Omit<FacilityBillingProfile, 'id' | 'updatedAt'>): Promise<FacilityBillingProfile> {
     // Full replace: explicit nulls (not omitted keys) so a recompute clears
     // fields that no longer have a value — the profile is a computed projection.
     const row = {
-      provider_party_id: data.providerPartyId,
+      facility_party_id: data.facilityPartyId,
       avg_billed_to_medicare_ratio: data.avgBilledToMedicareRatio ?? null,
       historical_reduction_pct: data.historicalReductionPct ?? null,
       common_flags: data.commonFlags,
       last_analysis_date: data.lastAnalysisDate ?? null,
       updated_at: new Date().toISOString(),
     };
-    const res = await this.sb.from('provider_billing_profiles')
-      .upsert(row, { onConflict: 'provider_party_id' }).select().single();
+    const res = await this.sb.from('facility_billing_profiles')
+      .upsert(row, { onConflict: 'facility_party_id' }).select().single();
     if (res.error) throw new Error(res.error.message);
-    return fromRow<ProviderBillingProfile>(res.data as Record<string, unknown>);
+    return fromRow<FacilityBillingProfile>(res.data as Record<string, unknown>);
   }
 
   async getEobForBill(billId: string): Promise<EOBRecord | null> {

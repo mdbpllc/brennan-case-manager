@@ -233,7 +233,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     ],
   },
   {
-    key: 'providerBusiness', label: 'Provider business', kind: 'organization', nameFields: ['name'],
+    key: 'providerBusiness', label: 'Facility', kind: 'organization', nameFields: ['name'],
     fields: [
       { key: 'name', label: 'Business name', type: 'text' },
       { key: 'phone', label: 'Main phone', type: 'phone' },

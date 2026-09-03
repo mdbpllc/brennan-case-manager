@@ -37,7 +37,7 @@ function v12Store() {
     links: [], clients: [], clientFlags: [], rosterFlags: [], contactEdges: [],
     fileCounters: {}, bills: [], lineItems: [], codeMappings: [], eobs: [],
     runs: [], resultLines: [], legalRules: [], feeSchedules: [], feeRates: [],
-    documents: [], providerProfiles: [], events: [], transcripts: [],
+    documents: [], facilityProfiles: [], events: [], transcripts: [],
     transcriptParticipants: [], stagingItems: [], routingDecisions: [],
     glossaryTerms: [], tagTemplates: [], charges: [], oaaIntakes: [],
     statuteChapters: [], statuteSections: [], verificationSnapshots: [],
@@ -55,7 +55,7 @@ describe('v12 → v13: the form-engine bump', () => {
     // leaving SSNs in the blob. Every step is pinned to a literal now.
     const old = v12Store();
     expect(migrateV12ToV13(old, JSON.stringify(old)).version).toBe(13);
-    expect(STORE_VERSION).toBe(13);
+    expect(STORE_VERSION).toBe(14);
   });
 
   it('is purely additive — nothing existing is read, moved or reshaped', () => {

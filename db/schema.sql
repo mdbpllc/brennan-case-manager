@@ -221,13 +221,29 @@ create table if not exists contact_edges (
     'insurer-of','insurer-of-adverse-party','principal-of','registered-agent-of',
     'heir-of','representative-of-estate-of','next-of-kin-of','spouse-of',
     'contractor-for','manufacturer-of-goods-sold-by','platform-for','attorney-for',
-    'bailee-of','joint-enterprise-with'
+    'bailee-of','joint-enterprise-with',
+    -- CD-14 (AS-Q11): a clinician renders care at a facility. Created ONLY at
+    -- promotion or by hand — THE MODEL NEVER CREATES AN EDGE (§14.4, the OBGYN
+    -- rule). No `verified` column rides with it: CD-14 limb (i) is OPEN, so
+    -- provenance is recorded on the individual and the "affiliation unverified"
+    -- line is NOT built.
+    'renders-care-at'
   )),
   case_id uuid references cases (id) on delete cascade,   -- NULL = world fact
+  -- The affiliation's PERIOD (CD-14). Dates are whatever Michael confirms at
+  -- the promote click, pre-filled from the treatment dates and CLEARABLE
+  -- (D-56): a cleared `from` is NULL and means current at every date, because
+  -- filling it silently would assert the affiliation BEGAN at the first visit.
+  effective_from date,
+  effective_to date,                                      -- blank = current
   note text,
   created_at timestamptz not null default now(),
   constraint contact_edges_not_self check (from_contact_id <> to_contact_id),
-  unique nulls not distinct (from_contact_id, to_contact_id, edge_type, case_id)
+  -- NAMED, unlike the inline key it replaces, so the next migration does not
+  -- have to find it by catalog lookup. `effective_from` joins the key because a
+  -- doctor who left a practice and returned needs two periods (D-7).
+  constraint contact_edges_edge_period_key
+    unique nulls not distinct (from_contact_id, to_contact_id, edge_type, case_id, effective_from)
 );
 
 create index if not exists contact_edges_from_idx on contact_edges (from_contact_id);
@@ -532,7 +548,9 @@ create table if not exists medical_bills (
   -- Ch. 146 cap input. Nullable because a flagged case has no client yet and
   -- its bills must not be blocked or invented.
   client_id uuid references case_clients (id) on delete set null,
-  provider_party_id uuid references parties (id) on delete set null,
+  -- AS-Q11: PROVIDER means the PERSON now (FE-18); the business is the FACILITY.
+  -- A bill keys the facility. Renamed from provider_party_id 2026-09-03.
+  facility_party_id uuid references parties (id) on delete set null,
   label text not null,
   bill_type integer not null check (bill_type in (1, 2)),
   claim_type text not null default 'unknown' check (claim_type in ('professional','facility','unknown')),
@@ -585,7 +603,8 @@ create index if not exists bill_line_items_bill_idx on bill_line_items (bill_id)
 -- protective_order rows never enter cross-case matching (guardrail 4).
 create table if not exists code_mappings (
   id uuid primary key default gen_random_uuid(),
-  provider_party_id uuid references parties (id) on delete set null,
+  -- Renamed from provider_party_id 2026-09-03 (AS-Q11).
+  facility_party_id uuid references parties (id) on delete set null,
   raw_description text not null,
   chargemaster_code text,
   cpt text not null,
@@ -598,7 +617,7 @@ create table if not exists code_mappings (
 );
 
 create index if not exists code_mappings_desc_trgm_idx on code_mappings using gin (raw_description gin_trgm_ops);
-create index if not exists code_mappings_provider_idx on code_mappings (provider_party_id);
+create index if not exists code_mappings_facility_idx on code_mappings (facility_party_id);
 
 -- Light EOB record on Type 2 bills. patient_responsibility is the Ch. 146
 -- lien-cap input — typed + source-pinned, one per bill.
@@ -619,9 +638,11 @@ create table if not exists eob_records (
 -- ratios and flags only, never client identities (guardrail 7).
 -- historical_reduction_pct auto-feeds from settlement billed-vs-final outcomes
 -- once the settlement module lands.
-create table if not exists provider_billing_profiles (
+-- Renamed from provider_billing_profiles 2026-09-03 (AS-Q11): the billing
+-- profile belongs to the FACILITY, not to a person.
+create table if not exists facility_billing_profiles (
   id uuid primary key default gen_random_uuid(),
-  provider_party_id uuid not null unique references parties (id) on delete cascade,
+  facility_party_id uuid not null unique references parties (id) on delete cascade,
   avg_billed_to_medicare_ratio numeric(8,2),
   historical_reduction_pct numeric(5,2),
   common_flags jsonb not null default '[]',
@@ -774,9 +795,9 @@ alter table legal_rules enable row level security;
 alter table fee_schedules enable row level security;
 alter table fee_schedule_rates enable row level security;
 alter table generated_documents enable row level security;
-alter table provider_billing_profiles enable row level security;
+alter table facility_billing_profiles enable row level security;
 
-create policy "authenticated full access provider_billing_profiles" on provider_billing_profiles
+create policy "authenticated full access facility_billing_profiles" on facility_billing_profiles
   for all to authenticated using (true) with check (true);
 create policy "authenticated full access medical_bills" on medical_bills
   for all to authenticated using (true) with check (true);
@@ -1211,7 +1232,10 @@ create table if not exists form_templates (
   name text not null,
   -- 'instrument' renders against a .docx skeleton; the other two are text
   -- blocks the instrument draws on. No item model — see the block header.
-  family text not null check (family in ('instrument', 'expert-narrative-variant', 'stock-answer')),
+  -- 'fixed-sentence' and 'writer-instructions' added 2026-09-03 (D-6). The
+  -- three existing values are carried through unchanged.
+  family text not null check (family in ('instrument', 'expert-narrative-variant', 'stock-answer',
+                                        'fixed-sentence', 'writer-instructions')),
   -- FE-12, from birth: where the FORMAT came from. FE-7 adoption is what flips
   -- 'proposed' to 'format-authoritative'; nothing else may.
   provenance text not null default 'proposed'
@@ -1378,8 +1402,251 @@ alter table generated_documents add constraint generated_documents_doc_type_chec
 -- unclassified-must-classify, and writing 'work-product' would assert a
 -- privilege nobody chose. No creation-time classification UI is built here.
 
+-- D-39: the per-plaintiff instrument (AS-Q10) and the per-client supplement
+-- base (AS-Q6) need the document keyed by client. The answer snapshot is
+-- unqueryable and an all-mental-health instrument has no child paragraph row to
+-- infer from, so the column is the only honest route.
+alter table generated_documents
+  add column if not exists client_id uuid references case_clients (id) on delete set null;
+
+create index if not exists generated_documents_client_idx on generated_documents (client_id);
+
 create index if not exists generated_documents_template_version_idx
   on generated_documents (template_version_id);
+
+-- ============ FE-D1 AMENDMENT — R17, THE CHRONOLOGY, THE PARAGRAPH RECORD ============
+-- Migration: db/migrations/2026-09-03-fe-d1-amendment.sql. Authorized by
+-- Michael 2026-09-02 ("YES — as written"), session log #146; spec
+-- docs/specs/fe-d1-amendment-slice.md §5.
+--
+-- These five sit HERE — after the FE-D1 block, before the privileges block —
+-- and in FK order, because the RLS probe asserts its table list is
+-- sequence-identical to this file's create-table order. An append at the end of
+-- the file would land after the all-tables grant and the revoke.
+--
+-- `client_id` is nullable on all of them for the reason medical_bills.client_id
+-- is: a flagged case has no client yet, and on a one-client case NULL reads as
+-- that client (D-54).
+
+-- The versioned TEXT chronology (AS-Q4). THE DROPPED FILE IS NOT KEPT — only
+-- the text extracted from it. A file store is gate-7 work.
+create table if not exists case_chronology_versions (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  client_id uuid references case_clients (id) on delete set null,
+  version_no integer not null,
+  dropped_at timestamptz not null default now(),
+  dropped_by uuid references auth.users (id),
+  source_filename text not null,
+  -- Closed list, named as a DEFAULT (D-43): RC-7's "anything the model can
+  -- read" is open-ended, so the readable set is the build's and every other
+  -- extension is refused at the drop.
+  source_format text not null check (source_format in ('pdf','docx','xlsx','csv','json','txt')),
+  extracted_text text,
+  -- D-62's threshold. False = no usable text layer: flagged at the drop, NEVER
+  -- sent to a model, excluded from "newest".
+  readable boolean not null,
+  char_count integer,
+  -- D-60: a mis-dropped chronology is PHI in the wrong matter.
+  removed_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique nulls not distinct (case_id, client_id, version_no)
+);
+
+create index if not exists case_chronology_versions_case_idx
+  on case_chronology_versions (case_id);
+create index if not exists case_chronology_versions_client_idx
+  on case_chronology_versions (client_id);
+
+-- R17 — the FACILITY row, CASE-SCOPED (AS-Q3). The facility is the existing
+-- directory contact; its TYPE is set for THIS case; the individuals are rows
+-- beneath it. A name becomes a firm-wide contact only when Michael PROMOTES it.
+create table if not exists case_providers (
+  id uuid primary key default gen_random_uuid(),
+  case_id uuid not null references cases (id) on delete cascade,
+  client_id uuid references case_clients (id) on delete set null,
+  -- restrict, not cascade (D-53): a party a designated facility points at is
+  -- not deletable — the case_clients.party_id precedent. Must be
+  -- kind = 'organization'; enforced in the adapter.
+  facility_party_id uuid not null references parties (id) on delete restrict,
+  -- NULLABLE, AND NULL IS THE MUST-FIX CONDITION (§12.3). Never defaulted:
+  -- §17.1a says the type is "always assigned by a person", and D-32's last-case
+  -- query is the ONLY pre-fill — never a specialty string, never a role tag.
+  -- `mid-level` is absent: a mid-level is a person, not a facility.
+  provider_type text check (provider_type in (
+    'emergency-medicine','pain-management','orthopedic-surgery','neurosurgery',
+    'primary-care','chiropractic','physical-therapy','prehospital-ems',
+    'radiologist','pharmacy','custodian-only',
+    'mental-health','other-physician','other-non-physician'
+  )),
+  -- HAND-SET values, never overwritten by the D-13 derivation chain.
+  treatment_from date,
+  treatment_to date,
+  -- D-15: the §5.2 LOP gate lives here now, typed, instead of in an untyped
+  -- party.fields string.
+  lop boolean not null default false,
+  -- D-48: "extraction has run for this facility" is exactly
+  -- `last_extraction_version_id is not null`. Without it, a facility with zero
+  -- individuals cannot be told apart from one never pulled.
+  last_extraction_version_id uuid references case_chronology_versions (id) on delete set null,
+  last_extracted_at timestamptz,
+  -- D-32: the pre-fill WRITES the type, and the row says where it came from.
+  type_carried_from_case_id uuid references cases (id) on delete set null,
+  created_by uuid references auth.users (id),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique nulls not distinct (case_id, client_id, facility_party_id)
+);
+
+create index if not exists case_providers_case_idx on case_providers (case_id);
+create index if not exists case_providers_client_idx on case_providers (client_id);
+create index if not exists case_providers_facility_idx on case_providers (facility_party_id);
+
+-- The individuals beneath a facility (AS-Q2). The model populates names,
+-- credentials, dates, visit rows and a summary — NEVER a type, a role marker,
+-- or which facilities are in the case.
+create table if not exists case_provider_individuals (
+  id uuid primary key default gen_random_uuid(),
+  case_provider_id uuid not null references case_providers (id) on delete cascade,
+  display_name text not null,
+  -- Part 3: credential is NULLABLE. D-42 handles the LEAD's comma when it is.
+  credential_suffix text,
+  -- NULL reads as the facility's type (§17.1a). `pharmacy` and `custodian-only`
+  -- are absent — neither describes a person's role.
+  role_marker text check (role_marker in (
+    'emergency-medicine','pain-management','orthopedic-surgery','neurosurgery',
+    'primary-care','chiropractic','physical-therapy','prehospital-ems',
+    'radiologist','mid-level','mental-health','other-physician','other-non-physician'
+  )),
+  -- D-11: they/their when NULL. Pronouns are DATA, never guessed (defect D-7).
+  pronoun text,
+  treatment_from date,
+  treatment_to date,
+  summary text,
+  -- AS-Q13a: provenance FROM BIRTH, so the "affiliation unverified" line can be
+  -- lit later without a backfill. The line itself is NOT built — CD-14 limb (i).
+  provenance text not null check (provenance in ('model','hand')),
+  chronology_version_id uuid references case_chronology_versions (id) on delete set null,
+  -- Set at PROMOTION and never by the model (D-56).
+  party_id uuid references parties (id) on delete set null,
+  -- D-12: kept and flagged when a newer chronology omits them, never deleted.
+  missing_from_latest boolean not null default false,
+  -- D-55: Michael's delete is a SOFT delete. No later pull resurrects it.
+  removed_by_hand_at timestamptz,
+  -- D-51: per-field provenance. A field named here survives re-extraction.
+  hand_edited_fields text[] not null default '{}',
+  sort_order integer,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists case_provider_individuals_provider_idx
+  on case_provider_individuals (case_provider_id);
+create index if not exists case_provider_individuals_party_idx
+  on case_provider_individuals (party_id);
+
+-- Per-visit rows, ONLY from a chronology (§17.7). `provenance` is always
+-- 'model' because no hand path exists, by ruling — the CHECK says so rather
+-- than leaving a column that looks like it takes two values.
+create table if not exists case_provider_visits (
+  id uuid primary key default gen_random_uuid(),
+  individual_id uuid not null references case_provider_individuals (id) on delete cascade,
+  visit_date date,
+  description text,
+  provenance text not null default 'model' check (provenance = 'model'),
+  chronology_version_id uuid references case_chronology_versions (id) on delete set null,
+  sort_order integer,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists case_provider_visits_individual_idx
+  on case_provider_visits (individual_id);
+
+-- The per-designation PARAGRAPH RECORD (AS-Q13a). One row per PARAGRAPH: a
+-- radiologist split writes two, each rider its own, a mental-health facility
+-- writes none (a block is not a paragraph). FE-21's 194.2(b) subsection objects
+-- stay OUT — only this record is IN.
+create table if not exists generated_document_paragraphs (
+  id uuid primary key default gen_random_uuid(),
+  document_id uuid not null references generated_documents (id) on delete cascade,
+  -- set null, not cascade (D-53): a SERVED record outlives its facility row,
+  -- which is why the rendered name is kept beside it.
+  case_provider_id uuid references case_providers (id) on delete set null,
+  facility_name_as_rendered text,
+  client_id uuid references case_clients (id) on delete set null,
+  -- The ordered individuals this paragraph covered — what AS-Q14 needs if
+  -- Michael rules that a new individual at a designated facility gets its own
+  -- block, and what makes that buildable later without a backfill.
+  individual_ids jsonb not null default '[]',
+  shape text not null check (shape in (
+    'treating-single','treating-group','treating-mixed','radiology-split',
+    'imaging-facility','midlevel-rider','pharmacy','custodian-only',
+    'other-non-physician','retained'
+  )),
+  lead_text text,
+  -- The writer's named plain-text parts, OPAQUE. Nothing inspects, byte-matches,
+  -- lints or parses them — §11.6 "Option 1".
+  parts jsonb,
+  assembled_text text,
+  fixed_sentence_version_ids jsonb not null default '[]',
+  writer_instructions_version_id uuid references form_template_versions (id) on delete set null,
+  chronology_version_id uuid references case_chronology_versions (id) on delete set null,
+  -- The AUTOMATIC limb only (AS-Q13a). No charge weighting — Q5 stays HELD.
+  gap_flag boolean not null default false,
+  sort_order integer,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists generated_document_paragraphs_document_idx
+  on generated_document_paragraphs (document_id);
+create index if not exists generated_document_paragraphs_provider_idx
+  on generated_document_paragraphs (case_provider_id);
+
+drop trigger if exists case_providers_touch on case_providers;
+create trigger case_providers_touch before update on case_providers
+  for each row execute function touch_updated_at();
+
+drop trigger if exists case_providers_set_created_by on case_providers;
+create trigger case_providers_set_created_by before insert on case_providers
+  for each row execute function set_created_by();
+
+drop trigger if exists case_provider_individuals_touch on case_provider_individuals;
+create trigger case_provider_individuals_touch before update on case_provider_individuals
+  for each row execute function touch_updated_at();
+
+-- RLS + policies from birth (FE-D1 slice item 11). The grants ride the
+-- all-tables statement below on a fresh run and the migration on an existing
+-- database — both paths are required, neither alone is enough.
+--
+-- These five carry PHI (a chronology's extracted text above all), and a
+-- permissive `using (true)` policy is NOT the access control that fact
+-- eventually needs. The professional security review before multi-user use is
+-- where that is decided.
+alter table case_chronology_versions enable row level security;
+alter table case_providers enable row level security;
+alter table case_provider_individuals enable row level security;
+alter table case_provider_visits enable row level security;
+alter table generated_document_paragraphs enable row level security;
+
+drop policy if exists "authenticated full access case_chronology_versions" on case_chronology_versions;
+create policy "authenticated full access case_chronology_versions" on case_chronology_versions
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access case_providers" on case_providers;
+create policy "authenticated full access case_providers" on case_providers
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access case_provider_individuals" on case_provider_individuals;
+create policy "authenticated full access case_provider_individuals" on case_provider_individuals
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access case_provider_visits" on case_provider_visits;
+create policy "authenticated full access case_provider_visits" on case_provider_visits
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access generated_document_paragraphs" on generated_document_paragraphs;
+create policy "authenticated full access generated_document_paragraphs" on generated_document_paragraphs
+  for all to authenticated using (true) with check (true);
 
 -- ============ API ROLE PRIVILEGES ============
 -- ADDED 2026-07-28, auth slice §5A, after the first live run of this file found

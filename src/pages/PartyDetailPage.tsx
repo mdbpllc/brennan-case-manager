@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { PartyRecord, CasePartyLink, CaseRecord } from '../domain/types';
-import type { ProviderBillingProfile } from '../domain/billing';
+import type { FacilityBillingProfile } from '../domain/billing';
 import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
 import { ALIAS_KIND_LABELS } from '../domain/directory';
 import { FieldDisplay } from '../components/fieldWidgets';
@@ -13,7 +13,7 @@ export default function PartyDetailPage() {
   const [party, setParty] = useState<PartyRecord | null>(null);
   const [links, setLinks] = useState<CasePartyLink[]>([]);
   const [cases, setCases] = useState<Record<string, CaseRecord>>({});
-  const [profile, setProfile] = useState<ProviderBillingProfile | null>(null);
+  const [profile, setProfile] = useState<FacilityBillingProfile | null>(null);
   /** Gate 10 §4 — the child row is fetched ONLY when Michael asks. Opening a
    *  contact does not pull an SSN across the wire on the chance he might look. */
   const [pii, setPii] = useState<PartyPii | null>(null);

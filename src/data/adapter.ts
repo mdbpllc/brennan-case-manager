@@ -39,7 +39,7 @@ import type {
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
-  ProviderBillingProfile,
+  FacilityBillingProfile,
 } from '../domain/billing';
 
 /** Shared runtime guard for updateParty: both adapters throw on a patch key
@@ -158,10 +158,10 @@ export interface DataAdapter {
   createCodeMapping(data: Omit<CodeMapping, 'id'>): Promise<CodeMapping>;
 
   /** All bills attached to a provider-business party, across cases — feeds the billing profile. */
-  listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]>;
-  getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null>;
-  /** Full replace keyed on providerPartyId — the profile is a computed projection, never hand-edited. */
-  upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile>;
+  listBillsForProvider(facilityPartyId: string): Promise<MedicalBill[]>;
+  getProviderProfile(facilityPartyId: string): Promise<FacilityBillingProfile | null>;
+  /** Full replace keyed on facilityPartyId — the profile is a computed projection, never hand-edited. */
+  upsertProviderProfile(data: Omit<FacilityBillingProfile, 'id' | 'updatedAt'>): Promise<FacilityBillingProfile>;
 
   getEobForBill(billId: string): Promise<EOBRecord | null>;
   saveEob(billId: string, data: Omit<EOBRecord, 'id' | 'billId' | 'updatedAt'>): Promise<EOBRecord>;

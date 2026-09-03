@@ -116,7 +116,7 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
     providerCharges: Object.fromEntries(
       chosenProviders.map((p) => [
         p.id,
-        bills.filter((b) => b.providerPartyId === p.id)
+        bills.filter((b) => b.facilityPartyId === p.id)
           .reduce((sum, b) => sum + (b.billedAmount ?? 0), 0),
       ]).filter(([, amount]) => (amount as number) > 0),
     ),

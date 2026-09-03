@@ -14,7 +14,7 @@ import { backfillRosterAttributes, summarizeBackfill } from '../domain/rosterBac
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
-  ProviderBillingProfile,
+  FacilityBillingProfile,
 } from '../domain/billing';
 import type { CalendarEvent } from '../domain/calendar';
 import type {
@@ -34,12 +34,15 @@ import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import { sortClients } from '../domain/client';
 import { seedData } from './seed';
 import { seedFormEngine } from '../forms/seed';
+import { DISCLOSURE_VARIANTS } from '../forms/variants';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 13; // v13: FE-D1 form engine (template bank,
+export const STORE_VERSION = 14; // v14: FE-D1 amendment - the provider/facility
+// rename inside stored rows, and section 9.4's ruled edit appended as a new
+// template version. v13: FE-D1 form engine (template bank,
 // versioned template bodies, token registry, format profiles). v12: gate 10 PII
 // promotion (dob typed, party_pii child records out of the fields blob). v11:
 // CD-1 contact directory (role tags, typed aliases, deceased fact; roster
@@ -74,7 +77,7 @@ interface Store {
   feeSchedules: FeeSchedule[];
   feeRates: FeeScheduleRate[];
   documents: GeneratedDocument[];
-  providerProfiles: ProviderBillingProfile[];
+  facilityProfiles: FacilityBillingProfile[];
   events: CalendarEvent[];
   transcripts: Transcript[];
   transcriptParticipants: TranscriptParticipant[];
@@ -448,6 +451,109 @@ export function migrateV12ToV13(old: Partial<Store>, raw: string): Store {
   return migrated;
 }
 
+/** v13 -> v14 - the FE-D1 amendment's rename, and section 9.4's ruled edit.
+ *
+ *  TWO JOBS, both on data the app already holds.
+ *
+ *  THE RENAME. AS-Q11 made PROVIDER mean the PERSON and FACILITY mean the
+ *  business, so `providerPartyId` became `facilityPartyId` on bills, code
+ *  mappings and the billing profile, and the profile collection was renamed with
+ *  it. A stored v13 bill still carries the old key while the renamed code reads
+ *  the new one, so a store that migrated without this step would show every bill
+ *  with NO facility rather than failing loudly. The keys are moved in place and
+ *  the old ones deleted, so nothing reads them by accident afterwards.
+ *
+ *  SECTION 9.4's EDIT. D-63: a FRESH seed carries the ruled text as v1, because a
+ *  fresh seed has no old text to preserve. A store that already holds v1 gets a
+ *  NEW VERSION APPENDED instead - never an overwrite, because the editor's whole
+ *  contract is that "which text went out the door" stays answerable. The change
+ *  note quotes Michael's ruling. Any template whose current body has drifted from
+ *  the generated constant is carried the same way, so this is not special-cased
+ *  to the chiropractor and a future spec edit migrates by the same route.
+ *
+ *  Forward-in-place with a full backup - the migrateV10ToV11 lesson. The backup
+ *  is written before anything is reshaped, and it holds v13 text because each
+ *  step re-serializes for the next one. */
+export function migrateV13ToV14(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v13`, raw);
+
+  const renameKey = <T,>(row: T): T => {
+    const bag = row as Record<string, unknown>;
+    if (!('providerPartyId' in bag)) return row;
+    const { providerPartyId, ...rest } = bag;
+    return { ...rest, facilityPartyId: providerPartyId } as unknown as T;
+  };
+
+  const bills = (old.bills ?? []).map(renameKey);
+  const codeMappings = (old.codeMappings ?? []).map(renameKey);
+  // The collection itself was renamed, so a v13 store still calls it
+  // `providerProfiles` - a key the Store type no longer has.
+  const legacy = old as unknown as { providerProfiles?: FacilityBillingProfile[] };
+  const facilityProfiles = (old.facilityProfiles ?? legacy.providerProfiles ?? []).map(renameKey);
+
+  const templates = [...(old.formTemplates ?? [])];
+  const versions = [...(old.formTemplateVersions ?? [])];
+  const republished: string[] = [];
+
+  for (const variant of DISCLOSURE_VARIANTS) {
+    const tpl = templates.find((t) => t.key === variant.key);
+    if (!tpl) continue;
+    const current = versions.find((v) => v.id === tpl.currentVersionId);
+    if (!current || current.body === variant.body) continue;
+
+    const highest = versions
+      .filter((v) => v.templateId === tpl.id)
+      .reduce((max, v) => Math.max(max, v.versionNo), 0);
+    const nextId = uid();
+    versions.push({
+      id: nextId,
+      templateId: tpl.id,
+      versionNo: highest + 1,
+      body: variant.body,
+      settings: { ...current.settings },
+      changeNote:
+        `form-engine.md section ${variant.section} was amended in the design space and this `
+        + `version carries the amendment. Section 9.4's edit is Michael's ruling of `
+        + `2026-08-31: "Get rid of chiropractic probability and replace with medical `
+        + `probability." The previous version is kept - the editor appends, it never `
+        + `overwrites.`,
+      createdAt: stamp,
+    });
+    templates[templates.indexOf(tpl)] = { ...tpl, currentVersionId: nextId, updatedAt: stamp };
+    republished.push(variant.section);
+  }
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 14, NOT STORE_VERSION - the defect this file now warns about at
+    // four separate steps. This function produces a v14 store and nothing more.
+    version: 14,
+    bills,
+    codeMappings,
+    facilityProfiles,
+    formTemplates: templates,
+    formTemplateVersions: versions,
+  };
+  delete (migrated as unknown as { providerProfiles?: unknown }).providerProfiles;
+
+  const summary =
+    `Store migrated v13→14 (FE-D1 amendment). Renamed providerPartyId→facilityPartyId `
+    + `on ${bills.length} bill(s), ${codeMappings.length} code mapping(s) and `
+    + `${facilityProfiles.length} billing profile(s), and renamed the profile collection. `
+    + (republished.length > 0
+      ? `Appended a new template version for section(s) ${republished.join(', ')} - prior versions kept. `
+      : `No template body had drifted, so no version was appended. `)
+    + `Full pre-migration backup at localStorage key "${KEY}-backup-v13".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (FE-D1 amendment migration)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -464,15 +570,21 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 12) return migrateV12ToV13(parsed, raw);
+      if (parsed.version === 13) return migrateV13ToV14(parsed, raw);
+      if (parsed.version === 12) {
+        const v13 = migrateV12ToV13(parsed, raw);
+        return migrateV13ToV14(v13, JSON.stringify(v13));
+      }
       if (parsed.version === 11) {
         const v12 = migrateV11ToV12(parsed, raw);
-        return migrateV12ToV13(v12, JSON.stringify(v12));
+        const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
+        return migrateV13ToV14(v13, JSON.stringify(v13));
       }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
-        return migrateV12ToV13(v12, JSON.stringify(v12));
+        const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
+        return migrateV13ToV14(v13, JSON.stringify(v13));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
@@ -480,7 +592,8 @@ function load(): Store {
         const v10 = migrateV9ToV10(parsed, raw);
         const v11 = migrateV10ToV11(v10, JSON.stringify(v10));
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
-        return migrateV12ToV13(v12, JSON.stringify(v12));
+        const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
+        return migrateV13ToV14(v13, JSON.stringify(v13));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
@@ -494,7 +607,7 @@ function load(): Store {
     // Gate 10 §3 - empty by design. No demo fixture carries SSN or licence
     // data, and none should: the seed is fictional and stays that way.
     partyPii: [],
-    runs: [], resultLines: [], reviewLog: [], documents: [], providerProfiles: [],
+    runs: [], resultLines: [], reviewLog: [], documents: [], facilityProfiles: [],
     // contactEdges and rosterFlags come from seedData() — the seed runs the
     // real backfill so demo mode shows what a migrated database shows.
     oaaIntakes: [],
@@ -892,24 +1005,24 @@ export class LocalAdapter implements DataAdapter {
     return rec;
   }
 
-  async listBillsForProvider(providerPartyId: string): Promise<MedicalBill[]> {
-    return load().bills.filter((b) => b.providerPartyId === providerPartyId);
+  async listBillsForProvider(facilityPartyId: string): Promise<MedicalBill[]> {
+    return load().bills.filter((b) => b.facilityPartyId === facilityPartyId);
   }
 
-  async getProviderProfile(providerPartyId: string): Promise<ProviderBillingProfile | null> {
-    return load().providerProfiles.find((p) => p.providerPartyId === providerPartyId) ?? null;
+  async getProviderProfile(facilityPartyId: string): Promise<FacilityBillingProfile | null> {
+    return load().facilityProfiles.find((p) => p.facilityPartyId === facilityPartyId) ?? null;
   }
 
-  async upsertProviderProfile(data: Omit<ProviderBillingProfile, 'id' | 'updatedAt'>): Promise<ProviderBillingProfile> {
+  async upsertProviderProfile(data: Omit<FacilityBillingProfile, 'id' | 'updatedAt'>): Promise<FacilityBillingProfile> {
     const store = load();
-    const idx = store.providerProfiles.findIndex((p) => p.providerPartyId === data.providerPartyId);
-    const rec: ProviderBillingProfile = {
+    const idx = store.facilityProfiles.findIndex((p) => p.facilityPartyId === data.facilityPartyId);
+    const rec: FacilityBillingProfile = {
       ...data,
-      id: idx === -1 ? uid() : store.providerProfiles[idx].id,
+      id: idx === -1 ? uid() : store.facilityProfiles[idx].id,
       updatedAt: now(),
     };
-    if (idx === -1) store.providerProfiles.push(rec);
-    else store.providerProfiles[idx] = rec;
+    if (idx === -1) store.facilityProfiles.push(rec);
+    else store.facilityProfiles[idx] = rec;
     save(store);
     return rec;
   }

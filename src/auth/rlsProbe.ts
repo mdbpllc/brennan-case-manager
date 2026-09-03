@@ -24,7 +24,7 @@ import { supabase } from '../data/supabaseClient';
  * real client data, ever — including anything created to exercise RLS).
  */
 
-/** All 37 tables in db/schema.sql. `policy: false` marks the deliberate omission.
+/** All 46 tables in db/schema.sql. `policy: false` marks the deliberate omission.
  *
  *  KEEP THIS IN STEP WITH THE SCHEMA. A table missing here is not probed, so a
  *  missing GRANT on it stays invisible to the one instrument built to catch
@@ -55,7 +55,7 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'bill_line_items', policy: true },
   { name: 'code_mappings', policy: true },
   { name: 'eob_records', policy: true },
-  { name: 'provider_billing_profiles', policy: true },
+  { name: 'facility_billing_profiles', policy: true },
   { name: 'analysis_runs', policy: true },
   { name: 'analysis_result_lines', policy: true },
   { name: 'review_log', policy: true },
@@ -92,6 +92,22 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'form_templates', policy: true },
   { name: 'form_template_versions', policy: true },
   { name: 'form_token_definitions', policy: true },
+  // FE-D1 AMENDMENT (2026-09-03). Probed from birth, same commit as the tables
+  // and their grants — slice item 11 again.
+  //
+  // ORDER IS LOAD-BEARING: a test asserts this list is sequence-identical to
+  // db/schema.sql's create-table order, so these five sit here because that is
+  // where the amendment migration appends them — after the FE-D1 block and
+  // before the API ROLE PRIVILEGES block.
+  //
+  // These carry PHI (a chronology's extracted text above all), so a missing
+  // GRANT on one is not merely an outage; check 4 of the migration asks
+  // whether `anon` reaches any of them and calls a true answer a live exposure.
+  { name: 'case_chronology_versions', policy: true },
+  { name: 'case_providers', policy: true },
+  { name: 'case_provider_individuals', policy: true },
+  { name: 'case_provider_visits', policy: true },
+  { name: 'generated_document_paragraphs', policy: true },
 ];
 
 /**

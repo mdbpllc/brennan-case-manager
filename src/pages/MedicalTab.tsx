@@ -220,7 +220,7 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
               return (
                 <tr key={b.id}>
                   <td><Link to={`/cases/${caseRec.id}/bills/${b.id}`}><strong>{b.label}</strong></Link></td>
-                  <td className="muted">{providerName(b.providerPartyId) ?? '—'}</td>
+                  <td className="muted">{providerName(b.facilityPartyId) ?? '—'}</td>
                   <td><span className="badge status">Type {b.billType}</span></td>
                   <td>
                     <span className={`badge claim-${b.claimType}`}>{b.claimType}</span>
@@ -341,7 +341,7 @@ function NewBillForm({
   const create = async () => {
     if (!label.trim()) return;
     const bill = await db.createBill({
-      caseId, providerPartyId: providerId || undefined, label: label.trim(), billType,
+      caseId, facilityPartyId: providerId || undefined, label: label.trim(), billType,
       claimType: 'unknown', claimTypeSource: 'detected',
       clientId: clientId || undefined,
       serviceStart: serviceStart || undefined, serviceEnd: serviceEnd || undefined,

@@ -1,4 +1,4 @@
-// ProviderBillingProfile recompute (synthesis Part 4). Deterministic aggregate
+// FacilityBillingProfile recompute (synthesis Part 4). Deterministic aggregate
 // over CONFIRMED runs only — provisional runs never touch the profile, matching
 // the only-confirmed-feeds-downstream rule. Cross-case by design: the profile
 // lives on the provider-business party record, and it stores ratios and audit
@@ -10,8 +10,8 @@ import { runCodingAudit } from './codingAudit';
 
 /** Rebuild a provider's billing profile from its bills' latest confirmed runs.
  *  Called after a run is confirmed; cheap at practice scale. */
-export async function recomputeProviderProfile(db: DataAdapter, providerPartyId: string): Promise<void> {
-  const bills = await db.listBillsForProvider(providerPartyId);
+export async function recomputeProviderProfile(db: DataAdapter, facilityPartyId: string): Promise<void> {
+  const bills = await db.listBillsForProvider(facilityPartyId);
   let confirmedBilled = 0;
   let confirmedBenchmark = 0;
   let lastAnalysisDate: string | undefined;
@@ -32,7 +32,7 @@ export async function recomputeProviderProfile(db: DataAdapter, providerPartyId:
   }
 
   await db.upsertProviderProfile({
-    providerPartyId,
+    facilityPartyId,
     avgBilledToMedicareRatio: confirmedBenchmark > 0
       ? Math.round((confirmedBilled / confirmedBenchmark) * 100) / 100
       : undefined,
