@@ -479,6 +479,7 @@ alter table form_templates add constraint form_templates_family_check
                     'fixed-sentence', 'writer-instructions'));
 
 -- ============ VERIFICATION — ANSWER THESE IN WORDS ============
+-- AFTER THE FACT (2026-09-03, #147): this file RAN and answered nine of ten. Check 8 FAILED and check 6's third limb CANNOT PASS as written — both are re-put, corrected, in `2026-09-03-fe-d1-amendment-fix.sql`; run that file and answer them there. Nothing executable in THIS file changed.
 -- Run each and read the result out loud before continuing. If any answer is not
 -- what the comment says it should be, STOP and report it rather than proceeding.
 --
