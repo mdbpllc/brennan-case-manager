@@ -1,7 +1,7 @@
 # Project Knowledge Working-Set Policy
 
 **Canonical repo path:** `docs/project-knowledge-working-set-policy.md`
-**Status:** LANDED in repo 2026-07-26 (drafted same day, design session, Opus 5; routed by Code). A one-line pointer to this doc lives in `CLAUDE.md` under working style/conventions. Amended 2026-08-18 (ruled same day): execution-capability line and capture-pruning caveat — see the two sections below.
+**Status:** LANDED in repo 2026-07-26 (drafted same day, design session, Opus 5; routed by Code). A one-line pointer to this doc lives in `CLAUDE.md` under working style/conventions. Amended 2026-08-18 (ruled same day): execution-capability line and capture-pruning caveat — see the two sections below. Amended 2026-09-02 (ruled same day, the capacity pass): the unit calibration, the retired-spec home, the born-unsynced class rule, the register split and the BUILD-STATE ceiling — see the last section.
 **Applies to:** the Claude project knowledge base for brennan-case-manager. Not to the repo, which has no equivalent constraint.
 
 ---
@@ -57,3 +57,14 @@ Whether to stand up a **second Claude project for legal authority / research**, 
 - **Do not split by build phase.** Each Claude project has its own separate memory space. A per-phase split would fragment conventions, session-log continuity, and accumulated decisions across a workflow that is genuinely continuous.
 - **A research/authority split is defensible** — it follows a real seam (occasionally-consulted reference vs. daily working set), and the research side does not need the build side's memory.
 - **Sequence:** execute steps 1–4 first. If the project drops back under the in-context threshold, a second project may be unnecessary.
+
+## Amendment 2026-09-02 — the capacity pass (ruled; `docs/specs/capacity-pass-2026-09-02.md` governs)
+
+- **The unit is exact.** The knowledge meter is the sum of each project document's `estimated_token_count` as the platform reports it (a deletion of 114,570 units moved the meter by 114,570). Measured ratios: repo markdown 3.70 B/unit; capture prose 3.65; table-heavy notes 2.96; JSON 2.59. One point of the 2,000,000 budget is 20,000 units ≈ 74 KB of repo markdown.
+- **The synced repo is the meter** — 72.6 points at HEAD `2a85c99`, of which `docs/specs/` is 88.6% by bytes. Project documents were 17.7 points before the pass and 9.2 after it.
+- **Retired specs have a home (`CAP-1`):** `docs/record/specs/<name>.md` by `git mv`, a three-line stub left at the old path. Retirement stays a per-file ruling.
+- **Evidence is born unsynced (`CAP-2`):** every packet routing row carries a CLASS — `RULING` (born in `docs/specs/`) or `EVIDENCE` (born in `docs/record/<slug>-<date>/`). The synced side always gets what a ruling needs.
+- **The register is two files (`CAP-3`):** ✅ rows and the superseded reconcile sentences live in `docs/record/attorney-review-queue-closed.md`; the synced register carries ⬜ and 🟡 rows (plus flagged ✅ parents with open children — `CAP-OPEN-2`) and the current sentence only.
+- **BUILD-STATE has a byte ceiling (`CAP-4`):** 100,000 bytes beside the 150-line cap; the shortfall is named in its banner.
+- **The pinned line "the index for any reference corpus" is read as a SMALL index.** The probate corpus manifest JSON (54,722 units, 2.7 points) left for Michael's machine on 2026-09-02 (`CAP-5`); `probate_system_prompt.md` and the README remain the probate index set.
+- **Never prune design docs** still stands for design docs. The 2026-08-18 caveat stands for captures; `TC-8` (2026-08-21) made captures TRANSIT, and the relocation method is now the project docs API read in Michael's own browser — byte-exact, manifest-hashed, verified on disk before deletion.

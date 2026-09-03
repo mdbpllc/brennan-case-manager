@@ -1,0 +1,15 @@
+{
+  "zip": "brennan-case-manager_probate-manifest-relocation_2026-09-02.zip",
+  "built": "2026-09-02 Central, in Michael's Chrome from the claude.ai project docs API",
+  "rule": "CAP-Q5 ruled 2026-09-02: the probate corpus manifest leaves project knowledge; probate_system_prompt.md and README stay.",
+  "files": [
+    {
+      "name": "probate_knowledge_corpus_manifest.json",
+      "uuid": "b9d12638-7b5b-4fae-a6c8-a574e7672a11",
+      "created_at": "2026-07-29T04:41:26.120321Z",
+      "bytes": 141803,
+      "estimated_token_count": 54722,
+      "sha256": "9ef2bc6b4f1ac0c90cd835957dbf16e0236036e0bacfa1b2bfe0e10c4e464ae3"
+    }
+  ]
+}

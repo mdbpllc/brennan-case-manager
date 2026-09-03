@@ -35,7 +35,7 @@ instrument anchors on the row's full first line as an exact string, re-verified 
    satellite rows verified beside them.** Wave 2 (the remaining **247** open rows; 114 + 247 = 361, the
    register's full open count) **launched on Fable and DIED AT THE WEEKLY LIMIT — eight agents, zero
    output; rerouted the same hour to an Opus session per §7.2** (mechanical evidence-gathering is
-   execution); its results fold in at §7. **Three batches landed between the hardening and this sheet
+   execution); its results fold in at §6. **Three batches landed between the hardening and this sheet
    (`#138`–`#140`, runners 83–85), and they change verdicts** — most visibly the v23-paste row, the
    hardening's own headline PREMISE-INTACT finding, which v28 (pasted 2026-08-31) has since dissolved.
 
@@ -275,9 +275,9 @@ that assembly: the cite, the quoted basis, and what the sentence must record.*
   3:59 PM Central today.
 
 ## §6 — WAVE-2 (the ~247 LIVE rows) — FOLDS IN HERE
-*Delegated to the background Opus session (`OPUS-SWEEP_queue-live-rows_2026-09-01.md`) after the Fable
-fleet died at the weekly wall (eight agents, zero output, the `#104` class — surfaced by the harness and
-recorded rather than worn). Placeholder until its evidence file returns; nothing in §2–§5 depends on it.*
+*Discharged 2026-09-01: the sweep returned 247/247 (CLOSE = 0; 68 annotate-keeps in five groups; one close-split;
+two reclassify-acts; two his-word rows; 174 keeps). The adjudication is the WAVE-2 SUPPLEMENT beside this file;
+the evidence is at docs/record/queue-cleanup-evidence-2026-09-01/wave2_opus_sweep_evidence.md.*
 
 ## §7 — WHAT THIS SHEET DOES NOT ESTABLISH
 No closure (Michael rules); no build authorization; no legal-currency verification (registry Status lines

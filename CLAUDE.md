@@ -232,6 +232,14 @@ coding sessions. The spec documents committed under `docs/specs/` are
   coding sessions should skim the latest entries at session start and append a
   short dated entry at the top after substantive work, per the instructions
   inside that file. Append entries; don't rewrite history.
+- `docs/record/attorney-review-queue-closed.md` — the review register's CLOSED half:
+  every ✅ row, text intact, under its register heading, with the RECONCILE HISTORY at
+  its head. Repo-only, append-only, bridge-reachable (`CAP-3`, ruled 2026-09-02);
+  `docs/specs/attorney-review-queue.md` carries ⬜ and 🟡 rows only (plus flagged ✅
+  parents with open children — `CAP-OPEN-2`). **And
+  `docs/record/specs/` holds RETIRED specs (`CAP-1`): a retired file moves there by
+  `git mv` and leaves a three-line stub at its old path so cites resolve.** Spec:
+  `docs/specs/capacity-pass-2026-09-02.md` §3.
 
 **Read them; never rewrite them in a coding session** (except the
 session-log append rule above). If the build reveals a spec problem, note
@@ -380,6 +388,15 @@ standing gates that survive any status change:
   failure is carried into the next runner line (QR-5, ruled 2026-08-16).** `docs/prompts/` is the canonical
   home for cross-interface prompts (prompts meant to be executed by
   Code sessions) — ruled 2026-07-26 (Q-2).
+- **Every packet routing row carries a CLASS — `RULING` or `EVIDENCE` (`CAP-2`, ruled
+  2026-09-02).** `EVIDENCE` — audits, verifier reports, sweeps, research memos and fetch
+  records, mining passes, walkthrough captures, entry-draft staging, folded adjudication
+  records — is BORN in `docs/record/<slug>-<date>/`, unsynced and bridge-reachable;
+  `RULING` — specs, slices, REQ-CAPTUREs, registries, prompts in force, the sheet Michael
+  rules from — is born in `docs/specs/`. The synced side always gets what a ruling needs;
+  evidence is cited by path. `BUILD-STATE.md` has a 100,000-byte ceiling beside its
+  150-line cap, the shortfall named in its banner (`CAP-4`). Spec:
+  `docs/specs/capacity-pass-2026-09-02.md` §3.
 - Preflight rows and questions about Michael-supplied material are answered by Michael
   first — never by sweeping his machine unprompted; filenames alone can carry client
   information. If Michael cannot recall, he may direct a search, per instance (ruled

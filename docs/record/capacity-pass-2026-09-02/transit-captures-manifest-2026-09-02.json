@@ -1,0 +1,159 @@
+{
+  "zip": "brennan-case-manager_transit-captures_2026-09-02.zip",
+  "built": "2026-09-02 Central, in Michael's Chrome from the claude.ai project docs API (project 019f9fc8-cb72-770d-a0f5-4a6405e7650b)",
+  "rule": "TC-8 TRANSIT relocation, step 1. Names are the exact project-knowledge names; a claude/ folder in this zip mirrors the claude/ namespace of project knowledge and is NOT a repo path.",
+  "files": [
+    {
+      "name": "claude_Disclosures_Expert_Designation_Walk_Capture_2026-08-21.md",
+      "uuid": "bf2eae35-61b7-4d42-9762-16062f220890",
+      "created_at": "2026-08-21T19:20:20.126290Z",
+      "bytes": 33548,
+      "estimated_token_count": 8968,
+      "sha256": "09cc2663ca486b5682f1e70c77ad1d51f74fc07979b789bc2cd629842cf372d9"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-21_Voice.md",
+      "uuid": "780913ef-6f70-4683-8673-74e5e0c65b64",
+      "created_at": "2026-08-21T19:20:20.130207Z",
+      "bytes": 14196,
+      "estimated_token_count": 3588,
+      "sha256": "57db1f85abc47498bf286f53097e6540251d6875896738628768ace5032ffa8c"
+    },
+    {
+      "name": "claude_Disclosures_Fold_In_H18_H12_Rulings_Capture_2026-08-21.md",
+      "uuid": "883d7f16-a89f-4a9c-8ed0-031db6d3d154",
+      "created_at": "2026-08-21T19:55:20.074406Z",
+      "bytes": 29534,
+      "estimated_token_count": 8240,
+      "sha256": "0c0bfe5efead22b0e46268dc44202fbc859fa2ebfbf1af6641ad55c87f78a991"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-21.md",
+      "uuid": "e81db06f-8e5c-4620-a66b-f08f2453d399",
+      "created_at": "2026-08-21T19:55:20.094456Z",
+      "bytes": 12444,
+      "estimated_token_count": 3476,
+      "sha256": "329514e47c410d7929d709cd3f73df6d92f05e29fe5868fb0bb38d5b87a41e92"
+    },
+    {
+      "name": "claude_Disclosures_Return_Path_and_Model_Call_Reversal_Capture_2026-08-21.md",
+      "uuid": "86d62ce1-cdf0-48a2-8ca0-9b951d912e64",
+      "created_at": "2026-08-21T21:59:10.385735Z",
+      "bytes": 30695,
+      "estimated_token_count": 7905,
+      "sha256": "7eff9de1ff2c9475205d2b3dfbb5eb4dd5882537fed3647d6ca741897692ea39"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-21_Voice2.md",
+      "uuid": "c585b23f-7561-4b0f-bae0-e380dd6f24aa",
+      "created_at": "2026-08-21T21:59:10.368021Z",
+      "bytes": 16658,
+      "estimated_token_count": 4269,
+      "sha256": "fc4bdf9259a318656a4b7dd84729cf5b9c0a58385ec684f5db7f00838513affd"
+    },
+    {
+      "name": "claude_Disclosures_H20_H21_CC1_Rulings_Capture_2026-08-21.md",
+      "uuid": "9aafef8a-bccf-4741-b14a-1d4d9aba0cc3",
+      "created_at": "2026-08-21T23:04:22.633423Z",
+      "bytes": 20866,
+      "estimated_token_count": 5261,
+      "sha256": "6cd86c2aab5620e1661bf70e8eefa55bbfc698a67f54b200a8b346adebb8a017"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-21_Voice3.md",
+      "uuid": "2234ec98-323b-4ce1-81c8-c543bf2bc5da",
+      "created_at": "2026-08-21T23:04:22.613783Z",
+      "bytes": 11452,
+      "estimated_token_count": 2855,
+      "sha256": "cbe50f0f177ea232198887001003aa3b1e0ff901143021915db52a01c814c83d"
+    },
+    {
+      "name": "claude_Disclosures_RECON1_Floor_and_Chronology_Capture_2026-08-22.md",
+      "uuid": "765fd2cc-918b-4c9e-adba-8aa9905dd5b4",
+      "created_at": "2026-08-22T20:22:26.865425Z",
+      "bytes": 28666,
+      "estimated_token_count": 7666,
+      "sha256": "85e90edb3571f7599d456b7a38504e6b2f5c7d9df88b56d10d9492e517479c6f"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-22_Voice.md",
+      "uuid": "eb9a4bf1-5ff6-4688-a351-cd72635c8eb9",
+      "created_at": "2026-08-22T20:22:26.874805Z",
+      "bytes": 12428,
+      "estimated_token_count": 3346,
+      "sha256": "1f2a8d53226858e6754396fd3f9fc676ac5a25d35be3f1085029304d4391ff9c"
+    },
+    {
+      "name": "claude_Disclosures_Addendum_Absence_and_Sequencing_Capture_2026-08-22.md",
+      "uuid": "84053b5e-5aec-44d6-9e98-f1f1047fbe31",
+      "created_at": "2026-08-22T21:58:43.675393Z",
+      "bytes": 18782,
+      "estimated_token_count": 5410,
+      "sha256": "1edc31abb137d759e98e23b3bb2144455af68abdf0873d5996dab3b8bcb01722"
+    },
+    {
+      "name": "claude_Handoff_Session_Log_2026-08-22.md",
+      "uuid": "6ac929d7-5b3e-42a6-b9d6-b2f1791eec59",
+      "created_at": "2026-08-22T21:58:43.675555Z",
+      "bytes": 13843,
+      "estimated_token_count": 3958,
+      "sha256": "5687a3c932278be01409feab31725e18712950b6fb8f705dc03fb56421409e93"
+    },
+    {
+      "name": "claude/claude_Disclosures_RC1_Sitting_Rulings_Capture_2026-08-31.md",
+      "uuid": "50f640a8-31da-4a01-a1ca-6b79a5a3b312",
+      "created_at": "2026-09-01T02:16:58.983515Z",
+      "bytes": 32641,
+      "estimated_token_count": 9221,
+      "sha256": "cba6236cc835f394cc4dc2a278ed2b8230f3c4011511293bc472bd24f51e3573"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-08-31.md",
+      "uuid": "56770400-4d59-4952-9c7d-1aece4b23952",
+      "created_at": "2026-09-01T02:16:53.754876Z",
+      "bytes": 19172,
+      "estimated_token_count": 5767,
+      "sha256": "42e36eeafe77a50ab755dd8ac3913eba8416f2b8c034886320656329a45086a1"
+    },
+    {
+      "name": "claude/claude_REQ-CAPTURE_disclosures-expert-designation_DRAFT_2026-08-20.md",
+      "uuid": "b299f187-ea12-4a9e-b196-f4a587c06a4b",
+      "created_at": "2026-08-21T03:21:08.332217Z",
+      "bytes": 55804,
+      "estimated_token_count": 15285,
+      "sha256": "e773723765ce071012075f928b39f2686458f3d9ac0c6b62723e29ac3975dd85"
+    },
+    {
+      "name": "claude/claude_PROMPT_voice-walkthrough-disclosures_2026-08-21.md",
+      "uuid": "e1178e94-86f4-495d-aca3-ec7d963a36ca",
+      "created_at": "2026-08-21T03:21:11.691851Z",
+      "bytes": 6680,
+      "estimated_token_count": 1886,
+      "sha256": "eb6a1ce012f0478e0dd3611a12716fcdb0a4ce325158cc4dba309d5d06a701df"
+    },
+    {
+      "name": "claude/claude_Disclosures_Amendment_Slice_Rulings_Capture_2026-08-31_Late.md",
+      "uuid": "135cdfd7-4a02-4bfe-a46b-53896624f779",
+      "created_at": "2026-09-01T05:47:33.328347Z",
+      "bytes": 30851,
+      "estimated_token_count": 8448,
+      "sha256": "ed7fee49dd1b94643c3c1514984bf8d0db62bdb1dd75bf2c7d7a7c0b993fabb7"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-08-31_Late.md",
+      "uuid": "b2a89ccc-a2c0-4a33-88bd-bec95dcbc3ec",
+      "created_at": "2026-09-01T05:38:41.202453Z",
+      "bytes": 21261,
+      "estimated_token_count": 6270,
+      "sha256": "76b4a6bd46b56a697f1b2499fb04f3bc889b3d0ee7670d99c72ea94742889986"
+    },
+    {
+      "name": "claude/claude_TRANSIT_Verification_Worknote_2026-09-01.md",
+      "uuid": "d8217641-6438-480a-852f-0f86c1f6a51b",
+      "created_at": "2026-09-01T15:50:54.227000Z",
+      "bytes": 8219,
+      "estimated_token_count": 2751,
+      "sha256": "04863b12f1cf998ec5b5543ad62e7dd4c960f3c0c288ec4816ab783e89517a8b"
+    }
+  ]
+}

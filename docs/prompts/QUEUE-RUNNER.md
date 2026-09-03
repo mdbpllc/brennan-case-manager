@@ -3,7 +3,7 @@
 
 # QUEUE-RUNNER — batch-process the push-packet inbox
 <!-- Paste everything below this line into a Claude Code session. -->
-<!-- v12, 2026-08-21. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
+<!-- v13, 2026-09-02. STATUS: STANDING CONVENTION — ruled ADOPTED by Michael 2026-07-26 (Q-1);
      Step 4 item 3 amended by Michael's ruling 2026-08-06; Step 4 item 2 amended by
      Michael's ruling 2026-08-07 (QR-1); Step 0 checkout gate added by Michael's ruling
      2026-08-08 (QR-3, v4); concurrency + non-FF-stop lines added by Michael's ruling
@@ -21,7 +21,10 @@
      2026-08-18 (TOC-4, v11); THE THIN-CONSTITUTION RESTRUCTURE — the live log and the full abstract
      index move to docs/record/ (bridge-only), and Step 4 item 1 gains the regeneration of the
      synced head file docs/specs/session-log-head.md — added by Michael's rulings 2026-08-21
-     (TC-2 through TC-5 and TC-12, v12). -->
+     (TC-2 through TC-5 and TC-12, v12); THE CAPACITY PASS — the routing-table CLASS column and the
+     born-unsynced rule (CAP-2), the RETIRE act (CAP-1), the closed register and the current-sentence header
+     rule (CAP-3), and the BUILD-STATE 100,000-byte ceiling (CAP-4) — added by Michael's rulings 2026-09-02;
+     spec docs/specs/capacity-pass-2026-09-02.md §3, which governs where this summary disagrees (v13). -->
 
 **Concurrency (MM-1, ruled 2026-08-08):** never run this queue on two machines at
 the same time. One runner, anywhere, at a time.
@@ -43,6 +46,14 @@ Three files, three different jobs, and only one of them reaches the design side:
 
 The live log is repo-only and bridge-reachable, exactly as the archive already is. **Nothing about
 the append-only rule changed — only where the file sits and who can read it without the bridge.**
+
+**WHERE THE REVIEW REGISTER LIVES (CAP-3, ruled 2026-09-02) — read this before Step 4 item 2.** Two files:
+`docs/specs/attorney-review-queue.md` (SYNCED; ⬜ and 🟡 rows only, plus any top-level ✅ parent held with an
+indented open child — eleven at the split, CAP-OPEN-2; its Status paragraph carries the CURRENT per-batch
+reconcile sentence only) and `docs/record/attorney-review-queue-closed.md` (REPO-ONLY, append-only,
+bridge-reachable; every ✅ row, text intact, under its register section heading; the RECONCILE HISTORY at its
+head). Spec: `docs/specs/capacity-pass-2026-09-02.md` §3.3. **And `docs/record/specs/` holds RETIRED specs
+(CAP-1, spec §3.1): a retired file moves there by `git mv` and leaves a three-line stub at its old path.**
 
 ## Step 0 — One-time setup (skip if already done)
 
@@ -113,6 +124,13 @@ queue from an unverified tree.
 1. Unzip all packets to a temp location.
 2. Read every manifest's §0 (READ ME FIRST), §1 (RECONCILE FIRST), and
    §2 (routing table) across ALL packets before acting on any.
+   **Every routing row carries a CLASS — `RULING` or `EVIDENCE` (CAP-2, ruled 2026-09-02; spec
+   `docs/specs/capacity-pass-2026-09-02.md` §3.2). `EVIDENCE` rows route under `docs/record/` and are
+   NEVER placed in `docs/specs/`; `RULING` rows route to their canonical home as before. A row with no
+   CLASS is a QR-6(e) act — skipped and reported — for the first two batches after v13, and a STOP
+   thereafter. Rows that place no file in the repo — the manifest, the session-log entry, the merge acts,
+   project-knowledge files, the instructions field — carry `—` and are outside this rule. The packet
+   author names the class; this runner never decides it.**
    Cross-check the confirmed order against each manifest's §3 entry date; if the
    manifests contradict the confirmed order, STOP and ask before executing.
 3. Conflict rule: where packets disagree (same canonical path, same
@@ -141,6 +159,11 @@ For each packet, oldest first:
    he authorizes. Exhibit: a packet's §8.1 asked for a deletion inside `.git/` — inert, and
    authorized in-session; the next such act may not be inert.**
 5. Collect its §3 session-log entry (do not append yet).
+6. **A routing row whose Action is `RETIRE` (CAP-1, ruled 2026-09-02; spec §3.1) requires a ruling cite
+   in the row.** With it: `git mv docs/specs/<name>.md docs/record/specs/<name>.md`, then write the
+   three-line stub at the old path EXACTLY as spec §3.1 item 2 gives it, then VERIFY — the file at its
+   new path carries its pre-move sha256, the stub is exactly three lines, and `git diff --cached -M
+   --name-status` shows the rename (`R100`). Without a ruling cite it is a QR-6(e) act: skip and report.
 
 ## Step 4 — Close out ONCE for the whole batch
 
@@ -217,10 +240,23 @@ it now and record the result. Never skip silently.**
    per-batch "Reconciled again to session-log #NN" sentence — update both. The omission has
    happened once (#84) and is recorded in that header, whose own words are "keep it current or
    the pointer lies."**
+   **The queue merge is THREE acts since v13 (CAP-3, ruled 2026-09-02; spec §3.3): (i) the rows; (ii) the
+   Status paragraph's CURRENT reconcile sentence — and the sentence it supersedes is APPENDED, verbatim, at
+   the END of the RECONCILE HISTORY block at the head of `docs/record/attorney-review-queue-closed.md`,
+   never deleted; (iii) every row this batch flips to ✅ MOVES — its whole block, the marker line plus its
+   indented continuation lines, text intact — to the closed register under its register section heading,
+   created there if absent. An indented ✅ beneath an open parent stays with the parent; a top-level ✅
+   with an indented open child is FLAGGED to Michael by ID and not moved. The synced register carries
+   ⬜ and 🟡 rows only, plus those flagged ✅ parents (eleven at the split — CAP-OPEN-2).**
 3. Rewrite docs/specs/BUILD-STATE.md IN FULL — never append. **150-line
    hard cap** (Michael's ruling 2026-07-27, BS-1, raised from 120; the cap
    exists for READABILITY, not token cost). At the cap, **displace — cut
-   detail, never add sections**. Preserve the pointer line to
+   detail, never add sections**. **AND A 100,000-BYTE CEILING (CAP-4, ruled 2026-09-02; spec §3.4),
+   measured by `wc -c` on the working tree — never `git show`, which returns the LF-normalized blob —
+   after the rewrite and before the commit: over the ceiling, displace until under it, write the
+   displaced text VERBATIM into this batch's runner line under the heading `DISPLACED FROM BUILD-STATE
+   (CAP-4)`, and NAME THE SHORTFALL in BUILD-STATE's banner — bytes before, bytes after, which
+   paragraphs. Under the ceiling, the banner says so in one clause.** Preserve the pointer line to
    `docs/specs/anti-resurrection-ledger.md`; the cap applies to BUILD-STATE
    only, not the ledger. Describe what EXISTS, verifiable from the working
    tree at the stated commit.
@@ -228,7 +264,10 @@ it now and record the result. Never skip silently.**
    unreviewed-entries range comes from the log at HEAD (A-4) and the queue-reconciled-through
    pointer from that file's own header at HEAD (A-5); every count BUILD-STATE states is
    re-derived, not carried.** **The log is now at `docs/record/session-log.md` — recompute
-   from there (TC-4).**
+   from there (TC-4).** **Register counts come from BOTH files since v13 (CAP-3): ⬜ and 🟡 from
+   `docs/specs/attorney-review-queue.md`; ✅ from `docs/record/attorney-review-queue-closed.md` PLUS any
+   top-level ✅ parent still in the synced file (eleven at the split — CAP-OPEN-2); the method named
+   (leading marker, `^\s*- (⬜|✅|🟡)`) and both file sizes stated.**
 4. Push to origin and VERIFY the remote ref moved. Never report "pushed"
    from an unchecked command. **If the push is rejected non-fast-forward
    (MM-1):** STOP — fetch, report the divergence to Michael, and reconcile.
@@ -255,6 +294,8 @@ it now and record the result. Never skip silently.**
   verifies.
 - If any packet contradicts BUILD-STATE.md or CLAUDE.md, flag the
   contradiction to Michael; do not silently obey either side.
+- **Never place an `EVIDENCE`-class file in `docs/specs/`, and never execute a `RETIRE` row that carries no
+  ruling cite (CAP-1, CAP-2, ruled 2026-09-02).**
 - **Never append a session-log entry to `docs/specs/session-log-head.md`.** It is DERIVED and
   regenerated; an entry written there and nowhere else is lost at the next batch. The entry
   goes in `docs/record/session-log.md` and reaches the head file only by regeneration (TC-5).

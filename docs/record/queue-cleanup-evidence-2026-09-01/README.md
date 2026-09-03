@@ -22,7 +22,9 @@ Produced 2026-09-01 (Central) at HEAD `7f02131`, from files staged byte-identica
 | `verify_V2.md` | Opus sheet-verifier | quotes/claims, Blocks E–H + §3, §5–§7 |
 | `verify_V3.md` | Opus sheet-verifier | adversarial destroy-a-question + his-words attribution tests |
 | `verify_RESWEEP.md` | Opus re-sweep | the fix pass's own check (RE-SWEEP AFTER FIX) — 38 locations |
+| `wave2_opus_sweep_evidence.md` | Opus sweep of the 247 un-audited open rows (the OPUS-SWEEP session) | 247/247; CLOSE = 0; 73 non-KEEP |
 
 Models: wave1_* dispatched as Fable 5 subagents; verify_* as Opus 5 (post-wall) — the dispatching
 session's record; the reports do not self-state models. Line numbers inside these reports are STAGED-COPY
 line numbers at `7f02131`, useful as finding aids only (CITE-STABILITY governs citation into live files).
+Wave-2 model: Opus 5 (its file's own header).
