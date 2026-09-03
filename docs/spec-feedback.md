@@ -1119,3 +1119,87 @@ this one anchors at the start only.
   in CLAUDE.md on 2026-07-21.
 - ~~Repo hosting~~ — decided 2026-07-21: private GitHub
   (`mdbpllc/brennan-case-manager`).
+
+## 2026-09-03 — FE-D1 amendment slice build: nine findings from the first tranche
+
+Raised by the Code session running `docs/prompts/PROMPT-fe-d1-amendment-slice-build-session.md`
+on Michael's `FE-D1A-1` authorization (session log `#146`). Nothing below was fixed in a spec.
+Items 1–4 bear on paragraph assembly and are the ones that most need a decision.
+
+**1. AS-Q8b's bold LEAD is not visually distinguishable in the master as it stands, and there is
+no `**`-to-bold mechanic to build it on.** Two separate facts, both verified at HEAD. (a) The
+engine does not convert `**` markers into bold runs — it DELETES them:
+`src/forms/context.ts:108`, `result.text.replace(/\*\*/g, '')`, with the comment that "the run's
+own style carries the bold". (b) The run's own style is bold for the whole paragraph: all four
+archetype narrative paragraphs in `disclosures-plaintiff-v1.docx` carry `<w:b/><w:bCs/>` on their
+single run (document.xml paragraphs 177, 181, 185, 189), as does the surrounding 195.5(a)
+boilerplate. So a paragraph rendered today is entirely bold, and a bold LEAD in front of it would
+read as no lead at all. **The build will place the LEAD as its own explicitly-bold run and leave
+the body's run properties exactly as the shell supplies them** — which means the body stays bold
+until Michael decides otherwise. Changing the master's formatting is not a Code session's act.
+**The question for Michael: should the narrative body be roman, with only the LEAD bold?** If
+yes, that is a change to the served document's appearance and belongs to him.
+
+**2. One `testifying_expert` item renders a block PLUS one narrative, so the radiologist split and
+the mid-level rider cannot be modelled as extra items.** The master's region spans paragraphs
+168–193: the provider block (168–173), then a `#select` over the four archetypes (175–191). Two
+items would print the facility's block TWICE, which `AS-Q7c`'s block design forbids. The slice's
+§6.2 assumes "a SECOND paragraph beneath the same provider block" is available; it is not, today.
+The build's answer is to let the narrative carry an ORDERED LIST of paragraphs and clone the
+archetype's own `<w:p>` once per entry — the §12.3 mechanic applied per paragraph rather than per
+record, fabricating no XML. Recorded because the slice was specified against the other premise.
+
+**3. THERE IS NO SQL OR SUPABASE SEED PATH FOR THE TEMPLATE BANK AT ALL.** The slice's Step-2
+question asks whether the bank reaches Supabase by SQL, so the amendment migration can carry seed
+rows. The answer is neither: `src/forms/seed.ts` is TypeScript, imported only by
+`src/data/localAdapter.ts`, and `SupabaseAdapter` has no seeding method of any kind
+(`grep -rniI "insert into form"` over the repo returns zero). **In live mode the four `form_*`
+tables are EMPTY on arrival** — no instrument, no twelve variants, no token registry. The
+amendment migration therefore carries no seed rows, deliberately: minting the first data-seeding
+SQL would give the fixed sentences a second, forkable source of truth beside the generated
+constant, which is the exact drift the §9 test exists to prevent. **But the underlying gap is
+real and predates this slice: whatever seeds the bank in live mode has not been built.**
+
+**4. §9.3 uses ONE `{s}` token for a noun and a verb in the same sentence, and one token cannot
+serve both.** "is an Emergency Medical Technician{s} who responded … {provider_they}
+specialize{s} in responding". The noun needs "s" when PLURAL; the verb needs "s" when SINGULAR.
+Whatever value `{s}` takes, one of the two is wrong. (It is currently pinned to the empty string
+at `src/forms/context.ts:310`, so today it renders "is an Emergency Medical Technician" beside
+"specialize".) §9.3's text is approved and is not to be reworded, so **the fix is two flex
+points, not one — which needs a token name Michael has not been asked for.**
+
+**5. The rider's subject token is named `{midlevel_short_name}` in the slice and `{midlevel_name}`
+in §9.12's approved text.** AS-Q8c's sentence opens `{midlevel_short_name}`; the approved §9.12
+paragraph opens `**{midlevel_name}, {midlevel_credential}**`. D-50 defines a SHORT-name rendering
+("Ms. Natarajan") distinct from the full name, so the two tokens genuinely mean different things
+and both are needed. Flagged only so the difference is deliberate rather than a typo inherited
+into the fixed-sentence row. None of `midlevel_name`, `midlevel_credential`,
+`midlevel_his_her` or `supervising_provider` resolves today — all four survive to the lint.
+
+**6. The slice cites the REQ-CAPTURE as its "second edition, 2026-08-31"; the file at HEAD is the
+THIRD edition, 2026-09-01.** The third fold-in the slice lists as OUT (§4, "the next Opus design
+session") was discharged at `#141` before this build ran. Several of the slice's "named
+divergences" are therefore already conformed — `form-engine.md` §10 now reads "FIFTEEN values,
+not twelve". No action beyond noting that the slice's authority line is one edition behind, and
+that this build read the third.
+
+**7. Prompt correction — the kickoff prompt calls a missing generator a STOP; the slice tells the
+build to write one.** `PROMPT-fe-d1-amendment-slice-build-session.md` Step 2 lists "the generator
+does not exist" among the premise changes that "is a stop: report it and put it to Michael". The
+slice's §6.4 and §13 item 2 say the opposite in terms: "write and commit the generator if it is
+not in the tree." The prompt's own rule is that the documents win on conflict, so the build wrote
+it. **The prompt gets the correction, per its own instruction.** (The generator has never existed:
+`git log --all -- scripts/` shows only `build-toc-fixtures.mjs`.)
+
+**8. `src/auth/rlsProbe.ts`'s header said "All 37 tables" while the list held 41.** A comment, not
+executable, and nothing behaved on it — but it is the header of the one instrument built to catch
+a missing GRANT. Corrected to 46 in passing. A second stale comment in the same file still reads
+"the schema's 31 policies" while 45 tables now carry one; left alone as outside this slice.
+
+**9. The adapter's method names still say Provider where the type now says Facility.**
+`listBillsForProvider`, `getProviderProfile`, `upsertProviderProfile` and
+`recomputeProviderProfile` were left unrenamed: they are neither columns nor types, and the
+slice's rename list (§3 item 11) names "three columns, the table, index/policy/constraint names,
+'Provider business', both adapters, TS types, the probe list, the store". Renaming the
+`DataAdapter` contract for no schema reason seemed the wrong call to make silently, so it is
+raised instead. Cosmetic; Michael's if he wants it consistent.
