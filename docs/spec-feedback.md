@@ -1273,9 +1273,10 @@ Two things are worth adding to item 2 before Michael rules on it:
   with `name, phone, fax, recordsEmail, taxId, registeredAgent, locations` — there is no
   `addressLine1` and no `cityStateZip` in the role at all — and `PartyFormPage` renders
   only `def.fields`. **So no facility Michael creates through the app's own party form
-  can ever hold the two keys the block reads.** The nine fixture facilities are whole
-  only because `src/data/disclosureFixtures.ts`'s `facilityParty()` helper writes those
-  keys directly; the facilities NOT authored by that helper are `p-hosp-ctrmc` and
+  can ever hold the two keys the block reads.** The nine facilities `facilityParty()` creates in
+  `src/data/disclosureFixtures.ts` all carry BOTH address keys — and eight of the nine a
+  phone as well, `p-fx-rehab` being written without one — only because that helper sets
+  those keys directly; the facilities NOT authored by that helper are `p-hosp-ctrmc` and
   `p-prov-procare`, both in `src/data/seed.ts`. **Only the first is designated on the
   Garcia matter, so only the first was OBSERVED failing — `p-prov-procare` has no
   `case_providers` row anywhere, produces no block today, and would fail the moment it
