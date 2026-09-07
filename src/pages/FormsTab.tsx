@@ -42,7 +42,9 @@ import { renderInstrument, type RegionItem, type NarrativeParagraph } from '../f
 import { disclosuresSkeletonBytes, DISCLOSURES_SKELETON_KEY } from '../forms/skeletons/disclosuresSkeleton';
 import { evaluateTypedGates, blockingGates, type GateWarning } from '../forms/gates';
 import { evaluateTiers, type Finding } from '../forms/tiers';
-import { buildDesignations, persistParagraphs, type DesignationBlock } from '../forms/generate';
+import {
+  buildDesignations, persistParagraphs, blockItem, facilityContactLines,
+} from '../forms/generate';
 import { resolveParagraphWriter } from '../forms/writer';
 import { providerTypeLabel } from '../forms/providerTypes';
 import { planFacility } from '../forms/assembly';
@@ -353,14 +355,14 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       // The provider block and the narrative both come from R17 now, so the
       // two expert regions are replaced wholesale rather than derived from
       // wizard answers that no longer exist.
-      const expertItems: RegionItem[] = designations.blocks.map((b) => blockItem(b));
+      const expertItems: RegionItem[] = designations.blocks.map(
+        (b) => blockItem(b, facilityParties),
+      );
       context.regions.testifying_expert = expertItems;
       context.regions.treating_provider = designations.blocks.map((b) => ({
         provider_individual_names_block: b.topLine,
         facility_name_caps: b.facilityName.toUpperCase(),
-        facility_address_line_1: field(facilityParties[b.facilityPartyId], 'addressLine1'),
-        facility_city_state_zip: field(facilityParties[b.facilityPartyId], 'cityStateZip'),
-        facility_phone: field(facilityParties[b.facilityPartyId], 'phone'),
+        ...facilityContactLines(facilityParties[b.facilityPartyId]),
       }));
       // D-28: the persons-with-knowledge provider entries are DERIVED from the
       // selection, in the same order, and are not hand-edited in the fact
@@ -882,20 +884,6 @@ function ResultPanel({ result }: {
 function field(p: PartyRecord | undefined, key: string): string {
   const v = (p?.fields ?? {})[key];
   return typeof v === 'string' ? v : '';
-}
-
-/** One `testifying_expert` item: the provider block's lines. Its narrative
- *  comes through `itemNarratives`, not through a token. */
-function blockItem(b: DesignationBlock): RegionItem {
-  return {
-    expert_names_block: b.topLine,
-    custodian_line: b.custodianLine,
-    facility_name_caps: b.facilityName.toUpperCase(),
-    facility_name: b.facilityName,
-    facility_address_line_1: '',
-    facility_city_state_zip: '',
-    facility_phone: '',
-  };
 }
 
 function instrumentTitle(posture: InstrumentPosture): string {

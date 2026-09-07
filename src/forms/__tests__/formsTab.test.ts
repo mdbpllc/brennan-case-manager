@@ -110,6 +110,35 @@ describe('the 195.2 panel is UNCHANGED from the FE-D1 build', () => {
   });
 });
 
+describe('HS-2 (F7) — the CALL SITE hands the block its facility records', () => {
+  // The defect was never inside a function: FormsTab's own `blockItem` returned
+  // three hard-coded empty strings. `generate.test.ts` pins the function, but
+  // the function cannot see what this file passes it — `blockItem(b, {})` would
+  // reintroduce the served-document defect with the whole suite green. Nothing
+  // executes this component (no jsdom, deliberately), so the guard is over the
+  // SOURCE, which is this file's own convention.
+
+  it('never hard-codes the three contact lines again', () => {
+    for (const token of ['facility_address_line_1', 'facility_city_state_zip', 'facility_phone']) {
+      expect(formsTab).not.toContain(`${token}: ''`);
+    }
+  });
+
+  it('passes the party MAP to blockItem, so the block keys off itself', () => {
+    // The map, not a resolved record: a resolved record could be the WRONG
+    // facility's, and a block naming one facility while carrying another's
+    // street is a records request sent to the wrong address.
+    expect(formsTab).toContain('blockItem(b, facilityParties)');
+    expect(formsTab).not.toMatch(/blockItem\(b,\s*facilityParties\[/);
+    expect(formsTab).not.toMatch(/blockItem\(b,\s*(undefined|\{\s*\})\s*\)/);
+  });
+
+  it('builds the treating-provider region from the SAME shared reader', () => {
+    // The two regions sit four lines apart and drifted apart once already.
+    expect(formsTab).toContain('...facilityContactLines(facilityParties[b.facilityPartyId])');
+  });
+});
+
 describe('the §9 library is still twelve, and still reaches the writer', () => {
   it('has twelve voice examples for the writer to draw on', () => {
     expect(DISCLOSURE_VARIANTS).toHaveLength(12);

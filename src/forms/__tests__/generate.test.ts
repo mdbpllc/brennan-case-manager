@@ -10,7 +10,13 @@
 // posture while H12-v is unruled.
 
 import { describe, it, expect } from 'vitest';
-import { buildDesignations, blockPreview, type GenerateInput } from '../generate';
+import {
+  buildDesignations, blockPreview, blockItem, type GenerateInput,
+} from '../generate';
+import { buildRenderContext } from '../context';
+import { renderInstrument } from '../renderer';
+import { disclosuresSkeletonBytes } from '../skeletons/disclosuresSkeleton';
+import { FIXTURE_BUNDLE, FIXTURE_ANSWERS } from '../fixtures';
 import { evaluateTiers } from '../tiers';
 import { WriterCallError, type ParagraphWriter, type WriteInput } from '../writer';
 import type { PartyRecord } from '../../domain/types';
@@ -347,5 +353,165 @@ describe('the rider names the paragraph it RIDES, not itself', () => {
     }));
     const rider = out.paragraphs.find((p) => p.shape === 'midlevel-rider')!;
     expect(rider.assembledText).toContain('regarding Drs. Vantwoud and Skarsgaard');
+  });
+});
+// ---------------------------------------------------------------- HS-2 / F7
+
+/**
+ * THE 195.5 DESIGNATION BLOCK'S ADDRESS AND TELEPHONE LINES.
+ *
+ * What this holds shut: `blockItem` returned three HARD-CODED empty strings
+ * for `facility_address_line_1`, `facility_city_state_zip` and
+ * `facility_phone` while the `treating_provider` region built beside it read
+ * the same three from the facility's own record. Every served block carried a
+ * designee, a custodian line and a facility NAME — and no street, no
+ * city/state/ZIP, no telephone — whatever the contact record held.
+ *
+ * The defect was invisible on the page for a structural reason, which is why
+ * it needs a test rather than an eye: §12.3 DROPS an emptied paragraph rather
+ * than leaving a blank line, so a facility with a complete contact record
+ * rendered EXACTLY like one with nothing on file.
+ *
+ * Authority: the REQ-CAPTURE's §1.6 — the block reads the 195.5(a)(1) address
+ * and telephone from the facility. §17.6 ("flag it and allow the user to still
+ * create the document") is UNCHANGED by this and is asserted below.
+ */
+describe('HS-2 (F7) — the block reads the facility\'s address and telephone', () => {
+  // Invented for this test. Never a fixture address, never a real one.
+  const CONTACT = {
+    addressLine1: '4200 Sandstone Row',
+    cityStateZip: 'Halite, TX 77042',
+    phone: '(361) 555-0142',
+  };
+  const NAME = 'Sandstone Regional Medical Center';
+
+  const onFile = {
+    id: 'f1', displayName: NAME, fields: { ...CONTACT },
+  } as unknown as PartyRecord;
+
+  /** The SAME facility with nothing on its contact record. */
+  const bare = { id: 'f1', displayName: NAME } as PartyRecord;
+
+  async function itemFor(p: PartyRecord) {
+    const parties = { f1: p };
+    const out = await buildDesignations(input({ facilityParties: parties }));
+    // blockItem takes the MAP and keys off the block, so the name and the
+    // address cannot come from different records.
+    return blockItem(out.blocks[0], parties);
+  }
+
+  /** The FormsTab path: R17's blocks replace the region wholesale (§9.2). */
+  async function renderedLines(p: PartyRecord): Promise<string[]> {
+    const parties = { f1: p };
+    const out = await buildDesignations(input({ facilityParties: parties }));
+    const { context } = buildRenderContext(FIXTURE_BUNDLE, FIXTURE_ANSWERS);
+    context.regions.testifying_expert = [blockItem(out.blocks[0], parties)];
+    context.itemSelects = {
+      ...context.itemSelects,
+      'testifying_expert:0': 'treating_provider',
+    };
+    const rendered = await renderInstrument(disclosuresSkeletonBytes(), context);
+    return rendered.plainText.split('\n').map((l) => l.trim());
+  }
+
+  it('(a) takes all three FROM THE RECORD, not from a constant', async () => {
+    const item = await itemFor(onFile);
+    expect(item.facility_address_line_1).toBe(CONTACT.addressLine1);
+    expect(item.facility_city_state_zip).toBe(CONTACT.cityStateZip);
+    expect(item.facility_phone).toBe(CONTACT.phone);
+
+    // Move the record and the block moves with it. THIS is the assertion the
+    // defect fails: a hard-coded value survives a changed record, a read does
+    // not. Asserting the three strings alone would pass against constants that
+    // happened to match.
+    const moved = await itemFor({
+      ...onFile,
+      fields: { ...CONTACT, addressLine1: '77 Feldspar Way', phone: '(361) 555-0199' },
+    } as PartyRecord);
+    expect(moved.facility_address_line_1).toBe('77 Feldspar Way');
+    expect(moved.facility_phone).toBe('(361) 555-0199');
+    expect(moved.facility_city_state_zip).toBe(CONTACT.cityStateZip);
+  });
+
+  it('(a) renders the six lines CONSECUTIVELY, in the master\'s own order', async () => {
+    const lines = await renderedLines(onFile);
+    const i = lines.indexOf(NAME.toUpperCase());
+    expect(i).toBeGreaterThan(-1);
+
+    // Part 3's order: name lines, custodian line, facility name, street,
+    // city/state/ZIP, telephone. Consecutive, because a dropped or reordered
+    // line is exactly the failure being guarded against.
+    expect(lines.slice(i - 2, i + 4)).toEqual([
+      'Ines Vantwoud',
+      'And/or Custodian of Records',
+      NAME.toUpperCase(),
+      CONTACT.addressLine1,
+      CONTACT.cityStateZip,
+      CONTACT.phone,
+    ]);
+  });
+
+  it('(b) a facility with NOTHING on file renders the block without those lines', async () => {
+    const item = await itemFor(bare);
+    expect(item.facility_address_line_1).toBe('');
+    expect(item.facility_city_state_zip).toBe('');
+    expect(item.facility_phone).toBe('');
+
+    const lines = await renderedLines(bare);
+    const i = lines.indexOf(NAME.toUpperCase());
+    expect(i).toBeGreaterThan(-1);
+    // The name line, the custodian line, the facility — and then the block
+    // ENDS. Asserting only the window that ENDS at the facility name proves
+    // nothing about absence: stray blank lines, unresolved `{{...}}` tokens or
+    // another facility's street would all satisfy it. The line AFTER the
+    // facility name is what carries this, and §12.3 makes it blank because the
+    // emptied paragraphs are dropped rather than left behind.
+    expect(lines.slice(i - 2, i + 2)).toEqual([
+      'Ines Vantwoud',
+      'And/or Custodian of Records',
+      NAME.toUpperCase(),
+      '',
+    ]);
+    // And the drop is REAL, not merely invisible: the on-file render carries
+    // exactly three more lines than this one.
+    const onFileLines = await renderedLines(onFile);
+    expect(onFileLines.length - lines.length).toBe(3);
+  });
+
+  it('cannot name one facility and carry another\'s address', async () => {
+    // The two-argument shape this replaced took a RESOLVED record, so a caller
+    // could hand blockItem the wrong one and get a served 195.5(a)(1) block
+    // directing records requests to the wrong address. Keying off the block
+    // makes that unrepresentable: a map holding BOTH facilities still yields
+    // the named one's street.
+    const other = {
+      id: 'f2', displayName: 'Feldspar County Hospital',
+      fields: { addressLine1: '77 Feldspar Way', cityStateZip: 'Feldspar, TX 77099', phone: '(361) 555-0199' },
+    } as unknown as PartyRecord;
+    const parties = { f1: onFile, f2: other };
+    const out = await buildDesignations(input({ facilityParties: parties }));
+    const item = blockItem(out.blocks[0], parties);
+    expect(item.facility_name_caps).toBe(NAME.toUpperCase());
+    expect(item.facility_address_line_1).toBe(CONTACT.addressLine1);
+    expect(item.facility_phone).toBe(CONTACT.phone);
+  });
+
+  it('(b) the panel still carries lines 1 and 2, and it still generates (§17.6)', () => {
+    // The ruled posture is UNCHANGED by this fix: a missing address flags, it
+    // never stops. tiers.ts reads the contact record itself and is untouched.
+    const out = evaluateTiers({
+      incidentDateIso: '2025-03-14',
+      selected: [facility('emergency-medicine', { lastExtractionVersionId: 'v1' })],
+      individuals: [person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' })],
+      facilityNames: { f1: NAME },
+      facilityAddresses: { f1: { hasAddress: false, hasPhone: false } },
+      chronologyVersions: [version],
+      billedFacilityPartyIds: [],
+    });
+    expect(out.panel.map((f) => f.line)).toEqual(expect.arrayContaining([1, 2]));
+    expect(out.panel.find((f) => f.line === 1)?.text)
+      .toContain('has no address on its contact record');
+    expect(out.canGenerate).toBe(true);
+    expect(out.stops).toHaveLength(0);
   });
 });

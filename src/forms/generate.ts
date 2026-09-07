@@ -29,7 +29,7 @@ import {
 import { fixedSentence } from './fixedSentences';
 import { DISCLOSURE_VARIANTS } from './variants';
 import { WriterCallError, type ParagraphWriter, type WriteInput } from './writer';
-import type { NarrativeParagraph } from './renderer';
+import type { NarrativeParagraph, RegionItem } from './renderer';
 
 export interface DesignationBlock {
   caseProviderId: string;
@@ -44,6 +44,64 @@ export interface DesignationBlock {
   /** D-8 — the "Currently practicing at …" sentence, when a LATER current edge
    *  exists. A TEXT ACT in a served block, listed for Michael's eye. */
   currentlyPracticingAt?: string;
+}
+
+function partyField(p: PartyRecord | undefined, key: string): string {
+  const v = (p?.fields ?? {})[key];
+  return typeof v === 'string' ? v : '';
+}
+
+/**
+ * The 195.5(a)(1) CONTACT LINES, read from the facility's OWN party record.
+ *
+ * The reader the TWO DESIGNATION REGIONS share, so the block and the
+ * treating-provider region beside it can never again disagree about where a
+ * facility's address and telephone come from. `HS-2` (`F7`): the block shipped
+ * three hard-coded empty strings while the region built four lines above it
+ * read the record correctly — so every served block carried a name and no
+ * street, whatever the record held.
+ *
+ * It is NOT the only reader of these three keys in the tree, and the comment
+ * should not be read as claiming so: `person_with_knowledge` builds its own
+ * `person_*` tokens from the same record, and `context.ts` builds the
+ * wizard-answer path's items from its own local reader. Consolidating those is
+ * a separate act.
+ *
+ * §17.6 is UNCHANGED by this: a facility with nothing on file still renders,
+ * still generates, and the panel's lines 1 and 2 are what say so. An empty
+ * value drops its paragraph (§12.3) rather than leaving a blank line.
+ */
+export function facilityContactLines(facility: PartyRecord | undefined): RegionItem {
+  return {
+    facility_address_line_1: partyField(facility, 'addressLine1'),
+    facility_city_state_zip: partyField(facility, 'cityStateZip'),
+    facility_phone: partyField(facility, 'phone'),
+  };
+}
+
+/**
+ * One `testifying_expert` item: the provider block's lines, in the master's
+ * own order. Its narrative comes through `itemNarratives`, not through a token.
+ *
+ * It takes the party MAP and does its own lookup rather than a resolved
+ * record, and that is deliberate. `b.facilityName` was resolved from
+ * `facilityParties[b.facilityPartyId]` inside `buildDesignations`; if the
+ * caller also had to hand the record back, a block could be built naming one
+ * facility and carrying another's street and telephone — a served 195.5(a)(1)
+ * block directing records requests to the wrong address. Keying off `b` here
+ * makes that unrepresentable rather than merely unlikely.
+ */
+export function blockItem(
+  b: DesignationBlock,
+  facilityParties: Record<string, PartyRecord | undefined>,
+): RegionItem {
+  return {
+    expert_names_block: b.topLine,
+    custodian_line: b.custodianLine,
+    facility_name_caps: b.facilityName.toUpperCase(),
+    facility_name: b.facilityName,
+    ...facilityContactLines(facilityParties[b.facilityPartyId]),
+  };
 }
 
 export interface GenerateResult {
