@@ -436,7 +436,9 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
   it('(a) renders the six lines CONSECUTIVELY, in the master\'s own order', async () => {
     const lines = await renderedLines(onFile);
     const i = lines.indexOf(NAME.toUpperCase());
-    expect(i).toBeGreaterThan(-1);
+    // >= 2, not > -1: a negative slice start wraps to the document's TAIL and
+    // would report a failure against the wrong text entirely.
+    expect(i).toBeGreaterThanOrEqual(2);
 
     // Part 3's order: name lines, custodian line, facility name, street,
     // city/state/ZIP, telephone. Consecutive, because a dropped or reordered
@@ -459,7 +461,7 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
 
     const lines = await renderedLines(bare);
     const i = lines.indexOf(NAME.toUpperCase());
-    expect(i).toBeGreaterThan(-1);
+    expect(i).toBeGreaterThanOrEqual(2);
     // The name line, the custodian line, the facility — and then the block
     // ENDS. Asserting only the window that ENDS at the facility name proves
     // nothing about absence: stray blank lines, unresolved `{{...}}` tokens or

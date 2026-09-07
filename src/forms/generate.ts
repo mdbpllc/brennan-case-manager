@@ -57,9 +57,9 @@ function partyField(p: PartyRecord | undefined, key: string): string {
  * The reader the TWO DESIGNATION REGIONS share, so the block and the
  * treating-provider region beside it can never again disagree about where a
  * facility's address and telephone come from. `HS-2` (`F7`): the block shipped
- * three hard-coded empty strings while the region built four lines above it
- * read the record correctly — so every served block carried a name and no
- * street, whatever the record held.
+ * three hard-coded empty strings while the `treating_provider` region — built
+ * from the SAME blocks at the SAME call site — read the record correctly, so
+ * every served block carried a name and no street, whatever the record held.
  *
  * It is NOT the only reader of these three keys in the tree, and the comment
  * should not be read as claiming so: `person_with_knowledge` builds its own

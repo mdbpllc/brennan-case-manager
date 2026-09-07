@@ -134,7 +134,8 @@ describe('HS-2 (F7) — the CALL SITE hands the block its facility records', () 
   });
 
   it('builds the treating-provider region from the SAME shared reader', () => {
-    // The two regions sit four lines apart and drifted apart once already.
+    // Both regions are built from the same blocks at the same call site, and
+    // they drifted apart once already.
     expect(formsTab).toContain('...facilityContactLines(facilityParties[b.facilityPartyId])');
   });
 });
