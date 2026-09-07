@@ -1251,6 +1251,70 @@ from inside this slice, because which of several locations belongs in a
 designation block is a question about the record, not about the engine. Home: a
 design decision for Michael, likely alongside `RF-2`.
 
+**2a. ADDENDUM TO ITEM 2, added 2026-09-07 by the `HS-2`/F7 fix session. NOTHING WAS
+CHANGED — this records what item 2's condition now looks like ON THE PAGE, and one
+consequence item 2 did not name.**
+
+`HS-2` (fixed at `8625508`) was a *different* defect sitting on top of item 2: the
+designation block hard-coded all three contact tokens to `''`, so **every** facility
+rendered addressless, whatever its record held. With that fixed, item 2's condition is
+visible again in exactly the form item 2 described — *"generated a block with only its
+phone"* — and the Garcia walk reproduces it: **seven** of the nine facilities carry street,
+city/state/ZIP and telephone; **Ash Grove Rehabilitation Services carries street and
+city/state/ZIP but NO telephone** — its fixture is created with no phone argument, so
+the line is dropped and the document still generates, which is the ruled §17.6 posture
+visible on the page; and **Central Texas Regional Medical Center carries its telephone
+alone.**
+
+Two things are worth adding to item 2 before Michael rules on it:
+
+- **THE ROOT CAUSE IS THE REGISTRY, WHICH MAKES THE FAILING SHAPE THE CANONICAL ONE, NOT
+  A STALE SEED.** `src/domain/partyRegistry.ts` defines `providerBusiness` ("Facility")
+  with `name, phone, fax, recordsEmail, taxId, registeredAgent, locations` — there is no
+  `addressLine1` and no `cityStateZip` in the role at all — and `PartyFormPage` renders
+  only `def.fields`. **So no facility Michael creates through the app's own party form
+  can ever hold the two keys the block reads.** The nine fixture facilities are whole
+  only because `src/data/disclosureFixtures.ts`'s `facilityParty()` helper writes those
+  keys directly; the facilities NOT authored by that helper are `p-hosp-ctrmc` and
+  `p-prov-procare`, both in `src/data/seed.ts`. **Only the first is designated on the
+  Garcia matter, so only the first was OBSERVED failing — `p-prov-procare` has no
+  `case_providers` row anywhere, produces no block today, and would fail the moment it
+  is given one.** This is
+  not a demo-data problem that goes away with real data; it is the shape real data will
+  have.
+
+- **A TEXT ACT IN A SERVED DOCUMENT THAT ITEM 2 DID NOT NAME.** Because §12.3 DROPS the
+  two emptied paragraphs rather than leaving blank lines, the telephone **slides up into
+  the slot the street line occupied** — and `src/domain/phone.ts` stores phones as bare
+  digits, with formatting "only at the input/display layer". So the served block reads:
+
+  ```
+  Ines Vantwoud, M.D., Tobias Skarsgaard, M.D., …
+  And/or Custodians of Records
+  CENTRAL TEXAS REGIONAL MEDICAL CENTER
+  2545550500
+  ```
+
+  Ten unlabelled digits where an address belongs. Raw phones already appear elsewhere in
+  the instrument, so this is a restoration of pre-amendment behaviour rather than a new
+  defect — but **the designation block is a new site for it and it goes out under
+  Michael's signature.** Whether the block should format a stored phone is a second,
+  smaller question than item 2's, and it can be answered independently of it.
+
+- **AND THE PANEL'S WORDING IS WRONG IN THIS CASE, WHICH MATTERS BECAUSE THE PANEL IS
+  WHAT'S SUPPOSED TO TELL HIM.** `FormsTab.tsx` computes
+  `hasAddress: Boolean(f.addressLine1 || f.cityStateZip)`, so `tiers.ts` line 1 fires and
+  says *"…has no address on its contact record — the block needs one."* The contact
+  record **does** carry an address — it is visible on the party page, in the `locations`
+  group — and the party form offers **no field** in which to satisfy the warning. The
+  flag is right about the document and wrong about the record, and it leads nowhere.
+  `tiers.ts` was scope-OUT for the F7 session and was correctly left untouched; the
+  wording is reported here, not changed.
+
+*(Recorded by the `HS-2`/F7 Code session, 2026-09-07. It fixed the hard-coded blanks and
+deliberately did NOT touch item 2's question — which of several `locations` belongs in a
+designation block remains a question about the record, exactly as item 2 says.)*
+
 **3. `pronounSetFromFields` READS `fields.pronouns` / `fields.gender`; THE `R17`
 INDIVIDUAL CARRIES A SINGLE `pronoun` COLUMN.** Caught in build, not by a test.
 Passing the wrong key made every pronoun in every generated paragraph resolve to
