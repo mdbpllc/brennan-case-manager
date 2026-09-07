@@ -1316,6 +1316,8 @@ Two things are worth adding to item 2 before Michael rules on it:
 deliberately did NOT touch item 2's question — which of several `locations` belongs in a
 designation block remains a question about the record, exactly as item 2 says.)*
 
+*(ANNOTATION 2026-09-07, `#149`: item 2 and its 2a addendum are RULED — five limbs in Michael's words at `docs/specs/forward-sitting-rulings-2026-09-07.md` §1 — and are BUILT BY the `CCS-1` slice at `docs/specs/cc1-rulings-and-address-model-slice.md` §3 item 17: the case row picks the location, the registry stores street and city/state/ZIP as two fields, a legacy one-line address is split ONCE at the record by a stated rule and marked, the render path never parses, the phone renders formatted. The one factual slip flagged by the F7 session — "seeded with two `locations`" (CTRMC has one) — stands as written; nothing above is edited.)*
+
 **3. `pronounSetFromFields` READS `fields.pronouns` / `fields.gender`; THE `R17`
 INDIVIDUAL CARRIES A SINGLE `pronoun` COLUMN.** Caught in build, not by a test.
 Passing the wrong key made every pronoun in every generated paragraph resolve to

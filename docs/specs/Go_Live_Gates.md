@@ -128,6 +128,25 @@ Trigger: before the app is relied on for real work — not merely before real da
 locked out is an availability problem rather than a confidentiality one. No SMTP work was done in
 the 2026-07-28 auth session; this is a gate note only.
 
+   *CLOSED — RULED by Michael, 2026-09-07 (Central), at the Forward Sitting (`#149`), on evidence gathered by
+   his own hand against the completion test in `docs/smtp-setup.md`: Custom SMTP ON at `smtp.postmarkapp.com`,
+   sender `signin@brennanstx.com`, read live from Supabase → Authentication → Emails; round trip one 2026-08-20
+   (`#122`); a later-day repeat — the 2026-09-05 magic links, From `signin@brennanstx.com`; and the §4.4
+   OUTSIDE-mailbox round trip 2026-09-07 to a Proton Mail address he controls — Inbox, seconds, From
+   `signin@brennanstx.com` — run by Authentication → Users → Invite user because the sign-in box refuses a
+   non-user ("Signups are not allowed for the otp"; the signup toggle is OFF), the temporary user deleted after.
+   The credential lives only in Postmark's and Supabase's dashboards (his word). His ruling: "sure". The gate's
+   text above stands as written.*
+
+   *EDGES, recorded so the closure is not over-read. (1) The invite-for-magic-link SUBSTITUTION is RULED TO
+   COUNT — Supabase Auth → the same custom SMTP → the recipient, differing only in template. (2) The magic-link
+   TEMPLATE itself has only ever been delivered to the firm's own M365 tenant (2026-08-20, 2026-09-05); the
+   invite template is what reached the outside inbox. (3) "Allow new users to sign up" was measured ON at
+   `#125` and is OFF as of 2026-09-07; Michael recalls turning it off "in about July" — the discrepancy is
+   recorded, not resolved; the live state is what the floor relies on. (4) The sign-in page's "the sending limit
+   is low" is stale copy from the default-sender era, queued as a text act (`CCS-1` slice, `SD-11`). Evidence:
+   `docs/record/forward-sitting-2026-09-07/gate9-evidence-record-2026-09-07.md`.*
+
 ## Gate 10 (appended 2026-08-18, C-4 of the Grok external review)
 
 **10. PII column promotion out of `parties.fields`.** DOB / SSN / driver's-license values move
@@ -212,6 +231,15 @@ canonical here and in session-log #53.
 item (5)'s "instructions v15" is read as **"the instructions current at the re-check, per
 trigger 1."** The version number above stands as written — this doc is append-only — and it no
 longer carries meaning, so it can never drift again. This closes AUD-2 / OPEN-1 / GLR-1.
+
+**Completion note appended 2026-09-07 (the Forward Sitting, `#149`):** items (1), (2) and (4) were already
+done; item (3) closed above; item (5) — the re-check — was RUN TO COMPLETION at Michael's pick ("1"), gates
+1, 2, 4 and 7/8 confirmed one at a time in his words, 3, 5, 6 and 10 confirmed at HEAD, and instructions v30
+drafted as the trigger-1 edition; item (5) completes at his paste of v30. The one LIVE matter is a TEST record
+(his word), so no real client record has entered the database; the fix migration ran during the same sitting
+and no migration is pending. Go-live remains this floor's own first sentence and is Michael's act on his day;
+the two migrations the `CCS-1` slice writes should run before it. This doc is append-only; nothing above is
+edited.
 
 ## Supabase account facts (for future sessions)
 
