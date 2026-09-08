@@ -135,8 +135,29 @@ describe('HS-2 (F7) — the CALL SITE hands the block its facility records', () 
 
   it('builds the treating-provider region from the SAME shared reader', () => {
     // Both regions are built from the same blocks at the same call site, and
-    // they drifted apart once already.
-    expect(formsTab).toContain('...facilityContactLines(facilityParties[b.facilityPartyId])');
+    // they drifted apart once already. D1 (2026-09-07) added the SELECTED
+    // location to the shared reader, so both must pass it: a block reading the
+    // south campus beside a treating-provider row reading the main one is the
+    // same defect in a new place.
+    expect(formsTab).toContain(
+      '...facilityContactLines(facilityParties[b.facilityPartyId], b.facilityLocationId)',
+    );
+  });
+
+  it('D1(iii) — NOTHING in the call site splits an address', () => {
+    // The split runs at the RECORD, in the store step and the SQL migration,
+    // and nowhere else. Michael's answer was "1", and this is what "the render
+    // path never parses" looks like as a check: no comma-splitting of an
+    // address key anywhere in the page that assembles the document.
+    expect(formsTab).not.toMatch(/address[A-Za-z]*[^\n]*\.split\(\s*['"`],/);
+    expect(formsTab).not.toContain('splitAddress');
+  });
+
+  it('D1 — the persons-with-knowledge lines read the SAME resolved location', () => {
+    // D1(iv): "1" — one address shape instrument-wide. The PWK entry derived
+    // from a designation must not read a different campus from the block.
+    expect(formsTab).toContain('person_address_line_1: contact.facility_address_line_1');
+    expect(formsTab).toContain('person_address_line_2: contact.facility_city_state_zip');
   });
 });
 

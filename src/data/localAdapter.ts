@@ -16,6 +16,7 @@ import {
   splitPartyFields, stripDestinationKeys, isEmptyPii, type PartyPii,
 } from '../domain/partyPii';
 import { backfillRosterAttributes, summarizeBackfill } from '../domain/rosterBackfill';
+import { applySplit, needsSplit, normaliseLocations, splitMark } from '../domain/addressSplit';
 import type {
   MedicalBill, BillLineItem, CodeMapping, EOBRecord, AnalysisRun, AnalysisResultLine,
   ReviewLogEntry, LegalRule, FeeSchedule, FeeScheduleRate, GeneratedDocument,
@@ -45,7 +46,9 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 15; // v15: FE-D1 amendment second half - the
+export const STORE_VERSION = 16; // v16: the CC-1 address model - every party's
+// one-line address split ONCE into addressLine1 + cityStateZip by the D1(iii)
+// rule and MARKED, and every facility location given a stable id. v15: FE-D1 amendment second half - the
 // fixed-sentence and writer-instruction template rows, and the general fix for a
 // bank that never gained newly-seeded templates. v14: FE-D1 amendment - the provider/facility
 // rename inside stored rows, and section 9.4's ruled edit appended as a new
@@ -644,6 +647,88 @@ export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
   return migrated;
 }
 
+/**
+ * v15 → v16 — THE ADDRESS MODEL (`D1`, ruled 2026-09-07, session log `#149`).
+ *
+ * Michael ruled where the split happens: ***"1"*** — once, at the record, by the
+ * step that adds the two fields, each split row MARKED, confirm-or-edit on the
+ * party page. **This function and `db/migrations/2026-09-07-address-model-split.sql`
+ * are the only two places the rule runs, and the render path never parses.**
+ *
+ * WHAT IT DOES, per party:
+ *   * a `providerBusiness`: every `locations[]` item gains a stable `id`
+ *     (`SD-4`), and any item carrying only the one-line `address` is split and
+ *     marked;
+ *   * every other type: the top-level `fields.address` is split the same way.
+ *
+ * WHAT IT NEVER DOES: delete the one-line value (`SD-5`), touch a record that
+ * already has a street line, or overwrite a `'hand'` mark. Re-running it finds
+ * nothing to do, which is the property the SQL file is written to share.
+ */
+export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v15`, raw);
+
+  let byRule = 0;
+  let unsplit = 0;
+  let idsAssigned = 0;
+  const unsplitNames: string[] = [];
+
+  const parties = (old.parties ?? []).map((p) => {
+    const fields = (p.fields ?? {}) as Record<string, unknown>;
+    if (p.partyType === 'providerBusiness') {
+      if (!Array.isArray(fields.locations)) return p;
+      const before = fields.locations as Record<string, unknown>[];
+      const after = normaliseLocations(before);
+      // Counted PER ITEM ACTUALLY CHANGED, never over the whole list: a second
+      // run would otherwise re-count every mark it had already set and report
+      // work it did not do. And a party whose locations came back unchanged is
+      // returned untouched, so `updatedAt` does not move on a no-op run —
+      // idempotence is about the record, not only about the values in it.
+      let touched = false;
+      after.forEach((l, i) => {
+        if (l.id !== before[i]?.id) { idsAssigned += 1; touched = true; }
+        if (needsSplit(before[i])) {
+          touched = true;
+          if (splitMark(l) === 'rule') byRule += 1;
+          if (splitMark(l) === 'rule-unsplit') { unsplit += 1; unsplitNames.push(p.displayName); }
+        }
+      });
+      if (!touched) return p;
+      return { ...p, fields: { ...fields, locations: after }, updatedAt: stamp };
+    }
+    const after = applySplit(fields);
+    if (after === fields) return p;
+    if (splitMark(after) === 'rule') byRule += 1;
+    if (splitMark(after) === 'rule-unsplit') { unsplit += 1; unsplitNames.push(p.displayName); }
+    return { ...p, fields: after, updatedAt: stamp };
+  });
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 16, NOT STORE_VERSION — the `migrateV10ToV11` lesson, warned about
+    // at every step since. This function produces a v16 store and nothing more.
+    version: 16,
+    parties,
+  };
+
+  const summary =
+    `Store migrated v15→16 (the CC-1 address model). Split ${byRule} address(es) by rule `
+    + `into a street line and a city/state/ZIP line, and marked them for your `
+    + `confirmation on the party page. ${unsplit} could not be split by the rule and `
+    + `carry the whole value on the street line`
+    + (unsplitNames.length > 0 ? ` (${[...new Set(unsplitNames)].join(', ')})` : '')
+    + `. Assigned ${idsAssigned} facility location id(s). No one-line address was `
+    + `deleted. Full pre-migration backup at localStorage key "${KEY}-backup-v15".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (CC-1 address model migration, v16)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -660,28 +745,36 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 14) return migrateV14ToV15(parsed, raw);
+      if (parsed.version === 15) return migrateV15ToV16(parsed, raw);
+      if (parsed.version === 14) {
+        const v15 = migrateV14ToV15(parsed, raw);
+        return migrateV15ToV16(v15, JSON.stringify(v15));
+      }
       if (parsed.version === 13) {
         const v14 = migrateV13ToV14(parsed, raw);
-        return migrateV14ToV15(v14, JSON.stringify(v14));
+        const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
+        return migrateV15ToV16(v15, JSON.stringify(v15));
       }
       if (parsed.version === 12) {
         const v13 = migrateV12ToV13(parsed, raw);
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
-        return migrateV14ToV15(v14, JSON.stringify(v14));
+        const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
+        return migrateV15ToV16(v15, JSON.stringify(v15));
       }
       if (parsed.version === 11) {
         const v12 = migrateV11ToV12(parsed, raw);
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
-        return migrateV14ToV15(v14, JSON.stringify(v14));
+        const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
+        return migrateV15ToV16(v15, JSON.stringify(v15));
       }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
-        return migrateV14ToV15(v14, JSON.stringify(v14));
+        const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
+        return migrateV15ToV16(v15, JSON.stringify(v15));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
@@ -691,7 +784,8 @@ function load(): Store {
         const v12 = migrateV11ToV12(v11, JSON.stringify(v11));
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
-        return migrateV14ToV15(v14, JSON.stringify(v14));
+        const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
+        return migrateV15ToV16(v15, JSON.stringify(v15));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.

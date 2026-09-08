@@ -27,6 +27,7 @@ import {
   parseRegionMarker, resolveTokens, harvestFilters, type TokenContext,
 } from './tokens';
 import { lintRender, type LintReport } from './lint';
+import { formatPhone } from '../domain/phone';
 
 const DOCUMENT_PART = 'word/document.xml';
 
@@ -448,6 +449,54 @@ export function recomputeCaptionSectionMarks(xml: string, partyLineCount: number
   return xml.replace(tbl, newTbl);
 }
 
+/**
+ * `SD-3` — THE ONE PHONE FORMATTER, AT THE RENDER SEAM.
+ *
+ * Michael ruled the FORMATTING on 2026-09-07 (`D1(i)`): ***"formatted"*** — the
+ * designation block's telephone renders "(210) 555-0200", never bare digits.
+ * The SCOPE limb of that question was not answered, so this default is taken
+ * and REPORTED: **instrument-wide**, every phone token, through the one
+ * formatter that already exists at `src/domain/phone.ts`.
+ *
+ * It runs HERE, once, over the whole context, rather than at each site that
+ * reads a phone off a record. `src/domain/phone.ts` stores phones as bare
+ * digits and says formatting happens "only at the input/display layer"; a
+ * served document is a display layer, and this is its one seam. The alternative
+ * — formatting at five call sites — is how a sixth site quietly ships ten
+ * unlabelled digits under Michael's signature, which is exactly what
+ * `spec-feedback.md` item 2a recorded happening in the designation block.
+ *
+ * Keyed on the TOKEN NAME, mechanically: `phone`, `fax`, and anything ending
+ * `_phone` or `_fax`. A future `attorney_phone` is covered by being named like
+ * one. **His veto on the scope is open** — narrowing this to the block is a
+ * one-line change to the predicate.
+ */
+const PHONE_TOKEN = /(^|_)(phone|fax)$/;
+
+function formatPhoneTokens(values: Record<string, string>): Record<string, string> {
+  let changed = false;
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(values)) {
+    if (PHONE_TOKEN.test(k) && typeof v === 'string' && v !== '') {
+      const f = formatPhone(v);
+      out[k] = f;
+      if (f !== v) changed = true;
+    } else {
+      out[k] = v;
+    }
+  }
+  return changed ? out : values;
+}
+
+/** The same pass over a whole render context — scalars and every region item. */
+export function formatPhonesInContext(ctx: RenderContext): RenderContext {
+  const regions: Record<string, RegionItem[]> = {};
+  for (const [name, items] of Object.entries(ctx.regions)) {
+    regions[name] = items.map(formatPhoneTokens);
+  }
+  return { ...ctx, scalars: formatPhoneTokens(ctx.scalars), regions };
+}
+
 // ----------------------------------------------------------- the render
 
 export async function renderInstrument(
@@ -456,6 +505,10 @@ export async function renderInstrument(
 ): Promise<RenderResult> {
   const shell = await readZip(skeleton);
   const original = entryText(shell, DOCUMENT_PART);
+
+  // `SD-3` — every phone token formatted ONCE, here, before anything is
+  // substituted. Nothing downstream reformats and nothing upstream needs to.
+  ctx = formatPhonesInContext(ctx);
 
   // §12.1 — run-merge FIRST, every time, before any anchor search.
   let xml = mergeRuns(original);

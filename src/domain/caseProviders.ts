@@ -107,6 +107,17 @@ export interface CaseProvider {
   /** D-32: the pre-fill WRITES the type, and the row says where it came from so
    *  the surface can read "type carried from <case> — change if wrong". */
   typeCarriedFromCaseId?: string;
+  /** `D1` (2026-09-07, `#149`) — WHICH of the facility's `locations[]` treated
+   *  this client on this matter, by that item's `SD-4` id. NOT a foreign key:
+   *  it names a jsonb sub-record inside `parties.fields`, not a row.
+   *
+   *  NULL is never a stop (`SD-10`). A facility with exactly ONE location
+   *  resolves without it (`SD-8`); with two or more it is a PANEL line, because
+   *  R1/R2 fixed the stop set at four and the amendment slice bars a fifth. */
+  facilityLocationId?: string;
+  /** `SD-7` — the D-32 shape applied to the location: where the pre-fill read
+   *  it from, so the surface can say "location carried from <case>". */
+  locationCarriedFromCaseId?: string;
   createdBy?: string;
   createdAt: string;
   updatedAt: string;
@@ -353,6 +364,32 @@ export function validateCaseProvider(
  * not from the vocabulary. §17.1a's "always assigned by a person" is satisfied
  * by the person who set it last time — not by the app inferring it now.
  */
+/**
+ * `SD-7` — the D-32 shape applied to the LOCATION.
+ *
+ * Reads the most recently updated row for the SAME facility on ANOTHER case
+ * that carried a location, and offers it. Deliberately the same query as
+ * `carriedType`: two pre-fills reading the same history by two different rules
+ * is how one of them quietly becomes wrong.
+ *
+ * The caller checks that the id still names a location the facility actually
+ * has — a campus can be removed from the contact record between cases, and a
+ * pre-fill pointing at a deleted location is worse than none.
+ */
+export function carriedLocation(
+  facilityPartyId: string,
+  priorRows: CaseProvider[],
+  excludeCaseId: string,
+): { facilityLocationId: string; fromCaseId: string } | undefined {
+  const best = priorRows
+    .filter((r) => r.facilityPartyId === facilityPartyId
+      && r.caseId !== excludeCaseId
+      && r.facilityLocationId != null && r.facilityLocationId !== '')
+    .sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))[0];
+  if (!best?.facilityLocationId) return undefined;
+  return { facilityLocationId: best.facilityLocationId, fromCaseId: best.caseId };
+}
+
 export function carriedType(
   facilityPartyId: string,
   priorRows: CaseProvider[],

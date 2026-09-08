@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import type { CaseRole, Side } from '../domain/types';
 import { CASE_ROLES, SIDES } from '../domain/types';
-import { PARTY_TYPES, PARTY_TYPE_MAP, computeDisplayName } from '../domain/partyRegistry';
+import { PARTY_TYPES, PARTY_TYPE_MAP, computeDisplayName, visibleFields } from '../domain/partyRegistry';
+import { markHand, normaliseLocations } from '../domain/addressSplit';
 import {
   splitPartyFields, mergePartyFields, applyPii, isEmptyPii, piiFieldKeys,
 } from '../domain/partyPii';
@@ -78,11 +79,26 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
     }
   };
 
+  /** `SD-6` — a save that TOUCHES either split field is Michael's hand, so the
+   *  "split by rule — confirm or edit" mark retires by the act of editing. Set
+   *  here rather than in `onChange` so a form merely opened and re-saved does
+   *  not silently confirm a split he never looked at. */
+  const setAddressField = (key: 'addressLine1' | 'cityStateZip', v: unknown) => {
+    setFields(markHand({ ...fields, [key]: v }));
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     const displayName = computeDisplayName(typeKey, fields);
-    const split = splitPartyFields(fields);
+    // `SD-4` — every `locations[]` item leaves the form with a stable id, and a
+    // row still carrying only a one-line address is split by the SAME rule the
+    // migration uses. This is the second and last place the rule runs; the
+    // render path never does (`D1(iii)`).
+    const normalised = fields.locations !== undefined
+      ? { ...fields, locations: normaliseLocations(fields.locations) }
+      : fields;
+    const split = splitPartyFields(normalised);
     if (mode === 'edit' && id) {
       await db.updateParty(id, {
         fields: split.fields, displayName, dateOfBirth: split.dateOfBirth ?? null,
@@ -114,7 +130,9 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
   if (!loaded) return <div className="muted">Loading…</div>;
 
   const piiFields = def.fields.filter((f) => piiKeys.includes(f.key));
-  const plainFields = def.fields.filter((f) => !piiKeys.includes(f.key));
+  // `SD-5` — the pre-split one-line box stops being offered once the record
+  // carries a street line. Its VALUE is untouched, in the blob, forever.
+  const plainFields = visibleFields(def.fields, fields).filter((f) => !piiKeys.includes(f.key));
 
   return (
     <div>
@@ -167,7 +185,13 @@ export default function PartyFormPage({ mode }: { mode: 'new' | 'edit' }) {
           <div className="form-grid">
             {plainFields.map((f) => (
               <div key={f.key} className={f.type === 'repeating' || f.type === 'textarea' ? 'full' : ''}>
-                <FieldInput def={f} value={fields[f.key]} onChange={(v) => setFields({ ...fields, [f.key]: v })} />
+                <FieldInput
+                  def={f}
+                  value={fields[f.key]}
+                  onChange={(v) => (f.key === 'addressLine1' || f.key === 'cityStateZip'
+                    ? setAddressField(f.key, v)
+                    : setFields({ ...fields, [f.key]: v }))}
+                />
               </div>
             ))}
           </div>

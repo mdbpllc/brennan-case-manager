@@ -47,7 +47,22 @@ export interface TierInput {
   selected: CaseProvider[];
   individuals: CaseProviderIndividual[];
   facilityNames: Record<string, string>;
-  facilityAddresses: Record<string, { hasAddress: boolean; hasPhone: boolean }>;
+  /** `D1` — read from the SELECTED location, not from the party. `hasAddress`
+   *  and `hasPhone` answer "does the block get one"; `locationState` answers
+   *  WHY not, which is what makes the panel's wording true of the record as
+   *  well as of the document (`spec-feedback.md` item 2a's third bullet). */
+  facilityAddresses: Record<string, {
+    hasAddress: boolean;
+    hasPhone: boolean;
+    /** `'none'` — the contact record has no locations at all.
+     *  `'unselected'` — it has two or more and none is picked for this matter.
+     *  `'selected'` — one is resolved (picked, or the only one there is). */
+    locationState?: 'none' | 'unselected' | 'selected';
+    /** `SD-6` — the resolved location's address was split by rule and he has
+     *  not confirmed it. One line per matter, gone once he touches it. */
+    unconfirmedSplit?: boolean;
+    locationLabel?: string;
+  }>;
   chronologyVersions: CaseChronologyVersion[];
   /** Facilities with bills for this client — `ND-7(a)`'s set check. */
   billedFacilityPartyIds: string[];
@@ -137,15 +152,36 @@ export function panelLines(input: TierInput): Finding[] {
     const people = activeIndividuals(input.individuals.filter((i) => i.caseProviderId === p.id));
     const plan = planFacility(p, input.individuals);
 
-    // 1 / 2 — RULED (`HD-1` "we need an address"; §17.6 "flag it and allow the
-    // user to still create the document"). The phone line still generates.
+    // 1 — RULED (`HD-1` "we need an address"; §17.6 "flag it and allow the
+    // user to still create the document"), REWRITTEN 2026-09-07 for the address
+    // model (`SD-1`). One false sentence becomes THREE TRUE ONES, because the
+    // three reasons a block has no street line are three different acts on
+    // Michael's part and the old wording named none of them. Every string here
+    // is PROVISIONAL and listed for his eye.
+    //
+    // NOTE the tier: all three are PANEL lines. `SD-10` — a facility with two
+    // or more locations and none selected is NEVER a fourth stop. R1/R2 fixed
+    // the stop set at four and the amendment slice's DO-NOT bars a fifth.
     if (contact && !contact.hasAddress) {
+      const state = contact.locationState ?? 'none';
       push({ line: 1, tier: 'panel', caseProviderId: p.id,
-        text: `${nameOf(p)} has no address on its contact record — the block needs one.` });
+        text: state === 'unselected'
+          ? `${nameOf(p)} has no location selected on this matter — pick one on the Medical tab.`
+          : `${nameOf(p)} has no locations on its contact record — add one on the Parties page.` });
     }
+    // `SD-1`'s third line, and the `SD-6` confirm surface's reach into the
+    // instrument: a rule-split address he has not looked at is flagged where he
+    // is about to serve it, not only on the party page.
+    if (contact?.unconfirmedSplit) {
+      push({ line: 1, tier: 'panel', caseProviderId: p.id,
+        text: `${nameOf(p)}${contact.locationLabel ? `'s ${contact.locationLabel}` : ''} address was split by rule — confirm it on the Parties page.` });
+    }
+    // 2 — §17.6's ruled posture, unchanged in substance and reworded to the
+    // selected location (`SD-1`, last sentence): the line is still absent and
+    // the document still generates; Michael is told rather than not told.
     if (contact && !contact.hasPhone) {
       push({ line: 2, tier: 'panel', caseProviderId: p.id,
-        text: `${nameOf(p)} has no phone number — the block omits the line and the document still generates.` });
+        text: `${nameOf(p)} has no phone number on the location the block reads — the block omits the line and the document still generates.` });
     }
 
     // 3 — gated by D-25: only AFTER an extraction has run for this facility.

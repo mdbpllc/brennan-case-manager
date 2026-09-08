@@ -27,7 +27,7 @@ import type { CaseRecord, PartyRecord } from '../domain/types';
 import type { CaseClient } from '../domain/client';
 import type { MedicalBill } from '../domain/billing';
 import {
-  activeIndividuals, carriedType, providerSortKey, providerTreatmentWindow,
+  activeIndividuals, carriedLocation, carriedType, providerSortKey, providerTreatmentWindow,
   sortIndividuals, sortProvidersOldestFirst,
   type CaseProvider, type CaseProviderIndividual, type CaseProviderVisit,
 } from '../domain/caseProviders';
@@ -88,6 +88,16 @@ export default function ProvidersSection({
     [facilities],
   );
 
+  /** `D1` — the facility's locations, as the contact record holds them. This
+   *  surface READS them; it never edits an address, which is `§17.8`'s rule
+   *  ("an address is never edited inside the form") applied to the Medical tab
+   *  as well. Editing happens on the Parties page. */
+  const locationsOf = useCallback((facilityPartyId: string): Record<string, unknown>[] => {
+    const f = facilities.find((p) => p.id === facilityPartyId);
+    const locs = (f?.fields as Record<string, unknown> | undefined)?.locations;
+    return Array.isArray(locs) ? (locs as Record<string, unknown>[]) : [];
+  }, [facilities]);
+
   /** D-54: on a one-client case a NULL client_id MEANS that client, so a row
    *  with no client is shown rather than hidden behind a selector that is not
    *  even rendered. On a multi-client case an unassigned row shows under every
@@ -109,12 +119,25 @@ export default function ProvidersSection({
       // D-32 — the ONLY pre-fill. It WRITES the type and records the case it
       // came from, so the row can say "carried from … — change if wrong".
       const carried = carriedType(facilityPartyId, allProviders, caseRec.id);
+      // `SD-7` / `SD-8` — the location pre-fill, on the SAME D-32 shape. A
+      // facility with exactly ONE location auto-selects it and records no
+      // carried-from case (there was no question to ask); otherwise the last
+      // case's pick is offered, but only if the facility still HAS that
+      // location — a campus can be removed from the contact record between
+      // cases, and a pre-fill pointing at a deleted one is worse than none.
+      const locs = locationsOf(facilityPartyId);
+      const priorLoc = carriedLocation(facilityPartyId, allProviders, caseRec.id);
+      const priorStillThere = priorLoc
+        && locs.some((l) => l.id === priorLoc.facilityLocationId) ? priorLoc : undefined;
+      const soleLocation = locs.length === 1 ? (locs[0].id as string | undefined) : undefined;
       await db.createCaseProvider({
         caseId: caseRec.id,
         clientId: selectedClientId ?? (clients.length === 1 ? clients[0].id : undefined),
         facilityPartyId,
         providerType: carried?.providerType,
         typeCarriedFromCaseId: carried?.fromCaseId,
+        facilityLocationId: soleLocation ?? priorStillThere?.facilityLocationId,
+        locationCarriedFromCaseId: soleLocation ? undefined : priorStillThere?.fromCaseId,
         lop: false,
         // NOTE: no extraction is fired by adding a facility (D-44). The drop and
         // his "Pull individuals" click are the only two triggers there are.
@@ -327,6 +350,23 @@ export default function ProvidersSection({
                 Type carried from the last case where you set it — change it if it is wrong here.
               </p>
             )}
+
+            {/* D1 (RULED 2026-09-07, "d") — WHICH location treated the client on
+                THIS matter. The designation block reads the selected location's
+                street, city/state/ZIP and phone; a facility with one location
+                resolves without a pick (SD-8), and two-or-more with none picked
+                is a PANEL line on the Forms tab, never a stop (SD-10). */}
+            <LocationPicker
+              row={row}
+              locations={locationsOf(row.facilityPartyId)}
+              busy={busy}
+              onPick={(facilityLocationId) => patchProvider(row.id, {
+                facilityLocationId,
+                // Once he picks it himself it is no longer carried, exactly as
+                // the TYPE behaves one control above.
+                locationCarriedFromCaseId: undefined,
+              })}
+            />
 
             {shown.length === 0 ? (
               <p className="small muted" style={{ marginTop: 8 }}>
@@ -728,6 +768,81 @@ function AddIndividual({
         <input value={credential} onChange={(e) => setCredential(e.target.value)} placeholder="M.D." />
       </label>
       <button className="btn small" onClick={add} disabled={busy || !name.trim()}>Add</button>
+    </div>
+  );
+}
+
+/**
+ * `D1` — the location picker on the facility card.
+ *
+ * Michael's answer to "where does the designation block get a facility's street,
+ * city/state/ZIP and telephone" was ***"d"***: the case row picks the location
+ * AND each location's address is stored split. This is the picking half.
+ *
+ * Three states, and none of them blocks:
+ *  - NO locations on the contact record  → a line saying so, pointing at the
+ *    Parties page. The block renders to the facility name and ends (§17.6).
+ *  - EXACTLY ONE                          → shown, not asked (`SD-8`).
+ *  - TWO OR MORE                          → a select. Unpicked is a PANEL line
+ *    on the Forms tab (`SD-10`), never a fifth stop — R1/R2 fixed the stop set
+ *    at four and the amendment slice bars a fifth in terms.
+ *
+ * It never edits an address. §17.8: "an address is never edited inside the
+ * form" — the provider block owns no data, and neither does this.
+ */
+function LocationPicker({
+  row, locations, busy, onPick,
+}: {
+  row: CaseProvider;
+  locations: Record<string, unknown>[];
+  busy: boolean;
+  onPick: (id: string | undefined) => void;
+}) {
+  const label = (l: Record<string, unknown>) => {
+    const name = (l.label as string)?.trim();
+    const street = (l.addressLine1 as string)?.trim() || (l.address as string)?.trim();
+    return [name, street].filter(Boolean).join(' — ') || '(unlabelled location)';
+  };
+
+  if (locations.length === 0) {
+    return (
+      <p className="small muted" style={{ marginTop: 4 }}>
+        This facility has no locations on its contact record. The designation block
+        will carry its name and nothing else — add a location on the Parties page.
+      </p>
+    );
+  }
+
+  if (locations.length === 1) {
+    return (
+      <p className="small muted" style={{ marginTop: 4 }}>
+        Location: <strong>{label(locations[0])}</strong> — the only one on this
+        contact record, so it is used without asking.
+      </p>
+    );
+  }
+
+  return (
+    <div className="small" style={{ marginTop: 6 }}>
+      <label>
+        Location that treated the client{' '}
+        <select
+          value={row.facilityLocationId ?? ''}
+          disabled={busy}
+          onChange={(e) => onPick(e.target.value || undefined)}
+        >
+          <option value="">— pick a location —</option>
+          {locations.map((l, i) => (
+            <option key={(l.id as string) ?? i} value={(l.id as string) ?? ''}>{label(l)}</option>
+          ))}
+        </select>
+      </label>
+      {row.locationCarriedFromCaseId && row.facilityLocationId && (
+        <span className="muted"> — carried from the last case where you set it; change it if it is wrong here.</span>
+      )}
+      {!row.facilityLocationId && (
+        <span className="muted"> — until you pick one, the block carries the facility name without a street or telephone.</span>
+      )}
     </div>
   );
 }

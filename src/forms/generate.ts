@@ -16,6 +16,7 @@
 
 import type { DataAdapter } from '../data/adapter';
 import type { PartyRecord } from '../domain/types';
+import { resolveLocation } from '../domain/addressSplit';
 import {
   activeIndividuals, newestReadableVersion,
   type CaseChronologyVersion, type CaseProvider, type CaseProviderIndividual,
@@ -44,6 +45,11 @@ export interface DesignationBlock {
   /** D-8 — the "Currently practicing at …" sentence, when a LATER current edge
    *  exists. A TEXT ACT in a served block, listed for Michael's eye. */
   currentlyPracticingAt?: string;
+  /** `D1` — WHICH of the facility's locations treated this client, carried on
+   *  the block so `blockItem` keeps its two-argument shape and the location
+   *  cannot be paired with the wrong facility downstream. Copied off the R17
+   *  row; undefined where none is selected, which is a panel line, not a stop. */
+  facilityLocationId?: string;
 }
 
 function partyField(p: PartyRecord | undefined, key: string): string {
@@ -70,12 +76,38 @@ function partyField(p: PartyRecord | undefined, key: string): string {
  * §17.6 is UNCHANGED by this: a facility with nothing on file still renders,
  * still generates, and the panel's lines 1 and 2 are what say so. An empty
  * value drops its paragraph (§12.3) rather than leaving a blank line.
+ *
+ * ⛔ **IT READS TWO STORED FIELDS AND SPLITS NOTHING** (`D1(iii)`, Michael:
+ * ***"1"***). A location that still carries only the pre-split one-line
+ * `address` renders NO street line here — deliberately, and pinned by a test —
+ * and raises `SD-1`'s panel line instead. The split runs at the record, in
+ * `migrateV15ToV16` and in `db/migrations/2026-09-07-address-model-split.sql`,
+ * and in no third place.
  */
-export function facilityContactLines(facility: PartyRecord | undefined): RegionItem {
+export function facilityContactLines(
+  facility: PartyRecord | undefined,
+  /** `D1` — the `SD-4` id of the location that treated the client. A facility
+   *  with exactly ONE location resolves without it (`SD-8`). */
+  facilityLocationId?: string,
+): RegionItem {
+  const loc = resolveLocation((facility?.fields ?? {}).locations, facilityLocationId);
+  // §3 item 17(d): with no location resolved the block "renders to the name and
+  // ends" — the §17.6 posture, unchanged. Three empties, and the document still
+  // generates.
+  if (!loc) {
+    return {
+      facility_address_line_1: '',
+      facility_city_state_zip: '',
+      facility_phone: '',
+    };
+  }
+  const str = (k: string) => (typeof loc[k] === 'string' ? (loc[k] as string) : '');
   return {
-    facility_address_line_1: partyField(facility, 'addressLine1'),
-    facility_city_state_zip: partyField(facility, 'cityStateZip'),
-    facility_phone: partyField(facility, 'phone'),
+    facility_address_line_1: str('addressLine1'),
+    facility_city_state_zip: str('cityStateZip'),
+    // `SD-2`, stated at `D1(i)` and not objected to: the location's own phone,
+    // falling back to the facility's main phone.
+    facility_phone: str('phone') || partyField(facility, 'phone'),
   };
 }
 
@@ -100,7 +132,7 @@ export function blockItem(
     custodian_line: b.custodianLine,
     facility_name_caps: b.facilityName.toUpperCase(),
     facility_name: b.facilityName,
-    ...facilityContactLines(facilityParties[b.facilityPartyId]),
+    ...facilityContactLines(facilityParties[b.facilityPartyId], b.facilityLocationId),
   };
 }
 
@@ -233,6 +265,7 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
       caseProviderId: provider.id,
       facilityPartyId: provider.facilityPartyId,
       facilityName,
+      facilityLocationId: provider.facilityLocationId,
       individuals: plan.blockIndividuals,
       custodianLine: line,
       topLine: n === 0 ? line : renderNames(plan.blockIndividuals).provider_name,

@@ -48,13 +48,42 @@ import type { ProviderTypeKey } from '../forms/providerTypes';
 const T = '2026-03-16T12:00:00.000Z';
 
 /** An organization contact for a facility. */
+/**
+ * A demo facility, in the shape the REGISTRY actually holds one.
+ *
+ * `spec-feedback.md` item 2a's first bullet is why this helper changed: it used
+ * to set `addressLine1` and `cityStateZip` at the TOP level of `fields`, which
+ * no facility created through the app's own party form could ever have. The
+ * fixtures rendered a block the product could not produce, so the defect item 2
+ * describes was invisible in demo and visible only on the seeded records.
+ *
+ * Under `D1` a facility's address lives on a `locations[]` item — split into
+ * street and city/state/ZIP, with a stable `SD-4` id — and the case row picks
+ * which item treated the client. These fixtures are written that way, so what
+ * the walk sees is what the form can make.
+ *
+ * The mark is `'hand'`: these addresses were authored split, not split by rule,
+ * and marking them otherwise would put a "confirm this" notice in front of
+ * Michael for nine records no machine ever touched.
+ */
 function facilityParty(
   id: string, name: string, address: string, cityStateZip: string, phone?: string,
 ): PartyRecord {
   return {
     id, partyType: 'providerBusiness', kind: 'organization', displayName: name,
     roleTags: ['providerBusiness'], aliases: [], deceased: false,
-    fields: { name, addressLine1: address, cityStateZip, ...(phone ? { phone } : {}) },
+    fields: {
+      name,
+      ...(phone ? { phone } : {}),
+      locations: [{
+        id: `${id}-loc-main`,
+        label: 'Main',
+        addressLine1: address,
+        cityStateZip,
+        ...(phone ? { phone } : {}),
+        addressSplitBy: 'hand',
+      }],
+    },
     createdAt: T, updatedAt: T,
   } as PartyRecord;
 }

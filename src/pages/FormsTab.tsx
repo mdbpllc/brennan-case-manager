@@ -38,6 +38,7 @@ import {
   type CaseProviderVisit, type GeneratedDocumentParagraph,
 } from '../domain/caseProviders';
 import { buildRenderContext, type CaseBundle } from '../forms/context';
+import { isUnconfirmedSplit, resolveLocation } from '../domain/addressSplit';
 import { renderInstrument, type RegionItem, type NarrativeParagraph } from '../forms/renderer';
 import { disclosuresSkeletonBytes, DISCLOSURES_SKELETON_KEY } from '../forms/skeletons/disclosuresSkeleton';
 import { evaluateTypedGates, blockingGates, type GateWarning } from '../forms/gates';
@@ -245,12 +246,27 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
     selected: chosen,
     individuals,
     facilityNames,
+    // D1 — recomputed from the SELECTED location rather than from the party,
+    // because that is what the block actually reads. `spec-feedback.md` item 2a
+    // recorded the old computation being right about the document and wrong
+    // about the record: it said a facility had no address while the address sat
+    // visible on the party page in a `locations` group the form could not even
+    // offer. `locationState` distinguishes the three cases the panel now names
+    // separately (SD-1) instead of collapsing them into one false sentence.
     facilityAddresses: Object.fromEntries(providers.map((p) => {
       const party = partyById(p.facilityPartyId);
-      const f = (party?.fields ?? {}) as Record<string, unknown>;
+      const locs = ((party?.fields ?? {}) as Record<string, unknown>).locations;
+      const rows = Array.isArray(locs) ? (locs as Record<string, unknown>[]) : [];
+      const loc = resolveLocation(rows, p.facilityLocationId);
+      const contact = facilityContactLines(party, p.facilityLocationId);
       return [p.facilityPartyId, {
-        hasAddress: Boolean(f.addressLine1 || f.cityStateZip),
-        hasPhone: Boolean(f.phone),
+        hasAddress: Boolean(contact.facility_address_line_1 || contact.facility_city_state_zip),
+        hasPhone: Boolean(contact.facility_phone),
+        locationState: rows.length === 0 ? 'none' as const
+          : loc ? 'selected' as const
+            : 'unselected' as const,
+        unconfirmedSplit: loc ? isUnconfirmedSplit(loc) : false,
+        locationLabel: loc ? ((loc.label as string) || '') : '',
       }];
     })),
     chronologyVersions: clientVersions,
@@ -362,22 +378,31 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       context.regions.treating_provider = designations.blocks.map((b) => ({
         provider_individual_names_block: b.topLine,
         facility_name_caps: b.facilityName.toUpperCase(),
-        ...facilityContactLines(facilityParties[b.facilityPartyId]),
+        ...facilityContactLines(facilityParties[b.facilityPartyId], b.facilityLocationId),
       }));
       // D-28: the persons-with-knowledge provider entries are DERIVED from the
       // selection, in the same order, and are not hand-edited in the fact
       // witness step — which keeps its own hand-added witnesses as built.
       context.regions.person_with_knowledge = [
         ...(context.regions.person_with_knowledge ?? []),
-        ...designations.blocks.map((b) => ({
-          person_name: b.topLine,
-          person_care_of_line: '',
-          person_firm_name_caps: b.facilityName.toUpperCase(),
-          person_address_line_1: field(facilityParties[b.facilityPartyId], 'addressLine1'),
-          person_address_line_2: field(facilityParties[b.facilityPartyId], 'cityStateZip'),
-          person_phone: field(facilityParties[b.facilityPartyId], 'phone'),
-          person_connection_statement: 'Health-care provider',
-        })),
+        ...designations.blocks.map((b) => {
+          // D1(iv), Michael: "1" — ONE address shape instrument-wide. These
+          // lines read the SAME resolved location the block does, through the
+          // same function, so the persons-with-knowledge entry and the
+          // designation block can never name one campus and address another.
+          const contact = facilityContactLines(
+            facilityParties[b.facilityPartyId], b.facilityLocationId,
+          );
+          return {
+            person_name: b.topLine,
+            person_care_of_line: '',
+            person_firm_name_caps: b.facilityName.toUpperCase(),
+            person_address_line_1: contact.facility_address_line_1,
+            person_address_line_2: contact.facility_city_state_zip,
+            person_phone: contact.facility_phone,
+            person_connection_statement: 'Health-care provider',
+          };
+        }),
       ];
       // §8.4: the charges table takes the SAME order as everything else.
       context.regions.provider_charge_row = chosen

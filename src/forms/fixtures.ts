@@ -61,7 +61,7 @@ export const FIXTURE_PARTIES: PartyRecord[] = [
     firmName: 'Feldspar & Gneiss PLLC',
     addressInline: '400 Tourmaline Way, Suite 210, Rockvale, TX 70001',
     addressLine1: '400 Tourmaline Way, Suite 210',
-    addressLine2: 'Rockvale, TX 70001',
+    cityStateZip: 'Rockvale, TX 70001',
     phone: '(555) 010-4400',
     fax: '(555) 010-4401',
     serviceEmails: 'dfeldspar@example-invalid.test',
@@ -71,7 +71,7 @@ export const FIXTURE_PARTIES: PartyRecord[] = [
     firmName: 'Gneiss Law Group',
     addressInline: '18 Obsidian Row, Rockvale, TX 70002',
     addressLine1: '18 Obsidian Row',
-    addressLine2: 'Rockvale, TX 70002',
+    cityStateZip: 'Rockvale, TX 70002',
     phone: '(555) 010-5500',
     fax: '(555) 010-5501',
     serviceEmails: 'egneiss@example-invalid.test',
@@ -119,7 +119,7 @@ export const FIXTURE_PARTIES: PartyRecord[] = [
   }),
   party('fx-p-witness', 'Nolan Pyrite', 'person', ['Witness'], {
     addressLine1: '12 Pyrite Lane',
-    addressLine2: 'Rockvale, TX 70006',
+    cityStateZip: 'Rockvale, TX 70006',
     phone: '(555) 010-1200',
   }),
 ];

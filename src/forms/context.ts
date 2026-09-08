@@ -205,7 +205,7 @@ export function buildRenderContext(bundle: CaseBundle, answers: WizardAnswers): 
     counsel_name: o.displayName,
     firm_name_caps: field(o, 'firmName').toUpperCase(),
     firm_address_line_1: field(o, 'addressLine1'),
-    firm_address_line_2: field(o, 'addressLine2'),
+    firm_address_line_2: field(o, 'cityStateZip'),
     firm_phone: field(o, 'phone'),
     firm_fax: field(o, 'fax'),
     served_party_name_caps: (
@@ -235,7 +235,7 @@ export function buildRenderContext(bundle: CaseBundle, answers: WizardAnswers): 
         person_care_of_line: field(p, 'careOf'),
         person_firm_name_caps: field(p, 'firmName').toUpperCase(),
         person_address_line_1: field(p, 'addressLine1'),
-        person_address_line_2: field(p, 'addressLine2'),
+        person_address_line_2: field(p, 'cityStateZip'),
         person_phone: field(p, 'phone'),
         person_connection_statement: fw.testimonyDescription,
       };
@@ -247,7 +247,7 @@ export function buildRenderContext(bundle: CaseBundle, answers: WizardAnswers): 
         person_care_of_line: field(w, 'careOf'),
         person_firm_name_caps: field(w, 'firmName').toUpperCase(),
         person_address_line_1: field(w, 'addressLine1'),
-        person_address_line_2: field(w, 'addressLine2'),
+        person_address_line_2: field(w, 'cityStateZip'),
         person_phone: field(w, 'phone'),
         person_connection_statement: '',
       })),

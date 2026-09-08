@@ -385,8 +385,15 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
   };
   const NAME = 'Sandstone Regional Medical Center';
 
+  /** D1 (2026-09-07): a facility's address lives on a `locations[]` item, split
+   *  into street and city/state/ZIP with a stable `SD-4` id — the shape the
+   *  registry now defines and the app's own party form can actually produce.
+   *  This fixture used to set the two keys at the TOP level of `fields`, which
+   *  `spec-feedback.md` item 2a records no app-created facility could ever
+   *  have. One location, so `SD-8` resolves it without a pick. */
   const onFile = {
-    id: 'f1', displayName: NAME, fields: { ...CONTACT },
+    id: 'f1', displayName: NAME,
+    fields: { locations: [{ id: 'l1', label: 'Main', ...CONTACT, addressSplitBy: 'hand' }] },
   } as unknown as PartyRecord;
 
   /** The SAME facility with nothing on its contact record. */
@@ -426,8 +433,13 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
     // happened to match.
     const moved = await itemFor({
       ...onFile,
-      fields: { ...CONTACT, addressLine1: '77 Feldspar Way', phone: '(361) 555-0199' },
-    } as PartyRecord);
+      fields: {
+        locations: [{
+          id: 'l1', label: 'Main', ...CONTACT,
+          addressLine1: '77 Feldspar Way', phone: '(361) 555-0199',
+        }],
+      },
+    } as unknown as PartyRecord);
     expect(moved.facility_address_line_1).toBe('77 Feldspar Way');
     expect(moved.facility_phone).toBe('(361) 555-0199');
     expect(moved.facility_city_state_zip).toBe(CONTACT.cityStateZip);
@@ -488,7 +500,12 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
     // the named one's street.
     const other = {
       id: 'f2', displayName: 'Feldspar County Hospital',
-      fields: { addressLine1: '77 Feldspar Way', cityStateZip: 'Feldspar, TX 77099', phone: '(361) 555-0199' },
+      fields: {
+        locations: [{
+          id: 'l2', label: 'Main', addressLine1: '77 Feldspar Way',
+          cityStateZip: 'Feldspar, TX 77099', phone: '(361) 555-0199',
+        }],
+      },
     } as unknown as PartyRecord;
     const parties = { f1: onFile, f2: other };
     const out = await buildDesignations(input({ facilityParties: parties }));
@@ -506,13 +523,18 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
       selected: [facility('emergency-medicine', { lastExtractionVersionId: 'v1' })],
       individuals: [person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' })],
       facilityNames: { f1: NAME },
-      facilityAddresses: { f1: { hasAddress: false, hasPhone: false } },
+      facilityAddresses: { f1: { hasAddress: false, hasPhone: false, locationState: 'none' } },
       chronologyVersions: [version],
       billedFacilityPartyIds: [],
     });
     expect(out.panel.map((f) => f.line)).toEqual(expect.arrayContaining([1, 2]));
+    // SD-1 rewrote line 1 into three lines that are TRUE of the record as well
+    // as of the document. The old sentence ("has no address on its contact
+    // record") was false of the shape that actually fails — the address was on
+    // the party page, in a `locations` group the form could not offer, and the
+    // flag led nowhere (spec-feedback item 2a, third bullet).
     expect(out.panel.find((f) => f.line === 1)?.text)
-      .toContain('has no address on its contact record');
+      .toContain('has no locations on its contact record');
     expect(out.canGenerate).toBe(true);
     expect(out.stops).toHaveLength(0);
   });

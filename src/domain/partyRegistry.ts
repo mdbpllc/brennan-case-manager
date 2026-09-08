@@ -43,6 +43,12 @@ export interface FieldDef {
   sensitive?: boolean; // SSN-class fields: masked in lists
   /** Gate 10 §2. Absent = the `parties.fields` blob, unchanged. */
   destination?: FieldDestination;
+  /** `SD-5` (2026-09-07, D1). A field kept in the registry only so an
+   *  already-stored value can still be READ, and hidden on the form once the
+   *  field that replaced it carries a value on that record. The value is NEVER
+   *  deleted — the split of a one-line address is reversible by hand precisely
+   *  because the source is still there. */
+  legacy?: boolean;
 }
 
 export interface PartyTypeDef {
@@ -54,11 +60,23 @@ export interface PartyTypeDef {
   fields: FieldDef[];
 }
 
+/** THE ONE ADDRESS SHAPE, ruled 2026-09-07 (`D1(iv)`, Michael: ***"1"*** —
+ *  "same treatment instrument-wide"; `docs/specs/cc1-rulings-and-address-model-slice.md`
+ *  §2.2, §3 item 17(a)). Two stored fields, so the served block's two lines are
+ *  honest without anything parsing an address at render time. The former single
+ *  `address` textarea rides below as `legacy`: its VALUE is never deleted, and
+ *  the one-time split (`src/domain/addressSplit.ts`) reads it. */
+const ADDRESS_SPLIT: FieldDef[] = [
+  { key: 'addressLine1', label: 'Street address (and suite)', type: 'text' },
+  { key: 'cityStateZip', label: 'City, State ZIP', type: 'text' },
+  { key: 'address', label: 'Mailing address (before the split)', type: 'textarea', legacy: true },
+];
+
 const CONTACT: FieldDef[] = [
   { key: 'phone', label: 'Phone', type: 'phone' },
   { key: 'fax', label: 'Fax', type: 'phone' },
   { key: 'email', label: 'Email', type: 'text' },
-  { key: 'address', label: 'Mailing address', type: 'textarea' },
+  ...ADDRESS_SPLIT,
 ];
 
 const PERSON_NAME: FieldDef[] = [
@@ -243,9 +261,16 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'registeredAgent', label: 'Registered agent', type: 'textarea' },
       {
         key: 'locations', label: 'Locations', type: 'repeating', itemLabel: 'location',
+        // `D1` (2026-09-07): the case row picks WHICH of these treated the
+        // client, and each one's address is stored SPLIT so the designation
+        // block's two lines come from two fields. `SD-4` gives each item a
+        // stable `id` — the R17 row keys on it and an array index would not
+        // survive a reorder; it is assigned on save, never typed.
         subFields: [
           { key: 'label', label: 'Short label', type: 'text', hint: 'e.g. "south side"' },
-          { key: 'address', label: 'Physical address', type: 'text' },
+          { key: 'addressLine1', label: 'Street address (and suite)', type: 'text' },
+          { key: 'cityStateZip', label: 'City, State ZIP', type: 'text' },
+          { key: 'address', label: 'Physical address (before the split)', type: 'text', legacy: true },
           { key: 'phone', label: 'Location phone', type: 'phone' },
           { key: 'recordsContact', label: 'Records-request contact (if per-location)', type: 'text' },
         ],
@@ -300,7 +325,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
     key: 'lawEnforcementAgency', label: 'Law enforcement agency', kind: 'organization', nameFields: ['name'],
     fields: [
       { key: 'name', label: 'Agency name', type: 'text', hint: 'Police dept, sheriff’s office, DPS' },
-      { key: 'address', label: 'Address', type: 'textarea' },
+      ...ADDRESS_SPLIT,
       { key: 'phone', label: 'Phone', type: 'phone' },
       { key: 'parentEntity', label: 'Parent government entity (optional)', type: 'partyLink', linkTypes: ['governmentEntity'] },
     ],
@@ -321,7 +346,7 @@ export const PARTY_TYPES: PartyTypeDef[] = [
       { key: 'name', label: 'Court name', type: 'text' },
       { key: 'level', label: 'Jurisdiction / level', type: 'select', options: ['District', 'County court at law', 'Justice of the peace', 'Municipal', 'Appellate'] },
       { key: 'county', label: 'County', type: 'text' },
-      { key: 'address', label: 'Physical address', type: 'textarea' },
+      ...ADDRESS_SPLIT,
       { key: 'clerkInfo', label: 'Clerk’s office contact & filing details', type: 'textarea' },
       { key: 'localRules', label: 'Standing orders / local rules (link or note)', type: 'textarea' },
       {
@@ -384,6 +409,24 @@ export const PARTY_TYPES: PartyTypeDef[] = [
 export const PARTY_TYPE_MAP: Record<string, PartyTypeDef> = Object.fromEntries(
   PARTY_TYPES.map((t) => [t.key, t]),
 );
+
+/**
+ * `SD-5` — which of a field set actually renders for ONE record.
+ *
+ * A `legacy` field is shown only while the record has nothing in the field that
+ * replaced it, so a contact whose address has been split stops offering the
+ * one-line box, and a contact whose address has NOT been split still shows the
+ * value it holds rather than appearing blank. Nothing is deleted either way.
+ *
+ * The pairing is by position: a `legacy` field is superseded by `addressLine1`,
+ * which is the only supersession this registry has. Kept here, beside the field
+ * definitions, so a second one is added in one place.
+ */
+export function visibleFields(defs: FieldDef[], rec: Record<string, unknown> | undefined): FieldDef[] {
+  const line1 = rec?.addressLine1;
+  const splitDone = typeof line1 === 'string' && line1.trim() !== '';
+  return defs.filter((f) => !f.legacy || !splitDone);
+}
 
 export function computeDisplayName(typeKey: string, fields: Record<string, unknown>): string {
   const def = PARTY_TYPE_MAP[typeKey];

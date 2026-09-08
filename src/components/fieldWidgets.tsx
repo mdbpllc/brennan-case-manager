@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { FieldDef } from '../domain/partyRegistry';
-import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
+import { PARTY_TYPE_MAP, visibleFields } from '../domain/partyRegistry';
+import { ensureLocationId, markHand } from '../domain/addressSplit';
 import type { PartyRecord } from '../domain/types';
 import { db } from '../data';
 import { Combobox } from './Combobox';
@@ -73,9 +74,19 @@ function RepeatingInput({
 }) {
   const rows: Record<string, unknown>[] = Array.isArray(value) ? (value as Record<string, unknown>[]) : [];
   const setRow = (i: number, key: string, v: unknown) => {
-    const next = rows.map((r, idx) => (idx === i ? { ...r, [key]: v } : r));
+    const next = rows.map((r, idx) => {
+      if (idx !== i) return r;
+      const edited = { ...r, [key]: v };
+      // `SD-6` — HIS touch is `'hand'`. Editing either split field on a row a
+      // machine split retires the "confirm or edit" mark by the act itself,
+      // which is the whole point of a mark that says who did it.
+      return key === 'addressLine1' || key === 'cityStateZip' ? markHand(edited) : edited;
+    });
     onChange(next);
   };
+  // `SD-4` — a new row gets its stable id at creation, not at save, so a
+  // selector built while the form is open keys on something real.
+  const addRow = () => onChange([...rows, ensureLocationId({})]);
   return (
     <div className="fld full">
       <span className="lab">{def.label}</span>
@@ -83,8 +94,8 @@ function RepeatingInput({
       <div className="rep">
         {rows.length === 0 && <div className="muted small" style={{ marginBottom: 8 }}>No entries yet.</div>}
         {rows.map((row, i) => (
-          <div className="rep-row" key={i}>
-            {def.subFields?.map((sf) => (
+          <div className="rep-row" key={(row.id as string) ?? i}>
+            {visibleFields(def.subFields ?? [], row).map((sf) => (
               <FieldInput key={sf.key} def={sf} value={row[sf.key]} onChange={(v) => setRow(i, sf.key, v)} />
             ))}
             <button type="button" className="btn small danger" onClick={() => onChange(rows.filter((_, idx) => idx !== i))}>
@@ -92,7 +103,7 @@ function RepeatingInput({
             </button>
           </div>
         ))}
-        <button type="button" className="btn small secondary" onClick={() => onChange([...rows, {}])}>
+        <button type="button" className="btn small secondary" onClick={addRow}>
           + Add {def.itemLabel ?? def.label.toLowerCase().replace(/s$/, '')}
         </button>
       </div>
@@ -144,9 +155,9 @@ export function FieldDisplay({ def, value }: { def: FieldDef; value: unknown }) 
     return (
       <div>
         {rows.map((row, i) => (
-          <div key={i} className="small" style={{ marginBottom: 3 }}>
-            {def.subFields
-              ?.map((sf) => {
+          <div key={(row.id as string) ?? i} className="small" style={{ marginBottom: 3 }}>
+            {visibleFields(def.subFields ?? [], row)
+              .map((sf) => {
                 const v = row[sf.key];
                 return v !== undefined && v !== '' ? `${sf.label}: ${String(v)}` : null;
               })

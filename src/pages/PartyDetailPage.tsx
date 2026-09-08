@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { PartyRecord, CasePartyLink, CaseRecord } from '../domain/types';
 import type { FacilityBillingProfile } from '../domain/billing';
-import { PARTY_TYPE_MAP } from '../domain/partyRegistry';
+import { PARTY_TYPE_MAP, visibleFields } from '../domain/partyRegistry';
 import { ALIAS_KIND_LABELS } from '../domain/directory';
 import { FieldDisplay } from '../components/fieldWidgets';
 import { mergePartyFields, piiFieldKeys, type PartyPii } from '../domain/partyPii';
+import { isUnconfirmedSplit, markHand, splitMark } from '../domain/addressSplit';
 import { db } from '../data';
 
 export default function PartyDetailPage() {
@@ -68,7 +69,11 @@ export default function PartyDetailPage() {
   // Only show fields that have values, plus always-show basics. PII fields are
   // partitioned out entirely: they get their own block behind the reveal, so an
   // un-revealed contact shows no trace of them either way.
-  const visibleDefs = def?.fields.filter((f) => !piiKeys.includes(f.key)) ?? [];
+  // `SD-5` — a legacy one-line address drops off the record once the split
+  // fields carry it, so the page shows one address rather than two readings
+  // of the same one. Nothing is deleted; `visibleFields` only decides what
+  // renders.
+  const visibleDefs = visibleFields(def?.fields ?? [], shown).filter((f) => !piiKeys.includes(f.key));
   const populated = visibleDefs.filter((f) => {
     const v = shown[f.key];
     return v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && v.length === 0);
@@ -108,6 +113,8 @@ export default function PartyDetailPage() {
           </div>
         </div>
       </div>
+
+      <AddressSplitNotice party={party} onConfirmed={setParty} />
 
       <div className="card">
         <h3>Cross-case history</h3>
@@ -212,6 +219,100 @@ export default function PartyDetailPage() {
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * `SD-6` — THE CONFIRM-OR-EDIT SURFACE for an address a MACHINE split.
+ *
+ * `D1(iii)`, Michael: ***"1"*** — split once, at the record, "each split row
+ * MARKED … shown on the party page with confirm-or-edit … mark and line gone
+ * once he touches it". This is that surface. Confirm changes NOTHING but the
+ * mark; the values it confirms are the ones on screen above it.
+ *
+ * It renders for a party whose own address was split, and for each `locations[]`
+ * item that was — a facility can have several, and one confirmed campus says
+ * nothing about the next.
+ */
+function AddressSplitNotice({
+  party, onConfirmed,
+}: {
+  party: PartyRecord;
+  onConfirmed: (p: PartyRecord) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const fields = (party.fields ?? {}) as Record<string, unknown>;
+  const locations = Array.isArray(fields.locations)
+    ? (fields.locations as Record<string, unknown>[])
+    : [];
+
+  const partyPending = isUnconfirmedSplit(fields);
+  const pendingLocations = locations
+    .map((l, i) => ({ l, i }))
+    .filter(({ l }) => isUnconfirmedSplit(l));
+  if (!partyPending && pendingLocations.length === 0) return null;
+
+  const confirmParty = async () => {
+    setBusy(true);
+    try {
+      onConfirmed(await db.updateParty(party.id, { fields: markHand(fields) }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const confirmLocation = async (index: number) => {
+    setBusy(true);
+    try {
+      const next = locations.map((l, i) => (i === index ? markHand(l) : l));
+      onConfirmed(await db.updateParty(party.id, { fields: { ...fields, locations: next } }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const line = (rec: Record<string, unknown>) => {
+    const l1 = (rec.addressLine1 as string) ?? '';
+    const l2 = (rec.cityStateZip as string) ?? '';
+    return splitMark(rec) === 'rule-unsplit'
+      ? `“${l1}” — the rule could not find a city, state and ZIP line, so the whole address is on the street line.`
+      : `“${l1}” / “${l2}”`;
+  };
+
+  return (
+    <div className="notice">
+      <strong>Split by rule — confirm or edit.</strong>{' '}
+      This address was entered on one line and split into a street line and a
+      city/state/ZIP line by rule, not by hand. Confirm it if it reads right, or{' '}
+      <Link to={`/parties/${party.id}/edit`}>edit it</Link>. Nothing was deleted —
+      the original one-line value is still on the record.
+      <table className="list" style={{ marginTop: '0.5rem' }}>
+        <tbody>
+          {partyPending && (
+            <tr>
+              <td><strong>Mailing address</strong></td>
+              <td>{line(fields)}</td>
+              <td style={{ width: '7rem', textAlign: 'right' }}>
+                <button className="btn small secondary" disabled={busy} onClick={confirmParty}>
+                  Confirm
+                </button>
+              </td>
+            </tr>
+          )}
+          {pendingLocations.map(({ l, i }) => (
+            <tr key={(l.id as string) ?? i}>
+              <td><strong>{(l.label as string) || `Location ${i + 1}`}</strong></td>
+              <td>{line(l)}</td>
+              <td style={{ width: '7rem', textAlign: 'right' }}>
+                <button className="btn small secondary" disabled={busy} onClick={() => confirmLocation(i)}>
+                  Confirm
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

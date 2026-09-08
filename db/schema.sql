@@ -1492,6 +1492,16 @@ create table if not exists case_providers (
   last_extracted_at timestamptz,
   -- D-32: the pre-fill WRITES the type, and the row says where it came from.
   type_carried_from_case_id uuid references cases (id) on delete set null,
+  -- D1 (2026-09-07, #149): WHICH of the facility's locations treated this
+  -- client on this matter. TEXT and deliberately NOT a foreign key -- it names
+  -- a jsonb sub-record's id inside parties.fields->'locations', not a row, so
+  -- there is nothing for Postgres to reference. NULL is never a stop (SD-10):
+  -- a single-location facility resolves without it (SD-8), and two-or-more with
+  -- none selected is a panel line.
+  facility_location_id text,
+  -- SD-7: the D-32 shape applied to the location, so the surface can say
+  -- "location carried from <case>".
+  location_carried_from_case_id uuid references cases (id) on delete set null,
   created_by uuid references auth.users (id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
