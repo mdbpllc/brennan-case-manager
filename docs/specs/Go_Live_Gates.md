@@ -241,6 +241,17 @@ and no migration is pending. Go-live remains this floor's own first sentence and
 the two migrations the `CCS-1` slice writes should run before it. This doc is append-only; nothing above is
 edited.
 
+**Floor-complete note appended 2026-09-07 (`#150`, the same evening):** item (5) is DONE — instructions v30
+was pasted by Michael ("I already pasted the instructions"), and the `#150` design session read the project's
+instructions field live and found v30 in force (the `#146` precedent: an attributed design-side read, not
+observable from the repo). The two `CCS-1` migrations were then run on LIVE by his hand the same evening —
+`2026-09-07-address-model-schema.sql` (three checks) and `2026-09-07-address-model-split.sql` (STEP 0 taken
+first: 0 / 0 / 2 / one `parties` CHECK; six checks) — every answer in his words, every predicted value landed,
+zero rows split because none needed it; no migration is pending at `ea5675b`
+(`docs/record/ccs1-migrations-run-2026-09-07/migration-run-record-ccs1-2026-09-07.md`). **THE FLOOR IS
+COMPLETE — (1) through (5).** Go-live remains this section's first sentence and Michael's act on his day. This
+doc is append-only; nothing above is edited.
+
 ## Supabase account facts (for future sessions)
 
 - Account created 2026-07-25 via GitHub login (mdbpllc identity), free tier.

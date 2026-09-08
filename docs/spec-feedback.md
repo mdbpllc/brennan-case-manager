@@ -1424,3 +1424,26 @@ Mouse click, keyboard `ArrowDown`+`Enter` and synthetic events all left the fiel
 SAME widget on the Parties tab committed normally in the same session. A note about the walk, not
 about the app — like item 7 — and the reason `R7` is reported as source-asserted rather than
 clicked.
+
+## 2026-09-07 — from the firm-obligations design pass (`#151`): one code/schema finding, flagged and not fixed
+
+**1. A CALENDAR CANCEL WRITES A `review_log` ACTION THE SCHEMA'S CHECK DOES NOT ADMIT.**
+`src/pages/CalendarTab.tsx`'s cancel handler calls `db.appendReviewLog({ entityType: 'calendar_event',
+…, action: 'cancelled', … })` after `db.updateEvent(ev.id, { status: 'cancelled', syncStatus: 'pending' })`
+and before `syncEvent(db, updated, caseRec)`. The Supabase adapter's `appendReviewLog` is a pass-through
+`insertRow('review_log', entry)`. `db/schema.sql`'s `review_log.action` is
+`check (action in ('suggested','confirmed','edited','rejected','created','generated'))`, and no file in
+`db/migrations/` widens it (the only migration naming `review_log` is the CL-2 backfill, two inserts). The
+domain type `ReviewLogEntry.action` (`src/domain/billing.ts`) DOES include `'cancelled'`, and the local
+adapter has no CHECK to hit. **Read from the code and the schema at `ea5675b`, NOT observed live:** in
+Supabase mode a cancel should update the event, have its audit insert refused (SQLSTATE 23514), and
+never reach the Outlook deletion that follows the insert. The 2026-08-13 cancel exercise BUILD-STATE
+records was *"your hand, your browser, demo events only"* — the local adapter — so it could not have
+caught this. `Q-RE-6` already records the same CHECK's missing `"decided"` value as *"a vocabulary gap
+rather than a live defect"*; this is the live-write sibling. **What a Code session should do:** confirm it
+(a cancel against the live database, or a read of the Supabase logs), then either widen the CHECK by
+migration (written and not run — Michael's hand runs it) or change the written value; the
+firm-obligations slice, if authorized, needs the CHECK widened for its own values (`FOD-6`) and can carry
+the fix in the same migration. **Recorded rather than changed: this pass edits nothing under `src/` or
+`db/`.** Found by the PF-1 preflight's HEAD-facts auditor; verified by the design session before being
+written here (`#151`).

@@ -1,0 +1,644 @@
+SOURCE EXCERPTS — the firm-obligations design pass, 2026-09-07 (Central) — EVIDENCE (CAP-2)
+Canonical repo path: docs/record/firm-obligations-design-2026-09-07/source-excerpts-2026-09-07.txt
+What this is: the passages docs/record/firm-obligations-design-2026-09-07/source-read-record-2026-09-07.md quotes, as pdftotext -layout extracted them from the official corpus (Statutes 26-08-14) and the TDRPC PDF, after the statute-pass §3 normalizer (statute files only). Page-number lines interleaved by -layout may remain. Retrieval is not verification; only Michael verifies.
+
+##### SOURCE EXCERPTS — normalized (characterized normalizer + one new context, see note) — corpus Statutes 26-08-14; TDRPC PDF eff. 3/7/2025 #####
+
+===== GV 81.051 / 81.052 =====
+ Sec. 81.051. BAR MEMBERSHIP REQUIRED. (a) The state bar is
+composed of those persons licensed to practice law in this state.
+Bar members are subject to this chapter and to the rules adopted by
+the supreme court.
+ (b) Each person licensed to practice law in this state
+shall, not later than the 10th day after the person’s admission to
+practice, enroll in the state bar by registering with the clerk of
+the supreme court.
+Added by Acts 1987, 70th Leg., ch. 148, Sec. 3.01, eff. Sept. 1,
+1987.
+ Sec. 81.052. MEMBERSHIP CLASSES. (a) A bar membership is
+one of four classes: active, inactive, emeritus, or associate.
+ (b) Each licensed member of the state bar is an active
+member until the person requests to be enrolled as an inactive
+member.
+ (c) An inactive member is a person who:
+ (1) is eligible for active membership but not engaged
+in the practice of law in this state; and
+ (2) has filed with the executive director and the
+clerk of the supreme court written notice requesting enrollment as
+an inactive member.
+ (d) An inactive member at his request may become an active
+member on application and payment of required fees.
+ (e) An emeritus member is a person who:
+ (1) is either an active or inactive member in good
+ 19
+standing who is at least 70 years old; and
+ (2) has filed a written notice requesting enrollment
+as an emeritus member.
+ (f) A person enrolled in law school in this state may be
+enrolled as an associate member.
+Added by Acts 1987, 70th Leg., ch. 148, Sec. 3.01, eff. Sept. 1,
+1987.
+
+===== GV 81.054 =====
+ Sec. 81.054. MEMBERSHIP FEES AND ADDITIONAL FEES. (a) The
+supreme court shall set membership fees and other fees for members
+of the state bar during the court’s annual budget process under
+Section 81.022. The fees, except as provided by Subsection (j) and
+those set for associate members, must be set in accordance with this
+section and Section 81.022.
+ (b) An emeritus member is not required to pay a membership
+fee for the year in which the member reaches the age of 70 or any
+year following that year.
+ (c) Fees shall be paid to the clerk of the supreme
+court. The clerk shall retain the fees, other than fees collected
+ 20
+under Subsection (j), until distributed to the state bar for
+expenditure under the direction of the supreme court to administer
+this chapter. The clerk shall retain the fees collected under
+Subsection (j) until distribution is approved by an order of the
+supreme court. In ordering that distribution, the supreme court
+shall order that the fees collected under Subsection (j) be
+remitted to the comptroller at least as frequently as
+quarterly. The comptroller shall credit 50 percent of the remitted
+fees to the credit of the judicial fund for programs approved by the
+supreme court that provide basic civil legal services to the
+indigent and shall credit the remaining 50 percent of the remitted
+fees to the fair defense account in the general revenue fund which
+is established under Section 79.031, to be used, subject to all
+requirements of Section 79.037, for demonstration or pilot projects
+that develop and promote best practices for the efficient delivery
+of quality representation to indigent defendants in criminal cases
+at trial, on appeal, and in postconviction proceedings.
+ (d) Fees collected under Subsection (j) may be used only to
+provide basic civil legal services to the indigent and legal
+representation and other defense services to indigent defendants in
+criminal cases as provided by Subsection (c). Other fees collected
+under this chapter may be used only for administering the public
+purposes provided by this chapter.
+ (e) The state bar by rule may adopt a system under which
+membership fees are due on various dates during the year. For the
+year in which a due date is changed, the annual fee shall be
+prorated on a monthly basis so that the member pays only that
+portion of the fee that is allocable to the number of months
+remaining before the new expiration date. An increase in fees
+applies only to fees that are payable on or after the effective date
+of the increase.
+ (f) A person who is otherwise eligible to renew the person’s
+membership may renew the membership by paying the required
+membership fees to the state bar on or before the due date.
+ (g) A person whose membership has been expired for 90 days
+or less may renew the membership by paying to the state bar
+membership fees equal to 1-1/2 times the normally required
+ 21
+membership fees.
+ (h) A person whose membership has been expired for more than
+90 days but less than one year may renew the membership by paying to
+the state bar membership fees equal to two times the normally
+required membership fees.
+ (i) Not later than the 30th day before the date a person’s
+membership is scheduled to expire, the state bar shall send written
+notice of the impending expiration to the person at the person’s
+last known address according to the records of the state bar.
+ (j) The supreme court shall set an additional legal services
+fee in an amount of $65 to be paid annually by each active member of
+the state bar except as provided by Subsection (k). Section 81.024
+does not apply to a fee set under this subsection.
+ (k) The legal services fee shall not be assessed on any
+Texas attorney who:
+ (1) is 70 years of age or older;
+ (2) has assumed inactive status under the rules
+governing the State Bar of Texas;
+ (3) is a sitting judge;
+ (4) is an employee of the state or federal government;
+ (5) is employed by a city, county, or district
+attorney’s office and who does not have a private practice that
+accounts for more than 50 percent of the attorney’s time;
+ (6) is employed by a 501(c)(3) nonprofit corporation
+and is prohibited from the outside practice of law;
+ (7) is exempt from MCLE requirements because of
+nonpracticing status; or
+ (8) resides out of state and does not practice law in
+Texas.
+ (l) In this section, "indigent" has the meaning assigned by
+Section 51.941.
+Added by Acts 1987, 70th Leg., ch. 148, Sec. 3.01, eff. Sept. 1,
+1987. Amended by Acts 1991, 72nd Leg., ch. 795, Sec. 18, eff. Sept.
+1, 1991; Acts 2003, 78th Leg., ch. 227, Sec. 13, 14, eff. Sept. 1,
+2003.
+Amended by:
+ Acts 2007, 80th Leg., R.S., Ch. 161 (S.B. 168), Sec. 1, eff.
+ 22
+May 22, 2007.
+ Acts 2007, 80th Leg., R.S., Ch. 855 (H.B. 1265), Sec. 4, eff.
+September 1, 2007.
+ Acts 2011, 82nd Leg., R.S., Ch. 984 (H.B. 1754), Sec. 5, eff.
+September 1, 2011.
+ Acts 2017, 85th Leg., R.S., Ch. 531 (S.B. 302), Sec. 5, eff.
+September 1, 2017.
+ SUBCHAPTER D. ADMISSION TO PRACTICE
+
+===== GV 81.113 =====
+ Sec. 81.113. CONTINUING LEGAL EDUCATION.
+ (a) Except as provided by Subsection (b), the state bar
+shall credit an attorney licensed in this state with meeting the
+minimum continuing legal education requirements of the state bar
+for a reporting year if during the reporting year the attorney is:
+ (1) employed full-time as an attorney by:
+ (A) the senate;
+ (B) the house of representatives;
+ (C) a committee, division, department, or office
+of the senate or house;
+ 51
+ (D) the Texas Legislative Council;
+ (E) the Legislative Budget Board;
+ (F) the Legislative Reference Library;
+ (G) the office of the state auditor; or
+ (H) the Sunset Advisory Commission; or
+ (2) serving as a state official appointed by the
+governor and confirmed by the senate.
+ (b) An attorney credited for continuing legal education
+under Subsection (a) must meet the continuing legal education
+requirements of the state bar in legal ethics or professional
+responsibility.
+ (c) The state bar shall recognize, prepare, or administer
+continuing education programs for members of the state bar. A
+member of the state bar must participate in the programs to the
+extent required by the supreme court to maintain the person’s state
+bar membership.
+Added by Acts 1991, 72nd Leg., ch. 795, Sec. 29, eff. Sept. 1, 1991.
+Amended by Acts 2003, 78th Leg., ch. 227, Sec. 19, eff. Sept. 1,
+2003.
+Amended by:
+ Acts 2011, 82nd Leg., 1st C.S., Ch. 4 (S.B. 1), Sec. 24.01,
+eff. September 28, 2011.
+ Acts 2025, 89th Leg., 2nd C.S., Ch. 7 (H.B. 16), Sec.
+15.05(a), eff. December 4, 2025.
+
+===== CCP 26.04(j)-(k) =====
+ (j) An attorney appointed under this article shall:
+ (1) make every reasonable effort to contact the
+defendant not later than the end of the first working day after the
+date on which the attorney is appointed and to interview the
+defendant as soon as practicable after the attorney is appointed;
+ (2) represent the defendant until charges are
+dismissed, the defendant is acquitted, appeals are exhausted, or
+the attorney is permitted or ordered by the court to withdraw as
+counsel for the defendant after a finding of good cause is entered
+on the record;
+ (3) with respect to a defendant not represented by
+other counsel, before withdrawing as counsel for the defendant
+after a trial or the entry of a plea of guilty:
+ (A) advise the defendant of the defendant’s right
+to file a motion for new trial and a notice of appeal;
+ (B) if the defendant wishes to pursue either or
+both remedies described by Paragraph (A), assist the defendant in
+ 6
+requesting the prompt appointment of replacement counsel; and
+ (C) if replacement counsel is not appointed
+promptly and the defendant wishes to pursue an appeal, file a timely
+notice of appeal; and
+ (4) not later than October 15 of each year and on a
+form prescribed by the Texas Indigent Defense Commission, submit to
+the county information, for the preceding fiscal year, that
+describes the percentage of the attorney’s practice time that was
+dedicated to work based on appointments accepted in the county
+under this article and Title 3, Family Code.
+ (k) A court may replace an attorney who violates Subsection
+(j)(1) with other counsel. A majority of the judges of the county
+courts and statutory county courts or the district courts, as
+appropriate, trying criminal cases in the county may remove from
+consideration for appointment an attorney who intentionally or
+repeatedly violates Subsection (j)(1).
+
+===== CCP 26.04 amendment history (tail) =====
+ 8
+ Acts 2011, 82nd Leg., R.S., Ch. 984 (H.B. 1754), Sec. 7, eff.
+September 1, 2011.
+ Acts 2013, 83rd Leg., R.S., Ch. 912 (H.B. 1318), Sec. 1(a),
+eff. September 1, 2014.
+ Acts 2015, 84th Leg., R.S., Ch. 595 (S.B. 316), Sec. 1, eff.
+September 1, 2015.
+ Acts 2015, 84th Leg., R.S., Ch. 858 (S.B. 1517), Sec. 4, eff.
+September 1, 2015.
+ Acts 2019, 86th Leg., R.S., Ch. 591 (S.B. 583), Sec. 1, eff.
+September 1, 2019.
+ Art. 26.041. PROCEDURES RELATED TO GUARDIANSHIPS.A(a) In
+
+===== TX 171.202(a)-(b) =====
+ Sec. 171.202. ANNUAL REPORT. (a) Except as provided by
+Section 171.2022, a taxable entity on which the franchise tax is
+imposed shall file an annual report with the comptroller
+containing:
+ (1) financial information of the taxable entity
+necessary to compute the tax under this chapter;
+ (2) the name and address of each officer and director
+of the taxable entity;
+ (3) the name and address of the agent of the taxable
+entity designated under Section 171.354; and
+ (4) other information required by the comptroller.
+ (b) The taxable entity shall file the report before May 16
+of each year after the beginning of the regular annual period. The
+report shall be filed on forms supplied by the comptroller.
+
+===== TX 171.2022 =====
+ Sec. 171.2022. EXEMPTION FROM REPORTING REQUIREMENTS. A
+taxable entity that does not owe any tax under this chapter for any
+period is not required to file a report under Section 171.201 or
+171.202. The exemption applies only to a period for which no tax is
+due.
+Added by Acts 1991, 72nd Leg., 1st C.S., ch. 5, Sec. 8.17, eff. Jan.
+1, 1992.
+Amended by:
+ Acts 2006, 79th Leg., 3rd C.S., Ch. 1 (H.B. 3), Sec. 7, eff.
+January 1, 2008.
+ Sec. 171.203. PUBLIC INFORMATION REPORT. (a) A
+
+===== TX 171.203 =====
+ Sec. 171.203. PUBLIC INFORMATION REPORT. (a) A
+corporation, limited liability company, limited partnership, or
+professional association on which the franchise tax is imposed,
+regardless of whether the entity is required to pay any tax, shall
+file a report with the comptroller containing:
+ (1) the name of each corporation, limited liability
+company, limited partnership, or professional association in which
+the corporation, limited liability company, limited partnership,
+or professional association filing the report owns a 10 percent or
+ 80
+greater interest and the percentage owned by the entity;
+ (2) the name of each corporation, limited liability
+company, limited partnership, or professional association that
+owns a 10 percent or greater interest in the corporation, limited
+liability company, limited partnership, or professional
+association filing the report;
+ (3) the name, title, and mailing address of each
+person who is:
+ (A) an officer or director of the corporation,
+limited liability company, or professional association on the date
+the report is filed and the expiration date of each person’s term as
+an officer or director, if any; and
+ (B) a general partner of the limited partnership
+on the date the report is filed;
+ (4) the name and address of the agent of the
+corporation, limited liability company, limited partnership, or
+professional association designated under Section 171.354; and
+ (5) the address of the corporation’s, limited
+liability company’s, limited partnership’s, or professional
+association’s principal office and principal place of business.
+ (b) The corporation, limited liability company, limited
+partnership, or professional association shall file the report once
+a year on a form prescribed by the comptroller.
+ (c) The comptroller shall forward the report to the
+secretary of state.
+ (d) The corporation, limited liability company, limited
+partnership, or professional association shall send a copy of the
+report to each person named in the report under Subsection (a)(3)
+who is not currently employed by the corporation, limited liability
+company, limited partnership, or professional association or a
+related entity listed in Subsection (a)(1) or (2). An officer or
+director of the corporation, limited liability company, or
+professional association, a general partner of the limited
+partnership, or another authorized person must sign the report
+under a certification that:
+ (1) all information contained in the report is true
+and correct to the best of the person’s knowledge; and
+ 81
+ (2) a copy of the report has been mailed to each person
+identified in this subsection on the date the return is filed.
+ (e) If a person’s name is included in a report under
+Subsection (a)(3) and the person is not an officer or director of
+the corporation, limited liability company, or professional
+association, or a general partner of the limited partnership, as
+applicable, on the date the report is filed, the person may file
+with the comptroller a sworn statement disclaiming the person’s
+status as shown on the report. The comptroller shall maintain a
+record of statements filed under this subsection and shall make
+that information available on request using the same procedures the
+comptroller uses for other requests for public information.
+ (f) A public information report that is filed
+electronically complies with the signature and certification
+requirements prescribed by Subsection (d).
+Acts 1981, 67th Leg., p. 1702, ch. 389, Sec. 1, eff. Jan. 1, 1982.
+Amended by Acts 1995, 74th Leg., ch. 1002, Sec. 19, eff. Jan. 1,
+1996; Acts 1997, 75th Leg., ch. 1185, Sec. 13, eff. Jan. 1, 1998;
+Acts 1999, 76th Leg., ch. 394, Sec. 11, eff. Jan. 1, 2000; Acts
+2003, 78th Leg., ch. 209, Sec. 41, eff. Jan. 1, 2004.
+Amended by:
+ Acts 2006, 79th Leg., 3rd C.S., Ch. 1 (H.B. 3), Sec. 7, eff.
+January 1, 2008.
+ Acts 2007, 80th Leg., R.S., Ch. 1282 (H.B. 3928), Sec. 27,
+eff. January 1, 2008.
+ Acts 2015, 84th Leg., R.S., Ch. 1097 (H.B. 2891), Sec. 3, eff.
+January 1, 2016.
+ Sec. 171.204. INFORMATION REPORT. (a) Except as provided
+
+===== TX 171.002 (a)-(d) =====
+ Sec. 171.002. RATES; COMPUTATION OF TAX. (a) Subject to
+Sections 171.003 and 171.1016 and except as provided by Subsection
+(b), the rate of the franchise tax is 0.75 percent of taxable
+margin.
+ (b) Subject to Sections 171.003 and 171.1016, the rate of
+the franchise tax is 0.375 percent of taxable margin for those
+taxable entities primarily engaged in retail or wholesale trade.
+ (c) A taxable entity is primarily engaged in retail or
+ 14
+wholesale trade only if:
+ (1) the total revenue from its activities in retail or
+wholesale trade is greater than the total revenue from its
+activities in trades other than the retail and wholesale trades;
+ (2) except as provided by Subsection (c-1), less than
+50 percent of the total revenue from activities in retail or
+wholesale trade comes from the sale of products it produces or
+products produced by an entity that is part of an affiliated group
+to which the taxable entity also belongs; and
+ (3) the taxable entity does not provide retail or
+wholesale utilities, including telecommunications services,
+electricity, or gas.
+ (c-1) Subsection (c)(2) does not apply to total revenue from
+activities in a retail trade described by Major Group 58 of the
+Standard Industrial Classification Manual published by the federal
+Office of Management and Budget.
+ (c-2) For purposes of Subsection (c)(3), the provision of
+telecommunications services does not include selling telephone
+prepaid calling cards.
+ (d) A taxable entity is not required to pay any tax and is
+not considered to owe any tax for a period if:
+ (1) the amount of tax computed for the taxable entity
+is less than $1,000; or
+ (2) the amount of the taxable entity’s total revenue
+from its entire business is less than or equal to $2.47 million or
+the amount determined under Section 171.006 per 12-month period on
+which margin is based.
+Acts 1981, 67th Leg., p. 1691, ch. 389, Sec. 1, eff. Jan. 1, 1982.
+Amended by Acts 1984, 68th Leg., 2nd C.S., ch. 31, art. 3, part D,
+Sec. 1, eff. May 1, 1985; Acts 1987, 70th Leg., 2nd C.S., ch. 5,
+art. 2, pt. 1, Sec. 1, eff. Jan. 1, 1988; Acts 1987, 70th Leg., 2nd
+C.S., ch. 5, art. 2, pt. 2, Sec. 1, eff. Jan. 1, 1990; Acts 1991,
+72nd Leg., 1st C.S., ch. 5, Sec. 8.031(a), eff. Jan. 1, 1992; Acts
+1997, 75th Leg., ch. 1185, Sec. 2, eff. Jan. 1, 1998; Acts 1999,
+76th Leg., ch. 394, Sec. 10, eff. Jan. 1, 2000.
+Amended by:
+
+===== TX 191 — section headings only (whole chapter as downloaded) =====
+15: Sec. 191.081. DEFINITION. In this subchapter, "oil well
+33: Sec. 191.082. TAX IMPOSED. (a) A tax is imposed on each
+65: Sec. 191.083. TAX RATE. The rate of the tax imposed by this
+97: Sec. 191.085. RECORD. (a) A person subject to the tax
+115: Sec. 191.086. PENALTY. A person who violates this
+127: Sec. 191.087. FAILURE TO FILE REPORT OR PAY TAX. (a) If a
+155: Sec. 191.088. STATE TAX LIEN. The taxes, penalties,
+169: Sec. 191.089. PERMIT REQUIRED. A person subject to the tax
+187: Sec. 191.101. TAX RECEIPT AS PERMIT. (a) The receipt from
+207: Sec. 191.102. DISPLAY OF PERMIT; PENALTY. (a) A person
+231: Sec. 191.121. NATURE OF TAX. A tax imposed by this chapter
+239: Sec. 191.122. ALLOCATION OF TAX. One-fourth of the revenue
+SUBCHAPTER lines:
+11:                   SUBCHAPTER E. OIL WELL SERVICE
+183:                           SUBCHAPTER F. TAX RECEIPT
+227:             SUBCHAPTER G. NATURE AND ALLOCATION OF TAX
+
+===== BC 71.151 =====
+ Sec. 71.151. DURATION AND RENEWAL OF CERTIFICATE. (a) A
+certificate is effective for a term not to exceed 10 years from the
+date the certificate is filed.
+ (b) A certificate is void at the end of the certificate’s
+stated term, unless within six months preceding the certificate’s
+expiration date the registrant files in the office of a county clerk
+and the secretary of state, if applicable, a renewal certificate
+complying with the requirements of this chapter for an original
+certificate.
+ (c) A registrant may renew a certificate under this section
+for any number of successive terms, but each term may not exceed 10
+years.
+Added by Acts 2007, 80th Leg., R.S., Ch. 885 (H.B. 2278), Sec. 2.01,
+eff. April 1, 2009.
+ Sec. 71.152. MATERIAL CHANGE IN INFORMATION; NEW
+
+===== TDRPC 1.15 (a)-(c) + cmt 1-2 (raw pdftotext, no normalizer needed: AA count 0) =====
+Rule 1.15 Safekeeping Property
+(a) A lawyer shall hold funds and other property belonging in whole or in part to clients or
+third persons that are in a lawyer’s possession in connection with a representation separate
+ 50
+from the lawyer’s own property. Such funds shall be kept in a separate account, designated as
+a trust or escrow account, maintained in the state where the lawyers office is situated, or
+elsewhere with the consent of the client or third person. Other client property shall be
+identified as such and appropriately safeguarded. Complete records of such account funds and
+other property shall be kept by the lawyer and shall be preserved for a period of five years
+after termination of the representation.
+(b) Upon receiving funds or other property in which a client or third person has an interest, a
+lawyer shall promptly notify the client or third person. Except as stated in this Rule or
+otherwise permitted by law or by agreement with the client, a lawyer shall promptly deliver to
+the client or third person any funds or other property that the client or third person is entitled
+to receive and, upon request by the client or third person, shall promptly render a full
+accounting regarding such property.
+(c) When in the course of representation a lawyer is in possession of funds or other property
+in which both the lawyer and another person claim interests, the property shall be kept
+separate by the lawyer until there is an accounting and severance of their interest. All funds in
+a trust or escrow account shall be disbursed only to those persons entitled to receive them by
+virtue of the representation or by law. If a dispute arises concerning their respective interests,
+the portion in dispute shall be kept separate by the lawyer until the dispute is resolved, and the
+undisputed portion shall be distributed appropriately.
+Comment:
+1. A lawyer should hold property of others with the care required of a professional fiduciary.
+Securities should be kept in a safe deposit box, except when some other form of safekeeping
+is warranted by special circumstances. All property which is the property of clients or third
+persons should be kept separate from the lawyer’s business and personal property and, if
+monies, in one or more trust accounts. Separate trust accounts may be warranted when
+administering estate monies or acting in similar fiduciary capacities. Paragraph (a) requires
+that complete records of the funds and other property be maintained.
+2. Lawyers often receive funds from third parties from which the lawyer’s fee will be paid.
+These funds should be deposited into a lawyer’s trust account. If there is risk that the client
+may divert the funds without paying the fee, the lawyer is not required to remit the portion
+from which the fee is to be paid. However, a lawyer may not hold funds to coerce a client into
+accepting the lawyer’s contention. The disputed portion of the funds should be kept in trust
+and the lawyer should suggest means for prompt resolution of the dispute, such as arbitration.
+The undisputed portion of the funds should be promptly distributed to those entitled to receive
+them by virtue of the representation. A lawyer should not use even that portion of trust
+account funds due to the lawyer to make direct payment to general creditors of the lawyer of
+the lawyer’s firm, because such a course of dealing increases the risk that all the assets of that
+account will be viewed as the lawyer’s property rather than that of clients, and thus as
+available to satisfy the claims of such creditors. When a lawyer receives from a client monies
+
+===== TDRPC face date =====
+              TEXAS DISCIPLINARY RULES OF
+                PROFESSIONAL CONDUCT
+                                  (Effective March 7, 2025)
+
+
+===== NORMALIZER RUN REPORT =====
+gv.81.txt {'paren': 517, 'period': 138, 'colon': 1, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 104, 'apos': 86} residual glued AA sites: 0 []
+gv.82.txt {'paren': 186, 'period': 55, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 43, 'apos': 60} residual glued AA sites: 0 []
+gv.79.txt {'paren': 201, 'period': 42, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 1, 'secnum': 25, 'apos': 30} residual glued AA sites: 0 []
+cr.26.txt {'paren': 231, 'period': 40, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 1, 'secnum': 23, 'apos': 102} residual glued AA sites: 0 []
+tx.171.txt {'paren': 910, 'period': 282, 'colon': 0, 'quote': 0, 'comma': 3, 'lower': 4, 'secnum': 168, 'apos': 190} residual glued AA sites: 6 ['AAAcooperative', 'agencies;AAand', 'government;AAand', 'government;AAand', 'government;AAand', 'state;AAand']
+tx.191.txt {'paren': 9, 'period': 13, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 13, 'apos': 2} residual glued AA sites: 0 []
+bc.71.txt {'paren': 114, 'period': 27, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 22, 'apos': 38} residual glued AA sites: 0 []
+
+===== tx.171 residual sites in context (semicolon context, uncharacterized) =====
+
+
+##### second round #####
+
+##### SOURCE EXCERPTS (second read, after the PF-1 preflight) — same corpus, same normalizer #####
+
+===== GV 406.002 =====
+ Sec. 406.002. TERM. The term of a notary public expires
+four years after the date the notary public qualifies.
+
+===== GV 406.010(a) =====
+ Sec. 406.010. BOND; OATH. (a) Each person to be appointed
+a notary public shall, before entering the official duties of
+office, execute a bond in the amount of $10,000 with a solvent
+surety company authorized to do business in this state as a surety.
+
+===== GV 81.114(a)-(b) =====
+ Sec. 81.114. ATTORNEY INSTRUCTION RELATED TO GUARDIANSHIP
+ISSUES. (a) The state bar shall provide a course of instruction
+for attorneys who represent any person’s interests in guardianship
+cases or who serve as court-appointed guardians.
+
+===== ES 1054.201-.203 =====
+ Sec. 1054.201. CERTIFICATION REQUIRED. (a) Except as
+provided by Subsection (c), an attorney representing any person’s
+interests in a guardianship proceeding, including an attorney ad
+litem, must be certified by the State Bar of Texas, or a person or
+other entity designated by the state bar, as having successfully
+completed a course of study in guardianship law and procedure
+sponsored by the state bar or the state bar’s designee.
+ (b) The State Bar of Texas shall require four hours of
+credit for certification under this subchapter, including one hour
+on alternatives to guardianship and supports and services available
+to proposed wards.
+ (c) An attorney may commence representation of a person’s
+interests and file an appearance in a guardianship proceeding
+before completing the course required for certification under
+Subsection (a), but must complete the course not later than the 14th
+day after the date of filing the appearance and before filing any
+substantive motion in the guardianship proceeding.
+Added by Acts 2011, 82nd Leg., R.S., Ch. 823 (H.B. 2759), Sec. 1.02,
+eff. January 1, 2014.
+Amended by:
+ Acts 2015, 84th Leg., R.S., Ch. 214 (H.B. 39), Sec. 6, eff.
+September 1, 2015.
+ Acts 2021, 87th Leg., R.S., Ch. 521 (S.B. 626), Sec. 20, eff.
+
+===== HS 181.101 =====
+ Sec. 181.101. TRAINING REQUIRED. (a) Each covered entity
+shall provide training to employees of the covered entity regarding
+the state and federal law concerning protected health information
+as necessary and appropriate for the employees to carry out the
+employees’ duties for the covered entity.
+ (b) An employee of a covered entity must complete training
+described by Subsection (a) not later than the 90th day after the
+date the employee is hired by the covered entity.
+ (c) If the duties of an employee of a covered entity are
+affected by a material change in state or federal law concerning
+protected health information, the employee shall receive training
+described by Subsection (a) within a reasonable period, but not
+later than the first anniversary of the date the material change in
+
+===== TX 22.01(a) =====
+ Sec. 22.01. RENDITION GENERALLY. (a) Except as provided by
+Chapter 24, a person shall render for taxation all tangible
+personal property used for the production of income that the person
+
+===== TX 22.23(a)-(b) =====
+ Sec. 22.23. FILING DATE. (a) Rendition statements and
+property reports must be delivered to the chief appraiser after
+January 1 and not later than April 15, except as provided by Section
+22.02.
+ (b) On written request by the property owner, the chief
+
+===== TX 22.28(a) =====
+ Sec. 22.28. PENALTY FOR DELINQUENT REPORT; PENALTY
+COLLECTION PROCEDURES. (a) Except as otherwise provided by
+Section 22.30, the chief appraiser shall impose a penalty on a
+person who fails to timely file a rendition statement or property
+
+===== TX 31.02(a) =====
+ Sec. 31.02. DELINQUENCY DATE. (a) Except as provided by
+Subsection (b) of this section and by Sections 31.03 and 31.04 of
+this code, taxes are due on receipt of the tax bill and are
+
+===== TX 171.2515(a) =====
+ Sec. 171.2515. FORFEITURE OF RIGHT OF TAXABLE ENTITY TO
+TRANSACT BUSINESS IN THIS STATE. (a) The comptroller may, for the
+same reasons and using the same procedures the comptroller uses in
+relation to the forfeiture of the corporate privileges of a
+
+===== TX 151.0101(a) =====
+ Sec. 151.0101. "TAXABLE SERVICES".
+ (a) "Taxable services" means:
+ (1) amusement services;
+ (2) cable television services;
+ (3) personal services;
+ (4) motor vehicle parking and storage services;
+ (5) the repair, remodeling, maintenance, and
+restoration of tangible personal property, except:
+ (A) aircraft;
+ (B) a ship, boat, or other vessel, other than:
+ (i) a taxable boat or motor as defined by
+Section 160.001;
+ (ii) a sports fishing boat; or
+ (iii) any other vessel used for pleasure;
+ (C) the repair, maintenance, and restoration of a
+motor vehicle; and
+ (D) the repair, maintenance, creation, and
+restoration of a computer program, including its development and
+modification, not sold by the person performing the repair,
+maintenance, creation, or restoration service;
+ (6) telecommunications services;
+ (7) credit reporting services;
+ (8) debt collection services;
+ (9) insurance services;
+ (10) information services;
+ (11) real property services;
+ (12) data processing services;
+ (13) real property repair and remodeling;
+ (14) security services;
+ (15) telephone answering services; and
+ (16) a sale by a transmission and distribution
+utility, as defined in Section 31.002, Utilities Code, of
+transmission or delivery of service directly to an electricity
+end-use customer whose consumption of electricity is subject to
+taxation under this chapter.
+
+===== BC 71.103 =====
+ Sec. 71.103. PLACE OF FILING. (a) A corporation, limited
+partnership, limited liability partnership, limited liability
+company, registered series of a limited liability company, or
+foreign filing entity required to file a certificate under Section
+71.101 shall file the certificate in the office of the secretary of
+state.
+
+===== LA 406.004(a) =====
+ Sec. 406.004. EMPLOYER NOTICE TO DIVISION. (a) An employer
+who does not obtain workers’ compensation insurance coverage shall
+notify the division in writing, in the time and as prescribed by
+
+===== LA 406.005(a) =====
+ Sec. 406.005. EMPLOYER NOTICE TO EMPLOYEES; ADMINISTRATIVE
+VIOLATION. (a) An employer shall notify each employee as provided
+
+===== GV 79.036(a-1) =====
+ (a-1) Not later than November 1 of each year and in the form
+and manner prescribed by the commission, each county shall prepare
+and provide to the commission information that describes for the
+preceding fiscal year the number of appointments under Article
+26.04, Code of Criminal Procedure, and Title 3, Family Code, made to
+each attorney accepting appointments in the county, and information
+provided to the county by those attorneys under Article
+26.04(j)(4), Code of Criminal Procedure.
+
+===== FA (Family Code) zip: ABSENT from the corpus folder =====
+0
+
+===== NORMALIZER RUN REPORT (second batch) =====
+gv.406.txt {'paren': 225, 'period': 65, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 48, 'apos': 51} residual glued AA sites: 0 []
+es.1054.txt {'paren': 77, 'period': 43, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 0, 'apos': 34} residual glued AA sites: 0 []
+hs.181.txt {'paren': 151, 'period': 46, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 31, 'apos': 39} residual glued AA sites: 0 []
+tx.22.txt {'paren': 134, 'period': 37, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 17, 'apos': 25} residual glued AA sites: 0 []
+tx.31.txt {'paren': 312, 'period': 90, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 26, 'apos': 48} residual glued AA sites: 1 ['REFUNDS;AAINTEREST.']
+tx.151.txt {'paren': 1757, 'period': 383, 'colon': 0, 'quote': 0, 'comma': 1, 'lower': 3, 'secnum': 266, 'apos': 187} residual glued AA sites: 6 ['services;AAand', 'state;AAor', 'States;AAor', 'broker;AAand', 'patients;AAand', 'helicopter;AAand']
+la.406.txt {'paren': 230, 'period': 67, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 51, 'apos': 119} residual glued AA sites: 0 []
+la.204.txt {'paren': 195, 'period': 67, 'colon': 1, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 56, 'apos': 91} residual glued AA sites: 0 []
+la.213.txt {'paren': 104, 'period': 39, 'colon': 0, 'quote': 0, 'comma': 0, 'lower': 0, 'secnum': 38, 'apos': 14} residual glued AA sites: 0 []
