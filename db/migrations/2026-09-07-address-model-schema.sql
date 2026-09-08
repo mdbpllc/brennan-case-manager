@@ -59,7 +59,7 @@ alter table public.case_providers
 
 comment on column public.case_providers.facility_location_id is
   'D1 (#149): the id of the parties.fields->''locations'' item that treated this '
-  'client on this matter. NOT a foreign key -- it names a jsonb sub-record, not a '
+  'client on this matter. NOT a foreign key: it names a jsonb sub-record, not a '
   'row. NULL is never a must-fix stop (SD-10): a single-location facility '
   'resolves without it (SD-8), and two-or-more with none selected raises a panel '
   'line.';
