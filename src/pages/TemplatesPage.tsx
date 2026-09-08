@@ -275,15 +275,17 @@ export default function TemplatesPage() {
           {warned.length > 0 && (
             <p className="notice" style={{ marginTop: 10 }}>
               <strong>
-                Saved, with {warned.length} token{warned.length === 1 ? '' : 's'} this system does
-                not define:
+                Saved. {warned.length} token{warned.length === 1 ? ' is' : 's are'} not in the token
+                registry:
               </strong>{' '}
               {warned.map((t) => <code key={t} style={{ marginRight: 6 }}>{`{${t}}`}</code>)}
               <br />
               <span className="small">
-                {warned.length === 1 ? 'It' : 'They'} will render empty. Nothing was blocked and
-                nothing was changed — this is here so you find out now rather than in a served
-                document.
+                A token the registry does not list may render empty. Nothing was blocked and nothing
+                was changed. <strong>The registry is known to be incomplete</strong> — it holds{' '}
+                {known.length} definition{known.length === 1 ? '' : 's'} while the instrument uses
+                many more, so a token flagged here is not necessarily wrong. Reported in
+                <code style={{ marginLeft: 4 }}>docs/spec-feedback.md</code>.
               </span>
             </p>
           )}

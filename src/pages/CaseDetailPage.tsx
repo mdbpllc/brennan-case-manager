@@ -522,16 +522,24 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
   const refresh = useCallback(async () => {
     const ls = await db.listLinksForCase(caseId);
     setLinks(ls);
-    const ps = await db.getParties(ls.map((l) => l.partyId));
+    const [cs, cf] = await Promise.all([
+      db.listClientsForCase(caseId),
+      db.getClientFlagForCase(caseId),
+    ]);
+    // R6 state 1 names a party whose LINK IS GONE — that is the whole of what
+    // an orphan damages record is. Fetching only the linked parties left the
+    // flag saying "A contact has a damages record but no Client role", which is
+    // the one sentence it exists to make specific. Found by unlinking on the
+    // walk, not by a test: the test pinned the unknown-party FALLBACK without
+    // noticing the fallback was the normal case.
+    const ps = await db.getParties([
+      ...new Set([...ls.map((l) => l.partyId), ...cs.map((c) => c.partyId)]),
+    ]);
     setParties(Object.fromEntries(ps.map((p) => [p.id, p])));
     setAllParties(await db.listParties());
     // CD-1: the backfill's refusals for THIS case.
     const flags = await db.listRosterFlags();
     setRosterFlags(flags.filter((f) => f.caseId === caseId));
-    const [cs, cf] = await Promise.all([
-      db.listClientsForCase(caseId),
-      db.getClientFlagForCase(caseId),
-    ]);
     setClients(cs);
     setClientFlag(cf);
   }, [caseId]);

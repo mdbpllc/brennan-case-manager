@@ -71,6 +71,14 @@ describe('R16 — the no-client flag renders in the TOP flag area', () => {
     expect(rosterPanel).toContain('Clients — damages scope');
   });
 
+  it('R6 — the party map covers CLIENT-RECORD parties, not only linked ones', () => {
+    // State 1 names a party whose LINK IS GONE — that is what an orphan damages
+    // record IS. Fetching only the linked parties left the flag reading "A
+    // contact has a damages record but no Client role", which is the one
+    // sentence it exists to make specific. Found by unlinking on the walk.
+    expect(caseDetail).toContain('...ls.map((l) => l.partyId), ...cs.map((c) => c.partyId)');
+  });
+
   it('the top flag area renders BEFORE the damages-scope card on the page', () => {
     // Position, not merely presence: "move it up" is a claim about order.
     const flags = caseDetail.indexOf('<ClientFlagsCard');

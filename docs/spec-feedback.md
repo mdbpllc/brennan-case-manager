@@ -1318,6 +1318,8 @@ designation block remains a question about the record, exactly as item 2 says.)*
 
 *(ANNOTATION 2026-09-07, `#149`: item 2 and its 2a addendum are RULED — five limbs in Michael's words at `docs/specs/forward-sitting-rulings-2026-09-07.md` §1 — and are BUILT BY the `CCS-1` slice at `docs/specs/cc1-rulings-and-address-model-slice.md` §3 item 17: the case row picks the location, the registry stores street and city/state/ZIP as two fields, a legacy one-line address is split ONCE at the record by a stated rule and marked, the render path never parses, the phone renders formatted. The one factual slip flagged by the F7 session — "seeded with two `locations`" (CTRMC has one) — stands as written; nothing above is edited.)*
 
+
+*(ANNOTATION 2026-09-07, the `CCS-1` build session: BUILT. The address model of §3 item 17 landed at this session's commits — the registry stores `addressLine1` + `cityStateZip` everywhere, `providerBusiness.locations[]` items carry both plus a stable id, `case_providers.facility_location_id` picks the location, `facilityContactLines()` reads the resolved one, and the split runs once at the record in `migrateV15ToV16` and in `db/migrations/2026-09-07-address-model-split.sql` (WRITTEN AND NOT RUN). The walk confirmed on the page what this item predicted: `p-prov-procare` — named here as the record that "would fail the moment it is given one" — raised R1's must-fix the first time it was given a `case_providers` row. Nothing above is edited.)*
 **3. `pronounSetFromFields` READS `fields.pronouns` / `fields.gender`; THE `R17`
 INDIVIDUAL CARRIES A SINGLE `pronoun` COLUMN.** Caught in build, not by a test.
 Passing the wrong key made every pronoun in every generated paragraph resolve to
@@ -1357,3 +1359,68 @@ NOTE ABOUT THE WALK AND NOT ABOUT THE APP.** Screenshots taken mid-scroll came
 back blank or with content displaced; `get_page_text` and `read_page` were
 accurate throughout, and every finding in the walk was reached through those.
 Recorded so a later session does not chase a rendering ghost.
+
+---
+
+## THIRD TRANCHE — recorded by the `CCS-1` build session, 2026-09-07
+
+*Every item below was found while building or walking the CC-1 rulings and address-model slice.
+None of them is acted on beyond what is stated; each is Michael's.*
+
+**8. THE 195.5 DESIGNATION BLOCK RENDERS "CUSTODIAN OF RECORDS" TWICE WHEN NOBODY IS
+NAMED.** On the walk, a designated facility with no individuals produced:
+
+```
+Custodian of Records
+Custodian of Records
+TRI-CAMPUS ORTHOPEDIC INSTITUTE
+88 Marlandy Rd
+Killeen, TX 76541
+(254) 555-9002
+```
+
+`blockItem()` emits `expert_names_block: b.topLine` and `custodian_line: b.custodianLine`, and
+`AS-Q7c` rules that at N = 0 **the top line IS the custodian line** — so both tokens carry the same
+string and the master renders both. **PRE-EXISTING: verified that no line of this slice's diff
+touches `topLine`, `custodianLine:`, `custodian_line` or `expert_names_block`.** It was invisible
+until this walk because it needs a designated facility with zero named individuals, which the
+`R11` custodian work put in front of the session for the first time. **Not fixed here** — the block's
+shape is `FE-18` / §17.6 ratified ground and a build session does not restructure a served block on
+its own judgment. Michael's, at the post-`CCS-1` walk.
+
+**9. `R8` UX-2 IS BUILT EXACTLY AS RULED AND THEREFORE WARNS ON LEGITIMATE TOKENS.** The
+ruling is *"Warn on save, dont block"*, checked against the seeded `FormTokenDefinition`
+registry. Built that way, saving `form-engine.md` §9.4 warned about **eight** tokens, **seven of
+which are real** — `{provider_name}`, `{client}`, `{client_he_she}`, `{incident_type}`,
+`{incident_date}`, `{provider_dr_name}`, `{provider_his_her}`. The cause is not the check: **the
+seeded registry holds 14 definitions while the disclosures skeleton alone uses 60 tokens**, so it
+is a stub rather than an inventory. A warning that fires on nearly every template is the
+"teaches him to ignore warnings" failure §11.5 names. **What the build did:** kept the ruled
+source and the ruled non-blocking posture, and corrected the warning's own wording, which
+asserted the flagged tokens *"will render empty"* — false of every one of those seven, and a
+false sentence in a warning is worse than a noisy one. **What it did NOT do:** widen the source,
+which would be a design act. Filling the registry, or narrowing the check, is Michael's.
+
+**10. `R15`'s RULED TITLE CANNOT REACH THE SERVED HEADING.** D-61 rules that a multi-client
+case names the responding plaintiff in the title, with the certificate of service and the footer
+following (FE-15). **The served heading is STATIC TEXT in the master skeleton** —
+`PLAINTIFF'S 194.2(b) & 195.5 DISCLOSURES`, present twice, carrying no token; the skeleton's 60
+tokens include none matching `title`, `footer` or `certificate`. So the ruling reaches the
+generated-document record, the download filename, the on-screen label, and two new scalars
+(`{instrument_title}`, `{footer_title}`) that resolve nothing today. **The master was not edited** —
+it is Michael's document and this slice has no authority over its text. Tokenizing those two
+spots is what would complete D-61.
+
+**11. THE BILL FORM'S PROVIDER LIST AND THE MEDICAL TAB'S FACILITY LIST DISAGREE.** The
+new-bill form offers `providerBusiness` parties **linked to the case**; the Providers section above
+it lists `case_providers` rows, which are keyed on a facility party that need not be linked at all.
+On the seeded Garcia matter the bill form's picker was **empty** while nine facilities showed above
+it. Pre-existing and unrelated to this slice, but it is why `R7`'s pre-fill could not be exercised
+by clicking on that matter. Recorded rather than changed: which list is right is a question about
+the record.
+
+**12. THE `Combobox` WOULD NOT COMMIT A SELECTION UNDER AUTOMATION IN THE NEW-BILL FORM.**
+Mouse click, keyboard `ArrowDown`+`Enter` and synthetic events all left the field empty, while the
+SAME widget on the Parties tab committed normally in the same session. A note about the walk, not
+about the app — like item 7 — and the reason `R7` is reported as source-asserted rather than
+clicked.

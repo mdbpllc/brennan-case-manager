@@ -665,16 +665,27 @@ export function migrateV14ToV15(old: Partial<Store>, raw: string): Store {
  * already has a street line, or overwrite a `'hand'` mark. Re-running it finds
  * nothing to do, which is the property the SQL file is written to share.
  */
-export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
-  const stamp = now();
-  localStorage.setItem(`${KEY}-backup-v15`, raw);
-
-  let byRule = 0;
-  let unsplit = 0;
-  let idsAssigned = 0;
-  const unsplitNames: string[] = [];
-
-  const parties = (old.parties ?? []).map((p) => {
+/**
+ * The `D1(iii)` rule over a party list — the ONE implementation the v16
+ * migration and the demo SEED both call.
+ *
+ * Two callers, one act. A store MIGRATING forward runs this over what it holds;
+ * a store SEEDING FRESH runs it over what it is about to hold. Both are "once,
+ * at the record", which is what Michael ruled; what would NOT be is a second
+ * rule, or a fresh demo store whose seeded facilities render addressless
+ * because the migration that splits them only ever ran on older stores.
+ *
+ * The seed keeps its single-line values on purpose (the slice's §3 item 17(g)),
+ * so the migration is genuinely exercised for anyone upgrading — and this is
+ * what makes a fresh store end up in the same shape as a migrated one rather
+ * than in a shape the product cannot render.
+ */
+function splitPartyAddresses(
+  parties: PartyRecord[],
+  stamp: string,
+  counts: { byRule: number; unsplit: number; idsAssigned: number; names: string[] },
+): PartyRecord[] {
+  return parties.map((p) => {
     const fields = (p.fields ?? {}) as Record<string, unknown>;
     if (p.partyType === 'providerBusiness') {
       if (!Array.isArray(fields.locations)) return p;
@@ -687,11 +698,11 @@ export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
       // idempotence is about the record, not only about the values in it.
       let touched = false;
       after.forEach((l, i) => {
-        if (l.id !== before[i]?.id) { idsAssigned += 1; touched = true; }
+        if (l.id !== before[i]?.id) { counts.idsAssigned += 1; touched = true; }
         if (needsSplit(before[i])) {
           touched = true;
-          if (splitMark(l) === 'rule') byRule += 1;
-          if (splitMark(l) === 'rule-unsplit') { unsplit += 1; unsplitNames.push(p.displayName); }
+          if (splitMark(l) === 'rule') counts.byRule += 1;
+          if (splitMark(l) === 'rule-unsplit') { counts.unsplit += 1; counts.names.push(p.displayName); }
         }
       });
       if (!touched) return p;
@@ -699,10 +710,19 @@ export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
     }
     const after = applySplit(fields);
     if (after === fields) return p;
-    if (splitMark(after) === 'rule') byRule += 1;
-    if (splitMark(after) === 'rule-unsplit') { unsplit += 1; unsplitNames.push(p.displayName); }
+    if (splitMark(after) === 'rule') counts.byRule += 1;
+    if (splitMark(after) === 'rule-unsplit') { counts.unsplit += 1; counts.names.push(p.displayName); }
     return { ...p, fields: after, updatedAt: stamp };
   });
+}
+
+export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v15`, raw);
+
+  const counts = { byRule: 0, unsplit: 0, idsAssigned: 0, names: [] as string[] };
+  const parties = splitPartyAddresses(old.parties ?? [], stamp, counts);
+  const { byRule, unsplit, idsAssigned, names: unsplitNames } = counts;
 
   const migrated: Store = {
     ...(old as Store),
@@ -810,6 +830,15 @@ function load(): Store {
     trackedBills: [], billRefs: [],
     ...seedData(),
   };
+  // D1(iii) — a FRESH store lands in the same shape a MIGRATED one does. The
+  // seed deliberately keeps its single-line addresses (§3 item 17(g)) so the
+  // v16 step is exercised on real records; without this, a browser that has
+  // never held a store would seed straight to v16 and its two seeded facilities
+  // would render addressless forever. Found by clicking, not by a test.
+  seeded.parties = splitPartyAddresses(
+    seeded.parties, now(),
+    { byRule: 0, unsplit: 0, idsAssigned: 0, names: [] },
+  );
   if (old && raw) {
     const backupKey = `${KEY}-backup-v${old.version ?? 0}`;
     localStorage.setItem(backupKey, raw);

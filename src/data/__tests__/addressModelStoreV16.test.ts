@@ -151,3 +151,30 @@ describe('v15 → v16: the address model', () => {
     expect(entry.reason).toContain(`${KEY}-backup-v15`);
   });
 });
+
+describe('a FRESH store lands in the same shape a MIGRATED one does', () => {
+  // FOUND BY CLICKING, not by a test. A browser that has never held a store
+  // seeds straight to STORE_VERSION and never runs a migration — so the seed's
+  // two single-line facility addresses would have stayed unsplit forever, and
+  // `p-hosp-ctrmc` would have rendered addressless on a fresh demo machine
+  // while rendering correctly on an upgraded one. The seed keeps its one-line
+  // values on purpose (§3 item 17(g)); the SEED PATH runs the same rule.
+  it('seeds the hospital with split fields and a marked location', async () => {
+    mem.clear();
+    const { LocalAdapter } = await import('../localAdapter');
+    const adapter = new LocalAdapter();
+    const hosp = await adapter.getParty('p-hosp-ctrmc');
+    const locs = locationsOf(hosp ?? undefined);
+    expect(locs).toHaveLength(1);
+    expect(locs[0].addressLine1).toBe('3100 S 31st St');
+    expect(locs[0].cityStateZip).toBe('Temple, TX');
+    expect(splitMark(locs[0])).toBe('rule');
+    expect(typeof locs[0].id).toBe('string');
+    // Nothing destroyed, here either.
+    expect(locs[0].address).toBe('3100 S 31st St, Temple, TX');
+    // And it landed at STORE_VERSION rather than mid-chain — the seed writes a
+    // current store, and the split is part of writing it. (`beforeEach` clears
+    // the store, so this is asserted here rather than in a second `it`.)
+    expect(JSON.parse(mem.get(KEY)!).version).toBe(STORE_VERSION);
+  });
+});

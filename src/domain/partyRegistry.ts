@@ -413,19 +413,28 @@ export const PARTY_TYPE_MAP: Record<string, PartyTypeDef> = Object.fromEntries(
 /**
  * `SD-5` — which of a field set actually renders for ONE record.
  *
- * A `legacy` field is shown only while the record has nothing in the field that
- * replaced it, so a contact whose address has been split stops offering the
- * one-line box, and a contact whose address has NOT been split still shows the
- * value it holds rather than appearing blank. Nothing is deleted either way.
+ * A `legacy` field exists to let an ALREADY-STORED value still be read. So it
+ * renders on exactly one condition: **the record actually holds one, and the
+ * field that replaced it is empty.**
+ *
+ * Both halves matter, and the second was found by clicking rather than by a
+ * test. Rendering a legacy field merely because the replacement was blank put a
+ * one-line "Mailing address" box on the NEW-party form — which would have gone
+ * on manufacturing unsplit records forever, in a slice whose whole point is
+ * that a one-line address is split once and never again. A blank new record has
+ * no stored value to read, so it is offered the two fields and nothing else.
+ *
+ * Nothing is ever deleted either way: the value stays in the blob whether or
+ * not a form offers a box for it.
  *
  * The pairing is by position: a `legacy` field is superseded by `addressLine1`,
  * which is the only supersession this registry has. Kept here, beside the field
  * definitions, so a second one is added in one place.
  */
 export function visibleFields(defs: FieldDef[], rec: Record<string, unknown> | undefined): FieldDef[] {
-  const line1 = rec?.addressLine1;
-  const splitDone = typeof line1 === 'string' && line1.trim() !== '';
-  return defs.filter((f) => !f.legacy || !splitDone);
+  const has = (k: string) => typeof rec?.[k] === 'string' && (rec[k] as string).trim() !== '';
+  const showLegacy = has('address') && !has('addressLine1');
+  return defs.filter((f) => !f.legacy || showLegacy);
 }
 
 export function computeDisplayName(typeKey: string, fields: Record<string, unknown>): string {

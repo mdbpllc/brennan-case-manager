@@ -159,7 +159,15 @@ export function FieldDisplay({ def, value }: { def: FieldDef; value: unknown }) 
             {visibleFields(def.subFields ?? [], row)
               .map((sf) => {
                 const v = row[sf.key];
-                return v !== undefined && v !== '' ? `${sf.label}: ${String(v)}` : null;
+                if (v === undefined || v === '') return null;
+                // A `phone` SUB-field went out as bare digits here while the
+                // same field at the top level rendered formatted, because this
+                // branch stringified rather than deferring to the type. Visible
+                // the moment a facility's location phone sat beside its main
+                // one. It reads through the ONE formatter — `src/domain/phone.ts`
+                // — which is the same one `SD-3` uses at the render seam.
+                const shown = sf.type === 'phone' ? formatPhone(String(v)) : String(v);
+                return `${sf.label}: ${shown}`;
               })
               .filter(Boolean)
               .join(' · ') || '(empty entry)'}
