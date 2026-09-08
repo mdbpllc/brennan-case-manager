@@ -58,7 +58,10 @@ export function eventNoun(caseType: string | undefined): string {
   return MOTOR_VEHICLE_CASE_TYPES.includes(caseType ?? '') ? 'collision' : 'incident';
 }
 
-/** D-49. DPT is deliberately absent — the PT honorific is a hands-on item. */
+/** D-49 / `R12` — **RULED 2026-09-05: *"Leave it out"***. DPT stays OUT. A
+ *  physical therapist renders as a full name with the credential, never as
+ *  "Dr.". The set is closed by that ruling and is not a hands-on item any
+ *  more. */
 export const DOCTORAL_CREDENTIALS = ['MD', 'DO', 'DC', 'DPM', 'DDS', 'DMD', 'PHD', 'PSYD'];
 
 function normalizeCredential(c: string | undefined): string {
@@ -69,9 +72,41 @@ export function isDoctoral(credential: string | undefined): boolean {
   return DOCTORAL_CREDENTIALS.includes(normalizeCredential(credential));
 }
 
+/**
+ * `SD-9` — the generational-suffix set for `HS-3`. A closed set, reported as a
+ * default taken: `HS-3` was minted OPEN and UNRULED on 2026-09-05, and Michael
+ * ruled it IN to this slice at `CCS-1` limb 5 (*"IN"*) without naming the
+ * suffixes, so the build names them rather than deciding silently. Trailing
+ * only, case-insensitive, trailing period optional.
+ *
+ * Post-nominals that are CREDENTIALS ("M.D.", "PA-C") are deliberately absent:
+ * they live in `credentialSuffix`, not in `displayName`, and stripping them
+ * here would be a second and disagreeing credential parser.
+ */
+export const GENERATIONAL_SUFFIXES = ['JR', 'SR', 'II', 'III', 'IV'];
+
+function isGenerational(token: string): boolean {
+  return GENERATIONAL_SUFFIXES.includes(token.replace(/[.,]/g, '').toUpperCase());
+}
+
+/**
+ * The SURNAME, for the "Dr. <surname>" form and the surnames join.
+ *
+ * `HS-3`, found on the running product 2026-09-05: this took the last
+ * whitespace-separated word, so *"Ray Caldwell Jr."* rendered **"Dr. Jr."** in
+ * a served designation. A trailing generational suffix is skipped.
+ *
+ * It steps back only ONE token and never past the last remaining word: "Jr."
+ * alone is a name as far as this function can tell, and returning the empty
+ * string would put a bare "Dr." in a document. A stacked suffix is not handled,
+ * because "Ray Caldwell Jr. III" is not a name anybody writes.
+ */
 function lastToken(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  return parts[parts.length - 1] ?? name;
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return name;
+  const last = parts[parts.length - 1];
+  if (parts.length > 1 && isGenerational(last)) return parts[parts.length - 2];
+  return last;
 }
 
 /** D-21's list form — "Drs. A, B and C", NO Oxford comma. Deliberately not
@@ -267,17 +302,27 @@ export function planFacility(
 // -------------------------------------------------------------- the block
 
 /**
- * D-64 — the block's custodian line, by N.
+ * D-64 / `R11` — the block's custodian line, by N. **RULED 2026-09-05.**
  *
- * The RULE is Michael's, from Part 3: the "(s)" tracks the count of named
- * individuals. The literal at N >= 2 is a rendering of his placeholder form and
- * is a PROPOSED hands-on item, not settled by the drawing he approved.
+ * The literal at N >= 2 was the last open piece of this. Michael was shown the
+ * inflecting form his own Part 3 rule produced and ruled:
+ *
+ *   *"B, but make sure that we're also putting the address and phone number
+ *    underneath the facility name as well."*
+ *
+ * — option B being the LITERAL **"And/or Custodian(s) of Records"** at EVERY
+ * N >= 1. **NO INFLECTION.** His Part 3 "number tracking the count" is
+ * superseded by his own pick, and the inflecting default with it. N = 0 keeps
+ * "Custodian of Records" — the block's TOP line when nobody is named
+ * (`AS-Q7c`) — and a pharmacy keeps §9.10's own literal, untouched.
+ *
+ * (His second clause is the address requirement, which is the `D1` address
+ * model this slice builds — and verifying it is what found `HS-2`.)
  */
 export function custodianLine(n: number, isPharmacy: boolean): string {
   if (isPharmacy) return 'Pharmacist(s) and/or Custodian of Records';
   if (n === 0) return 'Custodian of Records';
-  if (n === 1) return 'And/or Custodian of Records';
-  return 'And/or Custodians of Records';
+  return 'And/or Custodian(s) of Records';
 }
 
 // ------------------------------------------------------------- the tokens
@@ -344,13 +389,22 @@ function setOf(ind: { pronoun?: string } | undefined): PronounSet {
   return pronounSetFromFields({ pronouns: ind?.pronoun });
 }
 
-/** D-50 — the rider's subject, the rendering `AS-Q8c` approved. */
+/**
+ * D-50 / `R13` — the rider's subject. **RULED 2026-09-05.**
+ *
+ * Michael, asked what a mid-level should be called in the designation block:
+ * *"Just call them '[doctor name], [suffix]' in the designation block."* —
+ * narrowed to this sentence and confirmed: *"Yes"*.
+ *
+ * So it is the FULL display name plus the credential suffix — "Priya
+ * Natarajan, PA-C will testify consistent with …". **NO courtesy title, no
+ * "Dr.", and no inference from a pronoun.** The Mr./Ms. table that stood here
+ * is RETIRED for mid-levels by that ruling; `{midlevel_his_her}` is unchanged
+ * and still reads the pronoun, which is a different question.
+ */
 export function midlevelShortName(ind: CaseProviderIndividual): string {
-  const set = setOf(ind);
-  if (set === 'he') return `Mr. ${lastToken(ind.displayName)}`;
-  if (set === 'she') return `Ms. ${lastToken(ind.displayName)}`;
-  // No gender on record: the full name without the credential, and "their".
-  return ind.displayName;
+  const suffix = (ind.credentialSuffix ?? '').trim();
+  return suffix === '' ? ind.displayName : `${ind.displayName}, ${suffix}`;
 }
 
 /** Every token a fixed sentence can carry, bound from the RECORD (§6.5). */
@@ -392,13 +446,19 @@ export function tokenValues(
     values.midlevel_name = riderFor.displayName;
     values.midlevel_credential = riderFor.credentialSuffix ?? '';
     values.midlevel_his_her = pronouns(rset).possessive;
-    // GROUP FILL — the HELD default (§18.F, the rider's supervisor): the
-    // scope sentence names the provider(s) whose testimony is "described
-    // above", which is THE PARAGRAPH THE RIDER RIDES and never the mid-level
-    // themselves. The first walk-through rendered "consistent with … the
-    // testimony described above regarding Priya Natarajan" — the PA, cited as
-    // her own supervisor. Michael may make this a supervisor he designates by
-    // hand at the hands-on sitting.
+    // GROUP FILL, ALWAYS — `R4`, RULED 2026-09-05 (Michael: *"Move with your
+    // recommendation."*; MARKED — the drawing is Claude's, the adoption is
+    // his). The scope sentence names the provider(s) whose testimony is
+    // "described above", which is THE PARAGRAPH THE RIDER RIDES and never the
+    // mid-level themselves. The first walk-through rendered "consistent with …
+    // the testimony described above regarding Priya Natarajan" — the PA, cited
+    // as her own supervisor.
+    //
+    // The PROVISIONAL default is now the RULE. **No hand-designated supervisor
+    // and no per-rider override is built**, and the sentence that used to
+    // invite one is gone: the app-placed sentence is a SCOPE sentence, not the
+    // old writer variant's supervision assertion, and naming one physician
+    // would narrow the PA's testimony to a subset of what she participated in.
     const above = ridesOver && ridesOver.length > 0 ? renderNames(ridesOver) : undefined;
     values.supervising_provider = above?.provider_dr_name || ctx.facilityName;
   }

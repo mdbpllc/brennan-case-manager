@@ -26,6 +26,7 @@ import {
 } from '../domain/caseProviders';
 import { effectiveMarker, isExtractedType, isTreatingType } from './providerTypes';
 import { planFacility } from './assembly';
+import { currency } from './grammar';
 
 export type Tier = 'must-fix' | 'warn' | 'panel';
 
@@ -68,6 +69,25 @@ export interface TierInput {
   billedFacilityPartyIds: string[];
   /** Billed parties that are INDIVIDUALS and so cannot be a facility row. */
   billedIndividualPartyNames?: string[];
+  /** `R1` (ND-7(c), RULED 2026-09-05: *"c"* → *"Take c1."*) — the party TYPE of
+   *  each billed party, read through the CALLER's `partyById`. This is the key
+   *  the three tiers turn on, and it is a key that already exists: the party
+   *  model distinguishes `providerBusiness` ("Facility") from `business`, so no
+   *  new concept, no migration and no new party type is needed. A party whose
+   *  type is UNKNOWN here is never escalated — absence of information is not
+   *  evidence, and a stop raised on it would be a stop he cannot clear. */
+  billedPartyTypes?: Record<string, string | undefined>;
+  /** `R1` — the provider rows on this matter that are NOT selected for this
+   *  instrument. Together with `selected` this is every row there is, which is
+   *  the only way to tell "on the list and unticked" (tier 1, a panel line)
+   *  from "no provider row at all" (tier 2, a MUST-FIX). `TierInput` held only
+   *  `selected` and `billedFacilityPartyIds` before this ruling. */
+  unselected?: CaseProvider[];
+  /** `R3` (Q5 + Q10, RULED TOGETHER 2026-09-05: *"Go with B"*) — the billed
+   *  total per facility party, SCOPED TO THE ACTIVE CLIENT exactly as
+   *  `billedFacilityPartyIds` already is. The number is the escalation; there
+   *  is NO threshold, and `FE-22`'s "threshold" retires as a concept. */
+  billedTotals?: Record<string, number>;
   /** Supplemental posture only: facilities already designated, by party id. */
   alreadyDesignated?: { facilityPartyId: string; date: string; posture: string }[];
   /** Promoted individuals whose period-covering edge names another facility. */
@@ -124,6 +144,37 @@ export function mustFixConditions(input: TierInput): Finding[] {
         caseProviderId: p.id,
       });
     }
+  }
+
+  // `R1` TIER 2 — THE FOURTH STOP, and the only one this slice adds.
+  //
+  // ND-7(c) was HELD with the PROVISIONAL default "a PANEL LINE, never a stop".
+  // Michael walked it on 2026-09-05 with the Garcia fixture rendering two
+  // billed-not-designated lines on the first case he opened, and ruled *"c"* →
+  // *"Take c1."*: a billed party TYPED as a facility with no provider row at
+  // all is a MUST-FIX. The default is superseded FOR TIER 2 ONLY — tiers 1 and
+  // 3 keep their panel lines below.
+  //
+  // The stop set is now FOUR and CLOSED again. §12.3 closed it by ruling and
+  // this ruling reopened it exactly once; nothing else may add a fifth.
+  //
+  // Both clears are named in the route line, because a stop that does not say
+  // how to clear it is the "reflex to skip" failure R1 exists against.
+  const rowsAnywhere = new Set(
+    [...input.selected, ...(input.unselected ?? [])].map((p) => p.facilityPartyId),
+  );
+  for (const billed of input.billedFacilityPartyIds) {
+    if (rowsAnywhere.has(billed)) continue;
+    // ONLY a party the firm has typed "Facility". A `business` is tier 3, and
+    // an untyped or unknown party is neither — never stopped on.
+    if (input.billedPartyTypes?.[billed] !== 'providerBusiness') continue;
+    const who = input.facilityNames[billed] ?? 'A facility';
+    out.push({
+      line: 'stop',
+      tier: 'must-fix',
+      text: `${who} has bills on this matter and no provider record.`,
+      route: 'Add it on the Medical tab, or retype the party if it is not a treating facility.',
+    });
   }
 
   return out;
@@ -209,6 +260,16 @@ export function panelLines(input: TierInput): Finding[] {
         push({ line: 5, tier: 'panel', caseProviderId: p.id, individualId: ind.id,
           text: `"${ind.displayName}" reads like a facility name rather than a person's.` });
       }
+      // 19 — `R10` (D-11, RULED 2026-09-05: *"b"*). The rendering is UNCHANGED
+      // — an individual with no pronoun on record still renders they/their,
+      // which is the only choice that is never wrong about a person — AND the
+      // panel now carries one line per such individual, mirroring the line the
+      // client already had. The §10 default's "no panel line for it" is
+      // SUPERSEDED. `SD-n`-free: the wording is the ruling's own sentence.
+      if (!ind.pronoun || ind.pronoun.trim() === '') {
+        push({ line: 19, tier: 'panel', caseProviderId: p.id, individualId: ind.id,
+          text: `${ind.displayName} has no pronoun on record — rendering as they/their.` });
+      }
       // 9 — D-12.
       if (ind.missingFromLatest) {
         push({ line: 9, tier: 'panel', caseProviderId: p.id, individualId: ind.id,
@@ -221,10 +282,18 @@ export function panelLines(input: TierInput): Finding[] {
       }
     }
 
-    // 7 — the automatic limb only. No charge weighting: Q5 stays HELD.
+    // 7 — `R3` (Q5 + Q10, RULED TOGETHER 2026-09-05: *"Go with B"*). The gap
+    // line now CARRIES THE FACILITY'S BILLED TOTAL INLINE, and the gap lines
+    // sort charge-descending among themselves (below). NO threshold: the number
+    // is the escalation, and `FE-22`'s threshold retires as a concept. Dollars
+    // only, as drawn — share-of-total was offered and not taken up. `SD-17`,
+    // PROVISIONAL, his eye.
     if (plan.paragraphs.some((par) => par.gapFlag)) {
+      const total = input.billedTotals?.[p.facilityPartyId];
       push({ line: 7, tier: 'panel', caseProviderId: p.id,
-        text: `${nameOf(p)} goes out under the custodian-only paragraph because no individual could be named.` });
+        text: total !== undefined && total > 0
+          ? `${nameOf(p)} (${currency(total)} in charges) goes out under the custodian-only paragraph because no individual could be named.`
+          : `${nameOf(p)} goes out under the custodian-only paragraph because no individual could be named.` });
     }
 
     // 8 — AS-Q12(e), §12.7's imaging-entity question, for imaging-TYPED
@@ -311,18 +380,64 @@ export function panelLines(input: TierInput): Finding[] {
       text: 'There is no readable chronology on this client. Paragraphs are written from what is typed on the Medical tab.' });
   }
 
-  // 6 — ND-7(a)'s set check. A PANEL LINE, never a stop: ND-7(c) is HELD and
-  // this is its default, marked provisional.
+  // 6 — ND-7(a)'s set check, now `R1`'s TIERS 1 AND 3. Tier 2 (a billed
+  // FACILITY with no provider row) left this function on 2026-09-05 and is a
+  // must-fix; what stays here are the two tiers Michael ruled remain PANEL:
+  //
+  //   TIER 1 — a billed `providerBusiness` that HAS a row and is unticked.
+  //            Unchanged in substance and in wording: deselecting is his
+  //            visible act, and the line reports it rather than blocking it.
+  //   TIER 3 — a billed party typed anything else (`business`: a records
+  //            vendor, a funding or lien company). INFORMATIONAL. Silent was
+  //            offered as c2 and REJECTED.
+  //
+  // A party whose type is unknown falls to tier 1's wording, which is the
+  // conservative reading: it says the fact without asserting a type.
   const selectedParties = new Set(input.selected.map((p) => p.facilityPartyId));
+  const rowsAnywhere = new Set(
+    [...input.selected, ...(input.unselected ?? [])].map((p) => p.facilityPartyId),
+  );
   for (const billed of input.billedFacilityPartyIds) {
+    const type = input.billedPartyTypes?.[billed];
+    const who = input.facilityNames[billed] ?? 'A facility';
+    if (type !== undefined && type !== 'providerBusiness') {
+      // Tier 3. `SD-n`-free: the wording is the rulings doc's own sentence.
+      push({ line: 6, tier: 'panel',
+        text: `${who} has bills but is typed Business, not Facility — retype it if it treated the client.` });
+      continue;
+    }
+    // Tier 2 is a stop and has already been raised; saying it twice would put
+    // the same fact in two tiers. NOTE the condition: only a party the firm has
+    // TYPED "Facility" reaches tier 2, so a billed party whose type is unknown
+    // and which has no row still gets tier 1's line — the pre-ruling ND-7(a)
+    // behaviour, kept for the case the ruling does not reach. Dropping it would
+    // silence a true fact on the ground that the type was not set.
+    if (type === 'providerBusiness' && !rowsAnywhere.has(billed)) continue;
     if (!selectedParties.has(billed)) {
       push({ line: 6, tier: 'panel',
-        text: `${input.facilityNames[billed] ?? 'A facility'} has bills on this matter but is not selected for designation.` });
+        text: `${who} has bills on this matter but is not selected for designation.` });
     }
   }
   for (const who of input.billedIndividualPartyNames ?? []) {
     push({ line: 6, tier: 'panel',
       text: `A bill is linked to ${who}, who is a person rather than a facility — link the bill to the facility contact.` });
+  }
+
+  // `R3` — the gap lines sort CHARGE-DESCENDING among themselves (Q4's "useful
+  // SORT for the gap flag"), and nothing else in the panel moves. Sorting the
+  // whole list would reorder lines whose order carries meaning — the per-
+  // facility groups above are emitted in D-13's treatment order.
+  const gaps = out.filter((f) => f.line === 7);
+  if (gaps.length > 1) {
+    const totalFor = (f: Finding) => {
+      const row = input.selected.find((p) => p.id === f.caseProviderId);
+      return (row && input.billedTotals?.[row.facilityPartyId]) ?? 0;
+    };
+    const sorted = [...gaps].sort((a, b) => totalFor(b) - totalFor(a));
+    let k = 0;
+    for (let i = 0; i < out.length; i += 1) {
+      if (out[i].line === 7) { out[i] = sorted[k]; k += 1; }
+    }
   }
 
   return out;

@@ -61,13 +61,16 @@ When you're ready to move off demo mode onto the live shared database:
    Supabase's **Settings → API** page (Project URL and anon public key).
 4. Restart `npm run dev`. The sidebar will read "Connected: central database."
 
-**Known gap:** the schema's row-level-security policies only admit signed-in
-(`authenticated`) users, and the app has no sign-in screen yet — so Supabase mode
-will connect but every query will be refused until an auth flow is added. Tracked
-in `docs/spec-feedback.md`.
+**Signing in:** Supabase mode is gated by a magic link — you enter your email
+address, the app sends a single-use sign-in link, and opening it in the same
+browser returns you to the case list. There is no password. The schema's
+row-level-security policies admit only signed-in (`authenticated`) users, so
+Supabase mode without a sign-in shows you nothing. Demo mode is deliberately
+ungated: it holds fictional data in your own browser and never reaches a server.
 
-Do **not** put real client data in until we've done the security pass (auth sign-in,
-policies, and the professional security review from the project instructions §15).
+Do **not** put real client data in until the go-live gates in
+`docs/specs/Go_Live_Gates.md` are met — including the professional security
+review from the project instructions §15. Signing in is not that review.
 
 ## For future build sessions (technical map)
 

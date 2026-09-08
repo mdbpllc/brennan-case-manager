@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, CaseRole, Side, PiFlag, PracticeArea, RepresentationType, RosterBackfillFlag } from '../domain/types';
-import { RosterSlotsCard, RosterFlagsCard, RosterAttributes } from './RosterPanel';
+import { RosterSlotsCard, RosterFlagsCard, RosterAttributes, ClientFlagsCard } from './RosterPanel';
 import type { Charge } from '../domain/oaa';
 import { CASE_ROLES, SIDES } from '../domain/types';
-import type { CaseClient } from '../domain/client';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import { earliestLimitations, isResolved } from '../domain/client';
+import { defaultPosture, shouldAutoCreateClient } from '../domain/clientChecks';
 import ClientsCard from './ClientsCard';
 import { CASE_TYPES, PI_FLAGS, statusesFor, showsMedicalTab } from '../domain/caseTypes';
 import { ATTORNEY_USER } from '../domain/billing';
@@ -488,6 +489,11 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
   const [selRole, setSelRole] = useState<CaseRole>('Client');
   const [selSide, setSelSide] = useState<Side | ''>('');
   const [rosterFlags, setRosterFlags] = useState<RosterBackfillFlag[]>([]);
+  /** R16 / R6 — the client flags render in the TOP flag area now, so this tab
+   *  reads what the damages-scope card at the bottom used to read alone. The
+   *  card below still OWNS the writes; this is a read. */
+  const [clients, setClients] = useState<CaseClient[]>([]);
+  const [clientFlag, setClientFlag] = useState<ClientBackfillFlag | null>(null);
   /** Set when the add form was opened by clicking a roster slot. */
   const [pendingSlot, setPendingSlot] = useState('');
   const addFormRef = useRef<HTMLDivElement>(null);
@@ -522,6 +528,12 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
     // CD-1: the backfill's refusals for THIS case.
     const flags = await db.listRosterFlags();
     setRosterFlags(flags.filter((f) => f.caseId === caseId));
+    const [cs, cf] = await Promise.all([
+      db.listClientsForCase(caseId),
+      db.getClientFlagForCase(caseId),
+    ]);
+    setClients(cs);
+    setClientFlag(cf);
   }, [caseId]);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -535,6 +547,30 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
       storyRole: pendingSlot || undefined,
       slotRole: pendingSlot || undefined,
     });
+    // R5 (CL2-AC-1) — NEW LINKS ONLY. A PI matter gaining a Client-role link
+    // gains its damages-scope record here, with the posture defaulted from the
+    // practice area and editable on the row. Nothing existing is backfilled:
+    // R5(iii) is "new links only, flag the gaps", and the gaps are flagged
+    // above rather than filled in.
+    if (shouldAutoCreateClient(caseRec, selRole, selParty, clients)) {
+      await db.createClient({
+        caseId,
+        partyId: selParty,
+        posture: defaultPosture(caseRec),
+        displayOrder: clients.length,
+        clientFlags: [],
+        feeArrangement: {},
+        profileFields: {},
+      });
+      await db.appendReviewLog({
+        entityType: 'case_client', entityId: selParty, action: 'created', user: ATTORNEY_USER,
+        newValue: defaultPosture(caseRec),
+        reason:
+          'Damages-scope record created automatically when the party was linked with the Client '
+          + 'role on a PI matter (R5 / CL2-AC-1, ruled 2026-09-05). Posture defaulted from the '
+          + 'practice area and is editable on the row.',
+      });
+    }
     setAdding(false);
     setSelParty('');
     setPendingSlot('');
@@ -558,6 +594,18 @@ function PartiesTab({ caseRec }: { caseRec: CaseRecord }) {
         links={links}
         parties={parties}
         onResolve={resolveFlag}
+      />
+
+      {/* R16 (HS-1, "Move it up.") — the no-client flag reads HERE now, beside
+          the caption-alignment flags, because Michael read the top of this page
+          and reported no flag while it sat at the bottom. R6's two consistency
+          lines ride the same surface (SD-19). The resolving control stays in
+          the damages-scope card below and this points at it. */}
+      <ClientFlagsCard
+        flag={clientFlag}
+        clients={clients}
+        links={links}
+        parties={parties}
       />
 
       <RosterSlotsCard

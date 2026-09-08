@@ -42,9 +42,15 @@ export default function SignInPage() {
               A sign-in link is on its way to <strong>{email}</strong>. Open it in this browser —
               the link signs you in and returns you to the case list.
             </p>
+            {/* SD-11 — a TEXT ACT, PROVISIONAL, for Michael's eye.
+                "the sending limit is low" was written 2026-07-28 against
+                Supabase's default sender. Gate 9 CLOSED 2026-09-07 on Postmark
+                (`#149`), so the sentence describes a limit that is no longer
+                there — and it told him to expect failure at the one screen
+                where a real user meets this app. */}
             <p className="muted small">
-              Links are single-use and expire. If nothing arrives, check junk mail before asking
-              for another — the sending limit is low.
+              Links are single-use and expire. If nothing arrives within a few minutes, check your
+              junk folder before requesting another.
             </p>
             <button onClick={() => { setSent(false); setErr(null); }}>Use a different address</button>
           </>

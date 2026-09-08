@@ -80,7 +80,9 @@ describe('invariant 2 — the slot order, and causation LAST', () => {
     const scope = fillSentence(fixedSentence('rider-scope', 'mid-level')!.text,
       tokenValues(CTX, [pa], pa));
     expect(out.assembledText).toBe(`WHAT THE PA DID. ${scope}`);
-    expect(out.assembledText).toContain('Ms. Natarajan');
+    // R13 (2026-09-05): name + credential suffix, never a courtesy title.
+    expect(out.assembledText).toContain('Priya Natarajan, PA-C');
+    expect(out.assembledText).not.toContain('Ms. Natarajan');
   });
 
   it('places NO fixed sentence in a pharmacy or other-non-physician paragraph', () => {
@@ -320,13 +322,72 @@ describe('invariant 10 — plural, and D-21s honorific rule', () => {
     expect(many.provider_they).toBe('they');
   });
 
-  it('renders the rider subject per D-50 and falls back to the full name', () => {
-    expect(midlevelShortName(person({ displayName: 'Priya Natarajan', pronoun: 'she' })))
-      .toBe('Ms. Natarajan');
-    expect(midlevelShortName(person({ displayName: 'Devin Petrossian', pronoun: 'he' })))
-      .toBe('Mr. Petrossian');
+  it('R13 — name + credential suffix, and NEVER a courtesy title', () => {
+    // RULED 2026-09-05: *"Just call them '[doctor name], [suffix]' in the
+    // designation block."* → *"Yes"*. The Mr./Ms. table is RETIRED for
+    // mid-levels, so the pronoun on the record changes nothing here.
+    expect(midlevelShortName(person({
+      displayName: 'Priya Natarajan', credentialSuffix: 'PA-C', pronoun: 'she',
+    }))).toBe('Priya Natarajan, PA-C');
+    expect(midlevelShortName(person({
+      displayName: 'Devin Petrossian', credentialSuffix: 'NP', pronoun: 'he',
+    }))).toBe('Devin Petrossian, NP');
+    // A blank credential yields the bare name, not a dangling comma.
     expect(midlevelShortName(person({ displayName: 'Osvaldo Quillane' })))
       .toBe('Osvaldo Quillane');
+    expect(midlevelShortName(person({ displayName: 'Osvaldo Quillane', credentialSuffix: '  ' })))
+      .toBe('Osvaldo Quillane');
+    // The honorifics are gone from this path entirely.
+    for (const pronoun of ['she', 'he', undefined]) {
+      const out = midlevelShortName(person({
+        displayName: 'Priya Natarajan', credentialSuffix: 'PA-C', pronoun,
+      }));
+      expect(out).not.toMatch(/^(Mr|Ms|Dr)\./);
+    }
+  });
+});
+
+describe('HS-3 — a generational suffix is not a surname', () => {
+  it('renders "Dr. Caldwell" for "Ray Caldwell Jr.", never "Dr. Jr."', () => {
+    // Found on the running product 2026-09-05 and ruled IN at `CCS-1` limb 5
+    // (*"IN"*). `SD-9` names the closed set, reported as a default taken.
+    const names = renderNames([person({
+      displayName: 'Ray Caldwell Jr.', credentialSuffix: 'M.D.',
+    })]);
+    expect(names.provider_dr_name).toBe('Dr. Caldwell');
+    // The suffix is kept in the FULL-name form — the ruling drops it from the
+    // "Dr." form only.
+    expect(names.provider_name).toBe('Ray Caldwell Jr.');
+  });
+
+  it('takes every listed suffix, with or without the period, in any case', () => {
+    for (const suffix of ['Jr.', 'Jr', 'Sr.', 'Sr', 'II', 'III', 'IV', 'jr.', 'iii']) {
+      expect(renderNames([person({
+        displayName: `Ray Caldwell ${suffix}`, credentialSuffix: 'M.D.',
+      })]).provider_dr_name).toBe('Dr. Caldwell');
+    }
+  });
+
+  it('leaves an ordinary name alone', () => {
+    expect(renderNames([person({ displayName: 'Ray Caldwell', credentialSuffix: 'M.D.' })])
+      .provider_dr_name).toBe('Dr. Caldwell');
+    expect(renderNames([person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' })])
+      .provider_dr_name).toBe('Dr. Vantwoud');
+  });
+
+  it('never strips a name down to nothing — "Jr." alone stays "Jr."', () => {
+    // A bare "Dr." in a served document is worse than an odd one. The step back
+    // is one token and never past the last remaining word.
+    expect(renderNames([person({ displayName: 'Jr.', credentialSuffix: 'M.D.' })])
+      .provider_dr_name).toBe('Dr. Jr.');
+  });
+
+  it('reaches the SURNAMES JOIN too, not only the single-name form', () => {
+    const names = renderNames([
+      person({ displayName: 'Ray Caldwell Jr.', credentialSuffix: 'MD' }),
+      person({ displayName: 'Ines Vantwoud', credentialSuffix: 'MD' }),
+    ]);
+    expect(names.provider_dr_name).toBe('Drs. Caldwell and Vantwoud');
   });
 });
 
@@ -363,11 +424,19 @@ describe('invariant 11 — the event noun', () => {
 });
 
 describe('invariant 23 — the block strings by N (D-64)', () => {
-  it('matches the literals exactly at 0, 1 and 2, and for a pharmacy', () => {
+  it('R11 — the LITERAL at every N >= 1, with NO inflection', () => {
+    // RULED 2026-09-05: Michael was shown the inflecting form his own Part 3
+    // rule produced and picked option B, the literal. The "(s)" is written, not
+    // computed, so N = 1, 2 and 5 are the SAME string.
     expect(custodianLine(0, false)).toBe('Custodian of Records');
-    expect(custodianLine(1, false)).toBe('And/or Custodian of Records');
-    expect(custodianLine(2, false)).toBe('And/or Custodians of Records');
-    expect(custodianLine(5, false)).toBe('And/or Custodians of Records');
+    expect(custodianLine(1, false)).toBe('And/or Custodian(s) of Records');
+    expect(custodianLine(2, false)).toBe('And/or Custodian(s) of Records');
+    expect(custodianLine(5, false)).toBe('And/or Custodian(s) of Records');
+    // The inflecting forms are GONE — not merely unreachable at these counts.
+    for (const n of [0, 1, 2, 3, 5, 12]) {
+      expect(custodianLine(n, false)).not.toBe('And/or Custodians of Records');
+    }
+    // §9.10's pharmacy literal is untouched by the ruling, at any count.
     expect(custodianLine(0, true)).toBe('Pharmacist(s) and/or Custodian of Records');
     expect(custodianLine(3, true)).toBe('Pharmacist(s) and/or Custodian of Records');
   });

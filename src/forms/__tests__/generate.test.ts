@@ -217,9 +217,12 @@ describe('D-3 — a failed writer call files NOTHING for the whole instrument', 
 });
 
 describe('the block — D-64s line, D-65s membership, D-8s sentence', () => {
-  it('renders the custodian line from the COUNT of individuals on the block', async () => {
+  it('R11 — the same LITERAL at every count of one or more', async () => {
+    // RULED 2026-09-05 (*"B, …"*): the "(s)" is written, not inflected, so one
+    // named individual and two produce the SAME line. The count still decides
+    // whether there is a custodian line at all (N = 0 is the next test).
     const one = await buildDesignations(input());
-    expect(one.blocks[0].custodianLine).toBe('And/or Custodian of Records');
+    expect(one.blocks[0].custodianLine).toBe('And/or Custodian(s) of Records');
 
     const two = await buildDesignations(input({
       individuals: [
@@ -227,7 +230,7 @@ describe('the block — D-64s line, D-65s membership, D-8s sentence', () => {
         person({ displayName: 'Tobias Skarsgaard', credentialSuffix: 'D.O.' }),
       ],
     }));
-    expect(two.blocks[0].custodianLine).toBe('And/or Custodians of Records');
+    expect(two.blocks[0].custodianLine).toBe('And/or Custodian(s) of Records');
   });
 
   it('makes the custodian line the TOP line when nobody is named', async () => {
@@ -302,7 +305,10 @@ describe('the narratives handed to the renderer', () => {
     const narratives = out.itemNarratives['testifying_expert:0'];
     expect(narratives).toHaveLength(2);
     expect(narratives[1].lead).toBeUndefined();
-    expect(narratives[1].text).toContain('Ms. Natarajan');
+    // R13 — name + suffix. This rider's PA carries no credential in the
+    // fixture, so the rendering is the bare name and never "Ms.".
+    expect(narratives[1].text).toContain('Priya Natarajan');
+    expect(narratives[1].text).not.toContain('Ms. Natarajan');
   });
 
   it('invariant 27 — the gap flag is true EXACTLY for a custodian-only fallback', async () => {
@@ -338,7 +344,8 @@ describe('the rider names the paragraph it RIDES, not itself', () => {
       ],
     }));
     const rider = out.paragraphs.find((p) => p.shape === 'midlevel-rider')!;
-    expect(rider.assembledText).toContain('Ms. Natarajan will testify consistent with');
+    expect(rider.assembledText).toContain('Priya Natarajan will testify consistent with');
+    expect(rider.assembledText).not.toContain('Ms. Natarajan');
     expect(rider.assembledText).toContain('described above regarding Dr. Vantwoud');
     expect(rider.assembledText).not.toContain('regarding Priya Natarajan');
   });
@@ -457,7 +464,7 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
     // line is exactly the failure being guarded against.
     expect(lines.slice(i - 2, i + 4)).toEqual([
       'Ines Vantwoud',
-      'And/or Custodian of Records',
+      'And/or Custodian(s) of Records',
       NAME.toUpperCase(),
       CONTACT.addressLine1,
       CONTACT.cityStateZip,
@@ -482,7 +489,7 @@ describe('HS-2 (F7) — the block reads the facility\'s address and telephone', 
     // emptied paragraphs are dropped rather than left behind.
     expect(lines.slice(i - 2, i + 2)).toEqual([
       'Ines Vantwoud',
-      'And/or Custodian of Records',
+      'And/or Custodian(s) of Records',
       NAME.toUpperCase(),
       '',
     ]);

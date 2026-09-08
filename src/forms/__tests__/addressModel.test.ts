@@ -23,6 +23,10 @@ import { buildDesignations, blockItem, facilityContactLines } from '../generate'
 import { evaluateTiers } from '../tiers';
 import { formatPhonesInContext, type RenderContext } from '../renderer';
 import type { ParagraphWriter } from '../writer';
+import { buildRenderContext } from '../context';
+import { FIXTURE_BUNDLE, FIXTURE_ANSWERS } from '../fixtures';
+import contextSrc from '../context.ts?raw';
+import formsTabSrc from '../../pages/FormsTab.tsx?raw';
 
 /** The fixture writer, as every other test in this tree builds one. */
 function fixtureWriter(): ParagraphWriter {
@@ -226,5 +230,39 @@ describe('§7.21 — a facility with NO locations still generates (§17.6 unchan
       facility_city_state_zip: '',
       facility_phone: '',
     });
+  });
+});
+
+// ---------------------------------------------------------------- item 20
+
+describe('§7.20 — D1(iv): the persons-with-knowledge lines and the service list read the split fields', () => {
+  it('reads `addressLine1` / `cityStateZip` off a party created through the REGISTRY keys', () => {
+    // The point of the test is the KEYS. Before D1(iv) these two regions read
+    // `addressLine1` / `addressLine2`, and `addressLine2` was a key no party
+    // form ever offered — so a witness or an opposing firm entered through the
+    // app rendered its city/state/ZIP line blank. `SD-13` retires that key; the
+    // TOKEN names are unchanged, because renaming a token in the master's text
+    // is not this slice's act.
+    const { context } = buildRenderContext(FIXTURE_BUNDLE, FIXTURE_ANSWERS);
+
+    const service = context.regions.service_recipient ?? [];
+    expect(service.length).toBeGreaterThan(0);
+    expect(service[0].firm_address_line_1).toBe('400 Tourmaline Way, Suite 210');
+    expect(service[0].firm_address_line_2).toBe('Rockvale, TX 70001');
+
+    const pwk = context.regions.person_with_knowledge ?? [];
+    const witness = pwk.find((p) => p.person_name === 'Nolan Pyrite');
+    expect(witness).toBeDefined();
+    expect(witness!.person_address_line_1).toBe('12 Pyrite Lane');
+    expect(witness!.person_address_line_2).toBe('Rockvale, TX 70006');
+  });
+
+  it('SD-13 — nothing anywhere reads the retired `addressLine2` key', () => {
+    // Asserted over the two files that used to, rather than over the whole
+    // tree: a stray occurrence in a test fixture would say nothing about the
+    // render path, and this is a claim about the render path.
+    for (const src of [contextSrc, formsTabSrc]) {
+      expect(src).not.toContain("'addressLine2'");
+    }
   });
 });

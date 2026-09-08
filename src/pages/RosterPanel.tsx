@@ -9,7 +9,10 @@
 //     those are real questions the backfill refused to answer by guessing.
 
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import type { CaseRecord, CasePartyLink, PartyRecord, RosterBackfillFlag } from '../domain/types';
+import type { CaseClient, ClientBackfillFlag } from '../domain/client';
+import { clientConsistencyFlags } from '../domain/clientChecks';
 import {
   resolveRosterSlots, sortSlots, sideSetFor, EXPECTANCY_LABELS,
   PARTY_STATUS_LABELS, CAPACITY_KIND_LABELS, ROSTER_ACTIVE_STATE_LABELS,
@@ -177,4 +180,84 @@ export function RosterAttributes({ link }: { link: CasePartyLink }) {
   }
   if (bits.length === 0) return <span className="muted">—</span>;
   return <span className="muted">{bits.join(' · ')}</span>;
+}
+
+/**
+ * THE CLIENT FLAGS — `R16` and `R6`, in the TOP flag area.
+ *
+ * `HS-1` was found by Michael's own hand on 2026-09-05: he read the top of the
+ * Parties page on 26-0003 and reported no flag, because the *"FLAGGED — this
+ * case has no client record"* notice rendered at the BOTTOM, inside the
+ * damages-scope card, while the caption-alignment flags rendered here at the
+ * top. His ruling was one sentence — ***"Move it up."*** — and his reason was
+ * his own test: **he did not see it.**
+ *
+ * So the NOTICE lives here, beside the caption-alignment flags, and the
+ * RESOLVING CONTROL stays below in the damages-scope card with the flag
+ * pointing at it. Moving the control too would put a write next to a read in a
+ * region whose whole job is to be read.
+ *
+ * `R6` (`CL2-CHECK-1`, *"Adopt"*) renders here as well, and `SD-19` says its
+ * second line — which is also `R5(iii)`'s gap flag — reuses this shape rather
+ * than getting a card of its own. **Every line is FLAG-ONLY: nothing here
+ * writes, and nothing here auto-fixes.**
+ */
+export function ClientFlagsCard({
+  flag, clients, links, parties,
+}: {
+  /** The CL-2 backfill flag: this case has no client record at all. */
+  flag: ClientBackfillFlag | null;
+  clients: CaseClient[];
+  links: CasePartyLink[];
+  parties: Record<string, PartyRecord | undefined>;
+}) {
+  const checks = useMemo(
+    () => clientConsistencyFlags(clients, links, parties),
+    [clients, links, parties],
+  );
+  if (!flag && checks.length === 0) return null;
+
+  return (
+    <div className="notice">
+      {flag && (
+        <div>
+          <strong>FLAGGED — this case has no client record.</strong>
+          <div style={{ marginTop: 4 }}>{flag.reason}</div>
+          {flag.preservedStatuteOfLimitations && (
+            <div style={{ marginTop: 6 }}>
+              <strong>Preserved statute of limitations: {flag.preservedStatuteOfLimitations}</strong>{' '}
+              — held on the flag since the case-level field was retired. It carries onto the client
+              record when you create one.
+            </div>
+          )}
+          <div className="small" style={{ marginTop: 6 }}>
+            Fix it in <strong>Clients — damages scope</strong>, at the bottom of this page.
+          </div>
+        </div>
+      )}
+      {checks.length > 0 && (
+        <div style={{ marginTop: flag ? 10 : 0 }}>
+          <strong>
+            {checks.length} client {checks.length === 1 ? 'record needs' : 'records need'} a look.
+          </strong>{' '}
+          Nothing below has been changed or created — these are states your own rulings allow, said
+          out loud rather than repaired.
+          <table className="list" style={{ marginTop: '0.5rem' }}>
+            <tbody>
+              {checks.map((c) => (
+                <tr key={`${c.kind}:${c.partyId}`}>
+                  <td>
+                    {parties[c.partyId]
+                      ? <Link to={`/parties/${c.partyId}`}>{parties[c.partyId]!.displayName}</Link>
+                      : <strong>A contact</strong>}
+                  </td>
+                  <td>{c.text}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 }

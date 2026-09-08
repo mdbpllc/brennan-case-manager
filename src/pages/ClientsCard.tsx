@@ -13,6 +13,7 @@ import type { CaseClient, ClientBackfillFlag, ClientPosture, SolBasis } from '..
 import {
   CLIENT_FLAGS, CLIENT_POSTURES, SOL_BASES, isResolved, sortClients,
 } from '../domain/client';
+import { defaultPosture } from '../domain/clientChecks';
 import { ATTORNEY_USER } from '../domain/billing';
 import { db } from '../data';
 
@@ -66,7 +67,9 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
       const created = await db.createClient({
         caseId: caseRec.id,
         partyId: addPartyId,
-        posture: caseRec.practiceArea === 'Criminal' ? 'defendant' : 'claimant',
+        // R5(ii) — one expression, shared with the auto-create path, so the
+        // hand path and the automatic one cannot drift on the default.
+        posture: defaultPosture(caseRec),
         displayOrder: clients.length,
         // The date preserved on the backfill flag carries onto the client
         // record it was always meant for (Michael's ruling, 2026-07-28).
@@ -185,15 +188,24 @@ export default function ClientsCard({ caseRec, onChanged }: { caseRec: CaseRecor
 
       {err && <div className="notice" style={{ marginTop: 10 }}><strong>Couldn't do that.</strong> {err}</div>}
 
+      {/* R16 (HS-1), RULED 2026-09-05: *"Move it up."* — the FLAGGED notice
+          itself now renders in the TOP flag area of this page, beside the
+          caption-alignment flags, because Michael read the top of 26-0003 and
+          reported no flag while it sat down here. **The RESOLVING CONTROL
+          stays**, which is the other half of the ruling: the flag above points
+          at this, and moving a write into a read-only region would be a
+          different change than the one he made. */}
       {flag && (
         <div className="notice" style={{ marginTop: 10 }}>
-          <strong>FLAGGED — this case has no client record.</strong>
-          <div style={{ marginTop: 4 }}>{flag.reason}</div>
+          <strong>This case has no client record.</strong>{' '}
+          <span className="small">
+            Flagged at the top of this page — resolve it here.
+          </span>
           {flag.preservedStatuteOfLimitations && (
             <div style={{ marginTop: 6 }}>
               <strong>Preserved statute of limitations: {flag.preservedStatuteOfLimitations}</strong> — held
-              here since the case-level field was retired. It carries onto the client record when you
-              create one below.
+              on the flag since the case-level field was retired. It carries onto the client record when
+              you create one below.
             </div>
           )}
           {eligible.length === 0 ? (

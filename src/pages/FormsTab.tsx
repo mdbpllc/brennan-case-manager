@@ -241,6 +241,14 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
 
   const chosen = forClient.filter((p) => selected[p.id]);
 
+  /** D-54 / AS-Q10: a NULL `clientId` on a one-client case MEANS that client,
+   *  which is why the null branch is kept rather than tightened. R1 and R3 both
+   *  read this set, so it is computed once instead of twice. */
+  const clientBills = useMemo(
+    () => bills.filter((b) => !activeClientId || b.clientId === activeClientId || b.clientId == null),
+    [bills, activeClientId],
+  );
+
   const tiers = useMemo(() => evaluateTiers({
     incidentDateIso: caseRec.dateOfIncident,
     selected: chosen,
@@ -271,16 +279,36 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
     })),
     chronologyVersions: clientVersions,
     billedFacilityPartyIds: [...new Set(
-      bills.filter((b) => !activeClientId || b.clientId === activeClientId || b.clientId == null)
-        .map((b) => b.facilityPartyId).filter((id): id is string => Boolean(id)),
+      clientBills.map((b) => b.facilityPartyId).filter((id): id is string => Boolean(id)),
     )],
     billedIndividualPartyNames: bills
       .map((b) => (b.facilityPartyId ? partyById(b.facilityPartyId) : undefined))
       .filter((p): p is PartyRecord => p?.kind === 'individual')
       .map((p) => p.displayName),
+    // R1 — the party TYPE, read here through `partyById` and handed down, so
+    // `tiers.ts` keeps its rule that every check runs over RECORDS and never
+    // reaches for a store of its own.
+    billedPartyTypes: Object.fromEntries(
+      [...new Set(clientBills.map((b) => b.facilityPartyId).filter(Boolean))]
+        .map((id) => [id as string, partyById(id as string)?.partyType]),
+    ),
+    // R1 — the rows on this matter NOT selected for this instrument. With
+    // `selected` this is every row there is, which is what tells "on the list,
+    // unticked" from "no row at all".
+    unselected: forClient.filter((p) => !selected[p.id]),
+    // R3 — per-facility billed totals, SCOPED TO THE ACTIVE CLIENT exactly as
+    // `billedFacilityPartyIds` is.
+    billedTotals: clientBills.reduce<Record<string, number>>((acc, b) => {
+      if (!b.facilityPartyId) return acc;
+      acc[b.facilityPartyId] = (acc[b.facilityPartyId] ?? 0) + (b.billedAmount ?? 0);
+      return acc;
+    }, {}),
     alreadyDesignated: posture === 'supplemental' ? alreadyDesignated : undefined,
-  }), [caseRec.dateOfIncident, chosen, individuals, facilityNames, providers, partyById,
-    clientVersions, bills, activeClientId, posture, alreadyDesignated]);
+    // `activeClientId` is deliberately absent: it is no longer read here. Every
+    // client-scoped value now comes through `clientBills`, which carries the
+    // dependency for it.
+  }), [caseRec.dateOfIncident, chosen, forClient, selected, individuals, facilityNames,
+    providers, partyById, clientVersions, bills, clientBills, posture, alreadyDesignated]);
 
   const gates: GateWarning[] = useMemo(() => evaluateTypedGates({
     selected: chosen, individuals, facilityNames,
@@ -345,6 +373,12 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
 
       const clientParty = partyById(
         clients.find((c) => c.id === activeClientId)?.partyId ?? '',
+      );
+      // R15 (D-61, "c") — the plaintiff is named in the title ONLY on a
+      // multi-client case. One Generate is one instrument for one plaintiff
+      // (§15.7), so "the responding party" is the ACTIVE client and nobody else.
+      const title = instrumentTitle(
+        posture, multiClient ? (clientParty?.displayName ?? '') : undefined,
       );
 
       const designations = await buildDesignations({
@@ -415,6 +449,19 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
         }))
         .filter((r) => r.provider_total_charges !== currency(0));
 
+      // FE-15 / R15 — the certificate of service and the footer FOLLOW the
+      // title. They follow from ONE value here rather than from three places
+      // that can drift. The master skeleton carries neither token today (its
+      // heading and footer are static text), so these resolve nothing yet and
+      // cost nothing; the ruling lands the moment either token exists.
+      context.scalars = {
+        ...context.scalars,
+        instrument_title: title,
+        instrument_title_caps: title.toUpperCase(),
+        footer_title: title,
+        footer_title_caps: title.toUpperCase(),
+      };
+
       context.itemSelects = { ...context.itemSelects };
       designations.blocks.forEach((b, i) => {
         const first = designations.paragraphs.find((p) => p.caseProviderId === b.caseProviderId);
@@ -435,7 +482,10 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
 
       const writeBacks = await applyWriteBacks(db, []);
       const filename =
-        `${caseRec.fileNumber} disclosures${posture === 'original' ? '' : ` (${posture})`}.docx`;
+        `${caseRec.fileNumber} disclosures`
+        + (multiClient && clientParty ? ` — ${clientParty.displayName}` : '')
+        + (posture === 'original' ? '' : ` (${posture})`)
+        + '.docx';
       downloadDocx(rendered.docx, filename);
 
       const doc = await db.createDocument({
@@ -444,7 +494,7 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
         audience: 'opposing',
         // NULL — Q-COM-11 ruled (A): unclassified-must-classify.
         privilegeTier: undefined as unknown as never,
-        title: instrumentTitle(posture),
+        title,
         content: rendered.plainText,
         disclaimerVersion: 'fe-d1a-v1',
         generatedBy: 'FE-D1 disclosures engine (amendment slice)',
@@ -489,13 +539,21 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
         reproduced as the firm’s forms quote it and is <strong>UNVERIFIED</strong>.
       </div>
 
-      {/* ---------- must-fix tier (D-1, PROVISIONAL) ---------- */}
+      {/* ---------- must-fix tier — R2, RULED 2026-09-05 ----------
+          Michael: *"I'll rule with youre recomendation."* (MARKED: the drawing
+          is Claude's, the adoption is his). The top-of-page card STAYS as the
+          reading surface; the Generate button below is DISABLED and STATES THE
+          COUNT rather than going silently gray; there is NO dialog, and this is
+          not merged into the ambient panel — merging a stop into the "screen
+          only, changes nothing" panel is the reflex-to-skip failure R1 was
+          built against. The D-1 provisional footnote comes off: the surface is
+          ruled now. */}
       {tiers.stops.length > 0 && (
         <div className="card" style={{ borderLeft: '4px solid #b23' }}>
           <h3>Fix these first — {tiers.stops.length}</h3>
           <p className="small muted">
             The document is not generated and <strong>nothing is sent anywhere</strong> while one of
-            these stands. There are exactly three conditions that do this.
+            these stands. There are exactly four conditions that do this.
           </p>
           {tiers.stops.map((s, i) => (
             <p key={i} className="notice" style={{ marginTop: 8 }}>
@@ -503,9 +561,6 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
               {s.route && <><br /><span className="small">{s.route}</span></>}
             </p>
           ))}
-          <p className="small muted">
-            Where this list appears is still an open question for you — it sits here provisionally.
-          </p>
         </div>
       )}
 
@@ -742,18 +797,39 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       {/* ---------- generate ---------- */}
       <div className="card">
         <h3>Generate</h3>
+        {/* R15 — the ruled title, on screen, so it is readable BEFORE the
+            document exists. The served heading inside the .docx is static text
+            in the master and does not carry this yet (see `instrumentTitle`). */}
+        <p className="small muted">
+          This instrument will be filed as{' '}
+          <strong>
+            {instrumentTitle(
+              posture,
+              multiClient
+                ? partyById(clients.find((c) => c.id === activeClientId)?.partyId ?? '')?.displayName
+                : undefined,
+            )}
+          </strong>.
+        </p>
         {unmetBlocking.length > 0 && (
           <p className="notice">
             <strong>{unmetBlocking.length} hard pause</strong> not yet acknowledged. Confirm above
             to continue.
           </p>
         )}
+        {/* R2 — the button STATES the count while it is blocked, instead of
+            going quietly gray with nothing to read. `SD-16` is the string and
+            is PROVISIONAL, for his eye. */}
         <button
           className="btn"
           disabled={busy || chosen.length === 0 || unmetBlocking.length > 0 || !tiers.canGenerate}
           onClick={generate}
         >
-          {busy ? 'Generating…' : 'Generate Word document'}
+          {busy
+            ? 'Generating…'
+            : tiers.stops.length > 0
+              ? `Generate — ${tiers.stops.length} must-fix item${tiers.stops.length === 1 ? '' : 's'} stand${tiers.stops.length === 1 ? 's' : ''}`
+              : 'Generate Word document'}
         </button>
         <p className="small muted" style={{ marginTop: 8 }}>
           One call per paragraph. Nothing is sent while a must-fix item stands, and if any call
@@ -911,10 +987,31 @@ function field(p: PartyRecord | undefined, key: string): string {
   return typeof v === 'string' ? v : '';
 }
 
-function instrumentTitle(posture: InstrumentPosture): string {
-  if (posture === 'amended') return "Plaintiff's First Amended TRCP 194.2(b) and 195.5 Disclosures";
-  if (posture === 'supplemental') return "Plaintiff's Supplemental TRCP 194.2(b) and 195.5 Disclosures";
-  return "Plaintiff's TRCP 194.2(b) and 195.5 Disclosures";
+/**
+ * `R15` (D-61) — the instrument's title. **RULED 2026-09-05: *"c"*.**
+ *
+ * The title names the RESPONDING PLAINTIFF **only on a multi-client case** —
+ * *"Plaintiff Alba Quartzmoor's TRCP 194.2(b) and 195.5 Disclosures"* — and a
+ * one-client case keeps *"Plaintiff's …"* exactly as served today. FE-15 ties
+ * the certificate of service and the footer to the title, so they follow from
+ * this one value rather than being written twice.
+ *
+ * ⚠ WHAT THIS DOES NOT REACH, and it is worth knowing before reading the
+ * output: the SERVED heading is STATIC TEXT in the master skeleton —
+ * "PLAINTIFF'S 194.2(b) & 195.5 DISCLOSURES", present twice (title and footer)
+ * and carrying no token. This slice may not edit that master. So the ruled
+ * title reaches the generated-document RECORD, the download filename, the
+ * on-screen label, and `{instrument_title}` / `{footer_title}` the moment the
+ * master carries either token — and the heading inside the .docx keeps its
+ * static wording until Michael tokenizes it. Reported in
+ * `docs/spec-feedback.md` rather than worked around.
+ */
+function instrumentTitle(posture: InstrumentPosture, respondingPlaintiff?: string): string {
+  const who = (respondingPlaintiff ?? '').trim();
+  const owner = who === '' ? "Plaintiff's" : `Plaintiff ${who}'s`;
+  if (posture === 'amended') return `${owner} First Amended TRCP 194.2(b) and 195.5 Disclosures`;
+  if (posture === 'supplemental') return `${owner} Supplemental TRCP 194.2(b) and 195.5 Disclosures`;
+  return `${owner} TRCP 194.2(b) and 195.5 Disclosures`;
 }
 
 function downloadDocx(bytes: Uint8Array, filename: string) {

@@ -344,6 +344,12 @@ function NewBillForm({
   onDone: () => void;
 }) {
   const [label, setLabel] = useState('');
+  /** `R7` — TRUE until Michael types in the label box himself. The pre-fill
+   *  follows the provider only while the label is still the app's, so picking a
+   *  different provider after typing "Chiropractic — 2024" does not throw that
+   *  away. This is the whole of what makes a pre-fill different from an
+   *  overwrite. */
+  const [labelIsPrefilled, setLabelIsPrefilled] = useState(true);
   const [providerId, setProviderId] = useState('');
   const [billType, setBillType] = useState<BillType>(1);
   const [serviceStart, setServiceStart] = useState('');
@@ -369,13 +375,27 @@ function NewBillForm({
   return (
     <div className="filters" style={{ marginTop: 8, padding: 10, background: '#f7f8fa', borderRadius: 6, alignItems: 'flex-end' }}>
       <label className="fld"><span className="lab">Bill label</span>
-        <input type="text" value={label} placeholder="e.g. ProCare — chiropractic care" onChange={(e) => setLabel(e.target.value)} />
+        <input
+          type="text" value={label} placeholder="e.g. ProCare — chiropractic care"
+          onChange={(e) => { setLabel(e.target.value); setLabelIsPrefilled(false); }}
+        />
+        {labelIsPrefilled && label !== '' && (
+          <span className="hint">From the provider — edit it to tell two bills apart.</span>
+        )}
       </label>
       <label className="fld"><span className="lab">Provider</span>
+        {/* `BL-1` / `R7`, RULED 2026-09-05: *"Build it"*. The label DEFAULTS to
+            the provider name on creation and is editable to disambiguate. It
+            stays DISPLAY-ONLY — the July finding stands, and nothing downstream
+            reads this string as data. */}
         <Combobox
           options={providers.map((p) => ({ value: p.id, label: p.displayName }))}
           value={providerId}
-          onChange={setProviderId}
+          onChange={(id) => {
+            setProviderId(id);
+            if (!labelIsPrefilled) return;
+            setLabel(providers.find((p) => p.id === id)?.displayName ?? '');
+          }}
           placeholder="— (link provider party later)"
         />
       </label>
