@@ -1460,3 +1460,28 @@ written here (`#151`).
 4. **Rebuildability, recorded as a design property the slice must keep:** with the file as the source of truth, `case_providers` / `case_provider_individuals` / `case_provider_visits` are a derived index; the slice keeps `chronology_version_id` on the rows so a re-extraction over the same file can replace them.
 
 **Status:** OPEN — routed to design (`Q-API-20`). Nothing built.
+
+## 2026-09-09 — the register row-counting method is defective: a character class over the marker glyphs returns zero or undercounts, and the defect has propagated into packet-authoring guidance
+
+**Where:** `docs/prompts/QUEUE-RUNNER.md` Step 4 items 2 and 3 (the `CAP-3` merge and the `OPEN-5(a)` recount); the `CAP-3` paragraph in `CLAUDE.md`; and the per-packet `register-rows-*.md` files, which have been carrying the same broken idiom as guidance to the runner.
+
+**Context:** queue-runner batch 95 (`#154`) could not find six register rows that were present the whole time. The packet had warned about a *different* false zero — three of the rows are written without backticks around the ID — and prescribed the fix `^- [⬜🟡✅] \*\*\`\?<ID>`. **That prescribed pattern returned zero for all six rows, backticked and unbackticked alike.** The cause is not the backticks.
+
+1. **The defect, measured on `docs/specs/attorney-review-queue.md` at `b2dc222`.** A bracket expression over the three marker glyphs is matched **byte-wise** in this environment, so it does not match a multi-byte character at all:
+
+   | pattern | result |
+   |---|---|
+   | `^- [⬜🟡✅] ` in the default locale | **0** |
+   | `^- [⬜🟡✅] ` under `LC_ALL=C.UTF-8` | **375** |
+   | `^- (⬜\|🟡\|✅) ` (alternation, top-level) | **380** |
+   | `^\s*- (⬜\|✅\|🟡)` under `grep -P` (the runner's own stated method) | **396** |
+
+   The 375 → 380 gap is **exactly the 🟡 count**. Forcing a UTF-8 locale recovers `⬜` and `✅` but **still silently drops `🟡`**, which is outside the BMP (four UTF-8 bytes). The 380 → 396 gap is the 16 indented child rows, which the runner's `\s*` is written to include and the top-level anchor excludes — a real distinction, not an error.
+
+2. **Why this is worse than an ordinary miscount.** A false zero is indistinguishable from absence. Two earlier design passes had already concluded a row was missing on this same class of zero (`Q-WF-4`, then `Q-STAT-5`); both rows existed. A runner executing in a bare locale — which is the default here — would count **no register rows of any kind** and could report the register as empty, or mint duplicate rows for questions that already have one. That is the `K-6`/`K-7` failure class arriving through a tooling defect rather than a drafting one.
+
+3. **The fix, and it is one line.** **Never use a bracket class over the marker glyphs. Use alternation.** `^\s*- (⬜|✅|🟡)` under `grep -P` is correct and is already what the runner text says; the problem is that the runner's prose says it while packet guidance and prior practice have used the class form. `grep -E` with the same alternation also works. Any count that comes back `0` — or suspiciously round — should be re-run as a plain substring search for the bare ID, and **the matching line read**, before absence is asserted.
+
+4. **Not fixed here, because these are not this batch's files to amend.** Changing `docs/prompts/QUEUE-RUNNER.md` is a change to the runner's own text and needs Michael's ruling (`QR-2`: that file is the only full copy). The `CLAUDE.md` `CAP-3` paragraph is likewise a convention. What batch 95 did do is use the correct method for its own counts and state the method in its runner line, per `OPEN-5(a)`.
+
+**Status:** OPEN — routed to Michael. The counting method in force is already correct as written in the runner; what needs his word is whether the runner text and the packet-authoring convention should say **explicitly** that a character class over the marker glyphs is prohibited, so the broken idiom stops being reintroduced by each new packet.
