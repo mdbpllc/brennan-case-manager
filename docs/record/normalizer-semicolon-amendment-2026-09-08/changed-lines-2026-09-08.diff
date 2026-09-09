@@ -1,0 +1,29 @@
+=== tx.171.norm → tx.171.norm2 (the #151 output vs the amended normalizer's; byte-exact lines) ===
+< SOCIETY. AAAcooperative          that   is     either   a    farmers’ cooperative
+> SOCIETY. A cooperative          that   is     either   a    farmers’ cooperative
+< government and United States government agencies;AAand
+> government and United States government agencies; and
+< government;AAand
+> government; and
+< federal government;AAand
+> federal government; and
+< government;AAand
+> government; and
+< place of business to this state;AAand
+> place of business to this state; and
+=== tx.31.norm → tx.31.norm2 (the #151 output vs the amended normalizer's; byte-exact lines) ===
+<       Sec. 31.12. PAYMENT     OF   CERTAIN   TAX   REFUNDS;AAINTEREST.
+>       Sec. 31.12. PAYMENT     OF   CERTAIN   TAX   REFUNDS; INTEREST.
+=== tx.151.norm → tx.151.norm2 (the #151 output vs the amended normalizer's; byte-exact lines) ===
+< staging, radio communications, signage, and routing services;AAand
+> staging, radio communications, signage, and routing services; and
+< were determined by a contracting entity outside this state;AAor
+> were determined by a contracting entity outside this state; or
+< delivery outside the territorial limits of the United States;AAor
+> delivery outside the territorial limits of the United States; or
+< customs broker;AAand
+> customs broker; and
+< patients;AAand
+> patients; and
+<               (2) a helicopter;AAand
+>               (2) a helicopter; and

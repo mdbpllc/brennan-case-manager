@@ -1,0 +1,30 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }).catch(async e => { console.log('fallback launch', e.message.slice(0,80)); return chromium.launch(); });
+const pg = await b.newPage({ viewport: { width: 1480, height: 1000 } });
+const errs = []; pg.on('pageerror', e => errs.push('pageerror: ' + e.message)); pg.on('console', m => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
+await pg.goto('file:///home/claude/mock/dist/firm-obligations-mock-2026-09-08.html');
+await pg.waitForTimeout(300);
+await pg.screenshot({ path: 'dist/look-1-register.png', fullPage: false });
+// walk: DECISION 2, then Done on the September reconciliation
+await pg.click('button[data-dec="2"]'); await pg.waitForTimeout(100);
+const rows = await pg.$$eval('tr.oc td.name .nm', els => els.map(e => e.textContent));
+console.log('rows on register:', rows.length, rows.slice(0, 6).join(' | '));
+const btn = await pg.$$('button[data-act="done"]'); console.log('done buttons', btn.length);
+// find the trust reconciliation row's Done button
+const idx = rows.findIndex(r => r.startsWith('Trust-account'));
+await btn[idx].click(); await pg.waitForTimeout(100);
+await pg.click('button[data-act="submit"]'); await pg.waitForTimeout(150);
+const after = await pg.$$eval('tr.oc td.name', els => els.map(e => e.textContent).filter(t => t.startsWith('Trust-account')));
+console.log('trust rows after Done:', JSON.stringify(after));
+const trail = await pg.$$eval('.hist .small.muted', els => els.map(e => e.textContent));
+console.log('audit trail:', JSON.stringify(trail.slice(0,3)));
+await pg.screenshot({ path: 'dist/look-2-after-done.png', fullPage: false });
+await pg.click('button[data-screen="cases"]'); await pg.waitForTimeout(100);
+const card = await pg.$eval('#fo-card', e => e.textContent); console.log('card:', card.slice(0, 200));
+await pg.click('button[data-screen="outlook"]'); await pg.waitForTimeout(100);
+const ol = await pg.$$eval('.ol .ev.firm', els => els.length); console.log('outlook firm events:', ol);
+await pg.click('button[data-dec="9"]'); await pg.waitForTimeout(100);
+const ws = await pg.$$eval('table.ws tbody tr', els => els.length); console.log('worksheet rows:', ws);
+await pg.screenshot({ path: 'dist/look-3-outlook-ws.png', fullPage: false });
+console.log('errors:', errs.length ? errs : 'none');
+await b.close();

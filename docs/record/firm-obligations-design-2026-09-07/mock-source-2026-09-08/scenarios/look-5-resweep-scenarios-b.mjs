@@ -1,0 +1,14 @@
+import { createRequire } from "module"; const { chromium } = createRequire(import.meta.url)("/home/claude/.npm-global/lib/node_modules/playwright");
+const b = await chromium.launch(); const pg = await b.newPage({ viewport: { width: 1480, height: 1000 } });
+const errs = []; pg.on('pageerror', e => errs.push(e.message)); pg.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+await pg.goto('file:///home/claude/mock/dist/firm-obligations-mock-2026-09-08.html'); await pg.waitForTimeout(200);
+await pg.click('button[data-dec="4"]'); await (await pg.$$('.opts input'))[2].click(); await pg.waitForTimeout(60);
+console.log('L-5: owner badges at solo under option 3:', await pg.$$eval('.badge.owner', els => els.length));
+await pg.click('button[data-dec="6"]'); const before = await pg.$eval('.main', e => e.textContent.indexOf('Legal watch') < e.textContent.indexOf('Firm obligations —') ? 'legal first' : 'card first').catch(() => 'n/a');
+await pg.click('#cardAbove'); await pg.waitForTimeout(60); const after = await pg.$eval('.main', e => e.textContent.indexOf('Legal watch') < e.textContent.indexOf('Firm obligations —') ? 'legal first' : 'card first');
+await pg.click('button[data-dec="2"]'); await pg.waitForTimeout(60); const dec2 = await pg.$eval('.main', e => e.textContent.indexOf('Legal watch') < e.textContent.indexOf('Firm obligations —') ? 'legal first' : 'card first');
+console.log('M-1/L8: card order default', before, '| toggled', after, '| still toggled at DECISION 2:', dec2);
+await pg.click('button[data-dec="0"]'); await (await pg.$$('.opts input'))[3].click(); await pg.waitForTimeout(40); await pg.fill('#d0custom', 'Duties'); await pg.$eval('#d0custom', e => e.dispatchEvent(new Event('change', { bubbles: true }))); await pg.waitForTimeout(60);
+await pg.click('button[data-screen="outlook"]'); await pg.waitForTimeout(60);
+console.log('L-5b: custom word in the Outlook subject:', await pg.$eval('.ol .ev.firm', e => e.textContent.slice(0, 40)));
+console.log('errors:', errs.length ? errs : 'none'); await b.close();

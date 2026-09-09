@@ -1,0 +1,126 @@
+ok   fixture A today
+ok   one open occurrence at load: FOT-1
+ok   one open occurrence at load: FOT-2
+ok   one open occurrence at load: FOT-4
+ok   one open occurrence at load: FOT-6
+ok   one open occurrence at load: FOT-8
+ok   one open occurrence at load: FOT-9
+ok   one open occurrence at load: FOT-10
+ok   one open occurrence at load: FOT-11
+ok   one open occurrence at load: FOT-12
+ok   one open occurrence at load: FOT-13
+ok   one open occurrence at load: FOT-14
+ok   one open occurrence at load: FOT-17
+ok   one open occurrence at load: FOT-19
+ok   one open occurrence at load: FOT-21
+ok   one open occurrence at load: FOT-22
+ok   one open occurrence at load: FOT-23
+ok   one open occurrence at load: FOT-24
+ok   one open occurrence at load: FOT-25
+ok   one open occurrence at load: FOT-26
+ok   one open occurrence at load: FOT-27
+ok   one open occurrence at load: FOT-28
+ok   one open occurrence at load: FOT-30
+ok   one open occurrence at load: FOT-31
+ok   TIDC 2025 report overdue
+ok   TIDC 352 days overdue
+ok   trust reconciliation Sept overdue
+ok   MCLE lit (59 days, lead 90)
+ok   malpractice lit (49 days, lead 60)
+ok   domain lit (44 days, lead 60)
+ok   941 Q3 pending (29 days, lead 14)
+ok   doc restore lit (7 days, lead 14)
+ok   db restore never run → overdue
+ok   heartbeat Oct 1 overdue by 1
+ok   bar dues 2027 pending
+ok   precision month → due on the last day (FOD-17)
+ok   precision month lights on the 1st (spec as written)
+ok   FOM-6: the earlier of the 1st and due−lead (45)
+ok   membership-year span label
+ok   941 due Oct 31 covers Q3
+ok   W-2 due Jan 31 2027 covers 2026 wages
+ok   FOD-1: Sunday due date carries the note
+ok   a Thursday carries no note
+ok   card at Oct 2: the two hard overdue items only
+ok   DECISION 6 option 2: routine items join the card, sorted by proximity then weight
+ok   at Oct 20 the 941 (11 days) joins the card
+ok   Overdue pin: most-overdue first; weight breaks ties only at equal proximity (§4.4)
+ok   current month first
+ok   twelve months
+ok   beyond twelve months → Later
+ok   the January pile-up (Jan 1, then the three Jan 31 rows by name)
+ok   serial: the next PERIOD materializes on done
+ok   its label
+ok   still exactly one open
+ok   the 2026 report is lit at once (13 days, lead 30)
+ok   serial again → 2027
+ok   serial: a filing done late produces the next period already overdue, never skipped
+ok   collapse (spec literal): first rule date after the completion date — Oct 5, three days later
+ok   …and it is lit at once (lead 5) — FOM-1
+ok   collapse (FOM-1): Oct 2 completion closes October → next Nov 5
+ok   DEFECT PINNED (FOM-1): collapse as written + early completion (FOD-15) re-materializes the SAME date — Sept 5 again
+ok   collapse FOM-1, done early in-month → Oct 5 (identical)
+ok   collapse: four missed months → one next occurrence (Mar 1), no backlog
+ok   DECISION 2 option 2: serial cadence → Nov 1 materializes, already overdue, one at a time
+ok   interval: next = completion + 91
+ok   FOD-16: first occurrence due NOW when no last-done date
+ok   FOD-16: with a last-done date → last + 91
+ok   activation, spec as written: first rule date on/after today
+ok   FOM-4: with “last completed: the 2024 report” → the 2025 report materializes, already overdue
+ok   quarterly: Oct 31 done → Jan 31 for Q4
+ok   anniversary everyYears 4 → 2032
+ok   precision-month anniversary steps a year and lands on the last day again
+ok   not-applicable refused on the practice-time report (FOD-18) → not-applicable is not offered on this obligation (FOD-18)
+ok   not-applicable without a reason refused → outcomeReason is required
+ok   not-applicable closes the period and the next materializes
+ok   undo reopens and deletes the untouched next
+ok   FOD-7: undo is NOT allowed once the next occurrence was touched
+ok   undo refused when the next was touched — never two open occurrences (FOD-5) → undo is allowed only while the next occurrence is untouched and no other occurrence is open (FOD-7, FOD-5)
+ok   only the latest close can be undone; the older one’s next is itself done
+ok   a retired obligation’s open occurrence stays in the Overdue pin
+ok   …and on the card
+ok   Sunday after a Saturday due date: lit with the note, not overdue (FOD-1)
+ok   Monday: “overdue” prints (FOM-12’s point)
+ok   one-time done → the obligation retires itself
+ok   quarterly labels by the rule’s list order
+ok   fixture B at Sep 22: the reconciliation (13 days, lead 5) is not lit → not on the card
+ok   …FOD-14 literally: it is
+ok   DEFECT PINNED: collapse as written + early completion on an annual row → Oct 15, 2026 again
+ok   FOM-1 limb 2: never its own date → Oct 15, 2027
+ok   interval: completion + 91 even when marked serial
+ok   a blank override is refused
+ok   an overdue occurrence cannot be moved later
+ok   …but can be moved earlier (a correction)
+ok   a pending/lit occurrence takes a later real date (the carrier’s invoice)
+ok   retired: the open occurrence closes and no next materializes
+ok   one-time: retires itself when done
+ok   separate calendar
+ok   all-day events
+ok   subject, reminder at the lead window
+ok   precision-month row: the reminder fires at the register’s own lit moment
+ok   DECISION 0’s word reaches the subject
+ok   a done occurrence is a COMPLETED task, not an open overdue one
+ok   option 4: nothing pushed
+ok   option 3: same calendar
+ok   option 2: tasks
+ok   fixture B: nothing on the card at Sep 20
+ok   fixture B: nothing overdue
+ok   fixture B: TIDC lit on the register (25 days, lead 30) though absent from the card
+ok   Sunday after a Saturday due date: the lit 941 stays on the card
+ok   …and sits in the current month group, not Later
+ok   retired: no next
+ok   undo allowed while nothing else is open
+ok   after a re-activation opened a new occurrence, undo is refused (FOD-5)
+ok   undo refused: another occurrence is open → undo is allowed only while the next occurrence is untouched and no other occurrence is open (FOD-7, FOD-5)
+ok   DECISION 6 option 3: one class, date order alone
+ok   DECISION 7 option 5: an event AND a task per occurrence
+ok   a custom word singularizes safely
+ok   exactly one open after Done: FOT-2
+ok   exactly one open after Done: FOT-8
+ok   exactly one open after Done: FOT-9
+ok   exactly one open after Done: FOT-14
+ok   exactly one open after Done: FOT-19
+ok   exactly one open after Done: FOT-22
+ok   exactly one open after Done: FOT-24
+
+124/124 assertions passed

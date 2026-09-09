@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firm Obligations Mock</title>
+</head>
+<body>
+<style>/* ===== The product's own tokens (src/index.css at 8f7467b, verbatim values) — the ruling is "under the current tokens" ===== */
+:root {
+  --navy: #1b2a41; --navy-2: #24374f; --accent: #b08d3e; --bg: #f5f6f8; --card: #ffffff; --line: #dde2e9;
+  --text: #1d2433; --muted: #66707f; --ok: #2e7d4f; --warn: #b3541e;
+  /* the workbench (this mock's own scaffolding; deliberately NOT the product's surface) */
+  --wb-bg: #dfe4ec; --wb-panel: #f7f8fb; --wb-line: #c4ccd8; --wb-ink: #1d2433; --wb-muted: #5b6676; --wb-accent: #7a5f1e;
+  --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, Menlo, monospace;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--wb-bg); color: var(--wb-ink); }
+body { font-size: 14px; line-height: 1.45; }
+a { color: var(--navy); }
+code, .id { font-family: var(--mono); font-size: 0.92em; }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid #b7c6dd; outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ===== workbench frame ===== */
+.wb { display: grid; grid-template-columns: 212px minmax(0, 1fr) 352px; grid-template-rows: auto minmax(0, 1fr); min-height: 100vh; }
+.wb-head { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: #cfd6e1; border-bottom: 1px solid var(--wb-line); flex-wrap: wrap; }
+.wb-head h1 { font-size: 15px; margin: 0; color: var(--navy); letter-spacing: 0.2px; }
+.wb-head .fix { display: inline-block; padding: 2px 9px; border-radius: 999px; background: #f3edda; color: #7a5f1e; font-size: 11.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+.wb-head .ctl { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--wb-muted); }
+.wb-head select, .wb-head input[type='date'] { font: inherit; font-size: 12.5px; padding: 4px 6px; border: 1px solid var(--wb-line); border-radius: 5px; background: #fff; color: var(--text); }
+.wb-head .quick button { font-size: 11.5px; padding: 3px 8px; border: 1px solid var(--wb-line); background: #fff; border-radius: 999px; cursor: pointer; color: var(--navy); }
+.wb-head .quick button:hover { background: #eef1f5; }
+.wb-head .spacer { flex: 1; }
+.wb-head .meta { font-size: 11.5px; color: var(--wb-muted); }
+
+.wb-rail { background: var(--wb-panel); border-right: 1px solid var(--wb-line); padding: 12px 10px; overflow-y: auto; }
+.wb-rail .lab { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--wb-muted); margin: 8px 8px 6px; }
+.wb-rail button { display: block; width: 100%; text-align: left; border: 1px solid transparent; background: none; padding: 7px 9px; border-radius: 6px; cursor: pointer; font-size: 12.5px; color: var(--wb-ink); line-height: 1.3; }
+.wb-rail button:hover { background: #e9edf3; }
+.wb-rail button.on { background: #fff; border-color: var(--wb-line); box-shadow: 0 1px 2px rgba(20,30,50,0.06); }
+.wb-rail button .n { font-family: var(--mono); font-size: 11px; color: var(--wb-accent); margin-right: 6px; }
+.wb-rail button .q { display: block; font-size: 10.5px; color: var(--wb-muted); font-family: var(--mono); margin-top: 1px; }
+
+.wb-stage { padding: 14px 16px 24px; min-width: 0; overflow-x: auto; }
+.stage-tabs { display: flex; gap: 6px; margin-bottom: 10px; align-items: center; }
+.stage-tabs button { border: 1px solid var(--wb-line); background: #edf0f5; padding: 6px 12px; border-radius: 6px 6px 0 0; font-size: 12.5px; cursor: pointer; color: var(--navy); font-family: var(--mono); }
+.stage-tabs button.on { background: #fff; border-bottom-color: #fff; font-weight: 600; }
+.stage-tabs .hint { margin-left: auto; font-size: 11.5px; color: var(--wb-muted); }
+.browser { background: #fff; border: 1px solid var(--wb-line); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(20,30,50,0.10); }
+.browser .chrome { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #eceff4; border-bottom: 1px solid var(--wb-line); font-size: 11.5px; color: var(--wb-muted); }
+.browser .chrome .dots i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #c4ccd8; margin-right: 4px; }
+.browser .chrome .url { flex: 1; background: #fff; border: 1px solid var(--wb-line); border-radius: 4px; padding: 3px 8px; font-family: var(--mono); color: var(--text); }
+
+/* ===== the product surface (mirrors src/index.css) ===== */
+.shell { display: flex; min-height: 560px; background: var(--bg); }
+.sidebar { width: 172px; background: var(--navy); color: #e8ecf2; padding: 18px 0; flex-shrink: 0; }
+.sidebar .brand { padding: 0 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
+.sidebar .brand h1 { font-size: 16px; margin: 0; letter-spacing: 0.3px; color: #fff; }
+.sidebar .brand span { font-size: 11px; color: #9fb0c6; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar nav a { display: block; padding: 8px 18px; color: #c8d2e0; text-decoration: none; font-size: 13.5px; border-left: 3px solid transparent; cursor: pointer; }
+.sidebar nav a:hover { background: var(--navy-2); color: #fff; }
+.sidebar nav a.active { background: var(--navy-2); color: #fff; border-left-color: var(--accent); }
+.sidebar nav a.new { position: relative; }
+.sidebar nav a.new::after { content: 'NEW'; position: absolute; right: 12px; top: 10px; font-size: 9px; letter-spacing: 0.8px; color: var(--accent); }
+.sidebar .mode { margin: 16px 18px 0; font-size: 11px; color: #9fb0c6; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.12); }
+.main { flex: 1; padding: 22px 26px; min-width: 0; overflow-x: auto; }
+.page-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 16px; flex-wrap: wrap; }
+.page-head h2 { margin: 0; font-size: 21px; color: var(--navy); }
+.page-head .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; }
+.card h3 { margin: 0 0 10px; font-size: 15px; color: var(--navy); }
+.card.warnline { border-color: var(--warn); }
+.card.ghost { border-style: dashed; color: var(--muted); font-style: italic; background: transparent; }
+table.list { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.list th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); padding: 8px 10px; border-bottom: 2px solid var(--line); }
+table.list td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.list tr.rowlink { cursor: pointer; }
+table.list tr.rowlink:hover { background: #f0f3f7; }
+.badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.badge.status { background: #e4e9f0; color: var(--navy); }
+.badge.pi { background: #e7f0e9; color: var(--ok); }
+.badge.flag { background: #f3edda; color: #7a5f1e; }
+.badge.st-overdue { background: #f6e2e2; color: #a03030; }
+.badge.st-lit { background: #f3edda; color: #7a5f1e; }
+.badge.st-pending { background: #eef0f2; color: var(--muted); }
+.badge.st-done { background: #e7f0e9; color: var(--ok); }
+.badge.st-na { background: #ece9f4; color: #5b4a8a; }
+.badge.owner { background: #e4e9f0; color: var(--navy); }
+.badge.deleg { background: #ece9f4; color: #5b4a8a; }
+.btn { display: inline-block; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--navy); background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; }
+.btn:hover { background: var(--navy-2); }
+.btn.secondary { background: #fff; color: var(--navy); }
+.btn.secondary:hover { background: #eef1f5; }
+.btn.small { padding: 4px 10px; font-size: 12px; }
+.btn.danger { border-color: #a03030; color: #a03030; background: #fff; }
+.btn.danger:hover { background: #fbeeee; }
+button.linky { background: none; border: 0; padding: 0; font: inherit; color: var(--navy-2); text-decoration: underline; cursor: pointer; }
+.muted { color: var(--muted); }
+.small { font-size: 12.5px; }
+.notice { background: #f3edda; border: 1px solid #e2d3a8; color: #6b551f; border-radius: 6px; padding: 9px 13px; font-size: 13px; margin-bottom: 14px; }
+label.fld { display: block; font-size: 12.5px; }
+label.fld .lab { display: block; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+label.fld .hint { display: block; font-weight: 400; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+input[type='text'], input[type='date'], select, textarea { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; font-size: 13.5px; font-family: inherit; background: #fff; color: var(--text); }
+input:focus, select:focus, textarea:focus { outline: 2px solid #b7c6dd; border-color: var(--navy-2); }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px 14px; }
+.form-grid .full { grid-column: 1 / -1; }
+.nums { font-variant-numeric: tabular-nums; }
+
+/* register-specific */
+.reg-group { margin-top: 16px; }
+.reg-group h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); display: flex; align-items: baseline; gap: 8px; }
+.reg-group h4.overdue { color: #a03030; }
+.reg-group h4 .cnt { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); font-size: 12px; }
+.reg-group .empty { color: #b3bac4; font-size: 12.5px; padding: 4px 10px; }
+tr.oc td.name { min-width: 190px; }
+tr.oc td.name .nm { font-weight: 600; color: var(--navy); }
+tr.oc td.name .per { color: var(--muted); font-size: 12px; margin-left: 6px; }
+tr.oc td.due .dt { white-space: nowrap; }
+tr.oc td.due .wk { display: block; color: var(--muted); font-size: 11.5px; max-width: 170px; }
+tr.oc td.acts { text-align: right; min-width: 150px; }
+tr.oc td.acts .btn { margin: 2px 0 2px 4px; }
+.badge.st-overdue, .badge.st-lit, .badge.st-pending { white-space: nowrap; }
+.wt { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.wt.hard { background: var(--navy); } .wt.routine { background: #b7c6dd; }
+tr.exp td { background: #fafbfc; padding: 10px 14px 14px 30px; }
+tr.exp .kv { display: grid; grid-template-columns: 130px 1fr; gap: 4px 12px; font-size: 12.5px; }
+tr.exp .kv dt { color: var(--muted); font-weight: 600; font-size: 11.5px; padding-top: 2px; }
+tr.exp .kv dd { margin: 0; }
+tr.exp .hist { margin-top: 8px; font-size: 12.5px; }
+tr.exp .hist div { padding: 3px 0; border-top: 1px dashed var(--line); }
+tr.exp .form { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+tr.exp .form .row { display: flex; gap: 8px; margin-top: 8px; }
+.hl-target { box-shadow: 0 0 0 3px rgba(176,141,62,0.45); border-radius: 6px; }
+.days { font-variant-numeric: tabular-nums; }
+
+/* outlook projection */
+.ol { display: flex; min-height: 560px; background: #fff; }
+.ol .olside { width: 190px; background: #f3f2f1; border-right: 1px solid #e1dfdd; padding: 14px 12px; font-size: 12.5px; font-family: 'Segoe UI', system-ui, sans-serif; }
+.ol .olside h5 { margin: 0 0 8px; font-size: 12px; color: #605e5c; text-transform: uppercase; letter-spacing: 0.5px; }
+.ol .olside label { display: flex; gap: 8px; align-items: center; padding: 4px 2px; cursor: pointer; }
+.ol .olside .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.ol .olmain { flex: 1; padding: 16px 20px; min-width: 0; }
+.ol .olmain h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; color: #201f1e; }
+.ol .olmain .sub { color: #605e5c; font-size: 12px; margin-bottom: 12px; }
+.ol .day { border-top: 1px solid #edebe9; padding: 8px 0; display: grid; grid-template-columns: 120px 1fr; gap: 10px; font-size: 13px; }
+.ol .day .d { color: #605e5c; font-variant-numeric: tabular-nums; }
+.ol .ev { display: flex; align-items: flex-start; gap: 8px; padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; border-left: 4px solid #0f6cbd; background: #eff6fc; }
+.ol .ev.firm { border-left-color: var(--accent); background: #faf6ec; }
+.ol .ev.done { opacity: 0.6; text-decoration: line-through; }
+.ol .ev .rem { color: #605e5c; font-size: 11.5px; display: block; text-decoration: none; }
+.ol .todo { display: flex; align-items: flex-start; gap: 10px; padding: 8px 6px; border-bottom: 1px solid #edebe9; font-size: 13px; }
+.ol .todo .cb { width: 16px; height: 16px; border: 1.5px solid #605e5c; border-radius: 50%; margin-top: 2px; flex-shrink: 0; }
+.ol .todo .meta { color: #605e5c; font-size: 11.5px; display: block; }
+.ol .todo.overdue .meta { color: #a4262c; }
+.ol .none { padding: 30px; color: #605e5c; font-style: italic; }
+
+/* ===== the decision panel ===== */
+.wb-panel { background: var(--wb-panel); border-left: 1px solid var(--wb-line); padding: 14px 16px 30px; overflow-y: auto; font-size: 13px; }
+.wb-panel h2 { font-size: 14px; margin: 0 0 4px; color: var(--navy); text-wrap: balance; }
+.wb-panel .qid { font-family: var(--mono); font-size: 11px; color: var(--wb-accent); margin-bottom: 10px; }
+.wb-panel .sheet { border-left: 3px solid var(--accent); padding: 2px 0 2px 10px; margin: 8px 0 12px; color: var(--wb-ink); }
+.wb-panel .sheet p { margin: 6px 0; }
+.wb-panel .sheet .cap { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--wb-muted); }
+.wb-panel .opts { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
+.wb-panel .opts label { display: flex; gap: 8px; align-items: flex-start; padding: 6px 8px; border: 1px solid var(--wb-line); border-radius: 6px; background: #fff; cursor: pointer; }
+.wb-panel .opts label.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.wb-panel .opts input { margin-top: 3px; }
+.wb-panel .opts .lean { font-size: 10.5px; color: var(--wb-accent); text-transform: uppercase; letter-spacing: 0.6px; margin-left: 6px; }
+.wb-panel .see { margin: 10px 0; }
+.wb-panel .see button { font-size: 12px; padding: 4px 10px; border: 1px solid var(--navy); background: #fff; color: var(--navy); border-radius: 999px; cursor: pointer; margin: 0 4px 4px 0; }
+.wb-panel .see button:hover { background: #eef1f5; }
+.wb-panel .fom { margin-top: 14px; border-top: 1px solid var(--wb-line); padding-top: 10px; }
+.wb-panel .fom h3 { font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--wb-muted); }
+.wb-panel .fom .it { background: #fff; border: 1px solid var(--wb-line); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+.wb-panel .fom .it b { font-family: var(--mono); font-weight: 600; color: var(--wb-accent); }
+.wb-panel .fom .it label { display: flex; gap: 6px; align-items: center; margin-top: 6px; font-size: 12px; color: var(--navy); cursor: pointer; }
+.wb-panel .schem { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.wb-panel .schem .tbl { background: #fff; border: 1px solid var(--wb-line); border-radius: 6px; padding: 8px 10px; font-family: var(--mono); font-size: 11px; }
+.wb-panel .schem .tbl b { display: block; font-size: 11.5px; color: var(--navy); margin-bottom: 4px; }
+.wb-panel .schem .tbl.dim { opacity: 0.55; }
+.wb-panel .note { font-size: 12px; color: var(--wb-muted); margin: 8px 0; }
+.wb-panel .custom { margin-top: 6px; }
+.wb-panel textarea.sum { width: 100%; min-height: 120px; font-family: var(--mono); font-size: 11.5px; }
+
+/* worksheet */
+table.ws { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.ws th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); padding: 6px 6px; border-bottom: 2px solid var(--line); position: sticky; top: 0; background: #fff; }
+table.ws td { padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.ws td.id { font-family: var(--mono); white-space: nowrap; }
+table.ws td.ch { white-space: nowrap; }
+table.ws td.ch label { margin-right: 6px; cursor: pointer; }
+table.ws select { padding: 2px 4px; font-size: 12px; width: auto; }
+
+.fixbar { background: #f3edda; color: #6b551f; border-bottom: 1px solid #e2d3a8; padding: 5px 12px; font-size: 12px; }
+
+@media (max-width: 1100px) {
+  .wb { grid-template-columns: 200px minmax(0, 1fr); }
+  .wb-panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--wb-line); }
+}
+@media (max-width: 760px) {
+  .wb { grid-template-columns: 1fr; }
+  .wb-rail { border-right: 0; border-bottom: 1px solid var(--wb-line); }
+  .shell { flex-direction: column; } .sidebar { width: auto; }
+}
+</style>
+<div class="wb">
+  <header class="wb-head">
+    <h1>Firm obligations — rendered examples for the ruling sitting</h1>
+    <span class="fix">Fixture</span>
+    <div class="ctl"><label for="fixture">Register</label><select id="fixture"><option value="backlog">A — with a backlog</option><option value="current">B — everything current</option></select></div>
+    <div class="ctl"><label for="today">Today (fixture clock)</label><input type="date" id="today"></div>
+    <div class="ctl quick"><button data-quick="fixture">fixture default</button><button data-quick="2026-10-20">Oct 20, 2026</button><button data-quick="2026-12-28">Dec 28, 2026</button><button data-quick="2027-01-20">Jan 20, 2027</button></div>
+    <span class="spacer"></span>
+    <span class="meta">spec + sheet at HEAD <code>8f7467b</code> · the sheet governs · nothing here is ruled</span>
+  </header>
+  <aside class="wb-rail"><div class="lab">The sheet, in its order</div><button data-dec="0"><span class="n">DECISION 0</span>The word<span class="q">Q-FO-0</span></button><button data-dec="1"><span class="n">DECISION 1</span>The closes<span class="q">Q-FO-2 (a),(c)</span></button><button data-dec="2"><span class="n">DECISION 2</span>What a missed period does<span class="q">Q-FO-2 (b)</span></button><button data-dec="3"><span class="n">DECISION 3</span>Where it lives<span class="q">Q-FO-1</span></button><button data-dec="4"><span class="n">DECISION 4</span>Per-firm or per-attorney<span class="q">Q-FO-3</span></button><button data-dec="5"><span class="n">DECISION 5</span>The QuickBooks limb<span class="q">Q-FO-4</span></button><button data-dec="6"><span class="n">DECISION 6</span>Weight<span class="q">Q-FO-6</span></button><button data-dec="7"><span class="n">DECISION 7</span>Outlook<span class="q">Q-FO-5</span></button><button data-dec="8"><span class="n">DECISION 8</span>The registry boundary<span class="q">Q-FO-7</span></button><button data-dec="9"><span class="n">DECISION 9</span>Acquisitions and templates<span class="q">Q-FO-9 · Q-FO-8</span></button><button data-dec="10"><span class="n">DECISION 10</span>Rows<span class="q">Q-FO-10</span></button><div class="lab" style="margin-top:14px">Also</div><button data-dec="11"><span class="n">HELD</span>Not on the sheet — for the product</button><button data-dec="12"><span class="n">FOM</span>Everything building it exposed</button></aside>
+  <main class="wb-stage" id="stage"></main>
+  <section class="wb-panel" id="panel"></section>
+</div>
+<script>/* firm-obligations mock — DOMAIN LOGIC (spec: docs/specs/firm-obligations-module-spec.md §3–§4 at HEAD 8f7467b)
+   Pure functions over naive local YYYY-MM-DD dates (FOD-3). No timers, no clock reads: `today` is always an argument.
+   Every behaviour here is the spec AS WRITTEN unless a FOM- switch in `opts` selects a PROPOSED alternative
+   (the companion doc names each). Runs in the browser and under node (see test/domain.test.js).
+   Revised 2026-09-08 after the adversarial audit: undo gated on FOD-7's own condition and on the occurrence a close
+   materialized; retire never hides a lit occurrence (FOD-8); FOD-1's weekend exemption; one-time retires itself;
+   the card's horizon; quarterly labels by the rule's own order; interval kinds never serial. */
+(function (root) {
+  'use strict';
+  var DAY = 86400000;
+  function parseD(s) { var p = s.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); }
+  function fmtD(ms) { return new Date(ms).toISOString().slice(0, 10); }
+  function addDays(s, n) { return fmtD(parseD(s) + n * DAY); }
+  function daysBetween(a, b) { return Math.round((parseD(b) - parseD(a)) / DAY); }
+  function ymd(s) { var p = s.split('-').map(Number); return { y: p[0], m: p[1], d: p[2] }; }
+  function lastDay(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }            // m is 1-based
+  function mk(y, m, d) { return fmtD(Date.UTC(y, m - 1, Math.min(d, lastDay(y, m)))); }  // clamps Feb 29 etc.
+  function dow(s) { return new Date(parseD(s)).getUTCDay(); }                              // 0 = Sunday
+  function cmp(a, b) { return a < b ? -1 : a > b ? 1 : 0; }
+  function isDate(s) { return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(parseD(s)); }
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function fmtLong(s) { var p = ymd(s); return DOW[dow(s)] + ' ' + MON[p.m - 1] + ' ' + p.d + ', ' + p.y; }
+  function fmtShort(s) { var p = ymd(s); return MON[p.m - 1] + ' ' + p.d; }
+  function fmtMonth(s) { var p = ymd(s); return MON[p.m - 1] + ' ' + p.y; }
+
+  /* ---------- period labels (§3.3 `periodLabel` — "derived from the rule") ---------- */
+  function quarterLabel(ob, due) { // by the RULE'S OWN list order: the i-th date in the list is "Q<i>"; a date that wraps into January belongs to the prior year
+    var p = ymd(due), dates = ob.rule.dates, first = dates[0];
+    for (var i = 0; i < dates.length; i++) {
+      if (dates[i].month === p.m && dates[i].day === p.d) {
+        var wrapped = dates[i].month < first.month || (dates[i].month === first.month && dates[i].day < first.day);
+        return (wrapped ? p.y - 1 : p.y) + ' Q' + (i + 1);
+      }
+    }
+    return String(p.y);
+  }
+  function periodLabel(ob, due) {
+    var p = ymd(due), st = ob.periodStyle || defaultPeriodStyle(ob);
+    switch (st) {
+      case 'year': return String(p.y);
+      case 'prior-year': return String(p.y - 1) + (ob.periodSuffix || '');
+      case 'span': return p.y + '–' + String(p.y + (ob.rule.everyYears || 1)).slice(ob.rule.everyYears > 1 ? 0 : 2);
+      case 'month': return p.y + '-' + String(p.m).padStart(2, '0');
+      case 'quarter': return quarterLabel(ob, due);
+      case 'due': return 'by ' + due;
+      default: return String(p.y);
+    }
+  }
+  function defaultPeriodStyle(ob) {
+    switch (ob.kind) {
+      case 'fixed-annual': return 'year';
+      case 'fixed-quarterly': return 'quarter';
+      case 'fixed-monthly': return 'month';
+      case 'anniversary': return 'span';
+      case 'interval-from-completion': return 'due';   // FOM-7: the spec gives no label for interval kinds
+      case 'one-time': return 'year';
+    }
+    return 'year';
+  }
+
+  /* ---------- rule evaluation (§3.2) ---------- */
+  // The first rule date strictly AFTER `after`, or on/after when `inclusive`.
+  function nextRuleDate(ob, after, inclusive) {
+    var r = ob.rule, a = ymd(after), c;
+    switch (ob.kind) {
+      case 'fixed-annual':
+        c = mk(a.y, r.month, r.day);
+        if (cmp(c, after) > 0 || (inclusive && c === after)) return c;
+        return mk(a.y + 1, r.month, r.day);
+      case 'fixed-quarterly': {
+        var cands = [];
+        for (var yy = a.y; yy <= a.y + 1; yy++) r.dates.forEach(function (dt) { cands.push(mk(yy, dt.month, dt.day)); });
+        cands.sort();
+        for (var i = 0; i < cands.length; i++) if (cmp(cands[i], after) > 0 || (inclusive && cands[i] === after)) return cands[i];
+        return cands[cands.length - 1];
+      }
+      case 'fixed-monthly':
+        c = mk(a.y, a.m, r.day);
+        if (cmp(c, after) > 0 || (inclusive && c === after)) return c;
+        return a.m === 12 ? mk(a.y + 1, 1, r.day) : mk(a.y, a.m + 1, r.day);
+      case 'anniversary': {
+        var an = ymd(r.anchorDate), step = r.everyYears || 1, y = an.y;
+        c = mk(y, an.m, an.d);
+        while (!(cmp(c, after) > 0 || (inclusive && c === after))) { y += step; c = mk(y, an.m, an.d); }
+        return c;
+      }
+      case 'interval-from-completion':
+        return addDays(after, r.days);
+      case 'one-time':
+        return r.dueOn || null;
+    }
+    return null;
+  }
+  function nextPeriodDate(ob, prevDue) { return nextRuleDate(ob, prevDue, false); }
+  function isCadence(ob) { return ob.kind === 'fixed-monthly' || ob.kind === 'interval-from-completion'; }
+
+  /* ---------- occurrences (§3.3) ---------- */
+  var seq = 0;
+  function newOccurrence(ob, due, precisionMonth) {
+    var eff = due;
+    if (precisionMonth) { var p = ymd(due); eff = mk(p.y, p.m, lastDay(p.y, p.m)); } // FOD-17: falls due on the last day
+    return { id: ob.id + '#' + (++seq), obligationId: ob.id, periodLabel: periodLabel(ob, due), dueOn: eff,
+      dueOnOverride: null, state: 'open', doneOn: null, outcome: null, outcomeReason: null, doneNote: null,
+      filedAt: null, externalRef: null, delegatedTo: null, nextId: null, outlookEventId: null, syncStatus: 'pending', touched: false };
+  }
+  function effectiveDue(oc) { return oc.dueOnOverride || oc.dueOn; }
+
+  // First occurrence on activation. Spec §4.1 states the anniversary case ("the first due date on or after today") and
+  // FOD-16 the interval case; for the fixed kinds the spec is silent and "on or after today" is this mock's DEFAULT.
+  // FOM-4 (PROPOSED): a serial kind may take a "last period completed" date, from which the first occurrence is the period after it.
+  function firstOccurrence(ob, today, opts) {
+    var pm = ob.precision === 'month';
+    switch (ob.kind) {
+      case 'interval-from-completion':
+        return newOccurrence(ob, ob.lastDone ? addDays(ob.lastDone, ob.rule.days) : today, false);   // FOD-16
+      case 'one-time':
+        return ob.rule.dueOn ? newOccurrence(ob, ob.rule.dueOn, pm) : null;
+      default:
+        if (ob.lastPeriodDue && opts && opts.fomActivationLastCompleted) return newOccurrence(ob, nextPeriodDate(ob, ob.lastPeriodDue), pm);
+        return newOccurrence(ob, nextRuleDate(ob, today, true), pm);
+    }
+  }
+
+  // Derived states (§3.3: `state` is only open|done; lit/overdue/pending are computed, §4.3).
+  function litFrom(ob, oc, opts) {
+    var eff = effectiveDue(oc), byLead = addDays(eff, -(ob.leadDays || 0));
+    if (ob.precision === 'month' && !oc.dueOnOverride) {
+      var p = ymd(eff), first = mk(p.y, p.m, 1);
+      if (opts && opts.fomPrecisionEarlier) return cmp(byLead, first) < 0 ? byLead : first;  // FOM-6: the earlier of the two
+      return first;                                                                          // FOD-17 as written: lights on the 1st
+    }
+    return byLead;
+  }
+  // FOD-1: "no 'overdue' label printed on the weekend after a Saturday date" — the exemption covers the weekend the due date
+  // falls in (a Saturday's Sunday; a Sunday itself); from Monday the label prints, which is FOM-12's point.
+  function weekendHold(eff, today) {
+    var d = dow(eff); if (d !== 6 && d !== 0) return false;
+    var weekendEnd = d === 6 ? addDays(eff, 1) : eff;
+    return cmp(today, eff) > 0 && cmp(today, weekendEnd) <= 0;
+  }
+  function status(ob, oc, today, opts) {
+    if (oc.state === 'done') return 'done';
+    var eff = effectiveDue(oc);
+    if (cmp(today, eff) > 0 && !weekendHold(eff, today)) return 'overdue';
+    if (cmp(today, litFrom(ob, oc, opts)) >= 0) return 'lit';
+    return 'pending';
+  }
+  function daysTo(oc, today) { return daysBetween(today, effectiveDue(oc)); }
+
+  /* ---------- the closes (§4.2), materialization of the next (§4.1) ---------- */
+  function materializeNext(ob, closed, completionDate, opts) {
+    if (ob.kind === 'one-time') return null;                       // retires itself when done (§3.2) — the caller flips `active`
+    if (ob.active === false) return null;                          // FOD-8: retired → no next materializes (the closed one was the last)
+    var pm = ob.precision === 'month', mp = isCadence(ob) ? (ob.kind === 'interval-from-completion' ? 'collapse' : (ob.missedPeriods || 'collapse')) : (ob.missedPeriods || 'serial'), due;
+    if (ob.kind === 'interval-from-completion') due = addDays(completionDate, ob.rule.days);            // collapse by construction (§3.2)
+    else if (mp === 'serial') due = nextPeriodDate(ob, closed.dueOn);                                      // the next PERIOD, even if already past (§4.1)
+    else if (opts && opts.fomCollapsePeriod) {
+      // FOM-1 (PROPOSED), two limbs: a cadence completion closes the PERIOD it falls in (next = first rule date in a later period);
+      // a dated kind under collapse never re-materializes its own date (next = first rule date after max(closed due, completion)).
+      if (ob.kind === 'fixed-monthly') { var c = ymd(completionDate), endOfClosed = mk(c.y, c.m, lastDay(c.y, c.m)); due = nextRuleDate(ob, endOfClosed, false); }
+      else due = nextRuleDate(ob, cmp(completionDate, closed.dueOn) > 0 ? completionDate : closed.dueOn, false);
+    } else due = nextRuleDate(ob, completionDate, false);            // spec as written: "the first rule date AFTER the completion date"
+    return newOccurrence(ob, due, pm);
+  }
+  function defaultMissed(ob) { return isCadence(ob) ? 'collapse' : 'serial'; }
+
+  // Mark done → { closed, next, retiresObligation, log }. Never mutates other rows.
+  function markDone(ob, oc, input, opts) {
+    if (oc.state !== 'open') throw new Error('only an open occurrence can be closed');
+    var doneOn = input.doneOn || input.today;
+    oc.state = 'done'; oc.doneOn = doneOn; oc.outcome = 'completed';
+    oc.doneNote = input.doneNote || null; oc.filedAt = input.filedAt || null; oc.externalRef = input.externalRef || null;
+    oc.delegatedTo = null; oc.touched = true;
+    var next = materializeNext(ob, oc, doneOn, opts); oc.nextId = next ? next.id : null;
+    return { closed: oc, next: next, retiresObligation: ob.kind === 'one-time', log: { entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'done', at: input.today, note: 'Done ' + doneOn + (oc.doneNote ? ' — ' + oc.doneNote : '') } };
+  }
+  // Not applicable this period — ONLY on conditionalPerPeriod obligations, reason REQUIRED (§4.2, FOD-18).
+  function markNotApplicable(ob, oc, input, opts) {
+    if (!ob.conditionalPerPeriod) throw new Error('not-applicable is not offered on this obligation (FOD-18)');
+    if (!input.outcomeReason) throw new Error('outcomeReason is required');
+    if (input.outcomeReason !== 'condition-not-met' && input.outcomeReason !== 'performed-elsewhere') throw new Error('unknown outcomeReason');
+    var doneOn = input.doneOn || input.today;
+    oc.state = 'done'; oc.doneOn = doneOn; oc.outcome = 'not-applicable'; oc.outcomeReason = input.outcomeReason;
+    oc.doneNote = input.doneNote || null; oc.delegatedTo = null; oc.touched = true;
+    var next = materializeNext(ob, oc, doneOn, opts); oc.nextId = next ? next.id : null;
+    return { closed: oc, next: next, retiresObligation: ob.kind === 'one-time', log: { entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'not-applicable', at: input.today, note: 'Not applicable (' + input.outcomeReason + ')' + (oc.doneNote ? ' — ' + oc.doneNote : '') } };
+  }
+  // Undo (§4.2, FOD-7): allowed ONLY while the occurrence this close materialized is still untouched; it deletes that
+  // occurrence and reopens this one. `next` must be the occurrence recorded at the close (`nextId`).
+  function canUndo(oc, next, otherOpenExists) {
+    if (oc.state !== 'done') return false;
+    if (oc.nextId == null) return !next && !otherOpenExists;                     // a one-time or a retired row materialized nothing: undoable only while the obligation has NO open occurrence (FOD-5)
+    return !!next && next.id === oc.nextId && next.state === 'open' && !next.touched && !next.dueOnOverride;
+  }
+  function undo(ob, oc, next, today, otherOpenExists) {
+    if (!canUndo(oc, next, otherOpenExists)) throw new Error('undo is allowed only while the next occurrence is untouched and no other occurrence is open (FOD-7, FOD-5)');
+    var deletedNext = !!next;
+    oc.state = 'open'; oc.doneOn = null; oc.outcome = null; oc.outcomeReason = null; oc.doneNote = null; oc.filedAt = null; oc.externalRef = null; oc.nextId = null; oc.touched = true;
+    return { reopened: oc, deletedNext: deletedNext, log: { entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'undone', at: today, note: 'Reopened' + (deletedNext ? '; the untouched next occurrence deleted' : '') } };
+  }
+  // An override / edit re-evaluates the OPEN occurrence and never moves an OVERDUE one later (FOD-4).
+  function applyOverride(ob, oc, newDate, today) {
+    if (oc.state !== 'open') throw new Error('only an open occurrence takes an override');
+    if (!isDate(newDate)) return { applied: false, reason: 'a date is required' };
+    var was = effectiveDue(oc);
+    if (cmp(today, was) > 0 && cmp(newDate, was) > 0) return { applied: false, reason: 'never-later-when-overdue (FOD-4)' };
+    oc.dueOnOverride = newDate; oc.touched = true;
+    return { applied: true, log: { entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'edited', at: today, note: 'Due date set to ' + newDate + ' (was ' + was + ')' } };
+  }
+
+  /* ---------- the surfaces (§5) ---------- */
+  // The dashboard card (FOD-14, FOD-11). Rendered default: overdue, or LIT and due within `horizonDays` — the reading on which
+  // "nothing lit or overdue → the card renders NOTHING" (§4.3) holds. opts.cardWindowRegardlessOfLead renders FOD-14 literally
+  // (due within 14 days even when the lead has not lit it) — the two sentences disagree; FOM-13.
+  // Retired obligations' OPEN occurrences stay (FOD-8): only obligations with no open occurrence drop out.
+  function cardItems(obs, occs, today, opts) {
+    var horizon = (opts && opts.cardHorizonDays) || 14, out = [];
+    occs.forEach(function (oc) {
+      if (oc.state !== 'open') return;
+      var ob = obs[oc.obligationId]; if (!ob) return;
+      if (!(opts && opts.cardBothWeights) && ob.weight !== 'hard' && !(opts && opts.oneWeightClass)) return;
+      var d = daysTo(oc, today), st = status(ob, oc, today, opts);
+      var within = d <= horizon && (st === 'lit' || (d >= 0 && opts && opts.cardWindowRegardlessOfLead));   // a lit item with d < 0 is a weekend hold (FOD-1) and stays current
+      if (st === 'overdue' || within) out.push({ oc: oc, ob: ob, days: d, status: st });
+    });
+    return sortForDisplay(out, opts);
+  }
+  // Display order: signed days ascending (the most overdue first, then the soonest due); weight breaks ties only (§4.4).
+  function sortForDisplay(items, opts) {
+    return items.sort(function (a, b) {
+      if (a.days !== b.days) return a.days - b.days;
+      if (!(opts && opts.oneWeightClass) && a.ob.weight !== b.ob.weight) return a.ob.weight === 'hard' ? -1 : 1;
+      return cmp(a.ob.name, b.ob.name);
+    });
+  }
+  // The register (§5.2): Overdue pinned, twelve month groups current-month-first, then Later (FOM-3). Every OPEN occurrence
+  // renders (§5.2's "every active obligation's next occurrence"), retired ones included while open (FOD-8).
+  function registerGroups(obs, occs, today, opts) {
+    var overdue = [], months = {}, later = [], t = ymd(today), order = [];
+    for (var i = 0; i < 12; i++) { var m = ((t.m - 1 + i) % 12) + 1, y = t.y + Math.floor((t.m - 1 + i) / 12); var key = y + '-' + String(m).padStart(2, '0'); order.push(key); months[key] = []; }
+    occs.forEach(function (oc) {
+      if (oc.state !== 'open') return;
+      var ob = obs[oc.obligationId]; if (!ob) return;
+      var item = { oc: oc, ob: ob, days: daysTo(oc, today), status: status(ob, oc, today, opts) };
+      if (item.status === 'overdue') { overdue.push(item); return; }
+      var key = effectiveDue(oc).slice(0, 7);
+      if (months[key]) months[key].push(item); else if (cmp(key, order[0]) < 0) months[order[0]].push(item); /* a weekend hold from the month just ended stays current */ else later.push(item);
+    });
+    return { overdue: sortForDisplay(overdue, opts), months: order.map(function (k) { return { key: k, label: fmtMonth(k + '-01'), items: sortForDisplay(months[k], opts) }; }), later: sortForDisplay(later, opts) };
+  }
+  function weekendNote(due) { var d = dow(due); return (d === 0 || d === 6) ? 'a next-business-day rule may apply; not computed' : null; }
+
+  /* ---------- the Outlook projection (§5.3) ---------- */
+  // mode: 'event-separate' | 'todo' | 'event-same-category' | 'none' | 'both'. The reminder fires at the LIT moment (the same
+  // computation the register uses, FOM-6 included), so the two surfaces never disagree. `word` is DECISION 0's word.
+  function outlookItems(obs, occs, mode, opts, word) {
+    var out = [], w = word || 'Firm obligation';
+    var singular = /ies$/.test(w) ? w.slice(0, -3) + 'y' : /s$/.test(w) ? w.slice(0, -1) : w;
+    if (mode === 'none') return out;
+    occs.forEach(function (oc) {
+      var ob = obs[oc.obligationId]; if (!ob) return;
+      if (oc.state !== 'open' && !oc.touched) return;                       // fixture history predates the module and was never pushed
+      var due = effectiveDue(oc), done = oc.state === 'done';
+      var subj = singular + ': ' + ob.name + ' (' + oc.periodLabel + ')';
+      var body = singular + ' — no matter' + (ob.precision === 'month' && !oc.dueOnOverride ? ' · the day is not known until the statement arrives' : '');
+      var remAt = litFrom(ob, oc, opts);
+      if (mode === 'event-separate' || mode === 'event-same-category' || mode === 'both') {
+        out.push({ kind: 'event', calendar: mode === 'event-same-category' ? 'MDBP Cases' : 'MDBP Firm', category: 'MDBP Firm', subject: (done ? 'Done — ' : '') + subj,
+          date: due, allDay: true, reminderOn: !done, reminderAt: remAt, leadDays: daysBetween(remAt, due), body: body, prop: 'FIRM|' + ob.id + '|' + oc.id, done: done, oc: oc, ob: ob });
+      }
+      if (mode === 'todo' || mode === 'both') {
+        out.push({ kind: 'todo', list: 'MDBP Firm', subject: subj, date: due, reminderAt: remAt, leadDays: daysBetween(remAt, due), done: done, completedOn: done ? oc.doneOn : null, oc: oc, ob: ob });
+      }
+    });
+    return out.sort(function (a, b) { return cmp(a.date, b.date) || cmp(a.subject, b.subject); });
+  }
+
+  root.FO = { parseD: parseD, fmtD: fmtD, addDays: addDays, daysBetween: daysBetween, ymd: ymd, lastDay: lastDay, mk: mk, dow: dow, cmp: cmp, isDate: isDate,
+    fmtLong: fmtLong, fmtShort: fmtShort, fmtMonth: fmtMonth, MON: MON, DOW: DOW,
+    periodLabel: periodLabel, nextRuleDate: nextRuleDate, nextPeriodDate: nextPeriodDate, isCadence: isCadence, newOccurrence: newOccurrence, effectiveDue: effectiveDue,
+    firstOccurrence: firstOccurrence, litFrom: litFrom, weekendHold: weekendHold, status: status, daysTo: daysTo, materializeNext: materializeNext, defaultMissed: defaultMissed,
+    markDone: markDone, markNotApplicable: markNotApplicable, canUndo: canUndo, undo: undo, applyOverride: applyOverride,
+    cardItems: cardItems, registerGroups: registerGroups, weekendNote: weekendNote, outlookItems: outlookItems };
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));
+</script>
+<script>/* firm-obligations mock — FIXTURE. A FICTIONAL firm's register. Every date, every "firm fact" (payroll, a lease, a
+   notary commission, which counties) is INVENTED for the example and asserts nothing about Michael D. Brennan, PLLC.
+   Template names, kinds, leads, weights and source strings are copied from the spec's §7 catalog (FOT- rows) at HEAD
+   8f7467b; the `sourceNote` strings are the spec's own cite-and-status strings and characterize nothing new. */
+(function (root) {
+  'use strict';
+  var FO = root.FO;
+
+  function ob(o) { // fill the spec's defaults (§3.1, §12)
+    o.leadDays = o.leadDays == null ? 30 : o.leadDays;                       // FOD-2
+    o.missedPeriods = o.missedPeriods || FO.defaultMissed(o);                  // §3.2 defaults
+    o.ownerScope = o.ownerScope || 'firm';
+    o.active = o.active !== false;
+    o.conditionalPerPeriod = !!o.conditionalPerPeriod;
+    o.weight = o.weight || 'hard';
+    return o;
+  }
+
+  // The catalog as the register OFFERS it (spec §7; the DECISION 9 Part B table on the sheet). `fixture` marks the rows
+  // the fictional firm has ACTIVATED with an invented date; the rest are offered only.
+  var CATALOG = [
+    ob({ id: 'FOT-1',  name: 'State Bar membership fee', category: 'licensing', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '2026-06-01', everyYears: 1 }, precision: 'month', periodStyle: 'span', leadDays: 45, weight: 'hard',
+         sourceNote: 'Tex. Gov’t Code § 81.054(a), (e)–(k) — official corpus 2026-08-14 — UNVERIFIED; the due date itself is in the State Bar Rules — NOT HELD', notes: 'The $65 legal services fee is billed with the dues (fixture note).', sheetWeight: 'hard', weightSource: 'his #137 set (bar dues)' }),
+    ob({ id: 'FOT-2',  name: 'MCLE compliance', category: 'licensing', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '2026-11-30', everyYears: 1 }, periodStyle: 'year', leadDays: 90, weight: 'hard',
+         sourceNote: 'Tex. Gov’t Code § 81.113(b)–(c) — UNVERIFIED (statute) + NOT HELD (the State Bar Rules / MCLE Regulations)', notes: 'Compliance year ends Nov 30 (fixture).', sheetWeight: 'hard', weightSource: 'his #137 set (CLE hours)' }),
+    ob({ id: 'FOT-3',  name: 'Guardianship certification (2 yrs, then 4)', category: 'licensing', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '', everyYears: 2 }, leadDays: 60, weight: 'hard',
+         sourceNote: 'Tex. Estates Code §§ 1054.201(a)–(b), 1054.202(a)–(b), 1054.203; Tex. Gov’t Code § 81.114(a) — UNVERIFIED', conditionalOn: 'he represents interests in guardianship proceedings or takes guardianship ad litem appointments — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call (conditional row)' }),
+    ob({ id: 'FOT-4',  name: 'TIDC Attorney Practice Time Report', category: 'court-appointments', ownerScope: 'attorney', kind: 'fixed-annual', rule: { month: 10, day: 15 }, periodStyle: 'year', leadDays: 30, weight: 'hard',
+         sourceNote: 'Tex. Code Crim. Proc. art. 26.04(j)(4) — official corpus 2026-08-14 — UNVERIFIED; corroborated by Tex. Gov’t Code § 79.036(a-1)', notes: 'Per-county checklist (fixture): County A · County B.', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-5',  name: 'Appointment-list eligibility (per the county plan)', category: 'court-appointments', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '', everyYears: 1 }, leadDays: 60, weight: 'hard',
+         sourceNote: 'the county’s indigent-defense plan — NOT READ (plan) / HIS TO STATE (counties)', conditionalOn: 'per county', sheetWeight: 'hard', weightSource: 'Claude’s call (conditional row)' }),
+    ob({ id: 'FOT-6',  name: 'Trust-account reconciliation', category: 'practice-rules', kind: 'fixed-monthly', rule: { day: 5 }, missedPeriods: 'collapse', leadDays: 5, weight: 'hard',
+         sourceNote: 'PRACTICE — no cadence in the rule read (TDRPC 1.15(a), eff. 3/7/2025); the module must NEVER present it as a rule requirement', notes: 'A practice cadence — his day of the month (fixture: the 5th).', sheetWeight: 'hard', weightSource: 'his #137 set (IOLTA reconciliation) — his to settle' }),
+    ob({ id: 'FOT-7', seededInactive: true,  name: 'IOLTA certification', category: 'practice-rules', kind: 'anniversary', rule: { anchorDate: '', everyYears: 1 }, active: false, leadDays: 30, weight: 'hard',
+         sourceNote: 'Rules Governing the Operation of the Texas Access to Justice Foundation — NOT HELD', notes: 'Seeded INACTIVE until the rules are read; nothing asserted about what they require.', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-8',  name: 'Texas franchise tax annual report', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 5, day: 15 }, conditionalPerPeriod: true, leadDays: 45, weight: 'hard',
+         sourceNote: 'Tex. Tax Code § 171.202(b); § 171.2022; § 171.002(d)(2); § 171.204(b) — UNVERIFIED', conditionalOn: 'whether the PLLC owes tax in the period — HIS FACT, per period', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-9',  name: 'Public Information Report', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 5, day: 15 }, leadDays: 45, weight: 'hard',
+         sourceNote: 'Tex. Tax Code § 171.203(a)–(c); § 171.2515(a) — UNVERIFIED (statute); NOT READ (the date; the forfeiture grounds)', sheetWeight: 'hard', weightSource: 'Claude’s call (on the forfeiture power)' }),
+    ob({ id: 'FOT-10', name: 'Business personal property rendition', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 4, day: 15 }, leadDays: 45, weight: 'hard',
+         sourceNote: 'Tex. Tax Code §§ 22.01(a), 22.23(a)–(b), 22.28(a) — official corpus 2026-08-14 — UNVERIFIED', conditionalOn: 'the firm owns income-producing tangible personal property on January 1 — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-11', name: 'Property tax payment', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 1, day: 31 }, periodStyle: 'prior-year', periodSuffix: ' tax', leadDays: 30, weight: 'hard',
+         sourceNote: 'Tex. Tax Code § 31.02(a) — UNVERIFIED', conditionalOn: 'a tax bill issued — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-12', name: 'Assumed-name certificate renewal (10 yrs)', category: 'tax-entity-and-employment', kind: 'anniversary', rule: { anchorDate: '2031-08-01', everyYears: 10 }, leadDays: 180, weight: 'hard',
+         sourceNote: 'Tex. Bus. & Com. Code §§ 71.103(a), 71.151(a)–(c) — UNVERIFIED', conditionalOn: 'the firm holds an assumed-name certificate — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call (conditional row)' }),
+    ob({ id: 'FOT-13', name: 'Forms W-2 to employees and W-2/W-3 to SSA', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 1, day: 31 }, periodStyle: 'prior-year', periodSuffix: ' wages', conditionalPerPeriod: true, leadDays: 30, weight: 'hard',
+         sourceNote: '26 CFR 31.6051-1(d)(1)(i); 26 CFR 31.6071(a)-1(a)(3)(i) — eCFR pages through the fetch layer, request 2026-09-07, up_to_date_as_of 2026-09-03 — TIER B', conditionalOn: 'wages paid in the year', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-14', name: 'Form 941 quarterly', category: 'tax-entity-and-employment', kind: 'fixed-quarterly', rule: { dates: [{ month: 4, day: 30 }, { month: 7, day: 31 }, { month: 10, day: 31 }, { month: 1, day: 31 }] }, conditionalPerPeriod: true, leadDays: 14, weight: 'hard',
+         sourceNote: '26 CFR 31.6071(a)-1(a)(1) — eCFR page through the fetch layer, request 2026-09-07, up_to_date_as_of 2026-09-03 — TIER B', conditionalOn: 'wages paid in the quarter', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-15', name: 'Form 940 (FUTA) annual return', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 1, day: 31 }, leadDays: 30, weight: 'hard',
+         sourceNote: '26 CFR 31.6071(a)-1 (the FUTA paragraph) — TIER B (summary only)', conditionalOn: 'wages paid', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-16', name: 'TWC quarterly wage report and unemployment contribution', category: 'tax-entity-and-employment', kind: 'fixed-quarterly', rule: { dates: [{ month: 4, day: 30 }, { month: 7, day: 31 }, { month: 10, day: 31 }, { month: 1, day: 31 }] }, leadDays: 14, weight: 'hard',
+         sourceNote: 'Tex. Labor Code ch. 204, ch. 213; 40 TAC § 815.106 — NOT READ (date)', conditionalOn: 'wages paid', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-17', name: 'Form 1099-NEC', category: 'tax-entity-and-employment', kind: 'fixed-annual', rule: { month: 1, day: 31 }, periodStyle: 'prior-year', periodSuffix: ' payments', conditionalPerPeriod: true, leadDays: 30, weight: 'hard',
+         sourceNote: '26 CFR 1.6041-6 — TIER B', conditionalOn: 'reportable nonemployee compensation paid in the year — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-18', name: 'Federal income-tax return(s) and quarterly estimates', category: 'tax-entity-and-employment', kind: 'fixed-quarterly', rule: { dates: [{ month: 4, day: 15 }, { month: 6, day: 15 }, { month: 9, day: 15 }, { month: 1, day: 15 }] }, leadDays: 30, weight: 'hard',
+         sourceNote: '26 U.S.C. §§ 6654(c)(2), 6072(a)–(b); 26 CFR 1.6072-1/-2 — NOT READ (no named channel)', conditionalOn: 'entity election and estimated-tax posture — HIS FACT; his accountant’s dates at activation', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-19', name: 'Professional-liability (malpractice) policy renewal', category: 'insurance', kind: 'anniversary', rule: { anchorDate: '2026-11-20', everyYears: 1 }, periodStyle: 'span', leadDays: 60, weight: 'hard',
+         sourceNote: 'none (the policy) — HIS FACT', sheetWeight: 'hard', weightSource: 'his #137 set (malpractice renewal)' }),
+    ob({ id: 'FOT-20', name: 'Other coverage renewals', category: 'insurance', kind: 'anniversary', rule: { anchorDate: '', everyYears: 1 }, leadDays: 60, weight: 'hard',
+         sourceNote: 'none (the policy) — HIS FACT', conditionalOn: 'coverage held — HIS FACT', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-21', name: 'Notary public commission renewal (4 yrs)', category: 'insurance', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '2028-03-14', everyYears: 4 }, leadDays: 60, weight: 'routine',
+         sourceNote: 'Tex. Gov’t Code §§ 406.002, 406.010(a) — official corpus 2026-08-14 — UNVERIFIED', conditionalOn: 'he holds a notary commission — HIS FACT', sheetWeight: 'routine', weightSource: 'Claude’s call (conditional row)' }),
+    ob({ id: 'FOT-22', name: 'Backup restore test — documents', category: 'infrastructure', kind: 'interval-from-completion', rule: { days: 91 }, leadDays: 14, weight: 'routine',
+         sourceNote: 'PRACTICE — BR-3’s origin case', notes: 'Pull a handful of files from the third copy and confirm they open (fixture: last run July 10).', sheetWeight: 'routine', weightSource: 'Claude’s call (BR-3)' }),
+    ob({ id: 'FOT-23', name: 'Database restore test — the case data', category: 'infrastructure', kind: 'interval-from-completion', rule: { days: 91 }, leadDays: 14, weight: 'routine',
+         sourceNote: 'PRACTICE — BR-3’s sibling', notes: 'Prove a Supabase backup actually restores (fixture: never run).', sheetWeight: 'routine', weightSource: 'Claude’s call (BR-3)' }),
+    ob({ id: 'FOT-24', name: 'Backup heartbeat reviewed', category: 'infrastructure', kind: 'fixed-monthly', rule: { day: 1 }, missedPeriods: 'collapse', leadDays: 3, weight: 'routine',
+         sourceNote: 'PRACTICE — carries #137’s requirement that monitoring applies to the VENDOR too', sheetWeight: 'routine', weightSource: 'Claude’s call (BR-3)' }),
+    ob({ id: 'FOT-25', name: 'Firm payment card expiry', category: 'infrastructure', kind: 'anniversary', rule: { anchorDate: '2027-03-01', everyYears: 1 }, precision: 'month', periodStyle: 'year', leadDays: 60, weight: 'hard',
+         sourceNote: 'HIS FACT', notes: 'Every auto-renewing subscription rides on it (fixture expiry: March 2027).', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-26', name: 'Annual closed-file and records review', category: 'practice-rules', kind: 'anniversary', rule: { anchorDate: '2026-12-15', everyYears: 1 }, periodStyle: 'year', leadDays: 30, weight: 'routine',
+         sourceNote: 'PRACTICE — the proxy for the event-driven duties (trust records five years after termination; retention; the website check)', sheetWeight: 'routine', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-27', name: 'Domain renewal', category: 'infrastructure', kind: 'anniversary', rule: { anchorDate: '2026-11-15', everyYears: 1 }, periodStyle: 'span', leadDays: 60, weight: 'hard',
+         sourceNote: 'HIS FACT (the date) — the sign-in sender and the firm’s mail ride on it', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-28', name: 'Subscription renewal — Microsoft 365', category: 'infrastructure', kind: 'anniversary', rule: { anchorDate: '2027-02-10', everyYears: 1 }, periodStyle: 'span', leadDays: 30, weight: 'routine',
+         sourceNote: 'HIS FACT (the dates) — they bill automatically; the dated risk is FOT-25', sheetWeight: 'routine', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-29', name: 'Legal-research subscription — the auto-renewal notice window', category: 'infrastructure', kind: 'one-time', rule: { dueOn: '' }, leadDays: 60, weight: 'hard',
+         sourceNote: 'HIS FACT (the date) — the contract governs', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-30', name: 'Office lease — renewal or notice deadline', category: 'infrastructure', kind: 'one-time', rule: { dueOn: '2027-02-28' }, leadDays: 90, weight: 'hard',
+         sourceNote: 'if leased — HIS FACT', notes: 'Fixture: notice due Feb 28, 2027.', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-31', name: 'County / specialty bar memberships', category: 'licensing', ownerScope: 'attorney', kind: 'anniversary', rule: { anchorDate: '2027-01-01', everyYears: 1 }, periodStyle: 'year', leadDays: 30, weight: 'routine',
+         sourceNote: 'optional; register-only', sheetWeight: 'routine', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-32', seededInactive: true, name: 'LegiScan API key rotation', category: 'infrastructure', kind: 'one-time', rule: { dueOn: '' }, active: false, leadDays: 14, weight: 'hard',
+         sourceNote: 'M-4: after the LegiScan poller tier’s T3 build — HIS FACT (the date); created inactive', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-33', seededInactive: true, name: 'Model-call credential rotation', category: 'infrastructure', kind: 'one-time', rule: { dueOn: '' }, active: false, leadDays: 14, weight: 'hard',
+         sourceNote: 'HIS FACT (the date, once a vendor is ruled) — created inactive; nothing about the credential’s home is decided', sheetWeight: 'hard', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-34', seededInactive: true, name: 'DMARC', category: 'infrastructure', kind: 'one-time', rule: { dueOn: '' }, active: false, leadDays: 14, weight: 'routine',
+         sourceNote: 'PRACTICE — deferred past go-live (#126); created inactive', sheetWeight: 'routine', weightSource: 'Claude’s call' }),
+    ob({ id: 'FOT-35', name: 'Security risk analysis', category: 'practice-rules', kind: 'anniversary', rule: { anchorDate: '', everyYears: 1 }, leadDays: 30, weight: 'routine',
+         sourceNote: '45 CFR 164.308 returned 503 and was NOT READ; no source text is claimed', sheetWeight: 'routine', weightSource: 'Claude’s call' }),
+    ob({ id: 'BOI', seededInactive: true,    name: 'Beneficial-ownership (BOI) report', category: 'tax-entity-and-employment', kind: 'one-time', rule: { dueOn: '' }, active: false, leadDays: 30, weight: 'hard',
+         sourceNote: '31 CFR 1010.380(c)(1)(ii), (c)(2)(xxiv) — TIER B — his read of the section decides', notes: 'Seeded INACTIVE with the note: on the TIER B read a Texas PLLC is a domestic entity and exempt; the register remembers the question if the rule moves.', sheetWeight: '—', weightSource: 'inactive with the note' })
+  ];
+
+  // History rows and the open occurrence for each ACTIVATED template, all invented. `done` rows are written straight into
+  // history; the OPEN occurrence is materialized by the domain (so serial/collapse is real, not typed in).
+  function hist(obl, due, doneOn, extra) {
+    var oc = FO.newOccurrence(obl, due, obl.precision === 'month');
+    oc.state = 'done'; oc.doneOn = doneOn; oc.outcome = (extra && extra.outcome) || 'completed';
+    oc.outcomeReason = (extra && extra.outcomeReason) || null; oc.doneNote = (extra && extra.doneNote) || null; oc.filedAt = (extra && extra.filedAt) || null; oc.touched = false; // history predates the module: never projected to Outlook
+    return oc;
+  }
+  function open(obl, due) { return FO.newOccurrence(obl, due, obl.precision === 'month'); }
+
+  var FIXTURES = {
+    'backlog': {
+      label: 'Fixture A — a register with a backlog',
+      today: '2026-10-02',
+      note: 'Two hard items overdue (the 2025 practice-time report, the September reconciliation), two routine ones overdue, three lit inside their lead windows.',
+      activated: ['FOT-1','FOT-2','FOT-4','FOT-6','FOT-8','FOT-9','FOT-10','FOT-11','FOT-13','FOT-14','FOT-17','FOT-19','FOT-21','FOT-22','FOT-23','FOT-24','FOT-25','FOT-26','FOT-27','FOT-28','FOT-30','FOT-31','FOT-12'],
+      build: function (obs) {
+        var occ = [];
+        occ.push(hist(obs['FOT-1'], '2025-06-01', '2025-05-20', { doneNote: 'paid on the bar portal (fixture)', filedAt: 'OneDrive/Firm/Bar/2025 receipt.pdf (fixture)' }));
+        occ.push(hist(obs['FOT-1'], '2026-06-01', '2026-05-29', { doneNote: 'paid (fixture)', filedAt: 'OneDrive/Firm/Bar/2026 receipt.pdf (fixture)' }));
+        occ.push(open(obs['FOT-1'], '2027-06-01'));
+        occ.push(hist(obs['FOT-2'], '2025-11-30', '2025-11-12', { doneNote: '15 hours reported (fixture)' }));
+        occ.push(open(obs['FOT-2'], '2026-11-30'));
+        occ.push(hist(obs['FOT-4'], '2024-10-15', '2024-10-10', { doneNote: 'submitted on the TIDC form (fixture)' }));
+        occ.push(open(obs['FOT-4'], '2025-10-15'));                      // the 2024 report is the last one done → the 2025 report is open and long overdue (serial)
+        occ.push(hist(obs['FOT-6'], '2026-08-05', '2026-08-04', { doneNote: 'reconciled to the July statement (fixture)' }));
+        occ.push(open(obs['FOT-6'], '2026-09-05'));                      // September never done → overdue; DONE collapses to the next future rule date
+        occ.push(hist(obs['FOT-8'], '2026-05-15', '2026-04-30', { outcome: 'not-applicable', outcomeReason: 'condition-not-met', doneNote: 'no tax due for the period (fixture)' }));
+        occ.push(open(obs['FOT-8'], '2027-05-15'));
+        occ.push(hist(obs['FOT-9'], '2026-05-15', '2026-05-12', { doneNote: 'filed on the comptroller’s portal (fixture)', filedAt: 'OneDrive/Firm/2026/PIR.pdf (fixture)' }));
+        occ.push(open(obs['FOT-9'], '2027-05-15'));
+        occ.push(hist(obs['FOT-10'], '2026-04-15', '2026-04-02', { doneNote: 'rendition filed (fixture)' }));
+        occ.push(open(obs['FOT-10'], '2027-04-15'));
+        occ.push(hist(obs['FOT-11'], '2026-01-31', '2026-01-20', { doneNote: 'paid (fixture)' }));
+        occ.push(open(obs['FOT-11'], '2027-01-31'));                     // a Sunday — FOD-1's display
+        occ.push(hist(obs['FOT-13'], '2026-01-31', '2026-01-25', { doneNote: 'filed (fixture)' }));
+        occ.push(open(obs['FOT-13'], '2027-01-31'));
+        occ.push(hist(obs['FOT-14'], '2026-07-31', '2026-07-28', { doneNote: 'filed (fixture)' }));
+        occ.push(open(obs['FOT-14'], '2026-10-31'));
+        occ.push(hist(obs['FOT-17'], '2026-01-31', '2026-01-27', { doneNote: 'filed (fixture)' }));
+        occ.push(open(obs['FOT-17'], '2027-01-31'));
+        occ.push(hist(obs['FOT-19'], '2025-11-20', '2025-11-10', { doneNote: 'renewed (fixture)', filedAt: 'OneDrive/Firm/Insurance/2025-26 policy.pdf (fixture)' }));
+        occ.push(open(obs['FOT-19'], '2026-11-20'));
+        occ.push(open(obs['FOT-21'], '2028-03-14'));
+        occ.push(hist(obs['FOT-22'], '2026-07-10', '2026-07-10', { doneNote: 'six files opened from the third copy (fixture)' }));
+        occ.push(open(obs['FOT-22'], '2026-10-09'));                      // lastDone + 91
+        occ.push(open(obs['FOT-23'], '2026-09-01'));                      // never run → due on the day it was activated (FOD-16)
+        occ.push(hist(obs['FOT-24'], '2026-09-01', '2026-09-02', { doneNote: 'last copy 6 h old (fixture)' }));
+        occ.push(open(obs['FOT-24'], '2026-10-01'));
+        occ.push(open(obs['FOT-25'], '2027-03-01'));
+        occ.push(hist(obs['FOT-26'], '2025-12-15', '2025-12-18', { doneNote: 'review done (fixture)' }));
+        occ.push(open(obs['FOT-26'], '2026-12-15'));
+        occ.push(hist(obs['FOT-27'], '2025-11-15', '2025-11-01', { doneNote: 'renewed two years (fixture)' }));
+        occ.push(open(obs['FOT-27'], '2026-11-15'));
+        occ.push(open(obs['FOT-28'], '2027-02-10'));
+        occ.push(open(obs['FOT-30'], '2027-02-28'));
+        occ.push(open(obs['FOT-31'], '2027-01-01'));
+        occ.push(open(obs['FOT-12'], '2031-08-01'));
+        return occ;
+      }
+    },
+    'current': {
+      label: 'Fixture B — everything current',
+      today: '2026-09-20',
+      note: 'Nothing overdue and nothing hard due within 14 days — the dashboard card renders NOTHING (the WorklistCard precedent); the register still shows the lit items.',
+      activated: ['FOT-1','FOT-2','FOT-4','FOT-6','FOT-9','FOT-19','FOT-22','FOT-24','FOT-27'],
+      build: function (obs) {
+        var occ = [];
+        occ.push(hist(obs['FOT-1'], '2026-06-01', '2026-05-29', { doneNote: 'paid (fixture)' }));
+        occ.push(open(obs['FOT-1'], '2027-06-01'));
+        occ.push(hist(obs['FOT-2'], '2025-11-30', '2025-11-12', { doneNote: '15 hours reported (fixture)' }));
+        occ.push(open(obs['FOT-2'], '2026-11-30'));
+        occ.push(hist(obs['FOT-4'], '2025-10-15', '2025-10-14', { doneNote: 'submitted (fixture)' }));
+        occ.push(open(obs['FOT-4'], '2026-10-15'));                      // 25 days out: LIT (lead 30) but outside the card's 14-day horizon
+        occ.push(hist(obs['FOT-6'], '2026-09-05', '2026-09-04', { doneNote: 'reconciled (fixture)' }));
+        occ.push(open(obs['FOT-6'], '2026-10-05'));
+        occ.push(hist(obs['FOT-9'], '2026-05-15', '2026-05-12', { doneNote: 'filed (fixture)' }));
+        occ.push(open(obs['FOT-9'], '2027-05-15'));
+        occ.push(open(obs['FOT-19'], '2026-11-20'));
+        occ.push(hist(obs['FOT-22'], '2026-08-30', '2026-08-30', { doneNote: 'six files opened (fixture)' }));
+        occ.push(open(obs['FOT-22'], '2026-11-29'));
+        occ.push(hist(obs['FOT-24'], '2026-09-01', '2026-09-01', { doneNote: 'fresh (fixture)' }));
+        occ.push(open(obs['FOT-24'], '2026-10-01'));
+        occ.push(open(obs['FOT-27'], '2026-11-15'));
+        return occ;
+      }
+    }
+  };
+
+  function buildFixture(name) {
+    var fx = FIXTURES[name] || FIXTURES.backlog, obs = {}, order = [];
+    CATALOG.forEach(function (c) { var copy = JSON.parse(JSON.stringify(c)); copy.activatedInFixture = fx.activated.indexOf(copy.id) >= 0; if (!copy.activatedInFixture && copy.active) copy.active = false; if (copy.activatedInFixture) copy.active = true; obs[copy.id] = copy; order.push(copy.id); });
+    var occ = fx.build(obs);
+    return { name: name, label: fx.label, note: fx.note, today: fx.today, obligations: obs, order: order, occurrences: occ, reviewLog: [] };
+  }
+
+  root.FO_FIXTURE = { CATALOG: CATALOG, FIXTURES: FIXTURES, buildFixture: buildFixture };
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));
+</script>
+<script>window.SHEET = {"d0": {"html": "<p><b>DECISION 0 — <code>Q-FO-0</code> — THE WORD (SPEC §2)</b></p>\n<p><b>Question.</b> The record already uses \"firm deadline\" for <code>FC-7</code>'s MATTER-scoped internal-buffer track (<i>\"'Firm deadlines' are those that are set by the firm\"</i>, his words 2026-08-18). <code>FO-1</code>'s scope — bar dues, MCLE, the TIDC report, the restore test — is something else. The spec proposes <b>\"firm obligation\"</b> for the new scope and never \"firm deadline\". <b>Is \"firm obligation\" the word, or does he prefer another?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) \"Firm obligations\" — it is the phrase he used at <code>#137</code>; (2) \"Practice obligations\"; (3) \"Office obligations\"; (4) a word of his own, or \"obligations\" alone with the firm/matter split carried by the page.</p>\n<p><b>What the answer changes.</b> The nav label (<code>FOD-12</code>, <code>/firm/obligations</code> → \"Obligations\"), the card title, the table names' prefix, every heading in the spec.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d1": {"html": "<p><b>DECISION 1 — <code>Q-FO-2</code>(a) and (c) — THE CLOSES (SPEC §3.3, §4.2)</b></p>\n<p><b>Question.</b> Each obligation has exactly ONE current occurrence, and it closes in only two ways: <b>Done</b> (date + optional note + where the proof is), or — ONLY on obligations whose duty can lapse for a period (no wages this year → no W-2; no tax owed → no franchise report) — <b>Not applicable this period</b>, with a required reason. Undo within the period. On bar dues, MCLE, the practice-time report, the PIR, insurance, there is no \"not applicable\" at all: Done or Retire. No snooze, no \"later\", no dismiss, no bulk action. <b>Is that the behaviour he wants — and is there a THIRD state he uses in practice (<i>\"delegated to &lt;person&gt;, waiting\"</i>) that should mark an open occurrence without closing it?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) As drafted — two closes, \"not applicable\" only where the duty can lapse; (2) as drafted PLUS a \"delegated — waiting on &lt;person&gt;\" marker that is NOT a close and stays lit, showing who has it (a future paralegal might be the one who files the PIR); (3) something adjacent — e.g., \"Done\" should always ask for a confirmation number on filings; or he never wants \"not applicable\" and would rather retire and re-add; or another shape of his.</p>\n<p><b>What the answer changes.</b> The <code>outcome</code>/<code>outcomeReason</code> enums and the <code>conditionalPerPeriod</code> flag (SPEC §3.3), <code>FOD-18</code>, <code>FOD-19</code>, the register's buttons; option (2) adds an <code>assignee</code> axis (SPEC §10).</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d2": {"html": "<p><b>DECISION 2 — <code>Q-FO-2</code>(b) — WHAT A MISSED PERIOD DOES (SPEC §4.1)</b></p>\n<p><b>Question.</b> A filing missed for a period stays a real missed filing: finishing the 2025 practice-time report in 2027 produces the 2026 occurrence already overdue, and so on until he is current (<b>serial</b>). A cadence — the monthly trust reconciliation, the backup heartbeat review — does NOT manufacture a backlog: a reconciliation done in September reconciles to date, and the next occurrence is the next future month (<b>collapse</b>). <code>FO-2</code> says the current duty stays lit; the spec reads it as not saying the software invents past ones. <b>Is that split right, and is the default assignment (filings serial; cadences collapse) right?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) As drafted; (2) serial for everything — every missed period is a row until he clears it; (3) collapse for everything — only the current period is ever lit; (4) a per-obligation choice with a different default than the spec's, or a composite of his.</p>\n<p><b>What the answer changes.</b> <code>missedPeriods</code> and its defaults; <code>FOD-5</code>.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d3": {"html": "<p><b>DECISION 3 — <code>Q-FO-1</code> — WHERE IT LIVES — Claude's recommendation, for confirmation (SPEC §6)</b></p>\n<p><b>Recommendation.</b> Two new tables — <code>firm_obligations</code> and <code>firm_obligation_occurrences</code>, RLS/policy/GRANT/probe in the same commit, store v17 on the demo side — rather than widening <code>calendar_events</code> (making <code>case_id</code> nullable and adding a <code>scope</code>). <b>Nothing is migrated by the answer; it shapes the slice.</b> Reason: <code>calendar_events.case_id</code> has been <code>NOT NULL</code> since the 2026-07-24 Outlook build and every reader relies on it; an occurrence has done/outcome/next-materialization semantics a calendar event does not; and this chooses against the literal reading of <code>FO-1</code>'s <i>\"a new SCOPE, not a new type\"</i> because the matter side of that one-model reading is the unbuilt deadline engine. <b>Does he confirm the recommendation, or does he see the storage the other way?</b> (This is an engineering call put for his confirmation — the <code>#149</code> limb-3 shape — not a workflow question.)</p>\n<p><b>Starting points (Claude's lean first).</b> (1) Two tables (the recommendation); (2) widen <code>calendar_events</code>; (3) two tables now, a read-only projection into a firm-wide calendar list later, if one is built; (4) his own shape.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d4": {"html": "<p><b>DECISION 4 — <code>Q-FO-3</code> — <code>FO-5</code>: PER-FIRM OR PER-ATTORNEY, AND WHO DOES THE WORK (SPEC §10)</b></p>\n<p><b>Question.</b> CLE, dues and the practice-time report are per licensee; the PIR, insurance and the backups are the firm's. Today both are him. <b>Does the register carry an owner scope from the first migration (<code>firm</code> / <code>attorney</code>, changing nothing on screen at the solo stage, fanning out per licensed user at multi-user), or wait until there is a second user?</b> And, if DECISION 1 took the delegated marker: <b>is WHO DOES IT (an assignee — a future paralegal filing the PIR) modelled now, or at multi-user?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) The owner-scope field now; the assignee axis at multi-user; (2) no field until the multi-user phase; (3) per-user for everything (rejected as the lean because insurance and the PIR are not per-user); (4) both axes now, or his own split.</p>\n<p><b>What the answer changes.</b> Two columns now or later; at multi-user, that Done on an <code>attorney</code>-scoped obligation needs the owner or the attorney role (a gate-2 item either way).</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d5": {"html": "<p><b>DECISION 5 — <code>Q-FO-4</code> — <code>FO-7</code>: DOES <code>FO-3</code>'S QUICKBOOKS LIMB FIRE? (SPEC §9)</b></p>\n<p><b>Question.</b> The limb fires only <i>\"IF a QuickBooks integration is genuinely in the build or spec'd\"</i>, verified at HEAD. At <code>ea5675b</code>: <b>no QuickBooks code or table exists in <code>src/</code>, <code>db/</code> or <code>supabase/</code>; a research memo exists</b> (<code>qbo-integration-research-memo-2026-08-15.md</code>, PROPOSED — RESEARCH ONLY) and records that Intuit offers no read-only scope. <b>On those two facts, is the register built THIN with no hook — a confirmation number and a \"filed at\" pointer being the only money-adjacent fields — with any later QuickBooks slice adding its own <code>ledgerRef</code> column?</b> Whether a research memo is \"spec'd\" in the sense he meant is his call (runner 82's words: <i>\"being his call\"</i>).</p>\n<p><b>Starting points (Claude's lean first).</b> (1) Thin, no hook; <code>FO-7</code> closes on the two facts; (2) thin, but reserve a nullable <code>externalRef</code> column now; (3) the memo counts as \"spec'd\" — the limb fires and the slice carries an expense-side hook designed against the memo (heavier; <code>Q-QBO-2</code>'s no-read-only-scope finding applies); (4) his own reading of the condition.</p>\n<p><b>What the answer changes.</b> One nullable column, and whether <code>FO-7</code> closes.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d6": {"html": "<p><b>DECISION 6 — <code>Q-FO-6</code> — WEIGHT (SPEC §4.4)</b></p>\n<p><b>Question.</b> Two classes — <code>hard</code> (licence, filing, insurance, and whatever he calls <i>\"do or die\"</i>) and <code>routine</code> (cadences, memberships) — affecting ORDER and EMPHASIS only, never behaviour; or one class and date order alone? <b>And a composite worth naming: routine items live on the register only and never on the dashboard card.</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) Two classes, routine on the register only (the composite); (2) two classes, both on the card; (3) one class; (4) his own line.</p>\n<p><b>What the answer changes.</b> One enum column; the card's sort and contents; nothing else. (Which ROWS are hard is DECISION 9's business — his <code>#137</code> words named four items; every other weight in the catalog is Claude's call, and DECISION 9 Part B says so row by row.)</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d7": {"html": "<p><b>DECISION 7 — <code>Q-FO-5</code> — OUTLOOK: THE OBJECT, THE CALENDAR, THE REMINDER (SPEC §5.3)</b></p>\n<p><b>Question.</b> The app has no channel of its own — nothing reaches him unless he opens a page — so Outlook is the only surface that can make a lead window FELT. An all-day event on the due date fires the evening before and then scrolls into the past; a To Do task stays overdue until completed on every Outlook surface including the phone, but needs a new consent (<code>Tasks.ReadWrite</code>) on the registration, which today holds <code>Calendars.ReadWrite</code> alone. Outlook mobile toggles CALENDARS cleanly and filters CATEGORIES poorly. <b>Does he want occurrences pushed at all, and if so as what, where, with what reminder?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) An all-day event on the due date in a SEPARATE dedicated calendar (\"MDBP Firm\"), subject <i>\"Firm obligation: &lt;name&gt; (&lt;period&gt;)\"</i>, with <code>isReminderOn</code> and the reminder set to the lead window; (2) a To Do task, granting the new scope; (3) the same \"MDBP Cases\" calendar with a <code>MDBP Firm</code> category; (4) no push — the register and the card are enough; (5) a composite — e.g., event AND task, or a separate calendar with the reminder at seven days rather than the lead — or his own.</p>\n<p><b>What the answer changes.</b> The no-case <code>toGraphEvent</code> variant; whether the occurrence table carries the four sync fields; a consent act if (2). Keep-vs-delete on done is HELD for his Outlook (foot of this sheet).</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d8": {"html": "<p><b>DECISION 8 — <code>Q-FO-7</code> — THE REGISTRY BOUNDARY (SPEC §8)</b></p>\n<p><b>Question.</b> The seed catalog rests on practice-of-law and practice-administration propositions (Tex. Gov't Code §§ 81.054, 81.113, 81.114, 79.036(a-1), 406.002, 406.010; Estates Code §§ 1054.201–.203; Code Crim. Proc. art. 26.04(j)(4); TDRPC 1.15(a); Tax Code §§ 171.002(d), 171.202, 171.2022, 171.203, 171.204(b), 171.2515, 22.01, 22.23, 22.28, 31.02, 151.0101; Bus. &amp; Com. Code §§ 71.103, 71.151; Labor Code §§ 406.004–.005; Health &amp; Safety Code § 181.101). The registry has, in BUILD-STATE's words, carried <i>\"the firm's CASES, not its PRACTICE\"</i>, and <i>\"the cases-vs-practice boundary stays UNDECIDED\"</i>. <b>Do these enter the registry as UNVERIFIED entries in a NEW file, <code>legal-rule-registry-firm-obligations.md</code>, with each template's source note pointing at its entry — or stay as source notes on the templates and out of the registry?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (a) Registry entries, new file, drafts by a later Opus act, each entering UNVERIFIED — the module puts a statute-backed date on his screen; (b) source notes only; (c) entries in an existing file rather than a new one (which one is then a second question); (d) his own boundary.</p>\n<p><b>What the answer changes.</b> Whether a drafting act is queued; the <code>sourceNote</code> field's meaning.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>"}, "d9": {"html": "<p><b>DECISION 9 — <code>Q-FO-9</code> and <code>Q-FO-8</code> — ACQUISITIONS, CHANNELS, AND WHICH TEMPLATES (SPEC §7, §7.8)</b></p>\n<p><b>Part A — acquisitions and channels (his hand, permanently).</b> Five things the catalog wants and the Knowledge Repo does not hold: <b>(1) the State Bar Rules</b> (Art. III membership/dues; Art. XII MCLE) with the <b>MCLE Regulations</b>; <b>(2) the Rules Governing the Operation of the Texas Access to Justice Foundation</b> (IOLTA); <b>(3) the Family Code zip</b> (already the acquisition list's recommended minimum); <b>(4) the indigent-defense plan(s)</b> for the counties whose lists he is on — public documents outside the four channels; <b>(5) a federal-statute channel</b> (the Office of the Law Revision Counsel / govinfo.gov) for the estimated-tax and return dates. <b>Which does he want, and are (4) and (5) new SOURCING channels (a trigger-3 amendment each) or per-instance reads?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) All five, with (4) and (5) as named channels; (2) the State Bar Rules and the FA zip now, the rest when their rows are activated; (3) none yet; (4) his own set.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>\n<p><b>Part B — the catalog, one question, not thirty.</b> <i>\"Which of these are OFFERED in the register, and which are ACTIVE at go-live?\"</i> — dates, per-period conditions and the firm facts (payroll — including himself under an S election; an assumed name; a notary commission; guardianship work; which counties' lists; which subscriptions) are entered <b>at activation, in the product</b> (<code>FOD-9</code>; <code>CC-1(b)</code>), never here. The only per-row question at the sitting is the WEIGHT: four rows carry his own <code>#137</code> words; every other weight is Claude's call, marked so, and any of them is his to change in a word. His answer can be a list, a rule (\"everything statutory active, everything infrastructure offered\"), or a composite.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span> (a list, a rule, or a composite)</p>\n<p class=\"small muted\">(The Part B table is rendered as the worksheet below, row for row.)</p>"}, "d10": {"html": "<p><b>DECISION 10 — <code>Q-FO-10</code> — ROWS (SPEC §1 item 9)</b></p>\n<p><b>Question.</b> <code>FO-1</code>–<code>FO-7</code> and <code>BR-3</code> have no register row; the closed register's own header says minting them is his act. <b>Mint them now</b> — <code>FO-1</code>–<code>FO-3</code> born ✅ in the closed register (<code>CAP-3</code>) with their ruling text, <code>FO-4</code> closed by the spec once DECISIONS 0–9 are ruled, <code>FO-5</code>/<code>FO-6</code>/<code>FO-7</code> ⬜ with the full question text (or ✅ if DECISIONS 4/5 close them), <code>BR-3</code> ⬜ pointing at <code>FOT-22</code> — <b>or leave them roomless?</b></p>\n<p><b>Starting points (Claude's lean first).</b> (1) Mint — <code>QR-1</code> exists because a question with no row is a question that disappears; (2) mint only the ones still open after this sitting; (3) leave roomless; (4) his own subset.</p>\n<p class=\"small muted\"><b>Michael:</b> <span style=\"display:inline-block;min-width:120px;border-bottom:1px solid #999\">&nbsp;</span></p>\n<p>---</p>"}, "held": {"html": "<p><b>NOT ON THIS SHEET — HELD FOR THE PRODUCT (<code>CC-1(b)</code>; PROPOSED for the HANDS-ON QUEUE)</b></p><p><code>FO-6</code> (already accepted onto the queue) plus the five the spec §11 proposes: the dashboard card's wording, position, line count and 14-day horizon; the register's twelve-month view and the shape of the Done / Not-applicable affordances; Outlook as seen in his Outlook — separate calendar vs the same, the subject, keep-with-\"Done — \"-prefix vs delete, the reminder at the lead window, the To Do route if he grants the scope; whether a firm-wide calendar page should exist and whether firm obligations should be visible-but-filtered on a case's Calendar tab; lead-window defaults once he has felt one. <b>Gate: the module on fixtures in demo mode.</b> Claude calls the sitting unprompted when that gate opens (<code>CC-1(c)</code>).</p>\n<p><b>NOT ON THIS SHEET — THE SLICE</b></p><p>The build slice and its kickoff prompt are drafted AFTER DECISIONS 0–10, put whole, broken into limbs at his instruction, and authorized (or not) in their own act. Nothing on this sheet is a build authorization.</p>"}};
+window.WS_ROWS = [{"id": "FOT-1", "template": "State Bar membership fee (+ the $65 legal services fee as a note)", "weight": "hard", "source": "his <code>#137</code> set (bar dues)"}, {"id": "FOT-2", "template": "MCLE compliance", "weight": "hard", "source": "his <code>#137</code> set (CLE hours)"}, {"id": "FOT-3", "template": "Guardianship certification (2 yrs, then 4)", "weight": "hard", "source": "Claude's call (conditional row)"}, {"id": "FOT-4", "template": "TIDC practice-time report — Oct 15", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-5", "template": "Appointment-list eligibility (per the county plan)", "weight": "hard", "source": "Claude's call (conditional row)"}, {"id": "FOT-6", "template": "Trust-account reconciliation (monthly, a practice cadence)", "weight": "<b>hard</b>", "source": "his <code>#137</code> set (IOLTA reconciliation) — the spec first drafted <code>routine</code> on the source-of-law ground and moved it to <code>hard</code> on his words; his to settle"}, {"id": "FOT-7", "template": "IOLTA certification (inactive until the rules are read)", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-8", "template": "Franchise tax annual report — May 15 (per-period condition)", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-9", "template": "Public Information Report — May 15 in practice", "weight": "hard", "source": "Claude's call (on the forfeiture power, § 171.2515(a); the grounds NOT READ)"}, {"id": "FOT-10", "template": "Business personal property rendition — Apr 15", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-11", "template": "Property tax payment — Jan 31", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-12", "template": "Assumed-name certificate renewal (10 yrs)", "weight": "hard", "source": "Claude's call (conditional row)"}, {"id": "FOT-13–FOT-18", "template": "W-2/W-3 · 941 · 940 · TWC · 1099-NEC · returns and estimates — all conditional on wages/payments", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-19", "template": "Malpractice renewal", "weight": "hard", "source": "his <code>#137</code> set (malpractice renewal)"}, {"id": "FOT-20", "template": "Other coverage renewals", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-21", "template": "Notary commission (4 yrs)", "weight": "routine", "source": "Claude's call (conditional row)"}, {"id": "FOT-22–FOT-24", "template": "Documents restore test · database restore test · backup heartbeat review", "weight": "routine", "source": "Claude's call (<code>BR-3</code>, the origin case)"}, {"id": "FOT-25", "template": "Firm payment card expiry", "weight": "<b>hard</b>", "source": "Claude's call"}, {"id": "FOT-26", "template": "Annual closed-file and records review", "weight": "routine", "source": "Claude's call"}, {"id": "FOT-27", "template": "Domain renewal", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-28", "template": "Subscription renewals (Supabase, Postmark, M365, CloudLex)", "weight": "<b>routine</b>", "source": "Claude's call (they bill automatically)"}, {"id": "FOT-29–FOT-30", "template": "Legal-research renewal notice window · office lease notice", "weight": "hard", "source": "Claude's call"}, {"id": "FOT-31", "template": "County / specialty bar memberships", "weight": "routine", "source": "Claude's call"}, {"id": "FOT-32–FOT-34", "template": "LegiScan key rotation · model-credential rotation · DMARC (all inactive, undated)", "weight": "hard / hard / routine", "source": "Claude's call"}, {"id": "FOT-35", "template": "Security risk analysis", "weight": "routine", "source": "Claude's call"}, {"id": "—", "template": "BOI report", "weight": "inactive with the note", "source": "—"}];
+window.SHEET_META = {"path": "docs/specs/firm-obligations-ruling-sheet-2026-09-07.md", "head": "8f7467b", "sha256": "c13c7727d407c640964fe353f04696a04efa5d5645d1b3ce1f8a44c1079156c4"};</script>
+<script>/* firm-obligations mock — UI. Renders the three surfaces (spec §5) under the spec's defaults, with the eleven DECISIONS
+   of the ruling sheet as switches. SHEET and WS_ROWS are injected at build time, verbatim from the sheet at HEAD. */
+(function () {
+  'use strict';
+  var FO = window.FO, FX = window.FO_FIXTURE, SHEET = window.SHEET || {}, WS_ROWS = window.WS_ROWS || [];
+  function h(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function store(k, v) { try { if (v === undefined) { var r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+
+  /* ---------- state ---------- */
+  var S = {
+    fixture: 'backlog', today: null, screen: 'register', decision: 0, multiUser: false, hl: null, expanded: {}, form: null,
+    d: { d0: 1, d0custom: '', d1: 1, d2: 1, d3: 1, d4: 1, d5: 1, d6: 1, d7: 1, d8: 'a', d10: 1 },
+    fom: { collapsePeriod: false, precisionEarlier: false, pinHardFirst: false, perPeriodFlags: false, cardWindowLiteral: false },
+    cardAbove: false,
+    ws: {}, data: null
+  };
+  var saved = store('fo-mock-state-v1'); if (saved && saved.d) { S.d = Object.assign(S.d, saved.d); S.fom = Object.assign(S.fom, saved.fom || {}); S.ws = saved.ws || {}; }
+  function persist() { store('fo-mock-state-v1', { d: S.d, fom: S.fom, ws: S.ws }); }
+
+  function loadFixture(name, keepToday) { S.fixture = name; S.data = FX.buildFixture(name); if (!keepToday) S.today = S.data.today; S.expanded = {}; S.form = null; }
+  loadFixture('backlog');
+
+  /* ---------- decision effects ---------- */
+  function word() { var m = { 1: 'Firm obligations', 2: 'Practice obligations', 3: 'Office obligations' }; return S.d.d0 == 4 ? (S.d.d0custom || 'Obligations') : m[S.d.d0]; }
+  function navLabel() { var w = word().trim().split(/\s+/); var last = w[w.length - 1]; return last.charAt(0).toUpperCase() + last.slice(1); }
+  function opts() {
+    return { cardBothWeights: S.d.d6 == 2, oneWeightClass: S.d.d6 == 3, fomCollapsePeriod: S.fom.collapsePeriod, fomPrecisionEarlier: S.fom.precisionEarlier, cardWindowRegardlessOfLead: S.fom.cardWindowLiteral, cardHorizonDays: 14 };
+  }
+  function effMissed(ob) { if (ob.kind === 'interval-from-completion') return 'collapse'; /* by construction (§3.2) */ if (S.d.d2 == 2) return 'serial'; if (S.d.d2 == 3) return 'collapse'; return ob.missedPeriods; }
+  function withEff(ob) { var c = Object.create(ob); c.missedPeriods = effMissed(ob); c.conditionalPerPeriod = ob.conditionalPerPeriod || (S.fom.perPeriodFlags && ['FOT-10','FOT-11','FOT-15','FOT-16'].indexOf(ob.id) >= 0); return c; }
+  function outlookMode() { return { 1: 'event-separate', 2: 'todo', 3: 'event-same-category', 4: 'none', 5: 'both' }[S.d.d7]; }
+  function showsNA(ob) { return ob.conditionalPerPeriod && S.d.d1 != '3b'; }
+  function hasDelegate() { return S.d.d1 == 2 || S.d.d4 == 4; }
+  function isFiling(ob) { return ob.category === 'court-appointments' || ob.category === 'tax-entity-and-employment'; }
+  function ownerScopeModelled() { return S.d.d4 != 2; }
+  function licensees() { return S.multiUser ? ['Attorney A', 'Attorney B'] : ['(the firm’s one attorney)']; }
+  function openOccs() { return S.data.occurrences.filter(function (o) { return o.state === 'open'; }); }
+  function occsOf(id) { return S.data.occurrences.filter(function (o) { return o.obligationId === id; }); }
+  function log(entry) { S.data.reviewLog.unshift(entry); }
+
+  /* ---------- sorting override (FOM-9) ---------- */
+  function sortPin(items) {
+    if (!S.fom.pinHardFirst) return items;
+    return items.slice().sort(function (a, b) { if (a.ob.weight !== b.ob.weight && S.d.d6 != 3) return a.ob.weight === 'hard' ? -1 : 1; return a.days - b.days; });
+  }
+
+  /* ---------- rendering: shell ---------- */
+  function renderShell(inner, url, active) {
+    var nav = [['/cases', 'Cases'], ['/inbox', 'Inbox'], ['/notes', 'Office notes'], ['/parties', 'Parties'], ['/benchmarks', 'Benchmarks'], ['/rules', 'Legal rules'], ['/statutes', 'Statutes'], ['/bills', 'Bill tracking'], ['/templates', 'Templates'], ['/firm/obligations', navLabel()]];
+    return '<div class="browser"><div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">localhost:5173' + h(url) + '</span><span>demo mode</span></div>' +
+      '<div class="fixbar">FIXTURE — a fictional firm’s register. Every date and every “firm fact” here is invented for the example; nothing on this screen is a fact about Michael D. Brennan, PLLC.</div>' +
+      '<div class="shell"><aside class="sidebar"><div class="brand"><h1>Brennan Law</h1><span>Case Manager</span></div><nav>' +
+      nav.map(function (n) { return '<a data-go="' + h(n[0]) + '" class="' + (n[0] === active ? 'active' : '') + (n[0] === '/firm/obligations' ? ' new' : '') + '">' + h(n[1]) + '</a>'; }).join('') +
+      '</nav><div class="mode">Demo mode: data stays in this browser</div></aside><main class="main">' + inner + '</main></div></div>';
+  }
+
+  /* ---------- /cases ---------- */
+  function renderCases() {
+    var obsE = {}; Object.keys(S.data.obligations).forEach(function (k) { obsE[k] = withEff(S.data.obligations[k]); });
+    var items = sortPin(FO.cardItems(obsE, S.data.occurrences, S.today, opts()));
+    var due = items.filter(function (i) { return i.days >= 0; }).length, over = items.length - due;
+    var card;
+    if (!items.length) card = '<div class="card ghost" id="fo-card">(the ' + h(word().toLowerCase()) + ' card renders NOTHING — no ' + (S.d.d6 == 2 || S.d.d6 == 3 ? '' : 'hard ') + 'item is overdue or due within 14 days; the WorklistCard precedent)</div>';
+    else {
+      var lines = items.slice(0, 3).map(function (i) {
+        var oc = i.oc, d = i.days;
+        return '<div>' + (S.d.d6 == 3 ? '' : '<span class="wt ' + h(i.ob.weight) + '" title="' + h(i.ob.weight) + '"></span>') + h(i.ob.name) + ' <span class="muted">· ' + h(oc.periodLabel) + '</span> · due ' + h(FO.fmtShort(FO.effectiveDue(oc))) + ' · <span class="days">' + (d < 0 ? '<span style="color:var(--warn);font-weight:600">' + (-d) + (d === -1 ? ' day' : ' days') + ' overdue</span>' : d === 0 ? 'today' : d + (d === 1 ? ' day' : ' days')) + '</span></div>';
+      }).join('');
+      var more = items.length > 3 ? '<div class="muted">and ' + (items.length - 3) + ' more</div>' : '';
+      card = '<div class="card' + (over ? ' warnline' : '') + '" id="fo-card"><strong>' + h(word()) + ' — ' + due + ' due · ' + over + ' overdue</strong><div class="small" style="margin-top:4px">' + lines + more + '<div style="margin-top:4px"><a data-go="/firm/obligations">Open the register</a></div></div></div>';
+    }
+    var legal = '<div class="card warnline"><strong>Legal watch</strong><div class="small" style="margin-top:4px"><span>⚠ <a>2 rules due for re-verification</a> · </span><span><a>1 enacted change taking effect later</a> · </span><span><a>3 pending bills watched</a></span></div></div>';
+    var order = S.cardAbove ? card + legal : legal + card; // §11 item 1: position is a hands-on item — a toggle in the panel, never a decision effect
+    var inner = order + '<div class="page-head"><div><h2>Cases</h2><div class="sub">2 matters · demo data</div></div><a class="btn">New case</a></div>' +
+      '<table class="list"><thead><tr><th>File</th><th>Caption</th><th>Practice area</th><th>Status</th></tr></thead><tbody>' +
+      '<tr class="rowlink"><td>26-0001</td><td>Demo matter A (fixture)</td><td><span class="badge pi">PI</span></td><td><span class="badge status">Pre-suit</span></td></tr>' +
+      '<tr class="rowlink"><td>26-0002</td><td>Demo matter B (fixture)</td><td><span class="badge pi">PI</span></td><td><span class="badge status">Litigation</span></td></tr></tbody></table>';
+    return renderShell(inner, '/cases', '/cases');
+  }
+
+  /* ---------- /firm/obligations ---------- */
+  function statusBadge(st, days) {
+    if (st === 'overdue') return '<span class="badge st-overdue">' + (-days) + (days === -1 ? ' day' : ' days') + ' overdue</span>';
+    if (st === 'lit') return '<span class="badge st-lit">' + (days < 0 ? 'past its date · weekend' : 'lit · ' + (days === 0 ? 'due today' : days + (days === 1 ? ' day' : ' days'))) + '</span>';
+    return '<span class="badge st-pending">' + days + ' days</span>';
+  }
+  function ownerCell(ob) {
+    if (!S.multiUser) return '';                                   // the solo stage: nothing on screen under any reading (§10)
+    if (S.d.d4 == 3) return '<span class="badge owner">Attorney A</span>';
+    if (!ownerScopeModelled()) return '<span class="badge owner" title="no owner field (DECISION 4 option 2)">—</span>';
+    return ob.ownerScope === 'attorney' ? '<span class="badge owner">Attorney A</span>' : '<span class="badge owner" style="opacity:.6">firm</span>';
+  }
+  function rowHTML(item, group) {
+    var oc = item.oc, ob = item.ob, eff = FO.effectiveDue(oc), wk = FO.weekendNote(eff), key = oc.id, ex = !!S.expanded[key];
+    var pm = ob.precision === 'month' && !oc.dueOnOverride;
+    var dueTxt = pm ? '<span class="dt">' + h(FO.MON[FO.ymd(eff).m - 1] + ' ' + FO.ymd(eff).y) + '</span><span class="wk">day unknown until the statement — set the real date when known</span>' : '<span class="dt">' + h(FO.fmtLong(eff)) + '</span>' + (wk ? '<span class="wk">' + h(wk) + '</span>' : '');
+    var acts = '<button class="btn small" data-act="done" data-oc="' + h(key) + '">Done</button>';
+    if (showsNA(ob)) acts += '<button class="btn small secondary" data-act="na" data-oc="' + h(key) + '">Not applicable…</button>';
+    if (hasDelegate() && !oc.delegatedTo) acts += '<button class="btn small secondary" data-act="delegate" data-oc="' + h(key) + '">Delegate…</button>';
+    var deleg = (oc.delegatedTo ? ' <span class="badge deleg">waiting on ' + h(oc.delegatedTo) + '</span>' : '') + (ob.active === false ? ' <span class="badge flag" title="FOD-8: retiring closes nothing; this occurrence stays lit until done and no next one materializes">retired — stays until done</span>' : '');
+    var fan = (S.multiUser && S.d.d4 != 2 && (ob.ownerScope === 'attorney' || S.d.d4 == 3)) ? licensees() : [null];
+    var rows = fan.map(function (who, ix) {
+      var own = who && S.multiUser ? (S.d.d4 == 3 || ownerScopeModelled() ? '<span class="badge owner">' + h(who) + '</span>' : '') : ownerCell(ob);
+      return '<tr class="oc' + (S.hl === ob.id ? ' hl-target' : '') + '"><td class="name"><span class="nm">' + h(ob.name) + '</span><span class="per">' + h(oc.periodLabel) + '</span>' + (own ? ' ' + own : '') + deleg + '</td>' +
+        '<td class="due">' + dueTxt + '</td><td>' + (S.d.d6 == 3 ? '' : '<span class="wt ' + h(ob.weight) + '" title="' + h(ob.weight) + '"></span><span class="small muted">' + h(ob.weight) + '</span>') + '</td>' +
+        '<td>' + statusBadge(item.status, item.days) + (item.status !== 'overdue' && FO.weekendHold(eff, S.today) ? ' <span class="small muted">past its date; the weekend exemption (FOD-1)</span>' : '') + '</td><td class="acts">' + (ix === 0 ? acts : '<span class="muted small">(preview: at multi-user, ' + h(who) + '’s own occurrence)</span>') + ' <button class="linky small" data-act="exp" data-oc="' + h(key) + '">' + (ex ? 'less' : 'more') + '</button></td></tr>';
+    }).join('');
+    if (ex) rows += expanderHTML(ob, oc);
+    return rows;
+  }
+  function sourceLine(ob) {
+    var s = h(ob.sourceNote);
+    if (S.d.d8 === 'a') return '<a title="would point at a registry entry in legal-rule-registry-firm-obligations.md — none is drafted (DECISION 8 option a)">' + s + '</a> <span class="badge flag">would link a registry entry · none drafted</span>';
+    if (S.d.d8 === 'c') return '<a title="would point at an entry in an existing registry file (option c) — none drafted">' + s + '</a> <span class="badge flag">would link an entry in an existing file · none drafted</span>';
+    return s + ' <span class="muted small">(source note on the template — not a registry entry)</span>';
+  }
+  function expanderHTML(ob, oc) {
+    var hist = occsOf(ob.id).filter(function (o) { return o.state === 'done'; }).sort(function (a, b) { return FO.cmp(b.doneOn, a.doneOn); });
+    var trail = S.data.reviewLog.filter(function (e) { return e.entityId === oc.id || (e.entityType === 'firm_obligation' && e.entityId === ob.id) || hist.some(function (x) { return x.id === e.entityId; }); });
+    var html = '<tr class="exp"><td colspan="5"><dl class="kv">' +
+      '<dt>Source</dt><dd>' + sourceLine(ob) + '</dd>' +
+      (ob.conditionalOn ? '<dt>Applies if</dt><dd>' + h(ob.conditionalOn) + '</dd>' : '') +
+      '<dt>Rule</dt><dd>' + h(ruleText(ob)) + ' · lead ' + ob.leadDays + ' days · missed periods: ' + h(effMissed(ob)) + (ob.conditionalPerPeriod ? ' · not-applicable offered (the duty can lapse for a period)' : '') + '</dd>' +
+      (ob.notes ? '<dt>Notes</dt><dd>' + h(ob.notes) + '</dd>' : '') +
+      (ownerScopeModelled() ? '<dt>Owner scope</dt><dd>' + h(ob.ownerScope) + (S.multiUser ? '' : ' <span class="muted">(changes nothing on screen at the solo stage)</span>') + '</dd>' : '') +
+      '</dl>';
+    if (S.d.d5 == 3) html += '<div class="notice" style="margin-top:8px">Expense hook (DECISION 5 option 3): amount · payee · ledger reference — <i>designed later against the QBO memo; greyed here</i></div>';
+    html += '<div class="hist"><strong class="small">History</strong>' + (hist.length ? hist.map(function (o) {
+      return '<div>' + (o.outcome === 'not-applicable' ? '<span class="badge st-na">not applicable</span> ' : '<span class="badge st-done">done</span> ') + h(o.periodLabel) + ' · ' + h(o.doneOn) + (o.outcomeReason ? ' · ' + h(o.outcomeReason) : '') + (o.doneNote ? ' · ' + h(o.doneNote) : '') + (o.filedAt ? ' · <span class="muted">filed at:</span> ' + h(o.filedAt) : '') + (o.externalRef ? ' · ref ' + h(o.externalRef) : '') +
+        (o.touched && FO.canUndo(o, nextFor(o), !!nextOf(o)) ? ' <button class="linky small" data-act="undo" data-oc="' + h(o.id) + '">Undo</button>' : (o.touched ? ' <span class="small muted">(undo closed — the next occurrence was touched, FOD-7)</span>' : '')) + '</div>';
+    }).join('') : '<div class="muted">none yet</div>') + '</div>';
+    if (trail.length) html += '<div class="hist"><strong class="small">Audit trail (review_log)</strong>' + trail.map(function (e) { return '<div class="small muted"><code>' + h(e.action) + '</code> · ' + h(e.at) + ' · ' + h(e.note) + '</div>'; }).join('') + '</div>';
+    html += '<div style="margin-top:8px"><button class="btn small secondary" data-act="override" data-oc="' + h(oc.id) + '">Set the real due date…</button> <button class="btn small secondary" data-act="edit" data-oc="' + h(oc.id) + '">Edit lead / weight…</button> ' + (ob.active === false ? '<button class="btn small secondary" data-act="activate" data-ob="' + h(ob.id) + '">Un-retire</button>' : '<button class="btn small danger" data-act="retire" data-ob="' + h(ob.id) + '">Retire</button>') + '</div>';
+    if (S.form && S.form.oc === oc.id) html += formHTML(ob, oc);
+    return html + '</td></tr>';
+  }
+  function ruleText(ob) {
+    var r = ob.rule;
+    switch (ob.kind) {
+      case 'fixed-annual': return 'every year on ' + FO.MON[r.month - 1] + ' ' + r.day;
+      case 'fixed-quarterly': return 'quarterly — ' + r.dates.map(function (d) { return FO.MON[d.month - 1] + ' ' + d.day; }).join(' · ');
+      case 'fixed-monthly': return 'monthly on the ' + r.day + (r.day === 1 ? 'st' : r.day === 2 ? 'nd' : r.day === 3 ? 'rd' : 'th');
+      case 'anniversary': return 'every ' + (r.everyYears > 1 ? r.everyYears + ' years' : 'year') + ' from ' + (r.anchorDate || '(his date, at activation)') + (ob.precision === 'month' ? ' (month precision)' : '');
+      case 'interval-from-completion': return r.days + ' days after the last completion';
+      case 'one-time': return 'once, on ' + (r.dueOn || '(undated)');
+    }
+    return '';
+  }
+  function formHTML(ob, oc) {
+    var f = S.form, html = '<div class="form">';
+    if (f.kind === 'done') {
+      html += '<strong class="small">Mark done — ' + h(ob.name) + ' · ' + h(oc.periodLabel) + '</strong><div class="form-grid" style="margin-top:8px">' +
+        '<label class="fld"><span class="lab">Done on</span><input type="date" name="doneOn" value="' + h(S.today) + '"></label>' +
+        '<label class="fld"><span class="lab">Note</span><input type="text" name="doneNote" placeholder="a confirmation number, “filed on the portal”"></label>' +
+        '<label class="fld"><span class="lab">Filed at</span><input type="text" name="filedAt" placeholder="a URL, a folder, a document name — a pointer, never a file"></label>';
+      if (S.d.d1 == '3a' && isFiling(ob)) html += '<label class="fld"><span class="lab">Confirmation number <span class="muted">(required on filings — DECISION 1 option 3)</span></span><input type="text" name="confirmation" required></label>';
+      if (S.d.d5 == 2) html += '<label class="fld"><span class="lab">External ref <span class="muted">(reserved column — DECISION 5 option 2)</span></span><input type="text" name="externalRef"></label>';
+      html += '</div>';
+    } else if (f.kind === 'na') {
+      html += '<strong class="small">Not applicable this period — ' + h(ob.name) + ' · ' + h(oc.periodLabel) + '</strong><div class="form-grid" style="margin-top:8px">' +
+        '<label class="fld"><span class="lab">Reason <span class="muted">(required)</span></span><select name="outcomeReason"><option value="">— choose —</option><option value="condition-not-met">condition not met (e.g. no wages this period)</option><option value="performed-elsewhere">performed elsewhere</option></select></label>' +
+        '<label class="fld"><span class="lab">Note</span><input type="text" name="doneNote" placeholder="no wages paid this year"></label></div>';
+    } else if (f.kind === 'delegate') {
+      html += '<strong class="small">Delegate — ' + h(ob.name) + '</strong><div class="form-grid" style="margin-top:8px"><label class="fld"><span class="lab">Waiting on</span><input type="text" name="delegatedTo" placeholder="Paralegal P (fixture)"><span class="hint">a marker on the OPEN occurrence — it stays lit; only Done closes it</span></label></div>';
+    } else if (f.kind === 'edit') {
+      html += '<strong class="small">Edit — ' + h(ob.name) + '</strong><div class="form-grid" style="margin-top:8px"><label class="fld"><span class="lab">Lead window (days)</span><input type="text" name="leadDays" value="' + h(ob.leadDays) + '"><span class="hint">re-evaluates the open occurrence’s lit moment; FOD-4</span></label><label class="fld"><span class="lab">Weight</span><select name="weight"><option value="hard"' + (ob.weight === 'hard' ? ' selected' : '') + '>hard</option><option value="routine"' + (ob.weight === 'routine' ? ' selected' : '') + '>routine</option></select><span class="hint">emphasis and order only, never behaviour (§4.4)</span></label></div><div class="note small">Rule edits (the date, the kind) are not rendered in this mock — §5 of the companion names the omission.</div>';
+    } else if (f.kind === 'override') {
+      html += '<strong class="small">Set the real due date — ' + h(ob.name) + ' · ' + h(oc.periodLabel) + '</strong><div class="form-grid" style="margin-top:8px"><label class="fld"><span class="lab">Due on</span><input type="date" name="newDate" value="' + h(FO.effectiveDue(oc)) + '"><span class="hint">FOD-4: an overdue occurrence is never moved later</span></label></div>';
+    }
+    html += '<div class="row"><button class="btn small" data-act="submit">Confirm</button><button class="btn small secondary" data-act="cancel">Cancel</button>' + (f.error ? '<span class="small" style="color:#a03030;align-self:center">' + h(f.error) + '</span>' : '') + '</div></div>';
+    return html;
+  }
+  function tableWrap(rows) { return '<table class="list reg"><thead><tr><th>Obligation</th><th>Due</th><th>Weight</th><th>State</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>'; }
+  function renderRegister() {
+    var obs = {}; Object.keys(S.data.obligations).forEach(function (k) { obs[k] = withEff(S.data.obligations[k]); });
+    var g = FO.registerGroups(obs, S.data.occurrences, S.today, opts());
+    var active = S.data.order.filter(function (id) { return obs[id].active; }).length;
+    var lit = 0; openOccs().forEach(function (o) { var st = FO.status(obs[o.obligationId], o, S.today, opts()); if (obs[o.obligationId].active && (st === 'lit')) lit++; });
+    var html = '<div class="page-head"><div><h2>' + h(word()) + '</h2><div class="sub">' + active + ' active · ' + g.overdue.length + ' overdue · ' + lit + ' lit in their lead window · today is ' + h(FO.fmtLong(S.today)) + ' (fixture)</div></div><div><button class="btn" data-act="catalog">Add obligation</button></div></div>';
+    if (S.d.d1 == '3b') html += '<div class="notice">DECISION 1 option 3(b): no “not applicable” anywhere — a duty that lapses is RETIRED and re-added when it returns.</div>';
+    html += '<div class="reg-group"><h4 class="overdue">Overdue <span class="cnt">' + g.overdue.length + '</span></h4>' + (g.overdue.length ? tableWrap(sortPin(g.overdue).map(function (i) { return rowHTML(i, 'overdue'); }).join('')) : '<div class="empty">nothing overdue</div>') + '</div>';
+    g.months.forEach(function (m) { html += '<div class="reg-group"><h4>' + h(m.label) + ' <span class="cnt">' + m.items.length + '</span></h4>' + (m.items.length ? tableWrap(m.items.map(function (i) { return rowHTML(i, m.key); }).join('')) : '<div class="empty">—</div>') + '</div>'; });
+    html += '<div class="reg-group"><h4>Later <span class="cnt">' + g.later.length + ' · beyond twelve months (FOM-3)</span></h4>' + (g.later.length ? tableWrap(g.later.map(function (i) { return rowHTML(i, 'later'); }).join('')) : '<div class="empty">—</div>') + '</div>';
+    var hasOpen = function (id) { return S.data.occurrences.some(function (o) { return o.obligationId === id && o.state === 'open'; }); };
+    var inactive = S.data.order.filter(function (id) { return obs[id].seededInactive && !obs[id].activatedInFixture; });
+    var retired = S.data.order.filter(function (id) { return !obs[id].active && obs[id].activatedInFixture && !hasOpen(id); });
+    html += '<div class="reg-group"><h4>Inactive <span class="cnt">' + (inactive.length + retired.length) + ' · created inactive, or retired with nothing open (FOM-5); a retired obligation whose occurrence is still open stays in its month above, marked</span></h4><table class="list"><tbody>' +
+      inactive.concat(retired).map(function (id) { var ob = obs[id]; var doneRows = occsOf(id).filter(function (o) { return o.state === 'done'; }).length; return '<tr class="oc"><td class="name"><span class="nm">' + h(ob.name) + '</span><span class="per">' + h(ruleText(ob)) + '</span>' + (ob.activatedInFixture ? ' <span class="badge flag">retired</span>' : '') + '</td><td colspan="3" class="small muted">' + h(ob.notes || ob.sourceNote) + (doneRows ? ' · history: ' + doneRows + ' done' : '') + '</td><td class="acts"><button class="btn small secondary" data-act="activate" data-ob="' + h(id) + '">' + (ob.activatedInFixture ? 'Re-activate…' : 'Activate…') + '</button></td></tr>'; }).join('') + '</tbody></table></div>';
+    if (S.form && S.form.kind === 'catalog') html += catalogHTML(obs);
+    if (S.form && S.form.kind === 'activate') html += activateHTML(obs[S.form.ob]);
+    return renderShell(html, '/firm/obligations', '/firm/obligations');
+  }
+  function catalogHTML(obs) {
+    var html = '<div class="card" id="catalog"><h3>Add obligation — from the seed catalog, or blank</h3><div class="small muted">Templates only. Nothing is created until you activate it with your own date (FOD-9). “Offered / Active at go-live” is DECISION 9 Part B — use the worksheet in the panel.</div><table class="list" style="margin-top:8px"><thead><tr><th>Template</th><th>Rule</th><th>Weight</th><th>Source status</th><th></th></tr></thead><tbody>' +
+      S.data.order.map(function (id) { var ob = obs[id]; if (ob.activatedInFixture || ob.seededInactive) return ''; return '<tr class="oc"><td class="name"><span class="nm">' + h(ob.name) + '</span><span class="per">' + h(id) + '</span></td><td class="small">' + h(ruleText(ob)) + '</td><td><span class="wt ' + h(ob.weight) + '"></span>' + h(ob.weight) + '</td><td class="small muted">' + h(ob.sourceNote) + '</td><td class="acts"><button class="btn small secondary" data-act="activate" data-ob="' + h(id) + '">Activate…</button></td></tr>'; }).join('') +
+      '<tr class="oc"><td class="name"><span class="nm">Custom obligation</span></td><td class="small muted" colspan="3">name · kind · date · lead — anything he adds</td><td class="acts"><button class="btn small secondary" disabled>Add…</button></td></tr></tbody></table><div style="margin-top:8px"><button class="btn small secondary" data-act="cancel">Close</button></div></div>';
+    return html;
+  }
+  function activateHTML(ob) {
+    var serial = effMissed(ob) === 'serial' && ob.kind !== 'one-time';
+    return '<div class="card" id="activate"><h3>Activate — ' + h(ob.name) + '</h3><div class="form-grid">' +
+      (ob.kind === 'anniversary' ? '<label class="fld"><span class="lab">Anchor date (yours)</span><input type="date" name="anchorDate" value="' + h(ob.rule.anchorDate || '') + '"><span class="hint">the statement date, the policy date, the commission date</span></label>' : '') +
+      (ob.kind === 'one-time' ? '<label class="fld"><span class="lab">Due on</span><input type="date" name="dueOn" value="' + h(ob.rule.dueOn || '') + '"></label>' : '') +
+      (ob.kind === 'interval-from-completion' ? '<label class="fld"><span class="lab">Last done (optional)</span><input type="date" name="lastDone"><span class="hint">FOD-16: left blank, the first occurrence is due NOW</span></label>' : '') +
+      (serial ? '<label class="fld"><span class="lab">Last period completed (optional) <span class="muted">— FOM-4, PROPOSED</span></span><input type="date" name="lastPeriodDue" placeholder="the due date of the last one you did"><span class="hint">if given, the first occurrence is the period AFTER it — possibly already overdue; left blank, the next future date</span></label>' : '') +
+      (ob.conditionalOn ? '<label class="fld full"><span class="lab">Applies if</span><span class="hint">' + h(ob.conditionalOn) + ' — your fact, stated here, never inferred</span></label>' : '') +
+      '</div><div class="row" style="margin-top:10px;display:flex;gap:8px"><button class="btn small" data-act="submit-activate" data-ob="' + h(ob.id) + '">Activate</button><button class="btn small secondary" data-act="cancel">Cancel</button>' + (S.form.error ? '<span class="small" style="color:#a03030;align-self:center">' + h(S.form.error) + '</span>' : '') + '</div></div>';
+  }
+
+  /* ---------- Outlook projection ---------- */
+  function renderOutlook() {
+    var obs = {}; Object.keys(S.data.obligations).forEach(function (k) { obs[k] = withEff(S.data.obligations[k]); });
+    var mode = outlookMode(), items = FO.outlookItems(obs, S.data.occurrences, mode, opts(), word());
+    var side = '<div class="olside"><h5>My calendars</h5><label><span class="sw" style="background:#0f6cbd"></span> Calendar</label><label><span class="sw" style="background:#0f6cbd;opacity:.7"></span> MDBP Cases</label>' + (mode === 'event-separate' || mode === 'both' ? '<label><input type="checkbox" checked disabled><span class="sw" style="background:var(--accent)"></span> MDBP Firm <span class="muted">(new)</span></label>' : '') +
+      (mode === 'todo' || mode === 'both' ? '<h5 style="margin-top:14px">To Do</h5><label><span class="sw" style="background:var(--accent)"></span> MDBP Firm</label>' : '') + '<div class="muted" style="margin-top:14px;font-size:11px">Outlook mobile toggles CALENDARS cleanly and filters CATEGORIES poorly (spec §5.3).</div></div>';
+    var main = '<div class="olmain"><h3>' + (mode === 'todo' ? 'To Do — MDBP Firm' : 'Agenda') + '</h3><div class="sub">what the app would push as of ' + h(FO.fmtLong(S.today)) + ' · ' + { 'event-separate': 'all-day events in a separate “MDBP Firm” calendar, reminder at the lead window (the lean, FOD-10)', 'todo': 'To Do tasks — needs a new Tasks.ReadWrite consent on the registration', 'event-same-category': 'all-day events in the same “MDBP Cases” calendar, category “MDBP Firm”', 'none': 'nothing is pushed — the register and the card are the only surfaces', 'both': 'an event AND a task per occurrence' }[mode] + '</div>';
+    if (mode === 'none') main += '<div class="none">Nothing pushed. The only way the lead window is FELT is opening the register.</div>';
+    else {
+      var events = items.filter(function (i) { return i.kind === 'event'; }), todos = items.filter(function (i) { return i.kind === 'todo'; });
+      if (events.length) {
+        var byDay = {}; events.forEach(function (e) { (byDay[e.date] = byDay[e.date] || []).push(e); });
+        var caseEv = { '2026-10-06': 'Hearing — Demo matter A (MDBP Cases, fixture)', '2026-10-14': 'Deadline — Demo matter B response due (MDBP Cases, fixture)' };
+        Object.keys(caseEv).forEach(function (d) { (byDay[d] = byDay[d] || []).push({ kind: 'case', subject: caseEv[d], date: d }); });
+        var days = Object.keys(byDay).sort();
+        main += days.map(function (d) {
+          var past = FO.cmp(d, S.today) < 0;
+          return '<div class="day"><div class="d">' + h(FO.fmtLong(d)) + (past ? '<br><span class="small" style="color:#a4262c">scrolled into the past</span>' : '') + '</div><div>' + byDay[d].map(function (e) {
+            if (e.kind === 'case') return '<div class="ev">' + h(e.subject) + '</div>';
+            return '<div class="ev firm' + (e.done ? ' done' : '') + '"><div><b>All day</b> · ' + h(e.subject) + '<span class="rem">' + h(e.calendar) + ' · category ' + h(e.category) + ' · ' + h(e.body) + ' · ' + (e.reminderOn ? 'reminder ' + h(FO.fmtLong(e.reminderAt)) + ' (' + e.leadDays + ' days before)' : 'no reminder') + '</span></div></div>';
+          }).join('') + '</div></div>';
+        }).join('');
+      }
+      if (todos.length) main += '<div style="margin-top:14px">' + todos.map(function (t) { var od = !t.done && FO.cmp(t.date, S.today) < 0; return '<div class="todo' + (od ? ' overdue' : '') + (t.done ? ' done' : '') + '"><span class="cb' + (t.done ? ' on' : '') + '"></span><div>' + (t.done ? '<s>' + h(t.subject) + '</s>' : h(t.subject)) + '<span class="meta">' + (t.done ? 'completed ' + h(FO.fmtLong(t.completedOn)) + ' — moves to Outlook’s Completed list' : 'due ' + h(FO.fmtLong(t.date)) + (od ? ' — overdue, stays on every Outlook surface until completed' : '') + ' · reminder ' + h(FO.fmtLong(t.reminderAt))) + '</span></div></div>'; }).join('') + '</div>';
+      main += '<div class="muted" style="margin-top:14px;font-size:11.5px">Keep-with-“Done — ”-prefix vs delete on done is HELD for your Outlook (spec §11 item 3); the mock shows the prefix. Whether Graph honours a reminder 30–180 days before an all-day event is a build-time check (FOM-8).</div>';
+    }
+    return '<div class="browser"><div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">outlook.office.com — projection (not a screenshot)</span></div><div class="fixbar">FIXTURE — the projection of what the app would push; every date invented.</div><div class="ol">' + side + main + '</div></div>';
+  }
+
+  /* ---------- the decision panel ---------- */
+  var DEC = [
+    { n: 0, q: 'Q-FO-0', title: 'The word', opts: [[1, '“Firm obligations” (the phrase he used at #137)', true], [2, '“Practice obligations”'], [3, '“Office obligations”'], [4, 'a word of his own']], key: 'd0', look: [['/cases', 'the card title'], ['/firm/obligations', 'the nav label and page title'], ['outlook', 'the event subject and body line']] },
+    { n: 1, q: 'Q-FO-2(a),(c)', title: 'The closes', opts: [[1, 'As drafted — Done, and Not-applicable only where the duty can lapse', true], [2, 'As drafted PLUS a “delegated — waiting on <person>” marker (not a close)'], ['3a', 'Adjacent: Done always asks for a confirmation number on filings'], ['3b', 'Adjacent: no “not applicable” at all — retire and re-add']], key: 'd1', look: [['/firm/obligations', 'the Done / Not-applicable / Delegate buttons and the forms']], fom: ['FOM-11', 'FOM-12'] },
+    { n: 2, q: 'Q-FO-2(b)', title: 'What a missed period does', opts: [[1, 'As drafted — filings serial, cadences collapse', true], [2, 'Serial for everything'], [3, 'Collapse for everything'], [4, 'A per-obligation choice with a different default, or a composite']], key: 'd2', look: [['/firm/obligations', 'mark the 2025 practice-time report Done: the 2026 report materializes at once (serial); mark the September reconciliation Done: one next occurrence (collapse)']], fom: ['FOM-1', 'FOM-4', 'FOM-10'] },
+    { n: 3, q: 'Q-FO-1', title: 'Where it lives', opts: [[1, 'Two tables (the recommendation)', true], [2, 'Widen calendar_events'], [3, 'Two tables now, a read-only projection later'], [4, 'His own shape']], key: 'd3', look: [] },
+    { n: 4, q: 'Q-FO-3', title: 'FO-5: per-firm or per-attorney, and who does the work', opts: [[1, 'The owner-scope field now; the assignee axis at multi-user', true], [2, 'No field until the multi-user phase'], [3, 'Per-user for everything (rejected as the lean)'], [4, 'Both axes now, or his own split']], key: 'd4', look: [['/firm/obligations', 'the owner badge — toggle the multi-user preview below to see the fan-out']], fom: ['FOM-15'] },
+    { n: 5, q: 'Q-FO-4', title: 'FO-7: does FO-3’s QuickBooks limb fire?', opts: [[1, 'Thin, no hook; FO-7 closes on the two facts', true], [2, 'Thin, but reserve a nullable externalRef column now'], [3, 'The memo counts as “spec’d” — the slice carries an expense-side hook'], [4, 'His own reading of the condition']], key: 'd5', look: [['/firm/obligations', 'open a row’s Done form and its expander: the fields that exist under each reading']] },
+    { n: 6, q: 'Q-FO-6', title: 'Weight', opts: [[1, 'Two classes; routine on the register only, never on the card (the composite)', true], [2, 'Two classes, both on the card'], [3, 'One class — date order alone'], [4, 'His own line']], key: 'd6', look: [['/cases', 'the card: which rows reach it'], ['/firm/obligations', 'the weight glyphs and the Overdue pin’s order']], fom: ['FOM-9', 'FOM-13', 'FOM-14'] },
+    { n: 7, q: 'Q-FO-5', title: 'Outlook: the object, the calendar, the reminder', opts: [[1, 'An all-day event on the due date in a separate “MDBP Firm” calendar, reminder at the lead window', true], [2, 'A To Do task (new Tasks.ReadWrite consent)'], [3, 'The same “MDBP Cases” calendar with an “MDBP Firm” category'], [4, 'No push'], [5, 'A composite — event AND task, or his own']], key: 'd7', look: [['outlook', 'the projection under each option']], fom: ['FOM-8'] },
+    { n: 8, q: 'Q-FO-7', title: 'The registry boundary', opts: [['a', 'Registry entries, a new file, drafts by a later Opus act, each UNVERIFIED', true], ['b', 'Source notes only'], ['c', 'Entries in an existing file'], ['d', 'His own boundary']], key: 'd8', look: [['/firm/obligations', 'open a row’s expander: the Source line under each reading']] },
+    { n: 9, q: 'Q-FO-9 · Q-FO-8', title: 'Acquisitions, channels, and which templates', opts: null, key: null, look: [['/firm/obligations', 'the Add-obligation catalog (the templates as offered)']], fom: ['FOM-2', 'FOM-3', 'FOM-5', 'FOM-6', 'FOM-7'] },
+    { n: 10, q: 'Q-FO-10', title: 'Rows', opts: [[1, 'Mint — FO-1–FO-7 and BR-3', true], [2, 'Mint only the ones still open after this sitting'], [3, 'Leave roomless'], [4, 'His own subset']], key: 'd10', look: [] }
+  ];
+  var FOM = {
+    'FOM-1': { t: 'Collapse re-materializes too soon — and, completed early, the SAME date.', d: 'Spec §4.1 as written: the next occurrence is “the first rule date AFTER the completion date.” The September 5 reconciliation done October 2 → next October 5, three days away, lit at once (lead 5). Done EARLY on September 3 (FOD-15 allows it) → next is September 5 AGAIN; the same re-materialization happens to any annual or anniversary row under DECISION 2 option 3. PROPOSED, two limbs: a cadence completion closes the PERIOD it falls in (next = the first rule date in a later period); a dated kind under collapse never re-materializes its own date (next = the first rule date after the later of its due date and the completion). Interval kinds unaffected.', sw: 'collapsePeriod', swl: 'Render the PROPOSED rule instead of the spec as written' },
+    'FOM-2': { t: '“Conditional on” mixes activation facts with per-period lapse.', d: 'The catalog marks conditionalPerPeriod on four rows (FOT-8, 13, 14, 17) — the mock renders exactly those four — yet the duty can lapse for a period on FOT-10 (property owned on January 1), FOT-11 (a bill issued), FOT-15 and FOT-16 (wages) too. PROPOSED: mark per-period lapse explicitly on every row where it can occur, and keep activation conditions (his facts) as a separate column.', sw: 'perPeriodFlags', swl: 'Render the PROPOSED flags (Not-applicable offered on FOT-10, 11, 15, 16 as well)' },
+    'FOM-3': { t: 'A twelve-month view has no home for an occurrence beyond twelve months.', d: 'The notary commission (4 years), the assumed-name certificate (10) and the guardianship certificate (2) have next occurrences outside any month group. PROPOSED (rendered): a “Later” group at the foot, Done still allowed there (FOD-15).' },
+    'FOM-4': { t: 'Activation cannot know a period missed BEFORE activation.', d: 'Spec §4.1 states the first occurrence for anniversary kinds (“the first due date on or after today”) and is silent for the fixed kinds; the mock applies the same rule to them as its own default. Either way a report never filed for 2025 and activated in September 2026 materializes 2026 and never knows about 2025 — the sheet’s example (“finishing the 2025 practice-time report in 2027”) can only arise for a period missed AFTER activation. PROPOSED (rendered in Activate…): an optional “last period completed” at activation; if given, the first occurrence is the period after it, possibly already overdue.' },
+    'FOM-5': { t: 'Where inactive obligations live is unstated.', d: 'Rows “created inactive” (IOLTA certification, the two key rotations, DMARC, BOI) and retired rows need a place. PROPOSED (rendered): an Inactive section at the foot of the register with [Activate…] taking his date (FOD-9); templates never added live only in the catalog picker.' },
+    'FOM-6': { t: 'Month precision and the lead window interact, and the spec picks the 1st regardless.', d: 'FOD-17: a month-precision row “lights on the 1st.” For bar dues with a 45-day lead that is LATER than the lead would give (June 1 vs May 16); for a 5-day lead it is earlier. PROPOSED: the earlier of the 1st and due − lead — imprecision never shortens a lead.', sw: 'precisionEarlier', swl: 'Render the PROPOSED rule (the earlier of the two)' },
+    'FOM-7': { t: 'periodLabel is undefined for interval and one-time kinds.', d: 'PROPOSED: “by <due date>” for interval-from-completion; the year for one-time.' },
+    'FOM-8': { t: 'Build-time verification, not a design change: the reminder beyond two weeks.', d: 'Outlook’s reminder presets for events stop at two weeks; whether Graph honours reminderMinutesBeforeStart of 30–180 days on an all-day event must be proved in the slice’s tests before FOD-10 is relied on. If it does not, the lit moment needs another carrier (a To Do task, or a second “lead” event).' },
+    'FOM-9': { t: 'The spec fixes no order INSIDE the Overdue pin; the mock chose most-overdue-first.', d: 'Spec §4.3 says overdue items are “rendered first … with the day count” and §4.4 that hard sorts above routine “at equal due proximity” — nothing orders the pin itself. The mock renders most-overdue-first, weight breaking ties, so a routine item 31 days overdue sits above a hard item 27 days overdue. Put for his eye; the alternative is hard-first inside the pin, then by days.', sw: 'pinHardFirst', swl: 'Render hard-first inside the Overdue pin' },
+    'FOM-10': { t: 'Clarification: a backlog under serial is cleared one Done at a time.', d: 'Stated obliquely — the sheet’s “and so on until he is current”, §4.1’s “never skipped silently” — and implied by the one-open invariant (FOD-5): each Done materializes the next already-overdue period; two years behind is two clicks. PROPOSED: one plain sentence in §4.1, so the walk does not read it as a defect.' },
+    'FOM-11': { t: 'Undo “within the same period” (§4.2) vs FOD-7’s “while the next occurrence is untouched.”', d: 'The second is the operable test and the one rendered here (Undo appears only on the close whose materialized next is still untouched; otherwise the row says so). PROPOSED: drop the period phrase.' },
+    'FOM-12': { t: 'FOD-1 exempts only the weekend; Monday prints “overdue” though a roll may make Monday the due day.', d: 'FOD-1: “no ‘overdue’ label printed on the weekend after a Saturday date … the display says a next-business-day rule may apply and is not computed.” Rendered as written: on the Sunday after a Saturday due date the row stays lit with the note; on Monday “2 days overdue” prints — which is itself a conclusion the display was told not to draw. PROPOSED: either the exemption runs through the next business day, or the label on a weekend-dated occurrence reads “past its date — a next-business-day rule may apply; not computed” until done, never “overdue”. (Found by the adversarial audit of the mock.)' },
+    'FOM-13': { t: 'The card’s horizon: “due within 14 days” or “lit and due within 14 days”?', d: 'FOD-14 says the card carries hard items “overdue + due within 14 days”; §4.3 says “Nothing lit or overdue → the card renders NOTHING.” The two disagree for a short-lead row: the trust reconciliation (lead 5) is due within 14 days for nine days before it lights. The mock renders the conjunctive reading (the card never shows what the register has not lit); the switch renders FOD-14 literally. PROPOSED: the conjunctive reading, stated in FOD-14. (Found by the adversarial audit of the mock.)', sw: 'cardWindowLiteral', swl: 'Render FOD-14 literally (within 14 days even before the lead lights it)' },
+    'FOM-14': { t: 'The register’s horizon is stated two ways.', d: '§4.3: “The lead window is the register’s horizon”; §5.2: “a twelve-month view, every active obligation’s next occurrence grouped by month.” The mock renders §5.2 (every open occurrence, pending rows in grey). PROPOSED: reword §4.3 — the register shows every open occurrence; lit and overdue are what it emphasizes. (Found by the adversarial audit of the mock.)' },
+    'FOM-15': { t: 'The owner column at the solo stage is stated two ways.', d: '§5.2 lists “owner (only when it is not the firm)” on every register line; §10 says the field “changes NOTHING on screen” at the solo stage. The mock follows §10 (no owner badge at the solo stage under any reading; badges appear only in the multi-user preview). PROPOSED: §5.2’s parenthetical becomes “only once more than one licensed user exists”. (Found by the adversarial audit of the mock.)' }
+  };
+  function decisionPanel() {
+    if (S.decision === 11) return '<div class="qid">HELD · CC-1(b)</div><h2>Not on the sheet — held for the product</h2><div class="sheet"><div class="cap">The sheet’s foot, verbatim at HEAD 8f7467b</div>' + (SHEET.held ? SHEET.held.html : '') + '</div><div class="note">The mock renders DEFAULTS for these (the card’s wording and position, the register’s shape, the Outlook subject, the leads) so the eleven decisions can be seen in context — it does not put them. They wait for the module on fixtures in demo mode, the same gate as FO-6.</div>';
+    if (S.decision === 12) return '<div class="qid">FOM-1 … FOM-15 · PROPOSED</div><h2>Everything building the mock exposed</h2><div class="note">Each is a spec ambiguity or defect the rendering forced into the open. All PROPOSED — his adopt / reject / edit, one at a time, attached to the decision it belongs to (the companion doc §4 maps them). Switches marked “Render the PROPOSED rule” change what the register does.</div><div class="fom">' + Object.keys(FOM).map(fomItem).join('') + '</div>';
+    var dec = DEC[S.decision], sh = SHEET['d' + dec.n] || {};
+    var html = '<div class="qid">DECISION ' + dec.n + ' · ' + h(dec.q) + '</div><h2>' + h(dec.title) + '</h2>';
+    if (sh.html) html += '<div class="sheet"><div class="cap">The sheet’s text, verbatim at HEAD 8f7467b — the sheet governs</div>' + sh.html + '</div>';
+    if (dec.opts) {
+      html += '<div class="cap small muted" style="text-transform:uppercase;letter-spacing:.6px;font-size:10.5px">Render each starting point — options are a way of asking, never a menu (CC-1(a))</div><div class="opts">' + dec.opts.map(function (o) {
+        var on = String(S.d[dec.key]) === String(o[0]);
+        return '<label class="' + (on ? 'on' : '') + '"><input type="radio" name="dec" value="' + h(o[0]) + '"' + (on ? ' checked' : '') + '><span>(' + h(o[0]) + ') ' + h(o[1]) + (o[2] ? '<span class="lean">Claude’s lean</span>' : '') + '</span></label>';
+      }).join('') + '</div>';
+      if (dec.n === 0 && S.d.d0 == 4) html += '<div class="custom"><input type="text" id="d0custom" placeholder="his word" value="' + h(S.d.d0custom) + '"></div>';
+      if (dec.n === 3) html += schematic();
+      if (dec.n === 6 || dec.n === 0) html += '<label class="small" style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input type="checkbox" id="cardAbove"' + (S.cardAbove ? ' checked' : '') + '> Show the card ABOVE the legal-watch card <span class="muted">(position is a hands-on item — both are shown for context, neither is proposed)</span></label>';
+      if (dec.n === 4) html += '<label class="small" style="display:flex;gap:8px;align-items:center;margin:6px 0 10px"><input type="checkbox" id="mu"' + (S.multiUser ? ' checked' : '') + '> Multi-user preview — two fictional licensees, “Attorney A” and “Attorney B”</label>';
+      if (dec.n === 10) html += '<div class="note">Nothing renders for this decision — it is a register act. The eleven Q-FO rows exist since batch 92; FO-1–FO-7 and BR-3 have none.</div>';
+    }
+    if (dec.n === 9) html += worksheetHTML();
+    if (dec.look && dec.look.length) html += '<div class="see"><span class="small muted">Look at: </span>' + dec.look.map(function (l) { return '<button data-look="' + h(l[0]) + '" title="' + h(l[1]) + '">' + h(l[0] === 'outlook' ? 'Outlook' : l[0]) + '</button><span class="small muted">' + h(l[1]) + '</span><br>'; }).join('') + '</div>';
+    if (dec.fom && dec.fom.length) html += '<div class="fom"><h3>What building the mock exposed — PROPOSED, his adopt / reject / edit</h3>' + dec.fom.map(fomItem).join('') + '</div>';
+    return html;
+  }
+  function fomItem(id) {
+    var f = FOM[id]; if (!f) return '';
+    return '<div class="it"><b>' + h(id) + '</b> ' + h(f.t) + '<div class="small muted" style="margin-top:4px">' + h(f.d) + '</div>' + (f.sw ? '<label><input type="checkbox" data-fom="' + h(f.sw) + '"' + (S.fom[f.sw] ? ' checked' : '') + '> ' + h(f.swl) + '</label>' : '') + '</div>';
+  }
+  function schematic() {
+    var two = S.d.d3 == 1 || S.d.d3 == 3;
+    return '<div class="schem"><div class="tbl' + (two ? '' : ' dim') + '"><b>firm_obligations</b>id · name · category · owner_scope · owner_user_id · recurrence jsonb · missed_periods · conditional_per_period · lead_days · weight · source_note · notes · active · created_by …</div><div class="tbl' + (two ? '' : ' dim') + '"><b>firm_obligation_occurrences</b>id · obligation_id → · period_label · due_on · due_on_override · state open|done · done_on · done_by · outcome · outcome_reason · done_note · filed_at' + (S.d.d5 == 2 ? ' · external_ref' : '') + ' · outlook_event_id · sync_status · sync_error · last_sync_at</div>' +
+      '<div class="tbl' + (two ? ' dim' : '') + '" style="grid-column:1/-1"><b>calendar_events (widened — option 2)</b>… case_id <i>nullable</i> · scope matter|firm · + every occurrence column above, unused by every existing row; a null check on every existing reader</div>' + (S.d.d3 == 3 ? '<div class="tbl" style="grid-column:1/-1"><b>+ a read-only projection</b> into a firm-wide calendar list, later, if one is built</div>' : '') + '</div><div class="note">Nothing is migrated by the answer; it shapes the slice. The review_log.action CHECK is widened in the same migration (FOD-6).</div>';
+  }
+  function worksheetHTML() {
+    var html = '<div class="note">Part B, on the sheet: “Which of these are OFFERED in the register, and which are ACTIVE at go-live?” — a list, a rule, or a composite. Tick here; the summary below is yours to paste into the ledger. Dates are never asked (FOD-9). Weight overrides only where you disagree.</div><div style="max-height:360px;overflow:auto;border:1px solid var(--wb-line);background:#fff;border-radius:6px"><table class="ws"><thead><tr><th>Row</th><th>Template</th><th>Spec’s weight</th><th>Source of weight</th><th>Offered / Active / Neither</th><th>Weight</th></tr></thead><tbody>' +
+      WS_ROWS.map(function (r) {
+        var w = S.ws[r.id] || {}; var v = w.v || '';
+        return '<tr><td class="id">' + h(r.id) + '</td><td>' + r.template + '</td><td>' + r.weight + '</td><td class="small muted">' + r.source + '</td><td class="ch">' + ['O', 'A', 'N'].map(function (x) { return '<label><input type="radio" name="ws-' + h(r.id) + '" value="' + x + '"' + (v === x ? ' checked' : '') + '> ' + ({ O: 'offered', A: 'active', N: 'neither' })[x] + '</label>'; }).join('') + '</td><td><select data-wsw="' + h(r.id) + '"><option value=""' + (!w.w ? ' selected' : '') + '>as spec’d</option><option value="hard"' + (w.w === 'hard' ? ' selected' : '') + '>hard</option><option value="routine"' + (w.w === 'routine' ? ' selected' : '') + '>routine</option></select></td></tr>';
+      }).join('') + '</tbody></table></div><div style="margin-top:8px"><textarea class="sum" id="wssum" readonly>' + h(wsSummary()) + '</textarea><div style="margin-top:6px;display:flex;gap:6px"><button class="btn small secondary" id="wscopy">Copy summary</button><button class="btn small secondary" id="wsreset">Reset</button></div></div>';
+    return html;
+  }
+  function wsSummary() {
+    var off = [], act = [], nei = [], wc = [];
+    WS_ROWS.forEach(function (r) { var w = S.ws[r.id] || {}; if (w.v === 'O') off.push(r.id); if (w.v === 'A') act.push(r.id); if (w.v === 'N') nei.push(r.id); if (w.w) wc.push(r.id + ' → ' + w.w); });
+    return 'DECISION 9 Part B — worksheet (' + S.today + ' fixture clock; typed by Michael in the mock)\nOffered (register only): ' + (off.join(', ') || '—') + '\nActive at go-live: ' + (act.join(', ') || '—') + '\nNeither: ' + (nei.join(', ') || '—') + '\nWeight changes: ' + (wc.join('; ') || 'none') + '\nDates and per-period conditions: entered at activation, in the product (FOD-9).';
+  }
+
+  /* ---------- actions ---------- */
+  function occ(id) { return S.data.occurrences.filter(function (o) { return o.id === id; })[0]; }
+  function nextOf(oc) { return S.data.occurrences.filter(function (o) { return o.obligationId === oc.obligationId && o.state === 'open'; })[0]; }
+  function nextFor(oc) { return oc.nextId ? S.data.occurrences.filter(function (o) { return o.id === oc.nextId; })[0] : undefined; }
+  function act(name, el) {
+    var id = el.getAttribute('data-oc'), obId = el.getAttribute('data-ob'), oc = id ? occ(id) : null, ob = oc ? withEff(S.data.obligations[oc.obligationId]) : (obId ? withEff(S.data.obligations[obId]) : null);
+    switch (name) {
+      case 'exp': S.expanded[id] = !S.expanded[id]; if (!S.expanded[id] && S.form && S.form.oc === id) S.form = null; break;
+      case 'done': case 'na': case 'delegate': case 'override': S.expanded[id] = true; S.form = { kind: name, oc: id }; break;
+      case 'cancel': S.form = null; break;
+      case 'catalog': S.form = { kind: 'catalog' }; break;
+      case 'activate': {
+        var oba = S.data.obligations[obId];
+        if (oba.activatedInFixture && S.data.occurrences.some(function (o) { return o.obligationId === obId && o.state === 'open'; })) { oba.active = true; log({ entityType: 'firm_obligation', entityId: obId, action: 'edited', at: S.today, note: 'Un-retired — the open occurrence was never closed by the retirement (FOD-8)' }); break; }
+        S.form = { kind: 'activate', ob: obId }; break;
+      }
+      case 'retire': { var o2 = S.data.obligations[obId]; o2.active = false; log({ entityType: 'firm_obligation', entityId: obId, action: 'edited', at: S.today, note: 'Retired — the open occurrence stays lit until done (FOD-8); no next materializes' }); break; }
+      case 'undo': {
+        var nx = nextFor(oc);
+        try { var r = FO.undo(ob, oc, nx, S.today, !!nextOf(oc)); if (r.deletedNext && nx) S.data.occurrences = S.data.occurrences.filter(function (o) { return o.id !== nx.id; }); if (S.data.obligations[oc.obligationId].kind === 'one-time') { S.data.obligations[oc.obligationId].active = true; } log(r.log); syncNote(oc, 'reverted'); }
+        catch (e) { log({ entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'refused', at: S.today, note: e.message }); }
+        break;
+      }
+      case 'submit': submitForm(); break;
+      case 'submit-activate': submitActivate(obId); break;
+    }
+    render();
+  }
+  function syncNote(oc, what) { oc.syncStatus = what; }
+  function submitForm() {
+    var f = S.form, root = $('.exp .form') || $('#activate'); if (!f || !root) return;
+    var oc = occ(f.oc), ob = withEff(S.data.obligations[oc.obligationId]); var v = function (n) { var e = root.querySelector('[name="' + n + '"]'); return e ? e.value.trim() : ''; };
+    try {
+      if (f.kind === 'done') {
+        if (S.d.d1 == '3a' && isFiling(ob) && !v('confirmation')) throw new Error('a confirmation number is required on a filing (DECISION 1 option 3)');
+        var r = FO.markDone(ob, oc, { today: S.today, doneOn: v('doneOn') || S.today, doneNote: [v('doneNote'), v('confirmation') ? 'conf. ' + v('confirmation') : ''].filter(Boolean).join(' · '), filedAt: v('filedAt'), externalRef: v('externalRef') }, opts());
+        if (r.next) { S.data.occurrences.push(r.next); log({ entityType: 'firm_obligation_occurrence', entityId: r.next.id, action: 'created', at: S.today, note: 'Next occurrence materialized: ' + r.next.periodLabel + ', due ' + r.next.dueOn + ' (' + ob.missedPeriods + ')' }); }
+        if (r.retiresObligation) { S.data.obligations[oc.obligationId].active = false; log({ entityType: 'firm_obligation', entityId: oc.obligationId, action: 'edited', at: S.today, note: 'One-time obligation done — retires itself (§3.2); history stays in Inactive' }); }
+        log(r.log);
+      } else if (f.kind === 'na') {
+        var r2 = FO.markNotApplicable(ob, oc, { today: S.today, outcomeReason: v('outcomeReason'), doneNote: v('doneNote') }, opts());
+        if (r2.next) { S.data.occurrences.push(r2.next); log({ entityType: 'firm_obligation_occurrence', entityId: r2.next.id, action: 'created', at: S.today, note: 'Next occurrence materialized: ' + r2.next.periodLabel + ', due ' + r2.next.dueOn }); }
+        if (r2.retiresObligation) { S.data.obligations[oc.obligationId].active = false; }
+        log(r2.log);
+      } else if (f.kind === 'delegate') {
+        if (!v('delegatedTo')) throw new Error('name who has it');
+        oc.delegatedTo = v('delegatedTo'); log({ entityType: 'firm_obligation_occurrence', entityId: oc.id, action: 'edited', at: S.today, note: 'Delegated to ' + oc.delegatedTo + ' — still open, still lit' });
+      } else if (f.kind === 'edit') {
+        var base = S.data.obligations[oc.obligationId], lead = parseInt(v('leadDays'), 10);
+        if (isNaN(lead) || lead < 0) throw new Error('the lead is a number of days');
+        var wasLead = base.leadDays, wasW = base.weight; base.leadDays = lead; base.weight = v('weight') || base.weight;
+        log({ entityType: 'firm_obligation', entityId: base.id, action: 'edited', at: S.today, note: 'Lead ' + wasLead + ' → ' + lead + ' days; weight ' + wasW + ' → ' + base.weight + ' — the open occurrence re-evaluated (FOD-4)' });
+      } else if (f.kind === 'override') {
+        var r3 = FO.applyOverride(ob, oc, v('newDate'), S.today);
+        if (!r3.applied) throw new Error('refused — ' + r3.reason);
+        log(r3.log);
+      }
+      S.form = null;
+    } catch (e) { f.error = e.message; }
+  }
+  function submitActivate(obId) {
+    var ob = S.data.obligations[obId], root = $('#activate'); var v = function (n) { var e = root.querySelector('[name="' + n + '"]'); return e ? e.value.trim() : ''; };
+    try {
+      if (ob.kind === 'anniversary') { if (!v('anchorDate')) throw new Error('the anchor date is yours — enter it (FOD-9)'); ob.rule.anchorDate = v('anchorDate'); }
+      if (ob.kind === 'one-time') { if (!v('dueOn')) throw new Error('the date is yours — enter it (FOD-9)'); ob.rule.dueOn = v('dueOn'); }
+      if (ob.kind === 'interval-from-completion') ob.lastDone = v('lastDone') || null;
+      if (v('lastPeriodDue')) ob.lastPeriodDue = v('lastPeriodDue');
+      ob.active = true; ob.activatedInFixture = true;
+      if (S.data.occurrences.some(function (o) { return o.obligationId === obId && o.state === 'open'; })) { S.form = null; return; }   // an open occurrence already exists: nothing materializes
+      var first = FO.firstOccurrence(withEff(ob), S.today, { fomActivationLastCompleted: !!ob.lastPeriodDue });
+      if (first) { S.data.occurrences.push(first); log({ entityType: 'firm_obligation', entityId: obId, action: 'created', at: S.today, note: 'Activated; first occurrence ' + first.periodLabel + ' due ' + first.dueOn }); }
+      S.form = null;
+    } catch (e) { S.form.error = e.message; }
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var stage = $('#stage'), panel = $('#panel');
+    var tabs = '<div class="stage-tabs">' + [['cases', '/cases'], ['register', '/firm/obligations'], ['outlook', 'Outlook']].map(function (t) { return '<button data-screen="' + t[0] + '" class="' + (S.screen === t[0] ? 'on' : '') + '">' + h(t[1]) + '</button>'; }).join('') + '<span class="hint">' + h(S.data.label) + ' · ' + h(S.data.note) + '</span></div>';
+    stage.innerHTML = tabs + (S.screen === 'cases' ? renderCases() : S.screen === 'register' ? renderRegister() : renderOutlook());
+    panel.innerHTML = decisionPanel();
+    $$('.wb-rail button[data-dec]').forEach(function (b) { b.classList.toggle('on', Number(b.getAttribute('data-dec')) === S.decision); });
+    $('#today').value = S.today; $('#fixture').value = S.fixture;
+    if (S.hl) { var t = $('.hl-target'); if (t && t.scrollIntoView) t.scrollIntoView({ block: 'center' }); S.hl = null; }
+    persist();
+  }
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act],[data-go],[data-screen],[data-dec],[data-look],#wscopy,#wsreset'); if (!el) return;
+    if (el.hasAttribute('data-act')) { e.preventDefault(); act(el.getAttribute('data-act'), el); return; }
+    if (el.hasAttribute('data-go')) { e.preventDefault(); var g = el.getAttribute('data-go'); S.screen = g === '/firm/obligations' ? 'register' : g === '/cases' ? 'cases' : S.screen; render(); return; }
+    if (el.hasAttribute('data-screen')) { S.screen = el.getAttribute('data-screen'); render(); return; }
+    if (el.hasAttribute('data-dec')) { S.decision = Number(el.getAttribute('data-dec')); render(); return; }
+    if (el.hasAttribute('data-look')) { var l = el.getAttribute('data-look'); S.screen = l === 'outlook' ? 'outlook' : l === '/cases' ? 'cases' : 'register'; render(); return; }
+    if (el.id === 'wscopy') { var ta = $('#wssum'); ta.select(); try { navigator.clipboard.writeText(ta.value); } catch (x) {} return; }
+    if (el.id === 'wsreset') { S.ws = {}; render(); return; }
+  });
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.name === 'dec') { var dec = DEC[S.decision]; if (dec.key) { S.d[dec.key] = isNaN(Number(t.value)) ? t.value : Number(t.value); if (dec.n === 1 && t.value === '3b') { S.data.occurrences.forEach(function () {}); } render(); } return; }
+    if (t.id === 'd0custom') { S.d.d0custom = t.value; render(); return; }
+    if (t.id === 'mu') { S.multiUser = t.checked; render(); return; }
+    if (t.id === 'cardAbove') { S.cardAbove = t.checked; S.screen = 'cases'; render(); return; }
+    if (t.hasAttribute('data-fom')) { S.fom[t.getAttribute('data-fom')] = t.checked; render(); return; }
+    if (t.id === 'today') { if (/^\d{4}-\d{2}-\d{2}$/.test(t.value)) { S.today = t.value; render(); } return; }
+    if (t.id === 'fixture') { loadFixture(t.value); render(); return; }
+    if (t.name && t.name.indexOf('ws-') === 0) { var id = t.name.slice(3); S.ws[id] = S.ws[id] || {}; S.ws[id].v = t.value; $('#wssum').value = wsSummary(); persist(); return; }
+    if (t.hasAttribute('data-wsw')) { var id2 = t.getAttribute('data-wsw'); S.ws[id2] = S.ws[id2] || {}; S.ws[id2].w = t.value || null; $('#wssum').value = wsSummary(); persist(); return; }
+  });
+  document.addEventListener('input', function (e) { if (e.target.id === 'd0custom') { S.d.d0custom = e.target.value; $$('.sidebar nav a[data-go="/firm/obligations"]').forEach(function (a) { a.textContent = navLabel(); }); } });
+  $$('[data-quick]').forEach(function (b) { b.addEventListener('click', function () { var q = b.getAttribute('data-quick'); S.today = q === 'fixture' ? S.data.today : q; render(); }); });
+  render();
+})();
+</script>
+
+</body>
+</html>

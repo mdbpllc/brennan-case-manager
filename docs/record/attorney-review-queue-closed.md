@@ -27,6 +27,8 @@
 
 **Reconciled again to session-log #149 on 2026-09-07** (queue-runner batch 91, one packet — the FORWARD SITTING).
 
+**Reconciled again to session-log #151 on 2026-09-07** (queue-runner batch 92, two packets — the `CCS-1` MIGRATIONS RUN (`#150`) and the FIRM-OBLIGATIONS DESIGN PASS (`#151`). `HS-3` and `HS-5` flipped ✅ and moved to the closed register; `HS-4` and `HS-6` annotated in place and still ⬜. Eleven ⬜ rows added under a new FIRM OBLIGATIONS heading, carrying each question's full text; none closed, and no `FO-`/`BR-`/`DA-` id minted — that minting is Michael's act. The CC-1 hands-on queue after this batch, as `#151` states it: twelve accepted (unchanged) + seven proposed (unchanged) + five PROPOSED by `#151` (the module spec's §11 items, gated on the module built on fixtures in demo mode, the same gate as `FO-6`'s) + the post-`CCS-1` walk's agenda (`#150`).)
+
 ## CLOSED ROWS — under their register headings (level-2 and level-3 headings reproduced; the register's H1 is not)
 
 ## 1 — COURT OPINIONS
