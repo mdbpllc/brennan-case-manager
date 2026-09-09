@@ -1,0 +1,58 @@
+{
+  "relocation": "TC-8 TRANSIT step 1",
+  "date_central": "2026-09-08",
+  "head": "44409ef",
+  "destination": "Documents\\Knowledge Repo\\Session Captures\\",
+  "files": [
+    {
+      "name": "claude/claude_Forward_Sitting_Capture_2026-09-07.md",
+      "uuid": "5652e251-8c8a-419b-b40a-2d44f11425ba",
+      "bytes": 43127,
+      "sha256": "266a9b2d0ea9f9efd344729ce1184416d87c5d5fdef0a1cbbb0c964dca29fd73",
+      "estimated_token_count": 13735,
+      "created_at": "2026-09-08T01:47:44.127214Z"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-09-07.md",
+      "uuid": "f480b982-1feb-449b-a573-1817c3d898f8",
+      "bytes": 21615,
+      "sha256": "081618b596e34b5b3c875c14bb32c380844cd9e351cab1954c0450f143576454",
+      "estimated_token_count": 6622,
+      "created_at": "2026-09-08T01:47:47.665061Z"
+    },
+    {
+      "name": "claude/claude_Firm_Obligations_Design_Pass_Capture_2026-09-07_Late.md",
+      "uuid": "b0bb870c-cac0-4d7a-b296-e73fbc4794b3",
+      "bytes": 15702,
+      "sha256": "38448c8b040c5ea249b3e279fd6ebcf75d7a8d980a3b791f97fed660ba2016b9",
+      "estimated_token_count": 5141,
+      "created_at": "2026-09-08T03:40:19.790356Z"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-09-07_Late.md",
+      "uuid": "d0f1c8b7-d08a-4078-82c0-a7350bcabf31",
+      "bytes": 20443,
+      "sha256": "c4c8aedc81c8514f578f7d6faf66c61662a4309ff6462d07e4a1dab6cd074a87",
+      "estimated_token_count": 6094,
+      "created_at": "2026-09-08T03:40:18.602847Z"
+    },
+    {
+      "name": "claude/claude_Rendered_Examples_Capture_2026-09-08.md",
+      "uuid": "ad2ac08b-bfa2-407c-9231-e0d479f1f545",
+      "bytes": 15860,
+      "sha256": "dedca7a7dd713de8225ac94d23b1e64e76327a2271bf5a567ce72d44a2fcefbe",
+      "estimated_token_count": 5117,
+      "created_at": "2026-09-09T02:24:45.963692Z"
+    },
+    {
+      "name": "claude/claude_Handoff_Session_Log_2026-09-08.md",
+      "uuid": "2ef8400c-1d85-4f64-83c4-a1f22b67a0be",
+      "bytes": 20386,
+      "sha256": "629abee888526e3655e833f2ae640058e9ff44987f2c229a42c4c9bec9efe7e2",
+      "estimated_token_count": 5920,
+      "created_at": "2026-09-09T02:24:41.838959Z"
+    }
+  ],
+  "total_bytes": 137133,
+  "total_estimated_token_count": 42629
+}
