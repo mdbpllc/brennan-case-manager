@@ -1447,3 +1447,16 @@ firm-obligations slice, if authorized, needs the CHECK widened for its own value
 the fix in the same migration. **Recorded rather than changed: this pass edits nothing under `src/` or
 `db/`.** Found by the PF-1 preflight's HEAD-facts auditor; verified by the design session before being
 written here (`#151`).
+
+## 2026-09-09 — `AS-Q4` amended (#154): `case_chronology_versions.extracted_text` is now a spec-vs-code gap, and two rulings changed what the drop zone will write
+
+**Where:** `case_chronology_versions` (`db/schema.sql`, built by the FE-D1 amendment slice; migration run 2026-09-03), the Medical tab's chronology drop zone (`ProvidersSection.tsx` per BUILD-STATE), and `docs/specs/REQ-CAPTURE_disclosures-expert-designation_2026-08-20.md` §14.1.
+
+**Context:** at the 2026-09-09 API-integrations ruling sitting (`docs/specs/api-integrations-ruling-sheet-2026-09-09.md`) Michael amended `AS-Q4` in one limb: the extracted chronology text leaves the database and lives as a text file in the matter's OneDrive folder, with the row keeping a drive item id and content hash; the original file is kept beside it; removal moves both files to a firm-level `_removed` folder; the browser writes and extracts now, the P1 later. Decision 1 of the same sitting moves the five PHI-bearing tables to a Postgres inside the Microsoft tenant.
+
+1. **Spec-vs-code gap, open:** the built table stores the text (`extracted_text text`, invariant 29 of the amendment slice: *"`extracted_text` and `char_count` do (AS-Q4)"*). The amended ruling stores no text. **Nothing was changed in code by the sitting or by this packet.** The change is a later slice's (`Q-API-20`), which will need a migration (drop or null `extracted_text`; add `drive_item_id`, `content_hash`), a write path through Graph (`Files.ReadWrite`, consent Michael's), and the `_removed` move. Until that slice lands, **no real chronology may be dropped**, because on the built path it would put PHI text in Supabase, which decision 1 rejected.
+2. **Demo mode:** the localStorage adapter has no OneDrive; the slice will need a demo-mode stand-in for the file write (a fixture "folder" in the store, capped as D-60 caps text today). Not decided; flagged so the slice does not discover it.
+3. **The drop zone's accepted-format list and the readability flag are unchanged.** The unreadable-scan flag stays a property of the version; a flagged version's file still lands in OneDrive (it is the original), and is still never sent.
+4. **Rebuildability, recorded as a design property the slice must keep:** with the file as the source of truth, `case_providers` / `case_provider_individuals` / `case_provider_visits` are a derived index; the slice keeps `chronology_version_id` on the rows so a re-extraction over the same file can replace them.
+
+**Status:** OPEN — routed to design (`Q-API-20`). Nothing built.
