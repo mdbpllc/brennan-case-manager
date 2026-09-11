@@ -7,6 +7,8 @@
 **Before the first decision:** the session reads `session-log-head.md` and `BUILD-STATE.md` whole at HEAD, confirms the SPEC is at its canonical path unchanged, states the CC-1 hands-on queue, and re-reads the SPEC's §1 facts at THAT head — `ea5675b` is this sheet's basis and the build may have moved.
 **Rendered examples (added 2026-09-08, `#152`; PROPOSED, nothing ruled):** `docs/specs/firm-obligations-rendered-examples-2026-09-08.md` maps every DECISION below to a panel of an interactive mock of the module — the claude.ai artifact "Firm Obligations Mock", filed as `docs/record/firm-obligations-design-2026-09-07/firm-obligations-mock-2026-09-08.html` — and carries fifteen findings (`FOM-1`–`FOM-15`) the rendering exposed, each attached to a decision and put right after it. Open it beside this sheet; where the two differ, this sheet governs.
 
+**RULED 2026-09-10 (`#155`) — every decision on this sheet is ruled.** The answers, in Michael's words, are in `docs/specs/firm-obligations-rulings-2026-09-10.md` §1–§2 (DECISION 0–10 and `FOM-1`–`FOM-15`); the slice is authorized at its §3 (`FOS-1`); the sheet stands as authored — the option text was his to select from, not to edit, and the `**Michael:** ______` lines are left blank on purpose so the record shows the sheet as put.
+
 ---
 
 ## THE ORDER, AND WHY
