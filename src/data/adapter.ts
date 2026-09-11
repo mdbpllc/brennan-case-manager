@@ -8,6 +8,17 @@ import type {
   CaseChronologyVersion, CaseProvider, CaseProviderIndividual, CaseProviderVisit,
   GeneratedDocumentParagraph,
 } from '../domain/caseProviders';
+import type {
+  FirmObligation, FirmObligationCreate, FirmObligationOccurrence, FirmObligationPatch, OutcomeReason,
+} from '../domain/firmObligations';
+
+/** What a firm-obligation close returns: the closed row, the next it materialized
+ *  (none on a one-time or a retired obligation), and the obligation after the act. */
+export interface FirmCloseResult {
+  closed: FirmObligationOccurrence;
+  next: FirmObligationOccurrence | null;
+  obligation: FirmObligation;
+}
 
 /** A new contact. The CD-1 directory fields are OPTIONAL at the boundary and
  *  defaulted by the adapters (`withDirectoryDefaults`), so callers that predate
@@ -396,4 +407,58 @@ export interface DataAdapter {
     trackedBillId: string,
     refs: Omit<BillStatuteRef, 'id' | 'trackedBillId'>[],
   ): Promise<BillStatuteRef[]>;
+
+  // ---- Firm obligations (docs/specs/firm-obligations-build-slice.md §3 item 4) ----
+  // FOS-1 RULED YES 2026-09-10. Every act is PLANNED by src/domain/firmObligations.ts
+  // and APPLIED by the adapter, which decides nothing — so the two modes cannot
+  // diverge. Every act writes exactly one review_log line (FOD-6). There is no
+  // delete of an obligation (retire, never delete — FOD-8, FOD-23), and no snooze,
+  // "later", dismiss or bulk method anywhere (FO-2; slice §8).
+
+  /** Every obligation, active and retired — the register and the card read them all. */
+  listFirmObligations(): Promise<FirmObligation[]>;
+  getFirmObligation(id: string): Promise<FirmObligation | null>;
+  /** Activation from a template or blank, on HIS date, never guessed (FOD-9).
+   *  Materializes the first occurrence in the same act; added inactive, none. */
+  createFirmObligation(
+    input: FirmObligationCreate,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }>;
+  /** Rule, lead, weight, weekendRule, notes, the missed-period override. Re-evaluates
+   *  the open occurrence per FOD-4; `kept` says when an overdue one keeps its date. */
+  updateFirmObligation(
+    id: string, patch: FirmObligationPatch,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }>;
+  /** Closes nothing: an open occurrence stays lit until done (FOD-8). */
+  retireFirmObligation(id: string): Promise<FirmObligation>;
+  /** Re-activation is an activation: when nothing is open it opens the first rule
+   *  date on or after today. */
+  reactivateFirmObligation(
+    id: string,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }>;
+  listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]>;
+  /** Done — materializes the next occurrence (serial or collapsed, DECISION 2). */
+  markOccurrenceDone(
+    id: string, input: { doneOn?: string; doneNote?: string; filedAt?: string },
+  ): Promise<FirmCloseResult>;
+  /** Refused off a conditionalPerPeriod row, and without a reason (FOD-18). */
+  markOccurrenceNotApplicable(
+    id: string, input: { reason?: OutcomeReason; note?: string; doneOn?: string },
+  ): Promise<FirmCloseResult>;
+  /** Refused unless FOD-7's test holds (FOM-11). Removes the untouched next
+   *  occurrence and returns it, so the caller can delete its Outlook event. */
+  undoOccurrence(
+    id: string,
+  ): Promise<{ reopened: FirmObligationOccurrence; removed: FirmObligationOccurrence | null; obligation: FirmObligation }>;
+  /** THIS occurrence's real date. Refused later-than-current on an overdue one (FOD-4). */
+  setOccurrenceDueOverride(id: string, date: string): Promise<FirmObligationOccurrence>;
+  /** Every review_log line on firm obligations and their occurrences, OLDEST FIRST —
+   *  the row expanders and Undo's availability read it. */
+  listFirmObligationReviewLog(): Promise<ReviewLogEntry[]>;
+  /** The firm half of the Outlook retry queue — listEventsPendingSync's sibling. */
+  listFirmOccurrencesPendingSync(): Promise<FirmObligationOccurrence[]>;
+  /** Writes ONLY the four sync fields — never a date, a state or a close. */
+  updateFirmOccurrenceSync(
+    id: string,
+    patch: Partial<Pick<FirmObligationOccurrence, 'outlookEventId' | 'syncStatus' | 'syncError' | 'lastSyncAt'>>,
+  ): Promise<FirmObligationOccurrence>;
 }

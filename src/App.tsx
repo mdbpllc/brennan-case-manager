@@ -19,6 +19,7 @@ import SignInPage from './pages/SignInPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
 import DiagnosticsPage from './pages/DiagnosticsPage';
 import TemplatesPage from './pages/TemplatesPage';
+import FirmObligationsPage from './pages/FirmObligationsPage';
 import { usingSupabase } from './data';
 import { useAuth } from './auth/useAuth';
 
@@ -56,6 +57,8 @@ export default function App() {
         </div>
         <nav>
           <NavLink to="/cases" className={({ isActive }) => (isActive ? 'active' : '')}>Cases</NavLink>
+          {/* FOS-1 (2026-09-10): DECISION 0's word, FOD-12's path. The label is PROVISIONAL. */}
+          <NavLink to="/firm/obligations" className={({ isActive }) => (isActive ? 'active' : '')}>Obligations</NavLink>
           <NavLink to="/inbox" className={({ isActive }) => (isActive ? 'active' : '')}>Inbox</NavLink>
           <NavLink to="/notes" className={({ isActive }) => (isActive ? 'active' : '')}>Office notes</NavLink>
           <NavLink to="/parties" className={({ isActive }) => (isActive ? 'active' : '')}>Parties</NavLink>
@@ -82,6 +85,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/cases" replace />} />
           <Route path="/cases" element={<CaseListPage />} />
+          <Route path="/firm/obligations" element={<FirmObligationsPage />} />
           <Route path="/cases/new" element={<NewCasePage />} />
           <Route path="/cases/new/oaa" element={<OaaIntakePage />} />
           <Route path="/cases/:id" element={<CaseDetailPage />} />

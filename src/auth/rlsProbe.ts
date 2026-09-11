@@ -3,9 +3,9 @@ import { supabase } from '../data/supabaseClient';
 /**
  * RLS probe — the instrument for the auth slice's third unexercised thing:
  * the first real test of the schema's policies against an authenticated user.
- * The schema now carries 45 of them across 46 tables — file_counters is the one
+ * The schema now carries 47 of them across 48 tables — file_counters is the one
  * deliberate omission (see the negative control below). It read "31" from the
- * auth slice until 2026-09-03; the count has moved four times since and will
+ * auth slice until 2026-09-03; the count has moved five times since and will
  * move again, so the number lives in the list below, which is test-asserted
  * against db/schema.sql, rather than in a prose line nothing checks.
  *
@@ -29,7 +29,7 @@ import { supabase } from '../data/supabaseClient';
  * real client data, ever — including anything created to exercise RLS).
  */
 
-/** All 46 tables in db/schema.sql. `policy: false` marks the deliberate omission.
+/** All 48 tables in db/schema.sql. `policy: false` marks the deliberate omission.
  *
  *  KEEP THIS IN STEP WITH THE SCHEMA. A table missing here is not probed, so a
  *  missing GRANT on it stays invisible to the one instrument built to catch
@@ -113,6 +113,16 @@ export const SCHEMA_TABLES: { name: string; policy: boolean }[] = [
   { name: 'case_provider_individuals', policy: true },
   { name: 'case_provider_visits', policy: true },
   { name: 'generated_document_paragraphs', policy: true },
+  // FIRM OBLIGATIONS (FOS-1, 2026-09-10). Probed from birth, same commit as the
+  // tables, their RLS, their policy and their GRANT — slice §3 item 2.
+  //
+  // ORDER IS LOAD-BEARING here too: these are the last two create-table
+  // statements in db/schema.sql (after the amendment block, before API ROLE
+  // PRIVILEGES), so they sit last. Neither holds client data. Until Michael's
+  // hand runs `2026-09-10-firm-obligations.sql` they do not exist live, and a
+  // read here fails as a missing table (`other`), not as a privilege wall.
+  { name: 'firm_obligations', policy: true },
+  { name: 'firm_obligation_occurrences', policy: true },
 ];
 
 /**

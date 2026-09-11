@@ -696,7 +696,15 @@ create table if not exists review_log (
   id uuid primary key default gen_random_uuid(),
   entity_type text not null,
   entity_id text not null,
-  action text not null check (action in ('suggested','confirmed','edited','rejected','created','generated')),
+  -- FOS-1 (2026-09-10): `done`, `not-applicable` and `undone` are the firm
+  -- obligation closes and their reversal (FOD-6); `cancelled` is FOD-20, which
+  -- closes the #151 mismatch (CalendarTab's cancel already writes it). The
+  -- migration 2026-09-10-firm-obligations.sql DROPS the live CHECK by catalog
+  -- lookup and RE-ADDS this same list under a fixed name,
+  -- `review_log_action_check` — the name Postgres gives this inline CHECK on a
+  -- fresh run.
+  action text not null check (action in ('suggested','confirmed','edited','rejected','created','generated',
+                                         'done','not-applicable','undone','cancelled')),
   "user" text not null,
   timestamp timestamptz not null default now(),
   old_value text,
@@ -1656,6 +1664,122 @@ create policy "authenticated full access case_provider_visits" on case_provider_
 
 drop policy if exists "authenticated full access generated_document_paragraphs" on generated_document_paragraphs;
 create policy "authenticated full access generated_document_paragraphs" on generated_document_paragraphs
+  for all to authenticated using (true) with check (true);
+
+-- ============ FIRM OBLIGATIONS (FOS-1, 2026-09-10) ============
+-- Migration: db/migrations/2026-09-10-firm-obligations.sql — WRITTEN AND NOT
+-- RUN; Michael's hand runs it. Authorized by Michael 2026-09-10 ("Yes", FOD-20
+-- IN), session log #155; slice docs/specs/firm-obligations-build-slice.md §5.
+--
+-- These two sit HERE — after the FE-D1 amendment block, before the privileges
+-- block — so they are the LAST two create-table statements in the file: the
+-- RLS probe asserts its table list is sequence-identical to this file's
+-- create-table order, and an append at the very end would land after the
+-- all-tables grant.
+--
+-- A firm obligation is never a matter's: neither table carries a case_id, and
+-- calendar_events is untouched (DECISION 3, FOD-13). No money field, no
+-- externalRef, no ledgerRef (DECISION 5). The rule is stored, never the dates
+-- it yields — TARGET and DUE are derived at render (slice §2.3).
+
+create table if not exists firm_obligations (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  category text not null check (category in ('licensing','court-appointments','practice-rules','tax-entity-and-employment','insurance','infrastructure','custom')),
+  -- DECISION 4: from the first migration; nothing on screen at solo (FOM-15).
+  owner_scope text not null default 'firm' check (owner_scope in ('firm','attorney')),
+  -- NULL = the firm's one attorney.
+  owner_user_id uuid references auth.users (id),
+  -- The FOT- label a row was activated from; NULL on a custom obligation.
+  template_key text,
+  -- The declarative rule (spec §3.2): re-evaluated from the rule, never resolved once.
+  recurrence jsonb not null,
+  -- `precision` is a keyword of the column-name class: legal unquoted as a
+  -- column, as review_log's `timestamp` already is.
+  precision text not null default 'day' check (precision in ('day','month')),
+  -- No default: the domain defaults it from the rule kind (DECISION 2).
+  missed_periods text not null check (missed_periods in ('serial','collapse')),
+  -- FOD-18: the only rows offered Not applicable. A cross-table rule, so the
+  -- domain and both adapters enforce it, not a CHECK.
+  conditional_per_period boolean not null default false,
+  -- FOM-12 (slice §2.3): 'unknown' on every template; his setting at activation.
+  weekend_rule text not null default 'unknown' check (weekend_rule in ('rolls-forward','no-roll','unknown')),
+  lead_days integer not null default 30 check (lead_days >= 0),
+  -- DECISION 6: order and emphasis only — never behaviour.
+  weight text not null default 'routine' check (weight in ('hard','routine')),
+  -- FOM-4's optional activation input on a serial obligation.
+  last_period_completed date,
+  -- The SPEC §7 cite-and-status string, copied and never reworded.
+  source_note text,
+  applies_if text,
+  notes text,
+  -- FOD-8: retire, never delete.
+  active boolean not null default true,
+  created_by uuid references auth.users (id),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists firm_obligation_occurrences (
+  id uuid primary key default gen_random_uuid(),
+  -- FOD-23: restrict — a hand deletion with history behind it fails loudly.
+  obligation_id uuid not null references firm_obligations (id) on delete restrict,
+  period_label text not null,
+  -- The RULE date for the period, a naive local date (FOD-3).
+  due_on date not null,
+  due_on_override date,
+  -- open | done is ALL that is stored; every display state is derived.
+  state text not null default 'open' check (state in ('open','done')),
+  done_on date,
+  done_by uuid references auth.users (id),
+  outcome text check (outcome in ('completed','not-applicable')),
+  outcome_reason text check (outcome_reason in ('condition-not-met','performed-elsewhere')),
+  done_note text,
+  -- A pointer, never a stored file (document storage is gate 7).
+  filed_at text,
+  -- The four sync fields calendar events carry, so one push queue drains both.
+  outlook_event_id text,
+  sync_status text not null default 'pending' check (sync_status in ('pending','synced','error')),
+  sync_error text,
+  last_sync_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  -- The migration records why the third is weaker than it reads: on a NULL
+  -- outcome it evaluates NULL, and a CHECK passes on NULL.
+  check ((state = 'done') = (done_on is not null)),
+  check ((state = 'done') = (outcome is not null)),
+  check ((outcome = 'not-applicable') = (outcome_reason is not null))
+);
+
+-- FOD-5 at the database: one OPEN occurrence per obligation. Partial, so the
+-- done history is unlimited.
+create unique index if not exists firm_obligation_occurrences_one_open_idx
+  on firm_obligation_occurrences (obligation_id) where state = 'open';
+
+drop trigger if exists firm_obligations_touch on firm_obligations;
+create trigger firm_obligations_touch before update on firm_obligations
+  for each row execute function touch_updated_at();
+
+drop trigger if exists firm_obligations_set_created_by on firm_obligations;
+create trigger firm_obligations_set_created_by before insert on firm_obligations
+  for each row execute function set_created_by();
+
+drop trigger if exists firm_obligation_occurrences_touch on firm_obligation_occurrences;
+create trigger firm_obligation_occurrences_touch before update on firm_obligation_occurrences
+  for each row execute function touch_updated_at();
+
+-- RLS + policies from birth (slice §3 item 2). The grants ride the all-tables
+-- statement below on a fresh run and the migration on an existing database —
+-- both paths are required, neither alone is enough.
+alter table firm_obligations enable row level security;
+alter table firm_obligation_occurrences enable row level security;
+
+drop policy if exists "authenticated full access firm_obligations" on firm_obligations;
+create policy "authenticated full access firm_obligations" on firm_obligations
+  for all to authenticated using (true) with check (true);
+
+drop policy if exists "authenticated full access firm_obligation_occurrences" on firm_obligation_occurrences;
+create policy "authenticated full access firm_obligation_occurrences" on firm_obligation_occurrences
   for all to authenticated using (true) with check (true);
 
 -- ============ API ROLE PRIVILEGES ============

@@ -51,3 +51,13 @@ calendar named **MDBP Cases** appears in Outlook (change the name via
   matching hook.
 - Claude never signs in or handles credentials; the popup sign-in is always
   your action.
+- **Firm obligations push to a SEPARATE calendar** (added 2026-09-11 with the
+  firm-obligations build, DECISION 7): **MDBP Firm**, created on the first push
+  (change it via `VITE_OUTLOOK_FIRM_CALENDAR_NAME`; it must never be the same
+  name as the case calendar — the app refuses to push if it is). Each
+  occurrence is an all-day event on its aim-for date with a reminder at the
+  day it lights, and carries `FIRM|<obligation>|<occurrence>` in the same
+  hidden property instead of a matter reference. Same one delegated scope
+  (`Calendars.ReadWrite`) — no new consent. **Connect Outlook** and **Sync
+  now** also appear at the foot of the **Obligations** page; either drains
+  both queues.

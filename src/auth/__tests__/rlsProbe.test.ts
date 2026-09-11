@@ -35,17 +35,29 @@ describe('expectedUnreachable', () => {
     expect([...expectedUnreachable()]).toEqual(['file_counters']);
   });
 
-  it('covers all 46 schema tables with one policy-less exception', () => {
+  it('covers all 48 schema tables with one policy-less exception', () => {
     // 32 + the two CL-2 tables (case_clients, case_client_flags) + the two CD-1
     // tables (case_roster_flags, contact_edges) + gate 10's party_pii + FE-D1's
-    // four form-engine tables + the FE-D1 amendment's five. A table the probe
-    // does not list is a table whose missing GRANT nothing would catch.
+    // four form-engine tables + the FE-D1 amendment's five + the two
+    // firm-obligation tables (FOS-1). A table the probe does not list is a
+    // table whose missing GRANT nothing would catch.
     //
     // The 37 this asserted until 2026-08-20 is the figure the gate-3 write-path
     // run measured; everything added since arrives after that run and is
     // outside its 37x2 grid, carrying its own from-birth evidence instead.
-    expect(SCHEMA_TABLES).toHaveLength(46);
-    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(45);
+    expect(SCHEMA_TABLES).toHaveLength(48);
+    expect(SCHEMA_TABLES.filter((t) => t.policy)).toHaveLength(47);
+  });
+
+  it('lists both firm-obligation tables policy:true, probed from birth (FOS-1 slice §3 item 2)', () => {
+    // Same commit as the tables, their RLS, their one policy and their GRANT.
+    // policy:true matters as much as presence: a false here would put the
+    // register's own tables in expectedUnreachable() — refused BY DESIGN — and
+    // shouldWarnPrivilegeWall would stay silent about a missing GRANT on them.
+    expect(SCHEMA_TABLES.filter((t) => t.name.startsWith('firm_obligation'))).toEqual([
+      { name: 'firm_obligations', policy: true },
+      { name: 'firm_obligation_occurrences', policy: true },
+    ]);
   });
 
   it('lists the FE-D1 form-engine tables, probed from birth (slice item 11)', () => {

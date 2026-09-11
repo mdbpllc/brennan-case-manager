@@ -55,7 +55,8 @@ describe('v15 → v16: the address model', () => {
     // Every step in this chain is pinned to a literal because of it.
     const old = v15Store();
     expect(migrateV15ToV16(old, JSON.stringify(old)).version).toBe(16);
-    expect(STORE_VERSION).toBe(16);
+    // The FO build took the constant to 17 (2026-09-11); this step's own output stays 16.
+    expect(STORE_VERSION).toBe(17);
   });
 
   it('writes a full pre-migration backup before changing anything', () => {

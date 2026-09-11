@@ -12,4 +12,10 @@ export const MSAL_TENANT_ID = (import.meta.env.VITE_MSAL_TENANT_ID as string | u
 export const OUTLOOK_CALENDAR_NAME =
   (import.meta.env.VITE_OUTLOOK_CALENDAR_NAME as string | undefined) || 'MDBP Cases';
 
+/** The SEPARATE firm-obligations calendar (DECISION 7; FOD-28), found-or-created by
+ *  name exactly as MDBP Cases is, and cached under its own key (ensureFirmCalendar)
+ *  so a firm event never lands in the case calendar. Override via env. */
+export const OUTLOOK_FIRM_CALENDAR_NAME =
+  (import.meta.env.VITE_OUTLOOK_FIRM_CALENDAR_NAME as string | undefined) || 'MDBP Firm'; // PROVISIONAL — FOD-28
+
 export const outlookConfigured = Boolean(MSAL_CLIENT_ID);

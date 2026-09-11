@@ -103,7 +103,7 @@ describe('v14 → v15: the amendment bump', () => {
     // the v10→v11 step stamp a v11 store as v12 and skip a migration entirely.
     const old = v14Store();
     expect(migrateV14ToV15(old, JSON.stringify(old)).version).toBe(15);
-    expect(STORE_VERSION).toBe(16);
+    expect(STORE_VERSION).toBe(17);
   });
 
   it('adds the fixed sentences and the writer instructions a v14 store lacks', () => {

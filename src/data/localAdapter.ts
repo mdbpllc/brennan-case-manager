@@ -41,12 +41,24 @@ import { sortClients } from '../domain/client';
 import { seedData } from './seed';
 import { seedFormEngine } from '../forms/seed';
 import { DISCLOSURE_VARIANTS } from '../forms/variants';
+import { ATTORNEY_USER } from '../domain/billing';
+import { localISODate } from '../domain/dates';
+import {
+  planActivation, planDone, planNotApplicable, planUndo, planOverride, planEdit, planRetire, planReactivate,
+  FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
+  type ActContext, type FirmObligation, type FirmObligationCreate, type FirmObligationOccurrence,
+  type FirmObligationPatch, type OutcomeReason,
+} from '../domain/firmObligations';
+import type { FirmCloseResult } from './adapter';
+import { firmObligationsDemoSeed } from './firmObligationsSeed';
 
 const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 16; // v16: the CC-1 address model - every party's
+export const STORE_VERSION = 17; // v17: firm obligations (FOS-1, 2026-09-11) - the two
+// collections, and FOD-21's demo fixture firm, every date invented, demo mode only.
+// v16: the CC-1 address model - every party's
 // one-line address split ONCE into addressLine1 + cityStateZip by the D1(iii)
 // rule and MARKED, and every facility location given a stable id. v15: FE-D1 amendment second half - the
 // fixed-sentence and writer-instruction template rows, and the general fix for a
@@ -119,6 +131,11 @@ interface Store {
   formTemplateVersions: FormTemplateVersion[];
   formTokenDefinitions: FormTokenDefinition[];
   formFormatProfiles: FormFormatProfile[];
+  /** FOS-1 (firm-obligations-build-slice.md §3 item 4) — the demo-mode equivalent of
+   *  firm_obligations and firm_obligation_occurrences. In demo mode they hold
+   *  FOD-21's fixture firm, every date invented; Supabase mode seeds nothing. */
+  firmObligations: FirmObligation[];
+  firmObligationOccurrences: FirmObligationOccurrence[];
 }
 
 /** Attorney work that must survive a version-bump reseed (go-live gate 8,
@@ -749,6 +766,53 @@ export function migrateV15ToV16(old: Partial<Store>, raw: string): Store {
   return migrated;
 }
 
+/**
+ * v16 → v17: FIRM OBLIGATIONS (FOS-1; firm-obligations-build-slice.md §3 item 4,
+ * FOD-21). Adds the two collections — the demo-mode equivalent of
+ * firm_obligations and firm_obligation_occurrences — and, in demo mode, FOD-21's
+ * fixture firm, every date invented and computed from the day this runs (Michael's
+ * ruling at the build session's FOD-21 stop, 2026-09-11). Purely additive: nothing
+ * existing is read, moved or reshaped. `seedDemo: false` is the shape a central
+ * database starts in — both collections present and EMPTY (slice §7 item 17).
+ *
+ * The SEED PATH below calls the same fixture, so a fresh store lands where a
+ * migrated one does (the v16 lesson: a fresh store runs no migration).
+ */
+export function migrateV16ToV17(
+  old: Partial<Store>, raw: string,
+  opts: { today?: string; seedDemo?: boolean } = {},
+): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v16`, raw);
+  const fixture = opts.seedDemo === false
+    ? { obligations: [], occurrences: [], reviewLog: [] }
+    : firmObligationsDemoSeed(opts.today ?? localISODate(), stamp, uid);
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 17, NOT STORE_VERSION — the `migrateV10ToV11` lesson, warned about
+    // at every step since. This function produces a v17 store and nothing more.
+    version: 17,
+    firmObligations: old.firmObligations ?? fixture.obligations,
+    firmObligationOccurrences: old.firmObligationOccurrences ?? fixture.occurrences,
+  };
+
+  const summary =
+    `Store migrated v16→17 (firm obligations). Added the firm-obligation register`
+    + (fixture.obligations.length > 0
+      ? ` with the demo fixture firm: ${fixture.obligations.length} obligation(s) and `
+        + `${fixture.occurrences.length} open occurrence(s), EVERY DATE INVENTED (FOD-21)`
+      : ', empty')
+    + `. Nothing existing was changed. Full pre-migration backup at localStorage key "${KEY}-backup-v16".`;
+  migrated.reviewLog = [...(old.reviewLog ?? []), ...fixture.reviewLog, {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (firm-obligations migration, v17)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -765,28 +829,36 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 15) return migrateV15ToV16(parsed, raw);
+      if (parsed.version === 16) return migrateV16ToV17(parsed, raw);
+      if (parsed.version === 15) {
+        const v16 = migrateV15ToV16(parsed, raw);
+        return migrateV16ToV17(v16, JSON.stringify(v16));
+      }
       if (parsed.version === 14) {
         const v15 = migrateV14ToV15(parsed, raw);
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       if (parsed.version === 13) {
         const v14 = migrateV13ToV14(parsed, raw);
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       if (parsed.version === 12) {
         const v13 = migrateV12ToV13(parsed, raw);
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       if (parsed.version === 11) {
         const v12 = migrateV11ToV12(parsed, raw);
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
@@ -794,7 +866,8 @@ function load(): Store {
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
@@ -805,7 +878,8 @@ function load(): Store {
         const v13 = migrateV12ToV13(v12, JSON.stringify(v12));
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
-        return migrateV15ToV16(v15, JSON.stringify(v15));
+        const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
+        return migrateV16ToV17(v16, JSON.stringify(v16));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
@@ -828,6 +902,8 @@ function load(): Store {
     oaaIntakes: [],
     statuteChapters: [], statuteSections: [], verificationSnapshots: [], watchFlags: [],
     trackedBills: [], billRefs: [],
+    // FOS-1 — filled from FOD-21's fixture just below, never from seedData().
+    firmObligations: [], firmObligationOccurrences: [],
     ...seedData(),
   };
   // D1(iii) — a FRESH store lands in the same shape a MIGRATED one does. The
@@ -839,6 +915,13 @@ function load(): Store {
     seeded.parties, now(),
     { byRule: 0, unsplit: 0, idsAssigned: 0, names: [] },
   );
+  // FOD-21 — the same rule for the firm-obligation fixture: a fresh store carries
+  // exactly what the v16 → v17 step gives a migrated one, every date invented and
+  // computed from today.
+  const firmFixture = firmObligationsDemoSeed(localISODate(), now(), uid);
+  seeded.firmObligations = firmFixture.obligations;
+  seeded.firmObligationOccurrences = firmFixture.occurrences;
+  seeded.reviewLog.push(...firmFixture.reviewLog);
   if (old && raw) {
     const backupKey = `${KEY}-backup-v${old.version ?? 0}`;
     localStorage.setItem(backupKey, raw);
@@ -2009,5 +2092,186 @@ export class LocalAdapter implements DataAdapter {
     store.formFormatProfiles.push(rec);
     save(store);
     return rec;
+  }
+
+  // ---- Firm obligations (docs/specs/firm-obligations-build-slice.md §3 item 4) ----
+  // Every act is PLANNED by src/domain/firmObligations.ts and applied here in ONE
+  // save, so the store never holds half an act. The Supabase adapter applies the
+  // same plans; neither decides anything.
+
+  private firmCtx(): ActContext {
+    return { today: localISODate(), nowIso: now(), newId: uid, user: ATTORNEY_USER };
+  }
+
+  private firmParts(store: Store, occurrenceId: string) {
+    const occ = store.firmObligationOccurrences.find((o) => o.id === occurrenceId);
+    if (!occ) throw new Error('Occurrence not found');
+    const ob = store.firmObligations.find((o) => o.id === occ.obligationId);
+    if (!ob) throw new Error('Firm obligation not found');
+    const all = store.firmObligationOccurrences.filter((o) => o.obligationId === ob.id);
+    return { occ, ob, all };
+  }
+
+  private replaceFirmOccurrence(store: Store, id: string, patch: Partial<FirmObligationOccurrence>): FirmObligationOccurrence {
+    const idx = store.firmObligationOccurrences.findIndex((o) => o.id === id);
+    store.firmObligationOccurrences[idx] = { ...store.firmObligationOccurrences[idx], ...patch };
+    return store.firmObligationOccurrences[idx];
+  }
+
+  private replaceFirmObligation(store: Store, id: string, patch: Partial<FirmObligation>): FirmObligation {
+    const idx = store.firmObligations.findIndex((o) => o.id === id);
+    store.firmObligations[idx] = { ...store.firmObligations[idx], ...patch };
+    return store.firmObligations[idx];
+  }
+
+  private firmClose(
+    id: string,
+    plan: (ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], ctx: ActContext) => ReturnType<typeof planDone>,
+  ): FirmCloseResult {
+    const store = load();
+    const ctx = this.firmCtx();
+    const { occ, ob, all } = this.firmParts(store, id);
+    const p = plan(ob, occ, all, ctx);
+    const closed = this.replaceFirmOccurrence(store, p.occurrenceId, p.occurrencePatch);
+    if (p.next) store.firmObligationOccurrences.push(p.next);
+    const obligation = p.obligationPatch ? this.replaceFirmObligation(store, ob.id, p.obligationPatch) : ob;
+    store.reviewLog.push({ ...p.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { closed, next: p.next, obligation };
+  }
+
+  async listFirmObligations(): Promise<FirmObligation[]> {
+    return load().firmObligations.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  async getFirmObligation(id: string): Promise<FirmObligation | null> {
+    return load().firmObligations.find((o) => o.id === id) ?? null;
+  }
+
+  async createFirmObligation(
+    input: FirmObligationCreate,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const plan = planActivation(input, ctx);
+    store.firmObligations.push(plan.obligation);
+    if (plan.occurrence) store.firmObligationOccurrences.push(plan.occurrence);
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { obligation: plan.obligation, occurrence: plan.occurrence };
+  }
+
+  async updateFirmObligation(
+    id: string, patch: FirmObligationPatch,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const ob = store.firmObligations.find((o) => o.id === id);
+    if (!ob) throw new Error('Firm obligation not found');
+    const plan = planEdit(ob, patch, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx);
+    const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
+    const occurrence = plan.occurrence ? this.replaceFirmOccurrence(store, plan.occurrence.id, plan.occurrence.patch) : null;
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { obligation, occurrence, kept: plan.kept };
+  }
+
+  async retireFirmObligation(id: string): Promise<FirmObligation> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const ob = store.firmObligations.find((o) => o.id === id);
+    if (!ob) throw new Error('Firm obligation not found');
+    const plan = planRetire(ob, ctx);
+    const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return obligation;
+  }
+
+  async reactivateFirmObligation(
+    id: string,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const ob = store.firmObligations.find((o) => o.id === id);
+    if (!ob) throw new Error('Firm obligation not found');
+    const plan = planReactivate(ob, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx);
+    const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
+    if (plan.occurrence) store.firmObligationOccurrences.push(plan.occurrence);
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { obligation, occurrence: plan.occurrence };
+  }
+
+  async listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]> {
+    return load().firmObligationOccurrences.slice().sort((a, b) => a.dueOn.localeCompare(b.dueOn));
+  }
+
+  async markOccurrenceDone(
+    id: string, input: { doneOn?: string; doneNote?: string; filedAt?: string },
+  ): Promise<FirmCloseResult> {
+    return this.firmClose(id, (ob, occ, all, ctx) => planDone(ob, occ, all, input, ctx));
+  }
+
+  async markOccurrenceNotApplicable(
+    id: string, input: { reason?: OutcomeReason; note?: string; doneOn?: string },
+  ): Promise<FirmCloseResult> {
+    return this.firmClose(id, (ob, occ, all, ctx) => planNotApplicable(ob, occ, all, input, ctx));
+  }
+
+  async undoOccurrence(
+    id: string,
+  ): Promise<{ reopened: FirmObligationOccurrence; removed: FirmObligationOccurrence | null; obligation: FirmObligation }> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const { occ, ob, all } = this.firmParts(store, id);
+    const ids = new Set([ob.id, ...all.map((o) => o.id)]);
+    // Insertion order IS the order written — the order Undo's test reads.
+    const log = store.reviewLog.filter((l) =>
+      (l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY) && ids.has(l.entityId));
+    const plan = planUndo(ob, occ, all, log, ctx);
+    if (plan.removeOccurrence) {
+      store.firmObligationOccurrences = store.firmObligationOccurrences.filter((o) => o.id !== plan.removeOccurrence!.id);
+    }
+    const reopened = this.replaceFirmOccurrence(store, plan.occurrenceId, plan.reopenPatch);
+    const obligation = plan.obligationPatch ? this.replaceFirmObligation(store, ob.id, plan.obligationPatch) : ob;
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { reopened, removed: plan.removeOccurrence, obligation };
+  }
+
+  async setOccurrenceDueOverride(id: string, date: string): Promise<FirmObligationOccurrence> {
+    const store = load();
+    const ctx = this.firmCtx();
+    const { occ, ob } = this.firmParts(store, id);
+    const plan = planOverride(ob, occ, date, ctx);
+    const updated = this.replaceFirmOccurrence(store, id, plan.patch);
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return updated;
+  }
+
+  async listFirmObligationReviewLog(): Promise<ReviewLogEntry[]> {
+    return load().reviewLog.filter((l) => l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY);
+  }
+
+  async listFirmOccurrencesPendingSync(): Promise<FirmObligationOccurrence[]> {
+    return load().firmObligationOccurrences.filter((o) => o.syncStatus !== 'synced');
+  }
+
+  async updateFirmOccurrenceSync(
+    id: string,
+    patch: Partial<Pick<FirmObligationOccurrence, 'outlookEventId' | 'syncStatus' | 'syncError' | 'lastSyncAt'>>,
+  ): Promise<FirmObligationOccurrence> {
+    const store = load();
+    if (!store.firmObligationOccurrences.some((o) => o.id === id)) throw new Error('Occurrence not found');
+    // Only the four sync fields pass, whatever the caller sent.
+    const only: Partial<FirmObligationOccurrence> = {};
+    for (const k of ['outlookEventId', 'syncStatus', 'syncError', 'lastSyncAt'] as const) {
+      if (k in patch) (only as Record<string, unknown>)[k] = patch[k];
+    }
+    const updated = this.replaceFirmOccurrence(store, id, { ...only, updatedAt: now() });
+    save(store);
+    return updated;
   }
 }

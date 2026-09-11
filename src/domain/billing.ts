@@ -201,7 +201,11 @@ export interface ReviewLogEntry {
   id: string;
   entityType: string;
   entityId: string;
-  action: 'suggested' | 'confirmed' | 'edited' | 'rejected' | 'created' | 'generated' | 'cancelled';
+  // 'done' / 'not-applicable' / 'undone' are the firm-obligation closes (FOD-6);
+  // db/migrations/2026-09-10-firm-obligations.sql widens the CHECK for them and for
+  // 'cancelled' (FOD-20), which CalendarTab.tsx already writes.
+  action: 'suggested' | 'confirmed' | 'edited' | 'rejected' | 'created' | 'generated' | 'cancelled'
+    | 'done' | 'not-applicable' | 'undone';
   user: string;
   timestamp: string;
   oldValue?: string;

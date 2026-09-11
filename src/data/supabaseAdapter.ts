@@ -34,6 +34,15 @@ import type {
 } from '../forms/types';
 import type { CaseClient, ClientBackfillFlag } from '../domain/client';
 import { sortClients } from '../domain/client';
+import { ATTORNEY_USER } from '../domain/billing';
+import { localISODate } from '../domain/dates';
+import {
+  planActivation, planDone, planNotApplicable, planUndo, planOverride, planEdit, planRetire, planReactivate,
+  FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
+  type ActContext, type FirmObligation, type FirmObligationCreate, type FirmObligationOccurrence,
+  type FirmObligationPatch, type LogDraft, type OutcomeReason,
+} from '../domain/firmObligations';
+import type { FirmCloseResult } from './adapter';
 
 /**
  * Supabase adapter — the real central database (schema in db/schema.sql).
@@ -1298,5 +1307,202 @@ export class SupabaseAdapter implements DataAdapter {
       .upsert(toRow(data), { onConflict: 'key' }).select().single();
     if (res.error) throw new Error(res.error.message);
     return fromRow<FormFormatProfile>(res.data as Record<string, unknown>);
+  }
+
+  // ---- Firm obligations (docs/specs/firm-obligations-build-slice.md §3 item 4) ----
+  // The SAME plans the local adapter applies (src/domain/firmObligations.ts): this
+  // adapter reads the rows a plan needs and writes what the plan returns, deciding
+  // nothing. PostgREST gives no multi-statement transaction here, so every act
+  // writes in the order that keeps the database's own guards satisfied — above all
+  // the one-open partial unique index (firm_obligation_occurrences_one_open_idx):
+  // a close marks the current occurrence done BEFORE the next is inserted, and an
+  // undo removes the untouched next BEFORE the closed one is reopened. The review
+  // log line is written LAST, so a failed write never leaves a line claiming an act
+  // that did not land. None of these tables exists until Michael runs
+  // db/migrations/2026-09-10-firm-obligations.sql by hand.
+
+  private firmCtx(): ActContext {
+    return { today: localISODate(), nowIso: new Date().toISOString(), newId: () => crypto.randomUUID(), user: ATTORNEY_USER };
+  }
+
+  private async firmObligationRow(id: string): Promise<FirmObligation> {
+    const res = await this.sb.from('firm_obligations').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    if (!res.data) throw new Error('Firm obligation not found');
+    return fromRow<FirmObligation>(res.data as Record<string, unknown>);
+  }
+
+  private async firmOccurrenceRow(id: string): Promise<FirmObligationOccurrence> {
+    const res = await this.sb.from('firm_obligation_occurrences').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    if (!res.data) throw new Error('Occurrence not found');
+    return fromRow<FirmObligationOccurrence>(res.data as Record<string, unknown>);
+  }
+
+  private async firmOccurrencesOf(obligationId: string): Promise<FirmObligationOccurrence[]> {
+    return this.rows<FirmObligationOccurrence>('firm_obligation_occurrences', (q) =>
+      q.select('*').eq('obligation_id', obligationId).order('created_at'));
+  }
+
+  /** The obligation's own lines and its occurrences' lines, in the order written. */
+  private async firmLogFor(obligationId: string, occurrences: FirmObligationOccurrence[]): Promise<ReviewLogEntry[]> {
+    const ids = [obligationId, ...occurrences.map((o) => o.id)];
+    return this.rows<ReviewLogEntry>('review_log', (q) =>
+      q.select('*')
+        .in('entity_type', [FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY])
+        .in('entity_id', ids)
+        .order('timestamp', { ascending: true }));
+  }
+
+  private async writeFirmLog(line: LogDraft): Promise<void> {
+    await this.insertRow<ReviewLogEntry>('review_log', line);
+  }
+
+  private async firmClose(
+    id: string,
+    plan: (ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], ctx: ActContext) => ReturnType<typeof planDone>,
+  ): Promise<FirmCloseResult> {
+    const occ = await this.firmOccurrenceRow(id);
+    const ob = await this.firmObligationRow(occ.obligationId);
+    const all = await this.firmOccurrencesOf(ob.id);
+    const p = plan(ob, occ, all, this.firmCtx());
+    // done_by is provenance, like created_by: the signed-in caller, or NULL (F-25's honesty).
+    const { data } = await this.sb.auth.getSession();
+    const closed = await this.updateRow<FirmObligationOccurrence>(
+      'firm_obligation_occurrences', p.occurrenceId, { ...p.occurrencePatch, doneBy: data.session?.user.id },
+    );
+    const next = p.next
+      ? await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', p.next)
+      : null;
+    const obligation = p.obligationPatch
+      ? await this.updateRow<FirmObligation>('firm_obligations', ob.id, p.obligationPatch)
+      : ob;
+    await this.writeFirmLog(p.log);
+    return { closed, next, obligation };
+  }
+
+  async listFirmObligations(): Promise<FirmObligation[]> {
+    return this.rows<FirmObligation>('firm_obligations', (q) => q.select('*').order('name'));
+  }
+
+  async getFirmObligation(id: string): Promise<FirmObligation | null> {
+    const res = await this.sb.from('firm_obligations').select('*').eq('id', id).maybeSingle();
+    if (res.error) throw new Error(res.error.message);
+    return res.data ? fromRow<FirmObligation>(res.data as Record<string, unknown>) : null;
+  }
+
+  async createFirmObligation(
+    input: FirmObligationCreate,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
+    const plan = planActivation(input, this.firmCtx());
+    // created_by is left to the set_created_by trigger (F-25).
+    const obligation = await this.insertRow<FirmObligation>('firm_obligations', plan.obligation);
+    const occurrence = plan.occurrence
+      ? await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', plan.occurrence)
+      : null;
+    await this.writeFirmLog(plan.log);
+    return { obligation, occurrence };
+  }
+
+  async updateFirmObligation(
+    id: string, patch: FirmObligationPatch,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }> {
+    const ob = await this.firmObligationRow(id);
+    const all = await this.firmOccurrencesOf(id);
+    const plan = planEdit(ob, patch, all, this.firmCtx());
+    const obligation = await this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch);
+    const occurrence = plan.occurrence
+      ? await this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', plan.occurrence.id, plan.occurrence.patch)
+      : null;
+    await this.writeFirmLog(plan.log);
+    return { obligation, occurrence, kept: plan.kept };
+  }
+
+  async retireFirmObligation(id: string): Promise<FirmObligation> {
+    const plan = planRetire(await this.firmObligationRow(id), this.firmCtx());
+    const obligation = await this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch);
+    await this.writeFirmLog(plan.log);
+    return obligation;
+  }
+
+  async reactivateFirmObligation(
+    id: string,
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
+    const ob = await this.firmObligationRow(id);
+    const plan = planReactivate(ob, await this.firmOccurrencesOf(id), this.firmCtx());
+    const obligation = await this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch);
+    const occurrence = plan.occurrence
+      ? await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', plan.occurrence)
+      : null;
+    await this.writeFirmLog(plan.log);
+    return { obligation, occurrence };
+  }
+
+  async listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]> {
+    return this.rows<FirmObligationOccurrence>('firm_obligation_occurrences', (q) => q.select('*').order('due_on'));
+  }
+
+  async markOccurrenceDone(
+    id: string, input: { doneOn?: string; doneNote?: string; filedAt?: string },
+  ): Promise<FirmCloseResult> {
+    return this.firmClose(id, (ob, occ, all, ctx) => planDone(ob, occ, all, input, ctx));
+  }
+
+  async markOccurrenceNotApplicable(
+    id: string, input: { reason?: OutcomeReason; note?: string; doneOn?: string },
+  ): Promise<FirmCloseResult> {
+    return this.firmClose(id, (ob, occ, all, ctx) => planNotApplicable(ob, occ, all, input, ctx));
+  }
+
+  async undoOccurrence(
+    id: string,
+  ): Promise<{ reopened: FirmObligationOccurrence; removed: FirmObligationOccurrence | null; obligation: FirmObligation }> {
+    const occ = await this.firmOccurrenceRow(id);
+    const ob = await this.firmObligationRow(occ.obligationId);
+    const all = await this.firmOccurrencesOf(ob.id);
+    const plan = planUndo(ob, occ, all, await this.firmLogFor(ob.id, all), this.firmCtx());
+    if (plan.removeOccurrence) {
+      await this.deleteRows('firm_obligation_occurrences', 'id', plan.removeOccurrence.id);
+    }
+    const reopened = await this.updateRow<FirmObligationOccurrence>(
+      'firm_obligation_occurrences', plan.occurrenceId, plan.reopenPatch,
+    );
+    const obligation = plan.obligationPatch
+      ? await this.updateRow<FirmObligation>('firm_obligations', ob.id, plan.obligationPatch)
+      : ob;
+    await this.writeFirmLog(plan.log);
+    return { reopened, removed: plan.removeOccurrence, obligation };
+  }
+
+  async setOccurrenceDueOverride(id: string, date: string): Promise<FirmObligationOccurrence> {
+    const occ = await this.firmOccurrenceRow(id);
+    const plan = planOverride(await this.firmObligationRow(occ.obligationId), occ, date, this.firmCtx());
+    const updated = await this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', id, plan.patch);
+    await this.writeFirmLog(plan.log);
+    return updated;
+  }
+
+  async listFirmObligationReviewLog(): Promise<ReviewLogEntry[]> {
+    return this.rows<ReviewLogEntry>('review_log', (q) =>
+      q.select('*')
+        .in('entity_type', [FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY])
+        .order('timestamp', { ascending: true }));
+  }
+
+  async listFirmOccurrencesPendingSync(): Promise<FirmObligationOccurrence[]> {
+    return this.rows<FirmObligationOccurrence>('firm_obligation_occurrences', (q) =>
+      q.select('*').neq('sync_status', 'synced'));
+  }
+
+  async updateFirmOccurrenceSync(
+    id: string,
+    patch: Partial<Pick<FirmObligationOccurrence, 'outlookEventId' | 'syncStatus' | 'syncError' | 'lastSyncAt'>>,
+  ): Promise<FirmObligationOccurrence> {
+    // Only the four sync fields pass, whatever the caller sent.
+    const only: Record<string, unknown> = {};
+    for (const k of ['outlookEventId', 'syncStatus', 'syncError', 'lastSyncAt'] as const) {
+      if (k in patch) only[k] = patch[k];
+    }
+    return this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', id, only);
   }
 }

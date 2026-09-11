@@ -4,6 +4,7 @@ import type { CaseRecord, PracticeArea } from '../domain/types';
 import { CASE_TYPES, isClosedStatus } from '../domain/caseTypes';
 import { db } from '../data';
 import WorklistCard from '../components/WorklistCard';
+import FirmObligationsCard from '../components/FirmObligationsCard';
 
 const AREA_BADGE: Record<PracticeArea, string> = {
   'Personal Injury': 'pi',
@@ -41,6 +42,11 @@ export default function CaseListPage() {
           the landing page, not just the registry screen. Renders nothing
           when there's nothing to act on. */}
       <WorklistCard compact />
+      {/* FOS-1 (2026-09-10), slice §3 item 6: the firm-obligations card, hard
+          items only, overdue or lit within 14 days (FOM-13). BELOW the
+          legal-watch card by default (FOD-27 — position is a hands-on item).
+          Renders nothing when there's nothing to act on. */}
+      <FirmObligationsCard />
       <div className="page-head">
         <div>
           <h2>Cases</h2>
