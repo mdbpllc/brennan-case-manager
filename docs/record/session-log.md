@@ -17,6 +17,539 @@ Purpose: a dated, running record of what happened session to session in this pro
 
 ---
 
+## 2026-09-12 — CODE SESSION (Opus 5, fresh, fired from `docs/prompts/PROMPT-firm-obligations-slice-build-session.md`; queue runner BARRED; unnumbered per TOC-6) — THE FIRM-OBLIGATIONS SLICE IS BUILT: fixture-only in demo mode and walked by clicking; ONE MIGRATION WRITTEN AND NOT RUN; four stops put to Michael and each ruled by his pick; all thirty-three named defaults reported by number, four NOT built as named; every text act PROVISIONAL; an adversarial review, three rounds deep, confirmed defects the green suite had passed — every one fixed or filed before this entry — ONE COLLISION NEEDING HIS RULING (§8 against `FOD-4`) AND TWO WORDING DEPARTURES FILED FOR HIS EYE; `FOM-8` RUN AGAINST HIS REAL OUTLOOK (the demo-mode app, three throwaway events, all deleted), the long reminder READ AS HONOURED once its fire time was current (a 180-day reminder five months stale did not surface)
+
+**THE AUTHORIZATION, QUOTED, AND THE TEST IT SATISFIES.** The prompt fires on `FOS-1` ruled AFFIRMATIVELY at HEAD and on nothing else. The entry is **`## 2026-09-10 (#155)`**, its `FOS-1` bullet, read at HEAD `cab3b1c`: *"**RULED YES, verbatim *"Yes"*, ~23:03 CDT**: `FOD-20` (the `review_log` CHECK also takes `cancelled`, closing `#151`'s live-write mismatch) IN; the §2.3 synthesis confirmed."* **`FOD-20` IN → the CHECK takes TEN values.** Read at HEAD; not inferred from a register glyph.
+
+**STEP 0.** `git fetch origin` exit 0; `git ls-remote origin refs/heads/master` (the live remote read) returned `cab3b1cdd17918717cc652a1bf83c0cf5664f237`, equal to local HEAD, on `master`, tracked tree clean. The three untracked paths — `Claude outputs/`, `docs/specs/attorney-review-queue-audit-2026-08-24.md`, `docs/specs/id-collision-report.md` — are Michael's; **nothing was done to them**, and every `git add` through `e046906` named explicit paths. `inbox/` was EMPTY, so `MM-1` cleared and this session never doubled as the runner. **DT-1:** this entry carries the close-out date, 2026-09-12, read from the wall clock at 00:06 CDT; the build, the click-through and `FOM-8` ran on 2026-09-11 and keep that date below.
+
+**BASELINE, BEFORE A LINE WAS WRITTEN — RED, AND A STOP.**
+- **The run.** `npm test` **exit 1**: `Test Files 1 failed | 48 passed (49)`, `Tests 746 passed (746)`. `npm run build` 0, `npm run lint` 0 (4 warnings, all in the mock source below), `npx tsc -b` 0.
+- **The failing file was not a product test.** Vitest's default glob collected `docs/record/firm-obligations-design-2026-09-07/mock-source-2026-09-08/test/domain.test.js`, the design mock's plain-node harness filed as EVIDENCE at `44409ef` (batch 93). It dies at collection on `require('../src/domain.js')`, a path the filed tree does not have.
+- **Why no one saw it.** Batches 93–96 were docs-only and skipped the health check.
+- **Put to Michael as a stop; RULED — his pick: *"Exclude docs/ from vitest (Recommended)"*.**
+- **Commit `7c68eb9`.** `vite.config.ts` gained `test.exclude: [...configDefaults.exclude, 'docs/**']`, with the filed evidence untouched. After it, `npm test` exit 0 at 746 tests / 48 files, `tsc -b` 0, lint 0. Lint then carried a fifth warning, `7c68eb9`'s own triple-slash reference in `vite.config.ts`; `0cd201c` removed that line.
+
+**STEP 2 — THE PREMISES RE-VERIFIED AT `cab3b1c`, ONE DELTA.** Every premise held:
+- `calendar_events.case_id uuid not null references cases (id) on delete cascade`;
+- 28 `path=` lines in `src/App.tsx`, none under `/firm` and no top-level `/calendar` route (the one calendar path is the case tab's `/cases/:id/calendar`);
+- `review_log.action`'s six-value CHECK, and the only migration naming `review_log` (`2026-07-28-cl2-client-dimension.sql`) widens nothing;
+- `toGraphEvent(ev: CalendarEvent, caseRec: CaseRecord)` and `ensureCalendar` by `OUTLOOK_CALENDAR_NAME`;
+- `STORE_VERSION = 16` with literal-pinned steps; `SCHEMA_TABLES` 46 and its sequence test;
+- `appendReviewLog` on both adapters; `WorklistCard`'s "renders nothing when there's nothing to do"; `CalendarTab.tsx`'s `action: 'cancelled'`;
+- `snooze` and `quickbooks|qbo|intuit` in 0 files.
+
+**Delta: `ReviewLogEntry.action` in `src/domain/billing.ts` ALREADY listed `'cancelled'`**; only the SQL CHECK lacked it. It changes no ruling.
+
+**THE STOPS — EACH PUT TO MICHAEL WITH OPTIONS CLAUDE WROTE, EACH RULED BY HIS PICK.**
+1. The red baseline, above.
+2. **`FOD-21` could not be built as named.** Its "one target-passed on a weekend-dated row under each `weekendRule`" cannot exist under `unknown` (§2.3 item 4's precedence), and the product reads the real today, so target-passed under the other two settings exists only on Sat–Mon (rolls-forward) or from the Saturday through the weekend rule date itself (no-roll). His pick: *"Seed from the day the demo store is created (Recommended)"*.
+3. **`FOD-29`'s two phrasings disagree across a daylight-saving change** — "from the event's start (00:00 local on T) back to 00:00 local on `lightsOn`" against "i.e. `leadDays × 1440`". His pick: *"Fire at the lit moment (Recommended)"*, the real minutes between the two local midnights.
+4. **`FOM-8`'s timing.** His pick: *"Yes, when you're ready"*: the build finished and verified first, then the live check in this session with him.
+
+**Three further departures were NOT put to him as stops, and should have been under the kickoff's Step 4 ("any default you found you could not build as named is a STOP"), read with its DO-NOT preamble that slice §8 "binds in full".** All three are filed at `docs/spec-feedback.md`, 2026-09-12 section — for his ruling (part C item 1) and for his eye (part C items 2 and 9):
+- **Part C item 1:** slice §8's bar on "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo" against `FOD-4`'s edits.
+- **Part C item 2:** `FOD-26`'s lit card line drops its day count on a weekend `unknown` row, where §8 wins.
+- **Part C item 9:** `FOD-25` and `FOD-26` print "1 day" at N = 1, not the named "N days".
+
+**WHAT WAS BUILT — commit `0cd201c`** (36 files, +7,760 / −36):
+- **The domain.** `src/domain/firmObligations.ts` holds the six rule kinds, materialization (`FOM-4`, `FOM-1`, serial and collapse), R/T/D, `lightsOn` and the five display states, the strong line, the card and register views, and every act PLANNED as pure data. Neither adapter decides anything, so the two modes cannot diverge.
+- **The catalog.** Thirty-five templates plus the BOI note row are GENERATED from SPEC §7 byte-for-byte by `scripts/generate-firm-obligation-catalog.mjs`, with a drift test and `--check`. Every template's `weekendRule` is the literal `'unknown'`.
+- **Both adapters' methods, and store v17.** The v17 step has two collections, a literal `17`, a `-backup-v16`, and every older version chained through it. The `FOD-21` fixture is seeded on both the migrated and the fresh path.
+- **The register** at `/firm/obligations` (nav "Obligations"): Overdue pinned, twelve months by TARGET month, Later, Inactive collapsed, the catalog, Activate…, Custom, Done, Not applicable…, Undo, Edit…, Retire.
+- **The `/cases` card** directly below the legal-watch card.
+- **The Outlook sibling:** `toGraphFirmEvent` on the separate "MDBP Firm" calendar, all-day on T, `FIRM|obligationId|occurrenceId` on the existing property id, `isReminderOn: true`, and reminder minutes by the ruled rule. The case path is byte-identical.
+- **The migration, `db/schema.sql`, `SCHEMA_TABLES` 46 → 48** (47 policy-true), and the tests.
+- **The build's own lanes.** Catalog, migration and Outlook went to three builders, each checked by an adversarial verifier. Every lane touched only its own files, and none returned a HIGH finding. The verifiers' MEDIUM and LOW findings were dispositioned before `0cd201c`: the DST minutes went to Michael (stop 3 above); an `isReminderOn: false`-on-done deviation, which Claude's own lane instruction had caused, was reverted to the slice's literal `true`; and a same-name calendar guard was added, with its tests.
+
+**THE WHOLE-BUILD ADVERSARIAL REVIEW, AND THE FIXES — commit `e046906`.**
+- **How it ran.** Five finder lanes read the build against the slice: scope and parity; the defaults; the DO-NOTs and the tests; correctness; the UI and text acts. Five independent refuters, one per lane, then tried to break every finding, with probes. **Of 46 findings, one was refuted** (a nearest-candidate tie-break that can never move a date later); the rest held, some re-rated.
+- **The DO-NOT sweep.** The sweep table (lane L3, run at `0cd201c`) marked every limb it listed CLEAN except two: "migration run / DB connected" (not provable from the repo) and "a real date or fact" (the fixture's borrowed statute dates, fixed below).
+- **Two §8 DO-NOTs the table did not list were found elsewhere in the review.**
+  - The card's day count on a weekend `unknown` row: a breach, fixed below.
+  - Edits that return a lit occurrence to pending: a collision filed for his ruling, not decided.
+
+The defects that mattered, all passed by the green suite and all fixed:
+- **A back door out of FO-2 on every template.** The `FOD-4` guards keyed on the display label `overdue`. Under `unknown`, a weekend-dated occurrence shows past-date-unknown while overdue holds beneath it. So a later override or rule edit could move it out of FO-2, including by a three-step route (edit onto a Saturday, override later, edit back). The guards now test **today > D**.
+- **FOM-4 on month-precision rows (FOT-1 and FOT-25, both go-live templates).** A mid-month "last period completed" reopened the period he said was done, as overdue. Any day in the due month now names that period. **A day-precision date that is not one of the rule's due dates is REFUSED, not guessed** — a reading, filed at `spec-feedback.md`.
+- **Done after a kept rule edit** opened the closed period a second time.
+- **Re-activation** reopened a period already closed, and reopened a done one-time row as overdue.
+- **Interval edits** re-dated from the wrong completion, or not at all.
+- **An edit that changed nothing** was logged as a rule change (Postgres jsonb key order).
+- **The `FOD-21` fixture** borrowed three SPEC §7 statute dates, and missed the named mix on about one creation day in seven (FOT-8/FOT-9 lit ~46 days a year, FOT-1 past-date-unknown ~5). Every date is now invented from the creation day, and a 731-day sweep pins the mix.
+- **The card** printed a day count on a lit weekend `unknown` row (the §8 DO-NOT).
+- **The register page.**
+  - The catalog's activation form opened off-screen; it now scrolls into view.
+  - An act's error shows in the row or form that started it, and the act's buttons are disabled while it runs.
+  - Details prints no "due" date on a weekend row under `unknown`.
+  - Every Inactive row shows its template's catalog text and source, so the BOI row now shows its note.
+  - The Inactive "Activate…" re-pushes an occurrence the edit moved, writes no edit when nothing changed, and takes "last period completed" on a first activation.
+  - A retired row's open occurrence gains Re-activate.
+  - "+ Add obligation" waits for the register to load.
+  - Category and review-log slugs show as words, and SPEC-cell markdown is stripped at display, the Outlook subject included.
+  - Every on-screen string carries PROVISIONAL with a cite, pinned by an AST-walking test. A verifier's scratch copy of that walker, run on the `0cd201c` page, found 81 unmarked literal lines — a stricter count than the review's "about 41".
+  - The card renders from one pure summary.
+  - A "Needs attention" list shows any active obligation with no open occurrence.
+  - The DST reminder test pins its zone at runtime; it was proven under `TZ=UTC`.
+- **The Supabase adapter and sync.**
+  - Every act compensates a failed later write by UPDATE, or by re-inserting a row it deleted, and never by a compensating DELETE.
+  - Its errors fall into three classes: not saved, saved without its log line, could not restore.
+  - A failure-injecting fake pins every failure point. The firm adapter test file runs 67 tests at `e046906`; it ran 14 at `0cd201c`.
+  - Every act's review-log action and entity type are pinned on both adapters.
+  - The firm half of the Outlook drain continues past a row that throws, under a new sync test file with mocked auth and Graph.
+- **The second verification round, and what it fixed.**
+  - **A landed act whose Outlook push then failed looked failed,** and its error could be shown nowhere, because the reload unmounted the row that held it. Every push now goes through one catching helper, which reports "saved, but not pushed to Outlook"; the row stays queued for Sync now. An error whose row is gone goes to the top of the page.
+  - **The Inactive "Activate…" could leave half an act:** a refused "last period completed" still saved the rule edit. The page now asks the domain first (`reactivationProblem`, a dry run of both plans) and writes nothing on a refusal.
+  - **Forms could close mid-act.** The controls that open or close a form, and a row's other acts, are disabled while an act on that row runs.
+  - **A catalog activation could be duplicated.** Its form closes the moment the write lands.
+  - **Edits that changed nothing still wrote log lines.** "Save changes" with nothing changed, and "Set this date" with the date already in force, now write nothing. A month-precision row's own month-end still counts as a change, since it alters when the row lights (FOM-6).
+  - **Undo's "not deleted in Outlook" line read as a success.** It is now a warning.
+  - **Some Inactive rows had no Details panel.** Every Inactive row now carries one, so the review log a could-not-restore message points at is always there.
+  - **The Supabase adapter's messages.**
+    - They show the obligation's name without markdown.
+    - They name any date the activation carried that a retry would lose.
+    - They send him to "Needs attention" only when the state really is stranded.
+    - A restore that would put back `synced` over a push that landed in between restores `pending` instead.
+    - The firm drain survives a failing obligations read.
+  - **Tests.** Two page-test pins a checker showed could be bypassed are tightened. Two adapter branches that behaved correctly but were unguarded got their tests.
+
+**The fixes were built in two rounds of parallel lanes** (the page and card; the Supabase adapter and sync). Each round was checked by an adversarial verifier that re-ran the lane's tests, probed its behaviour with throwaway tests (since deleted) and ran mutants against its test pins.
+- **Breaches.** **No lane verifier found a DO-NOT or scope breach beyond the §8-against-`FOD-4` collision above.**
+- **Round one's verifiers** found two MEDIUM defects and a set of LOW ones; round two fixed them.
+- **Round two's verifiers** found only LOW gaps, all closed before the health check: two page-test pins a mutant could bypass; two correct but unguarded adapter branches; and a message pointing at a Details panel some Inactive rows did not render.
+- **The two new adapter tests** were each run against an in-memory mutation of the line it guards, and each failed alone (1 failed, 66 passed). That result was recorded in the session notes from the follow-up agent's report; its result files were not kept.
+
+**THE DEFAULTS TAKEN, BY NUMBER — none approved; every one built as named EXCEPT four:** `FOD-21` and `FOD-29`, built as Michael ruled at stops 2 and 3 (`FOD-29` sends the real minutes between the two local midnights across a clock change, not its "i.e. `leadDays × 1440`"); and `FOD-25` and `FOD-26`. Their day count reads "1 day" at N = 1, and `FOD-26`'s lit card line drops the count on a weekend `unknown` row, where §8 governs. **Those two were NOT put to him as stops;** they are filed at `spec-feedback.md` (2026-09-12 section, part C items 2 and 9).
+- `FOD-1` as amended by `FOM-12`: weekends only; T the last business day before a weekend R; D rolls only under rolls-forward; the FOD-1 note under `unknown`; no holiday computed.
+- `FOD-2`: 30-day default, template leads pre-filled and editable.
+- `FOD-3`: naive local dates, `today` always an argument.
+- `FOD-4`: edits touch only the open occurrence; the never-later guard on the past-due CONDITION, not the label (the review's fix); a kept rule edit says so. It also stops a change that would turn a labelled-overdue occurrence into past-date-unknown, even with D unmoved or earlier — an override or a weekend-rule edit is refused, a rule edit keeps its date — a reading beyond `FOD-4`'s "LATER" (part C item 3).
+- `FOD-5` as amended by `FOM-1` and `FOM-4`: first and next occurrence; one open, enforced in the domain and by the partial unique index.
+- `FOD-6`: exactly one `review_log` line per act.
+- `FOD-7`: Undo's only test, read from the close line's trail.
+- `FOD-8`: Retire closes nothing.
+- `FOD-9`: no date guessed; Supabase seeds nothing.
+- `FOD-10` as amended by DECISION 7: the separate calendar, all-day on T.
+- `FOD-11`: two weights; order only.
+- `FOD-12`: the route and nav label.
+- `FOD-13`: no firm occurrence on any case's Calendar tab or queue.
+- `FOD-14` as amended by `FOM-13`: hard items only — overdue, or lit / target-passed / past-date-unknown with target within 14 days.
+- `FOD-15`: Done on any open row.
+- `FOD-16`: an interval is due now unless last-done is entered.
+- `FOD-17` as amended by `FOM-6`: month lighting while no override.
+- `FOD-18`: Not applicable only on the eight lapse rows, reason required.
+- `FOD-19`: no snooze anywhere.
+- `FOD-20`: TEN values.
+- `FOD-21`: as ruled at stop 2, dates invented from the creation day.
+- `FOD-22`: Done PATCHes "Done — " and keeps the event; Undo restores.
+- `FOD-23`: `on delete restrict`, no delete method.
+- `FOD-24`: the holiday line on the register foot and in the card's expander.
+- `FOD-25`: the strong line — **at N = 1 it prints "1 day"**.
+- `FOD-26`: the card title and lines — **at N = 1 it prints "1 day", and the lit line carries no count on a weekend `unknown` row, §8 winning**.
+- `FOD-27`: below the legal-watch card.
+- `FOD-28`: "MDBP Firm", overridable.
+- `FOD-29`: as ruled at stop 3 — the real minutes between the two local midnights, not "i.e. `leadDays × 1440`".
+- `FOD-30`: lead and weight pre-filled, his dates required, weekend radios preselecting `unknown`.
+- `FOD-31`: month-precision R is the month's last day.
+- `FOD-32`: a one-time Done retires the row; Undo re-activates.
+- `FOD-33`: the Inactive section.
+
+**THE TEXT ACTS — ALL PROVISIONAL, EACH MARKED IN CODE WITH ITS CITE, NONE DESCRIBED ANYWHERE AS APPROVED:**
+- the nav label and page title (DECISION 0);
+- the card title, lines, "and K more" / "Open the register" and "About these dates" (`FOD-26`, `FOD-24`);
+- the strong line in every state and the `FOD-1` note (`FOD-25`);
+- the holiday line (`FOD-24`);
+- the group headings — Overdue, the month names, Later, Inactive — and "Nothing falls due this month" (`FOM-9`, `FOM-14`, `FOM-3`, `FOM-5`; the month names §2.3's example shape);
+- the demo banner (`FOD-21`);
+- the retired badge and Inactive lines (`FOD-33`);
+- the close form's labels, placeholders and reasons (`FOD-18`);
+- the rule-kind and weekend-rule labels, and the activation and edit forms' labels (`FOD-30`, `FOM-4`, `FOD-16`, `FOD-2`, DECISION 6);
+- the act-confirmation notices — "Activated: …", "Done: …", "Reopened: …", "Retired: … Its open occurrence stays until done.", "Saved: …", "Nothing changed." — and the landed-but-not-pushed warning (`FOD-30`, `FOM-5`, `FOD-25`, `FOD-7`, `FOD-8`, `FOD-4`, DECISION 7, slice §3 item 10);
+- the refusal and error sentences, including the Supabase adapter's three message classes (`FOD-4`, `FOD-7`, `FOD-8`, `FOD-9`, `FOD-18`, `FOD-32`, `FOM-4`, slice §3 item 10);
+- the review-log reasons;
+- the Outlook subject and body lines, "Done — ", and the calendar and category name (DECISION 7, `FOD-22`, `FOD-28`);
+- the act and form buttons and headings — "+ Add obligation" / "Close", "Add obligation", "Custom obligation", "Activate: …", "Activate…", "Activate", "Done", "Edit…", "Re-activate", "Cancel", "Details" / "Hide details", and "Undo done (…)" / "Undo not applicable (…)" (slice §3 items 5 and 10, `FOD-4`, `FOD-7`, `FOD-8`, `FOD-30`, `FOM-5`);
+- the catalog's marks and hints — "suggested", "Applies if:", "Can lapse per period", "Can lapse for a period (offers Not applicable)", "Source:", "From the catalog: …" and "Nothing here is active until you activate it with your own date." (DECISION 9B, `FOM-2`, `FOD-9`, slice §3 item 5);
+- the review-log action words (Created, Edited, Done, Not applicable, Undone) and the "Review log" heading (`FOD-6`), the category words (slice §3 item 10, spec §3.1) and the weight titles Hard and Routine (DECISION 6);
+- Undo's warning that the removed next occurrence's Outlook event was NOT deleted (`FOD-7` with DECISION 7);
+- the remaining buttons and marks — "Not applicable…", "Retire", "Save changes", "Set this date", "Add as inactive", "already added" and "No inactive obligations." — and the register's count line "N open · M overdue" (`FOD-18`, `FOD-8`, `FOD-4`, `FOM-5`, slice §3 item 10);
+- the notices "Added inactive: …", "Re-activated: …" and "Due date for … set to …" (`FOM-5`, `FOD-8`, `FOD-4`);
+- the edit form's "A missed period" with "Stays owed (the next period follows, even if past)" / "Collapses to the next date", and "The real due date for …" (DECISION 2, `FOD-4`);
+- the Details panel's lines — "Rule date … · aim for … · due … · lights …" (on a weekend `unknown` row, the same without the due date), "Weekend: … · lead N days · …", "Notes:", "Outlook: …" with "push failed — …" / "queued", and the "History" heading and its lines — and the catalog's "Lead … · weight …" (slice §3 items 5 and 10, `FOD-25`, `FOD-18`, DECISION 7);
+- the "Needs attention" sentence;
+- the Outlook line's texts.
+
+Every string carries its cite beside it — the `FOD-n`, `FOM-n`, DECISION or slice section that names it, otherwise slice §3 item 5, 6 or 10.
+
+**THE MIGRATION — WRITTEN AND NOT RUN.** `db/migrations/2026-09-10-firm-obligations.sql` (23,843 B, LF):
+- **The header.** It names the authorization and states the hand-run protocol: back up, STEP 0 on its own, the file pasted alone, the checks answered in words. **STEP 0** is the `review_log` action count, written down by hand before anything runs. **WHAT THIS DOES NOT DO** lists no matter table, no row written, no registry entry, no holiday, no money or assignee column, no existing row changed, no migration amended.
+- **THE GATE** is the first statement. It raises if `firm_obligations` already exists (a second run stops there), if `review_log` is missing, or if `review_log` carries no CHECK on `action`. Every statement after it is guarded anyway.
+- **The two tables** are exactly §5.1 and §5.2: the partial unique index `firm_obligation_occurrences_one_open_idx … where state = 'open'`, the `_touch` and `set_created_by` triggers, RLS with one policy each, and GRANTs to `authenticated`.
+- **The action CHECK** is dropped by catalog lookup and re-added as `review_log_action_check` with TEN values.
+- **Seven foot checks, answered in words:**
+  1. both tables, RLS on, one policy each;
+  2. the index present and PARTIAL;
+  3. exactly one action CHECK, with ten values;
+  4. `authenticated` reaches both tables four ways, `anon` none;
+  5. both tables empty;
+  6. the three triggers;
+  7. STEP 0 re-run, unchanged.
+- **Nothing was run. No database was connected to at any point in this session.** `db/schema.sql` carries the same objects in the same commit.
+
+**`FOM-8` — THE LIVE OUTLOOK CHECK, RUN WITH MICHAEL (Step 5).**
+- **The setup.** Demo mode on port 5173, the origin his Entra registration allows, in his own Chrome. The server was started through a temporary change to the tracked `.claude/launch.json`, restored afterwards; git shows it unchanged.
+- **Why sign-in went through a separate control.** The page's own "Connect Outlook" also drains the push queue, which in the demo store held the fixture's twelve invented occurrences and two demo case events. So it was disabled in the check's tab and a sign-in-only control put there instead. Michael first opened a tab of his own, saw that button live, and closed it without clicking. **He signed in himself.**
+- **The first two events.** `ensureFirmCalendar` found or created **"MDBP Firm"**. Through the app's own `toGraphFirmEvent` and `pushFirmOccurrenceToOutlook`, two throwaway all-day events dated Mon 2026-10-05 were pushed, with leads of 30 and 180 days.
+  - **Graph accepted both.** A read-back GET of each (200) showed `reminderMinutesBeforeStart` stored exactly as sent — 43,200 and 259,200 — with `isAllDay` and `isReminderOn` true and category MDBP Firm.
+  - Graph's `reminderView` placed the fire times at 00:00 Central on 2026-09-05 and 2026-04-08.
+- **His eye, in desktop Outlook's Reminders window.** **The 30-day reminder SHOWED ("coming up in three weeks"); the 180-day one did NOT.**
+- **A third event tested the likeliest cause, staleness.**
+  - The 180-day reminder's fire time was five months stale; the 30-day one's was six days old.
+  - So a third event was dated Wed 2027-03-10 with a 180-day lead. The app's payload sent **259,260** minutes: the real minutes between the two local midnights across November's clock change (180 × 1,440 + 60), per the ruled rule.
+  - Graph stored it, and `reminderView` placed its fire time at 00:00 Central on 2026-09-11, the day of the check. **It SHOWED.**
+- **The result. The session read the long reminder as honoured under the slice's "accepted AND surfaces", with a qualifier of its own — once the fire time was current — so the slice's "Lights today" fallback was NOT built** — the build's call under slice §3 item 7, not a ruling.
+- **Filed at `docs/spec-feedback.md`.** The limitation found: in the one observation, desktop Outlook did not surface a reminder whose fire time was five months stale, and staleness is the likeliest cause; the boundary between six days and five months was not measured. And **Michael's own comment at the check: *"This comment may be something for design: I dont know if I need upcoming deadlines in the outlook reminders."***
+- **Cleanup.** All three events were deleted (GET → 404 each), and the app's local Outlook session was cleared. The "MDBP Firm" calendar was left in his Outlook.
+
+**THE CLICK-THROUGH, IN DEMO MODE ON THE FIXTURE (§9 item 11), today Fri 2026-09-11 — every row fiction.**
+- **/cases.** The firm card read "Firm obligations — 2 due · 3 overdue", three lines, "and 2 more", and the "About these dates" expander. The legal-watch card rendered nothing in demo.
+- **The weekend rules by hand.**
+  - **FOT-31**, activated on Sat 2026-09-26 under rolls-forward, read *"Due Mon Sep 28 (rolled from Sat Sep 26) · aim for Fri Sep 25"*.
+  - **FOT-26** on the same date under no-roll read *"Due Sat Sep 26 · aim for Fri Sep 25"*.
+  - **`unknown` was NOT activated by hand.** Its rows were read on the fixture's seeded activations (FOT-2, FOT-8, FOT-9), which run the same activation path.
+- **Done and Undo.** Done on the heartbeat (fixed-monthly, collapse) opened October, with "Undo done (2026-09)". Undo reopened September and removed October.
+- **Not applicable.** On FOT-8 (condition not met), Mark stayed disabled until a reason was chosen, and the next occurrence landed in Later.
+- **Retire.** FOT-26 took the badge "retired — stays until done". Done on it materialized nothing and moved it to Inactive, with "last done" and its Undo.
+- **Defects the walk found.** The catalog's Activate… opened its form off-screen (fixed). The catalog showed SPEC cells' raw markdown (the display is now stripped; storage stays verbatim).
+- **One mis-click.** It opened FOT-25's form; the form was cancelled and nothing was activated.
+- **Not confirmed by clicking.** The empty card (Fixture B) is pinned by tests only. The Outlook projection is `FOM-8`'s job.
+
+**THE RE-WALK, AFTER BOTH FIX ROUNDS — a fresh demo store on the new fixture.**
+- **The fixture.** FOT-4 on its invented date (Jul 13); "12 open · 5 overdue"; no markdown on screen; no console error.
+- **The form fix.** The catalog form, opened from 3,730 px down the page, now lands at the top of the screen.
+- **An inline refusal.** On the overdue TIDC row, a later real due date was refused **inside its own form, in view**, and nothing was stored.
+- **Nothing changed.** Save changes with nothing changed closed the form, said "Nothing changed." and wrote no log line.
+- **The BOI row.** Its Inactive row shows its note, its source and its Review log.
+- **The /cases card.** It read "Firm obligations — 2 due · 3 overdue", with the domain name free of backticks.
+- **Not exercised by clicking.** Each of these is pinned by tests only:
+  - the busy-disabled controls (demo acts finish in milliseconds);
+  - the landed-but-not-pushed warning (Outlook was not connected there);
+  - "Needs attention" (only a failed central write makes one);
+  - Re-activate on a retired row.
+
+**BUILD READINGS, REPORTED (not `FOD`-numbered):**
+- The undo link lives in the close line's `review_log.new_value` trail, because §5.2 has no column for it.
+- `FOM-13`'s "lit" is read as lit, target-passed or past-date-unknown.
+- Register months group by TARGET month; a not-overdue item whose target month has passed sits in the current month.
+- The Overdue pin holds only the `overdue` state.
+- Future done, last-done and last-period-completed dates are refused.
+- `FOM-6` month lighting applies only while no override exists.
+- The anniversary label for a multi-year term is written in full.
+- Only the five `createdInactive` templates offer "Add as inactive"; the BOI template key is `boi-note`.
+- The sourceNote joins Source and Status with " — ".
+- FOT-18 offers two kinds.
+- Re-activation is read as an activation, never reopens a closed period, and on a first activation from Inactive takes "last period completed".
+- The migration gate stops a second run before any statement.
+- A same-name calendar refusal was added.
+- A push that comes back `syncStatus: 'error'` counts as not pushed; a row left `pending` because Outlook is not connected is not a warning.
+- Every form closes the moment its write lands, and a later push failure shows at the top of the page as "saved, but not pushed to Outlook".
+- **In the Supabase adapter:**
+  - a first-write failure is reported as "not saved";
+  - an activation whose first occurrence failed to save stands active with NO activation line in the log (`spec-feedback.md`, 2026-09-12 section, part C item 6);
+  - a restore writes `updated_at`, which the migration's touch trigger will overwrite once Michael runs it (it has not run);
+  - one unreachable guard's message says "this app never deletes one", which Undo's own planned delete contradicts. It is PROVISIONAL wording.
+- **The only deletes in the firm path are Undo's: the untouched next occurrence's row, and that occurrence's Outlook event by Graph,** which `FOD-7` and §7 item 8 require, with slice §3 item 7's "reverted on undo" for the event. The kickoff prompt's broader "no delete" collides with the row delete, and the prompt's own precedence rule decides it for the slice (part C item 16).
+- Re-activate replaces Retire on a retired row's open occurrence.
+- **The Inactive "Activate…"** asks the domain first, which narrows but cannot close a stale-register race (part C item 14). FOD-16's last-done date cannot be re-entered after a failed first-occurrence save (part C item 15).
+- The text-act marker test walks the page's syntax tree. It is a floor: a string held in a local variable first was marked by hand.
+- **One surfaces test's title overstates.** It says "nothing else unlights", but `FOD-4`'s edits can (part C item 1).
+- **Two code comments at `e046906` are imprecise,** found by a close-out verifier after that commit and left for the next code change. `src/data/firmObligationsSeed.ts` line 20 places no-roll's target-passed on "the weekend day itself"; it runs from the Saturday through the weekend rule date. `src/domain/firmObligations.ts` lines 1327–1328 say that under `unknown` a weekend R "is not D"; under `unknown` D is R, and only rolls-forward moves D. Comments only; no code reads them.
+
+**THE COLLISION NEEDING HIS RULING is filed at `docs/spec-feedback.md` (2026-09-12 section, part C item 1)** with the other collision-class items. Slice §8 bars "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo", and the kickoff prompt says the same. Yet `FOD-4` and §3 items 4–5 let a lead edit, a rule edit or an override on a not-past-due occurrence return a lit one to pending. The build follows `FOD-4` and pins today's behaviour in a test named for the conflict.
+
+**HEALTH, AFTER — GREEN, against the red baseline and the green after `7c68eb9`:**
+- **Tests.** `npm test` exit 0: **1,081 tests across 56 files** (746 across 48 after `7c68eb9`).
+- **Build.** `npm run build` exit 0, printing the same chunk-size warning the baseline printed. The main chunk grew from 1,030.42 kB to 1,127.76 kB (gzip 295.67 → 323.03 kB).
+- **Lint.** `npm run lint` exit 0; its 4 warnings are all in the filed mock under `docs/record/`, as at baseline.
+- **Types.** `npx tsc -b` exit 0.
+
+Exit codes were read off `npm` and `npx` themselves, never through a pipe (the final run's line, `test=0 build=0 lint=0 tscb=0`, is recorded in the session notes). No changed file mixes line endings (checked by a bytes read).
+
+**WHAT WAS NOT DONE, each because a rule bars it:**
+- no migration run and no database connected;
+- no snooze, later, dismiss, bulk or delete control, and no compensating DELETE (the only deletes in the firm path are Undo's: the untouched next occurrence's row, and that occurrence's Outlook event by Graph, which `FOD-7` and §7 item 8 require);
+- **§8's bar on "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo" NOT honoured where `FOD-4`'s edits apply** — a collision filed for his ruling, not a stop taken;
+- no holiday computed, and no template's weekend rule changed;
+- no registry entry or registry file, and no SPEC §7 string reworded;
+- no money, ledger or QuickBooks field, and no assignee or owner badge;
+- no new consent and no To Do task;
+- nothing on a case's Calendar tab, and no firm-wide calendar page;
+- `calendar_events`, `cases` and every matter table untouched, and `toGraphEvent`'s case path unchanged;
+- the Outlook first-edit duplication defect not fixed;
+- nothing seeded in Supabase mode, and no real firm date or fact entered;
+- no vendor and no model;
+- no spec edited (`BUILD-STATE.md` excepted), with `spec-feedback.md` taking one new dated section;
+- `docs/record/session-log-toc.md` NOT regenerated and `docs/specs/session-log-head.md` NOT written, so **the next batch's census will detect this entry as unindexed, by design**;
+- no `#nn`, no queue row and no ID minted, and the queue runner not doubled as;
+- **"walked" is not "live"**: fixture-only, outside the GL-1 floor.
+
+**THE CLOSE-OUT, CHECKED BEFORE THIS COMMIT.** This entry, the BUILD-STATE rewrite and the spec-feedback section went through three rounds of independent adversarial verification before the commit. Round one's findings led to a full regeneration from HEAD. No HIGH finding survived round two; its MEDIUM and LOW findings were fixed in the text or the claim narrowed. Round three read what those fixes changed and found no HIGH finding; its two MEDIUM and seven LOW findings, and one further inconsistency it noted in BUILD-STATE's banner, were fixed in the text before this commit, without a fourth round.
+
+**BUILD-STATE:** rewritten in full as a CODE refresh at **99,994 B (6 B under the `CAP-4` ceiling) and 135/150 non-blank (149 raw)**, stated at commit `e046906`.
+- **Re-derived on the working tree that became `e046906`** (that commit changed none of the counted files): the counts its note names — among them the 46 seeded form templates, counted by executing the seed.
+- **Re-measured by program:** the register and registry counts.
+- **Checked by existence test only (`HK-5`):** the declared data paths.
+- **Re-verified:** the forms engine's files, and the writer's fixture-only resolution.
+- **The header.** The banner reads **"ONE migration WRITTEN AND NOT RUN"** and names the file. The anti-resurrection-ledger pointer is kept.
+- **The ledger.** **Fifty-six passages, 8,415 B, were removed — 8 displaced outright, 48 superseded in place.** Three further edits only inserted text after an unchanged passage, and are not counted. A word-level diff of the old file against the new accounts for every removed word; four tokens differ only where a span's edge split a word from its punctuation.
+
+All fifty-six ride below.
+
+**Staged for Code:** none — this session was the build.
+
+**Awaiting/Returned from Code, unreviewed:** everything in this entry. For Michael's eye specifically:
+- **the migration**, to be run by his hand after a backup, pasted alone, checks answered in words;
+- **the §8-against-`FOD-4` ruling**, and the other collisions at `spec-feedback.md` (2026-09-12 section, part C) — among them `FOD-25`/`FOD-26`'s day count, and the Undo-delete collision, which the prompt's own precedence rule decides for the slice;
+- **the text acts**, every one PROVISIONAL;
+- **the thirty-three defaults**, especially `FOD-26`'s card wording and `FOD-27`'s position;
+- **Outlook keep-vs-delete**, the early-done reminder (`isReminderOn: true`), and his own `FOM-8` question whether upcoming deadlines belong in Outlook reminders at all;
+- the leads.
+
+**Next:**
+1. THE FIRM-OBLIGATIONS HANDS-ON SITTING at the demo app: the text acts, the card's position and wording, the register's affordances, Outlook keep-vs-delete, the leads, and the §8-against-`FOD-4` ruling, with part C's other items for his eye.
+2. The migration, by his hand.
+3. His real activations, with his real dates.
+
+In parallel: the DECISION 8 registry drafting act (an Opus design session, with PF-1 running on it) and the DECISION 9A acquisitions.
+
+---
+
+**DISPLACED FROM BUILD-STATE (CAP-4)** — 56 passages, 8,415 B of text, removed from `docs/specs/BUILD-STATE.md` at this refresh (8 displaced outright, 48 superseded in place), so the 100,000-byte ceiling could be met while the firm-obligations build, its one unrun migration and the `FOM-8` result were added. **Every one is a SPENT NARRATIVE, a DUPLICATE whose substance stands elsewhere in the file, a figure this CODE refresh re-derived, or a status this build moved — NOT ONE IS AN EXISTENCE CLAIM.** Three further edits only inserted text after an unchanged passage and are not listed. They ride here VERBATIM and this is the only surviving copy, with ONE stated exception: each is quoted with its own leading and trailing whitespace trimmed, which is the join punctuation of the text around it and not content, so the quoted text measures 8,406 B against the 8,415 B removed. Beside each is where its substance now stands.
+
+**P01 — superseded in place — the banner, rewritten for this CODE refresh**
+
+> Commit: 357ca8e (every claim below re-checked at this commit)  |  Branch: master  |  Generated: 2026-09-11 Central (one hundred forty-first refresh)  |  **WRITTEN BY THE QUEUE RUNNER (batch 96, the NINETY-SIXTH invocation) on a DOCS-ONLY batch — **no `src/`, `db/` or `supabase/` file was read at all**, so every `src/`- and `db/`-derived figure below is CARRIED from the `ea5675b` CODE refresh and is MARKED as carried (`QR-6(a)`); every count over `docs/` was re-measured here.**
+
+**P02 — superseded in place — the banner's CAP-4 line, restated with this refresh's own figures**
+
+> ⛔ **`CAP-4` BOUND; SHORTFALL NAMED — entered the refresh at 99,915 B, stands at 99,975 B, 25 B under the 100,000-byte ceiling, 136/150 non-blank (150 raw). 29 PASSAGES REMOVED, 7,609 B — 4 DISPLACED outright, 25 SUPERSEDED in place — NOT ONE AN EXISTENCE CLAIM**; each rides this batch's runner line VERBATIM under `DISPLACED FROM BUILD-STATE (CAP-4)`, the log's only copy, with where its substance still stands.
+
+**P03 — displaced outright — the Q-WF-4 / WF-2–WF-8 status: the WF-2–WF-8 EMAIL-WORKFLOW SPEC bullet under Design-input memos carries its substance and now names the row `Q-WF-4`**
+
+> 🟡 **`Q-WF-4` IS RULED IN SHAPE (`#154`, item 7) — THE ROW EXISTS AND IS NOW 🟡**, a composite decided now and built in Wave 3, each build its own authorization. **WF-2–WF-8 STAY ⬜, SEVEN OF SEVEN GATED, ZERO SATISFIED.**
+
+**P04 — superseded in place — the banner: ONE migration WRITTEN AND NOT RUN, named; the CCS-1 run fact kept in the same sentence and in the data-layer bullets**
+
+> ✅ **EVERY MIGRATION WRITTEN TO DATE HAS RUN, AND NO MIGRATION IS PENDING.** The two `CCS-1` migrations ran on LIVE by his hand 2026-09-07 (`#150`); record at `docs/record/ccs1-migrations-run-2026-09-07/`.
+
+**P05 — superseded in place — the banner: the slice is BUILT; its authorization stays at FIRM OBLIGATIONS under Design-input memos and in #155**
+
+> ⚠ **NOTHING WAS BUILT THIS BATCH — `#155` IS A RULING SITTING, DOCUMENTATION ONLY.** ✅ **`FOS-1` RULED YES (*"Yes"*, 2026-09-10): THE FIRM-OBLIGATIONS BUILD SLICE, `docs/specs/firm-obligations-build-slice.md`, IS BUILD-AUTHORIZED AND NOT YET BUILT** — kickoff prompt `docs/prompts/PROMPT-firm-obligations-slice-build-session.md`; a separate Code session Michael fires, the queue runner BARRED; ONE migration to be WRITTEN AND NOT RUN by that build; no client data, OUTSIDE the GL-1 floor.
+
+**P06 — displaced outright — For design side → INSTRUCTIONS, which carries the same v32/v31 statement in full**
+
+> ⚠ **INSTRUCTIONS `v32` DELIVERED 2026-09-10 (`#155`, trigger 3) — PASTED OR NOT IS HIS WORD; `v31` is the last version confirmed in force by a live read; the repo cannot verify the field and does not.**
+
+**P07 — superseded in place — the counts note, re-derived at this HEAD (a CODE refresh carries none of these)**
+
+> *EVERY COUNT OVER `docs/` WAS RE-DERIVED THIS REFRESH, NOT CARRIED (`OPEN-5(a)`). **THIS IS A RUNNER REFRESH ON A DOCS-ONLY BATCH THAT READ NO `src/`, `db/` OR `supabase/` FILE, SO THOSE FIGURES ARE CARRIED AND SAID TO BE (`QR-6(a)`):** **28 route paths in `src/App.tsx`, `SCHEMA_TABLES` 46 (45 policy-true, 1 not), `STORE_VERSION = 16`, 11 files in `db/migrations/`, 46 `create table` in `db/schema.sql`, tests 746 across 48 files, 46 seeded templates, and the `ALTER DEFAULT PRIVILEGES` occurrence count** — every one MEASURED at the `ea5675b` CODE refresh or the batch-92 read and NOT re-measured here, because this batch read no file outside `docs/`.
+
+**P08 — superseded in place — the counts note: this file's own line endings, and the CAP-4 streak**
+
+> Every file this batch touched is LF, verified by a bytes read (0 CRLF). **⛔ TWELVE consecutive refreshes
+
+**P09 — superseded in place — the practice-areas paragraph: the migration sentence, restated with the one unrun**
+
+> ✅ **EVERY MIGRATION WRITTEN TO DATE HAS RUN — INCLUDING THE `CCS-1` BUILD'S TWO, BY MICHAEL'S HAND THE EVENING OF 2026-09-07 (`#150`) — AND NO MIGRATION IS PENDING.
+
+**P10 — displaced outright — the fold's own record, `form-engine.md` §3's closing subsection (#106); §9's verbatim rule lives in CLAUDE.md**
+
+> **§9 was NOT touched** — a verified pure insertion, 25 lines, zero deletions. **This matters to FE-D1: slice 1 hard-codes a parser, and the spec it reads now states the ruled syntax**
+
+**P11 — superseded in place — Screens live: the /cases line gains the firm card and the register route**
+
+> /cases — case list; compact statute-worklist card (the de facto dashboard);
+
+**P12 — superseded in place — Data layer: the store version**
+
+> **store v16** (2026-09-03:
+
+**P13 — superseded in place — Data layer: the v17 step and the chain**
+
+> so a browser that never held a store lands in the same shape a migrated one does**), the v9→v16 chain
+
+**P14 — superseded in place — Data layer: tables and policies re-derived**
+
+> **`db/schema.sql` and the RLS probe both stand at 46 tables, sequence-identical, with 45 policies
+
+**P15 — superseded in place — Data layer: the create-table count, and which pair the sentence means**
+
+> **46 `create table` statements in schema.sql, AND BOTH MIGRATIONS HAVE NOW RUN BY MICHAEL'S HAND
+
+**P16 — superseded in place — Data layer: the amendment's five tables, re-verified in db/schema.sql and the probe at this refresh**
+
+> measured at the `ea5675b` CODE refresh and CARRIED here:
+
+**P17 — superseded in place — Data layer: the migration status, restated**
+
+> EVERY MIGRATION WRITTEN TO DATE HAS NOW RUN; none is pending.**
+
+**P18 — superseded in place — Data layer: the re-derived parenthetical**
+
+> *(Re-derived here every refresh: 46 tables, 46 `enable row level security`, **45 policies**
+
+**P19 — superseded in place — Data layer: the symmetry warning, restated at the current counts**
+
+> so never "correct" 36 to 37 for symmetry.
+
+**P20 — displaced outright — the 2026-08-19 run record (#113); the column's CHECK and the backfill stand in db/schema.sql and the migration**
+
+> - **F-12's STEP (d) FIX EXECUTED LIVE 2026-08-19.** `party_status = coalesce(party_status, null)` — which would have left every Witness / Adjuster / provider / expert / judge NULL though `'non-party-actor'` exists in the CHECK — now writes the value.
+
+**P21 — superseded in place — GRANTs bullet: the live 37 is a 2026-08-19 measurement**
+
+> on all **37 tables** from `ALTER DEFAULT PRIVILEGES`
+
+**P22 — superseded in place — GRANTs bullet: the migration count, re-counted at this refresh**
+
+> **all ELEVEN migrations**, re-counted at the batch-92 read over the whole of `db/migrations/` and **CARRIED here, not repeated — this docs-only batch read no `db/` file** — **every one of the 14 occurrences
+
+**P23 — superseded in place — GRANTs bullet: the scope's widening**
+
+> six → nine → eleven, still zero)
+
+**P24 — superseded in place — the anon repair bullet: the probe count**
+
+> **The probe covers 46 tables**
+
+**P25 — superseded in place — the external-system sweep's basis: the sweep's own date, since this build's migration comments now name some swept terms**
+
+> *(Basis stated: word-bounded over `db/` these are exactly zero.
+
+**P26 — superseded in place — RLS, exercised: the probe's table list**
+
+> The probe READS all **46** tables (`SCHEMA_TABLES` — includes `party_pii`, FE-D1's four `form_*` tables and the amendment's five,
+
+**P27 — superseded in place — RLS, exercised: the policy count**
+
+> **ALL 45 POLICIES ARE BYTE-IDENTICAL — `for all to authenticated using (true) with check (true)` — ONE RULE ON 45 TABLES, not 45 rule sets.**
+
+**P28 — superseded in place — FORM ENGINE: the store version the second tranche left, dated (the Data layer bullet states v17 today)**
+
+> **BOTH TRANCHES ARE BUILT (§13 items 1-14); STORE v15.**
+
+**P29 — superseded in place — FORM ENGINE: the safety half, re-verified rather than carried**
+
+> **THE SAFETY HALF IS CARRIED FROM THE `ea5675b` CODE REFRESH, WHICH RE-VERIFIED IT; THIS DOCS-ONLY BATCH READ NO `src/` FILE AND DID NOT RE-RUN THE SWEEP:**
+
+**P30 — superseded in place — FORM ENGINE: the second tranche's existence test, re-run**
+
+> (carried from the 2026-09-07 CODE refresh's existence test)
+
+**P31 — superseded in place — FORM ENGINE: AS-Q4's no-code-change sentence, not attributed to a batch this refresh is not**
+
+> **NOTHING WAS CHANGED IN CODE by the sitting or by this batch**
+
+**P32 — superseded in place — Known stubs: the cancelled-write gap, re-read at this CODE refresh**
+
+> **A `review_log` WRITE OUTSIDE ITS CHECK — FLAGGED AT `#151`, NOT FIXED, NOT VERIFIED LIVE; NOW `FOD-20`'s, IN BY `FOS-1` (`#155`), closed by the FO build's migration when it runs.** `src/pages/CalendarTab.tsx`'s cancel writes `action: 'cancelled'`; `db/schema.sql`'s CHECK admits six values WITHOUT it; the Supabase adapter passes the row straight through. On those reads a LIVE cancel should fail its audit insert (23514) and never reach the Outlook deletion. **These are `#151`'s design-side reads over the bridge at `ea5675b`, not this runner's — no `src/` file was read this batch, and nothing was confirmed live.**
+
+**P33 — displaced outright — the #110 verification record; the class's remaining pair stays named in the same bullet**
+
+> — **four of those five on programmatic character-exact matches with ZERO flags.**
+
+**P34 — displaced outright — the #96 record (`V7-23-CITE`), which stands in the session log's `2026-08-16 (#96)` entry; BUILD-STATE no longer carries it**
+
+> #96 produced its one **rejection** (`V7-23-CITE`), the evidence it is not a rubber stamp
+
+**P35 — superseded in place — the Design-input memos heading: firm obligations is now built**
+
+> ## Design-input memos — ALL PROPOSED BUT FIRM OBLIGATIONS (RULED `#155`), nothing built, no registry file touched by any of them
+
+**P36 — superseded in place — the WF-2–WF-8 bullet: the row named, and the composite stated here, now that the banner no longer carries them**
+
+> 🟡 **THAT GATE IS RULED IN SHAPE AND ITS ROW IS 🟡 (`#154`, item 7).** The composite is in the banner;
+
+**P37 — superseded in place — the TOC bullet: batch 96's regeneration, and this CODE entry unindexed by design**
+
+> **186 rows to 186 dated entries, `#65`–`#155` GAPLESS**, regenerated over the log as THIS batch wrote it, so `TOC-4` FIRED (forty-ninth edition; firing count forty-one → forty-two). *(The log's LAST `## ` line is the `## ARCHIVED:` pointer heading, not an entry and never a row — a bare `grep -c '^## '` returns 187 against 186 entries and invents a missing row.)*
+
+**P38 — superseded in place — FIRM OBLIGATIONS: built; the defaults, text acts and fixes in the 2026-09-12 CODE entry; the collisions in spec-feedback**
+
+> **FIRM OBLIGATIONS — RULED 2026-09-10 (`#155`); THE BUILD SLICE `docs/specs/firm-obligations-build-slice.md` IS AUTHORIZED (`FOS-1`) AND UNBUILT.**
+
+**P39 — superseded in place — FIRM OBLIGATIONS: FO-7's two facts, re-read at this CODE refresh**
+
+> `FO-7`'s two facts as `#151` read them over the bridge at `ea5675b` — NOT this runner's read:
+
+**P40 — superseded in place — FIRM OBLIGATIONS: the hands-on sitting's gate, now met**
+
+> **The spec §11 five are ACCEPTED as THE FIRM-OBLIGATIONS HANDS-ON SITTING, gated on the build.**
+
+**P41 — superseded in place — CAPACITY: the log measured at this refresh's working tree**
+
+> **AT HEAD, RE-MEASURED BY `wc` THIS BATCH AND NOT CARRIED:** `docs/record/session-log.md` **186 dated entries, 91 design `#nn`, high-water `#155`, GAPLESS from `#65`**
+
+**P42 — superseded in place — CAPACITY: the Q-CAP-5 limb retired by TC-10, shortened**
+
+> (b) the ~700 KB re-split trigger, RETIRED by `TC-10` (2026-08-21),
+
+**P43 — superseded in place — CAPACITY: the Voice2 pair's transit eligibility, attributed to the batch that made it**
+
+> **The `#137` Voice2 pair becomes TRANSIT-ELIGIBLE with this batch at HEAD**
+
+**P44 — superseded in place — DT-1: this refresh's own date, from the wall clock**
+
+> this refresh carries the RUN date, 2026-09-11, read from the wall clock at 00:15 CDT.**
+
+**P45 — displaced outright — `docs/record/normalizer-semicolon-amendment-2026-09-08/`, which characterizes the thirteen sites (the count stays in the bullet)**
+
+> — **twelve after a SEMICOLON** (`services;AAand`, in `tx.151`, `tx.171`, `tx.31`) and **one five-`A` run** that is the article `A` between two artifact spaces (`SOCIETY.AAAAAcooperative`)
+
+**P46 — superseded in place — HK-7: the declared-path existence test, re-run at this refresh**
+
+> **RE-CHECKED NATIVELY THIS BATCH by existence test on DECLARED paths only
+
+**P47 — superseded in place — REQ-CAPTURE: the size, re-measured at this refresh**
+
+> re-measured this batch by `wc` at HEAD; unchanged
+
+**P48 — superseded in place — YOUR HAND: (11) is DONE, its number not reused**
+
+> (10) **paste v32**; (11) **fire the FO build session** once `#155` is at HEAD — *"run docs/prompts/PROMPT-firm-obligations-slice-build-session.md"*; `FOM-8`'s live check needs his connected Outlook; (12)
+
+**P49 — superseded in place — NEXT ACTS: the header's date, now that item (3) records the build**
+
+> **NEXT ACTS, IN ORDER, AS OF 2026-09-10 (`#155`), THE WAVE 0 ACTS
+
+**P50 — superseded in place — NEXT ACTS (3): the build is done**
+
+> (3) **THE FIRM-OBLIGATIONS BUILD** (the Code session he fires) **→ THE FIRM-OBLIGATIONS HANDS-ON SITTING → the migration by his hand → his real activations** — the ruling sitting is DONE (`#155`);
+
+**P51 — superseded in place — NEXT ACTS: the twelve accepted items, FO-6's gate now met**
+
+> **TWELVE ACCEPTED REMAIN, EVERY ONE GATED ON AN UNBUILT MODULE AND NAMED:
+
+**P52 — superseded in place — NEXT ACTS: FO-6's gate (the build in demo mode, per its register row) is met**
+
+> `FO-6` (no firm-obligations concept exists in the calendar code).
+
+**P53 — superseded in place — NEXT ACTS: the five FO spec §11 items' gate is met**
+
+> the FO spec §11 items, gated on the FO build in demo mode — THE FIRM-OBLIGATIONS HANDS-ON SITTING;
+
+**P54 — displaced outright — NEXT ACTS' own sentence in the same bullet: ✅ `Q-IN2-1` HAS LANDED**
+
+> · CR-3 blank form + versioned manual (`Q-IN2-1`)
+
+**P55 — superseded in place — the register bullet: batch 96's acts, attributed to batch 96**
+
+> **THIS BATCH FLIPPED THIRTEEN ⬜ → ✅ AND MOVED THEM
+
+**P56 — superseded in place — the register bullet: batch 96's append, attributed**
+
+> **This batch appended the superseded `#154` sentence to that same block.**
+
 ## 2026-09-11 — QUEUE-RUNNER batch (runner line; NINETY-SIXTH invocation) — one docs-only packet: the firm-obligations ruling sitting (`#155`), executed whole — and the batch that found the synced head file had been lagging the log it derives from
 
 - **THE QUEUE HELD ONE PACKET AND IT RAN WHOLE, IN THE ORDER MICHAEL CONFIRMED.** `push-to-code_firm-obligations-ruling-sitting_2026-09-10.zip` — 120,992 B, mtime 2026-09-10 23:59:15 −0500, sha256 `3847b4b45ea2c8ad87f84cd13251557f75d3f99de800e92e55dc83c2ff861459`, the identity pinned at Step 1 (`QR-6(c)`). One packet, so filename-date order and pure-mtime order agree trivially; Michael picked *"Run it (Recommended)"* at the Step 1 STOP before anything was touched. **Nothing was superseded** (no second packet to conflict with) and **nothing was skipped as already built**: all eight canonical paths were ABSENT from the working tree, from HEAD and from `origin/master`, no commit in history touched them, and `(#155)` had no heading hit — pending in both of the senses `QR-5` names. DT-1: this line carries the run date, 2026-09-11, read from the wall clock at 00:15 CDT; `#155` keeps its own 2026-09-10 stamp.

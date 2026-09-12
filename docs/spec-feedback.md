@@ -1485,3 +1485,98 @@ written here (`#151`).
 4. **Not fixed here, because these are not this batch's files to amend.** Changing `docs/prompts/QUEUE-RUNNER.md` is a change to the runner's own text and needs Michael's ruling (`QR-2`: that file is the only full copy). The `CLAUDE.md` `CAP-3` paragraph is likewise a convention. What batch 95 did do is use the correct method for its own counts and state the method in its runner line, per `OPEN-5(a)`.
 
 **Status:** OPEN — routed to Michael. The counting method in force is already correct as written in the runner; what needs his word is whether the runner text and the packet-authoring convention should say **explicitly** that a character class over the marker glyphs is prohibited, so the broken idiom stops being reintroduced by each new packet.
+
+## 2026-09-12 — from the firm-obligations slice build (`FOS-1`): four stops ruled by Michael, spec gaps found building it, the `FOM-8` result, and the collisions an adversarial review of the build surfaced
+
+Recorded by the build session fired from `docs/prompts/PROMPT-firm-obligations-slice-build-session.md`, dated 2026-09-12 from the wall clock at its close (DT-1); the build and the `FOM-8` check ran on 2026-09-11. Nothing in any spec was edited; every item below is for the design space. The defects the review found in the BUILD, which the build then fixed, are recorded in that session's log entry, not here; this section carries only what is a question about the text or a fact the design side needs.
+
+### A. Ruled by Michael at the build session's stops (his picks among options Claude wrote)
+
+1. **The baseline was red.**
+   - `npm test` exited 1 before any change. Vitest's default glob collected `docs/record/firm-obligations-design-2026-09-07/mock-source-2026-09-08/test/domain.test.js`, the design mock's plain-node harness, filed as EVIDENCE at `44409ef`. It fails at collection (`require('../src/domain.js')` — no such path in the filed tree). The 746 product tests all passed.
+   - Batches 93–96 were docs-only and skipped the health check (`QR-6(f)`), so the red sat unseen.
+   - **Ruled: "Exclude docs/ from vitest"** (`vite.config.ts` `test.exclude`).
+   - *Process observation for the design space:* a docs-only packet that files test-shaped EVIDENCE can turn the suite red, and the docs-only skip is exactly the batch that cannot see it.
+2. **FOD-21 could not be built as named.** It asks for "one target-passed on a weekend-dated row under each `weekendRule`".
+   - Under `unknown` that state cannot exist: §2.3 item 4's precedence makes it past-date-unknown.
+   - The product reads the real today. So target-passed under the other two settings exists only on Sat–Mon (rolls-forward), or from the Saturday through the weekend rule date itself (no-roll).
+   - **Ruled: "Seed from the day the demo store is created"** — each weekend row sits on the most recent weekend whose target has passed: target-passed where that state can exist, overdue otherwise, and past-date-unknown under `unknown`.
+3. **FOD-29's two phrasings disagree across a daylight-saving change:** "from the event's start (00:00 local on T) back to 00:00 local on `lightsOn`" against "i.e. `leadDays × 1440`". **Ruled: "Fire at the lit moment"** — the real minutes between the two local midnights.
+4. **`FOM-8`'s timing** — "Yes, when you're ready": run with him after the build was verified. The result is at B-14.
+
+### B. Spec gaps and facts found building (not ruled; each reading built as the most literal one, and each fact reported)
+
+1. **§5.2 has no column for the occurrence a close materialized, or for "touched".** FOD-7's only undo test (FOM-11) needs both, and the `#152` mock carried `nextId` and `touched` in memory. The build carries the link in the close line's `review_log.new_value` (a small JSON record) and reads the ordered log. The same trail also tells an interval occurrence which completion it was measured from. Whether a column should exist is a design question.
+2. **§5.2's third row CHECK is three-valued.** `(outcome = 'not-applicable') = (outcome_reason is not null)` evaluates NULL on an open row (outcome NULL), and a CHECK passes on NULL — so an open row carrying an `outcome_reason` is not refused. Built as written; `outcome is not distinct from 'not-applicable'` would close it. The adapters' undo clears the field.
+3. **FOM-2's split has no text to split.** SPEC §7's *Conditional on* cells mix activation facts and per-period lapse conditions; for the eight lapse rows the cell IS the per-period condition. The build copies the cell into "Applies if" and carries the lapse flag separately. The one activation fact §7.5's heading puts on every row under it is carried by no template; the rows the catalog seeds from §7.5 are FOT-13–FOT-18 and the BOI row.
+4. **SPEC §7 cells carry markdown** (`**hard**`, backticks — e.g. FOT-27's name "Domain renewal — `brennanstx.com`"). They are copied byte-for-byte and stored verbatim; the build strips the markup at DISPLAY only (screen, error text, Outlook subject).
+5. **FOT-29 / FOT-30 are "`one-time` per term"** while FOD-32 retires a one-time on Done; each new term is an Inactive → Activate… with a new date.
+6. **FOT-18 names two kinds** (quarterly estimates; the annual return): built as a quarterly template offering both kinds at activation.
+7. **The BOI row names no kind and no weight**: built as an undated one-time, inactive; weight defaults to routine at activation.
+8. **FOD-30 "requires the date" on statute-dated rows** (FOT-4 Oct 15 etc.) means Michael types the rule date; the template date is shown only as a hint.
+9. **§7 item 17's "Supabase-shaped tests"** is ambiguous; built as the v17 step with the demo seed off (both collections present and empty).
+10. **Slice §3 item 7 names `isReminderOn: true`**, so an occurrence marked Done EARLY still rings at its lit moment on its kept "Done —" event — for the hands-on sitting's keep-vs-delete item.
+11. **The migration gate vs §5.4's "every statement guarded and re-runnable"**: built as a gate that stops a second run before any statement, with every statement after it guarded.
+12. **The RLS probe before the migration runs**: the two new tables fail as `other` (missing), which silences the privilege-wall alarm for that window — inherited from the FE-D1 amendment's identical window.
+13. **§1's premise re-verified with one delta**: `ReviewLogEntry.action` in `src/domain/billing.ts` already listed `'cancelled'`; only the SQL CHECK lacked it.
+14. **`FOM-8`, RUN AGAINST MICHAEL'S REAL OUTLOOK from the demo-mode app, with three throwaway events, in his desktop Outlook.**
+   - **What Graph stored.** Graph accepted all-day events in the separate "MDBP Firm" calendar.
+     - A read-back GET of the first two (200) showed `isReminderOn: true` and `reminderMinutesBeforeStart` exactly as sent: 43,200 and 259,200, on events dated Mon 2026-10-05.
+     - For the third, dated Wed 2027-03-10, the session recorded the stored minutes, equal to those sent: 259,260. That is the app's own figure, the real minutes between the two local midnights across the November clock change (180 × 1,440 + 60).
+     - Graph's `reminderView` placed each fire time at 00:00 Central on the lit day.
+   - **What his Reminders window showed.**
+     - The 30-day reminder, whose fire time was six days past, SHOWED.
+     - The 180-day reminder whose fire time was five months past did NOT.
+     - The 180-day reminder whose fire time was the day of the check SHOWED.
+   - **The session's reading.** It read this as honoured under the slice's test ("accepted AND surfaces"), adding a qualifier of its own: once the fire time was current. So the slice's "Lights today" fallback was NOT built. That was the build's call under slice §3 item 7, not a ruling.
+   - **A limitation the design side should know.** In the one observation, desktop Outlook did not surface a reminder whose fire time was five months stale, and staleness is the likeliest cause. The boundary lies somewhere between six days and five months and was not measured.
+   - **If the limitation holds,** an occurrence first pushed long after its lit moment gets no desktop reminder: for example, a long-lead row activated late, or a serial backlog period materialized already overdue. The register and the card remain its surfaces (FO-2).
+   - **Cleanup.** All three events were deleted and confirmed gone. The "MDBP Firm" calendar was left in place.
+15. **Michael's words at the live check, for the design space:** *"This comment may be something for design: I dont know if I need upcoming deadlines in the outlook reminders."* It bears on DECISION 7's reminder and on the hands-on sitting's Outlook keep-vs-delete item. Nothing in the build was changed by it.
+
+### C. Collisions inside the slice or against the kickoff prompt, and readings the text does not make — surfaced by the build's adversarial review (not ruled)
+
+1. **What may unlight a lit occurrence — slice §8 and the kickoff prompt against FOD-4. A RULING IS NEEDED.**
+   - **The bar.** Slice §8's first DO-NOT bars "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo", and the kickoff prompt says the same.
+   - **What FOD-4 allows.** FOD-4 (spec §12; slice §3 items 4–5) lets a lead edit, a rule edit or a due-date override return a lit occurrence to pending, on an occurrence NOT past its due date.
+   - **The lead edit.** It moves no rule, target or due date, only the lit moment (`lightsOn`). So §7 item 21, which bars only moving D later, does not reach it; only §8's DO-NOT does.
+   - **Where §7 item 21 does collide.** A rule edit, or a weekend-rule edit such as no-roll → rolls-forward on a weekend R, can move a not-past-due occurrence's D later, and item 21's carve-out names only the override.
+   - **The build permits both:** the rule edit per FOD-4 and §7 item 7, and the weekend-rule edit per §2.3 item 1 and §3 items 4–5, which route it through FOD-4's re-evaluation.
+   - **How the build handled it.** It follows FOD-4 and §3's enumerated acts, guards only what is past its due date, and pins today's behaviour in a test named for this conflict. **It was not put to Michael as a stop during the build.**
+   - **The choice for Michael.** Refuse any edit that returns a lit occurrence to pending (the DO-NOT's letter); refuse any edit other than the override that moves a not-past-due D later (§7 item 21's letter); or amend §8 and §7 item 21 to name FOD-4's edits.
+2. **FOD-26's lit card line "· N days" against §8's "Do not print 'overdue' or a day count on a weekend-dated occurrence whose `weekendRule` is `unknown`".** The build lets §8 win: on such a row the lit line reads "<name> · aim for <T>" with no count. It was not put to Michael as a stop.
+3. **FOD-4's "overdue" is read as the CONDITION, not the label.**
+   - **Why.** Under `unknown`, §2.3 item 4 shows a weekend R as past-date-unknown while overdue holds beneath it from the day after D = R. A guard keyed on the label let a later override or rule edit take such an occurrence out of FO-2, on every template, since all ship `unknown`.
+   - **The build's guard** is today > D.
+   - **Further limits.** A change that would turn a labelled-overdue occurrence into past-date-unknown is stopped even with D unmoved or earlier: an override or a weekend-rule change is refused, and a rule edit keeps its date. A weekend-rule change that would move D later is refused, even when the occurrence stays past due.
+   - **A gap.** Nothing is past due on a weekend rule date itself, or on the Saturday before a Sunday one. Under `unknown` the row already reads "past its date" on those days, and no override or rule-edit guard applies until the day after the rule date.
+4. **FOM-4's "last period completed", named by its due date.**
+   - Under month precision (FOT-1, FOT-25), any day in the due month names that period.
+   - At day precision, a date that is not one of the rule's due dates names no period, since a filing date could belong to the period before or after. So the build REFUSES it with a plain message rather than guessing.
+   - The form's label says "its due date"; the design side may prefer a different entry.
+5. **Re-activation never reopens a closed period.** FOM-4 rules only a FIRST occurrence ("the first rule date on or after today"); no text says what a re-activation opens. The build reads re-activation as an activation, and adds three further readings the text does not make:
+   - A retired row done early steps past every period its history shows closed.
+   - A one-time row already done on its date is refused until a new date is set.
+   - A FIRST activation from Inactive (the seeded-inactive templates) takes FOM-4's optional "last period completed" on a serial row, as the catalog path does. The page asks the domain whether the re-activation would be refused BEFORE it writes the edit, so a refusal leaves nothing half-done.
+6. **Atomicity in Supabase mode.**
+   - **The problem.** An act is 2–4 PostgREST writes with no transaction; the local adapter is atomic.
+   - **The compensation built.** It restores earlier writes by UPDATE, or re-inserts a row the act itself deleted, and it never issues a DELETE to compensate. Slice §8 bars deleting "a done occurrence or an obligation", and the kickoff prompt's restatement bars "a delete on any obligation or occurrence" (see item 16). Where compensation would need a delete, it leaves the state and says so. One unreachable guard's message says "this app never deletes one", which Undo's own planned delete (item 16) contradicts; it is PROVISIONAL wording.
+   - **The register's mitigation.** The register gains a "Needs attention" list for an active obligation with no open occurrence.
+   - **A design question.** When an activation's first-occurrence insert fails, the obligation stands active with NO activation line in `review_log`, because a line naming an occurrence that does not exist would be false. Should a failed activation be logged?
+   - **The true fix** is one Postgres function per act (RPC) in the migration. That is a schema object §5 does not list, so it was not built; the design side's call.
+7. **Undo's Outlook delete is best-effort.** When Outlook is not connected or the delete fails, the removed next occurrence's event stays in MDBP Firm.
+   - The row that carried its id is gone. The id survives only in the undo's review-log line (`removedNextOutlookEventId` in its JSON), and not even there if that line failed to write in Supabase mode.
+   - Nothing reads that id, so nothing retries the delete, and the register tells him to delete the event by hand.
+   - §3 item 7's "reverted on undo" does not hold in that case.
+8. **One on-screen act, two review-log lines.** The Inactive "Activate…" is `updateFirmObligation` then `reactivateFirmObligation`, each its own act with its own line, against §7 item 16's "each act writes exactly one line". The build writes no edit line when nothing changed.
+9. **FOD-25 and FOD-26 at N = 1** print "overdue · 1 day" and "· 1 day", not the named "N days". Not put to Michael as a stop.
+10. **The card keeps a hard past-date-unknown item indefinitely**, and a target-passed one only through D; the day after D it turns overdue and stays on the card as overdue. Its target is behind today, so it is always "within 14 days". That is consistent with FO-2, but FOD-14's wording hides it.
+11. **Nothing stops a template being activated twice.** FOT-28 and FOT-18 legitimately repeat, so this may be right, but repeats share a register name and an Outlook subject.
+12. **`ensureFirmCalendar` refuses when the firm calendar name equals the case calendar name** — a guard the slice does not name.
+13. **The due-date override's label and success text say "due date", but the override sets R, the rule date.** Under rolls-forward on a weekend R, D differs. The review log says "Rule date … set to". This is wording for the hands-on sitting.
+14. **Activating from Inactive is still two acts.** The page now asks the domain whether the re-activation would be refused BEFORE writing the edit. That narrows a half-finished act to two cases: a register loaded before another tab changed the row, or a central-database failure on the second write. Closing both needs ONE adapter act that edits and re-activates together — an adapter design change, for the design side.
+15. **After an activation whose first occurrence failed to save, FOD-16's last-done date cannot be re-entered.** The Inactive form offers "Last done" only on a new row, and re-activation takes only "last period completed". So the error message names the lost date and says the re-activated row will open due now. On a serial row the message asks him to re-enter the "last period completed"; if he does not, the row keeps the one it was saved with, which its re-opened occurrence never used. A re-entry path for last-done needs a domain change and a page change.
+16. **Undo's delete — the kickoff prompt against slice §7 item 8.**
+   - **The collision.** The prompt's DO-NOT ("a delete on any obligation or occurrence"; its Step 3's "no delete") would bar what slice §7 item 8 requires: Undo "deletes the untouched next". FOD-7 (spec §12) requires the same: "it deletes that next occurrence".
+   - **What the build does.** Both adapters delete that row — the local adapter from the store, the Supabase adapter by a DELETE on `firm_obligation_occurrences`. The build follows §7 item 8 and FOD-7, as the prompt's own precedence rule directs: "If anything here conflicts with those documents at HEAD, the documents win and this prompt gets a correction."
+   - **The resolution.** The prompt's own precedence rule decides it, so no ruling is sought here: the prompt's restatement is the text to correct, to §8's words. Undo would stop deleting only if slice §7 item 8 and FOD-7 were themselves amended.
