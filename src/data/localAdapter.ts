@@ -2105,9 +2105,9 @@ export class LocalAdapter implements DataAdapter {
 
   private firmParts(store: Store, occurrenceId: string) {
     const occ = store.firmObligationOccurrences.find((o) => o.id === occurrenceId);
-    if (!occ) throw new Error('Occurrence not found');
+    if (!occ) throw new Error('Occurrence not found'); // PROVISIONAL — slice §3 item 10
     const ob = store.firmObligations.find((o) => o.id === occ.obligationId);
-    if (!ob) throw new Error('Firm obligation not found');
+    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
     const all = store.firmObligationOccurrences.filter((o) => o.obligationId === ob.id);
     return { occ, ob, all };
   }
@@ -2167,8 +2167,13 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     const ctx = this.firmCtx();
     const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found');
-    const plan = planEdit(ob, patch, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx);
+    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    const all = store.firmObligationOccurrences.filter((o) => o.obligationId === id);
+    const ids = new Set([id, ...all.map((o) => o.id)]);
+    // The ordered log tells an interval row which completion its open occurrence was measured from.
+    const log = store.reviewLog.filter((l) =>
+      (l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY) && ids.has(l.entityId));
+    const plan = planEdit(ob, patch, all, ctx, log);
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     const occurrence = plan.occurrence ? this.replaceFirmOccurrence(store, plan.occurrence.id, plan.occurrence.patch) : null;
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
@@ -2180,7 +2185,7 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     const ctx = this.firmCtx();
     const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found');
+    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
     const plan = planRetire(ob, ctx);
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
@@ -2189,13 +2194,13 @@ export class LocalAdapter implements DataAdapter {
   }
 
   async reactivateFirmObligation(
-    id: string,
+    id: string, inputs: { lastPeriodCompleted?: string } = {},
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
     const store = load();
     const ctx = this.firmCtx();
     const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found');
-    const plan = planReactivate(ob, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx);
+    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    const plan = planReactivate(ob, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx, inputs);
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     if (plan.occurrence) store.firmObligationOccurrences.push(plan.occurrence);
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
@@ -2264,7 +2269,7 @@ export class LocalAdapter implements DataAdapter {
     patch: Partial<Pick<FirmObligationOccurrence, 'outlookEventId' | 'syncStatus' | 'syncError' | 'lastSyncAt'>>,
   ): Promise<FirmObligationOccurrence> {
     const store = load();
-    if (!store.firmObligationOccurrences.some((o) => o.id === id)) throw new Error('Occurrence not found');
+    if (!store.firmObligationOccurrences.some((o) => o.id === id)) throw new Error('Occurrence not found'); // PROVISIONAL — slice §3 item 10
     // Only the four sync fields pass, whatever the caller sent.
     const only: Partial<FirmObligationOccurrence> = {};
     for (const k of ['outlookEventId', 'syncStatus', 'syncError', 'lastSyncAt'] as const) {

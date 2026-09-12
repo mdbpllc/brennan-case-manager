@@ -24,6 +24,13 @@
 // otherwise, past-date-unknown under `unknown`. The states then move as real days
 // pass, which is the product working, not the fixture decaying.
 //
+// NO ROW BORROWS A TEMPLATE'S DATE. The catalog shows SPEC §7's dates as hints (FOT-4's
+// October 15; FOT-8's and FOT-9's May 15), and the law behind them is UNVERIFIED. The
+// fixture invents every date relative to the creation day instead, so the fiction
+// pairs no statute with a date and the named mix holds on EVERY creation day. A sweep
+// over two years of creation days pins that
+// (src/data/__tests__/firmObligationsStoreV17.test.ts).
+//
 // THE NON-UNKNOWN SETTINGS SIT ONLY ON ROWS WITH NO LAW BEHIND THEM (a PRACTICE
 // cadence and a HIS-FACT renewal), so not even the fiction pairs a statute with a
 // roll: the slice's DO-NOT "do not infer a roll from a cite or a source note".
@@ -33,7 +40,7 @@
 // product could not have created.
 
 import {
-  addDays, dayOfWeek, isWeekend, makeDate, planActivation,
+  addDays, dayOfWeek, endOfMonth, isWeekend, lastBusinessDayBefore, makeDate, planActivation,
   type ActContext, type FirmObligation, type FirmObligationOccurrence,
 } from '../domain/firmObligations';
 import { activationFromTemplate, type ActivationInputs } from '../domain/firmObligationActivation';
@@ -60,6 +67,11 @@ function yearBefore(d: string): string {
   const p = parts(d);
   return makeDate(p.y - 1, p.m, p.d);
 }
+/** A fixed-annual rule's month and day, taken from an invented date. */
+function monthDay(d: string): { month: number; day: number } {
+  const p = parts(d);
+  return { month: p.m, day: p.d };
+}
 
 /** The most recent Saturday whose Friday target is already behind `today`. */
 function saturdayPastTarget(today: string): string {
@@ -82,27 +94,32 @@ function template(key: string) {
 export function demoActivations(today: string): { key: string; inputs: ActivationInputs }[] {
   const { y, m } = parts(today);
 
-  // FOM-4's backlog: the most recent past October 15 that fell on a weekday is the
-  // overdue period; "last period completed" is the one before it.
-  let backlogYear = y;
-  for (let yy = y; yy >= y - 8; yy--) {
-    const d = makeDate(yy, 10, 15);
-    if (d < today && !isWeekend(d)) { backlogYear = yy; break; }
-  }
-
+  // FOM-4's backlog on the practice-time report: an invented annual date two months
+  // back is the overdue period; "last period completed" is the year before it.
+  const practice = weekdayOnOrBefore(addDays(today, -60));
   const malpractice = weekdayOnOrBefore(addDays(today, -27));
   const docsRestoreDue = weekdayOnOrBefore(addDays(today, -31));
   const sat = saturdayPastTarget(today);
   const noRollDay = noRollWeekendDay(today);
   const trust = weekdayOnOrAfter(addDays(today, 3));
   const heartbeat = weekdayOnOrAfter(addDays(today, 1));
+  // The bar fee is month precision, so its rule date is its month's last day. This
+  // month's, unless that month's target (its last business day) is already behind
+  // today — a weekend month-end — and then next month's, which its 45-day lead has
+  // lit too.
+  const monthEnd = endOfMonth(today);
+  const barTarget = isWeekend(monthEnd) ? lastBusinessDayBefore(monthEnd) : monthEnd;
+  const barAnchor = barTarget >= today ? makeDate(y, m, 1) : makeDate(y, m + 1, 1);
+  // Two invented annual dates far enough out that a 45-day lead leaves them pending.
+  const franchise = weekdayOnOrAfter(addDays(today, 120));
+  const infoReport = weekdayOnOrAfter(addDays(today, 150));
 
   return [
     // --- two hard overdue ---
     { key: 'FOT-4', inputs: {
-      recurrence: { kind: 'fixed-annual', month: 10, day: 15 }, weekendRule: 'unknown',
-      lastPeriodCompleted: makeDate(backlogYear - 1, 10, 15),
-      notes: 'Fixture checklist: County A · County B (invented).',
+      recurrence: { kind: 'fixed-annual', ...monthDay(practice) }, weekendRule: 'unknown',
+      lastPeriodCompleted: yearBefore(practice),
+      notes: 'Fixture checklist: County A · County B (invented).', // PROVISIONAL — FOD-21 (demo fixture text)
     } },
     { key: 'FOT-19', inputs: {
       recurrence: { kind: 'anniversary', anchorDate: malpractice }, weekendRule: 'unknown',
@@ -115,7 +132,7 @@ export function demoActivations(today: string): { key: string; inputs: Activatio
     } },
     // --- three lit ---
     { key: 'FOT-1', inputs: {
-      recurrence: { kind: 'anniversary', anchorDate: makeDate(y, m, 1) }, weekendRule: 'unknown',
+      recurrence: { kind: 'anniversary', anchorDate: barAnchor }, weekendRule: 'unknown',
     } },
     { key: 'FOT-6', inputs: {
       recurrence: { kind: 'fixed-monthly', day: parts(trust).d }, weekendRule: 'unknown',
@@ -137,8 +154,8 @@ export function demoActivations(today: string): { key: string; inputs: Activatio
       lastPeriodCompleted: yearBefore(sat),
     } },
     // --- the rest pending ---
-    { key: 'FOT-8', inputs: { recurrence: { kind: 'fixed-annual', month: 5, day: 15 }, weekendRule: 'unknown' } },
-    { key: 'FOT-9', inputs: { recurrence: { kind: 'fixed-annual', month: 5, day: 15 }, weekendRule: 'unknown' } },
+    { key: 'FOT-8', inputs: { recurrence: { kind: 'fixed-annual', ...monthDay(franchise) }, weekendRule: 'unknown' } },
+    { key: 'FOT-9', inputs: { recurrence: { kind: 'fixed-annual', ...monthDay(infoReport) }, weekendRule: 'unknown' } },
     { key: 'FOT-25', inputs: {
       recurrence: { kind: 'anniversary', anchorDate: makeDate(y, m + 6, 1) }, weekendRule: 'unknown',
     } },

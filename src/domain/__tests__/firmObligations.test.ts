@@ -21,6 +21,8 @@ import {
   type FirmObligationPatch, type LogDraft, type RecurrenceRule, type WeekendRule,
 } from '../firmObligations';
 import type { ReviewLogEntry } from '../billing';
+import { activationFromTemplate } from '../firmObligationActivation';
+import { FIRM_OBLIGATION_TEMPLATES } from '../firmObligationTemplates';
 
 // ------------------------------------------------------------------ fixtures
 
@@ -126,7 +128,7 @@ function world(start: string) {
     },
     edit(obId: string, patch: FirmObligationPatch) {
       const c = ctx();
-      const p = planEdit(ob(obId), patch, occsOf(obId), c);
+      const p = planEdit(ob(obId), patch, occsOf(obId), c, logFor(obId));
       Object.assign(ob(obId), p.obligationPatch);
       if (p.occurrence) Object.assign(occ(p.occurrence.id), p.occurrence.patch);
       write(p.log, c);
@@ -138,9 +140,9 @@ function world(start: string) {
       Object.assign(ob(obId), p.obligationPatch);
       write(p.log, c);
     },
-    reactivate(obId: string) {
+    reactivate(obId: string, inputs: { lastPeriodCompleted?: string } = {}) {
       const c = ctx();
-      const p = planReactivate(ob(obId), occsOf(obId), c);
+      const p = planReactivate(ob(obId), occsOf(obId), c, inputs);
       Object.assign(ob(obId), p.obligationPatch);
       if (p.occurrence) occurrences.push(p.occurrence);
       write(p.log, c);
@@ -792,5 +794,320 @@ describe('§7 item 21 — nothing snoozes', () => {
     w.undo(d.next!.id);
     const occurrenceActions = new Set(w.log.filter((l) => l.entityType === 'firm_obligation_occurrence').map((l) => l.action));
     expect([...occurrenceActions].sort()).toEqual(['done', 'not-applicable', 'undone']);
+  });
+});
+
+// ------------------------------------------------ the whole-build review's fixes
+// Each block pins a defect the adversarial review of 2026-09-11 confirmed, so a
+// regression fails here by name.
+
+describe('review — FOD-4 guards the condition beneath past-date-unknown, not the label', () => {
+  // R = Sat Jan 30 2027 under `unknown`: T = Fri Jan 29, D = R.
+  const setup = (today: string) => {
+    const w = world('2026-12-01');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 1, day: 30 }));
+    expect(a.occurrence!.dueOn).toBe('2027-01-30');
+    w.setToday(today);
+    return { w, id: a.occurrence!.id, obId: a.obligation.id };
+  };
+
+  it('past its date: a later override is refused, though the screen never says "overdue"', () => {
+    const { w, id, obId } = setup('2027-03-15');
+    expect(stateOf(w.ob(obId), w.occ(id), '2027-03-15')).toBe('past-date-unknown');
+    expect(FO.isPastDue(w.ob(obId), w.occ(id), '2027-03-15')).toBe(true);
+    expect(() => w.override(id, '2028-01-31')).toThrow(/never be moved later/);
+  });
+
+  it('on the rule date itself it is not yet past due, so a later override is his', () => {
+    const { w, id, obId } = setup('2027-01-30');
+    expect(stateOf(w.ob(obId), w.occ(id), '2027-01-30')).toBe('past-date-unknown');
+    expect(FO.isPastDue(w.ob(obId), w.occ(id), '2027-01-30')).toBe(false);
+    w.override(id, '2027-02-15');
+    expect(w.occ(id).dueOnOverride).toBe('2027-02-15');
+  });
+
+  it('past its date: a rule edit that would move it later keeps its date', () => {
+    const { w, id, obId } = setup('2027-03-15');
+    const p = w.edit(obId, { recurrence: { kind: 'fixed-annual', month: 12, day: 30 } });
+    expect(p.kept).toMatch(/keeps its date/);
+    expect(w.occ(id).dueOn).toBe('2027-01-30');
+  });
+
+  it('past its date: → no-roll turns it overdue and is allowed; → rolls-forward would move D later and is refused', () => {
+    const one = setup('2027-03-15');
+    one.w.edit(one.obId, { weekendRule: 'no-roll' });
+    expect(stateOf(one.w.ob(one.obId), one.w.occ(one.id), '2027-03-15')).toBe('overdue');
+    const two = setup('2027-03-15');
+    expect(() => two.w.edit(two.obId, { weekendRule: 'rolls-forward' })).toThrow(/FOD-4/);
+  });
+
+  it('the reverse route: a rule edit that would turn "overdue" into past-date-unknown keeps its date', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }, { lastPeriodCompleted: '2024-10-15' }));
+    expect(dayOfWeek('2025-10-11')).toBe(6);
+    const p = w.edit(a.obligation.id, { recurrence: { kind: 'fixed-annual', month: 10, day: 11 } });
+    expect(p.kept).toMatch(/keeps its date/);
+    expect(w.occ(a.occurrence!.id).dueOn).toBe('2025-10-15');
+    expect(stateOf(w.ob(a.obligation.id), w.occ(a.occurrence!.id), '2026-09-11')).toBe('overdue');
+  });
+
+  it('the three-step route (edit onto a Saturday, override it away, edit back) is closed at its first step', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }, { lastPeriodCompleted: '2024-10-15' }));
+    const id = a.occurrence!.id;
+    w.edit(a.obligation.id, { recurrence: { kind: 'fixed-annual', month: 10, day: 11 } });
+    expect(() => w.override(id, '2027-03-01')).toThrow(/never be moved later/);
+    expect(cardItems(w.obligations, w.occurrences, '2026-09-11').map((i) => i.occurrence.id)).toEqual([id]);
+  });
+
+  it('a LIT occurrence can still return to pending by a lead edit — FOD-4 and §7 item 21 allow it; the conflict with slice §8 is reported for Michael, not decided here', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 1 }, { leadDays: 60 }));
+    const id = a.occurrence!.id;
+    expect(stateOf(w.ob(a.obligation.id), w.occ(id), '2026-09-11')).toBe('lit');
+    w.edit(a.obligation.id, { leadDays: 5 });
+    expect(stateOf(w.ob(a.obligation.id), w.occ(id), '2026-09-11')).toBe('pending');
+  });
+});
+
+describe('review — FOM-4\'s "last period completed" names a period by its due date', () => {
+  it('month precision (FOT-1, FOT-25): any day in the due month names that period; the first occurrence is the one after', () => {
+    for (const key of ['FOT-1', 'FOT-25']) {
+      const t = FIRM_OBLIGATION_TEMPLATES.find((x) => x.key === key)!;
+      const input = activationFromTemplate(t, {
+        recurrence: { kind: 'anniversary', anchorDate: '2025-07-15' }, weekendRule: 'unknown', lastPeriodCompleted: '2025-07-15',
+      });
+      expect(input.precision).toBe('month');
+      const plan = planActivation(input, { today: '2026-09-11', nowIso: STAMP, newId: () => 'x', user: 't' });
+      expect(plan.occurrence).toMatchObject({ dueOn: '2026-07-31', periodLabel: '2026–27' });
+    }
+  });
+
+  it('month precision: this year\'s period, entered on the 1st, opens next year\'s', () => {
+    const ob = activation({ kind: 'anniversary', anchorDate: '2025-07-15' }, { precision: 'month' });
+    expect(materializeFirst(ob, '2026-09-11', { lastPeriodCompleted: '2026-07-01' })).toEqual({ dueOn: '2027-07-31', periodLabel: '2027–28' });
+  });
+
+  it('a date that names no period is refused rather than guessed, at either precision', () => {
+    const annual = activation({ kind: 'fixed-annual', month: 10, day: 15 });
+    expect(() => materializeFirst(annual, '2026-09-11', { lastPeriodCompleted: '2024-10-10' })).toThrow(/not one of this rule's due dates/);
+    const byMonth = activation({ kind: 'anniversary', anchorDate: '2025-07-15' }, { precision: 'month' });
+    expect(() => materializeFirst(byMonth, '2026-09-11', { lastPeriodCompleted: '2025-09-10' })).toThrow(/not in a month this rule falls due/);
+  });
+});
+
+describe('review — Done after a kept rule edit never opens the closed period again', () => {
+  it('serial annual: Oct 15 → Nov 15 kept on the overdue 2025 report; Done opens 2026, not 2025 again', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }, { lastPeriodCompleted: '2024-10-15' }));
+    expect(w.edit(a.obligation.id, { recurrence: { kind: 'fixed-annual', month: 11, day: 15 } }).kept).toMatch(/keeps its date/);
+    const d = w.done(a.occurrence!.id);
+    expect(d.next).toMatchObject({ dueOn: '2026-11-15', periodLabel: '2026' });
+    expect(w.occsOf(a.obligation.id).map((o) => o.periodLabel)).toEqual(['2025', '2026']);
+  });
+
+  it('anniversary: the anchor moved a month later on an overdue term; Done opens the next term', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'anniversary', anchorDate: '2024-07-15' }, { lastPeriodCompleted: '2024-07-15' }));
+    expect(a.occurrence).toMatchObject({ dueOn: '2025-07-15', periodLabel: '2025–26' });
+    expect(w.edit(a.obligation.id, { recurrence: { kind: 'anniversary', anchorDate: '2024-08-15' } }).kept).toMatch(/keeps its date/);
+    expect(w.done(a.occurrence!.id).next).toMatchObject({ dueOn: '2026-08-15', periodLabel: '2026–27' });
+  });
+
+  it('collapse annual with the completion backdated before the new rule date: still the next period', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }, { lastPeriodCompleted: '2024-10-15' }));
+    w.edit(a.obligation.id, { recurrence: { kind: 'fixed-annual', month: 11, day: 15 }, missedPeriods: 'collapse' });
+    expect(w.done(a.occurrence!.id, { doneOn: '2025-10-20' }).next).toMatchObject({ dueOn: '2026-11-15', periodLabel: '2026' });
+  });
+});
+
+describe('review — an interval occurrence re-dates only from the completion it was measured from', () => {
+  it('a first occurrence dated from a last-done date re-dates when the interval changes', () => {
+    const w = world('2026-09-11');
+    const a = w.activate({ ...activation({ kind: 'interval-from-completion', days: 91 }), lastDone: '2026-08-01' });
+    expect(a.occurrence!.dueOn).toBe('2026-10-31');
+    w.edit(a.obligation.id, { recurrence: { kind: 'interval-from-completion', days: 30 } });
+    expect(w.occ(a.occurrence!.id).dueOn).toBe('2026-08-31');
+  });
+
+  it('"due now" keeps its date — it was measured from nothing the rule can reproduce', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'interval-from-completion', days: 91 }));
+    const p = w.edit(a.obligation.id, { recurrence: { kind: 'interval-from-completion', days: 30 } });
+    expect(p.occurrence).toBeNull();
+    expect(w.occ(a.occurrence!.id).dueOn).toBe('2026-09-11');
+  });
+
+  it('after Done, the next re-dates from that done date', () => {
+    const w = world('2026-06-01');
+    const a = w.activate(activation({ kind: 'interval-from-completion', days: 91 }));
+    const d = w.done(a.occurrence!.id);
+    expect(d.next!.dueOn).toBe('2026-08-31');
+    w.setToday('2026-06-10');
+    w.edit(a.obligation.id, { recurrence: { kind: 'interval-from-completion', days: 60 } });
+    expect(w.occ(d.next!.id).dueOn).toBe('2026-07-31');
+  });
+
+  it('after retire → done → re-activate, the re-activated occurrence keeps its date', () => {
+    const w = world('2026-06-01');
+    const a = w.activate(activation({ kind: 'interval-from-completion', days: 91 }));
+    w.retire(a.obligation.id);
+    w.done(a.occurrence!.id);
+    w.setToday('2026-09-11');
+    const r = w.reactivate(a.obligation.id);
+    expect(r.occurrence!.dueOn).toBe('2026-09-11');
+    w.edit(a.obligation.id, { recurrence: { kind: 'interval-from-completion', days: 30 } });
+    expect(w.occ(r.occurrence!.id).dueOn).toBe('2026-09-11');
+  });
+});
+
+describe('review — an edit that changes nothing is not logged as a change', () => {
+  it('compares rules by meaning: a missing everyYears, jsonb key order and an empty note change nothing', () => {
+    const seeded = obWith({ recurrence: { kind: 'anniversary', anchorDate: '2026-03-01' } });
+    expect(FO.changedFields(seeded, { recurrence: { kind: 'anniversary', anchorDate: '2026-03-01', everyYears: 1 }, notes: '' })).toEqual([]);
+    const fromJsonb = obWith({ recurrence: { day: 15, kind: 'fixed-annual', month: 10 } as RecurrenceRule });
+    expect(FO.changedFields(fromJsonb, { recurrence: { kind: 'fixed-annual', month: 10, day: 15 } })).toEqual([]);
+    expect(FO.changedFields(fromJsonb, { recurrence: { kind: 'fixed-annual', month: 10, day: 16 }, leadDays: 30, weight: 'routine' }))
+      .toEqual(['recurrence', 'weight']);
+  });
+
+  it('the log reason names the changed fields in words', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+    w.edit(a.obligation.id, { leadDays: 45, weekendRule: 'no-roll' });
+    expect(w.log.at(-1)!.reason).toBe('Edited: lead, weekend rule');
+  });
+});
+
+describe('review — re-activation never reopens a closed period', () => {
+  it('a dated row retired, done early, then re-activated before its date: the next period, not the one just done', () => {
+    const w = world('2026-09-01');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }));
+    w.retire(a.obligation.id);
+    w.done(a.occurrence!.id);
+    w.setToday('2026-09-20');
+    expect(w.reactivate(a.obligation.id).occurrence).toMatchObject({ dueOn: '2027-10-15', periodLabel: '2027' });
+  });
+
+  it('a one-time row already done is refused, not reopened overdue', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+    w.done(a.occurrence!.id);
+    w.setToday('2026-10-05');
+    expect(() => w.reactivate(a.obligation.id)).toThrow(/already done/);
+  });
+
+  it('Activate… from Inactive takes a date: an undated row is refused until it has one (§7 item 13)', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'one-time' }, { name: 'BOI note', active: false }));
+    expect(() => w.reactivate(a.obligation.id)).toThrow(/needs its due date/);
+    w.edit(a.obligation.id, { recurrence: { kind: 'one-time', dueOn: '2026-12-01' } });
+    expect(w.reactivate(a.obligation.id).occurrence).toMatchObject({ dueOn: '2026-12-01', periodLabel: '2026' });
+  });
+
+  it('a first activation from Inactive takes FOM-4\'s "last period completed" on a serial row (FOT-7\'s shape)', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'anniversary' }, { active: false }));
+    w.edit(a.obligation.id, { recurrence: { kind: 'anniversary', anchorDate: '2020-03-02' } });
+    const r = w.reactivate(a.obligation.id, { lastPeriodCompleted: '2024-03-02' });
+    expect(r.occurrence).toMatchObject({ dueOn: '2025-03-02', periodLabel: '2025–26' });
+    expect(w.ob(a.obligation.id).lastPeriodCompleted).toBe('2024-03-02');
+  });
+
+  it('refuses "last period completed" on a row that already has history', () => {
+    const w = world('2026-09-01');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }));
+    w.retire(a.obligation.id);
+    w.done(a.occurrence!.id);
+    expect(() => w.reactivate(a.obligation.id, { lastPeriodCompleted: '2025-10-15' })).toThrow(/first activation/);
+  });
+});
+
+describe('review — the card line, the card summary, the stranded list, plain text on screen', () => {
+  it('a lit weekend row under `unknown` carries no day count on the card (slice §8); under a roll it does', () => {
+    const today = '2027-01-20';
+    const unk = obWith({ id: 'u', weekendRule: 'unknown' });
+    const rf = obWith({ id: 'r', weekendRule: 'rolls-forward' });
+    const items = cardItems([unk, rf], [occAt('2027-01-30', { id: 'ou', obligationId: 'u' }), occAt('2027-01-30', { id: 'or', obligationId: 'r' })], today);
+    const byOb = Object.fromEntries(items.map((i) => [i.obligation.id, FO.cardLine(i, today)]));
+    expect(byOb.u).toBe('Fixture obligation · aim for Fri Jan 29');
+    expect(byOb.r).toBe('Fixture obligation · aim for Fri Jan 29 · 9 days');
+  });
+
+  it('cardSummary: three lines, then "and N more"', () => {
+    const today = '2026-09-09';
+    const obs = ['a', 'b', 'c', 'd', 'e'].map((id) => obWith({ id }));
+    const occs = obs.map((o, i) => occAt(`2026-07-${13 + i}`, { id: `o${o.id}`, obligationId: o.id }));
+    const s = FO.cardSummary(cardItems(obs, occs, today), today);
+    expect(s.lines).toHaveLength(3);
+    expect(s.more).toBe(2);
+    expect([s.due, s.overdue]).toEqual([0, 5]);
+    expect(FO.cardSummary(cardItems(obs.slice(0, 2), occs.slice(0, 2), today), today).more).toBe(0);
+  });
+
+  it('the register lists an active obligation with no open occurrence as stranded — only a half-finished central write makes one', () => {
+    const view = registerView(
+      [obWith({ id: 'stranded' }), obWith({ id: 'retired', active: false }), obWith({ id: 'fine' })],
+      [occAt('2026-12-01', { id: 'of', obligationId: 'fine' })],
+      '2026-09-11',
+    );
+    expect(view.stranded.map((o) => o.id)).toEqual(['stranded']);
+  });
+
+  it('plainText drops the SPEC cells\' markdown for display and leaves an ordinary asterisk alone', () => {
+    expect(FO.plainText('Domain renewal — `brennanstx.com`')).toBe('Domain renewal — brennanstx.com');
+    expect(FO.plainText('31 CFR 1010.380 — **TIER B** — his read')).toBe('31 CFR 1010.380 — TIER B — his read');
+    expect(FO.plainText('an *emphasised* word')).toBe('an emphasised word');
+    expect(FO.plainText('2 * 3 * 4')).toBe('2 * 3 * 4');
+  });
+});
+
+describe('§7 item 9 — the eight FOM-2 templates carry Not applicable through activation; FOT-1 does not', () => {
+  const RULE: Partial<Record<string, RecurrenceRule>> = {
+    'fixed-annual': { kind: 'fixed-annual', month: 12, day: 1 },
+    'fixed-quarterly': QUARTERLY_941,
+    anniversary: { kind: 'anniversary', anchorDate: '2026-12-01' },
+  };
+
+  it.each(['FOT-8', 'FOT-10', 'FOT-11', 'FOT-13', 'FOT-14', 'FOT-15', 'FOT-16', 'FOT-17'])('%s offers it and accepts it', (key) => {
+    const t = FIRM_OBLIGATION_TEMPLATES.find((x) => x.key === key)!;
+    const w = world('2026-09-11');
+    const a = w.activate(activationFromTemplate(t, { recurrence: RULE[t.kind]!, weekendRule: 'unknown' }));
+    expect(a.obligation.conditionalPerPeriod).toBe(true);
+    expect(() => w.na(a.occurrence!.id, { reason: 'condition-not-met' })).not.toThrow();
+  });
+
+  it('FOT-1 refuses it', () => {
+    const t = FIRM_OBLIGATION_TEMPLATES.find((x) => x.key === 'FOT-1')!;
+    const w = world('2026-09-11');
+    const a = w.activate(activationFromTemplate(t, { recurrence: RULE.anniversary!, weekendRule: 'unknown' }));
+    expect(a.obligation.conditionalPerPeriod).toBe(false);
+    expect(() => w.na(a.occurrence!.id, { reason: 'condition-not-met' })).toThrow(/FOD-18/);
+  });
+});
+
+describe('review — the Inactive "Activate…" asks before it edits (reactivationProblem)', () => {
+  it('returns the refusal the re-activation would give, or null, and writes nothing by asking', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'fixed-annual' }, { active: false }));
+    const ob = w.ob(a.obligation.id);
+    const rule = { recurrence: { kind: 'fixed-annual' as const, month: 3, day: 15 } };
+    expect(FO.reactivationProblem(ob, rule, w.occsOf(ob.id), '2026-09-11', { lastPeriodCompleted: '2026-03-10' }))
+      .toMatch(/not one of this rule's due dates/);
+    expect(FO.reactivationProblem(ob, rule, w.occsOf(ob.id), '2026-09-11', { lastPeriodCompleted: '2026-03-15' })).toBeNull();
+    expect(FO.reactivationProblem(ob, {}, w.occsOf(ob.id), '2026-09-11')).toMatch(/fixed-annual/);
+    expect(w.log).toHaveLength(1);
+    expect(w.ob(ob.id)).toMatchObject({ active: false, recurrence: { kind: 'fixed-annual' } });
+  });
+
+  it('a one-time row already done on its date is refused before any edit, and a new date clears it', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+    w.done(a.occurrence!.id);
+    w.setToday('2026-10-05');
+    const ob = w.ob(a.obligation.id);
+    expect(FO.reactivationProblem(ob, {}, w.occsOf(ob.id), '2026-10-05')).toMatch(/already done/);
+    expect(FO.reactivationProblem(ob, { recurrence: { kind: 'one-time', dueOn: '2027-10-01' } }, w.occsOf(ob.id), '2026-10-05')).toBeNull();
   });
 });

@@ -124,13 +124,27 @@ export async function syncAllPending(db: DataAdapter): Promise<{ synced: number;
     return { synced, failed };
   }
   if (firmQueue.length > 0) {
-    const obligationById = new Map((await db.listFirmObligations()).map((o) => [o.id, o]));
+    let obligations: FirmObligation[];
+    try {
+      obligations = await db.listFirmObligations();
+    } catch {
+      // The queue read but its obligations did not: no row can be pushed without its
+      // obligation, so each counts as failed, and the case half's counts still come back.
+      return { synced, failed: failed + firmQueue.length };
+    }
+    const obligationById = new Map(obligations.map((o) => [o.id, o]));
     for (const occ of firmQueue) {
       const ob = obligationById.get(occ.obligationId);
       if (!ob) { failed += 1; continue; }
-      const result = await syncFirmOccurrence(db, occ, ob);
-      if (result.syncStatus === 'synced') synced += 1;
-      else failed += 1;
+      try {
+        const result = await syncFirmOccurrence(db, occ, ob);
+        if (result.syncStatus === 'synced') synced += 1;
+        else failed += 1;
+      } catch {
+        // The push failed AND writing its error back failed too (review C4-8). Count the
+        // row as failed and go on: one bad row never stops the rest of the queue.
+        failed += 1;
+      }
     }
   }
   return { synced, failed };

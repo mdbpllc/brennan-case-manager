@@ -154,8 +154,56 @@ const MUTABLE_OBLIGATION_KEYS = new Set<string>([
 export function assertObligationPatchKeys(patch: object): void {
   const extra = Object.keys(patch).filter((k) => !MUTABLE_OBLIGATION_KEYS.has(k));
   if (extra.length > 0) {
-    throw new Error(`updateFirmObligation: unsupported patch key(s) ${extra.join(', ')} — only ${[...MUTABLE_OBLIGATION_KEYS].join(', ')} are editable`);
+    throw new Error(`updateFirmObligation: unsupported patch key(s) ${extra.join(', ')} — only ${[...MUTABLE_OBLIGATION_KEYS].join(', ')} are editable`); // PROVISIONAL — slice §3 item 4
   }
+}
+
+/** Plain words for the patch keys in the review log's reason. The line's JSON keeps
+ *  the keys themselves. */
+export const FIELD_LABEL: Record<keyof FirmObligationPatch, string> = {
+  recurrence: 'rule', // PROVISIONAL — slice §3 item 10
+  precision: 'date precision', // PROVISIONAL — slice §3 item 10 (FOD-31)
+  missedPeriods: 'missed-period setting', // PROVISIONAL — slice §3 item 10 (DECISION 2)
+  leadDays: 'lead', // PROVISIONAL — slice §3 item 10 (FOD-2)
+  weight: 'weight', // PROVISIONAL — slice §3 item 10 (DECISION 6)
+  weekendRule: 'weekend rule', // PROVISIONAL — slice §3 item 10 (§2.3)
+  notes: 'notes', // PROVISIONAL — slice §3 item 10
+};
+
+/** A rule in one canonical shape: only the fields its kind reads, in a fixed order,
+ *  with `everyYears` defaulting to 1. That way an edit that changes nothing is not
+ *  logged as a change, even though Postgres jsonb returns keys in its own order and
+ *  the form writes `everyYears: 1` where a stored row may omit it. */
+export function canonicalRule(r: RecurrenceRule): RecurrenceRule {
+  switch (r.kind) {
+    case 'fixed-annual': return { kind: r.kind, month: r.month, day: r.day };
+    case 'fixed-quarterly': return { kind: r.kind, dates: r.dates?.map((d) => ({ month: d.month, day: d.day })) };
+    case 'fixed-monthly': return { kind: r.kind, day: r.day };
+    case 'anniversary': return { kind: r.kind, anchorDate: r.anchorDate, everyYears: r.everyYears && r.everyYears > 0 ? r.everyYears : 1 };
+    case 'interval-from-completion': return { kind: r.kind, days: r.days };
+    case 'one-time': return { kind: r.kind, dueOn: r.dueOn };
+    default: return r;
+  }
+}
+
+/** The patch keys that would actually change the obligation, compared by meaning,
+ *  not by serialisation: a missing note and an empty one are the same note. */
+export function changedFields(ob: FirmObligation, patch: FirmObligationPatch): (keyof FirmObligationPatch)[] {
+  const norm = (k: keyof FirmObligationPatch, v: unknown): string => JSON.stringify(
+    k === 'recurrence' && v ? canonicalRule(v as RecurrenceRule)
+      : k === 'notes' ? ((v as string | null | undefined) || null)
+        : (v ?? null));
+  return (Object.keys(patch) as (keyof FirmObligationPatch)[]).filter((k) => norm(k, patch[k]) !== norm(k, ob[k]));
+}
+
+/** Display only. SPEC §7's cells are copied byte-for-byte, markdown included; the
+ *  screen and the Outlook payload show them without the markup. The stored strings
+ *  are never changed. */
+export function plainText(s: string): string {
+  return s
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/(^|[^\w*])\*(?!\s)([^*]+?)(?<!\s)\*(?![\w*])/g, '$1$2');
 }
 
 export const FIRM_OBLIGATION_ENTITY = 'firm_obligation';
@@ -257,6 +305,7 @@ export function nextBusinessDayAfter(d: string): string {
 
 // --------------------------------------------------------------- formatting
 
+// PROVISIONAL — §2.3's example shape: the three date formats below are text acts.
 /** "Sat Jan 30" — the register's short form (slice §2.3's own example shape). */
 export function formatDay(d: string): string {
   const { m, d: day } = parts(d);
@@ -324,12 +373,13 @@ function nextPeriod(
   ob: Pick<FirmObligation, 'recurrence' | 'precision'>, after: string, inclusive: boolean,
 ): PeriodPoint {
   const hit = candidatePeriods(ob, after).find((p) => (inclusive ? p.rule >= after : p.rule > after));
-  if (!hit) throw new Error(`No ${ob.recurrence.kind} period found after ${after}`);
+  if (!hit) throw new Error(`No ${ob.recurrence.kind} period found after ${after}`); // PROVISIONAL — slice §3 item 10
   return hit;
 }
 
 // ------------------------------------------------------- periodLabel (FOM-7)
 
+// PROVISIONAL — FOM-7: the period labels below are text acts (a multi-year term written in full, and "by <date>", are the build's readings of it).
 function periodLabelFor(ob: Pick<FirmObligation, 'recurrence'>, p: PeriodPoint): string {
   const r = ob.recurrence;
   const { y, m, d } = parts(p.base);
@@ -409,9 +459,23 @@ export function materializeFirst(
     const rule = applyPrecision(ob, r.dueOn);
     return { dueOn: rule, periodLabel: periodLabelFor(ob, { base: r.dueOn, rule }) };
   }
-  const p = effectiveMissedPeriods(ob) === 'serial' && inputs.lastPeriodCompleted
-    ? nextPeriod(ob, inputs.lastPeriodCompleted, false)
-    : nextPeriod(ob, today, true);
+  if (effectiveMissedPeriods(ob) === 'serial' && inputs.lastPeriodCompleted) {
+    // FOM-4: the first occurrence is the period AFTER the one he names, and he names
+    // it by its due date. Under month precision that due date is only a month
+    // (FOD-31): any day in the rule's month names the period whose rule date is that
+    // month's last day. At day precision, a date that is not one of the rule's dates
+    // names no period (a filing date could belong to the period before it or after
+    // it), so it is refused rather than guessed (FOD-9).
+    const at = applyPrecision(ob, inputs.lastPeriodCompleted);
+    if (!candidatePeriods(ob, at).some((p) => p.rule === at)) {
+      throw new Error(ob.precision === 'month'
+        ? `"Last period completed": ${formatDate(inputs.lastPeriodCompleted)} is not in a month this rule falls due — enter a date in that period's due month (FOM-4).` // PROVISIONAL — FOM-4
+        : `"Last period completed": ${formatDate(inputs.lastPeriodCompleted)} is not one of this rule's due dates — enter that period's due date itself (FOM-4).`); // PROVISIONAL — FOM-4
+    }
+    const p = nextPeriod(ob, at, false);
+    return { dueOn: p.rule, periodLabel: periodLabelFor(ob, p) };
+  }
+  const p = nextPeriod(ob, today, true);
   return { dueOn: p.rule, periodLabel: periodLabelFor(ob, p) };
 }
 
@@ -431,7 +495,7 @@ export function materializeFirst(
  */
 export function materializeNext(
   ob: Pick<FirmObligation, 'recurrence' | 'precision' | 'missedPeriods' | 'active'>,
-  closed: Pick<FirmObligationOccurrence, 'dueOn'>,
+  closed: Pick<FirmObligationOccurrence, 'dueOn'> & { periodLabel?: string },
   completion: string,
 ): OccurrenceDraft | null {
   const r = ob.recurrence;
@@ -441,39 +505,45 @@ export function materializeNext(
     const due = addDays(completion, r.days!);
     return { dueOn: due, periodLabel: periodLabelFor(ob, { base: due, rule: due }) };
   }
+  // Step past the closed occurrence's PERIOD under the rule as it stands now, not
+  // only past its stored date. A rule edit on a past-due occurrence keeps the old
+  // date (FOD-4), so under the new rule that same period can fall LATER than the
+  // stored date. Stepping past the stored date alone would open the period just
+  // closed a second time.
+  const ownRule = closed.periodLabel === undefined ? undefined
+    : candidatePeriods(ob, closed.dueOn).find((p) => periodLabelFor(ob, p) === closed.periodLabel)?.rule;
+  const floor = ownRule !== undefined && ownRule > closed.dueOn ? ownRule : closed.dueOn;
   let p: PeriodPoint;
   if (effectiveMissedPeriods(ob) === 'serial') {
-    p = nextPeriod(ob, closed.dueOn, false);
+    p = nextPeriod(ob, floor, false);
   } else if (r.kind === 'fixed-monthly') {
-    p = nextPeriod(ob, maxDate(endOfMonth(completion), closed.dueOn), false);
+    p = nextPeriod(ob, maxDate(endOfMonth(completion), floor), false);
   } else {
-    p = nextPeriod(ob, maxDate(closed.dueOn, completion), false);
+    p = nextPeriod(ob, maxDate(floor, completion), false);
   }
   return { dueOn: p.rule, periodLabel: periodLabelFor(ob, p) };
 }
 
 /**
  * FOD-4's re-evaluation of the OPEN occurrence under an edited rule. The occurrence
- * keeps its PERIOD — the 2027 report stays the 2027 report — and takes the new
- * rule's date for that period; only where no period of the new rule carries the
- * same label (the kind itself changed) does it take the nearest new rule date. An
- * interval row moves only when a completion exists to measure from: its first
- * occurrence was dated from an activation input (FOD-16's last-done date, or
- * "now") that the rule alone cannot reproduce, so it keeps its date.
+ * keeps its PERIOD (the 2027 report stays the 2027 report) and takes the new rule's
+ * date for that period. Only where no period of the new rule carries the same label
+ * (the kind itself changed) does it take the nearest new rule date.
+ *
+ * An interval occurrence re-dates only from the completion it was measured from:
+ * `basis`, the done date of the close that materialized it, or FOD-16's last-done
+ * date at activation. "Due now" (no last-done date) and a re-activation measure from
+ * nothing the rule can reproduce, so with no basis the occurrence keeps its date.
  */
 export function reevaluateOpen(
   ob: Pick<FirmObligation, 'recurrence' | 'precision' | 'missedPeriods'>,
   open: Pick<FirmObligationOccurrence, 'dueOn' | 'periodLabel'>,
-  all: FirmObligationOccurrence[],
+  basis: string | null = null,
 ): OccurrenceDraft | null {
   const r = ob.recurrence;
   if (r.kind === 'interval-from-completion') {
-    const lastDone = all
-      .filter((o) => o.state === 'done' && o.doneOn)
-      .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-      .at(-1);
-    if (!lastDone) return null;
-    const due = addDays(lastDone.doneOn!, r.days!);
+    if (!basis) return null;
+    const due = addDays(basis, r.days!);
     return { dueOn: due, periodLabel: periodLabelFor(ob, { base: due, rule: due }) };
   }
   if (r.kind === 'one-time') return materializeFirst(ob, open.dueOn);
@@ -567,6 +637,34 @@ export function daysOverdue(
   return stateOf(ob, occ, today) === 'overdue' ? daysBetween(dueDate(ob, occ), today) : null;
 }
 
+/** Past its due date IN SUBSTANCE: open, and today is after D. Under `unknown` with a
+ *  weekend R the screen says past-date-unknown instead of overdue (§2.3 item 4's
+ *  precedence), but the condition beneath that label is the same one from the day
+ *  after D = R, and FOD-4's never-later rule protects the condition, not the label.
+ *  On the rule date itself today is not after D, so nothing is past due yet. */
+export function isPastDue(
+  ob: Pick<FirmObligation, 'weekendRule'>,
+  occ: Pick<FirmObligationOccurrence, 'state' | 'dueOn' | 'dueOnOverride'>,
+  today: string,
+): boolean {
+  return occ.state === 'open' && today > dueDate(ob, occ);
+}
+
+/** FOD-4's no-back-door test for an occurrence that is past its due date. A change
+ *  escapes FO-2 when it would move D later, take the occurrence out of past-due, or
+ *  take an "overdue" occurrence out of the Overdue pin by turning it into
+ *  past-date-unknown. A change that only turns past-date-unknown into overdue, with
+ *  D unmoved, escapes nothing. */
+function escapesPastDue(
+  obBefore: FirmObligation, before: FirmObligationOccurrence,
+  obAfter: FirmObligation, after: FirmObligationOccurrence,
+  today: string,
+): boolean {
+  if (dueDate(obAfter, after) > dueDate(obBefore, before)) return true;
+  if (!isPastDue(obAfter, after, today)) return true;
+  return stateOf(obBefore, before, today) === 'overdue' && stateOf(obAfter, after, today) !== 'overdue';
+}
+
 /** The register's "lit" in FO-2's sense — entered its window and not done (spec §2:
  *  "OVERDUE — lit and past its due date. Both are the same 'lit'"). */
 export function isLitInFo2Sense(state: DisplayState): boolean {
@@ -629,11 +727,15 @@ export function cardLine(
   item: Pick<ViewItem, 'obligation' | 'occurrence' | 'state' | 'target'>, today: string,
 ): string {
   const { obligation: ob, occurrence: occ } = item;
+  const name = plainText(ob.name);
   if (item.state === 'lit') {
+    // Slice §8's DO-NOT outranks FOD-26's shape: no day count at all on a weekend-dated
+    // occurrence under `unknown`, even before its target.
+    if (isUnknownWeekend(ob, occ)) return `${name} · aim for ${formatDay(item.target)}`; // PROVISIONAL — FOD-26 as limited by slice §8
     const n = daysBetween(today, item.target);
-    return `${ob.name} · aim for ${formatDay(item.target)} · ${n} day${n === 1 ? '' : 's'}`; // PROVISIONAL — FOD-26
+    return `${name} · aim for ${formatDay(item.target)} · ${n} day${n === 1 ? '' : 's'}`; // PROVISIONAL — FOD-26
   }
-  return `${ob.name} · ${strongLine(ob, occ, today).text}`; // PROVISIONAL — FOD-26 with FOD-25
+  return `${name} · ${strongLine(ob, occ, today).text}`; // PROVISIONAL — FOD-26 with FOD-25
 }
 
 /** FOD-24 — the standing holiday line (register foot; card expander). PROVISIONAL. */
@@ -703,6 +805,20 @@ export function cardCounts(items: ViewItem[]): { due: number; overdue: number } 
   return { due: items.length - overdue, overdue };
 }
 
+/** FOD-26: the card shows its first three lines, then "and N more". */
+export const CARD_LINES = 3;
+
+/** Everything the card renders, decided here so the component only draws it. */
+export function cardSummary(items: ViewItem[], today: string): {
+  due: number; overdue: number; lines: { id: string; text: string; overdue: boolean }[]; more: number;
+} {
+  return {
+    ...cardCounts(items),
+    lines: items.slice(0, CARD_LINES).map((it) => ({ id: it.occurrence.id, text: cardLine(it, today), overdue: it.state === 'overdue' })),
+    more: Math.max(0, items.length - CARD_LINES),
+  };
+}
+
 // --------------------------------------------------------- the register (§5.2)
 
 export interface RegisterMonth { key: string; label: string; items: ViewItem[] }
@@ -711,6 +827,10 @@ export interface RegisterView {
   months: RegisterMonth[];
   later: ViewItem[];
   inactive: { obligation: FirmObligation; lastDone: FirmObligationOccurrence | null; open: FirmObligationOccurrence | null }[];
+  /** ACTIVE obligations with no open occurrence. No act in either adapter leaves one;
+   *  only a central-database act that failed part-way (PostgREST gives no
+   *  transaction) can. Listed so it never disappears from every surface. */
+  stranded: FirmObligation[];
 }
 
 /**
@@ -759,16 +879,23 @@ export function registerView(
       return { obligation: o, lastDone: done.at(-1) ?? null, open: list.find((x) => x.state === 'open') ?? null };
     });
 
+  const openIds = new Set(occurrences.filter((o) => o.state === 'open').map((o) => o.obligationId));
+  const stranded = obligations
+    .filter((o) => o.active && !openIds.has(o.id))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   return {
     overdue,
     months: keys.map((k) => ({ key: k, label: formatMonth(k), items: months.get(k)!.sort(byTarget) })),
     later: later.sort(byTarget),
     inactive,
+    stranded,
   };
 }
 
 // ------------------------------------------------------------- validation
 
+// PROVISIONAL — FOD-9; slice §3 item 10: every refusal sentence built in validateRule and validateObligation below is a text act.
 /** `allowUndated`: an INACTIVE row may omit its DATE parameters — the seeded-inactive
  *  templates (FOT-7, FOT-32–FOT-34, the BOI note) have no date until he has one. Its
  *  non-date parameters (every N years, an interval's days) are still checked. */
@@ -861,6 +988,8 @@ interface ObligationTrail {
   fields?: string[];
   openedOccurrenceId?: string | null;
   reevaluatedOccurrenceId?: string | null;
+  /** FOD-16's last-done date on an interval activation, when he gave one. */
+  lastDone?: string | null;
 }
 interface UndoTrail {
   kind: 'undo';
@@ -880,9 +1009,25 @@ export function readTrail(line: Pick<ReviewLogEntry, 'newValue'>): Trail | null 
   }
 }
 
+/** The completion an interval occurrence was measured from: the done date of the
+ *  close that materialized it, or FOD-16's last-done date on the activation that
+ *  opened it. Null for "due now" and for a re-activation, which measure from nothing
+ *  the rule can reproduce. `log` holds every line on the obligation in the order
+ *  written. */
+export function intervalBasis(openId: string, log: Pick<ReviewLogEntry, 'newValue'>[]): string | null {
+  for (let i = log.length - 1; i >= 0; i--) {
+    const t = readTrail(log[i]);
+    if (t?.kind === 'close' && t.nextOccurrenceId === openId) return t.doneOn;
+    if (t?.kind === 'obligation' && t.openedOccurrenceId === openId) {
+      return t.act === 'activated' ? t.lastDone ?? null : null;
+    }
+  }
+  return null;
+}
+
 function assertOneOpen(occs: FirmObligationOccurrence[]): void {
   if (occs.filter((o) => o.state === 'open').length > 1) {
-    throw new Error('More than one open occurrence on this obligation — the one-open invariant is broken (FOD-5); refusing to act.');
+    throw new Error('More than one open occurrence on this obligation — the one-open invariant is broken (FOD-5); refusing to act.'); // PROVISIONAL — FOD-5
   }
 }
 
@@ -907,6 +1052,7 @@ export interface ActivationPlan {
   log: LogDraft;
 }
 
+// PROVISIONAL — FOM-4, FOD-9, FOD-16; slice §3 item 10: every refusal and log-reason sentence in planActivation is a text act.
 export function planActivation(input: FirmObligationCreate, ctx: ActContext): ActivationPlan {
   const { lastDone, ...rest } = input;
   const serial = effectiveMissedPeriods(rest) === 'serial';
@@ -961,6 +1107,7 @@ export interface ClosePlan {
   log: LogDraft;
 }
 
+// PROVISIONAL — FOD-15, FOD-18; slice §3 item 10: every refusal sentence in planClose is a text act (its log reason is marked where it is built).
 function planClose(
   ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[],
   outcome: OccurrenceOutcome, input: { doneOn?: string; doneNote?: string; filedAt?: string; reason?: OutcomeReason },
@@ -1001,8 +1148,11 @@ function planClose(
       action: outcome === 'completed' ? 'done' : 'not-applicable',
       user: ctx.user,
       newValue: JSON.stringify(trail),
+      // PROVISIONAL — slice §3 item 10: every fragment of this reason is a text act.
       reason: [
-        outcome === 'completed' ? `Done ${formatDate(doneOn)}` : `Not applicable (${input.reason}) ${formatDate(doneOn)}`,
+        outcome === 'completed'
+          ? `Done ${formatDate(doneOn)}`
+          : `Not applicable (${input.reason === 'performed-elsewhere' ? 'performed elsewhere' : 'the condition did not apply'}) ${formatDate(doneOn)}`,
         note ? `— ${note}` : '',
         next ? `· next: ${next.periodLabel}, rule date ${formatDate(next.dueOn)}` : '',
         retires ? '· one-time: the obligation retires itself' : '',
@@ -1019,6 +1169,7 @@ export function planDone(
   return planClose(ob, occ, all, 'completed', input, ctx);
 }
 
+// PROVISIONAL — FOD-18: both refusal sentences in planNotApplicable are text acts.
 /** FOD-18: offered ONLY on a conditionalPerPeriod obligation, and a reason is required. */
 export function planNotApplicable(
   ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[],
@@ -1035,6 +1186,7 @@ export function planNotApplicable(
 
 // ---- Undo (FOD-7, FOM-11) ----
 
+// PROVISIONAL — FOD-7; slice §3 item 10: every "why" sentence canUndo returns reaches the screen and is a text act, as is planUndo's log reason.
 export type UndoCheck = { ok: true } | { ok: false; why: string };
 
 /**
@@ -1148,20 +1300,19 @@ export interface OverridePlan {
   log: LogDraft;
 }
 
-/** Sets THIS occurrence's real date. Refused on a done occurrence, and on an OVERDUE
- *  one whenever it would move the due date later or take it out of "overdue" — the
- *  never-later rule, so an override is never a back door out of FO-2 (FOD-4). */
+/** Sets THIS occurrence's real date (R). Refused on a done occurrence. On one past
+ *  its due date — overdue, or past-date-unknown once today is after D — it is refused
+ *  whenever it would move D later, take the occurrence out of past-due, or take an
+ *  overdue one out of the Overdue pin. That is the never-later rule, so an override
+ *  is never a back door out of FO-2 (FOD-4). */
 export function planOverride(
   ob: FirmObligation, occ: FirmObligationOccurrence, date: string, ctx: ActContext,
 ): OverridePlan {
-  if (occ.state !== 'open') throw new Error('Only an open occurrence takes a due-date override.');
-  if (!isIsoDate(date)) throw new Error('The due date must be a date.');
-  const before = stateOf(ob, occ, ctx.today);
+  if (occ.state !== 'open') throw new Error('Only an open occurrence takes a due-date override.'); // PROVISIONAL — FOD-4
+  if (!isIsoDate(date)) throw new Error('The due date must be a date.'); // PROVISIONAL — FOD-4
   const after = { ...occ, dueOnOverride: date };
-  if (before === 'overdue') {
-    if (dueDate(ob, after) > dueDate(ob, occ) || stateOf(ob, after, ctx.today) !== 'overdue') {
-      throw new Error('This occurrence is overdue; its due date can never be moved later (FOD-4).');
-    }
+  if (isPastDue(ob, occ, ctx.today) && escapesPastDue(ob, occ, ob, after, ctx.today)) {
+    throw new Error('This occurrence is past its due date; its due date can never be moved later, or out of overdue (FOD-4).'); // PROVISIONAL — FOD-4
   }
   return {
     occurrenceId: occ.id,
@@ -1173,7 +1324,9 @@ export function planOverride(
       user: ctx.user,
       oldValue: ruleDate(occ),
       newValue: date,
-      reason: `Due date for ${occ.periodLabel} set to ${formatDate(date)} (was ${formatDate(ruleDate(occ))})`,
+      // "Rule date", not "due date": the override sets R, and under `unknown` on a
+      // weekend R is not D.
+      reason: `Rule date for ${occ.periodLabel} set to ${formatDate(date)} (was ${formatDate(ruleDate(occ))})`, // PROVISIONAL — FOD-4
     },
   };
 }
@@ -1190,19 +1343,23 @@ export interface EditPlan {
 }
 
 /**
- * An edit re-evaluates the OPEN occurrence, never a done one, and never moves an
- * OVERDUE occurrence later (FOD-4). A weekend-rule change is refused on an overdue
- * occurrence when it would move D later or take the occurrence out of "overdue" —
- * the same no-back-door reading, applied to the one setting that moves D without
- * moving the stored date.
+ * An edit re-evaluates the OPEN occurrence, never a done one (FOD-4). On an open
+ * occurrence past its due date (isPastDue), no edit is a back door out of FO-2. A rule
+ * change that would move D later, take the occurrence out of past-due, or take an
+ * overdue one out of the Overdue pin leaves it on its date (`kept`). A weekend-rule
+ * change that would do any of those is refused. It is the override's own test,
+ * applied here to the one setting that moves D without moving the stored date.
+ *
+ * `log` holds every line on the obligation in the order written; it tells an interval
+ * occurrence which completion it was measured from.
  */
 export function planEdit(
   ob: FirmObligation, patch: FirmObligationPatch, all: FirmObligationOccurrence[], ctx: ActContext,
+  log: Pick<ReviewLogEntry, 'newValue'>[] = [],
 ): EditPlan {
   assertObligationPatchKeys(patch);
   assertOneOpen(all);
-  const changed = (Object.keys(patch) as (keyof FirmObligationPatch)[])
-    .filter((k) => JSON.stringify(patch[k]) !== JSON.stringify(ob[k]));
+  const changed = changedFields(ob, patch);
   const nextOb: FirmObligation = { ...ob, ...patch };
   nextOb.missedPeriods = effectiveMissedPeriods(nextOb);
   validateObligation(nextOb);
@@ -1212,22 +1369,19 @@ export function planEdit(
   let kept: string | null = null;
 
   if (open) {
-    const before = stateOf(ob, open, ctx.today);
-    if (changed.includes('weekendRule') && before === 'overdue') {
-      const stateAfter = stateOf(nextOb, open, ctx.today);
-      if (stateAfter !== 'overdue' || dueDate(nextOb, open) > dueDate(ob, open)) {
-        throw new Error('This occurrence is overdue; changing its weekend rule would move its due date later or take it out of overdue (FOD-4). Mark it done first.');
-      }
+    const pastDue = isPastDue(ob, open, ctx.today);
+    if (changed.includes('weekendRule') && pastDue && escapesPastDue(ob, open, nextOb, open, ctx.today)) {
+      throw new Error('This occurrence is past its due date; changing its weekend rule would move its due date later or take it out of overdue (FOD-4). Mark it done first.'); // PROVISIONAL — FOD-4
     }
     // The missed-period override changes how the NEXT occurrence materializes, not
     // this one's date — so only the rule and its precision re-evaluate it.
     const ruleChanged = changed.includes('recurrence') || changed.includes('precision');
     if (ruleChanged) {
-      const draft = reevaluateOpen(nextOb, open, all);
+      const draft = reevaluateOpen(nextOb, open, intervalBasis(open.id, log));
       if (draft && (draft.dueOn !== open.dueOn || draft.periodLabel !== open.periodLabel)) {
-        const moved = { ...open, dueOn: draft.dueOn };
-        if (before === 'overdue' && dueDate(nextOb, moved) > dueDate(ob, open)) {
-          kept = `The open occurrence (${open.periodLabel}) is overdue, so it keeps its date; the new rule applies from the next period (FOD-4).`;
+        const moved = { ...open, dueOn: draft.dueOn, periodLabel: draft.periodLabel };
+        if (pastDue && escapesPastDue(ob, open, nextOb, moved, ctx.today)) {
+          kept = `The open occurrence (${open.periodLabel}) is past its due date, so it keeps its date; the new rule applies from the next period (FOD-4).`; // PROVISIONAL — FOD-4
         } else {
           occurrence = {
             id: open.id,
@@ -1263,7 +1417,7 @@ export function planEdit(
       user: ctx.user,
       oldValue: JSON.stringify(oldValues),
       newValue: JSON.stringify({ ...trail, values: newValues }),
-      reason: `Edited: ${changed.length ? changed.join(', ') : 'nothing changed'}${kept ? ` — ${kept}` : ''}`,
+      reason: `Edited: ${changed.length ? changed.map((k) => FIELD_LABEL[k]).join(', ') : 'nothing changed'}${kept ? ` — ${kept}` : ''}`, // PROVISIONAL — slice §3 item 10
     },
   };
 }
@@ -1271,7 +1425,7 @@ export function planEdit(
 // ---- Retire / Re-activate (FOD-8) ----
 
 export function planRetire(ob: FirmObligation, ctx: ActContext): { obligationPatch: Partial<FirmObligation>; log: LogDraft } {
-  if (!ob.active) throw new Error('This obligation is already retired.');
+  if (!ob.active) throw new Error('This obligation is already retired.'); // PROVISIONAL — FOD-8
   const trail: ObligationTrail = { kind: 'obligation', act: 'retired' };
   return {
     obligationPatch: { active: false, updatedAt: ctx.nowIso },
@@ -1279,36 +1433,94 @@ export function planRetire(ob: FirmObligation, ctx: ActContext): { obligationPat
       entityType: FIRM_OBLIGATION_ENTITY, entityId: ob.id, action: 'edited', user: ctx.user,
       oldValue: 'active', newValue: JSON.stringify(trail),
       // Retire closes nothing: an open occurrence stays lit until done (FOD-8).
-      reason: 'Retired — an open occurrence stays until done',
+      reason: 'Retired — an open occurrence stays until done', // PROVISIONAL — FOD-8
     },
   };
 }
 
+/**
+ * Re-activation is an activation (FOM-4): when nothing is open, the first rule date on
+ * or after today, but NEVER a period already closed. A periodic row steps past every
+ * period its history shows closed. A one-time row already closed on its date is
+ * refused until he sets a new date. A FIRST activation from Inactive (a row with no
+ * occurrence at all, like the seeded-inactive templates) may carry FOM-4's "last
+ * period completed" on a serial row, exactly as an activation from the catalog does.
+ */
 export function planReactivate(
   ob: FirmObligation, all: FirmObligationOccurrence[], ctx: ActContext,
+  inputs: { lastPeriodCompleted?: string } = {},
 ): { obligationPatch: Partial<FirmObligation>; occurrence: FirmObligationOccurrence | null; log: LogDraft } {
-  if (ob.active) throw new Error('This obligation is already active.');
+  if (ob.active) throw new Error('This obligation is already active.'); // PROVISIONAL — FOD-8
   assertOneOpen(all);
   const reactivated = { ...ob, active: true };
   validateObligation(reactivated);
+  const lpc = inputs.lastPeriodCompleted || undefined;
+  if (lpc !== undefined) {
+    if (all.length > 0) {
+      throw new Error('"Last period completed" is taken only on a first activation — this obligation already has history (FOM-4).'); // PROVISIONAL — FOM-4
+    }
+    if (!isIsoDate(lpc)) throw new Error('last period completed must be a date'); // PROVISIONAL — FOM-4
+    if (lpc > ctx.today) throw new Error('last period completed cannot be a future date'); // PROVISIONAL — FOM-4
+  }
+  const serial = effectiveMissedPeriods(reactivated) === 'serial' && reactivated.recurrence.kind !== 'one-time';
   const hasOpen = all.some((o) => o.state === 'open');
   let occurrence: FirmObligationOccurrence | null = null;
   if (!hasOpen) {
-    // Re-activation is an activation: the first rule date on or after today (FOM-4).
-    const draft = materializeFirst(reactivated, ctx.today, {});
-    if (!draft) throw new Error('This obligation has no date yet — set it with Edit… first (FOD-9).');
+    let draft = materializeFirst(reactivated, ctx.today, { lastPeriodCompleted: serial ? lpc : undefined });
+    if (!draft) throw new Error('This obligation has no date yet — set it with Edit… first (FOD-9).'); // PROVISIONAL — FOD-9
+    const closed = all.filter((o) => o.state === 'done');
+    if (reactivated.recurrence.kind === 'one-time') {
+      const firstDue = draft.dueOn;
+      if (closed.some((o) => o.dueOn === firstDue)) {
+        throw new Error('This one-time obligation is already done for that date — set its new date first (FOD-32).'); // PROVISIONAL — FOD-32
+      }
+    } else if (reactivated.recurrence.kind !== 'interval-from-completion') {
+      const closedLabels = new Set(closed.map((o) => o.periodLabel));
+      for (let guard = 0; closedLabels.has(draft.periodLabel) && guard < 100; guard++) {
+        const p = nextPeriod(reactivated, draft.dueOn, false);
+        draft = { dueOn: p.rule, periodLabel: periodLabelFor(reactivated, p) };
+      }
+    }
     occurrence = newOccurrence(ob, draft, ctx);
   }
   const trail: ObligationTrail = { kind: 'obligation', act: 're-activated', openedOccurrenceId: occurrence?.id ?? null };
   return {
-    obligationPatch: { active: true, updatedAt: ctx.nowIso },
+    obligationPatch: {
+      active: true,
+      ...(lpc !== undefined && serial ? { lastPeriodCompleted: lpc } : {}),
+      updatedAt: ctx.nowIso,
+    },
     occurrence,
     log: {
       entityType: FIRM_OBLIGATION_ENTITY, entityId: ob.id, action: 'edited', user: ctx.user,
       oldValue: 'retired', newValue: JSON.stringify(trail),
       reason: occurrence
-        ? `Re-activated; occurrence ${occurrence.periodLabel} opened, rule date ${formatDate(occurrence.dueOn)}`
-        : 'Re-activated',
+        ? `Re-activated; occurrence ${occurrence.periodLabel} opened, rule date ${formatDate(occurrence.dueOn)}` // PROVISIONAL — FOD-8
+        : 'Re-activated', // PROVISIONAL — FOD-8
     },
   };
+}
+
+/**
+ * Would re-activating this obligation, with this edit applied first, be refused? The
+ * Inactive row's "Activate…" is an edit followed by a re-activation: two acts, each
+ * with its own log line. Asking this BEFORE the edit is written means a refused
+ * re-activation (a "last period completed" that names no period, a one-time already
+ * done, an undated row) leaves no half-finished edit behind. It runs the very plans
+ * the two acts run, writes nothing, and returns the refusal sentence or null.
+ */
+export function reactivationProblem(
+  ob: FirmObligation, patch: FirmObligationPatch, all: FirmObligationOccurrence[], today: string,
+  inputs: { lastPeriodCompleted?: string } = {},
+): string | null {
+  const ctx: ActContext = { today, nowIso: `${today}T12:00:00.000Z`, newId: () => 'dry-run', user: 'dry-run' };
+  try {
+    const edited: FirmObligation = changedFields(ob, patch).length > 0
+      ? { ...ob, ...planEdit(ob, patch, all, ctx).obligationPatch }
+      : ob;
+    planReactivate(edited, all, ctx, inputs);
+    return null;
+  } catch (e) {
+    return e instanceof Error ? e.message : String(e);
+  }
 }

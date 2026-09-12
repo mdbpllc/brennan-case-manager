@@ -233,6 +233,17 @@ describe('toGraphFirmEvent — the payload (DECISION 7; slice §7 item 15)', () 
     expect(toGraphFirmEvent(reopened, ob)).toEqual(pOpen);
   });
 
+  it("a SPEC §7 name reaches the subject without its markdown — FOT-27's backticks never reach Outlook (review L5-08)", () => {
+    const ob = obligation({ name: 'Domain renewal — `brennanstx.com`' });
+    const open = toGraphFirmEvent(occurrence(), ob);
+    expect(open.subject).toBe('Firm obligation: Domain renewal — brennanstx.com (2026)');
+    expect(toGraphFirmEvent(occurrence({ state: 'done', doneOn: '2026-10-01', outcome: 'completed' }), ob).subject)
+      .toBe('Done — Firm obligation: Domain renewal — brennanstx.com (2026)');
+    expect(JSON.stringify(open)).not.toContain('`');
+    // Only the display changed: the stored name keeps its backticks.
+    expect(ob.name).toBe('Domain renewal — `brennanstx.com`');
+  });
+
   it('category MDBP Firm, and FIRM|obligationId|occurrenceId on the EXISTING property id', () => {
     expect(MATTER_PROP_ID).toBe('String {b7f2a6e0-52c1-47d8-9b3a-1e64c02f7d15} Name bcmMatterRef');
     const p = toGraphFirmEvent(occurrence({ id: 'occ-77', obligationId: 'ob-42' }), obligation({ id: 'ob-42' }));
@@ -290,18 +301,34 @@ describe('reminderMinutesBeforeStart — AT THE LIT MOMENT (FOD-29 as Michael ru
   });
 
   it('across a clock change the reminder still rings at midnight on the lit day — NOT lead × 1440', () => {
-    // Lights Mar 1 2027, T Mar 31 2027: the US spring-forward (Mar 14 2027) falls inside.
-    const ob = obligation({ precision: 'month', leadDays: 5 });
-    const occ = occurrence({ periodLabel: '2027', dueOn: '2027-03-31' });
-    const got = minutes(ob, occ) as number;
-    expect(got).toBe(realMinutes('2027-03-01', '2027-03-31'));
-    if (offsetsDiffer('2027-03-01', '2027-03-31')) {
-      // This runtime's zone changes its clocks in that window (America/Chicago does):
-      // the ruling's effect is visible, 60 minutes off the naive product.
-      expect(got).toBe(30 * 1440 - 60);
-    } else {
-      // A zone with no change in the window: the two readings coincide, and must.
-      expect(got).toBe(30 * 1440);
+    // The zone is PINNED for this test (review L2-F7). Left to the machine's zone, a
+    // runner on UTC has no clock change in either window and a naive days × 1440 would
+    // pass. Node re-reads TZ when process.env.TZ is ASSIGNED, so every Date below — the
+    // implementation's and realMinutes' alike — runs in America/Chicago. The zone in
+    // force before the pin is put back by assigning it again: DELETING TZ does not make
+    // Node re-read the zone (checked on Node 24), so a delete would leave Chicago pinned
+    // for every later test. (`process` is reached through globalThis: the app's
+    // type-check does not load Node's types.)
+    const env = (globalThis as unknown as { process: { env: Record<string, string | undefined> } }).process.env;
+    const saved = env.TZ ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+    env.TZ = 'America/Chicago';
+    try {
+      // Fail loudly if the pin did not take: without a real offset change inside each
+      // window, the assertions below would prove nothing.
+      expect(offsetsDiffer('2027-03-01', '2027-03-31'), 'TZ pin did not take: no clock change Mar 1 – Mar 31 2027').toBe(true);
+      expect(offsetsDiffer('2027-11-01', '2027-11-30'), 'TZ pin did not take: no clock change Nov 1 – Nov 30 2027').toBe(true);
+
+      // Spring forward (Sun Mar 14 2027) inside: lights Mar 1, T Wed Mar 31 — an hour short.
+      const spring = minutes(obligation({ precision: 'month', leadDays: 5 }), occurrence({ periodLabel: '2027', dueOn: '2027-03-31' }));
+      expect(spring).toBe(realMinutes('2027-03-01', '2027-03-31'));
+      expect(spring).toBe(30 * 1440 - 60);
+
+      // Fall back (Sun Nov 7 2027) inside: lights Nov 1, T Tue Nov 30 — an hour long.
+      const fall = minutes(obligation({ precision: 'month', leadDays: 5 }), occurrence({ periodLabel: '2027', dueOn: '2027-11-30' }));
+      expect(fall).toBe(realMinutes('2027-11-01', '2027-11-30'));
+      expect(fall).toBe(29 * 1440 + 60);
+    } finally {
+      env.TZ = saved;
     }
   });
 });

@@ -12,9 +12,12 @@
 //   Wed 2026-09-16 — a weekday, where target-passed cannot exist under either
 //                    rolling setting, so those two rows are overdue — the ruled
 //                    behaviour, pinned so nobody "fixes" it back.
+//
+// …and then on EVERY creation day across two years (the sweep at the foot), because a
+// fixture that holds only at the pinned clocks decays on the days nobody pinned.
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { stateOf, cardItems, registerView, type DisplayState } from '../../domain/firmObligations';
+import { addDays, dayOfWeek, stateOf, cardItems, registerView, type DisplayState } from '../../domain/firmObligations';
 
 const mem = new Map<string, string>();
 (globalThis as { localStorage?: unknown }).localStorage = {
@@ -26,7 +29,7 @@ const mem = new Map<string, string>();
 
 const { migrateV16ToV17, migrateV15ToV16, STORE_VERSION, LocalAdapter } = await import('../localAdapter');
 const { seedData } = await import('../seed');
-const { DEMO_SEED_USER } = await import('../firmObligationsSeed');
+const { DEMO_SEED_USER, firmObligationsDemoSeed } = await import('../firmObligationsSeed');
 
 const KEY = 'brennan-case-manager-v1';
 
@@ -37,13 +40,27 @@ function v16Store() {
 
 type Store = ReturnType<typeof migrateV16ToV17>;
 
-function statesAt(store: Store, today: string): Record<string, DisplayState> {
+function statesAt(store: Pick<Store, 'firmObligations' | 'firmObligationOccurrences'>, today: string): Record<string, DisplayState> {
   const out: Record<string, DisplayState> = {};
   for (const ob of store.firmObligations) {
     const open = store.firmObligationOccurrences.find((o) => o.obligationId === ob.id && o.state === 'open');
     if (open) out[ob.templateKey!] = stateOf(ob, open, today);
   }
   return out;
+}
+
+/** FOD-21's named mix as ruled: the weekend rows by the day of the week. */
+function namedMix(today: string): Record<string, DisplayState> {
+  const w = dayOfWeek(today);
+  return {
+    'FOT-4': 'overdue', 'FOT-19': 'overdue', // hard
+    'FOT-22': 'overdue', // routine
+    'FOT-1': 'lit', 'FOT-6': 'lit', 'FOT-24': 'lit',
+    'FOT-23': w === 6 || w === 0 || w === 1 ? 'target-passed' : 'overdue', // rolls-forward: Sat–Mon
+    'FOT-27': w === 6 || w === 0 ? 'target-passed' : 'overdue', // no-roll: the weekend day itself
+    'FOT-2': 'past-date-unknown', // unknown
+    'FOT-8': 'pending', 'FOT-9': 'pending', 'FOT-25': 'pending',
+  };
 }
 
 beforeEach(() => mem.clear());
@@ -126,13 +143,23 @@ describe('FOD-21 — the fixture firm, at the fixture clocks', () => {
     expect([s['FOT-1'], s['FOT-6'], s['FOT-24']]).toEqual(['lit', 'lit', 'lit']);
   });
 
-  it('the practice-time report carries the FOM-4 backlog: the 2025 report opened, overdue, from "last period completed" 2024', () => {
+  it('the practice-time report carries the FOM-4 backlog on an INVENTED date: Wed Jul 15, opened overdue from "last period completed" the year before', () => {
     const old = v16Store();
     const store = migrateV16ToV17(old, JSON.stringify(old), { today: '2026-09-13' });
     const tidc = store.firmObligations.find((o) => o.templateKey === 'FOT-4')!;
-    expect(tidc.lastPeriodCompleted).toBe('2024-10-15');
+    // Sixty days before Sun 2026-09-13 is Wed 2026-07-15 — not the catalog's October 15.
+    expect(tidc.recurrence).toEqual({ kind: 'fixed-annual', month: 7, day: 15 });
+    expect(tidc.lastPeriodCompleted).toBe('2025-07-15');
     const open = store.firmObligationOccurrences.find((o) => o.obligationId === tidc.id)!;
-    expect(open).toMatchObject({ dueOn: '2025-10-15', periodLabel: '2025', state: 'open' });
+    expect(open).toMatchObject({ dueOn: '2026-07-15', periodLabel: '2026', state: 'open' });
+  });
+
+  it('the franchise-tax and information reports carry invented dates too, not the catalog\'s May 15', () => {
+    const old = v16Store();
+    const store = migrateV16ToV17(old, JSON.stringify(old), { today: '2026-09-13' });
+    const rule = (key: string) => store.firmObligations.find((o) => o.templateKey === key)!.recurrence;
+    expect(rule('FOT-8')).toEqual({ kind: 'fixed-annual', month: 1, day: 11 });
+    expect(rule('FOT-9')).toEqual({ kind: 'fixed-annual', month: 2, day: 10 });
   });
 
   it('the card and the pin at Sunday: five hard lines (three shown, two more), the pin hard-first', () => {
@@ -143,6 +170,7 @@ describe('FOD-21 — the fixture firm, at the fixture clocks', () => {
     const view = registerView(store.firmObligations, store.firmObligationOccurrences, '2026-09-13');
     expect(view.overdue.map((i) => i.obligation.templateKey)).toEqual(['FOT-4', 'FOT-19', 'FOT-22']);
     expect(view.inactive.map((i) => i.obligation.templateKey)).toEqual(['boi-note']);
+    expect(view.stranded).toEqual([]);
   });
 
   it('twelve activations plus the BOI note row added inactive — one open occurrence each, none for the BOI row', () => {
@@ -170,6 +198,25 @@ describe('FOD-21 — the fixture firm, at the fixture clocks', () => {
     expect(created).toHaveLength(13);
     expect(created.every((l) => l.user === DEMO_SEED_USER && l.action === 'created')).toBe(true);
     expect(DEMO_SEED_USER).toMatch(/invented/);
+  });
+});
+
+describe('FOD-21 — the named mix holds on EVERY creation day, not only at the pinned clocks', () => {
+  it('a sweep over 731 creation days from Thu 2026-01-01 (every weekday, every weekend month-end) finds no miss', () => {
+    const misses: string[] = [];
+    let day = '2026-01-01';
+    for (let i = 0; i < 731; i++, day = addDays(day, 1)) {
+      let n = 0;
+      const seed = firmObligationsDemoSeed(day, `${day}T12:00:00.000Z`, () => `id-${++n}`);
+      if (seed.obligations.length !== 13 || seed.occurrences.length !== 12) {
+        misses.push(`${day}: ${seed.obligations.length} obligations, ${seed.occurrences.length} occurrences`);
+      }
+      const got = statesAt({ firmObligations: seed.obligations, firmObligationOccurrences: seed.occurrences }, day);
+      for (const [key, want] of Object.entries(namedMix(day))) {
+        if (got[key] !== want) misses.push(`${day} ${key}: ${got[key]} (FOD-21 names ${want})`);
+      }
+    }
+    expect(misses).toEqual([]);
   });
 });
 

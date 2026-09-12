@@ -9,7 +9,7 @@ import type { CalendarEvent } from '../domain/calendar';
 import type { FirmObligation, FirmObligationOccurrence } from '../domain/firmObligations';
 import type { CaseRecord } from '../domain/types';
 import {
-  daysBetween, dueDate, FOD1_NOTE, formatDate, isUnknownWeekend, lightsOn, ruleDate, targetDate,
+  daysBetween, dueDate, FOD1_NOTE, formatDate, isUnknownWeekend, lightsOn, plainText, ruleDate, targetDate,
 } from '../domain/firmObligations';
 import { OUTLOOK_CALENDAR_NAME } from './config';
 import { OUTLOOK_FIRM_CALENDAR_NAME } from './config';
@@ -230,6 +230,9 @@ export function minutesBetweenLocalMidnights(from: string, to: string): number {
  *    `isReminderOn` stays TRUE, as slice §3 item 7 names it — so an occurrence done
  *    EARLY (FOD-15) still rings at its lit moment. That is recorded for the hands-on
  *    sitting's keep-vs-delete item, not decided here.
+ *  - The subject shows the name through plainText: SPEC §7's names are stored with
+ *    their markdown (FOT-27's backticks), and Outlook shows the words (review L5-08).
+ *    The body names no obligation, so the subject is the only place the name appears.
  *
  * T, D and the lit day come from the domain module's one derivation; only the end
  * date's "+1 day" uses this file's own local addDays, which agrees for naive dates.
@@ -241,7 +244,7 @@ export function toGraphFirmEvent(
   const R = ruleDate(occ);
   const T = targetDate(occ);
   const D = dueDate(obligation, occ);
-  const subject = `Firm obligation: ${obligation.name} (${occ.periodLabel})`; // PROVISIONAL — DECISION 7
+  const subject = `Firm obligation: ${plainText(obligation.name)} (${occ.periodLabel})`; // PROVISIONAL — DECISION 7
   const lines = [
     'Firm obligation — no matter', // PROVISIONAL — FOD-10 as amended by DECISION 7
     `Due ${formatDate(D)}`, // PROVISIONAL — DECISION 7 (slice §2.3 item 5)

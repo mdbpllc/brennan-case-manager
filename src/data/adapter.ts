@@ -431,9 +431,11 @@ export interface DataAdapter {
   /** Closes nothing: an open occurrence stays lit until done (FOD-8). */
   retireFirmObligation(id: string): Promise<FirmObligation>;
   /** Re-activation is an activation: when nothing is open it opens the first rule
-   *  date on or after today. */
+   *  date on or after today — never a period already closed. A FIRST activation
+   *  from Inactive (a row with no occurrence yet) may carry FOM-4's optional
+   *  "last period completed" on a serial row. */
   reactivateFirmObligation(
-    id: string,
+    id: string, inputs?: { lastPeriodCompleted?: string },
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }>;
   listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]>;
   /** Done — materializes the next occurrence (serial or collapsed, DECISION 2). */

@@ -8,6 +8,10 @@
 // (FOM-13's conjunctive reading) — so it never shows what the register has not lit,
 // and never drops an overdue item however long overdue (FO-2).
 //
+// It draws what the domain's cardSummary decides — the two counts, the first three
+// lines, "and N more" — and decides nothing itself, so a lit weekend-dated row under
+// `unknown` carries no day count here either (slice §8).
+//
 // Every string here is PROVISIONAL (FOD-26 for the title and lines; FOD-24 for the
 // holiday line); its position below the legal-watch card is FOD-27. Michael rules
 // all three at THE FIRM-OBLIGATIONS HANDS-ON SITTING.
@@ -17,7 +21,7 @@ import { Link } from 'react-router-dom';
 import { db } from '../data';
 import { localISODate } from '../domain/dates';
 import {
-  HOLIDAY_LINE, cardCounts, cardItems, cardLine,
+  HOLIDAY_LINE, cardItems, cardSummary,
   type FirmObligation, type FirmObligationOccurrence,
 } from '../domain/firmObligations';
 
@@ -37,23 +41,18 @@ export default function FirmObligationsCard() {
   const today = localISODate();
   const items = cardItems(data.obligations, data.occurrences, today);
   if (items.length === 0) return null;
-  const { due, overdue } = cardCounts(items);
+  const s = cardSummary(items, today);
 
   return (
-    <div className="card" style={{ borderColor: overdue ? 'var(--warn, #b45309)' : undefined }}>
-      <strong>Firm obligations — {due} due · {overdue} overdue</strong>{/* PROVISIONAL — FOD-26 */}
+    <div className="card" style={{ borderColor: s.overdue ? 'var(--warn, #b45309)' : undefined }}>
+      <strong>Firm obligations — {s.due} due · {s.overdue} overdue</strong>{/* PROVISIONAL — FOD-26 */}
       <div className="small" style={{ marginTop: 4 }}>
-        {items.slice(0, 3).map((it) => (
-          <div key={it.occurrence.id} style={it.state === 'overdue' ? { color: 'var(--warn)' } : undefined}>
-            {cardLine(it, today)}
-          </div>
+        {s.lines.map((l) => (
+          <div key={l.id} style={l.overdue ? { color: 'var(--warn)' } : undefined}>{l.text}</div>
         ))}
-        {items.length > 3 && (
-          <div><Link to="/firm/obligations">and {items.length - 3} more</Link></div> /* PROVISIONAL — FOD-26 */
-        )}
-        {items.length <= 3 && (
-          <div><Link to="/firm/obligations">Open the register</Link></div> /* PROVISIONAL — FOD-26 */
-        )}
+        {s.more > 0
+          ? <div><Link to="/firm/obligations">and {s.more} more</Link></div> /* PROVISIONAL — FOD-26 */
+          : <div><Link to="/firm/obligations">Open the register</Link></div> /* PROVISIONAL — slice §3 item 6 (a link to the register); FOD-26 */}
       </div>
       <details className="small muted" style={{ marginTop: 4 }}>
         <summary>About these dates</summary>{/* PROVISIONAL — FOD-24 expander */}
