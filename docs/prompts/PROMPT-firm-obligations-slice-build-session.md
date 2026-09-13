@@ -54,7 +54,7 @@ The slice's `src/` and `db/` statements were read from staged copies at `357ca8e
 Three of them are the shape of this build and are restated so they cannot be missed:
 
 - **The weekend rule is three states, and `unknown` is the seed value everywhere** (§2.3). A roll is displayed only where the obligation's own `weekendRule` says so. **Under `unknown`, a weekend-dated occurrence never prints "overdue" or a day count.** No holiday is computed, no holiday list ships. If you find yourself writing a holiday table or inferring a roll from a source note, stop — that is the roll-defaults ruling's ruled-out shape.
-- **Nothing unlights an occurrence but Done, Not-applicable (conditional rows only) and Undo.** No snooze, no later, no dismiss, no bulk action, no delete. Retire closes nothing.
+- **Nothing unlights an occurrence but Done, Not-applicable (conditional rows only) and Undo — and, since `#156`, `FOD-4`'s edits on a not-past-due occurrence.** No snooze, no later, no dismiss, no bulk action; no delete of a done occurrence or an obligation (Undo's delete of the untouched next is REQUIRED — slice §7 item 8, `FOD-7`). Retire closes nothing. *(Corrected 2026-09-12 by `#156` per this prompt's own precedence rule: the earlier "no delete" contradicted slice §7 item 8 and `FOD-7`; the documents won.)*
 - **Every text act is a PROVISIONAL string with its `FOD-n` cite beside it in code**, listed in your entry, never described as approved.
 
 ## Step 4 — Defaults are reported, not hidden
@@ -75,7 +75,7 @@ With Michael's connected Outlook (demo mode, his consent already in place for `C
 
 The slice's §8 is the DO-NOT list and binds in full. Restated so it cannot be missed:
 
-- **Do not build a snooze, a "later", a dismiss, a bulk action, or a delete on any obligation or occurrence.**
+- **Do not build a snooze, a "later", a dismiss, a bulk action, or a delete of a done occurrence or an obligation** — slice §8's words; Undo's delete of the untouched next is required by slice §7 item 8 and `FOD-7`. *(Corrected 2026-09-12, `#156`, part C item 16.)*
 - **Do not compute a holiday; do not ship a holiday list; do not set any template's `weekendRule` to anything but `unknown`.**
 - **Do not print "overdue" or a day count on a weekend-dated occurrence whose `weekendRule` is `unknown`.**
 - **Do not draft or insert a registry entry; do not create `legal-rule-registry-firm-obligations.md`; do not reword a SPEC §7 cite string.**

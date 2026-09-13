@@ -4,15 +4,854 @@
 > **CITE THIS FILE BY HEADING OR BY QUOTED SENTENCE, NEVER BY LINE NUMBER** (CITE-STABILITY, ruled 2026-08-16): it is rewritten wholesale, so every line number in it moves.
 > **THIS IS THE ONLY PART OF THE SESSION-LOG RECORD THAT REACHES THE DESIGN SIDE.** Everything behind it is bridge-only — see §3.
 
-**Generated:** 2026-09-11 Central (DT-1), over the log **as it stands at this commit** and riding the **same commit** as the entries it derives from. Read FROM commit `357ca8e`; written by the QUEUE-RUNNER's NINETY-SIXTH invocation (batch 96), a docs-only batch. **This edition also re-syncs §1 to the log: until it, the batch-95 runner line below lacked the same-day note that the `357ca8e` follow-on commit inserted into that entry in the live log without regenerating this file.**
+**Generated:** 2026-09-13 Central (DT-1), over the log **as it stands at this commit** and riding the **same commit** as the entries it derives from. Read FROM commit `5781420`; written by the QUEUE-RUNNER's NINETY-SEVENTH invocation (batch 97), a docs-only batch. **This edition is the first to carry the 2026-09-12 CODE entry — the firm-obligations build — which the session that wrote it deliberately left for this batch to index.**
 
 **THE RULE THAT PRODUCED §1, STATED IN FULL SO YOU CAN CHECK IT (`TC-2`):** parse the live log into entries on its `## ` headings; identify design entries by the `(#nn)` token in the heading (`TOC-6` — the `#nn` series is design-only, runner batches carry runner ordinals, and other Code entries are unnumbered); take the **fourth most recent** design `#nn` entry and **every entry above it in the log**, in log order, newest first; copy them **byte-for-byte**, whole entries only — never truncated, never paraphrased, never summarised. Interleaved runner lines and unnumbered Code entries come with them, because they are what say *what landed*.
 
-**This edition:** §1 carries **9 entries**, reaching back to design **`#152`**; §2 indexes **all 186 entries** in the live log (design 91 / runner 74 / code 21), high-water design **`#155`**. The §3.5 ceiling did NOT bind this edition: nothing was dropped from §1.
+**This edition:** §1 carries **5 entries**, reaching back to design **`#155`**; §2 indexes **all 189 entries** in the live log (design 92 / runner 75 / code 22), high-water design **`#156`**. ⛔ **THE 200,000-BYTE CEILING BOUND, AND THE SHORTFALL IS NAMED (`TC-12`, spec §3.5).** The `TC-2` rule selected **10 entries** reaching back to design **`#153`**; assembled whole, this file would have measured **279,266 B**, so the **5 oldest whole entries were dropped from §1** — never truncated, and §2 and §3 were not cut. **§1 now reaches back to design `#155`** (its oldest entry of any kind is `#155` itself). Everything dropped is whole in `docs/record/session-log.md`, which is bridge-only and the authority, and §2 below still lists every entry.
 
 ---
 
 ## §1 HEAD ENTRIES — VERBATIM, NEWEST FIRST
+
+## 2026-09-13 — QUEUE-RUNNER batch (runner line; NINETY-SEVENTH invocation) — one docs-only packet: the firm-obligations hands-on sitting and the post-`CCS-1` walk (`#156`), executed whole — one placement the packet's words could not locate, put to Michael and placed by his pick; the head file's ceiling binding hard enough that it now carries only two design entries verbatim; and a docs-only BUILD-STATE refresh re-attributing the CODE refresh's "at this refresh" claims it could not re-read
+
+- **THE QUEUE HELD ONE PACKET AND IT RAN WHOLE, IN THE ORDER MICHAEL CONFIRMED.** `push-to-code_firm-obligations-hands-on-sitting_2026-09-12.zip` — 104,893 B, mtime 2026-09-13 00:05:10 −0500, sha256 `be983c3623618d0356e4948c33c33fcb0643ccce5653bc149616959735839c17`, the identity pinned at Step 1 (`QR-6(c)`) and re-checked unchanged before it was unzipped. One packet, so filename-date order and pure-mtime order agree trivially; Michael picked *"Confirm — run it (Recommended)"* at the Step 1 STOP, an option whose text also answered the `MM-1` question the repo cannot (no other runner active). **Nothing was superseded, and nothing was skipped as already built:** all seven canonical paths were ABSENT from the working tree, from HEAD and from `origin/master`; no commit on any ref had touched them (`git log --all -- <path>`, a path-based read); and `(#156)` had 0 heading hits — pending in both of the senses `QR-5` names. DT-1: this line carries the run date, 2026-09-13, read from the wall clock at 00:21 CDT; `#156` keeps its own 2026-09-12 stamp. **One clock read failed and was caught before commit:** in Git Bash, `TZ=America/Chicago date '+%Y-%m-%d %H:%M:%S %Z'` printed `2026-09-13 16:10:05 GMT` while Central was 11:10, so BUILD-STATE's uncommitted working copy briefly read *16:10 CDT*; every later clock read went through `[System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId(…, 'Central Standard Time')`, the call the regeneration script runs. The 11:10 reading and the 16:10 copy were seen in session and are kept in no repo file.
+- **STEP 0 GATE CLEAN, ON EVIDENCE THAT COULD HAVE DISCONFIRMED IT (`QR-6(a)`).** On `master`; after `git fetch origin` (exit 0), `git ls-remote origin refs/heads/master` returned `57814201bf0cda142c616701f6437e479b01ba7e`, equal to HEAD, and `git rev-list --left-right --count HEAD...origin/master` returned `0 0`. No tracked file was modified. The untracked paths are Michael's and nothing was done to them: `Claude outputs/` (fourteen files) and the two 2026-08-24 files. Step 0's setup held: `inbox/` in `.gitignore`, `Bash(rm -f inbox/*)` in the machine-local allowlist, the live log at `docs/record/`, no `docs/specs/session-log.md`.
+- **EIGHT OF EIGHT STAGED FILES VERIFIED BY HASH AND SIZE BEFORE PLACEMENT, AND THE SEVEN PLACED FILES RE-VERIFIED FROM DISK AFTER.** `CHECKSUMS.txt` again carries a size column, so the check was a per-file loop, not `sha256sum -c`. Every staged file is LF with 0 CR.
+- **EVERY §1 FACT RE-CHECKED AT THIS HEAD, NOT CARRIED — AND TWO DETAILS DID NOT HOLD.** `#155` is the top design ordinal by a heading-anchored grep, and `(#156)` 0. `FOS-2`, `CAP-2a` and `FXD-` are at **0 tracked files** by `git grep` — repo-wide, where the packet had checked only its staged set. The migration `db/migrations/2026-09-10-firm-obligations.sql` is NOT run on the word of the 2026-09-12 CODE entry (*written and not run*) — at HEAD the newest entry above `#155`, and now directly below `#156` — so the fix slice's second gate holds and the build slice was edited. The three edit-row files were present, LF, 0 CR. **All seven exact-match anchors matched exactly once** — every text extracted from the manifest's fenced blocks and inline spans by program, never retyped — and the build slice's last line was its closing italic line and the module spec's its §15 anchor, as §4.1(c) and §4.2 require. **Two §1 details did not hold, and nothing depended on either:** the manifest's *"Batch 96 (`357ca8e`)"* names the spec-feedback commit beneath batch 96; batch 96 itself is `cab3b1c` (`git log`); and its *"`(#155)` 3 hits"* is a whole-file count — anchored to headings, `(#155)` hits once.
+- **THE PACKET'S ACTS, ALL EXECUTED, EACH CHECKED BEFORE THE WRITE AND FROM DISK AFTER.** THREE `RULING` files placed — `docs/specs/firm-obligations-hands-on-rulings-2026-09-12.md` (17,965 B), `docs/specs/firm-obligations-fix-slice.md` (38,298 B), `docs/prompts/PROMPT-firm-obligations-fix-slice-build-session.md` (13,700 B) — and FOUR `EVIDENCE` files in the new `docs/record/firm-obligations-hands-on-2026-09-12/`: the ledger (17,705 B), the walkthrough capture (25,285 B), the audit record (8,066 B), and v33 as delivered (91,633 B). **`CAP-2` held:** every file-placing row carried its CLASS, the edit rows carried `—` (now by `CAP-2a`), and there was no `RETIRE` row. The build slice took §4.1's two replacements and its §12 append (52,382 → 55,206 B); the module spec its §16 append (80,634 → 82,167 B); the `FOS-1` kickoff prompt §4.3's two replacements (15,770 → 16,275 B). The fix-slice kickoff prompt was placed by bytes and verified by hash, and not otherwise opened (§6).
+- **THE THREE `CAP-3` ACTS.** (i) ROWS — `FO-6` flipped ⬜ → 🟡 with its RULED IN SHAPE sentence appended; `HS-4`, `Q-API-14` and `Q-API-3` annotated add-only, each confirmed a single physical line before the append; the FIRM OBLIGATIONS heading annotated; ONE 🟡 row BORN for per-paragraph regenerate (a label, no durable ID — FINDING 1); `FOS-2` BORN ✅ at the end of the closed register's FOS section. (ii) The `#156` sentence written into the Status paragraph with the run date, and the superseded `#155` sentence — extracted by a balanced-parenthesis match, 1,289 B — APPENDED verbatim at the end of RECONCILE HISTORY. (iii) MOVES: none, because no row flipped ✅. **One act beyond the packet, on Michael's in-session authorization (FINDING 7):** `HS-6` annotated add-only. **The closed register took exactly two insertions** (a line-opcode check returned inserts only). No `CAP-OPEN-2` flag arose.
+- **COUNTS, RECOMPUTED FROM BOTH FILES BY THE HOUSE METHOD** (leading marker by alternation, `^\s*- (⬜|✅|🟡)`): `docs/specs/attorney-review-queue.md` (SYNCED, **447,482 B**) holds **374 ⬜ and 9 🟡**, plus the **11 ✅ parents held under `CAP-OPEN-2`**; `docs/record/attorney-review-queue-closed.md` (**293,314 B**) holds **164 ✅**. Open 375 → 374; amber 7 → 9; closed 163 → 164, conserved as 163 + 0 moved + 1 born; total ✅ 175. **All four of the packet's predicted counts matched, and none was copied.**
+- **FINDING 1 — THE PACKET PLACED A ROW UNDER A HEADING THAT DOES NOT EXIST AS DESCRIBED, AND MICHAEL PICKED ITS HOME.** §4.4 put the born 🟡 row *"under the FORM ENGINE heading that carries the `R`-series / `HS-` rows"*. At HEAD no heading fits both halves: *Form engine (FE series) — ADDED 2026-08-07* carries FE rows, `FE-SEED-1` and `HD-23` but no R or HS row; **no R-series row exists in either register file**; and `HS-4` and `HS-6` sit under *CC-1 hands-on sitting (HS series)*. §6 bars approximating, so the question went to Michael with three options; his pick, *"Form engine section (Recommended)"*, placed the row directly after `HD-23`.
+- **FINDING 2 — THE HEAD FILE'S CEILING BOUND, AND HARD.** The `TC-2` rule selected **10 entries** reaching back to design **`#153`**; over 200,000 B assembled whole, so **5 whole entries left §1** — the 2026-09-09 runner line, `#154`, the 2026-09-09 CODE entry, the 2026-09-08 runner line and `#153` — and it now carries **5 entries whose oldest design entry is `#155`** (its oldest entry of any kind is `#155` itself) — **two design entries verbatim where the rule wants four.** §2 still lists every entry, and each dropped entry is whole in the live log. The weight is three entries: the 2026-09-12 CODE entry (53,975 B, a 15,658 B `CAP-4` ledger inside it, measured from its DISPLACED heading to the entry's end), batch 96's runner line (31,176 B), and this line, whose own `CAP-4` ledger below is 23,192 B on the same basis. **That is `CAP-OPEN-4`'s question with a measured cost: displacement ledgers carried inside log entries now push design rulings out of the only session-log file the design side reads.** The ruling is Michael's.
+- **FINDING 3 — BUILD-STATE'S "AT THIS REFRESH" CLAIMS BELONGED TO A CODE REFRESH, AND A DOCS-ONLY REFRESH CANNOT RE-ASSERT THEM.** The 2026-09-12 CODE refresh read `src/` and `db/` and said so in its header and in seven places — the counts note, the amendment's five, the migrations re-count, the second tranche's existence test, the safety half, the `review_log` read and `FO-7`'s facts. This batch read neither tree, so each is re-attributed to the `e046906` CODE refresh and marked carried, the `QR-6(a)` shape batch 96 used. **One such phrase predates that refresh:** the Data-layer parenthetical *"Re-derived here every refresh"* stood unmarked through batch 96's docs-only refresh; it now reads *"Re-derived at every CODE refresh, carried here"*. What this refresh re-derived for BUILD-STATE, from `docs/` and by existence test: the registry backlog 47 / 35 / 12 on the two named files (30 of 40 and 5 of 7 `**Status:** VERIFIED` lines); the carrier-duties file's 22; the medical-billing drafts file's 5 `**Status:** DRAFT` lines of 5; seven REQ-CAPTUREs, the disclosures capture at 253,299 B / 1,147 non-blank; the runbook at 81 non-blank / 106 raw; the EVIDENCE directories at 21, 4 and the new 4; and the three declared HK-5 data paths ABSENT by existence test. FINDING 8's sweep then re-derived every other count BUILD-STATE states about what `docs/` holds now.
+- **FINDING 4 — THE UNINDEXED CODE ENTRY IS INDEXED, AND IT IS THE TOC'S TENTH TRAP AGAIN, AS ITS AUTHOR PREDICTED.** The 2026-09-12 CODE entry regenerated neither derived file by design. The census before this batch's regeneration found 187 dated entries against 186 index rows, the surplus exactly that entry; after it, 189 rows against 189 entries, matched position by position on ID and date, 0 mismatches.
+- **FINDING 5 — `Claude outputs/` HOLDS A COPY OF A FILE THIS BATCH FILED, AND THIS ONE IS BYTE-IDENTICAL.** `project-instructions-v33-2026-09-12.md` there matches the EVIDENCE copy filed today (91,633 B, sha256 `9600fc23…`). A before-and-after fingerprint of that folder's listing, the two 2026-08-24 files and the zip was taken to test that nothing was touched; the folder is Michael's to clear.
+- **FINDING 6 — THE PACKET'S STATUS SENTENCE, PLACED VERBATIM, SORTS `AS-Q17` AS CLOSED RATHER THAN AS A FIX.** It reads *"seven proposed → four CLOSED (`AS-Q14`–`AS-Q17`), two RULED as fixes (`D-8`, `D-18`)"*, while the fix slice builds `AS-Q17` as fix B3 and lists only `AS-Q14` (b), `AS-Q15` and `AS-Q16` as ruled with nothing to build (its §2.3). The sentence is packet text and stands as placed; BUILD-STATE states the fix slice's split. Correcting the register sentence is a design act.
+- **FINDING 7 — THE `HS-6` ROW STILL SENT ITS QUESTION TO A WALK THAT HAS RUN, AND MICHAEL AUTHORIZED THE NOTE.** Found by the pre-commit pass: `HS-6` ended *"is still his, at the post-`CCS-1` walk"*; the walk ran at `#156` without reaching `SD-12`; and §4.4 routed no act to the row — the same case as `HS-4`, which it did annotate. Put to Michael as a `QR-6(e)` act, his pick *"Add the HS-6 note (Recommended)"* appended the note shown to him, add-only, at the true end of the single-line row. The packet's own Status sentence for this batch, placed verbatim, does not list it.
+- **FINDING 8 — `OPEN-5(a)` HAD NOT BEEN MET, AND TEN COUNTS BUILD-STATE CARRIED WERE WRONG, WITH ONE HEADING.** The rule reads *"every count BUILD-STATE states is re-derived, not carried"*. The fourth pre-commit pass showed this file carrying counts no refresh had re-derived: the cascade map's eleven, four and six had stood unchanged since `d6f97e6` (2026-08-19). **A read-only sweep of all 149 lines followed:** four lanes, with each MISMATCH re-derived by an independent agent — fourteen agents in all, and a before-and-after fingerprint unchanged. **It found 388 counts. The 161 that describe what `docs/` holds now were each re-derived from their files: 151 matched, 10 did not, and all ten were confirmed.** The other 227 the sweep did not re-derive: 91 record past events, 112 come from `src/`, `db/`, `supabase/` or the live database and stay carried as marked, and 24 lie outside the repo (the HK-5 data paths among them, which this refresh existence-tested separately — FINDING 3). **The ten, corrected in place and ledgered below:**
+  - *"Five WF gates"* on T3 → four. The WF spec in three places — §2.4, §3, and its own `Q-WF-2` in §10 — and the queue's `Q-WF-2` row, which repeats §10, say five against gate tables that show four; correcting those is a design act.
+  - *"No entry with adopted-but-unverified wording remains"* → only 19a and 19b still carry it.
+  - CR-10's *"one of its four now clear"* → two (29 and 32).
+  - *"three wording expansions"* flagged → two (TRCP 194's span was resolved at `#108`).
+  - Privacy's *"one caller"* → two (`O-1`'s audit limb joined gate 10 at `#154`).
+  - §3's *"sixteen"* durable IDs, in two places → ten (six were minted at `FE-D1A-1`).
+  - The Tasks 14, 15 and 17 open tallies *9+3*, *11+4* and *3* → 7+3, 9+4 and 4.
+  - And, found by the fifth pre-commit pass rather than the sweep, the same wrong zero in the registry section's heading: *"the ruled-wording tail is EMPTY"* → *only 19a/19b's ruled wording is unverified*.
+  **None of the eleven was written by this batch; each stood at HEAD `5781420`.**
+- **HEALTH CHECK SKIPPED, AND THE SKIP RECORDED (`QR-6(f)`).** §5 is NONE and no `src/`, `db/`, `supabase/` or build-tooling path is routed, so `npm test` / `npm run build` / `npm run lint` would prove nothing about this batch. No file under those trees was read or written.
+- **NOTHING WAS BUILT, AND THE BARRIERS HELD.** `FOS-2` authorizes a build by a fresh Opus Code session that Michael fires. This runner wrote and ran no migration, minted no ID (per-paragraph regenerate stays a label), touched no registry entry, relocated no capture, appended nothing to `spec-feedback.md`, and verified no legal proposition. Every §6 DO-NOT was honoured. **No packet-added act arose. One runner-found act outside the routing table — the `HS-6` note — went to Michael under `QR-6(e)` and was made on his word; the other in-session question was a placement inside a routed row.**
+- **BUILD-STATE REWRITTEN IN FULL, BY PROGRAM — AND EVERY COUNT IT STATES ABOUT WHAT `docs/` HOLDS NOW RE-DERIVED BY FINDING 8'S SWEEP, NONE COPIED (`OPEN-5(a)`).** The rewrite is a set of exact-match edits on the HEAD blob, each anchor asserted to match once. A-4 comes from the log as this batch writes it (`#75`–`#156`, 82 on the inherited basis), and A-5 from the register's own header (`#156`). **`CAP-4` bound for a fourteenth consecutive refresh: 99,994 B → 99,961 B, 39 B under, 135/150 non-blank (149 raw); 63 passages removed (7,843 B — 18 displaced outright, 45 superseded in place), every one listed VERBATIM below, and five further edits only inserted text.** The published size was iterated to a fixed point against the file as written, and a word-level diff of the HEAD file against the new one found no removed word outside a ledgered passage. The banner's ceiling figures post-date FINDING 8's sweep; the regeneration that wrote them computed them.
+- **THE TOC'S FIFTIETH EDITION AND THE HEAD FILE, BOTH REGENERATED IN FULL OVER THE LOG AS THIS BATCH WRITES IT.** The TOC has three new rows (`runner 97`, `#156` and the 2026-09-12 CODE entry): 189 rows against 189 dated entries, design 92 (`#65`–`#156`, gapless) / runner 75 (23–97, gapless) / other 22; `TOC-4`'s firing count goes forty-two → forty-three. The census program was first run against batch 96's commit `cab3b1c` and reproduced that edition's published figures exactly (186 / 91 / 74 / 21, summaries 18–446 words, median 101). The head generator was validated the same way, rebuilding batch 96's head file byte-for-byte from its own parts, before it was run here.
+- **PRE-COMMIT ADVERSARIAL PASSES CAUGHT DEFECTS IN THIS BATCH'S OUTPUT AFTER THE RUNNER'S OWN CHECKS HAD PASSED.** **Pass one:** seven read-only lanes — packet fidelity, this line, BUILD-STATE, the TOC, the head file, the register, cross-file consistency — each told to REFUTE, with every HIGH or MEDIUM finding re-checked by a second, independent agent: eighteen agents, none died. **Confirmed and fixed:** × HIGH — FINDING 2 gave the CODE entry's `CAP-4` ledger as *23 KB*, and it measures 15,658 B (three lanes found it independently); × MEDIUM — a ledger pointer sent batch 96's register account to the synced Status paragraph, from which this batch had moved it; × MEDIUM — this line called every §1 fact re-verified while the manifest names batch 96's commit wrongly; × MEDIUM — BUILD-STATE stated the hard-items-only reminder as built, when it is `FOS-2`'s unbuilt amendment; × MEDIUM — BUILD-STATE put `AS-Q17` among the closed items and outside `FOS-2`'s fixes (FINDING 6); × MEDIUM — the `HS-6` row (FINDING 7). **Refuted by the reproducing agent:** × HIGH, raised by two lanes — that *"CHECKABLE FOR TRANSIT at HEAD"* is a `QR-5` prediction; both pairs meet `TC-8`'s two conditions at `5781420`. One further MEDIUM was re-rated LOW. **LOW, fixed:** NEXT ACTS put *paste v33* before *Sync*, against `#156`; the 30-day default, the per-obligation field and the six text acts' names were missing from BUILD-STATE; BUILD-STATE's header claimed every claim re-checked, and one `src/` claim still read *"CONFIRMED AT HEAD"*; this line placed the CODE entry *above* where `#156` lands; a ledger pointer named a clock the CODE entry does not carry; *"reaches back only to `#155`"* where §1 then ran down to batch 95's runner line; *A-4 from the log at HEAD* for the log as written; the TOC banner's unbounded *~739 B* row figure. **Pass two:** three read-only lanes over the text pass one's fixes changed — fix fidelity, the changed text, the derived files with cross-file consistency — with the same reproduction: six agents, none died. **Confirmed and fixed:** × MEDIUM — BUILD-STATE's narrowed header, *"every `docs/` claim below re-checked"*, was still not true: its ADP bullet carried a register line cite, `:793`, that has pointed at nothing relevant since the row it named moved on 2026-08-19 (its `spec-feedback.md` cite, `:591`, still resolved); the header was rewritten and both line numbers are gone under cite-stability. **Re-rated LOW by the reproducing agent, and fixed:** BUILD-STATE's shortened DT-1 sentence cited a clock incident this line had not recorded (now recorded in the first bullet; the same fix rewrote the ledger pointer for the sentence it compressed, dropping a reference that pass three restored and pass four re-pointed); and this bullet said *each* pass's fingerprint matched before pass two's had been compared. **LOW, fixed:** FINDING 2 measured its two ledgers to different end points (this line's now given on the CODE ledger's basis); the TOC row credited pass one's catches to both passes and counted one refuted claim as two; FINDING 7 did not say the placed Status sentence omits the `HS-6` note; a ledger reason still read *"re-derived at this HEAD"*; the manifest's *"`(#155)` 3 hits"* reproduces only as a whole-file count (now said); and the TOC banner's line wrap. **Pass three:** two read-only lanes — pass two's fixes with the text they changed, and a whole-output cross-check with a fresh read of this line — with the same reproduction: four agents, none died, and the cross-check lane found nothing. **Confirmed and fixed:** × HIGH — pass two's account above, and the ledger's reason for dropping the two line cites, had said *both* cites pointed at nothing relevant, when only the register's `:793` did, as pass two's own reproducing agent had said; × MEDIUM — FINDING 3 still closed with *"Everything BUILD-STATE states from `docs/` was re-derived"*, the blanket claim pass two had removed from BUILD-STATE's header. **LOW, fixed:** the header's *"the commit this file describes"*, for a file that describes the working tree built on it; the clock clause quoted its command without the format string it ran with; *"which is `cab3b1c`"* could attach to the wrong commit; and a ledger pointer had dropped DT-1's ~19:00 limb. **Pass four:** two read-only lanes — the pass-three patch, and the derived files byte for byte — with the same reproduction: three agents, none died, and the byte lane re-derived every figure it checked. **Confirmed and fixed:** × MEDIUM — BUILD-STATE's header still said every count over `docs/` was re-measured and that this refresh's re-checks were named in this line; neither held, since this line never named the medical-billing DRAFT recount and the cascade map's counts had never been re-derived. That finding is what set off FINDING 8's sweep. **LOW, fixed:** the ledger pointer for the compressed DT-1 sentence named v33's DT-1, which covers the design-side container and not the batch window (now pointed at the runner lines that record the window); the pass-two account above called that pointer's earlier rewrite a correction (now said as it happened); the pass-three account said FINDING 3 *opened* with the sentence that closed it; the clock clause described two reads no file keeps (now said to be in-session); FINDING 3's list, headed *from `docs/`*, included existence tests outside the repo; and the TOC row's account of pass three. **Each pass's no-breach claim was tested, not trusted:** for passes one to five and for FINDING 8's sweep, a sha256 fingerprint of the sixteen batch files, the two 2026-08-24 files, the zip, the unpacked packet, the `Claude outputs/` listing and `git status` was taken before the agents started and was identical after they finished. **Pass five:** two read-only lanes — the sweep's corrections with the patch text, and the derived files with cross-file figures — with the same reproduction: five agents, none died. The first lane re-derived all ten corrected counts and found them true; the second re-derived the head file, the TOC and BUILD-STATE's figures. **Confirmed and fixed:** × HIGH, rated MEDIUM by the second lane — FINDING 8 counted the WF spec's stale *five* as appearing twice, when it stands in three passages; × MEDIUM — the registry section's heading still called the ruled-wording tail *EMPTY*, the same wrong zero FINDING 8 had corrected in the bullet beneath it (now corrected, ledgered and added to FINDING 8, whose ledger reason no longer calls that zero *stale*: it was never true). **LOW, fixed:** BUILD-STATE's header credited the sweep with ceiling figures the later regeneration computed; the pass-four account above left out two of its fixes; FINDING 8's *not re-derived* read against FINDING 3's existence test; and the TOC row's pass-four clause omitted its LOW items. **Pass five was the last review pass, as batch 96's fourth was for that batch: its fixes were checked by program and by a read-only pre-commit gate, not by a sixth pass.**
+- **OPEN ITEMS, MERGED FROM THE PACKET'S §7 — MICHAEL'S, NOT CODE'S; no runner resolved any.** Paste v33 · fire the fix build (`FOS-2`: a fresh Opus Code session, `/usage` first, *"run docs/prompts/PROMPT-firm-obligations-fix-slice-build-session.md"*) · then the migration by his hand, after the fix build amends it (backup, STEP 0, pasted alone, ten checks) · then his real activations · `FO-6`'s firm-wide calendar page and per-paragraph regenerate, each a later slice with its own authorization (both 🟡; the latter's durable ID is his to mint) · `HS-4` / `SD-14`, held · the six PROVISIONAL `CCS-1` text acts (`R1`'s route line and tier-3 panel line, `R10`'s pronoun line, `R15`'s title strings, `SD-12`, `SD-11`) at a later hands-on sitting — **`R1`, `R10`, `R15` and `SD-11` have no register row; they ride BUILD-STATE's YOUR HAND (19) as §4.5 routes them, and none was minted (§6)** · `Q-API-14` and `Q-API-3`'s filing half, held again · `Q-API-18`, `Q-API-19` · `Q-STAT-7` · the empty "MDBP Firm" calendar, keep or delete · `Claude outputs\`, his to clear · a trigger-7 monthly instructions review, due by the end of September · the `#137` Voice2 pair's and the `#155` pair's TRANSIT, at a sitting with his Chrome · the two `H12-v` asks, the DECISION 9A acquisitions, the DECISION 8 drafting act, Wave 0 and go-live, as carried. **Raised by this batch, also his:** FINDING 2's cost, for `CAP-OPEN-4`; and the two untracked 2026-08-24 files, DO NOTHING, carried.
+
+### DISPLACED FROM BUILD-STATE (CAP-4)
+
+**63 passages, 7,843 B, removed from `docs/specs/BUILD-STATE.md` by this batch — 18 DISPLACED outright (nothing in their place), 45 SUPERSEDED in place (replaced by this batch's rewording, its re-derived figures, or an attribution to the `e046906` CODE refresh this docs-only batch could not re-read). NOT ONE IS AN EXISTENCE CLAIM LOST: where a passage named a file or a fact, the place it still stands is given. Each is quoted VERBATIM, extracted by program from the file at HEAD `5781420` as the minimal token span covering its edit's removals, edge whitespace trimmed; this runner line is the log's only copy of each (the head file carries a derived copy while this entry sits in its §1). 5 further edits only inserted text and are not listed.**
+
+1. *banner — the refresh header — SUPERSEDED: the CODE refresh's header, true of that refresh and not of this docs-only one. Survives at: the rewritten header; the 2026-09-12 CODE entry, which records that refresh.*
+
+   > e046906 (every claim below re-checked at this commit)  |  Branch: master  |  Generated: 2026-09-12 Central (one hundred forty-second refresh)  |  **A CODE REFRESH, WRITTEN BY THE FIRM-OBLIGATIONS BUILD SESSION (unnumbered, `TOC-6`): `src/`, `db/` and `docs/` were READ; the counts the note below names, and every figure marked re-measured at this refresh, were RE-DERIVED, not
+
+2. *banner — the `CAP-4` clause — SUPERSEDED: the CODE refresh's own ceiling figures, replaced by this refresh's. Survives at: the same clause, recomputed; the 2026-09-12 CODE entry's 56-passage ledger.*
+
+   > 975 B, stands at 99,994 B, 6 B under the 100,000-byte ceiling, 135/150 non-blank (149 raw). 56 PASSAGES REMOVED, 8,415 B — 8 DISPLACED outright, 48 SUPERSEDED in place — NOT ONE AN EXISTENCE CLAIM**; each rides this session's log entry
+
+3. *banner — the HIPAA add-on decision — DISPLACED: a `#154` decision detail, not a build fact. Survives at: `#154`'s entry and `docs/specs/api-integrations-ruling-sheet-2026-09-09.md`.*
+
+   > The HIPAA add-on / Team plan is NOT being bought (≈ $714/month before the add-on's unpublished price).
+
+4. *banner — the migration's hand-run protocol — SUPERSEDED: `#156` puts the fix build before the run and ten checks where there were seven. Survives at: the rewritten clause; YOUR HAND (15); `docs/specs/firm-obligations-fix-slice.md`.*
+
+   > ; his hand, after a backup, STEP 0 first, pasted alone, seven checks in words)
+
+5. *banner — the go-live sentence — DISPLACED: a duplicate. Survives at: THE LAUNCH PATH (GO-LIVE ITSELF REMAINS HIS ACT ON HIS DAY, in GL-1's own words).*
+
+   > **GO-LIVE ITSELF REMAINS HIS ACT ON HIS DAY.**
+
+6. *banner — the pending ruling, and the `FOM-8` result — SUPERSEDED: the ruling it awaited is made (`#156`, (A)); the `FOM-8` sentence leaves the banner. Survives at: the rewritten clause; Known stubs & fakes, whose Outlook bullet carries `FOM-8`'s full result and now its ratification.*
+
+   > one awaits his ruling. **`FOM-8` RAN AGAINST HIS REAL OUTLOOK (the demo-mode app, throwaway events, deleted): a 180-day reminder surfaced once its fire time was current, so no fallback was built.**
+
+7. *the counts note — its basis — SUPERSEDED: a CODE refresh's basis; these figures were not re-read by this docs-only batch. Survives at: the rewritten note; the 2026-09-12 CODE entry.*
+
+   > WERE RE-DERIVED, NOT CARRIED (`OPEN-5(a)`) — A CODE REFRESH, `src/`, `db/` AND `docs/` ALL READ
+
+8. *the counts note — the line-endings method sentence — DISPLACED: method narrative; the note keeps its own 'verified by a bytes read'. Survives at: the note's own *verified by a bytes read (0 CRLF)*; the ninth derivation trap in `docs/record/session-log-toc.md`.*
+
+   > Line endings re-checked by BINARY read, not `grep`/`file(1)` — neither is evidence about line endings; a bytes read is.
+
+9. *the counts note — the `CAP-4` streak — SUPERSEDED: the streak ordinal, advanced by this refresh. Survives at: the same sentence.*
+
+   > THIRTEEN
+
+10. *THE LAUNCH PATH — the instructions history inside floor item (5) — DISPLACED: stale: `v33` is now the newest edition, and the instructions state lives under For design side. Survives at: For design side → INSTRUCTIONS; `#150`'s and `#153`'s entries.*
+
+   > — v30 pasted and found in force by `#150`'s live read; **v31 has since superseded it (`#153`)** and NOTHING IN THE REPO VERIFIES EITHER
+
+11. *Phase 0 / T3 — the WF gates' T3 count — SUPERSEDED: a stale count: the WF gate tables route four gates through T3, not five. Survives at: the corrected sentence; the gate tables in `docs/specs/email-workflow-requirements.md` and `docs/specs/wf-2-wf-8-email-workflow-spec-2026-08-15.md`.*
+
+   > Five WF gates say "gated on T3"
+
+12. *Client dimension — the D-CL2-3 re-affirmation — DISPLACED: a duplicate. Survives at: THE FC BLOCK, FC-5 (fee basis STAYS PER CLIENT — D-CL2-3 stands).*
+
+   > **D-CL2-3: BILLING RATE IS PER CLIENT — RE-AFFIRMED 2026-08-18 (FC-5).**
+
+13. *Client dimension — the time tracker, parked — DISPLACED: a duplicate. Survives at: Known stubs & fakes, the time-tracker line (the tracker stays parked behind CE1).*
+
+   > The time tracker stays parked
+
+14. *Data layer — why steps are pinned to literals — DISPLACED: the history behind a rule the sentence keeps. Survives at: the kept sentence (**All migration steps are PINNED TO LITERALS.**); the log entry of the batch that fixed it.*
+
+   > — `migrateV10ToV11` had stamped `STORE_VERSION`, which at 12 would have SKIPPED v11→v12 and left SSNs in the blob
+
+15. *Data layer — a spec-feedback finding answered — DISPLACED: spent narrative of a closed finding. Survives at: `docs/spec-feedback.md` finding 1 itself.*
+
+   > ; `spec-feedback.md` finding 1 ANSWERED.
+
+16. *Data layer — where the amendment's five were re-verified — SUPERSEDED: not re-read by this docs-only batch. Survives at: the same sentence, attributed to the `e046906` CODE refresh.*
+
+   > this
+
+17. *Data layer — the parenthetical's re-derivation claim — SUPERSEDED: a docs-only runner refresh re-derives nothing under `db/` — and batch 96 carried this phrase unchanged on a docs-only batch. Survives at: the same parenthetical.*
+
+   > here
+
+18. *Data layer — the live 37 characterization — DISPLACED: a characterization the next sentence restates. Survives at: the next sentence ("not a census").*
+
+   > **The live 37 is now BETTER THAN INFERRED ON ITS FLOOR, and still not a census.**
+
+19. *GRANTs bullet — the migration re-count's basis — SUPERSEDED: not re-counted by this docs-only batch. Survives at: the same sentence, attributed to the `e046906` CODE refresh.*
+
+   > this
+
+20. *RLS/ADP bullet — two carried line cites — SUPERSEDED: line cites into files edited in place (cite-stability): the register cite `:793` has pointed at nothing relevant since its row moved on 2026-08-19, and the `spec-feedback.md` cite `:591` still resolved and went under the same rule. Survives at: the same sentence without the line numbers; the 2026-08-19 entry that made the repair.*
+
+   > :591 and `docs/specs/attorney-review-queue.md`:793
+
+21. *Known stubs — the roster.ts defect confirmation — SUPERSEDED: a docs-only refresh cannot confirm a `src/` fact at this HEAD. Survives at: the same sentence, attributed to `#86` and marked carried.*
+
+   > #86,
+
+22. *FORM ENGINE — the fired kickoff — DISPLACED: spent narrative; both tranches are recorded built in the next sentence. Survives at: the next sentence (BOTH TRANCHES ARE BUILT).*
+
+   > THE KICKOFF PROMPT HAS FIRED.
+
+23. *FORM ENGINE — the second tranche's existence test — SUPERSEDED: not re-run by this docs-only batch. Survives at: the same sentence, attributed to the `e046906` CODE refresh.*
+
+   > this
+
+24. *FORM ENGINE — the safety half — SUPERSEDED: not re-verified by this docs-only batch. Survives at: the same sentence, attributed to the `e046906` CODE refresh.*
+
+   > THIS
+
+25. *Known stubs — the `review_log` read — SUPERSEDED: not re-read by this docs-only batch. Survives at: the same sentence, attributed to the `e046906` CODE refresh.*
+
+   > this
+
+26. *The registry — its section heading — SUPERSEDED: the same wrong zero C02 corrects: 19a and 19b's ruled wording (`RL-1`) is adopted and UNVERIFIED. Survives at: the corrected heading; entries 19a and 19b in `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md`.*
+
+   > the ruled-wording tail is EMPTY
+
+27. *The registry — batch 96's streak-ordinal note — DISPLACED: batch 96's narrative of its own correction. Survives at: batch 96's runner line, FINDING 3(b).*
+
+   > (its streak ordinal is dropped: it read FOURTH through three refreshes while batch 95's runner line said fifth)
+
+28. *The registry — adopted-but-unverified wording — SUPERSEDED: a wrong zero: 19a and 19b, the pair the same bullet names, carry adopted wording and UNVERIFIED status. Survives at: the corrected sentence; entries 19a and 19b in `docs/specs/legal-rule-registry-discovery-enforcement-and-pleading.md`.*
+
+   > No entry with adopted-but-unverified wording remains anywhere in the registry
+
+29. *The registry — the CR-10 gate count — SUPERSEDED: a stale count: 29 and 32 are both VERIFIED, so two of the four are clear. Survives at: the corrected sentence; the Status lines of entries 29 and 32 in `docs/specs/legal-rule-registry-criminal-plea-and-costs.md`.*
+
+   > ONE
+
+30. *The registry — the V-4 notes act's count — SUPERSEDED: compressed: the act's verification detail. Survives at: the AUD-3 bullet's re-derived 22 `VERIFIED` lines; the entry recording `RL-5`.*
+
+   > and no Status line in that ALL-VERIFIED file was touched, and its 22 `VERIFIED` lines were counted before and after and are identical
+
+31. *The registry — the carrier-duties file's open wording flags — SUPERSEDED: a stale count: TRCP 194's span flag was resolved at `#108`, leaving two flagged. Survives at: the corrected sentence; `docs/specs/legal-rule-registry-discovery-and-carrier-duties.md` (its 193.3 and 192.3(f) notes, and the header's resolution of the 194 span).*
+
+   > three wording expansions there are FLAGGED, NOT ADOPTED** (TRCP 194's span,
+
+32. *The registry — privacy's callers — SUPERSEDED: a stale count: the `Q-WF-6` row's `#154` annotation names `O-1`'s audit limb as a second caller. Survives at: the corrected sentence; the `Q-WF-6` and `G10-4` rows of `docs/specs/attorney-review-queue.md`.*
+
+   > one caller: gate 10 (`G10-4`, #115) —
+
+33. *Design-input memos — the TOC bullet's figures — SUPERSEDED: batch 96's edition and the CODE refresh's unindexed-entry count, both advanced by this batch's regeneration. Survives at: the same sentence, re-derived; the Coverage section of `docs/record/session-log-toc.md`.*
+
+   > 186 rows, `#65`–`#155` GAPLESS**, regenerated over the log as batch 96 wrote it (`TOC-4`'s forty-ninth edition); **at this refresh's working tree the log holds 187 dated entries (186 at `e046906`), and the firm-obligations build's CODE entry is UNINDEXED BY DESIGN until the next batch's `TOC-4`.** *(The log's LAST `## ` line is the `## ARCHIVED:` pointer heading, not an entry and never a row — a bare `grep -c '^## '` returns 188 against 187
+
+34. *FIRM OBLIGATIONS bullet — its head — SUPERSEDED: `#156` ruled the collision named as awaiting his ruling, ruled every default, and confirmed the text acts it called all provisional (some act strings stay provisional, slice §12). Survives at: the rewritten head; `docs/specs/firm-obligations-hands-on-rulings-2026-09-12.md`; slice §12; the 2026-09-12 CODE entry.*
+
+   > Its thirty-three `FOD-` defaults, its text acts (all PROVISIONAL) and the review's fixed defects are in the 2026-09-12 CODE entry; **the slice's collisions — ONE NEEDING HIS RULING, §8 against `FOD-4` on what may unlight a lit occurrence — are in `docs/spec-feedback.md`'s 2026-09-12 section.**
+
+35. *FIRM OBLIGATIONS bullet — the template status list — DISPLACED: detail the spec carries. Survives at: `docs/specs/firm-obligations-module-spec.md` §7.*
+
+   > — UNVERIFIED / TIER B / NOT HELD / NOT READ / HIS FACT / PRACTICE / EVENT-DRIVEN / DO NOT SEED —
+
+36. *FIRM OBLIGATIONS bullet — `FO-7`'s facts and DECISION 0 — SUPERSEDED: compressed; the facts are carried from the `e046906` CODE refresh, not re-read by this batch. Survives at: the rewritten sentence; the QBO memo bullet (#87) for the research memo; `docs/specs/firm-obligations-rulings-2026-09-10.md` for DECISION 0.*
+
+   > 's two facts, re-read at this CODE refresh: no QuickBooks code or table; the research memo exists, PROPOSED — RESEARCH ONLY**; so `FO-3`'s conditional limb is ruled NOT to fire (DECISION 5: thin, no hook) — **`FO-7` CLOSED; `FO-5` CLOSED on DECISION 4 (owner scope now).** *"Firm obligation"* is the word (DECISION 0).
+
+37. *FIRM OBLIGATIONS bullet — the §11 five as accepted-gated — SUPERSEDED: the sitting they were accepted as has RUN. Survives at: this bullet's head ("spec §11's five DONE").*
+
+   > **The spec §11 five are ACCEPTED as THE FIRM-OBLIGATIONS HANDS-ON SITTING, gated on the build, now met.**
+
+38. *CAPACITY — the reading — SUPERSEDED: `#155`'s reading, replaced by `#156`'s. Survives at: `#155`'s entry.*
+
+   > 155` read the meter at **1,628,404 / 2,000,000 = 81.4%**, thirteen
+
+39. *CAPACITY — the log census — SUPERSEDED: the CODE refresh's working-tree census, re-derived over the log as this batch writes it. Survives at: the same sentence, re-derived.*
+
+   > 187 dated entries (the newest an unindexed CODE entry), 91 design `#nn`, high-water `#155
+
+40. *CAPACITY — transit eligibility — SUPERSEDED: `#156` names both pairs checkable once this batch is at HEAD. Survives at: `#155`'s and `#156`'s entries.*
+
+   > became TRANSIT-ELIGIBLE once batch 96 landed** (its definitions carried into `docs/record/`, its `FO-`/`BR-3` rows minted) — **to be VERIFIED by a full-text read at a later sitting with his Chrome; nothing moved.** The `#155
+
+41. *For design side — INSTRUCTIONS — SUPERSEDED: `v33` delivered at `#156`; `v32` confirmed in force by `#156`'s live read. Survives at: the rewritten line; `v31`'s copy in `docs/record/transit-2026-09-08/`, named under CAPACITY; `v32`'s in the sitting's four under FIRM OBLIGATIONS.*
+
+   > v32` DELIVERED 2026-09-10 (`#155`) AS THE TRIGGER-3 EDITION, filed as EVIDENCE at `docs/record/firm-obligations-sitting-2026-09-10/project-instructions-v32-as-delivered-2026-09-10.md` — PASTED OR NOT IS MICHAEL'S WORD; THE REPO CANNOT VERIFY THE INSTRUCTIONS FIELD AND DOES NOT.** **`v31` remains the last version confirmed in force by a live read** (`#155`'s); its as-delivered copy is `docs/record/transit-2026-09-08/project-instructions-v31-as-delivered-2026-09-08.md`.
+
+42. *For design side — the in-force reminder — DISPLACED: a duplicate of three bullets that state each rule. Survives at: RUNNER DISCIPLINE and the PF-1 bullet; SOURCING (FC-14); the DT-1 line.*
+
+   > `PF-1`, FC-14's fourth channel and DT-1 remain in force.
+
+43. *For design side — DT-1 — SUPERSEDED: `#155`'s stamp and the CODE refresh's clock, replaced by `#156`'s and this refresh's. Survives at: `#155`'s entry for its stamp; the CODE refresh's date in the 2026-09-12 CODE entry's heading, its 00:35 clock only in this quote.*
+
+   > 155` is stamped 2026-09-10, the Central date of its work (opened 21:34, rulings closed 23:05 CDT); this refresh carries 2026-09-12, read from the wall clock at 00:35
+
+44. *For design side — the DT-1 class sentence — SUPERSEDED: compressed, with this batch's own clock incident as its exhibit. Survives at: the compressed sentence, which keeps the rule; the ~19:00-to-midnight batch window, recorded in the live log's runner lines of 2026-08-19 and 2026-08-20 (the sixty-fifth, sixty-seventh, sixty-eighth, sixty-ninth and seventy-fifth invocations; v33's DT-1 covers only the design-side container's 19:00 rollover); this quote is the only surviving copy of the *local, therefore safe* limb.*
+
+   > rule is unchanged and is the class, not the date: every batch run between ~19:00 Central and midnight reads a UTC date one day ahead, any execution point DT-1 gains must read the wall clock rather than a shell, and “the Code session is local, therefore safe” stays false
+
+45. *SOURCING — `#106`'s acquisition narrative — DISPLACED: spent narrative of an acquisition and a closure recorded at the time. Survives at: `#106`'s entry; `Q-RE-9`'s closure in `docs/record/attorney-review-queue-closed.md`.*
+
+   > Michael acquired six by hand mid-session. **`Q-RE-9` — the convention's first proven gap — CLOSES with it.**
+
+46. *REQ-CAPTURES — the count's method note — DISPLACED: a counting note from the refresh that first met the amendment slice. Survives at: the count itself, unmoved at seven.*
+
+   > (the amendment slice is a BUILD SLICE, not a capture, and does not join this count)
+
+47. *YOUR HAND — (1) the post-`CCS-1` walk — SUPERSEDED: DONE at `#156`. Survives at: YOUR HAND's DONE sentence; the Forms row; `#156`.*
+
+   > (1) **THE POST-`CCS-1` WALK** — the seven proposed hands-on items, the eleven `SD-` text acts, the nineteen `SD-` defaults with `SD-3`'s scope veto, the confirm-or-edit marks, `spec-feedback.md` items 8–11, and the `CAP-2` exemption wording;
+
+48. *YOUR HAND — (10) paste v32 — SUPERSEDED: `#156`'s live read found `v32` in force. Survives at: YOUR HAND's DONE sentence; INSTRUCTIONS.*
+
+   > (10) **paste v32**;
+
+49. *YOUR HAND — (15) and (16) — SUPERSEDED: (16) DONE at `#156`; (15)'s order and check count changed by `FOS-2`. Survives at: the rewritten (15); the DONE sentence; `#156`.*
+
+   > after a backup, STEP 0 first, pasted alone, seven checks in words; (16) **THE FIRM-OBLIGATIONS HANDS-ON SITTING** — the text acts, the `FOD-` defaults, Outlook keep-vs-delete, the leads, `FO-6`, and **the §8-against-`FOD-4` ruling** — then his real activations. **(11) is DONE (the build), its number not reused
+
+50. *NEXT ACTS — the ordered list — SUPERSEDED: the walk and the sitting are DONE (`#156`); `#156`'s order. Survives at: the rewritten list; `#156`'s Next line.*
+
+   > the FO build), THE WAVE 0 ACTS RUNNING IN PARALLEL AS HIS TIME ALLOWS:** (1) **THE POST-`CCS-1` WALK**, called at `#150`; (2) **the two `H12-v` asks**, in parallel; (3) **THE FIRM-OBLIGATIONS HANDS-ON SITTING → the migration by his hand → his real activations** — the ruling sitting (`#155`) and the build (2026-09-11) are DONE; (4) **the DECISION 8 drafting act**; (5) **the split-store slice, AFTER the walk** (`Q-API-20`); (6
+
+51. *NEXT ACTS — the CC-1 sitting narrative — SUPERSEDED: the `#148` sitting's narrative, and a count `#156` moved. Survives at: `docs/specs/cc1-hands-on-sitting-rulings-2026-09-05.md`, cited later in the same bullet; `#148`.*
+
+   > SITTING — HELD 2026-09-05 (`#148`) WITH THE RUNNING PRODUCT IN FRONT OF HIM; SIXTEEN RULINGS, AND NINE OF THE TWENTY-ONE ACCEPTED ITEMS CLOSED.** **TWELVE ACCEPTED REMAIN, ALL NAMED, ELEVEN
+
+52. *NEXT ACTS — the eleven's ripeness citation — DISPLACED: a citation for a gating the sentence already states. Survives at: the same sentence (GATED ON AN UNBUILT MODULE).*
+
+   > (behind unbuilt modules per the 2026-08-24 audit's ripeness note)
+
+53. *NEXT ACTS — `FO-6`, the seven proposed, the five, the two held — SUPERSEDED: `#156` disposed the seven, ruled `FO-6` in shape, and ran the sitting the five were gated on. Survives at: the rewritten sentences; `docs/specs/firm-obligations-hands-on-rulings-2026-09-12.md`.*
+
+   > its gate, the build in demo mode, is met; its content is the sitting's item 4). SEVEN PROPOSED REMAIN, untouched: D-18, D-8, per-paragraph regenerate, `AS-Q14`, `AS-Q15`, `AS-Q16`, `AS-Q17`.** **FIVE MORE ACCEPTED-GATED, ADDED 2026-09-10 (`#155`): the FO spec §11 items, gated on the FO build in demo mode, NOW BUILT — THE FIRM-OBLIGATIONS HANDS-ON SITTING; its item 4 is `FO-6`'s, already among the twelve.** **AND TWO HELD ITEMS ARE
+
+54. *NEXT ACTS — §3's durable IDs still unanswered — SUPERSEDED: a stale count: six of the sixteen were minted at `FE-D1A-1` (2026-09-02); ten stay proposed. Survives at: the corrected entry; `FE-D1A-1` in `docs/record/attorney-review-queue-closed.md`.*
+
+   > sixteen
+
+55. *NEXT ACTS — the Tasks 14, 15 and 17 open tallies — SUPERSEDED: stale tallies: Task 14 has 7 questions and 3 looks open, Task 15 has 9 and 4, Task 17 has 4. Survives at: the corrected tallies; those tasks' rows in `docs/specs/attorney-review-queue.md` and `docs/record/attorney-review-queue-closed.md`.*
+
+   > 9+3, 11+4, 7 (`Q-T3P-1`), 3
+
+56. *H-STRING — the newest-series note — DISPLACED: stale: newer series (FO, FOS, FXD) have been minted since. Survives at: the naming-caveat sentence before it.*
+
+   > **`FC`, `D-SMTP` and `GL1` are the newest series and only `GL1` needed a flag**
+
+57. *For design side — the cr3 map's corrected lines — DISPLACED: a duplicate. Survives at: the IN-2 bullet under Design-input memos (TWO LINES OF `cr3-field-code-map.md` ARE CORRECTED IN THE SPEC AND THE FILE WAS NOT EDITED).*
+
+   > **Two of its lines are corrected by the #84 spec and the file was NOT edited**
+
+58. *VERIFICATION STATUS — the unreviewed range — SUPERSEDED: `#156` filed; the range re-derived over the log as this batch writes it. Survives at: the same sentence, re-derived.*
+
+   > 155 — **81 entries on the inherited basis, re-derived at this HEAD (A-4)**, `#155` filed here — the runner lines interleaved through the ninety-sixth
+
+59. *VERIFICATION STATUS — the two bases — SUPERSEDED: the bases re-derived with `#156`. Survives at: the same sentence, re-derived.*
+
+   > 155 = 81; STRICT positive-clearance basis #65–#155 less #67 = 90
+
+60. *The register — batch 96's acts — SUPERSEDED: batch 96's account, replaced by batch 97's acts. Survives at: batch 96's runner line; the superseded `#155` sentence at the end of RECONCILE HISTORY in `docs/record/attorney-review-queue-closed.md`.*
+
+   > 155`.** **BATCH 96 FLIPPED THIRTEEN ⬜ → ✅ AND MOVED THEM (the twelve `Q-FO-` rows and `Q-API-20`), BORE TWO ⬜ (`FO-6`, `BR-3`) AND SEVEN ✅ (`FO-1`–`FO-5`, `FO-7`, `FOS-1`), ANNOTATED `Q-STAT-5` add-only AND AMENDED the FIRM OBLIGATIONS heading.** ⬜ 386 → 375
+
+61. *The register — the synced file's size and counts — SUPERSEDED: re-measured after batch 97. Survives at: the same sentence, re-measured.*
+
+   > 446,315 B**) holds **375 `⬜`, 7
+
+62. *The register — the closed file's size, counts and conservation — SUPERSEDED: re-measured after batch 97. Survives at: the same sentence, re-measured.*
+
+   > 291,131 B**) holds **163 `✅`** — **total ✅ 174 with the eleven held parents; the closed file CONSERVED: 143 + 13 moved + 7 born = 163.** So **375 open, 382 open-in-substance** with the seven `🟡`. **Batch 96 appended the superseded `#154
+
+63. *The register bullet — §3's IDs still Michael's to mint — SUPERSEDED: a stale count: six of the sixteen were minted at `FE-D1A-1`. Survives at: the corrected sentence; `FE-D1A-1` in `docs/record/attorney-review-queue-closed.md`.*
+
+   > any
+
+## 2026-09-12 (#156) — (Typed design session, Cowork, Fable 5.1 per the environment; opened 08:02 CDT on the standing kickoff for the hands-on sitting, paused ~08:10–22:04 CDT, the last ruling — `FOS-2` — at 23:55 CDT; DT-1 stamps it 2026-09-12, the Central date of the sitting's work, its packaging crossing midnight on the `#153`/`#155` precedent; DEVICE BRIDGE GRANTED on the checkout but the bridge VM's shell could NOT mount it — twice, the 2026-09-10 failure — so every repo read was a staged read-only copy and the packet is delivered by `device_commit_files`: THE FIRM-OBLIGATIONS HANDS-ON SITTING AND THE POST-`CCS-1` WALK — the two walks every list at HEAD named next, taken in one sitting per CC-1(c), Michael running the app himself in his own Chrome in demo mode on the fixture and ruling from what he saw, one question per widget, every ruling in a running ledger in his words: THE §8-AGAINST-`FOD-4` COLLISION RULED "(A)" — no code change; the `/cases` card, the register, the four forms, the catalog and thirty-three `FOD-` defaults CONFIRMED as built; THE OUTLOOK REMINDER RULED AS HIS COMPOSITE (hard items only; 30 days by default; a per-obligation field) after his own words that most case deadlines "need to remind at most 30 days out"; Done keeps the event and kills its reminder; the staleness fallback NOT built; `FO-6` "later"; the leads stand; seven firm-obligations fixes and — from the post-`CCS-1` walk — six disclosures fixes gathered into `docs/specs/firm-obligations-fix-slice.md`, audited by two lanes, and AUTHORIZED WHOLE (`FOS-2`, verbatim "Yes"); the split address, the Medical/Forms surfaces, `SD-3` and `R8`'s strings CONFIRMED; six `CCS-1` text acts and `SD-14` left PROVISIONAL by name because he did not reach them; `D-18` "no episode sentence", `D-8` "don't add the sentence", `AS-Q14` (b), `AS-Q15`/`AS-Q16` as default, `AS-Q17` "pause still fires, then designate", THIRD TRANCHE items 8/10/11 fixed by ruling, per-paragraph regenerate "later"; `CAP-2a` ruled (TRIGGER 3 — v33 delivered); nothing built, no migration run, no tracked file written, no Outlook event created, no ID minted beyond the fix slice's `FXD-` defaults, no legal characterization)
+
+**Verified from staged copies before anything was said** (every check names its source): HEAD `5781420` on `master` = the local `origin/master` tracking ref (`.git/refs/heads/master` = `.git/refs/remotes/origin/master`) — **a local read, not a QR-3 pass; no live `ls-remote` was possible this sitting**; the live log's top entry the firm-obligations build's unnumbered CODE entry (`## 2026-09-12 — CODE SESSION (Opus 5, fresh, fired from …`; 53,975 B with its `CAP-4` tail), read whole, UNINDEXED in the head file by design; `docs/spec-feedback.md`'s `## 2026-09-12` section read whole (parts A–C); BUILD-STATE at `e046906` (99,994 B per its banner) read whole; the head file (batch-96 edition — nine §1 entries each confirmed present in the live log by heading; 186 §2 rows) read at its banner and §1 headings, the live log being the authority; `(#156)` 0 hits, `(#155)` 3 hits in the staged log; `FOS-2`, `CAP-2a`, `FXD-` 0 hits over the fifteen staged repo files (not repo-wide — the runner re-checks); instructions **v32 in force by a live read of the field** at 08:02 CDT; knowledge meter **1,690,163 / 2,000,000 = 84.5%** at open, fifteen docs (`Q-CAP-5(a)` did not fire); `package.json` at HEAD: `dev:demo` = `vite --mode demo --port 5175` — so the demo URL given was `http://localhost:5175`, not README's 5173 (an operational note in v33). **CC-1 hands-on queue stated at the top** (rule 6): THE FIRM-OBLIGATIONS HANDS-ON SITTING (the five spec §11 items + `FO-6` + everything the build handed back); THE POST-`CCS-1` WALK; the eleven accepted items gated on unbuilt modules, named; the two CC-1(b) holds from `#154`. **Two preconditions by widget:** the migration — *"Not run"*; the demo app — *"Up — Demo mode, Obligations in the nav"*.
+
+- **PART ONE — THE FIRM-OBLIGATIONS HANDS-ON SITTING, ten items, every pick his (the rulings record `docs/specs/firm-obligations-hands-on-rulings-2026-09-12.md` §1 carries the option text under each):** (1) §8 against `FOD-4` — first *"I need to to explain this a bit more to me"*, then, on the bar-dues example, ***"(A) Yes — settings are editable any time"*** — NO code change; the build slice's §8 and §7 item 21 amended by this packet · (2) the card ***"Confirm as built"*** — part C items 2, 9, 10 accepted; `FOD-14`/`FOD-26` reworded in spec §16 · (3) the register ***"Confirm as built"*** ("Needs attention" unseen, PROVISIONAL) · (4a) activation + edit ***"Confirm both, override label stays "due date""*** · (4b) close, re-activation, double activation ***"Confirm all three as built"*** · (5) the catalog ***"Confirm as built"*** (no weekend default put — DECISION 8's act) · (6b) the reminder — outside the set: *"Let's talk this one through some more to tailor it. I do not want all of the events to carry a reminder."*, then his own words ***"Most deadlines in a case need to remind at most 30 days out, except for important deadlines that we need more time to think about, like expert designation deadlines."*** (about CASE deadlines — carried as a DIRECTION for the `FC-7` deadline engine), then the composite for this module ***"That looks correct."*** — hard items only; 30 days before target by default, or the lead if shorter; a per-obligation "Outlook reminder days" field; DECISION 7's reminder limb amended, `FOD-29` re-based · (6a) Done → event ***"Keep it, retitled, but kill the reminder"*** (`FOD-22` amended) · (6c) staleness ***"Register and card are enough"*** — no fallback · (6d) the empty "MDBP Firm" calendar: his hand, information only · (7) `FO-6` ***"Firm-wide calendar page, later"*** → 🟡; the leads — *"Explain this a bit more for me."*, then ***"Stand as shipped"*** · (8) the eleven list-only defaults ***"All eleven stand"*** — all thirty-three `FOD-` RULED · (9) part B item 1 ***"Add the column (Recommended)"***; part B item 2 ***"Tighten it (Recommended)"***; part C item 6 ***"Build the RPC functions now"***; part C item 7 ***"Retry on next sync (Recommended)"***; part C items 8/14 ***"One act, one line (Recommended)"***; part C item 15 ***"Not needed once RPC lands (Recommended)"***; items 3 and 12 not put, left as built · (10) part C item 16 — no ruling; the `FOS-1` kickoff prompt's two "no delete" lines corrected to §8's words by this packet. Fix routing: ***"Draft the fix slice tonight; put FOS-2 to me (Recommended)"***; scope: ***"One slice, two groups (Recommended)"***.
+- **PART TWO — THE POST-`CCS-1` WALK (called at `#150`):** the split address ***"Confirm as built"*** (`SD-5`, `SD-6`) · the Medical tab and the instrument ***"Confirm all as built"*** (`SD-1`, `SD-16`, `SD-17`, `SD-18` CONFIRMED as strings; `SD-2`, `SD-4`, `SD-7`–`SD-10`, `SD-13`, `SD-19` ruled as built) · `SD-3` ***"Instrument-wide stands"***; `R8`'s strings ***"Confirm as built"*** (THIRD TRANCHE item 9 not widened) · the remaining text acts — *"Confirm all but ones I haven't reached"*, reached: **none** — `R1`'s route line and tier-3 panel line, `R10`'s pronoun line, `R15`'s title strings, `SD-12`, `SD-11` STAY PROVISIONAL by name; `SD-14`/`HS-4` ***"Didn't reach it — hold"*** · the seven proposed: `D-18` *"Change the form"* → ***"No episode sentence at all"***; `D-8` ***"Don't add the sentence"***; per-paragraph regenerate ***"Yes, later slice"*** (🟡, no durable ID); `AS-Q14` ***"(b) Re-designate the facility whole"***; `AS-Q15` ***"Stand as default"***; `AS-Q16` ***"Stand as default"***; `AS-Q17` *"Designate under the treating paragraph"* → on the pause limb ***"Pause still fires, then designate"*** · THIRD TRANCHE item 8 ***"Fix — print it once"***; item 10 ***"Have Code tokenize the master"***; item 11 ***"The Providers section's list (case_providers)"*** · **`CAP-2a` — *"Edit rows carry — (Recommended)"*: the class is a BIRTH rule for new files; an edit-in-place row inherits the edited file's class and carries `—` — TRIGGER 3 FIRES; v33 delivered.** As of `#150` the live database's two parties were the test record's and neither needed a split; he stayed in demo mode throughout.
+- **`FOS-2` — THE FIX SLICE, DRAFTED AFTER EVERY RULING AND AUTHORIZED WHOLE.** `docs/specs/firm-obligations-fix-slice.md` (RULING; two groups — A: the seven firm-obligations fixes, the UNRUN migration AMENDED IN PLACE with four columns, one replaced CHECK and nine per-act Postgres functions, store v18; B: the six disclosures fixes incl. the master `.docx` tokenized at exactly two heading spots; eleven `FXD-` defaults) and `docs/prompts/PROMPT-firm-obligations-fix-slice-build-session.md` (RULING; a pointer that fires on this entry and on the migration still being unrun) were delivered as files BEFORE the question. **Two read-only adversarial lanes ran on the first draft, told to refute — lane A (fidelity to the ledger): 2 HIGH / 7 MEDIUM / 7 LOW; lane B (HEAD facts and conventions): 2 HIGH / 7 MEDIUM / 6 LOW. Every HIGH was real:** a rulings record cited but not yet written; a reminder formula (`min(reminderDays, leadDays)`) that would have silently ignored the hand-raised value his composite's limb 4 exists for — rewritten as `FXD-9` (the field pre-fills `min(30, leadDays)` and fires exactly) and put INSIDE the `FOS-2` question; "five columns" for four; an unsupported claim that the `R15` scalars already resolve to the static heading. All fixed; record at `docs/record/firm-obligations-hands-on-2026-09-12/adversarial-audit-2026-09-12.md`. Put whole — *Yes* / *Yes, group A only* / *Break it down into limbs* / *Not tonight* — **RULED YES, verbatim *"Yes"*, 23:55 CDT.** The build is a fresh Opus Code session Michael fires from the prompt; the queue runner is BARRED from it; the ruled order is fix build → the migration by his hand (ten checks) → his real activations.
+- **ADJACENT (CC-1(c)), offered and not pressed:** `Q-API-14` and `Q-API-3`'s filing half ***"Keep both held (Recommended)"***; `Q-API-18`'s two facts and `Q-API-19` ***"Not now — stay open"***; `Q-STAT-7` ***"Not yet — stays open"***; Wave 0 (b) not offered (no Outlook sign-in this sitting).
+- **WHAT SHIPPED (this packet, docs-only):** this entry; THREE RULING files — the rulings record, the fix slice, its kickoff prompt; FOUR EVIDENCE files under `docs/record/firm-obligations-hands-on-2026-09-12/` — the ledger, the walkthrough capture, the audit record, v33 as delivered; two exact-match replacements and one append on the build slice; one append on the spec's §16; two exact-match replacements on the `FOS-1` kickoff prompt (part C item 16); the register's three acts — `FO-6` ⬜ → 🟡 annotated, `HS-4` annotated add-only (held), `Q-API-14` and `Q-API-3` annotated add-only (held again), one 🟡 row BORN for per-paragraph regenerate (label only — a durable ID is his to mint), `FOS-2` BORN ✅ in the closed register under the FOS heading, the reconcile sentence advanced; the BUILD-STATE facts in this packet's §4.5. **`CAP-2`:** every row that places a file carries its class; the edit rows carry `—` by `CAP-2a`. **§5 is NONE for the runner.**
+- **WHAT DID NOT HAPPEN, each because a rule bars it or because it is his:** nothing built; no `src/`, `db/`, `supabase/` or tracked file written (`package.json` and `db/migrations/2026-09-10-firm-obligations.sql` read from staged copies for verification); no migration run — his word *"Not run"*, and the ruled order now inserts the fix build before it; no consent clicked; no Outlook sign-in, no event created, none deleted (none existed); no real date, county or appointment list asked (H5, `FOD-9`); no registry entry, no roll default, no cite string touched — PF-1 did not fire; no capture relocated (the `#137` Voice2 pair's condition (2) not verified tonight); no `git` command on his machine; `Q-STAT-7` not put. **One reading caught before it bound:** the reminder cap, above. **One form point:** every question this sitting went through the answer widget. Bridge scratch on his machine: none beyond the packet zip in `inbox/` and the v33 file at `C:\Users\Brennan\brennan-case-manager\Claude outputs\project-instructions-v33-2026-09-12.md` (his hand to clear; the pre-audit copies of the `#155` files sit there too — batch 96's FINDING 5).
+
+**Next:** the queue runs this packet on `mdb-pllc` (batch 97), which also indexes the firm-obligations build's CODE entry into the head file (`TOC-4`); Michael clicks Sync; **Michael pastes v33**; then his hand — `/usage`, a FRESH Opus Code session, *"run docs/prompts/PROMPT-firm-obligations-fix-slice-build-session.md"* (`FOS-2` at HEAD; the migration still unrun); then the migration by his hand (ten checks after the fix build); then his real activations. In parallel as his time allows: the two `H12-v` asks; the DECISION 9A acquisitions; the DECISION 8 drafting act (an Opus design session, PF-1 there); `Q-STAT-7`; `Q-API-18`'s two facts and `Q-API-19`; the Wave 0 acts; the `#137` Voice2 pair's and the `#155` pair's TRANSIT at a sitting with his Chrome (both checkable at HEAD once batch 97 lands — the `#155` pair's routing table names batch 96's placements; the `#137` pair's definitions carried at `#155`); the six PROVISIONAL `CCS-1` text acts and `SD-14` at a later hands-on sitting; `FO-6`'s firm-wide calendar page and per-paragraph regenerate as later slices, each its own authorization; the split-store slice after (`Q-API-20`); go-live, his day.
+
+**Staged for Code:** the rulings record, the fix slice and its kickoff prompt (RULING); the ledger, the walkthrough capture, the audit record and v33 as delivered (EVIDENCE); the build slice's two replacements and §12 append; the spec's §16 append; the `FOS-1` prompt's two replacements; the register's three acts; the BUILD-STATE facts in this packet's §4.5. **Nothing under `src/`, `db/`, `supabase/` or build tooling.**
+
+**Awaiting/Returned from Code, unreviewed:** as BUILD-STATE's own line states at HEAD — recompute it there (`OPEN-5(a)`, start-of-session rule 5). What this session can truthfully add: the firm-obligations build's CODE entry (2026-09-12) was READ design-side whole, and its "Awaiting/Returned from Code" list is DISPOSED by this sitting item by item — the migration (his word, unrun), the §8-against-`FOD-4` ruling (A), the text acts (Part One's confirmed; "Needs attention" provisional), the thirty-three defaults (all ruled), Outlook keep-vs-delete and the reminder (ruled), the leads (stand); batch 96's runner line was read whole and its landing verified by existence of the three RULING paths and the EVIDENCE directory (`device_stage_files` of the rulings record and slice; `device_list_dir`); the `CCS-1` build's "Awaiting" list is PARTLY disposed — the confirm marks, `SD-3`, `SD-1`/`SD-16`/`SD-17`/`SD-18`, the R8 strings and the four reported findings are ruled; six text acts and `SD-14` remain for his eye. **Still open and still Michael's:** paste v33 · fire the fix build · run the migration after it · his real activations · the two `H12-v` asks · the DECISION 9A acquisitions · the DECISION 8 drafting act · `Q-STAT-7` · `Q-API-18`'s two facts · `Q-API-19` · `Q-API-14` and `Q-API-3`'s filing half (held) · the Wave 0 acts · the two TRANSIT-eligible pairs · the six PROVISIONAL `CCS-1` text acts and `HS-4` · the "MDBP Firm" calendar (keep or delete) · `Claude outputs\` (three pre-audit copies and v33) · the two untracked 2026-08-24 files (DO NOTHING) · a trigger-7 monthly review pass, due by month's end · go-live, his day.
+
+## 2026-09-12 — CODE SESSION (Opus 5, fresh, fired from `docs/prompts/PROMPT-firm-obligations-slice-build-session.md`; queue runner BARRED; unnumbered per TOC-6) — THE FIRM-OBLIGATIONS SLICE IS BUILT: fixture-only in demo mode and walked by clicking; ONE MIGRATION WRITTEN AND NOT RUN; four stops put to Michael and each ruled by his pick; all thirty-three named defaults reported by number, four NOT built as named; every text act PROVISIONAL; an adversarial review, three rounds deep, confirmed defects the green suite had passed — every one fixed or filed before this entry — ONE COLLISION NEEDING HIS RULING (§8 against `FOD-4`) AND TWO WORDING DEPARTURES FILED FOR HIS EYE; `FOM-8` RUN AGAINST HIS REAL OUTLOOK (the demo-mode app, three throwaway events, all deleted), the long reminder READ AS HONOURED once its fire time was current (a 180-day reminder five months stale did not surface)
+
+**THE AUTHORIZATION, QUOTED, AND THE TEST IT SATISFIES.** The prompt fires on `FOS-1` ruled AFFIRMATIVELY at HEAD and on nothing else. The entry is **`## 2026-09-10 (#155)`**, its `FOS-1` bullet, read at HEAD `cab3b1c`: *"**RULED YES, verbatim *"Yes"*, ~23:03 CDT**: `FOD-20` (the `review_log` CHECK also takes `cancelled`, closing `#151`'s live-write mismatch) IN; the §2.3 synthesis confirmed."* **`FOD-20` IN → the CHECK takes TEN values.** Read at HEAD; not inferred from a register glyph.
+
+**STEP 0.** `git fetch origin` exit 0; `git ls-remote origin refs/heads/master` (the live remote read) returned `cab3b1cdd17918717cc652a1bf83c0cf5664f237`, equal to local HEAD, on `master`, tracked tree clean. The three untracked paths — `Claude outputs/`, `docs/specs/attorney-review-queue-audit-2026-08-24.md`, `docs/specs/id-collision-report.md` — are Michael's; **nothing was done to them**, and every `git add` through `e046906` named explicit paths. `inbox/` was EMPTY, so `MM-1` cleared and this session never doubled as the runner. **DT-1:** this entry carries the close-out date, 2026-09-12, read from the wall clock at 00:06 CDT; the build, the click-through and `FOM-8` ran on 2026-09-11 and keep that date below.
+
+**BASELINE, BEFORE A LINE WAS WRITTEN — RED, AND A STOP.**
+- **The run.** `npm test` **exit 1**: `Test Files 1 failed | 48 passed (49)`, `Tests 746 passed (746)`. `npm run build` 0, `npm run lint` 0 (4 warnings, all in the mock source below), `npx tsc -b` 0.
+- **The failing file was not a product test.** Vitest's default glob collected `docs/record/firm-obligations-design-2026-09-07/mock-source-2026-09-08/test/domain.test.js`, the design mock's plain-node harness filed as EVIDENCE at `44409ef` (batch 93). It dies at collection on `require('../src/domain.js')`, a path the filed tree does not have.
+- **Why no one saw it.** Batches 93–96 were docs-only and skipped the health check.
+- **Put to Michael as a stop; RULED — his pick: *"Exclude docs/ from vitest (Recommended)"*.**
+- **Commit `7c68eb9`.** `vite.config.ts` gained `test.exclude: [...configDefaults.exclude, 'docs/**']`, with the filed evidence untouched. After it, `npm test` exit 0 at 746 tests / 48 files, `tsc -b` 0, lint 0. Lint then carried a fifth warning, `7c68eb9`'s own triple-slash reference in `vite.config.ts`; `0cd201c` removed that line.
+
+**STEP 2 — THE PREMISES RE-VERIFIED AT `cab3b1c`, ONE DELTA.** Every premise held:
+- `calendar_events.case_id uuid not null references cases (id) on delete cascade`;
+- 28 `path=` lines in `src/App.tsx`, none under `/firm` and no top-level `/calendar` route (the one calendar path is the case tab's `/cases/:id/calendar`);
+- `review_log.action`'s six-value CHECK, and the only migration naming `review_log` (`2026-07-28-cl2-client-dimension.sql`) widens nothing;
+- `toGraphEvent(ev: CalendarEvent, caseRec: CaseRecord)` and `ensureCalendar` by `OUTLOOK_CALENDAR_NAME`;
+- `STORE_VERSION = 16` with literal-pinned steps; `SCHEMA_TABLES` 46 and its sequence test;
+- `appendReviewLog` on both adapters; `WorklistCard`'s "renders nothing when there's nothing to do"; `CalendarTab.tsx`'s `action: 'cancelled'`;
+- `snooze` and `quickbooks|qbo|intuit` in 0 files.
+
+**Delta: `ReviewLogEntry.action` in `src/domain/billing.ts` ALREADY listed `'cancelled'`**; only the SQL CHECK lacked it. It changes no ruling.
+
+**THE STOPS — EACH PUT TO MICHAEL WITH OPTIONS CLAUDE WROTE, EACH RULED BY HIS PICK.**
+1. The red baseline, above.
+2. **`FOD-21` could not be built as named.** Its "one target-passed on a weekend-dated row under each `weekendRule`" cannot exist under `unknown` (§2.3 item 4's precedence), and the product reads the real today, so target-passed under the other two settings exists only on Sat–Mon (rolls-forward) or from the Saturday through the weekend rule date itself (no-roll). His pick: *"Seed from the day the demo store is created (Recommended)"*.
+3. **`FOD-29`'s two phrasings disagree across a daylight-saving change** — "from the event's start (00:00 local on T) back to 00:00 local on `lightsOn`" against "i.e. `leadDays × 1440`". His pick: *"Fire at the lit moment (Recommended)"*, the real minutes between the two local midnights.
+4. **`FOM-8`'s timing.** His pick: *"Yes, when you're ready"*: the build finished and verified first, then the live check in this session with him.
+
+**Three further departures were NOT put to him as stops, and should have been under the kickoff's Step 4 ("any default you found you could not build as named is a STOP"), read with its DO-NOT preamble that slice §8 "binds in full".** All three are filed at `docs/spec-feedback.md`, 2026-09-12 section — for his ruling (part C item 1) and for his eye (part C items 2 and 9):
+- **Part C item 1:** slice §8's bar on "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo" against `FOD-4`'s edits.
+- **Part C item 2:** `FOD-26`'s lit card line drops its day count on a weekend `unknown` row, where §8 wins.
+- **Part C item 9:** `FOD-25` and `FOD-26` print "1 day" at N = 1, not the named "N days".
+
+**WHAT WAS BUILT — commit `0cd201c`** (36 files, +7,760 / −36):
+- **The domain.** `src/domain/firmObligations.ts` holds the six rule kinds, materialization (`FOM-4`, `FOM-1`, serial and collapse), R/T/D, `lightsOn` and the five display states, the strong line, the card and register views, and every act PLANNED as pure data. Neither adapter decides anything, so the two modes cannot diverge.
+- **The catalog.** Thirty-five templates plus the BOI note row are GENERATED from SPEC §7 byte-for-byte by `scripts/generate-firm-obligation-catalog.mjs`, with a drift test and `--check`. Every template's `weekendRule` is the literal `'unknown'`.
+- **Both adapters' methods, and store v17.** The v17 step has two collections, a literal `17`, a `-backup-v16`, and every older version chained through it. The `FOD-21` fixture is seeded on both the migrated and the fresh path.
+- **The register** at `/firm/obligations` (nav "Obligations"): Overdue pinned, twelve months by TARGET month, Later, Inactive collapsed, the catalog, Activate…, Custom, Done, Not applicable…, Undo, Edit…, Retire.
+- **The `/cases` card** directly below the legal-watch card.
+- **The Outlook sibling:** `toGraphFirmEvent` on the separate "MDBP Firm" calendar, all-day on T, `FIRM|obligationId|occurrenceId` on the existing property id, `isReminderOn: true`, and reminder minutes by the ruled rule. The case path is byte-identical.
+- **The migration, `db/schema.sql`, `SCHEMA_TABLES` 46 → 48** (47 policy-true), and the tests.
+- **The build's own lanes.** Catalog, migration and Outlook went to three builders, each checked by an adversarial verifier. Every lane touched only its own files, and none returned a HIGH finding. The verifiers' MEDIUM and LOW findings were dispositioned before `0cd201c`: the DST minutes went to Michael (stop 3 above); an `isReminderOn: false`-on-done deviation, which Claude's own lane instruction had caused, was reverted to the slice's literal `true`; and a same-name calendar guard was added, with its tests.
+
+**THE WHOLE-BUILD ADVERSARIAL REVIEW, AND THE FIXES — commit `e046906`.**
+- **How it ran.** Five finder lanes read the build against the slice: scope and parity; the defaults; the DO-NOTs and the tests; correctness; the UI and text acts. Five independent refuters, one per lane, then tried to break every finding, with probes. **Of 46 findings, one was refuted** (a nearest-candidate tie-break that can never move a date later); the rest held, some re-rated.
+- **The DO-NOT sweep.** The sweep table (lane L3, run at `0cd201c`) marked every limb it listed CLEAN except two: "migration run / DB connected" (not provable from the repo) and "a real date or fact" (the fixture's borrowed statute dates, fixed below).
+- **Two §8 DO-NOTs the table did not list were found elsewhere in the review.**
+  - The card's day count on a weekend `unknown` row: a breach, fixed below.
+  - Edits that return a lit occurrence to pending: a collision filed for his ruling, not decided.
+
+The defects that mattered, all passed by the green suite and all fixed:
+- **A back door out of FO-2 on every template.** The `FOD-4` guards keyed on the display label `overdue`. Under `unknown`, a weekend-dated occurrence shows past-date-unknown while overdue holds beneath it. So a later override or rule edit could move it out of FO-2, including by a three-step route (edit onto a Saturday, override later, edit back). The guards now test **today > D**.
+- **FOM-4 on month-precision rows (FOT-1 and FOT-25, both go-live templates).** A mid-month "last period completed" reopened the period he said was done, as overdue. Any day in the due month now names that period. **A day-precision date that is not one of the rule's due dates is REFUSED, not guessed** — a reading, filed at `spec-feedback.md`.
+- **Done after a kept rule edit** opened the closed period a second time.
+- **Re-activation** reopened a period already closed, and reopened a done one-time row as overdue.
+- **Interval edits** re-dated from the wrong completion, or not at all.
+- **An edit that changed nothing** was logged as a rule change (Postgres jsonb key order).
+- **The `FOD-21` fixture** borrowed three SPEC §7 statute dates, and missed the named mix on about one creation day in seven (FOT-8/FOT-9 lit ~46 days a year, FOT-1 past-date-unknown ~5). Every date is now invented from the creation day, and a 731-day sweep pins the mix.
+- **The card** printed a day count on a lit weekend `unknown` row (the §8 DO-NOT).
+- **The register page.**
+  - The catalog's activation form opened off-screen; it now scrolls into view.
+  - An act's error shows in the row or form that started it, and the act's buttons are disabled while it runs.
+  - Details prints no "due" date on a weekend row under `unknown`.
+  - Every Inactive row shows its template's catalog text and source, so the BOI row now shows its note.
+  - The Inactive "Activate…" re-pushes an occurrence the edit moved, writes no edit when nothing changed, and takes "last period completed" on a first activation.
+  - A retired row's open occurrence gains Re-activate.
+  - "+ Add obligation" waits for the register to load.
+  - Category and review-log slugs show as words, and SPEC-cell markdown is stripped at display, the Outlook subject included.
+  - Every on-screen string carries PROVISIONAL with a cite, pinned by an AST-walking test. A verifier's scratch copy of that walker, run on the `0cd201c` page, found 81 unmarked literal lines — a stricter count than the review's "about 41".
+  - The card renders from one pure summary.
+  - A "Needs attention" list shows any active obligation with no open occurrence.
+  - The DST reminder test pins its zone at runtime; it was proven under `TZ=UTC`.
+- **The Supabase adapter and sync.**
+  - Every act compensates a failed later write by UPDATE, or by re-inserting a row it deleted, and never by a compensating DELETE.
+  - Its errors fall into three classes: not saved, saved without its log line, could not restore.
+  - A failure-injecting fake pins every failure point. The firm adapter test file runs 67 tests at `e046906`; it ran 14 at `0cd201c`.
+  - Every act's review-log action and entity type are pinned on both adapters.
+  - The firm half of the Outlook drain continues past a row that throws, under a new sync test file with mocked auth and Graph.
+- **The second verification round, and what it fixed.**
+  - **A landed act whose Outlook push then failed looked failed,** and its error could be shown nowhere, because the reload unmounted the row that held it. Every push now goes through one catching helper, which reports "saved, but not pushed to Outlook"; the row stays queued for Sync now. An error whose row is gone goes to the top of the page.
+  - **The Inactive "Activate…" could leave half an act:** a refused "last period completed" still saved the rule edit. The page now asks the domain first (`reactivationProblem`, a dry run of both plans) and writes nothing on a refusal.
+  - **Forms could close mid-act.** The controls that open or close a form, and a row's other acts, are disabled while an act on that row runs.
+  - **A catalog activation could be duplicated.** Its form closes the moment the write lands.
+  - **Edits that changed nothing still wrote log lines.** "Save changes" with nothing changed, and "Set this date" with the date already in force, now write nothing. A month-precision row's own month-end still counts as a change, since it alters when the row lights (FOM-6).
+  - **Undo's "not deleted in Outlook" line read as a success.** It is now a warning.
+  - **Some Inactive rows had no Details panel.** Every Inactive row now carries one, so the review log a could-not-restore message points at is always there.
+  - **The Supabase adapter's messages.**
+    - They show the obligation's name without markdown.
+    - They name any date the activation carried that a retry would lose.
+    - They send him to "Needs attention" only when the state really is stranded.
+    - A restore that would put back `synced` over a push that landed in between restores `pending` instead.
+    - The firm drain survives a failing obligations read.
+  - **Tests.** Two page-test pins a checker showed could be bypassed are tightened. Two adapter branches that behaved correctly but were unguarded got their tests.
+
+**The fixes were built in two rounds of parallel lanes** (the page and card; the Supabase adapter and sync). Each round was checked by an adversarial verifier that re-ran the lane's tests, probed its behaviour with throwaway tests (since deleted) and ran mutants against its test pins.
+- **Breaches.** **No lane verifier found a DO-NOT or scope breach beyond the §8-against-`FOD-4` collision above.**
+- **Round one's verifiers** found two MEDIUM defects and a set of LOW ones; round two fixed them.
+- **Round two's verifiers** found only LOW gaps, all closed before the health check: two page-test pins a mutant could bypass; two correct but unguarded adapter branches; and a message pointing at a Details panel some Inactive rows did not render.
+- **The two new adapter tests** were each run against an in-memory mutation of the line it guards, and each failed alone (1 failed, 66 passed). That result was recorded in the session notes from the follow-up agent's report; its result files were not kept.
+
+**THE DEFAULTS TAKEN, BY NUMBER — none approved; every one built as named EXCEPT four:** `FOD-21` and `FOD-29`, built as Michael ruled at stops 2 and 3 (`FOD-29` sends the real minutes between the two local midnights across a clock change, not its "i.e. `leadDays × 1440`"); and `FOD-25` and `FOD-26`. Their day count reads "1 day" at N = 1, and `FOD-26`'s lit card line drops the count on a weekend `unknown` row, where §8 governs. **Those two were NOT put to him as stops;** they are filed at `spec-feedback.md` (2026-09-12 section, part C items 2 and 9).
+- `FOD-1` as amended by `FOM-12`: weekends only; T the last business day before a weekend R; D rolls only under rolls-forward; the FOD-1 note under `unknown`; no holiday computed.
+- `FOD-2`: 30-day default, template leads pre-filled and editable.
+- `FOD-3`: naive local dates, `today` always an argument.
+- `FOD-4`: edits touch only the open occurrence; the never-later guard on the past-due CONDITION, not the label (the review's fix); a kept rule edit says so. It also stops a change that would turn a labelled-overdue occurrence into past-date-unknown, even with D unmoved or earlier — an override or a weekend-rule edit is refused, a rule edit keeps its date — a reading beyond `FOD-4`'s "LATER" (part C item 3).
+- `FOD-5` as amended by `FOM-1` and `FOM-4`: first and next occurrence; one open, enforced in the domain and by the partial unique index.
+- `FOD-6`: exactly one `review_log` line per act.
+- `FOD-7`: Undo's only test, read from the close line's trail.
+- `FOD-8`: Retire closes nothing.
+- `FOD-9`: no date guessed; Supabase seeds nothing.
+- `FOD-10` as amended by DECISION 7: the separate calendar, all-day on T.
+- `FOD-11`: two weights; order only.
+- `FOD-12`: the route and nav label.
+- `FOD-13`: no firm occurrence on any case's Calendar tab or queue.
+- `FOD-14` as amended by `FOM-13`: hard items only — overdue, or lit / target-passed / past-date-unknown with target within 14 days.
+- `FOD-15`: Done on any open row.
+- `FOD-16`: an interval is due now unless last-done is entered.
+- `FOD-17` as amended by `FOM-6`: month lighting while no override.
+- `FOD-18`: Not applicable only on the eight lapse rows, reason required.
+- `FOD-19`: no snooze anywhere.
+- `FOD-20`: TEN values.
+- `FOD-21`: as ruled at stop 2, dates invented from the creation day.
+- `FOD-22`: Done PATCHes "Done — " and keeps the event; Undo restores.
+- `FOD-23`: `on delete restrict`, no delete method.
+- `FOD-24`: the holiday line on the register foot and in the card's expander.
+- `FOD-25`: the strong line — **at N = 1 it prints "1 day"**.
+- `FOD-26`: the card title and lines — **at N = 1 it prints "1 day", and the lit line carries no count on a weekend `unknown` row, §8 winning**.
+- `FOD-27`: below the legal-watch card.
+- `FOD-28`: "MDBP Firm", overridable.
+- `FOD-29`: as ruled at stop 3 — the real minutes between the two local midnights, not "i.e. `leadDays × 1440`".
+- `FOD-30`: lead and weight pre-filled, his dates required, weekend radios preselecting `unknown`.
+- `FOD-31`: month-precision R is the month's last day.
+- `FOD-32`: a one-time Done retires the row; Undo re-activates.
+- `FOD-33`: the Inactive section.
+
+**THE TEXT ACTS — ALL PROVISIONAL, EACH MARKED IN CODE WITH ITS CITE, NONE DESCRIBED ANYWHERE AS APPROVED:**
+- the nav label and page title (DECISION 0);
+- the card title, lines, "and K more" / "Open the register" and "About these dates" (`FOD-26`, `FOD-24`);
+- the strong line in every state and the `FOD-1` note (`FOD-25`);
+- the holiday line (`FOD-24`);
+- the group headings — Overdue, the month names, Later, Inactive — and "Nothing falls due this month" (`FOM-9`, `FOM-14`, `FOM-3`, `FOM-5`; the month names §2.3's example shape);
+- the demo banner (`FOD-21`);
+- the retired badge and Inactive lines (`FOD-33`);
+- the close form's labels, placeholders and reasons (`FOD-18`);
+- the rule-kind and weekend-rule labels, and the activation and edit forms' labels (`FOD-30`, `FOM-4`, `FOD-16`, `FOD-2`, DECISION 6);
+- the act-confirmation notices — "Activated: …", "Done: …", "Reopened: …", "Retired: … Its open occurrence stays until done.", "Saved: …", "Nothing changed." — and the landed-but-not-pushed warning (`FOD-30`, `FOM-5`, `FOD-25`, `FOD-7`, `FOD-8`, `FOD-4`, DECISION 7, slice §3 item 10);
+- the refusal and error sentences, including the Supabase adapter's three message classes (`FOD-4`, `FOD-7`, `FOD-8`, `FOD-9`, `FOD-18`, `FOD-32`, `FOM-4`, slice §3 item 10);
+- the review-log reasons;
+- the Outlook subject and body lines, "Done — ", and the calendar and category name (DECISION 7, `FOD-22`, `FOD-28`);
+- the act and form buttons and headings — "+ Add obligation" / "Close", "Add obligation", "Custom obligation", "Activate: …", "Activate…", "Activate", "Done", "Edit…", "Re-activate", "Cancel", "Details" / "Hide details", and "Undo done (…)" / "Undo not applicable (…)" (slice §3 items 5 and 10, `FOD-4`, `FOD-7`, `FOD-8`, `FOD-30`, `FOM-5`);
+- the catalog's marks and hints — "suggested", "Applies if:", "Can lapse per period", "Can lapse for a period (offers Not applicable)", "Source:", "From the catalog: …" and "Nothing here is active until you activate it with your own date." (DECISION 9B, `FOM-2`, `FOD-9`, slice §3 item 5);
+- the review-log action words (Created, Edited, Done, Not applicable, Undone) and the "Review log" heading (`FOD-6`), the category words (slice §3 item 10, spec §3.1) and the weight titles Hard and Routine (DECISION 6);
+- Undo's warning that the removed next occurrence's Outlook event was NOT deleted (`FOD-7` with DECISION 7);
+- the remaining buttons and marks — "Not applicable…", "Retire", "Save changes", "Set this date", "Add as inactive", "already added" and "No inactive obligations." — and the register's count line "N open · M overdue" (`FOD-18`, `FOD-8`, `FOD-4`, `FOM-5`, slice §3 item 10);
+- the notices "Added inactive: …", "Re-activated: …" and "Due date for … set to …" (`FOM-5`, `FOD-8`, `FOD-4`);
+- the edit form's "A missed period" with "Stays owed (the next period follows, even if past)" / "Collapses to the next date", and "The real due date for …" (DECISION 2, `FOD-4`);
+- the Details panel's lines — "Rule date … · aim for … · due … · lights …" (on a weekend `unknown` row, the same without the due date), "Weekend: … · lead N days · …", "Notes:", "Outlook: …" with "push failed — …" / "queued", and the "History" heading and its lines — and the catalog's "Lead … · weight …" (slice §3 items 5 and 10, `FOD-25`, `FOD-18`, DECISION 7);
+- the "Needs attention" sentence;
+- the Outlook line's texts.
+
+Every string carries its cite beside it — the `FOD-n`, `FOM-n`, DECISION or slice section that names it, otherwise slice §3 item 5, 6 or 10.
+
+**THE MIGRATION — WRITTEN AND NOT RUN.** `db/migrations/2026-09-10-firm-obligations.sql` (23,843 B, LF):
+- **The header.** It names the authorization and states the hand-run protocol: back up, STEP 0 on its own, the file pasted alone, the checks answered in words. **STEP 0** is the `review_log` action count, written down by hand before anything runs. **WHAT THIS DOES NOT DO** lists no matter table, no row written, no registry entry, no holiday, no money or assignee column, no existing row changed, no migration amended.
+- **THE GATE** is the first statement. It raises if `firm_obligations` already exists (a second run stops there), if `review_log` is missing, or if `review_log` carries no CHECK on `action`. Every statement after it is guarded anyway.
+- **The two tables** are exactly §5.1 and §5.2: the partial unique index `firm_obligation_occurrences_one_open_idx … where state = 'open'`, the `_touch` and `set_created_by` triggers, RLS with one policy each, and GRANTs to `authenticated`.
+- **The action CHECK** is dropped by catalog lookup and re-added as `review_log_action_check` with TEN values.
+- **Seven foot checks, answered in words:**
+  1. both tables, RLS on, one policy each;
+  2. the index present and PARTIAL;
+  3. exactly one action CHECK, with ten values;
+  4. `authenticated` reaches both tables four ways, `anon` none;
+  5. both tables empty;
+  6. the three triggers;
+  7. STEP 0 re-run, unchanged.
+- **Nothing was run. No database was connected to at any point in this session.** `db/schema.sql` carries the same objects in the same commit.
+
+**`FOM-8` — THE LIVE OUTLOOK CHECK, RUN WITH MICHAEL (Step 5).**
+- **The setup.** Demo mode on port 5173, the origin his Entra registration allows, in his own Chrome. The server was started through a temporary change to the tracked `.claude/launch.json`, restored afterwards; git shows it unchanged.
+- **Why sign-in went through a separate control.** The page's own "Connect Outlook" also drains the push queue, which in the demo store held the fixture's twelve invented occurrences and two demo case events. So it was disabled in the check's tab and a sign-in-only control put there instead. Michael first opened a tab of his own, saw that button live, and closed it without clicking. **He signed in himself.**
+- **The first two events.** `ensureFirmCalendar` found or created **"MDBP Firm"**. Through the app's own `toGraphFirmEvent` and `pushFirmOccurrenceToOutlook`, two throwaway all-day events dated Mon 2026-10-05 were pushed, with leads of 30 and 180 days.
+  - **Graph accepted both.** A read-back GET of each (200) showed `reminderMinutesBeforeStart` stored exactly as sent — 43,200 and 259,200 — with `isAllDay` and `isReminderOn` true and category MDBP Firm.
+  - Graph's `reminderView` placed the fire times at 00:00 Central on 2026-09-05 and 2026-04-08.
+- **His eye, in desktop Outlook's Reminders window.** **The 30-day reminder SHOWED ("coming up in three weeks"); the 180-day one did NOT.**
+- **A third event tested the likeliest cause, staleness.**
+  - The 180-day reminder's fire time was five months stale; the 30-day one's was six days old.
+  - So a third event was dated Wed 2027-03-10 with a 180-day lead. The app's payload sent **259,260** minutes: the real minutes between the two local midnights across November's clock change (180 × 1,440 + 60), per the ruled rule.
+  - Graph stored it, and `reminderView` placed its fire time at 00:00 Central on 2026-09-11, the day of the check. **It SHOWED.**
+- **The result. The session read the long reminder as honoured under the slice's "accepted AND surfaces", with a qualifier of its own — once the fire time was current — so the slice's "Lights today" fallback was NOT built** — the build's call under slice §3 item 7, not a ruling.
+- **Filed at `docs/spec-feedback.md`.** The limitation found: in the one observation, desktop Outlook did not surface a reminder whose fire time was five months stale, and staleness is the likeliest cause; the boundary between six days and five months was not measured. And **Michael's own comment at the check: *"This comment may be something for design: I dont know if I need upcoming deadlines in the outlook reminders."***
+- **Cleanup.** All three events were deleted (GET → 404 each), and the app's local Outlook session was cleared. The "MDBP Firm" calendar was left in his Outlook.
+
+**THE CLICK-THROUGH, IN DEMO MODE ON THE FIXTURE (§9 item 11), today Fri 2026-09-11 — every row fiction.**
+- **/cases.** The firm card read "Firm obligations — 2 due · 3 overdue", three lines, "and 2 more", and the "About these dates" expander. The legal-watch card rendered nothing in demo.
+- **The weekend rules by hand.**
+  - **FOT-31**, activated on Sat 2026-09-26 under rolls-forward, read *"Due Mon Sep 28 (rolled from Sat Sep 26) · aim for Fri Sep 25"*.
+  - **FOT-26** on the same date under no-roll read *"Due Sat Sep 26 · aim for Fri Sep 25"*.
+  - **`unknown` was NOT activated by hand.** Its rows were read on the fixture's seeded activations (FOT-2, FOT-8, FOT-9), which run the same activation path.
+- **Done and Undo.** Done on the heartbeat (fixed-monthly, collapse) opened October, with "Undo done (2026-09)". Undo reopened September and removed October.
+- **Not applicable.** On FOT-8 (condition not met), Mark stayed disabled until a reason was chosen, and the next occurrence landed in Later.
+- **Retire.** FOT-26 took the badge "retired — stays until done". Done on it materialized nothing and moved it to Inactive, with "last done" and its Undo.
+- **Defects the walk found.** The catalog's Activate… opened its form off-screen (fixed). The catalog showed SPEC cells' raw markdown (the display is now stripped; storage stays verbatim).
+- **One mis-click.** It opened FOT-25's form; the form was cancelled and nothing was activated.
+- **Not confirmed by clicking.** The empty card (Fixture B) is pinned by tests only. The Outlook projection is `FOM-8`'s job.
+
+**THE RE-WALK, AFTER BOTH FIX ROUNDS — a fresh demo store on the new fixture.**
+- **The fixture.** FOT-4 on its invented date (Jul 13); "12 open · 5 overdue"; no markdown on screen; no console error.
+- **The form fix.** The catalog form, opened from 3,730 px down the page, now lands at the top of the screen.
+- **An inline refusal.** On the overdue TIDC row, a later real due date was refused **inside its own form, in view**, and nothing was stored.
+- **Nothing changed.** Save changes with nothing changed closed the form, said "Nothing changed." and wrote no log line.
+- **The BOI row.** Its Inactive row shows its note, its source and its Review log.
+- **The /cases card.** It read "Firm obligations — 2 due · 3 overdue", with the domain name free of backticks.
+- **Not exercised by clicking.** Each of these is pinned by tests only:
+  - the busy-disabled controls (demo acts finish in milliseconds);
+  - the landed-but-not-pushed warning (Outlook was not connected there);
+  - "Needs attention" (only a failed central write makes one);
+  - Re-activate on a retired row.
+
+**BUILD READINGS, REPORTED (not `FOD`-numbered):**
+- The undo link lives in the close line's `review_log.new_value` trail, because §5.2 has no column for it.
+- `FOM-13`'s "lit" is read as lit, target-passed or past-date-unknown.
+- Register months group by TARGET month; a not-overdue item whose target month has passed sits in the current month.
+- The Overdue pin holds only the `overdue` state.
+- Future done, last-done and last-period-completed dates are refused.
+- `FOM-6` month lighting applies only while no override exists.
+- The anniversary label for a multi-year term is written in full.
+- Only the five `createdInactive` templates offer "Add as inactive"; the BOI template key is `boi-note`.
+- The sourceNote joins Source and Status with " — ".
+- FOT-18 offers two kinds.
+- Re-activation is read as an activation, never reopens a closed period, and on a first activation from Inactive takes "last period completed".
+- The migration gate stops a second run before any statement.
+- A same-name calendar refusal was added.
+- A push that comes back `syncStatus: 'error'` counts as not pushed; a row left `pending` because Outlook is not connected is not a warning.
+- Every form closes the moment its write lands, and a later push failure shows at the top of the page as "saved, but not pushed to Outlook".
+- **In the Supabase adapter:**
+  - a first-write failure is reported as "not saved";
+  - an activation whose first occurrence failed to save stands active with NO activation line in the log (`spec-feedback.md`, 2026-09-12 section, part C item 6);
+  - a restore writes `updated_at`, which the migration's touch trigger will overwrite once Michael runs it (it has not run);
+  - one unreachable guard's message says "this app never deletes one", which Undo's own planned delete contradicts. It is PROVISIONAL wording.
+- **The only deletes in the firm path are Undo's: the untouched next occurrence's row, and that occurrence's Outlook event by Graph,** which `FOD-7` and §7 item 8 require, with slice §3 item 7's "reverted on undo" for the event. The kickoff prompt's broader "no delete" collides with the row delete, and the prompt's own precedence rule decides it for the slice (part C item 16).
+- Re-activate replaces Retire on a retired row's open occurrence.
+- **The Inactive "Activate…"** asks the domain first, which narrows but cannot close a stale-register race (part C item 14). FOD-16's last-done date cannot be re-entered after a failed first-occurrence save (part C item 15).
+- The text-act marker test walks the page's syntax tree. It is a floor: a string held in a local variable first was marked by hand.
+- **One surfaces test's title overstates.** It says "nothing else unlights", but `FOD-4`'s edits can (part C item 1).
+- **Two code comments at `e046906` are imprecise,** found by a close-out verifier after that commit and left for the next code change. `src/data/firmObligationsSeed.ts` line 20 places no-roll's target-passed on "the weekend day itself"; it runs from the Saturday through the weekend rule date. `src/domain/firmObligations.ts` lines 1327–1328 say that under `unknown` a weekend R "is not D"; under `unknown` D is R, and only rolls-forward moves D. Comments only; no code reads them.
+
+**THE COLLISION NEEDING HIS RULING is filed at `docs/spec-feedback.md` (2026-09-12 section, part C item 1)** with the other collision-class items. Slice §8 bars "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo", and the kickoff prompt says the same. Yet `FOD-4` and §3 items 4–5 let a lead edit, a rule edit or an override on a not-past-due occurrence return a lit one to pending. The build follows `FOD-4` and pins today's behaviour in a test named for the conflict.
+
+**HEALTH, AFTER — GREEN, against the red baseline and the green after `7c68eb9`:**
+- **Tests.** `npm test` exit 0: **1,081 tests across 56 files** (746 across 48 after `7c68eb9`).
+- **Build.** `npm run build` exit 0, printing the same chunk-size warning the baseline printed. The main chunk grew from 1,030.42 kB to 1,127.76 kB (gzip 295.67 → 323.03 kB).
+- **Lint.** `npm run lint` exit 0; its 4 warnings are all in the filed mock under `docs/record/`, as at baseline.
+- **Types.** `npx tsc -b` exit 0.
+
+Exit codes were read off `npm` and `npx` themselves, never through a pipe (the final run's line, `test=0 build=0 lint=0 tscb=0`, is recorded in the session notes). No changed file mixes line endings (checked by a bytes read).
+
+**WHAT WAS NOT DONE, each because a rule bars it:**
+- no migration run and no database connected;
+- no snooze, later, dismiss, bulk or delete control, and no compensating DELETE (the only deletes in the firm path are Undo's: the untouched next occurrence's row, and that occurrence's Outlook event by Graph, which `FOD-7` and §7 item 8 require);
+- **§8's bar on "any control that unlights an occurrence other than Done, Not-applicable (conditional rows only) and Undo" NOT honoured where `FOD-4`'s edits apply** — a collision filed for his ruling, not a stop taken;
+- no holiday computed, and no template's weekend rule changed;
+- no registry entry or registry file, and no SPEC §7 string reworded;
+- no money, ledger or QuickBooks field, and no assignee or owner badge;
+- no new consent and no To Do task;
+- nothing on a case's Calendar tab, and no firm-wide calendar page;
+- `calendar_events`, `cases` and every matter table untouched, and `toGraphEvent`'s case path unchanged;
+- the Outlook first-edit duplication defect not fixed;
+- nothing seeded in Supabase mode, and no real firm date or fact entered;
+- no vendor and no model;
+- no spec edited (`BUILD-STATE.md` excepted), with `spec-feedback.md` taking one new dated section;
+- `docs/record/session-log-toc.md` NOT regenerated and `docs/specs/session-log-head.md` NOT written, so **the next batch's census will detect this entry as unindexed, by design**;
+- no `#nn`, no queue row and no ID minted, and the queue runner not doubled as;
+- **"walked" is not "live"**: fixture-only, outside the GL-1 floor.
+
+**THE CLOSE-OUT, CHECKED BEFORE THIS COMMIT.** This entry, the BUILD-STATE rewrite and the spec-feedback section went through three rounds of independent adversarial verification before the commit. Round one's findings led to a full regeneration from HEAD. No HIGH finding survived round two; its MEDIUM and LOW findings were fixed in the text or the claim narrowed. Round three read what those fixes changed and found no HIGH finding; its two MEDIUM and seven LOW findings, and one further inconsistency it noted in BUILD-STATE's banner, were fixed in the text before this commit, without a fourth round.
+
+**BUILD-STATE:** rewritten in full as a CODE refresh at **99,994 B (6 B under the `CAP-4` ceiling) and 135/150 non-blank (149 raw)**, stated at commit `e046906`.
+- **Re-derived on the working tree that became `e046906`** (that commit changed none of the counted files): the counts its note names — among them the 46 seeded form templates, counted by executing the seed.
+- **Re-measured by program:** the register and registry counts.
+- **Checked by existence test only (`HK-5`):** the declared data paths.
+- **Re-verified:** the forms engine's files, and the writer's fixture-only resolution.
+- **The header.** The banner reads **"ONE migration WRITTEN AND NOT RUN"** and names the file. The anti-resurrection-ledger pointer is kept.
+- **The ledger.** **Fifty-six passages, 8,415 B, were removed — 8 displaced outright, 48 superseded in place.** Three further edits only inserted text after an unchanged passage, and are not counted. A word-level diff of the old file against the new accounts for every removed word; four tokens differ only where a span's edge split a word from its punctuation.
+
+All fifty-six ride below.
+
+**Staged for Code:** none — this session was the build.
+
+**Awaiting/Returned from Code, unreviewed:** everything in this entry. For Michael's eye specifically:
+- **the migration**, to be run by his hand after a backup, pasted alone, checks answered in words;
+- **the §8-against-`FOD-4` ruling**, and the other collisions at `spec-feedback.md` (2026-09-12 section, part C) — among them `FOD-25`/`FOD-26`'s day count, and the Undo-delete collision, which the prompt's own precedence rule decides for the slice;
+- **the text acts**, every one PROVISIONAL;
+- **the thirty-three defaults**, especially `FOD-26`'s card wording and `FOD-27`'s position;
+- **Outlook keep-vs-delete**, the early-done reminder (`isReminderOn: true`), and his own `FOM-8` question whether upcoming deadlines belong in Outlook reminders at all;
+- the leads.
+
+**Next:**
+1. THE FIRM-OBLIGATIONS HANDS-ON SITTING at the demo app: the text acts, the card's position and wording, the register's affordances, Outlook keep-vs-delete, the leads, and the §8-against-`FOD-4` ruling, with part C's other items for his eye.
+2. The migration, by his hand.
+3. His real activations, with his real dates.
+
+In parallel: the DECISION 8 registry drafting act (an Opus design session, with PF-1 running on it) and the DECISION 9A acquisitions.
+
+---
+
+**DISPLACED FROM BUILD-STATE (CAP-4)** — 56 passages, 8,415 B of text, removed from `docs/specs/BUILD-STATE.md` at this refresh (8 displaced outright, 48 superseded in place), so the 100,000-byte ceiling could be met while the firm-obligations build, its one unrun migration and the `FOM-8` result were added. **Every one is a SPENT NARRATIVE, a DUPLICATE whose substance stands elsewhere in the file, a figure this CODE refresh re-derived, or a status this build moved — NOT ONE IS AN EXISTENCE CLAIM.** Three further edits only inserted text after an unchanged passage and are not listed. They ride here VERBATIM and this is the only surviving copy, with ONE stated exception: each is quoted with its own leading and trailing whitespace trimmed, which is the join punctuation of the text around it and not content, so the quoted text measures 8,406 B against the 8,415 B removed. Beside each is where its substance now stands.
+
+**P01 — superseded in place — the banner, rewritten for this CODE refresh**
+
+> Commit: 357ca8e (every claim below re-checked at this commit)  |  Branch: master  |  Generated: 2026-09-11 Central (one hundred forty-first refresh)  |  **WRITTEN BY THE QUEUE RUNNER (batch 96, the NINETY-SIXTH invocation) on a DOCS-ONLY batch — **no `src/`, `db/` or `supabase/` file was read at all**, so every `src/`- and `db/`-derived figure below is CARRIED from the `ea5675b` CODE refresh and is MARKED as carried (`QR-6(a)`); every count over `docs/` was re-measured here.**
+
+**P02 — superseded in place — the banner's CAP-4 line, restated with this refresh's own figures**
+
+> ⛔ **`CAP-4` BOUND; SHORTFALL NAMED — entered the refresh at 99,915 B, stands at 99,975 B, 25 B under the 100,000-byte ceiling, 136/150 non-blank (150 raw). 29 PASSAGES REMOVED, 7,609 B — 4 DISPLACED outright, 25 SUPERSEDED in place — NOT ONE AN EXISTENCE CLAIM**; each rides this batch's runner line VERBATIM under `DISPLACED FROM BUILD-STATE (CAP-4)`, the log's only copy, with where its substance still stands.
+
+**P03 — displaced outright — the Q-WF-4 / WF-2–WF-8 status: the WF-2–WF-8 EMAIL-WORKFLOW SPEC bullet under Design-input memos carries its substance and now names the row `Q-WF-4`**
+
+> 🟡 **`Q-WF-4` IS RULED IN SHAPE (`#154`, item 7) — THE ROW EXISTS AND IS NOW 🟡**, a composite decided now and built in Wave 3, each build its own authorization. **WF-2–WF-8 STAY ⬜, SEVEN OF SEVEN GATED, ZERO SATISFIED.**
+
+**P04 — superseded in place — the banner: ONE migration WRITTEN AND NOT RUN, named; the CCS-1 run fact kept in the same sentence and in the data-layer bullets**
+
+> ✅ **EVERY MIGRATION WRITTEN TO DATE HAS RUN, AND NO MIGRATION IS PENDING.** The two `CCS-1` migrations ran on LIVE by his hand 2026-09-07 (`#150`); record at `docs/record/ccs1-migrations-run-2026-09-07/`.
+
+**P05 — superseded in place — the banner: the slice is BUILT; its authorization stays at FIRM OBLIGATIONS under Design-input memos and in #155**
+
+> ⚠ **NOTHING WAS BUILT THIS BATCH — `#155` IS A RULING SITTING, DOCUMENTATION ONLY.** ✅ **`FOS-1` RULED YES (*"Yes"*, 2026-09-10): THE FIRM-OBLIGATIONS BUILD SLICE, `docs/specs/firm-obligations-build-slice.md`, IS BUILD-AUTHORIZED AND NOT YET BUILT** — kickoff prompt `docs/prompts/PROMPT-firm-obligations-slice-build-session.md`; a separate Code session Michael fires, the queue runner BARRED; ONE migration to be WRITTEN AND NOT RUN by that build; no client data, OUTSIDE the GL-1 floor.
+
+**P06 — displaced outright — For design side → INSTRUCTIONS, which carries the same v32/v31 statement in full**
+
+> ⚠ **INSTRUCTIONS `v32` DELIVERED 2026-09-10 (`#155`, trigger 3) — PASTED OR NOT IS HIS WORD; `v31` is the last version confirmed in force by a live read; the repo cannot verify the field and does not.**
+
+**P07 — superseded in place — the counts note, re-derived at this HEAD (a CODE refresh carries none of these)**
+
+> *EVERY COUNT OVER `docs/` WAS RE-DERIVED THIS REFRESH, NOT CARRIED (`OPEN-5(a)`). **THIS IS A RUNNER REFRESH ON A DOCS-ONLY BATCH THAT READ NO `src/`, `db/` OR `supabase/` FILE, SO THOSE FIGURES ARE CARRIED AND SAID TO BE (`QR-6(a)`):** **28 route paths in `src/App.tsx`, `SCHEMA_TABLES` 46 (45 policy-true, 1 not), `STORE_VERSION = 16`, 11 files in `db/migrations/`, 46 `create table` in `db/schema.sql`, tests 746 across 48 files, 46 seeded templates, and the `ALTER DEFAULT PRIVILEGES` occurrence count** — every one MEASURED at the `ea5675b` CODE refresh or the batch-92 read and NOT re-measured here, because this batch read no file outside `docs/`.
+
+**P08 — superseded in place — the counts note: this file's own line endings, and the CAP-4 streak**
+
+> Every file this batch touched is LF, verified by a bytes read (0 CRLF). **⛔ TWELVE consecutive refreshes
+
+**P09 — superseded in place — the practice-areas paragraph: the migration sentence, restated with the one unrun**
+
+> ✅ **EVERY MIGRATION WRITTEN TO DATE HAS RUN — INCLUDING THE `CCS-1` BUILD'S TWO, BY MICHAEL'S HAND THE EVENING OF 2026-09-07 (`#150`) — AND NO MIGRATION IS PENDING.
+
+**P10 — displaced outright — the fold's own record, `form-engine.md` §3's closing subsection (#106); §9's verbatim rule lives in CLAUDE.md**
+
+> **§9 was NOT touched** — a verified pure insertion, 25 lines, zero deletions. **This matters to FE-D1: slice 1 hard-codes a parser, and the spec it reads now states the ruled syntax**
+
+**P11 — superseded in place — Screens live: the /cases line gains the firm card and the register route**
+
+> /cases — case list; compact statute-worklist card (the de facto dashboard);
+
+**P12 — superseded in place — Data layer: the store version**
+
+> **store v16** (2026-09-03:
+
+**P13 — superseded in place — Data layer: the v17 step and the chain**
+
+> so a browser that never held a store lands in the same shape a migrated one does**), the v9→v16 chain
+
+**P14 — superseded in place — Data layer: tables and policies re-derived**
+
+> **`db/schema.sql` and the RLS probe both stand at 46 tables, sequence-identical, with 45 policies
+
+**P15 — superseded in place — Data layer: the create-table count, and which pair the sentence means**
+
+> **46 `create table` statements in schema.sql, AND BOTH MIGRATIONS HAVE NOW RUN BY MICHAEL'S HAND
+
+**P16 — superseded in place — Data layer: the amendment's five tables, re-verified in db/schema.sql and the probe at this refresh**
+
+> measured at the `ea5675b` CODE refresh and CARRIED here:
+
+**P17 — superseded in place — Data layer: the migration status, restated**
+
+> EVERY MIGRATION WRITTEN TO DATE HAS NOW RUN; none is pending.**
+
+**P18 — superseded in place — Data layer: the re-derived parenthetical**
+
+> *(Re-derived here every refresh: 46 tables, 46 `enable row level security`, **45 policies**
+
+**P19 — superseded in place — Data layer: the symmetry warning, restated at the current counts**
+
+> so never "correct" 36 to 37 for symmetry.
+
+**P20 — displaced outright — the 2026-08-19 run record (#113); the column's CHECK and the backfill stand in db/schema.sql and the migration**
+
+> - **F-12's STEP (d) FIX EXECUTED LIVE 2026-08-19.** `party_status = coalesce(party_status, null)` — which would have left every Witness / Adjuster / provider / expert / judge NULL though `'non-party-actor'` exists in the CHECK — now writes the value.
+
+**P21 — superseded in place — GRANTs bullet: the live 37 is a 2026-08-19 measurement**
+
+> on all **37 tables** from `ALTER DEFAULT PRIVILEGES`
+
+**P22 — superseded in place — GRANTs bullet: the migration count, re-counted at this refresh**
+
+> **all ELEVEN migrations**, re-counted at the batch-92 read over the whole of `db/migrations/` and **CARRIED here, not repeated — this docs-only batch read no `db/` file** — **every one of the 14 occurrences
+
+**P23 — superseded in place — GRANTs bullet: the scope's widening**
+
+> six → nine → eleven, still zero)
+
+**P24 — superseded in place — the anon repair bullet: the probe count**
+
+> **The probe covers 46 tables**
+
+**P25 — superseded in place — the external-system sweep's basis: the sweep's own date, since this build's migration comments now name some swept terms**
+
+> *(Basis stated: word-bounded over `db/` these are exactly zero.
+
+**P26 — superseded in place — RLS, exercised: the probe's table list**
+
+> The probe READS all **46** tables (`SCHEMA_TABLES` — includes `party_pii`, FE-D1's four `form_*` tables and the amendment's five,
+
+**P27 — superseded in place — RLS, exercised: the policy count**
+
+> **ALL 45 POLICIES ARE BYTE-IDENTICAL — `for all to authenticated using (true) with check (true)` — ONE RULE ON 45 TABLES, not 45 rule sets.**
+
+**P28 — superseded in place — FORM ENGINE: the store version the second tranche left, dated (the Data layer bullet states v17 today)**
+
+> **BOTH TRANCHES ARE BUILT (§13 items 1-14); STORE v15.**
+
+**P29 — superseded in place — FORM ENGINE: the safety half, re-verified rather than carried**
+
+> **THE SAFETY HALF IS CARRIED FROM THE `ea5675b` CODE REFRESH, WHICH RE-VERIFIED IT; THIS DOCS-ONLY BATCH READ NO `src/` FILE AND DID NOT RE-RUN THE SWEEP:**
+
+**P30 — superseded in place — FORM ENGINE: the second tranche's existence test, re-run**
+
+> (carried from the 2026-09-07 CODE refresh's existence test)
+
+**P31 — superseded in place — FORM ENGINE: AS-Q4's no-code-change sentence, not attributed to a batch this refresh is not**
+
+> **NOTHING WAS CHANGED IN CODE by the sitting or by this batch**
+
+**P32 — superseded in place — Known stubs: the cancelled-write gap, re-read at this CODE refresh**
+
+> **A `review_log` WRITE OUTSIDE ITS CHECK — FLAGGED AT `#151`, NOT FIXED, NOT VERIFIED LIVE; NOW `FOD-20`'s, IN BY `FOS-1` (`#155`), closed by the FO build's migration when it runs.** `src/pages/CalendarTab.tsx`'s cancel writes `action: 'cancelled'`; `db/schema.sql`'s CHECK admits six values WITHOUT it; the Supabase adapter passes the row straight through. On those reads a LIVE cancel should fail its audit insert (23514) and never reach the Outlook deletion. **These are `#151`'s design-side reads over the bridge at `ea5675b`, not this runner's — no `src/` file was read this batch, and nothing was confirmed live.**
+
+**P33 — displaced outright — the #110 verification record; the class's remaining pair stays named in the same bullet**
+
+> — **four of those five on programmatic character-exact matches with ZERO flags.**
+
+**P34 — displaced outright — the #96 record (`V7-23-CITE`), which stands in the session log's `2026-08-16 (#96)` entry; BUILD-STATE no longer carries it**
+
+> #96 produced its one **rejection** (`V7-23-CITE`), the evidence it is not a rubber stamp
+
+**P35 — superseded in place — the Design-input memos heading: firm obligations is now built**
+
+> ## Design-input memos — ALL PROPOSED BUT FIRM OBLIGATIONS (RULED `#155`), nothing built, no registry file touched by any of them
+
+**P36 — superseded in place — the WF-2–WF-8 bullet: the row named, and the composite stated here, now that the banner no longer carries them**
+
+> 🟡 **THAT GATE IS RULED IN SHAPE AND ITS ROW IS 🟡 (`#154`, item 7).** The composite is in the banner;
+
+**P37 — superseded in place — the TOC bullet: batch 96's regeneration, and this CODE entry unindexed by design**
+
+> **186 rows to 186 dated entries, `#65`–`#155` GAPLESS**, regenerated over the log as THIS batch wrote it, so `TOC-4` FIRED (forty-ninth edition; firing count forty-one → forty-two). *(The log's LAST `## ` line is the `## ARCHIVED:` pointer heading, not an entry and never a row — a bare `grep -c '^## '` returns 187 against 186 entries and invents a missing row.)*
+
+**P38 — superseded in place — FIRM OBLIGATIONS: built; the defaults, text acts and fixes in the 2026-09-12 CODE entry; the collisions in spec-feedback**
+
+> **FIRM OBLIGATIONS — RULED 2026-09-10 (`#155`); THE BUILD SLICE `docs/specs/firm-obligations-build-slice.md` IS AUTHORIZED (`FOS-1`) AND UNBUILT.**
+
+**P39 — superseded in place — FIRM OBLIGATIONS: FO-7's two facts, re-read at this CODE refresh**
+
+> `FO-7`'s two facts as `#151` read them over the bridge at `ea5675b` — NOT this runner's read:
+
+**P40 — superseded in place — FIRM OBLIGATIONS: the hands-on sitting's gate, now met**
+
+> **The spec §11 five are ACCEPTED as THE FIRM-OBLIGATIONS HANDS-ON SITTING, gated on the build.**
+
+**P41 — superseded in place — CAPACITY: the log measured at this refresh's working tree**
+
+> **AT HEAD, RE-MEASURED BY `wc` THIS BATCH AND NOT CARRIED:** `docs/record/session-log.md` **186 dated entries, 91 design `#nn`, high-water `#155`, GAPLESS from `#65`**
+
+**P42 — superseded in place — CAPACITY: the Q-CAP-5 limb retired by TC-10, shortened**
+
+> (b) the ~700 KB re-split trigger, RETIRED by `TC-10` (2026-08-21),
+
+**P43 — superseded in place — CAPACITY: the Voice2 pair's transit eligibility, attributed to the batch that made it**
+
+> **The `#137` Voice2 pair becomes TRANSIT-ELIGIBLE with this batch at HEAD**
+
+**P44 — superseded in place — DT-1: this refresh's own date, from the wall clock**
+
+> this refresh carries the RUN date, 2026-09-11, read from the wall clock at 00:15 CDT.**
+
+**P45 — displaced outright — `docs/record/normalizer-semicolon-amendment-2026-09-08/`, which characterizes the thirteen sites (the count stays in the bullet)**
+
+> — **twelve after a SEMICOLON** (`services;AAand`, in `tx.151`, `tx.171`, `tx.31`) and **one five-`A` run** that is the article `A` between two artifact spaces (`SOCIETY.AAAAAcooperative`)
+
+**P46 — superseded in place — HK-7: the declared-path existence test, re-run at this refresh**
+
+> **RE-CHECKED NATIVELY THIS BATCH by existence test on DECLARED paths only
+
+**P47 — superseded in place — REQ-CAPTURE: the size, re-measured at this refresh**
+
+> re-measured this batch by `wc` at HEAD; unchanged
+
+**P48 — superseded in place — YOUR HAND: (11) is DONE, its number not reused**
+
+> (10) **paste v32**; (11) **fire the FO build session** once `#155` is at HEAD — *"run docs/prompts/PROMPT-firm-obligations-slice-build-session.md"*; `FOM-8`'s live check needs his connected Outlook; (12)
+
+**P49 — superseded in place — NEXT ACTS: the header's date, now that item (3) records the build**
+
+> **NEXT ACTS, IN ORDER, AS OF 2026-09-10 (`#155`), THE WAVE 0 ACTS
+
+**P50 — superseded in place — NEXT ACTS (3): the build is done**
+
+> (3) **THE FIRM-OBLIGATIONS BUILD** (the Code session he fires) **→ THE FIRM-OBLIGATIONS HANDS-ON SITTING → the migration by his hand → his real activations** — the ruling sitting is DONE (`#155`);
+
+**P51 — superseded in place — NEXT ACTS: the twelve accepted items, FO-6's gate now met**
+
+> **TWELVE ACCEPTED REMAIN, EVERY ONE GATED ON AN UNBUILT MODULE AND NAMED:
+
+**P52 — superseded in place — NEXT ACTS: FO-6's gate (the build in demo mode, per its register row) is met**
+
+> `FO-6` (no firm-obligations concept exists in the calendar code).
+
+**P53 — superseded in place — NEXT ACTS: the five FO spec §11 items' gate is met**
+
+> the FO spec §11 items, gated on the FO build in demo mode — THE FIRM-OBLIGATIONS HANDS-ON SITTING;
+
+**P54 — displaced outright — NEXT ACTS' own sentence in the same bullet: ✅ `Q-IN2-1` HAS LANDED**
+
+> · CR-3 blank form + versioned manual (`Q-IN2-1`)
+
+**P55 — superseded in place — the register bullet: batch 96's acts, attributed to batch 96**
+
+> **THIS BATCH FLIPPED THIRTEEN ⬜ → ✅ AND MOVED THEM
+
+**P56 — superseded in place — the register bullet: batch 96's append, attributed**
+
+> **This batch appended the superseded `#154` sentence to that same block.**
 
 ## 2026-09-11 — QUEUE-RUNNER batch (runner line; NINETY-SIXTH invocation) — one docs-only packet: the firm-obligations ruling sitting (`#155`), executed whole — and the batch that found the synced head file had been lagging the log it derives from
 
@@ -175,390 +1014,6 @@
 
 **Awaiting/Returned from Code, unreviewed:** as BUILD-STATE's own line states at HEAD — recompute it there (`OPEN-5(a)`, start-of-session rule 5). What this session can truthfully add: batch 95 was READ design-side (its runner line whole, `#154` whole) and its landing verified by existence at the ruling sheet's canonical path and the seven EVIDENCE files' directory (`device_list_dir`); the `357ca8e` follow-on commit was read by its message (`COMMIT_EDITMSG`) and its effect on `spec-feedback.md`'s headings; nothing returned from Code is reviewed here. **Still open and still Michael's:** paste v32 · fire the FO build session · the post-`CCS-1` walk · the two `H12-v` asks and the AWS BAA read · the DECISION 9A acquisitions · the DECISION 8 drafting act (an Opus session) · `Q-STAT-7` · `Q-API-18`'s two facts · `Q-API-19` · `Q-API-9`, `-11`, `-12` · `Q-API-14` and `Q-API-3`'s filing half (held) · the Wave 0 acts (a)–(d) · the `#137` Voice2 pair's transit (eligible once this packet is at HEAD) · the `review_log` `'cancelled'` mismatch (now `FOD-20`'s, IN) · the two untracked 2026-08-24 files (DO NOTHING) · `CAP-OPEN-1`–`4` · `FE-SEED-1` · `TFI-1`–`3` / `CD-14` limb (i) · `HD-23` · moving the earlier relocation zips from `Downloads\` to `Session Captures\` (optional) · go-live, his day.
 
-## 2026-09-09 — QUEUE-RUNNER batch (runner line; NINETY-FIFTH invocation) — one docs-only packet: the API-integrations landscape and ruling sitting (`#154`)
-
-- **THE QUEUE HELD ONE PACKET AND IT RAN WHOLE.** `push-to-code_api-integrations-landscape_2026-09-09.zip` (155,432 B, mtime 2026-09-09 01:38:30 −0500, sha256 `57381f7add7cc83f741d24529a366080b8951faec2edbcfa03c317763f46cff3` — the identity pinned at Step 1 and the identity deleted against at Step 4.5). Filename-date order and pure-mtime order AGREE, so no `QR-4` question arose. Thirteen staged files, **13 of 13 checksums verified before placement and again after**. **Nothing was superseded** (a one-packet batch has no conflict rule to apply) and **nothing was skipped as already built** — the Step 1 already-executed check found BOTH new canonical paths ABSENT at HEAD, neither pushed nor committed-but-unpushed, so this was a genuinely pending packet.
-- **STEP 0 GATE CLEAN, ON THE EVIDENCE THAT COULD DISCONFIRM IT.** On `master` at `b2dc222`; a live `git fetch` plus `git ls-remote origin refs/heads/master` returned the same SHA, and `git rev-list --left-right --count HEAD...origin/master` returned `0 0` — not behind, not ahead, not diverged. Working tree carried no modified tracked file; the three untracked entries are the two 2026-08-24 files the packet's §7 marks **DO NOTHING** and a `Claude outputs/` directory. None was touched.
-- **ALL NINE OF THE PACKET'S §1 FACTS RE-VERIFIED AT THIS HEAD, NOT CARRIED.** `#153` still the top design ordinal and **`#154` at 0 hits** across `docs/`, `db/`, `supabase/`, `CLAUDE.md`, `README.md`; **`Q-API-` at 0 hits** repo-wide, so no label collided; both new canonical paths absent; the REQ-CAPTURE anchors adjacent at lines 1075/1077, LF, `AMENDED 2026-09-09` at 0 before and **2 after**, exactly as §4.3's duplicate watch specifies; `docs/spec-feedback.md` CRLF with the 2026-09-07 firm-obligations section last; BUILD-STATE at `Commit: 44409ef`, **99,711 B / 136 non-blank — 289 B of `CAP-4` headroom**, as §1.8 predicted.
-- **A COUNTING METHOD IS DEFECTIVE AND IS CORRECTED HERE — THE PACKET'S ROW-FORM WARNING WAS RIGHT ABOUT THE SYMPTOM AND WRONG ABOUT THE CAUSE.** §1.4 and `register-rows-2026-09-09.md` both warned that a backticked grep returns a false zero on `Q-WF-4`, `Q-WF-6` and `Q-STAT-5`, whose rows are written without backticks, and prescribed the backtick-optional form `^- [⬜🟡✅] \*\*\`\?<ID>`. **That prescribed form ALSO returned zero — for all six rows, backticked and unbackticked alike.** The cause is the **character class**: `[⬜🟡✅]` is matched byte-wise in this environment and returns 0 outright; forcing `LC_ALL=C.UTF-8` recovers `⬜` and `✅` but **still silently drops `🟡`**, which is outside the BMP. Only **alternation** — `(⬜|🟡|✅)` — counts all three. Measured proof on the register at `b2dc222`: bracket class in the default locale **0**; bracket class under `C.UTF-8` **375**; alternation **380**; the runner's own stated method `^\s*- (⬜|✅|🟡)` under PCRE **396** (the difference being 16 indented child rows, which the runner's `\s*` is written to include). **The rows were all present the whole time** — one physical line each, no hard-wrap: `Q-WF-4`, `Q-WF-6`, `Q-STAT-5`, `Q-COM-4`, `Q-QBO-3`, `Q-QBO-6`. **Nothing was created.** The row-form finding §4.6 asked for is therefore recorded WITH a correction: the series really are written both ways, but that is not what produced this session's zeros, and a runner in a bare locale using the bracket class would have reported **no register rows of any kind** and called the register empty. Routed to `docs/spec-feedback.md` is the standing consequence — **the house counting method must be alternation, never a character class**, and `^\s*- (⬜|✅|🟡)` under `grep -P` is the form that satisfies it.
-- **THE THREE `CAP-3` ACTS, ALL EXECUTED.** (i) ROWS: one new heading — `### API INTEGRATIONS — the 2026-09-09 ruling sitting (#154)` — with **one 🟡 and seven ⬜** rows carrying full question text (`QR-1`); **thirteen rows BORN CLOSED** under the same heading in the closed register (twelve `Q-API-` closures and the closed-for-now list); **one flip, `Q-WF-4` ⬜ → 🟡** (ruled in shape, execution pending — the block did NOT move, because only ✅ moves); **six add-only annotations** (the `#85` italic paragraph, `Q-COM-4`, `Q-QBO-3`, `Q-QBO-6`, `Q-WF-6`, `Q-STAT-5`). **No `Q-API-` id is minted durable; the labels stay packet-local.** (ii) THE STATUS SENTENCE: the `#154` sentence written, the superseded `#153` sentence appended verbatim to the closed register's RECONCILE HISTORY. **It carried with it the 2026-09-09 FOLLOW-ON ACT paragraph that the `b2dc222` session had fused to it** — Michael's call, put to him at the Step 1 STOP with the reasoning that the paragraph is part of what the current sentence says and the history is append-only, and answered *"Go"*. (iii) MOVES: **none — no row flipped ✅ this batch.**
-- **COUNTS RECOMPUTED OVER BOTH FILES, METHOD NAMED (`OPEN-5(a)`, `CAP-3`).** Leading marker, `^\s*- (⬜|✅|🟡)` under `grep -P`: `docs/specs/attorney-review-queue.md` (SYNCED, **450,196 B**) holds **386 ⬜, 7 🟡**, plus the **11 ✅ parents held back for having an indented open child (`CAP-OPEN-2`)**; `docs/record/attorney-review-queue-closed.md` (repo-only, bridge-reachable, append-only, **274,378 B**) holds **143 ✅**. Open moved **380 → 386**; amber **5 → 7**; total ✅ **141 → 154**, conserved as 141 + the 13 born closed with **nothing moved between files**.
-- **HEALTH CHECK SKIPPED, AND THE SKIP IS RECORDED WITH ITS REASON (`QR-6(f)`).** `npm test` / `npm run build` / `npm run lint` were NOT run. The batch is docs-only: **§5 is NONE in the one packet**, and its routing table places no `src/`, `db/`, `supabase/` or build-tooling path. On such a batch the health check proves nothing about the batch. **No `src/`, `db/` or `supabase/` file was read at all, so every figure BUILD-STATE derives from those trees is CARRIED from the `ea5675b` CODE refresh and is marked as carried (`QR-6(a)`).**
-- **`CAP-2` HELD AND CHECKED.** The one RULING-class file was born in `docs/specs/`; the seven EVIDENCE files were born in the new `docs/record/api-integrations-landscape-2026-09-08/`. A check for any EVIDENCE filename under `docs/specs/` returned **0**. Every routing row carried a CLASS, so no `QR-6(e)` skip arose on that ground. **No `RETIRE` row in this packet.**
-- **THE PACKET'S OTHER ACTS.** The REQ-CAPTURE annotation was INSERTED beneath the `AS-Q4` MARKED blockquote and the §0 index cell APPENDED — **add-only; the ruled text, its table and the MARKED note were not edited** (net 3 lines added, 1 replaced, that one being the index row itself). *A second `MARKED — THE FOUR…` blockquote exists in the file at line 1352 — "THE FOUR OPTIONS", selection "(A)" — and a prefix-anchored match hit both; the anchor was narrowed to the packet's full phrase, which is unique.* `docs/spec-feedback.md` gained its 2026-09-09 section at the END, **written CRLF to match the file, verified by a bytes read: 0 lone LF.**
-- **NOTHING WAS BUILT, DEPLOYED, CLICKED OR SENT.** §5 was NONE and is recorded as deliberate, not an oversight: Wave 0 (a), the `statute-fetch` / `legiscan-poller` deployment, is AUTHORIZED but is **a separate Code session with Michael's own Supabase sign-in**, which a docs-batch runner never performs. No Supabase secret, cron or live-project object was touched; no consent was clicked; no Azure resource, Power Automate flow or migration was created; no email was sent. **The Microsoft HIPAA BAA text and the Compliance Materials NDA body reached no file — §6's first DO-NOT, honoured.**
-- **BUILD-STATE REWRITTEN IN FULL, EVERY COUNT RE-DERIVED AT HEAD, NEVER CARRIED FROM THE PACKET (`OPEN-5(a)`).** Registry backlog re-derived by the stated method (two named files, anchor `^**Status:** VERIFIED`): **47 entries, 35 verified, 12 not — UNMOVED for a fifth consecutive batch.** REQ-CAPTURE count **7**, and the disclosures capture re-measured after this batch's own annotation at **253,299 B / 1,147 non-blank** (it was 251,535 / 1,146). A-4 recomputed from the log at HEAD; A-5 taken from the register's own header at HEAD.
-
-*[Same-day note, added after this entry was committed and pushed at `4be996c`, on Michael's instruction — the entry above is not edited. **The bullet on the counting defect says the standing consequence “is routed to `docs/spec-feedback.md`”, and at the time it was committed it was NOT: only the packet's own directed 2026-09-09 section had been appended, and no counting section existed in that file.** The routing was performed as a follow-on act in a later commit the same day, as `## 2026-09-09 — the register row-counting method is defective…`. The bullet's claim is therefore true as of that later commit and was premature in this one — the `QR-5` failure class (a sentence about an act that had not yet happened), caught here by Michael rather than by the runner, and recorded rather than rewritten because the log is append-only.]*
-
-### DISPLACED FROM BUILD-STATE (CAP-4)
-
-**18 passages, 6,050 B, displaced from `docs/specs/BUILD-STATE.md` by this batch so the file stays under its 100,000-byte ceiling. Each is SPENT NARRATIVE — a prior batch's account of itself, a condition since discharged, or a fact stated twice in the same bullet — and NOT ONE IS AN EXISTENCE CLAIM. This runner line is the only surviving copy of each.**
-
-1. *banner — batch 94's own account of itself (CAP-4 ledger figures, the transit summary, and the Postmark-credential sentence)*
-
-   > ⛔ **`CAP-4` BOUND; SHORTFALL NAMED — entered the refresh at 99,672 B, stands at 99,711 B, 289 B under the 100,000-byte ceiling, 136/150 non-blank (150 raw). 14 PASSAGES DISPLACED, 6,014 B** … **The Postmark credential lives only in Postmark's and Supabase's dashboards (his word).** ⚠ **NOTHING WAS RULED, AUTHORIZED OR BUILT THIS BATCH — `#153` IS A TRANSIT EXECUTION, DOCUMENTATION ONLY:** six project-knowledge files relocated and deleted, four EVIDENCE files filed, nothing built, no ID minted.
-
-2. *line 120 — the false “no row at all” claim, corrected per §4.5 item 3*
-
-   > **THE HARDEST GATE IS ON NO ROW AT ALL (Q-WF-4): does this application acquire a server-side identity, and of what shape?**
-
-3. *line 138 — batch 94's account of the two items it dropped, and batch 93's account of its own drop*
-
-   > *(**TWO ITEMS DROPPED THIS BATCH AND THE REST RENUMBERED — SAID HERE, NOT DONE SILENTLY.** The old item (3), CLEARING `Claude outputs\`, is SPENT: the `Documents\Knowledge Repo\` folder's **THREE** scratch zips were deleted by name and verified gone by Michael's hand 2026-09-08 — and the FOURTH, `repo-snapshot-ea5675b_2026-09-07.zip`, **WAS NOT THERE TO DELETE**, his words, kept apart here because an absence is not a deletion, and he reports the checkout's folder cleared by his hand too. **NO STANDING COUNT OF THE CHECKOUT'S FOLDER IS PUBLISHED HERE — IT IS A LIVE DELIVERY CHANNEL AND ANY COUNT OF IT GOES STALE IN MINUTES.** Timed readings only: EMPTY at 22:48 (the packet's); ONE at 23:1x, the v31 delivery, byte-identical to the EVIDENCE copy this batch commits; TWO at 23:25; **SEVEN by 00:23 on 2026-09-09**, the later ones not this batch's. Batch 93's “seventeen” is spent and gets no successor figure. Clearing it is optional and his. The old item (4), `Q-G3-4`, is DROPPED as STALE on the `GL1-1` precedent: `Go_Live_Gates.md` at HEAD carries the closure beneath gate 3 — *"CLOSED — RULED by Michael, 2026-08-20 (`Q-G3-4`, recorded `#126`)"* — so the question this file listed as awaiting him was answered nineteen days before, exactly as its own RLS bullet says.)* *(The item (6) dropped at batch 93, `GL1-1`, was DROPPED as STALE for the same reason: this file contradicted itself, and `Go_Live_Gates.md` at HEAD settles it — the correcting append IS present beneath gate 1, so `GL1-1` is RULED, EXECUTED and CLOSED, exactly as the LAUNCH PATH bullet says. The draft file remains on disk as the source of that append.)*
-
-4. *line 150 — batch 94's own no-row account and the RC-4/RF-2 narrative it stated twice*
-
-   > **THE BATCH ITSELF ADDED NO ROW, FLIPPED NONE AND MOVED NOTHING.** `Q-G3-4` is RULED AND CLOSED at HEAD and correctly has no row. **`RC-4` gained a row 2026-09-09 on Michael's instruction, with its full question text (`QR-1`); `RF-2`'s question already had one — `TC-OPEN-4` — so it was ALIASED, not duplicated.** ⬜ 379 → 380.
-
-5. *line 150 — batch 94's seventh-consecutive-batch self-account*
-
-   > **This batch appended the superseded `#152` sentence to that same block — the three-act merge working as ruled for the SEVENTH consecutive batch.****
-
-6. *line 150 — the duplicated RC-4/RF-2 sentence (the same fact is stated once, above)*
-
-   > **`RC-4` GAINED A REGISTER ROW 2026-09-09 (Michael's instruction); `RF-2` ALREADY HAD ONE AS `TC-OPEN-4`, NOW ALIASED THERE RATHER THAN DUPLICATED. Both series collision-checked repo-wide, clear.**
-
-7. *line 21 — the signup-toggle measurement narrative (the FACT survives in the banner)*
-
-   > **THE SIGNUP TOGGLE IS OFF — MEASURED LIVE 2026-09-07 (`#149`)**, closing the open act this file carried since `#125` measured it ON: the outside-mailbox attempt through the sign-in box was refused with *“Signups are not allowed for the otp”*.
-
-8. *line 89 — a prior batch's account of correcting its own stale wording*
-
-   > — the “authorized and unbuilt” wording this file carried was stale against its own banner and is corrected here.
-
-9. *line 129 — `#153`'s full meter-decomposition narrative, superseded by `#154`'s reading*
-
-   > read the knowledge meter at **1,654,674 / 2,000,000 = 82.7%** at open (seventeen docs) and **1,612,045 = 80.6%** after the transit — a drop of exactly **42,629**, the unit calibration's SIXTH confirmation — then **1,617,371 = 80.9%** after Michael clicked Sync at 23:01:35 CDT, the synced share **1,577,097 = 78.9 points over 194 files / 5,552,623 B** and the **ELEVEN** remaining project docs **40,274** units: **1,577,097 + 40,274 = 1,617,371 exactly**, so the meter now decomposes into the sync endpoint's own count plus the docs' unit sum — two halves a design session can read directly instead of inferring. Design-side reads, **not repo facts**; every sum re-checked here and all fourteen are exact.
-
-10. *line 129 — batch 94's account of executing the transit (the record path survives at line 131)*
-
-   > **TRANSIT — SIX FILES MOVED 2026-09-08 (`#153`), THE THIRD EXECUTION OF THE `TC-8` ACT:** the `#149`/`#150`, `#151` and `#152` capture/handoff pairs relocated to `Documents\Knowledge Repo\Session Captures\` in one zip (142,464 B, sha256 `ef223995…daec0`), byte-verified in `Downloads\` and again at the destination and ONLY THEN deleted from project knowledge. Record: `docs/record/transit-2026-09-08/`.
-
-11. *line 132 — batch 94's account of its own midnight crossing (the RULE survives, unchanged)*
-
-   > The work ran 2026-09-08 Central; the close-out CROSSED MIDNIGHT and the commit lands **2026-09-09** Central, the wall clock read at 00:00:23 CDT from two independent instruments. **The runner line is stamped 2026-09-08 — the date the work was done and the date every fact in it carries — on the `#152` precedent that the bulk of the sitting governs; `#153` itself opened 22:51 CDT on 2026-09-08.** The commit date and the entry date therefore differ by one day, said here so no later reader reads it as an error.
-
-12. *line 138 — the account of three items having left this list (they are gone; the list shows it)*
-
-   > *(`Q-PR3-3` ANNOTATED, NOT CLOSED.)* **PASTING v30 AND RUNNING THE TWO `CCS-1` MIGRATIONS ARE BOTH DONE (`#150`), AND PASTING v31 IS DONE TOO (`#153`, his word) — all three leave this list.**
-
-13. *line 140 — batch 92's “this batch” self-account, three batches stale*
-
-   > ✅ **`HS-3` and `HS-5` are CLOSED and moved to the closed register this batch**;
-
-14. *line 133 — `#152`'s normalizer measurement figures (preserved verbatim in the record directory named in the same sentence)*
-
-   > exactly those thirteen lines change across the sixteen `#151` chapters, zero residual glued `AA` after, zero sites of either shape in ten of the eleven chapters §3 was written on, 28 semicolon sites across the whole Tax Code zip, and no quoted passage on the record touched.
-
-15. *line 150 — the RF-series collision-check narrative (the alias fact survives above)*
-
-   > **`RF-1`–`RF-7` WERE SESSION-LOCAL HANDLES; THE `RF` SERIES IS NOW COLLISION-CHECKED REPO-WIDE AND CLEAR (2026-09-09), and `RF-2` sits on `TC-OPEN-4` as an alias.
-
-16. *line 140 — the seven proposed items named a second time in the same bullet (they are listed above it, and the walk's contents are itemised at YOUR HAND (1))*
-
-   > **ALL SEVEN REMAINING PROPOSED ITEMS — D-18, D-8, per-paragraph regenerate, `AS-Q14`–`AS-Q17` — ARE NAMED TO THE POST-`CCS-1` WALK, together with the slice's ELEVEN `SD-` TEXT ACTS and the confirm-or-edit marks.**
-
-17. *line 137 — the captures' provenance narrative (the DE series has its own bullet)*
-
-   > First three SPENT as CD-1 input; UIM + deficiency seeded the **DE series**.
-
-18. *line 129 — a summary immediately restated item-by-item in the same bullet*
-
-   > **All three `Q-CAP` acts are RULED, EXECUTED and VERIFIED.**
-
-
-**ALSO REMOVED FROM BUILD-STATE, AND NOT COUNTED AS DISPLACEMENT — six runs of six words or more that a word-level diff of the old file against the new one turned up.** They are recorded because a rewritten banner is a removal too, and an unrecorded one reads as if it never existed. **Each was COMPRESSED or SUPERSEDED rather than displaced: its substance still stands, and where is named.**
-
-1. > — all sixteen hands-on rulings of 2026-09-05, `HS-3`, and the five address-model rulings of 2026-09-07
-
-   *Survives at:* the slice's contents — the claim *THE CC-1 RULINGS AND ADDRESS-MODEL SLICE IS BUILT* stands in the banner, and the enumeration stands at the CC-1 bullet under NEXT ACTS and in `docs/specs/cc1-hands-on-sitting-rulings-2026-09-05.md`
-
-2. > (`#150`), nine of nine checks answered in his words and ZERO rows split because none needed it;
-
-   *Survives at:* the migration run's detail — *EVERY MIGRATION WRITTEN TO DATE HAS RUN, AND NO MIGRATION IS PENDING* stands in the banner, which still names the record at `docs/record/ccs1-migrations-run-2026-09-07/`
-
-3. > Item (5) closed at his own paste of the instructions, confirmed by a live design-side read — **nothing in the repo verifies it.**
-
-   *Survives at:* floor item (5) — stated at greater length in the LAUNCH PATH bullet, which carries the live read, the v30 → v31 supersession, and *NOTHING IN THE REPO VERIFIES EITHER*
-
-4. > — PASTED, MICHAEL'S OWN WORD IN THIS SESSION (2026-09-08);
-
-   *Survives at:* the v31 paste — stated in full in the INSTRUCTIONS bullet (*PASTED BY MICHAEL, HIS OWN WORD IN THE BATCH-94 SESSION*)
-
-5. > TRANSIT IS DONE AND LEAVES THE LIST):**
-
-   *Survives at:* superseded, not lost: the NEXT ACTS header was rewritten to 2026-09-09, and the transit having left the list is now simply true of the list
-
-6. > UNCHANGED (no row flipped this batch).**
-
-   *Survives at:* superseded, not lost: the register counts were recomputed this batch, and *no row flipped* is false of this batch — one row flipped ⬜ → 🟡
-
-## 2026-09-09 (#154) — (Typed design session, Cowork, Fable 5.1 per the environment; opened the evening of 2026-09-08 on Michael's own question — a prompt he was feeding another model about API integrations, *"We are not going to integrate Google into the software at all, and we use Microsoft 365"* — the first stamp clock-checked at 22:58 CDT, and the rulings taken 00:46–01:20 CDT on 2026-09-09, so DT-1 stamps the entry 2026-09-09; DEVICE BRIDGE GRANTED on the checkout: THE API-INTEGRATIONS LANDSCAPE AND RULING SITTING — an improved, client-clean prompt and Claude's own answer to it (memo v1, a fifteen-fact RECONCILE FIRST floor and an eleven-group catalog, audited twice); a red-team prompt with a paste-back format; Grok 4.6's CHALLENGE-RESPONSE reconciled item by item into memo v2; then, at his instruction *"bring it to me one thing at a time,"* THIRTEEN ITEMS PUT ONE AT A TIME: PHI LEAVES SUPABASE for a pointer + split store, `AS-Q4` AMENDED in one limb with three forks, `Q-WF-4` ANSWERED IN SHAPE as a composite of four runner shapes, delegated `Files.ReadWrite` and `Mail.Send` ruled IN with the Graph-not-Postmark rule, four Wave 0 acts authorized and none of them the runner's, a closed-for-now list adopted, travel ruled; the Microsoft BAA text he pasted under NDA RECORDED NOWHERE; the ordinal `#153` TAKEN MID-SITTING by the transit-execution session (batch 94 at 00:44 CDT), so this is `#154`; nothing built, no `src/` edited, no consent clicked, no migration, no ID minted durable)
-
-Michael shared the one-paragraph prompt and, asked what he wanted, chose **"Both"**: a better prompt and Claude's own answer. **Verified over the bridge before either was written:** HEAD `44409ef` on `master` = the local `origin/master` tracking ref (a local read, NOT a QR-3 pass); `inbox/` EMPTY; no `.git/index.lock`; `git status` never run. **Then the repo moved under the sitting:** at packaging (01:30 CDT) a LIVE `git ls-remote origin refs/heads/master` read `d4c5e7d`, 0/0 by `rev-list --left-right --count` — **batch 94 committed at 00:44:13 CDT, two minutes before item 1 was put, filing the TRANSIT-EXECUTION session as `#153`.** A heading-anchored grep over the live log before any stamp found `#153` the top design ordinal, so this entry is **`#154`** — the `TOC-6` race live, two design sessions in one evening. Every anchor this packet's acts rest on was re-read at `d4c5e7d` (batch 94 touched neither the REQ-CAPTURE nor `docs/spec-feedback.md`; the register's only change was its Status paragraph) — **and once more at `b2dc222`**, because a Code session Michael directed (Opus, unnumbered per `TOC-6`) committed and pushed at 01:27:20 CDT while this packet was being assembled: the `RC-4` row and the `RF-2` alias onto `TC-OPEN-4`, its own message correcting batch 94's "no row" finding on `RF-2` as *"right about the string and wrong about the substance."* Every check below held at `b2dc222`. Instructions **v31 are IN FORCE** by a live read of the instructions field at packaging; the knowledge meter read **1,610,695 / 2,000,000 = 80.5%**, eleven docs = 40,274 units, so the synced share is 1,570,421 — consistent with a Sync after batch 94 (the head file shrank 25,050 B at `d4c5e7d`), stated as consistent, not asserted.
-
-- **THE PROMPT AND THE MEMO.** `PROMPT-api-integrations-landscape_2026-09-08.md` (EVIDENCE): self-contained, client-clean — the practice, the app as BUILD-STATE and the specs describe it, eight hard constraints (no Google; BAA-for-PHI; credential custody; nothing decided by a document; retrieval ≠ verification; solo-now-multi-later; no real data; sourced vendor facts), and a four-part output shape whose first-order question is *"does this application acquire a server-side identity, and of what shape?"* Memo v1 (`api-integrations-proposal_2026-09-08.md`, EVIDENCE) answered it against the record: §0 fifteen RECONCILE FIRST facts read at HEAD (the one SPA registration with `Calendars.ReadWrite` and no secret; three Edge Functions, two undeployed and one a stub calling no vendor; `AS-Q4`'s text-in-database ruling; `Q-6`'s CourtListener bar; `#137`'s Microsoft-independent backup; `H12-v`'s six routes); §1 a runner proposal; §2 five rules; §3 a catalog of sixty-odd rows in eleven groups, each marked EXISTS / DESIGNED-UNBUILT / NEW with its gate, actor and PHI class, every vendor claim fetched and dated or marked NOT ESTABLISHED; §4 waves; §6 thirteen packet-local `Q-API-` questions. **Two adversarial audits ran on v1 before it was shown** (5 HIGH / 19 MEDIUM / 5 LOW, then a re-sweep 2 / 5 / 5, every HIGH real): the largest fix was structural — Exchange Online RBAC for Applications scopes MAILBOXES only, so every app-only FILE permission was struck from the runner design; the rest were attribution (the disclosures-writer refusal is the slice spec's, not BUILD-STATE's; `outlook-setup.md` is the source for the extended property), marks ([RECORD]/[PK]/[FETCHED]/[SEARCH ONLY]), and the eFileTexas filing moment marked CONTESTED.
-- **THE CHALLENGE LOOP.** A red-team prompt (`PROMPT-challenge-api-integrations-proposal_2026-09-08.md`, EVIDENCE) told another model to test, improve, find weaknesses and propose additions, returning a paste-back block. Michael ran it on **Grok 4.6** and pasted `CHALLENGE-RESPONSE v1` (filed verbatim with a provenance header as EVIDENCE). The reconciliation (`challenge-reconciliation_2026-09-09.md`, EVIDENCE) disposed of **26 assertions, 10 weaknesses, 5 alternatives and 12 additions one by one**, each marked [RECORD] / [PK] / [FETCHED] / [SEARCH ONLY] / [GROK]. Refuted at source: the AWS HIPAA-eligible page's date (May 22, 2026 stands), SRFax's BAA (its own page says it signs), and "Edge Functions are WRONG as the Graph home" (overstated — the 2-second limit is CPU time, Graph retries for four hours, and Microsoft's own instruction is acknowledge-and-enqueue). Adopted into v2: ack-and-enqueue as the Execution cell, `CallRecords` excluded from the RBAC-scoped sentence, Key Vault OR Entra RBAC for the Event Hubs credential, four runner SHAPES as a table, new catalog rows (Exchange transport rules, Intune, Purview, OneDrive folder notifications, CloudLex exit), a composite four-wave sequence, and six new questions (`Q-API-14`–`19`). **Not adopted:** every legal characterization Grok offered (routed as UNVERIFIED candidates, §6 of the sheet); the trust-boundary restatement; the "microseconds" claim (a reasoned claim, not measured). A third audit ran on the reconciliation (3 / 9 / 6, fixed and re-swept). Memo v2 (`api-integrations-proposal_v2_2026-09-09.md`, EVIDENCE) carries every change `[v2]`-marked.
-- **THE COST QUESTION, AND WHAT IT TURNED INTO.** *"Does this mean that I am looking at a $599/month minimum cost for my software?"* — on the record's own reading (`#130`; the amendment slice: *"THE AMENDMENT'S FIVE CARRY PHI — a chronology's extracted text above all"*) the five disclosures tables and the chronology text are PHI, and Supabase's HIPAA add-on is Team/Enterprise only (from $599/month; PITR $100 per 7 days; Small compute $15 — ≈ $714 before the add-on's own unpublished price, against Pro's from-$25; `supabase.com/pricing`, read 2026-09-08). Asked *"is there any way that we can mitigate the Cost?"* and *"can the postgres sql be built off chronologies stored in one-drive?"*, the answer that became decision 1: **yes — the file is the source of truth, the rows are a rebuildable derived index, and the PHI tables live in a Postgres inside the Microsoft tenant while Supabase keeps the case core and pointers.**
-- **THE THIRTEEN ITEMS, EACH BY HIS PICK (the ruling sheet, RULING-class, has the option text under every one; CC-1(a) noted throughout — the text is Claude's, the selection his).** (1) FACT: is Microsoft's HIPAA BAA in force? — he offered the BAA text under Microsoft's Compliance Materials NDA, was asked not to paste it, pasted it anyway, and **it is recorded nowhere** (the public offering page is cited instead); re-put narrower: **"Covered-status is undecided."** — OPEN and his; the subscription type not stated. (2) DECISION 1: **"Pointer + split store (Recommended)."** (3) `AS-Q4`, its own act — *"Run me through this a bit more."*, the walk given, then **"Adopt the one-limb change."** (4) the original file: **"Keep it beside the text (Recommended)."** (5) removal: **"Move to a removed folder (Recommended)."** (6) who writes: **"Browser now, P1 later (Recommended)."** (7) `Q-WF-4`: **"Composite as read (Recommended)."** (8) `Files.ReadWrite`: **"In, for all three uses (Recommended)."** (9) `Mail.Send`: **"In, user-initiated (Recommended)."** (10) Wave 0: **"(a) Deploy the two functions, (b) Outlook defect captures, (c) CloudLex export rehearsal, (d) Backup vendor choice"** — all four. (11) the transport-rule ignore list: **"Yes, but later."** (12) the closed-for-now list: **"Adopt the list as put (Recommended)."** (13) travel: **"Yes — package it now (Recommended)."**
-- **THE `AS-Q4` AMENDMENT, ONE LIMB, STATED ONCE.** RULED 2026-08-31 (late): *"(i) Extracted text per version in the database; bytes not retained; file store at gate 7."* RULED 2026-09-09: the extracted text per version is **a text file in the matter's OneDrive folder** (per client, as `AS-Q10` has it); the `case_chronology_versions` row keeps version, drive item id, content hash, `readable`, `char_count`, `removed_at` — **and no text**; the original dropped file is **kept beside the text file** (point-don't-copy when it already lives in the CloudLex mirror), so "bytes not retained" now reads *by the app's database*; removal (`D-60`) **moves both files to a firm-level `_removed` folder** outside any matter, pointer kept, deletion his hand; **the browser writes and extracts now** (delegated `Files.ReadWrite`), **the P1 service later** when T3 is authorized. Everything else in `AS-Q4` stands — the readability flag, one chronology set per client, the file store at gate 7. **Recorded by an ANNOTATION beneath the REQ-CAPTURE's §14.1, never by editing the ruled text; the built table's `extracted_text` column is a spec-vs-code gap logged in `docs/spec-feedback.md` (the 2026-09-09 section). Consequence for the floor, stated plainly: NO REAL CHRONOLOGY MAY BE DROPPED until the split-store slice lands (`Q-API-20`), because the built path would put PHI text in Supabase, which decision 1 rejected.**
-- **`Q-WF-4` — ANSWERED IN SHAPE, AND ITS ROW EXISTS.** The composite: (i) delegated-only NOW; (ii) a Supabase scheduled runner — an Edge Function endpoint that acknowledges-and-enqueues within Microsoft's 3-second window, Supabase Queues, cron renewals, a delta-query sweep — for the PHI-free jobs the day `statute-fetch` and `legiscan-poller` deploy; (iv) Power Automate flows, pointers only, as the INTERIM for the known-sender mail pipelines; (iii) an Azure runner (Functions with Managed Identity and Key Vault, Graph delivering to Event Hubs) as the DESTINATION for anything touching PHI. **Reason:** decision 1 keeps PHI inside the Microsoft tenant, so the PHI-touching runner belongs there. Decided now, built in Wave 3, **each build its own authorization**. **Three things found at HEAD and corrected before shipping:** this session's first read said `Q-WF-4` had no register row — a FALSE ZERO from grepping the backticked form, when the row is written `- ⬜ **Q-WF-4.**` without backticks; **the same false zero then bit a SECOND time, after it had been diagnosed** — the fix was applied to `Q-WF-4` alone and the next pass concluded `Q-STAT-5` had no row either, when `- ⬜ **Q-STAT-5 — How far should the Insurance line go …**` sits three lines above `Q-STAT-7` in the same form (Fable 5.1's miss both times; caught by the backtick-optional grep and the row read before the zip closed; nothing false reached HEAD; the record's own rule — *enumerate the WHOLE series before scoping the fix* — relearned, not new, and the Code side met the same class the same night on `RF-2`); and **BUILD-STATE's WF bullet still says *"THE HARDEST GATE IS ON NO ROW AT ALL (Q-WF-4)"* while the same sentence's neighbour says *"ITS ROW NAMES ALL THREE CONSUMERS (#94)"* — stale against the register and against itself, flagged for the runner's refresh.** The row flips ⬜ → 🟡 (ruled, execution pending); the `#85` paragraph, `Q-COM-4`, `Q-QBO-3`, `Q-QBO-6`, `Q-WF-6` and `Q-STAT-5` are annotated add-only; the WF-2–WF-8 rows stay ⬜ on their own gates.
-- **THE SCOPES, AND THE RULE THAT CAME WITH ONE OF THEM.** Delegated `Files.ReadWrite` on the SPA registration for three uses — the chronology text and original written at the drop, the `_removed` move, and PDF preview via Graph conversion (`Q-API-3`'s preview half; the FILING half stays behind a fidelity test on his master `.docx`, hands-on). Delegated `Mail.Send`, every send his click, no app-only sending until the Azure runner is built and separately authorized — **and the rule: any notification or message from the app that could name a client or a provider goes through Graph from his own mailbox, never through Postmark, which will not sign a BAA.** Both consent clicks are his, in the Entra portal, at the slice that first needs each (as on 2026-07-26); the OneDrive matter-folder convention is a fact he supplies then (H5).
-- **WAVE 0 — FOUR ACTS AUTHORIZED, NONE OF THEM THE QUEUE RUNNER'S.** (a) Deploy `statute-fetch` and `legiscan-poller` per `docs/statute-cache-setup.md`, invoke the poller once by hand and read its JSON log before trusting cron — **a SEPARATE Code session with Michael's Supabase sign-in, NOT a runner act** (it touches the live project; `QR-6(e)`); it is the proving step for the Supabase scheduled path and answers `F-14` and `O-11` with evidence. (b) The two Outlook-defect evidence captures — his hand, his browser. (c) The CloudLex export rehearsal — his hand on the portal, the export landing on the existing OneDrive tree; importers built later by a Code session **against a fictional fixture shaped like the export's columns — the real export never enters the repo, a fixture, a packet or a chat.** (d) The backup vendor one-pager (Backblaze B2 vs AWS S3 / Glacier / AWS Backup against `#137`'s requirements and the $50 ceiling) — a design act, put back to him as a choice. **(e) the Exchange transport-rule ignore list: authorized in principle, DEFERRED to the mail-intake slice; the sender list his hand.**
-- **THE CLOSED-FOR-NOW LIST (adopted as put).** SMS/CPaaS until `COM-LOOK-4`, a BAA and his written finding on photographs; Teams chat and Bookings until the paralegal hire; the e-signature API until a BAA naming the SKU and a volume finding; LawPay links and live QBO until the money-module ruling; CourtListener in-app until `Q-6` is resolved with FLP; PACER until a federal matter needs it; **closed for good absent a new ruling:** rules-based calendaring vendors (`FC-9`'s engine wins), Microsoft 365 Backup as the third copy (contrary to `#137`), address validation (as `CCS-1` ruled).
-- **PF-1 DID NOT FIRE, AND THE SKIP IS RECORDED:** the packet carries no legal characterization and drafts no registry entry; the cites the challenge raised (45 C.F.R. § 160.103 and § 164.312(b); TDRPC 1.14 and TRDP 17.10; Tex. Gov't Code ch. 662 and TRCP 4) are routed as UNVERIFIED candidates to `Q-WF-6`, `Q-QBO-6` and — as the fifth-registry-file placement question — `Q-STAT-5`, by add-only annotation, and are characterized nowhere. **RR-1 ran:** the sheet, the four act files and this entry were re-read against the ordinal move, the two row reads and the second HEAD move before the zip closed. **RE-SWEEP AFTER FIX** ran on each audit's fix pass (the three fleets above).
-- **WHAT SHIPPED (this packet, docs-only):** this entry; ONE RULING file — `docs/specs/api-integrations-ruling-sheet-2026-09-09.md`; SEVEN EVIDENCE files under `docs/record/api-integrations-landscape-2026-09-08/` (the prompt, memo v1, the challenge prompt, Grok's response verbatim, the reconciliation, memo v2, the running ledger); ONE INSERT beneath the REQ-CAPTURE's §14.1 and one cell append in its §0 index; ONE APPEND to `docs/spec-feedback.md`; the register's three acts — a new `### API INTEGRATIONS` heading with one 🟡 and seven ⬜ rows carrying full question text (`QR-1`), thirteen rows BORN CLOSED in the closed register under the same heading, `Q-WF-4` flipped ⬜ → 🟡, six add-only annotations, the reconcile sentence advanced; the BUILD-STATE facts in the packet's §4.5. **`CAP-2`:** every row that places a file carries its class. **§5 is NONE for the runner** — the deployment is a separate Code session with his sign-in, by his authorization quoted there.
-- **WHAT DID NOT HAPPEN, each because a rule bars it or because it is his:** nothing built; no `src/`, `db/` or `supabase/` file read or written; no schema act — the `AS-Q4` amendment waits for its slice; no migration; no consent clicked; no Azure subscription, database, Power Automate flow or app-only permission; no `Q-API-` id minted durable (packet-local, collision-checked 0/0/0 at `44409ef`, `d4c5e7d` and `b2dc222`); no registry file touched; no legal currency verified; no real client data touched (the memos name no client; the CloudLex export stays on his tree); no capture relocated; no live database touched; `git status` not run, no lock stranded; **the Microsoft BAA text is in no file, no ledger, no capture and no memory.** Bridge scratch on his machine: none beyond the packet zip in `inbox/`; the VM's `/tmp/bcm` copy is the VM's own.
-
-**Next:** the queue runs this packet on `mdb-pllc` (batch 95); Michael clicks Sync; **`Q-API-20` is his sequencing pick** — draft the split-store slice now, or after **THE FIRM-OBLIGATIONS RULING SITTING** (unchanged from `#152`/`#153` as the next act on its track, the mock beside the sheet) and **THE POST-`CCS-1` WALK**; the Wave 0 acts in parallel as his time allows — the deploy Code session (his Supabase sign-in), the two Outlook-defect captures, the CloudLex export rehearsal — and the backup one-pager whenever a design session is asked for it; the two `H12-v` asks by his hand; `Q-STAT-7` whenever he reads it; **the CC-1 HANDS-ON QUEUE gains two HELD items (CC-1(b), Claude's hold, stated): `Q-API-14` (the OneDrive deep link and Intune before any in-app document window) and `Q-API-3`'s filing half (the fidelity test)**; go-live, his day — with the new floor caution above (no real chronology before the slice).
-
-**Staged for Code:** the ruling sheet (RULING); the seven EVIDENCE files; the REQ-CAPTURE §14.1 annotation and §0 cell append; the spec-feedback section; the register's three acts (rows, flip, annotations, reconcile sentence); the BUILD-STATE facts in this packet's §4.5.
-
-**Awaiting/Returned from Code, unreviewed:** as BUILD-STATE's own line states at HEAD — recompute it there (`OPEN-5(a)`, start-of-session rule 5). What this session can truthfully add: batch 94 was READ design-side after it landed mid-sitting (its runner line's heading and `#153` whole) and its four EVIDENCE files verified by existence at `d4c5e7d`; the `b2dc222` Code commit was read by its message and `--stat` only; nothing returned from Code is reviewed here. **Still open and still Michael's:** `Q-API-18`'s two facts (subscription type; covered status) · `Q-API-19` (ServeManager — his answer, never a sweep) · `Q-API-9`, `-11`, `-12` (one line each) · `Q-API-14` and `Q-API-3`'s filing half (hands-on, held) · `Q-API-20` (sequencing) · the four Wave 0 acts · the firm-obligations ruling sitting · the post-`CCS-1` walk · the two `H12-v` asks and the AWS BAA read · `Q-FO-9`'s acquisitions · `Q-FO-10`, `Q-FO-11`, `Q-STAT-7` · the `#137` Voice2 pair's transit (blocked on its definitions reaching the repo) · the `review_log` `'cancelled'` mismatch (a Code act) · the two untracked 2026-08-24 files (DO NOTHING) · go-live, his day.
-
-## 2026-09-09 — CODE SESSION (Opus 5; the same session that ran batch 94, continued after its close-out on Michael's instruction *"add register rows for RF-2 and RC-4"*; unnumbered per `TOC-6`) — THE `RF-2`/`RC-4` ROWS, AND A CORRECTION TO BATCH 94's OWN FINDING: `RC-4` gains a row carrying its full question text; **`RF-2` turns out to have had a row all along, under `TC-OPEN-4`**, so it is ALIASED there rather than duplicated; and both ID series are collision-checked repo-wide for the first time — both clear
-
-- **WHAT MICHAEL ASKED FOR, AND WHY HALF OF IT CHANGED SHAPE.** Batch 94's FINDING 3 reported that `RF-2` and `RC-4` were carried as OPEN by both the packet's §7 and BUILD-STATE while having **no row in either register file**, and flagged it as the `K-6`/`K-7` class — a question surviving only in prose. He then directed rows for both. **Research before writing found the finding was half wrong: `RF-2`'s question already has a row — `TC-OPEN-4`, THE MISSING SIBLING, at the TC-series heading — naming the same file and asking the same act, *"Hand it in."*** Batch 94 was right that no row carried the STRING `RF-2` and wrong that no row carried the QUESTION. **A second row would have duplicated a live open item, which is worse than one row under an unfamiliar name**, so `RF-2` was recorded as an ALIAS on the row that exists and that row was enriched with what `RF-2` carried and it lacked. `RC-4` genuinely had no row anywhere and gained one. **The correction is written into the register itself, not left in a runner line** — batch 94's own entry is committed and append-only and was not touched.
-- **THE COLLISION CHECK RAN FIRST, AND IT HAD NEVER RUN.** BUILD-STATE's standing warning was explicit: ***"`RF-1`–`RF-7` ARE SESSION-LOCAL HANDLES, NOT IDs — NO `RF` STRING HAS EVER BEEN COLLISION-CHECKED REPO-WIDE, and minting any of them, or any of §3's sixteen, is YOURS, not a runner's."*** With Michael's instruction supplying the authority, the check was run before either edit: a repo-wide scan over `*.md`, `*.ts`, `*.tsx` and `*.sql` returns `RF-2` ×105, `RF-5` ×20, `RF-7` ×12, `RF-3` ×9, `RF-1` ×5, `RF-6` ×2, `RF-4` ×2, and for the other series `RC-1` ×139, `RC-4` ×52, `RC-3` ×43, `RC-2` ×23 and a tail. **Both series are CLEAR** — corroborated by the untracked `docs/specs/id-collision-report.md`, which records *"**`RC-`** — Clear … No queue rows"* and *"**`RF-`** — Clear; RF-1 withdrawn, RF-2/3/5/7 carried; RF-4/RF-6 never appear. No queue rows."* **One apparent hit was a false positive and is named rather than quietly dropped: `RC-32`, which is `CRC-32` — the checksum in this batch's own transit record, caught by a pattern with no left word boundary.** That file was READ, not touched: the packet's §7 marks the two untracked 2026-08-24 files **DO NOTHING**, which bars routing them, not consulting them.
-- **THE `RC-4` ROW — NEW, AND UNDER THE STATUTE IT BELONGS TO.** Placed as a top-level ⬜ row in **§2 STATUTES AND RULES IN CURRENT TEXT**, immediately beneath the existing ✅ `CPRC §18.001(d)–(g)` anchor and its open `Residual (V2)` child, which honours the record's own instruction that this candidate takes the home the statute already has — *"one home, not two."* It carries the FULL question per `QR-1`: that Michael named *"CPRC eighteen dot zero zero one"* at `#135` (2026-08-22) as the predicate behind the reasonable-and-necessary limb and it was **RECORDED UNVERIFIED, with Claude asserting no cite and confirming none**; that `RC-4` was **NARROWED at `#139`** so the predicate LANGUAGE is settled as the four limbs required of the writer and **only the CITE remains open**; that no proposition text has ever been drafted for it and drafting is its own authorized act on which `PF-1` would run; and that **nothing in the build waits on it**, the four-limb content being required of the writer by instruction and not checked by the app. **The row asks a question and verifies nothing.** `CLAUDE.md` registry rule 2 governs and is quoted in it: a model asserting legal currency never counts as verification, and only Michael verifies.
-- **THE `RF-2` ALIAS — AND WHAT IT RESCUED.** `TC-OPEN-4` now reads **"THE MISSING SIBLING. ALSO CARRIED AS `RF-2`; THE TWO IDs ARE ONE ITEM."** and gains the context that lived only in the REQ-CAPTURE and in prose: hand the capture in **so both unfiled disclosures captures reconcile together**; its **Q3** (the format-profile / instrument-definition boundary, which must be ruled before the renderer is built) and **Q5** (refuse-or-warn) bear on **R2** and **R16**; until it lands, all six of its questions survive only as `docs/spec-feedback.md` finding 3; **`H5` bars a machine search** — questions about Michael-supplied material are answered by him first, never by sweeping his machine, though he may DIRECT a search per instance and that call is his alone; he supplied the file once, to a Code session on 2026-08-20, where it was input to a ruling that never happened and was never committed; its last recorded location is his Downloads folder, machine unconfirmed. **The awaited act is a hand-in through the `REQ-1` channel to a DESIGN session.** **No machine search was made or proposed here.**
-- **COUNTS, MEASURED AFTER THE WRITE BY TWO METHODS THAT AGREE.** `attorney-review-queue.md` (SYNCED) **438,879 → 443,324 B**, markers **⬜ 379 → 380**, **✅ 11 held** and **🟡 5 both unchanged**; `attorney-review-queue-closed.md` untouched at **266,233 B**, **✅ 130** — **total ✅ 141 still conserved, nothing flipped and nothing moved.** The Status paragraph gained a **follow-on note, not a second reconcile sentence**: no batch ran, so `CAP-3`'s one-current-sentence structure is intact and the `#153` sentence still stands as batch 94 wrote it.
-- **BUILD-STATE FOLDED IN, AND `CAP-4` PAID WITHOUT DISPLACEMENT.** Five claims it carried are now false or stale and all five are corrected: the roomless sentence, the `RF` session-local-handles warning (the check has now run), the register counts and file size, the `RC-4` mention in **STILL YOURS AND ALL SMALL**, and batch 94's no-row bullet. **The file went 99,722 → 99,711 B — it SHRANK — so no passage was displaced and the fourteen-passage ledger in batch 94's runner line is unchanged and still accurate.** 136/150 non-blank; published figure re-established against `wc -c` and equal to actual. ⚠ **289 B of headroom: the next batch displaces before it adds a sentence.**
-- **WHAT WAS NOT DONE, each because a rule or a boundary bars it.** No legal proposition was verified, drafted or characterized — `RC-4`'s cite stays UNVERIFIED and is Michael's alone. No registry file was touched. No row was flipped, closed or moved. No `RF-`, `RC-`, `FO-`, `BR-` or `DA-` id beyond the two named was minted. Batch 94's committed entry was not edited. The two untracked 2026-08-24 files were read and not routed. `Claude outputs\` was not touched. Nothing under `src/`, `db/` or `supabase/` was read or written, so the health check would prove nothing and was not run — the same `QR-6(f)` reasoning as the batch it follows.
-
-**Next:** unchanged — **the firm-obligations ruling sitting** on the sheet with the mock beside it; **the post-`CCS-1` walk**; the two `H12-v` asks; `Q-STAT-7`; `Q-FO-9`/`Q-FO-10`/`Q-FO-11`; go-live, his day. **`TC-OPEN-4`/`RF-2` and `RC-4` are now both findable in the register**, which is where an item awaiting him is supposed to live.
-
-## 2026-09-08 — QUEUE-RUNNER batch (runner line; NINETY-FOURTH invocation) — one docs-only packet, and the batch that FILED THE TRANSIT EXECUTION AND FOUND FOUR THINGS THE PACKET COULD NOT HAVE KNOWN: the `#153` record lands as four EVIDENCE files in a new `docs/record/transit-2026-09-08/`, byte-exact and none of them in `docs/specs/`; the packet's own claim that the checkout's `Claude outputs\` is EMPTY is FALSIFIED at HEAD and measured twice, the second time catching Michael's own answer arriving in that folder as this runner read it; `Q-G3-4` — carried by BUILD-STATE's YOUR-HAND list as an open act of his — is RULED AND CLOSED at HEAD against `Go_Live_Gates.md` and DROPS on the `GL1-1` precedent; `RF-2` and `RC-4` are carried as OPEN by both the packet and BUILD-STATE while having NO ROW IN EITHER REGISTER FILE, the `K-6`/`K-7` failure class, flagged and NOT fixed because minting rows is Michael's act; and batch 93's own runner line disagrees with the file it committed about all three `CAP-4` figures. Register merge is three acts with NO row added and NONE flipped; `CAP-4` is paid a TENTH consecutive time, twelve passages and 5,649 B; the health check is SKIPPED and the skip recorded (`QR-6(f)`)
-
-- **THE PACKET, AND IT RAN ALONE.** `push-to-code_transit-execution_2026-09-08.zip` — **53,746 B, mtime 2026-09-08 23:11:16 −0500, sha256 `bafc5becb23be614177e3ef703aca7078dc7aee87dcff2b09f49d430864636b1`**, five files. Identity was PINNED at Step 1 (`QR-6(c)`) and Michael's confirmation restated all three figures independently; **they matched to the byte, the second, and the hash.** Step 0 gate: `master`, HEAD `44409ef8ac58bb21bd817ec75e133ec86c6c367b`, **equal to origin by a live `git fetch` + `git ls-remote origin refs/heads/master`** — not the tracking ref (`QR-6(a)`) — `0 0` by `git rev-list --left-right --count`, no tracked-file modifications. Step 1's already-executed check (`QR-5`) returned **NOT executed, in neither sense**: all four staged deliverables absent from the working tree and `docs/record/transit-2026-09-08/` non-existent, so the packet was neither landed-and-pushed nor committed-and-unpushed. **Every one of the packet's §1 reconcile predictions verified exactly** — the directory absent, no `(#153)` heading in the live log, the only two `#153` strings under `docs/` being the statute anchors `FA.153.htm#153.002` exactly as predicted, the six `claude/claude_*` names absent from `docs/` and no `claude/` directory anywhere in the repo.
-- **WHAT LANDED — FOUR `EVIDENCE` FILES, ALL FOUR VERIFIED AFTER PLACEMENT, NONE IN `docs/specs/`.** New directory `docs/record/transit-2026-09-08/`: `transit-execution-record-2026-09-08.md` (14,910 B, `d26e7a62…`), `transit-relocation-manifest-2026-09-08.md` (2,746 B, `9b380607…`), `transit-relocation-manifest-2026-09-08.json` (**2,230 B, sha256 `07580d3498b70ca329d85482f31ad0199b765b61400413dd4967d8f2c2f4051a` — the packet's §4.3 figure to the byte**) and `project-instructions-v31-as-delivered-2026-09-08.md` (84,958 B, `070088d5…`). Each was compared to its source with `cmp` after writing: **IDENTICAL, four of four.** `CAP-2` honoured — every routing row that places a file carries CLASS `EVIDENCE` and all four route under `docs/record/`; **the `—` CLASS column that ran four consecutive batches does not recur here, the rows that carry `—` being exactly the ones that place no file.** **§4.3's `core.autocrlf` contingency DID NOT FIRE ON WRITE — AND THE HALF THAT SURVIVES IS NAMED RATHER THAN LEFT TO OVER-READ:** a binary read of all four files returns **0 CRLF and 0 lone CR**, so the JSON is byte-exact in this working tree AND in the blob, and the working-tree-size caveat §4.3 asks for is not owed. **But `core.autocrlf` is `true` on this machine and `git add` warned that LF will be replaced by CRLF the next time git touches these files, so a FRESH CHECKOUT will render the JSON with CRLF and it will NOT hash to `07580d34…` there.** The hash of record remains the zip's entry, exactly as §4.3 provides; what is verified here is this tree and this blob, and nothing wider. A data-hygiene pass over all four returned no PHI-shaped match; the two strings a loose pattern flagged in v31 are the firm's own Postmark sender address and a list of rule effective-dates. **The six relocated capture files' NAMES appear only as manifest rows; none of their CONTENT reached the repo** (`§6` DO-NOT 3).
-- **THE PACKET'S ARITHMETIC WAS RE-DERIVED RATHER THAN ACCEPTED, AND ALL FOURTEEN SUMS ARE EXACT:** the six files' bytes to 137,133 and their units to 42,629; `1,654,674 − 42,629 = 1,612,045`; `1,643,637 + 11,037 = 1,654,674`; `1,571,771 + 82,903 = 1,654,674`; `1,577,097 + 40,274 = 1,617,371`; `1,577,097 − 1,571,771 = 5,326`; and all seven percentage/point conversions against 2,000,000. **Not one figure needed correction** — the second consecutive packet whose every prediction and every sum verified.
-- **FINDING 1 — THE PACKET SAYS THE CHECKOUT'S `Claude outputs\` IS EMPTY. IT IS NOT, AND THE SECOND MEASUREMENT CAUGHT THE FOLDER CHANGING UNDER THE READ.** `#153`'s entry records the folder *"observed EMPTY at open (mtime 22:48 CDT)"* — that phrase occurs once in the packet, in §3 — while §4.5 says the same in its own words, *"The checkout's `Claude outputs\`: EMPTY"*; both order BUILD-STATE's YOUR-HAND item (3) dropped as SPENT **on both folders**. At Step 1 the folder held `project-instructions-v31-2026-09-08.md`, **84,958 B, mtime 23:12 — one minute after the packet zip closed at 23:11:16 — and byte-identical to the packet's own staged v31 (`cmp` clean, both sha256 `070088d5dfc32569562cd754fa380ecc1467df19c26e5c38449068c94d3ce952`)**: the session's own delivery had repopulated the folder it certified empty. Re-measured at 23:25 after Michael's answer, the folder held **a second file** — `runner-response_batch94_2026-09-08.md`, 1,924 B, mtime 23:24 — **which is his answer to this runner, delivered through that same folder.** So the folder is not stale scratch at all; it is a live delivery channel carrying this session's own traffic. Put to him, he answered *"Both `Claude outputs\` folders are clear"* **and** selected *record what is true*; the two are reconciled the only honest way — **item (3) drops as he directed, and BUILD-STATE now states what is measurably there rather than that the folder is clear.** The `Documents\Knowledge Repo\Claude outputs\` half rests on his word and this runner cannot see that folder at all (`HK-5`).
-- **FINDING 2 — `Q-G3-4` WAS ON MICHAEL'S HAND LIST AND HAS BEEN ANSWERED SINCE 2026-08-20.** BUILD-STATE's RLS bullet says **`Q-G3-4` RULED 2026-08-20 (`#126`), *"Close gate 3, edges recorded"*, the closure appended beneath the gate** — while its YOUR-HAND list carried the same question as item (4), open and awaiting him. **`Go_Live_Gates.md` at HEAD settles it against the list:** beneath gate 3 sits *"CLOSED — RULED by Michael, 2026-08-20 (`Q-G3-4`, recorded `#126`), on the 37×2 live write-path run of the same date … 37/37 refused signed out at the privilege layer, 36/36 policy-bearing tables allowed signed in"*. The item is **DROPPED as STALE on the exact `GL1-1` precedent batch 93 set** — same file, same evidence class, resolved against the gates doc rather than guessed — and `Q-G3-4` correctly has no register row. **Two items therefore leave the YOUR-HAND list this batch and the survivors are renumbered (1)–(4); the drop and the renumbering are stated inside the list itself, not done silently** (`§6` DO-NOT 9).
-- **FINDING 3 — `RF-2` AND `RC-4` ARE CARRIED AS OPEN AND HAVE NO ROW ANYWHERE.** The packet's §7 carries both in a row whose Item cell reads *"Carried from `#152` and BUILD-STATE, unchanged"* and whose Status cell reads *"OPEN"*, and BUILD-STATE names `RF-2` in its REQ-CAPTURE bullet (*"REMAINS OPEN AND IS YOURS"*) and `RC-4` in **STILL YOURS AND ALL SMALL**. Measured by leading marker (`^\s*- (⬜|✅|🟡)`) over both register files: **neither has a row in `attorney-review-queue.md` and neither has one in `docs/record/attorney-review-queue-closed.md`** — `RF-2`'s single appearance in the closed register is inside the `CCS-1` row's *text*, not a row of its own. That is the `K-6`/`K-7` failure class the `QR-1` ruling exists to prevent: an item whose question survives only in prose that a later rewrite may compress away. **FLAGGED AND NOT FIXED — this packet routes no row, and minting one is Michael's act, not a runner's.** Both are now named in BUILD-STATE's OPEN-AND-ROOMLESS sentence and in the register's own reconcile sentence, which are the two durable places available without adding a row.
-- **FINDING 4 — BATCH 93'S RUNNER LINE AND THE FILE IT COMMITTED DISAGREE ON EVERY `CAP-4` FIGURE.** That line states *"Final: 25 passages, 7,250 B, file at 99,384 B, 616 B under, 136/150 non-blank."* The file it committed reads **99,672 B** — by `wc -c` on the working tree at session start and by `git show 44409ef:docs/specs/BUILD-STATE.md | wc -c`, which agree because the file is LF-only — and its own banner at that commit read **99,672 B, 328 B under, 24 passages actually displaced, 7,085 B**, naming the 25th (`D25`, 165 B) as BOOKED IN ERROR. The banner is right and the runner line is stale: the corrections landed in the banner after the entry's figures were written, and the entry is append-only once committed. **NOTHING WAS EDITED — the entry stands as written, `#152` and every earlier entry untouched (`§6` DO-NOT 8) — but the consequence is recorded here: the `CAP-4` figures in the runner-line series are not a reliable running total, and each refresh's own banner, measured at HEAD, is the authority.**
-- **FINDING 5 — A PACKET-ORDERED DELETION WITH NO TARGET.** §4.5 orders the NEXT ACTS line rewritten *"with 'TRANSIT of the four files' removed as done."* **No such phrase is in that line** — the NEXT ACTS line names the post-`CCS-1` walk, the two `H12-v` asks, the ruling sitting and go-live, and never mentions transit. The sentence the packet meant lives in the CAPACITY bullet as **"TRANSIT — FOUR FILES ARE READY AND NONE HAS MOVED"**, and that is where it was spent — displaced as `D4` and replaced by the six-files-moved fact. The NEXT ACTS line took only its date stamp and a clause saying the transit is done. **Recorded because a deletion ordered against the wrong line is the kind of instruction a runner can report as executed without anything having been removed.**
-- **MICHAEL'S IN-SESSION FACTS SUPERSEDED THE PACKET, AND ARE MARKED AS HIS WORD.** §4.5 shipped saying **v31's paste was unconfirmed**; he stated in this session that **v31 IS PASTED AND IN FORCE**, and BUILD-STATE's INSTRUCTIONS line now says so on his word, with the as-delivered EVIDENCE copy cited and the standing caveat kept verbatim — *the repo cannot verify the instructions field and does not.* He also reported Sync clicked at 23:01 CDT after batch 93 and stated he would click it again after this batch lands. **Neither is a repo fact and neither is dressed as one.**
-- **THE REGISTER — THREE ACTS, AND THE FIRST OF THEM IS EMPTY BY DESIGN.** (i) **NO row added, NONE flipped, NOTHING moved** — the packet routes none. (ii) The Status paragraph's reconcile sentence advanced to **`#153`**, and the superseded `#152` sentence (**579 B**) was **EXTRACTED from the file and appended VERBATIM** — never retyped — to the END of the RECONCILE HISTORY block in `docs/record/attorney-review-queue-closed.md`, which now carries **73 reconcile SENTENCES** — 72 opening *"Reconciled again to session-log…"* plus the `#28` opener that predates that wording — in **SEVEN standalone paragraphs plus the one joined pre-split paragraph holding 67 of them**. *(The unit matters, and this batch got it wrong first: it published "72 paragraphs", which is wrong twice — the block holds 7 paragraphs, not 72, and a `Reconciled again` matcher silently drops the `#28` opener.)*. (iii) No moves, no flips. Counts re-measured after the write by two independent methods that agree exactly — `grep -c` and a python leading-marker pass: `attorney-review-queue.md` (SYNCED, **438,879 B**) **⬜ 379, 🟡 5**, plus the **11 top-level ✅ parents held for `CAP-OPEN-2`**; `attorney-review-queue-closed.md` (**266,233 B**) **✅ 130** — **total ✅ 141, CONSERVED.** The new reconcile sentence carries findings 2 and 3 in full, so they survive in the register itself and not only here.
-- **`CAP-4` PAID A TENTH CONSECUTIVE TIME, IN ONE ROUND.** The file entered at **99,672 B** (328 B of headroom — the position batch 93 left it in) and stands at **99,722 B, 278 B under the ceiling, 136/150 non-blank, 150 raw.** ⚠ **THAT HEADROOM IS THIN AND IT IS SAID SO RATHER THAN LEFT TO BE DISCOVERED:** batch 95 must displace before it can add a sentence, exactly as this batch had to. The figure moved twice after first converging — once for a late accuracy fix and once for the DT-1 correction below — and each time the published figure was re-established against `wc -c` and re-stated in this line and in the index row, so all three now agree at 99,755. **FOURTEEN passages displaced, 6,014 B**, every one reproduced verbatim below. Each is spent narrative — a prior batch's account of itself (`D1`, `D2`, `D8`), a superseded measurement (`D3`, `D4`), the v30 paste narrative in its three homes (`D5`, `D10`, `D11`), a discharged hand item (`D6`, `D7`), a banner duplicate whose full account survives untouched elsewhere (`D9`), or a compression whose rule survives in place (`D12`) — **and not one is an existence claim.** The published figure was iterated to a fixed point and then re-checked against `wc -c`: **published 99,722 equals actual 99,722.** **THE FIXED POINT MOVED TWICE AFTER FIRST CONVERGING, AND BOTH MOVES ARE RECORDED RATHER THAN HIDDEN:** it converged on **99,331**; a late one-sentence accuracy fix then took the file to **99,389**, and the banner was corrected in the SAME LENGTH so the point held without re-iterating; then the DT-1 correction below took it to **99,755**, and the point was re-established by iteration. Each time the figure was re-checked against `wc -c` and re-stated in this line AND in the index row, so all three files agree at 99,722 — **the self-referential failure batch 93 hit twice, caught twice here, the second time only because the published size had already been copied into two other files.**
-- **HEALTH CHECK SKIPPED, AND THE SKIP IS RECORDED WITH ITS REASON (`QR-6(f)`).** §5 is **NONE** in the one packet, and every path this batch wrote is under `docs/` — the four EVIDENCE files, the live log, the two derived indexes, both register files and BUILD-STATE. **No `src/`, `db/`, `supabase/` or build-tooling file was read or written**, so `npm test` / `npm run build` / `npm run lint` would have proved nothing about this batch. Consequently **every `src/`- and `db/`-derived figure in BUILD-STATE is CARRIED and marked as carried (`QR-6(a)`)**; the counts over `docs/` were all re-derived at this HEAD (`OPEN-5(a)`), including the register tallies from both files, the `A-4` range recomputed to **79 entries on the inherited basis (#75–#153)** against a strict basis of 88, the nine-entry gap unchanged, and the `A-5` pointer advanced to `#153`.
-- **METHOD, SO THE NEXT RUNNER CAN JUDGE IT.** A six-lane read-only scout fleet was run before any write — BUILD-STATE, the head-file spec, the TOC method, both register files, the live log's shape, and the repo/git facts — each lane required to name the command behind every claim. It returned the `TC-2` cut point, the `§2` row derivation validated **179/179** against the log, and the `CAP-4` position that governed this refresh. A separate SIX-LANE ADVERSARIAL PASS — lanes told to REFUTE, every finding then put to THREE independent verifiers with real=false the default — was run against the UNCOMMITTED tree before the commit: **27 findings filed, 17 CONFIRMED, 10 refuted.** **IT CAUGHT SEVEN REAL DEFECTS IN THIS RUNNER'S OWN WORK, AND EVERY ONE IS FIXED ABOVE RATHER THAN SOFTENED.** (a) THE WORST: the regenerated `session-log-head.md` — **the only part of this record the design side can read** — carried a SUPERSEDED DRAFT of this very runner line, because it was generated BEFORE two later corrections; it published `99,389 B` as a verified `CAP-4` figure, dropped the DT-1 bullet entirely and dropped the fresh-checkout CRLF caveat. **The derived file must be generated LAST; it now is, and §1 is byte-for-byte against the log.** (b) BUILD-STATE said Michael's **four** scratch zips were *“deleted by name and verified gone”* when his own quoted words in `#153` say THREE were deleted and the fourth **was not there** — an absence written up as a deletion, in the same commit as the source that contradicts it. (c) BUILD-STATE published *“TWO files… at this HEAD”* for the checkout's `Claude outputs\`; by 00:23 it held **SEVEN** — the exact failure this batch's own FINDING 1 exists to name, committed by the batch. It now publishes timed readings and no standing count. (d) BUILD-STATE's TOC bullet had a headline of 181/181 and a parenthetical still reading 180/179. (e) The closed register's block was published as **72 reconcile paragraphs** — wrong twice: 7 paragraphs, 73 sentences, the matcher silently dropping the `#28` opener. (f) A quotation attributed to the packet's §7 spliced TWO markdown table cells together and added an em dash the source does not contain. (g) The TOC's Coverage bullet was digit-swapped out of the forty-fifth edition rather than rewritten, so it still narrated batch 93. **The refuted ten are not restated as findings.** The lesson worth carrying: **every one of these passed this runner's own checks**, and four of the seven were created by edits made AFTER those checks ran. **Two lane findings are worth carrying:** the head file's own `§3.2` note describes its authoring-time figure as *"including the log preamble"* while the file does not carry the preamble — the RULE never orders it, so practice is right and the parenthetical is loose; and the spec's **200 KB** ceiling is stated without saying binary or decimal, which does not bind today (the file is far under either) but will be someone's ruling eventually.
-- **DT-1 BIT THIS BATCH AND THE STAMP IS EXPLAINED RATHER THAN LEFT TO LOOK LIKE AN ERROR.** The packet arrived at 23:11 CDT on 2026-09-08 and the close-out crossed midnight Central: the wall clock read **2026-09-09 00:00:23 CDT** on two independent instruments (the shell and PowerShell) while UTC read 05:00:23, the one-day-ahead skew BUILD-STATE's DT-1 line has warned about all along. **This entry is stamped 2026-09-08** — the date the work was done, the date the packet carries, and the date of every fact recorded here — **on the `#152` precedent that the bulk of the sitting governs**, while the commit itself lands on 2026-09-09. `#153`'s own stamp is the packet's and was not touched. **The two dates differ by one day on purpose; BUILD-STATE says so too, so neither file has to be read against the other to make sense of it.**
-- **QR-5 COMPLIANCE, STATED PLAINLY.** This entry is committed BEFORE the push and BEFORE the packet deletion, so **it asserts neither.** Both are reported to Michael in-session per Step 4 items 4–6, and if either fails it is carried into batch 95's runner line, where it can be said truthfully. **Nothing was carried into this line from batch 93, and that is on EVIDENCE rather than on its report.** Its push landed: the live `git ls-remote origin refs/heads/master` at Step 0 returned `44409ef8ac58bb21bd817ec75e133ec86c6c367b`, and `git log -1 --format=%s 44409ef` returns *"queue-runner batch 93: the firm-obligations rendered examples (#152)"* — **that SHA IS batch 93's own commit**, so the push it could not assert did in fact land. Its deletion landed too: `inbox/` held **exactly one zip, this packet's**, at Step 1. Neither is taken from batch 93's word.
-
-### DISPLACED FROM BUILD-STATE (`CAP-4`)
-
-**Fourteen passages, 6,014 B, displaced at the ONE HUNDRED THIRTY-NINTH refresh (batch 94).** Each is reproduced VERBATIM below and **this runner line is the only surviving copy of each as a whole.** Not one is an existence claim; each is a prior batch's account of itself, a superseded measurement, a discharged hand item, a banner duplicate whose full account survives untouched elsewhere, or a compression whose rule survives in place. The `why` is stated per passage so a later reader can judge the call rather than take it.
-
-**D1 batch93-cap4-accounting** — *batch 93's own CAP-4 accounting, spent the moment this refresh re-measured the file* — 979 B
-
-⛔ **`CAP-4` BOUND; SHORTFALL NAMED — entered the refresh at 99,991 B, stands at 99,672 B, 328 B under the 100,000-byte ceiling, 136/150 non-blank (150 raw). **24 PASSAGES ACTUALLY DISPLACED, 7,085 B** — a 25th (`D25`, 165 B) was BOOKED IN ERROR and is marked as such in the ledger: it was an in-place numeral update, not a removal.** Each is SPENT NARRATIVE — a prior batch's account of itself, a derivation whose conclusion is kept, or a condition since discharged — and **NOT ONE IS AN EXISTENCE CLAIM**; all ride this batch's runner line VERBATIM under `DISPLACED FROM BUILD-STATE (CAP-4)`, **which is the only surviving copy of each passage AS A WHOLE — though TWELVE of the twenty-five are COMPRESSIONS whose opening sentences survive in place here, so the ledger is a SUPERSET of what was removed, which is the safe direction for a rule that exists to prevent loss.** Both corrections come from this batch's pre-commit adversarial pass, not from a later reader.
-
-**D2 batch93-on-152** — *batch 93's characterisation of #152, superseded by #153* — 140 B
-
-⚠ **NOTHING WAS RULED, AUTHORIZED OR BUILT THIS BATCH — `#152` is a design sitting that produced RENDERED EXAMPLES and PROPOSALS ONLY.**
-
-**D3 152-meter-readings** — *#152's meter readings, superseded by #153's three readings* — 407 B
-
-**CAPACITY — MEASURED THIS REFRESH, AND THE PRIOR FIGURES HERE WERE STALE.** `#152` read the knowledge meter at **1,643,637 / 2,000,000 = 82.2%** at its open — under the 90% trigger, so `Q-CAP-5(a)` did NOT fire; that is the design side's read and **not a repo fact**. **FIFTEEN project docs**, the `#151` capture pair having entered project knowledge at that session's close with TRANSIT lines carried.
-
-**D4 four-ready-none-moved** — *the four-files-ready eligibility sentence, spent by the execution it anticipated* — 427 B
-
-**TRANSIT — FOUR FILES ARE READY AND NONE HAS MOVED:** `#152` verified by full-text read at `8f7467b` that the `#149`/`#150` capture pair and the `#151` pair are ELIGIBLE for the three-step transit act, and that the **`#137` Voice2 pair is NOT** (`BR-2`, `BR-4` and `DA-2` live only there, as does the sheet's prior art). **Transit is a design-side act needing Michael's browser; this is recorded eligibility, never a move.**
-
-**D5 v30-delivery-narrative** — *the v30 delivery narrative, superseded by v31 in force* — 917 B
-
-- **INSTRUCTIONS: `v30` IS IN FORCE — DELIVERED 2026-09-07 (`#149`) AS THE TRIGGER-1 EDITION, PASTED BY MICHAEL (*“I already pasted the instructions”*) AND FOUND IN FORCE BY `#150`'s LIVE READ OF THE INSTRUCTIONS FIELD (an attributed design-side read, the `#146` precedent). THE REPO CANNOT VERIFY THIS AND DOES NOT: a Code session cannot see the instructions field at all.** It carries the floor's completion, the working-set change, and three operational notes (`HS-5` with the signup-OFF and invite-substitution facts; the CRLF-after-checkout note; cite `spec-feedback.md` by heading). The text AS DELIVERED is filed as EVIDENCE at `docs/record/forward-sitting-2026-09-07/project-instructions-v30-as-delivered-2026-09-07.md` — **which is evidence of what was delivered, never a claim that it was pasted.** `PF-1` and FC-14's SOURCING fourth channel entered at v28 and remain in force. DT-1 remains in force
-
-**D6 hand-item-claude-outputs** — *YOUR-HAND item (3), the Claude outputs clearance - spent on both folders per Michael* — 582 B
-
-(3) **CLEAR `Claude outputs\` INSIDE THE CHECKOUT** — **SEVENTEEN stale files as this batch counted them natively (the record's “eight” is stale), including a “PROPOSED” copy of the slice and BOTH firm-obligations packet zips** — and **FOUR scratch zips in `Documents\Knowledge Repo\Claude outputs\`** (`repo-snapshot-ea5675b_2026-09-07.zip`, `fo-sources-2026-09-07.zip`, `fo-sources-2026-09-07-b.zip`, and `repo-snapshot-8f7467b_2026-09-08.zip` at 4,354,682 B, `#152`'s read-only working copy — that fourth figure is the design side's word, HK-5 barring a sweep); (4)
-
-**D7 hand-item-q-g3-4** — *YOUR-HAND item (4), Q-G3-4 - RULED AND CLOSED at HEAD; the item was stale* — 141 B
-
-**`Q-G3-4`** — does the clean gate-3 run CLOSE gate 3, or only `GL-1` item (4), UPDATE/DELETE never exercised against `using (true)`?; (5) 
-
-**D8 batch93-two-rows** — *batch 93's account of the two rows it added, spent - they are now simply open rows* — 408 B
-
-**TWO ⬜ ROWS WERE ADDED THIS BATCH AND NONE FLIPPED** — `Q-FO-11` (the fifteen `FOM-` findings) under the EXISTING `FIRM OBLIGATIONS` heading and `Q-STAT-7` (the PROPOSED `;AA` normalizer amendment) under the statute heading, each carrying its question's FULL text (`QR-1`); **nothing moved to the closed register** — **no `FO-`/`BR-`/`DA-` id was minted, which is Michael's act (`Q-FO-10` asks him).**
-
-**D9 banner-ccs1-duplicate** — *the banner's duplicate of the CCS-1 migration detail; the full account survives in the migration bullet and the `db/schema.sql` bullet, both untouched* — 515 B
-
-The two `CCS-1` migrations ran on LIVE by Michael's hand the evening of 2026-09-07 (`#150`) — `db/migrations/2026-09-07-address-model-schema.sql` (three checks), then `2026-09-07-address-model-split.sql` (STEP 0 taken first: 0 / 0 / 2 / one `parties` CHECK; six checks) — **nine of nine checks answered in his words, every predicted value landed, and ZERO rows split because none needed it.** No session ran either; record at `docs/record/ccs1-migrations-run-2026-09-07/migration-run-record-ccs1-2026-09-07.md`.
-
-**D10 banner-v30-paste** — *the banner v30-paste narrative, superseded by v31 in force* — 232 B
-
-Item (5) closed at his own paste of instructions v30, reported in his words and confirmed by `#150`'s live read of the instructions field — **an attributed design-side read, the `#146` precedent; nothing in the repo verifies it.**
-
-**D11 launchpath-v30-trigger** — *the LAUNCH PATH v30 trigger-1 narrative, superseded by v31 in force* — 364 B
-
-**TRIGGER 1 FIRED and instructions v30 was drafted and DELIVERED as the trigger-1 edition. ITEM (5) IS DONE — Michael pasted v30 (*“I already pasted the instructions”*) and the `#150` design session READ THE INSTRUCTIONS FIELD LIVE and found v30 in force; that is an attributed design-side read on the `#146` precedent, and NOTHING IN THE REPO VERIFIES IT.**
-
-**D12 bytesize-explanation** — *the worked explanation of why byte sizes are not published inside the record they measure; the RULE itself survives in place* — 537 B
-
-**its BYTE SIZE is deliberately NOT stated here: this batch writes into that log after this line, so any figure would be stale before the commit; the runner line carries their post-regeneration ROW and ENTRY counts instead — never byte sizes**; `session-log-toc.md` and `session-log-head.md` are DERIVED and were regenerated this batch — **their byte sizes are NOT published here, NOT in the runner line and NOT in their own banners — every one of those places is inside the record they measure, so take them with `wc -c` at HEAD**
-
-## 2026-09-08 (#153) — (Typed design session, Cowork, Fable 5.1 per the environment; opened 22:51 CDT on Michael's resume instruction — *"TRANSIT EXECUTION, resume."* — with HEAD, the six eligible files, their bytes, units and sha256 prefixes, the destination, the method and the sequence all stated by him; DEVICE BRIDGE GRANTED at once on the checkout, `Documents\Knowledge Repo` and `Downloads`; Claude in Chrome for the docs-API read and the download button: THE TRANSIT EXECUTION — the `#149`/`#150`, `#151` and `#152` capture/handoff pairs, SIX FILES, relocated by the three-step TC-8 act in one zip built by the `#149` lossless method, byte-verified in `Downloads\` and again in `Documents\Knowledge Repo\Session Captures\`, and only then deleted from project knowledge; the meter 1,654,674 = 82.7% → 1,612,045 = 80.6%, a drop of exactly 42,629, the unit calibration's SIXTH confirmation; the prior session's three scratch-zip deletions filed in his words; instructions v31 delivered as the trigger-4 edition; NO ruling made, nothing built, no ID minted)
-
-**Verified over the bridge before anything was said** (every check names its command in the record): HEAD `44409ef8ac58bb21bd817ec75e133ec86c6c367b` on `master` = the local `origin/master` tracking ref, `0 0` by `git rev-list --left-right --count` — **a local read; the origin evidence is Michael's own live `ls-remote`, stated in his instruction and not repeated here**; no `.git/index.lock`; `git status` never run; `inbox/` EMPTY — so batch 93 had run and `#152` was at HEAD (L142 by heading grep, with `#151` L289, `#150` L308, `#149` L514); `git diff --name-status 8f7467b 44409ef` = 21 A / 7 M / **0 D**, so `#152`'s full-text eligibility reads at `8f7467b` carry; the `#152` pair's own routing documents present at `44409ef` by this session's reads (the companion, the mock, the audit, the ledger, `mock-source-2026-09-08/` at fourteen files, the three-file normalizer directory, `Q-FO-11` and `Q-STAT-7` in the register); the top design ordinal `#152` and `#153` unminted (its two occurrences in `docs/` are statute anchors); Session Captures holding the two 09-07 zips. Knowledge meter **1,654,674 / 2,000,000 = 82.7%** at open, seventeen docs; the docs API's seventeen `estimated_token_count`s sum to **82,903**, so the synced repo's share was 1,571,771 = 78.6 points and project docs 4.1. **The synced share was unmoved from `#152`'s open** — 1,643,637 + the two 09-08 docs' 11,037 = 1,654,674 exactly — which is a design-side inference that Sync had not been clicked after batch 93; Michael clicked it during this sitting (below). **CC-1 hands-on queue** — twelve accepted (all gated) + seven proposed + five PROPOSED by `#151` + the post-`CCS-1` walk's agenda, unchanged — **was stated at the close, not at the top; the rule-6 omission is owned here, not excused.**
-
-- **THE RELOCATION, ALL THREE STEPS VERIFIED.** *Step 1:* in Michael's Chrome on the project page, the docs API read in his session returned the seventeen documents' metadata first — no content to the chat — and the six targets matched his instruction to the byte and to the unit (43,127/13,735 · 21,615/6,622 · 15,702/5,141 · 20,443/6,094 · 15,860/5,117 · 20,386/5,920 = **137,133 B / 42,629 units**) with sha256 prefixes `266a9b2d`, `081618b5`, `38448c8b`, `c4c8aedc`, `dedca7a7`, `629abee8`; a STORE zip was built in the page, eight entries pinned to 2026-09-08 22:40, with `MANIFEST.json` (2,230 B) and `MANIFEST.md` (1,785 B) in the 09-07 shape: **`brennan-case-manager_transit-0907-0907late-0908-pairs_2026-09-08.zip`, 142,464 B, sha256 `ef22399591cfc86f419e6b536f10fef63eb74177f14995b5e1b798d035edaec0`**; a VISIBLE BUTTON was injected, the download stated in chat (file, source, size, hash) and **clicked by his hand** (*"It's in Downloads."*) — no script-triggered download. The prior session's build (142,037 B, `d01deee6…`, his figure) was not reproduced: 427 bytes of manifest prose differ; every content file is hash-identical. *Step 2:* in `Downloads\` — `stat`, `sha256sum`, `unzip -tq`, and a python pass over every extracted entry against `MANIFEST.json`: **ALL MATCH**; then `cp -p` to Session Captures (guarded against an existing name) and there `sha256sum`, `unzip -tq`, `cmp` — **identical**, the folder's third zip. *Step 3:* `project_delete` on the six, each `deleted: true`, at **23:00 CDT**, on his instruction *"then delete the six and read the meter"*; `project_info` then read **1,612,045 = 80.6%**, eleven docs. **1,654,674 − 42,629 = 1,612,045 — exact.** Eleven docs remain at 40,274 units = 2.0 points: the two `H12-v` email drafts and the two 2026-08-18 working documents (live), the `#137` Voice2 pair (NOT eligible — `BR-2`, `BR-4`, `DA-2` live only there; unchanged from `#152`), the probate index pair and the three carried files.
-- **FILED HERE, DONE 2026-09-08 BY THE PRIOR SESSION, IN MICHAEL'S WORDS:** *"the three scratch zips in `Claude outputs\` (`repo-snapshot-8f7467b_2026-09-08.zip`, `fo-sources-2026-09-07.zip`, `fo-sources-2026-09-07-b.zip`) deleted by name and verified gone; `repo-snapshot-ea5675b_2026-09-07.zip` was not there"* — the folder is `Documents\Knowledge Repo\Claude outputs\`, observed this session holding no zip (three non-zip 09-02/09-03 files remain, not this act's, not named — H5). And his account of why that session ended: *"the auto-mode safety check refused the export mid-session, content-triggered for the rest of that conversation, and a fresh session was the path."* This was the fresh session; the same method ran first try. **The checkout's own `Claude outputs\`** was observed EMPTY at open (mtime 22:48 CDT); asked, he answered *"the Claude outputs were cleared by Code by my hand."* BUILD-STATE's YOUR-HAND item (3) is spent on both folders.
-- **TWO TOOL BEHAVIOURS, NEITHER THE SAFETY CHECK, RECORDED FOR THE NEXT EXECUTION:** the Chrome tool's RETURN of the in-page manifest text was blocked as `[BLOCKED: Cookie/query string data]` — an output filter matching UUIDs and sha256 strings; a lone hash passed — so the manifests were read back from the zip on disk over the bridge (`sha256sum` of the extracted entries = the workspace copies, `07580d34…4051a` and `657dd94e…c617d2`). Recorded in v31's new operational note beside the refusal.
-- **INSTRUCTIONS v31 — TRIGGER #4's SIXTH FIRING, DELIVERED:** built by twelve exact-match edits applied by program to the byte-exact v30 (the live instructions field's sha256 `2a59cda4…` = `docs/record/forward-sitting-2026-09-07/project-instructions-v30-as-delivered-2026-09-07.md`, checked in-page and over the bridge; nothing retyped): the header; start-of-session rule 4 (three zips in Session Captures); the working-set captures bullet; the TRANSIT method sentence (thirty-two files in three sittings; the visible-button and read-from-disk clauses); the new operational note (the auto-mode refusal, in his words, with the output-filter aside); the capacity note's 2026-09-08 measurements; the trigger-3, -4 and -6 histories; and two truth fixes ("completes at the paste of this v30" → completed, per `#150`'s live read). Filed as EVIDENCE as delivered; **pasted or not is Michael's — a later session's live read of the field is the evidence.**
-- **SYNC:** Michael clicked Sync during the sitting (*"just hit sync right now"*, ~23:05 CDT). Post-sync meter at the packet's close: **1,617,371 / 2,000,000 = 80.9% — Sync ran at 23:01:35 CDT by the project's `/syncs` endpoint `last_synced_at`; the synced share 1,577,097 = 78.9 points over 194 files / 5,552,623 B (batch 93's net +5,326); 1,577,097 + 40,274 = 1,617,371 exactly — the meter decomposes into the sync endpoint's own `current_token_count` plus the docs' unit sum, two halves a design session can now read directly instead of inferring**.
-- **PF-1 DID NOT FIRE, AND THE SKIP IS RECORDED:** no legal characterization, no registry entry, no quotation of law anywhere in this packet. **RR-1 ran:** the record, the manifest record, v31 and this entry were re-read against every later fact of the sitting — the Sync click, the `Claude outputs\` answer, the post-sync meter — before the zip closed. No audit fleet was run on a relocation record.
-- **WHAT SHIPPED (this packet, docs-only):** this entry; FOUR EVIDENCE files in a new `docs/record/transit-2026-09-08/` — the execution record, the relocation manifest record (`MANIFEST.md` verbatim plus the landing paragraph), the `MANIFEST.json` byte-exact, and v31 as delivered; the BUILD-STATE facts in the manifest's §4.5; **no register row, no flip**; the reconcile sentence advanced. **`CAP-2`:** every row that places a file carries its class — all EVIDENCE.
-- **WHAT DID NOT HAPPEN, each because a rule bars it or because it is his:** no ruling recorded — Michael made none; nothing built; no `src/` read; no schema act; no ID minted; no registry file touched; no legal content; no fact about the firm asserted; no real client data touched (the six files are design-session captures and handoffs); no web fetch; no live database touched; `git status` not run, no lock stranded; nothing written to the tracked tree. **Bridge scratch left on his machine: none** beyond the two deliverables — the transit zip (in `Downloads\` and Session Captures) and the packet zip in `inbox/`; the VM's `/tmp/transit-verify/` is the VM's own.
-
-**Next:** the queue runs this packet on `mdb-pllc` (batch 94); Michael clicks Sync; **Michael pastes v31**; then **THE FIRM-OBLIGATIONS RULING SITTING** on the sheet with the mock open beside it — the next act on the firm-obligations track, unchanged from `#152`; **THE POST-`CCS-1` WALK** stays next on its own track; the two `H12-v` asks by his hand; `Q-STAT-7` whenever he reads it; the `#137` Voice2 pair's transit once the ruling sitting's packet carries its `BR-`/`DA-` definitions into the repo; the `review_log` `'cancelled'` mismatch to a Code session; go-live, his day.
-
-**Staged for Code:** the four EVIDENCE files (`docs/record/transit-2026-09-08/`); the reconcile sentence; the BUILD-STATE facts in this packet's §4.5.
-
-**Awaiting/Returned from Code, unreviewed:** as BUILD-STATE's own line states at HEAD — recompute it there (`OPEN-5(a)`, start-of-session rule 5). What this session can truthfully add: batch 93 was READ design-side (its runner line's heading and `#152` whole) and its landing verified by existence at every canonical path named above; nothing returned from Code is reviewed here. **Still open and still Michael's:** paste v31 · the firm-obligations ruling sitting (the sheet + the mock) · the post-`CCS-1` walk · the two `H12-v` asks and the AWS BAA read · go-live, his day · `Q-FO-9`'s acquisitions · `Q-FO-10` (rows) · `Q-FO-11` (the fifteen findings, one at a time) · `Q-STAT-7` (the normalizer amendment) · the `#137` Voice2 pair's transit (blocked on its definitions reaching the repo) · the `review_log` `'cancelled'` mismatch (a Code act) · the two untracked 2026-08-24 files (DO NOTHING) · `CAP-OPEN-1`–`4` · `FE-SEED-1` · `TFI-1`–`3` / `CD-14` limb (i) · `RF-2` · `RC-4` · `HD-23` · moving the earlier relocation zips from `Downloads\` to `Session Captures\` (optional; the 09-08 zip's `Downloads\` copy joins that list).
-
-## 2026-09-08 — QUEUE-RUNNER batch (runner line; NINETY-THIRD invocation) — one docs-only packet, and the batch that FILED THE RENDERED EXAMPLES FOR THE FIRM-OBLIGATIONS SITTING AND REPAIRED TWO PLACES WHERE BUILD-STATE CONTRADICTED ITSELF: the mock and its fourteen-file source land as EVIDENCE under `docs/record/`, the RULING-class companion and its fifteen `FOM-` findings land in `docs/specs/`, two ⬜ rows enter the register with their full question text and none flips, and the runner's own findings are six — the `GL1-1` contradiction the packet flagged RESOLVED at HEAD against the gates doc rather than guessed, a SECOND self-contradiction the packet did not name (BUILD-STATE calling the `CCS-1` slice "authorized and unbuilt" in its FORM ENGINE bullet, against its own banner saying it is BUILT), a same-named packet zip in the outputs folder carrying DIFFERENT BYTES from the one in `inbox/`, an outputs-folder count the record still states as eight against seventeen measured natively, a `CAP-4` payment that took THREE displacement rounds because the first two left 152 B of headroom, and a packet whose every reconcile prediction verified exactly
-
-- **THE PACKET, AND IT RAN ALONE.** `push-to-code_firm-obligations-rendered-examples_2026-09-08.zip` (148,704 B, mtime 2026-09-08 21:24:27 −0500, sha256 `527dbca56837f1f87326ddc3b1c290f151a9bf27c56f6433ae85831109fd56ef`, identity pinned at Step 1 per `QR-6(c)`), the only zip in `inbox/`. Filename-date order and pure-mtime order cannot disagree at one packet and no filename lacked a date, so `QR-4` had nothing to arbitrate. **Nothing was superseded** — one packet, no conflict rule to apply — and **nothing was skipped as already built**: all six new canonical paths were ABSENT at `8f7467b`, so the packet was neither pushed nor committed-but-unpushed (the `QR-5` distinction, checked because it has bitten before). Michael confirmed the order and the execution before anything was written.
-- **STEP 0.** On `master`; HEAD `8f7467b` = the local tracking ref = `git ls-remote origin refs/heads/master` (a LIVE remote read, not the tracking ref — `QR-6(a)`), 0 ahead / 0 behind. No tracked file was modified. **The tree carried three untracked paths and all three are on the record as Michael's**: the packet's own §7 lists *"the two untracked 2026-08-24 files (DO NOTHING)"* and `Claude outputs\`, so the state was reported rather than treated as a gate failure. `docs/record/` present, `docs/specs/session-log.md` absent — no half-executed `TC-4` move.
-- **WHAT LANDED.** Twenty-one files placed and **verified by sha256 AFTER placement at their canonical paths, 21 of 21 OK** (the packet's `CHECKSUMS.txt`, path-rewritten to the canonical tree): the RULING companion `docs/specs/firm-obligations-rendered-examples-2026-09-08.md`; and under `docs/record/` — the mock `firm-obligations-design-2026-09-07/firm-obligations-mock-2026-09-08.html`, its `mock-source-2026-09-08/` tree (fourteen files, including `test/domain.test.js` and the five `scenarios/*.mjs` click scripts), the audit and the ledger, and `normalizer-semicolon-amendment-2026-09-08/` (three files). **`CAP-2` held: not one EVIDENCE file entered `docs/specs/`.** One pointer line inserted into the ruling sheet after the single `**Before the first decision:**` anchor (line 7; 132 → 133 lines). No `RETIRE` row, so `docs/record/specs/` was not needed and was not created.
-- **THE THREE REGISTER ACTS (`CAP-3`), ALL THREE DONE.** (i) `Q-FO-11` inserted after the single `Q-FO-10` row and `Q-STAT-7` after the single `Q-STAT-6` row, **each as one physical line carrying its full question text (`QR-1`)**, under EXISTING headings — no new heading, per the packet's §6 and batch 92's Finding 1. Both anchors were checked for hard-wrap before insertion, because a register row wrapped across physical lines would have put the insert mid-row; both are single lines (528 and 4,662 BYTES — 510 and 4,616 characters; the distinction matters because the rows carry multi-byte glyphs). (ii) the Status paragraph's CURRENT reconcile sentence advanced to `#152` / batch 93 in this runner's own words. (iii) the superseded `#151` sentence **extracted from the register and appended VERBATIM** (772 B) at the end of the RECONCILE HISTORY in `docs/record/attorney-review-queue-closed.md`, after the `#149` sentence; predecessor confirmed absent from the synced file and present in the closed one. **No row flipped ✅ and nothing moved**, so no `CAP-OPEN-2` question arose. Counts by the register's own leading-marker matcher (`^[ \t]*- (⬜|✅|🟡)`): synced **377 → 379 ⬜**, 🟡 **5**, held ✅ **11**, all unchanged but the ⬜; closed **130 ✅**, unchanged. `attorney-review-queue.md` 438,302 B; `attorney-review-queue-closed.md` 265,652 B.
-- **FINDING 1 — THE `GL1-1` CONTRADICTION IS RESOLVED, NOT CARRIED.** The packet's §4.5 flagged that BUILD-STATE recorded `GL1-1` as RULED and CLOSED in its LAUNCH PATH bullet while "YOUR HAND — OPEN ACTS" item (6) still listed it as an open adopt/reject/edit, and told the runner to drop one or state which is true **from the gates doc at HEAD**. It was read: `docs/specs/Go_Live_Gates.md` carries the *"Correcting append (drafted 2026-08-19 for `GL1-1`; the gate's text above stands as written — this doc is append-only)"* beneath gate 1. **The append is present, so `GL1-1` is ruled, executed and closed, and item (6) was the stale half.** Item (6) is dropped and the drop is stated in place with its ground; the draft file stays on disk as the source of that append.
-- **FINDING 2 — A SECOND SELF-CONTRADICTION, WHICH THE PACKET DID NOT NAME.** The FORM ENGINE bullet CARRIED, at its end but not as its last words, *“it was RULED at `#149` in five limbs and is BUILT BY the `CCS-1` slice (§3 item 17), which is authorized and unbuilt.”* (quoted here from `8f7467b` and not retyped; 86 further characters follow it in that bullet) — while this same file's banner has said **THE CC-1 RULINGS AND ADDRESS-MODEL SLICE IS BUILT** since batch 92. The wording was stale against its own banner and is corrected in place, saying so. Found because the §4.5 defect made it worth sweeping the file for the same shape rather than fixing only the one instance named.
-- **FINDING 3 — TWO ZIPS, ONE NAME, DIFFERENT BYTES.** `Claude outputs\push-to-code_firm-obligations-rendered-examples_2026-09-08.zip` (139,670 B, sha256 `65090d88e41f4ebbd2f417366530c6d80fefbe0b797ab14be3e3dc19c88c30c8`) is **not** the packet that ran. It is an **earlier build missing the seven `scenarios/` entries**; the `inbox/` copy is complete and matches the manifest's row 4. Recorded rather than passed over because `QR-6(c)` exists for exactly this shape, and a reader who knows only the filename cannot tell the two apart.
-- **FINDING 4 — THE OUTPUTS-FOLDER COUNT ON THE RECORD IS STALE.** BUILD-STATE's YOUR HAND item (3) said *"eight stale files"* (from `#150`). Counted natively this batch: **seventeen**, now including both firm-obligations packet zips. The figure is corrected and the fourth `Documents\Knowledge Repo\Claude outputs\` scratch zip is added **as the design side's word, `HK-5` barring a sweep of Michael's machine to confirm it.**
-- **FINDING 5 — `CAP-4` COST THREE ROUNDS, AND THE FIRST TWO WERE NOT ENOUGH.** The file entered at **99,991 B** — 9 B under the ceiling — so every byte this batch added had to be bought first. Round 1 paid 12 passages (3,622 B) and the factual updates then took the file to **101,557 B, over the ceiling**. Round 2 paid 9 more (2,728 B) and landed **99,848 B — 152 B of headroom**, which is compliant and useless: the next batch would have been over before it wrote a sentence. Round 3 paid 4 more. **Final: 25 passages, 7,250 B, file at 99,384 B, 616 B under, 136/150 non-blank.** The published figure was iterated to a fixed point and then re-measured independently by `wc -c` on the working tree — a self-referential count is wrong the moment it is written unless it is solved for. **NINTH consecutive refresh to pay `CAP-4`.**
-- **FINDING 6 — EVERY RECONCILE PREDICTION IN THE PACKET VERIFIED EXACTLY.** Six new paths absent; the sheet 132 lines with its anchor at exactly one occurrence; both register anchors at exactly one; `Q-FO-11`, `Q-STAT-7` and `FOM-` collision-free repo-wide (0/0/0); `#151` the top design ordinal by a heading-anchored grep; ⬜ 377 → 379 with 🟡 and both ✅ populations unmoved. Stated because the opposite is what usually needs reporting.
-- **A SIX-LANE READ-ONLY ADVERSARIAL PASS RAN BEFORE THE COMMIT, AND IT CHANGED THIS ENTRY.** Six lanes against the uncommitted tree — QR-5 compliance, verbatim fidelity, arithmetic, the `CAP-4` displacement audit, packet compliance, the derived files — each told to REFUTE rather than confirm, then every finding put to an INDEPENDENT adversarial verifier: **26 findings, 13 CONFIRMED and 13 REFUTED.** **The most expensive confirmation was a HIGH that every one of this runner's own checks had passed: `docs/record/session-log-toc.md` had been PATCHED, NOT REGENERATED** — two rows and two range lines inserted while its whole Coverage section, its Basis-of-this-read table and its *checked the other way* paragraph still stood as batch 92 wrote them, byte-identical, so the file published this batch's figures in one bullet and batch 92's in another. `TOC-4` says REGENERATE; inserting rows into a carried frame is not regenerating. All three are re-derived. Also confirmed and fixed: the `CAP-4` ledger over-charged by one passage (`D25`) and its “only surviving copy” claim was unqualified against twelve compressions; two bold-nesting breaks this batch introduced into BUILD-STATE; a batch-92 `db/migrations` measurement carried into a batch that read no `db/` file; the A-4 runner term left at *“ninety-second”*; the head file's §3 pointing at *“§2 below”* when §2 is above it; Finding 2's misquote; and the register-anchor widths reported as characters when they are bytes. **The thirteen refutations are as much the point as the confirmations** — among them a claim that `D15`/`D16` displaced existence claims, refuted on the record's own term-of-art meaning. **A runner that only self-checks passes its own blind spots.**
-- **HEALTH CHECK — SKIPPED, AND THE SKIP IS RECORDED (`QR-6(f)`).** `npm test` / `npm run build` / `npm run lint` were **not run**. §5 is NONE in the one packet and no `src/`, `db/`, `supabase/` or build-tooling path appears in its routing table, so the suite could prove nothing about this batch. The mock's own 124-assertion harness is EVIDENCE shipped in the packet (`mock-source-2026-09-08/test-run-2026-09-08.txt`), not a run of this repo's suite, and is not offered as one.
-- **DERIVED FILES.** `docs/record/session-log-toc.md` regenerated in full over the log as this batch wrote it (`TOC-4`), and `docs/specs/session-log-head.md` regenerated in full (`TC-2`/`TC-5`) — never appended to, both riding this commit.
-- **WHAT THIS BATCH DID NOT DO.** No `src/`, `db/` or `supabase/` file was read or written. No `FOM-` finding was applied to the spec and the spec was not edited. The `;AA` §3.1 amendment was **not** applied to `statute-pass-registry-retrieval-2026-08-14.md` and `norm2.py` was not run against anything. No `FO-`/`BR-`/`DA-` id was minted. No registry entry was created, edited or set to verified. No project-knowledge capture was relocated — TRANSIT needs Michael's browser and this batch only records eligibility.
-- **OPEN ITEMS CARRIED FROM THE PACKET'S §7 — MICHAEL'S, NOT CODE'S.** `Q-FO-0`–`Q-FO-10`, the eleven decisions of the ruling sheet, ⬜ since batch 92, the sitting now next on the track **with the mock beside it** · `Q-FO-11` NEW, the fifteen `FOM-` findings one at a time after their decisions · `Q-STAT-7` NEW, adopt / edit / reject the §3.1 normalizer amendment · **TRANSIT** — the `#149`/`#150` pair and the `#151` pair, four files, eligibility verified at `8f7467b`; the `#137` Voice2 pair stays · `H12-v`, the two external asks drafted 2026-09-07 and **never sent by Claude** · **the walk** — the post-`CCS-1` walk called at `#150`, eleven text acts, nineteen `SD-` defaults, confirm marks, the seven proposed hands-on items, the `CAP-2` wording · `review_log` `'cancelled'`, the code/schema mismatch `#151` flagged, a Code act and not this packet's · `GL1-1` — **closed by this batch's Finding 1, and leaves the list** · scratch — four zips in `Documents\Knowledge Repo\Claude outputs\`, and `Claude outputs\` inside the checkout at **seventeen** stale files, not eight · carried: `CAP-OPEN-1`–`4` · `FE-SEED-1` · `TFI-1`–`3` / `CD-14` limb (i) · `RF-2` · `RC-4` · `HD-23` · the two untracked 2026-08-24 files (**DO NOTHING**, and nothing was done) · `Downloads\` relocation zips → `Session Captures\` (optional).
-- **THE `CAP-2` `—` COLUMN, AGAIN.** The packet places `—` on its edit rows (8, 9, 10) on batch 89's reading of the exemption and says so on its face, calling itself **the fifth consecutive batch to do so**; the runner's own text names the manifest, the session-log entry, the merge acts, project-knowledge files and the instructions field as outside the CLASS rule, so every `—` row here is within the enumerated exemption and none was treated as a `QR-6(e)` act. The wording question sits on `#150`'s open-items line and is bound for the walk. **This batch did not decide it.**
-
-### DISPLACED FROM BUILD-STATE (`CAP-4`)
-**Twenty-five passages were BOOKED at 7,250 B; the honest figures, corrected by this batch's own pre-commit adversarial pass BEFORE the commit, are TWENTY-FOUR ACTUALLY DISPLACED and 7,085 B.** `D25` was an IN-PLACE NUMERAL UPDATE, not a removal, and was charged in error; it is kept below, marked, and excluded from the corrected total. **Verbatim, and in the order they were paid. This runner line is the only surviving copy of each passage AS A WHOLE — but TWELVE of the twenty-five are COMPRESSIONS whose opening sentences survive in place in BUILD-STATE (D6, D8, D9, D10, D12, D14, D15, D17, D20, D21, D22 and D25 retain 47–117 byte verbatim runs there), so this ledger is a SUPERSET of what was removed — the safe direction for a rule that exists to prevent loss, and stated rather than left for a reader to discover.** Each was cut because it is spent narrative (a prior batch's account of itself, a derivation whose conclusion is kept in place, or a condition since discharged), and **NOT ONE IS AN EXISTENCE CLAIM.**
-
-**D1 crlf-selfaccount**
-
-This batch wrote `docs/spec-feedback.md` as CRLF (verified 1,449 CRLF / 0 lone LF) and every other file it touched as LF. 
-
-**D2 37-of-46 derivation**
-
-The prior basis was the live 36 (#113) plus gate 10's one new table, corroborated by a privilege sweep. **The 2026-08-20 gate 3 run adds a POSITIVE, PER-TABLE existence reading: each of the 37 named tables answered an insert BY NAME — 36 accepting and `file_counters` refusing on privilege — and a table absent from the API would have returned `PGRST205` instead. None did.** That raises the floor from a privilege inference to a per-name confirmation; 
-
-**D3 f4-f18 stoppage**
-
-**It was STOPPED first** when the database read 14.5. **Michael upgraded, and it landed under the EXISTING ruling — no fresh authorization, only the gate passing.** 
-
-**D4 raise-notice aside**
-
-Its `raise notice` was treated as decoration — **a check that cannot produce a disconfirmation is not a check.** 
-
-**D5 f12-step-d provenance**
-
- **It was edited while the migration was still unrun, on your in-session confirmation. The repo could establish NEITHER fact — both are your word**
-
-**D6 signup-ON condition**
-
-**AND `#125` ADDS A CONDITION THE RUN RECORD COULD NOT HAVE STATED, WHICH IS CONTEXT FOR `Q-G3-4` RATHER THAN A CORRECTION OF IT:** that record's §10 framing — *“`using (true)` grants every authenticated user every row, by design, in a solo practice”* — is sound only while the set of authenticatable users is CLOSED, **and the signup toggle was measured ON.** The record stated its own scope accurately; what changed is a live-configuration fact outside it
-
-**D7 first-indexing selfaccount**
-
-**and THIS regeneration is the FIRST to index the unnumbered `CCS-1` build entry, which the head file and the TOC at `ea5675b` predated BY DESIGN (that build session was barred from the runner)**; 
-
-**D8 #104 two-defects narrative**
-
-- **RUNNER-FOUND AT #104 AND NOT EDITED INTO THE DOCUMENT — TWO DEFECTS, ONE OF THEM HIGH.** **(1) *WHALEY*'S PUBLICATION NOTATION IS IN THE COPY, AND IT SAYS “DO NOT PUBLISH.”** The document asserts it *“could not be found anywhere in the copy I read”* and builds `Q-AUTH-2` on that premise. It is at the foot of the FLP-served opinion — so **under TRAP 47.7(a) *Whaley* has NO precedential value**, `Q-RL6-1`'s option (d) is dead, and **FLP reporting `status: “Published”` for this very opinion is a live proof that the FLP field is not evidence of a Texas designation.** **(2) A V-9 BREACH ON *ANASTASSOV*:** it is characterised at length while authorship is recorded as unchecked; **identification was one query away from a V-9-permitted source** — the court's own document reads *“SLAUGHTER, J., delivered the opinion for a unanimous Court”* — so the holding is **unanimous and stronger than claimed**, but the method failed. **The queue rows carry these; the document and #104 stand verbatim (`Q-T19-3`)**
-
-**D9 toc6 selfaccount**
-
-**the unnumbered `CCS-1` build entry of 2026-09-07 (`TOC-6`), NOW INDEXED for the first time because `TOC-4` fired this batch — the head file and the TOC at `ea5675b` predated it BY DESIGN, that build session having been barred from the runner,** 
-
-**D10 batch92 register acts**
-
-**TWO ROWS FLIPPED AND MOVED THIS BATCH AND ELEVEN WERE ADDED** — **`HS-3` and `HS-5` flipped ✅ and MOVED** to the closed register; `HS-4` and `HS-6` were ANNOTATED and stay ⬜; and **ELEVEN NEW ⬜ ROWS** entered under a new `FIRM OBLIGATIONS` heading, each carrying its question's FULL text (`QR-1`), under packet-local `Q-FO-` labels — 
-
-**D11 CAP-OPEN-2 selfaccount**
-
-**Neither moved row was a ✅ parent with an indented open child — the line beneath each was READ rather than assumed — so no new `CAP-OPEN-2` flag was raised.** 
-
-**D12 three-act selfaccount**
-
-**Batch 92 appended the superseded `#149` sentence to that same block — the three-act merge working exactly as ruled for the FIFTH consecutive batch.**
-
-**D13 fix-migration checks**
-
-file *“Success. No rows returned.”*; check 1 one CHECK with twenty values ending `'renders-care-at'`; check 2 = the amendment's check 8 in BOTH halves, the trailing-space insert refused by `contact_edges_edge_type_check` (23514), **proving the first insert was accepted where on 2026-09-03 it had failed**; check 3 = 0/0/0.
-
-**D14 §5 window narrative**
-
-**THE §5 WINDOW IS CLOSED AND ITS WARNING IS SPENT:** both migrations ran in the SAME SITTING as the pull, `MIG-1` first, each pasted alone, before a live matter was opened — exactly as designed — so the live app and the live database now agree on `facility_party_id`.
-
-**D15 WS3 gate narrative**
-
-Gates ruled at #109: `Q-WS3-1` → **"Cross-reference"**; `Q-WS3-2` → **"Comment-9"** (the derivation stands as drafted, its note stating honestly that both opinions reach the result **through comment 9** and that **no located case uses the 192.3(a) formulation**). 
-
-**D16 RL-3/RL-2 cite acts**
-
-**`RL-3`, three cite acts:** 20b (*Collins*) took the full parenthetical, and 15 and 21a each took **date + cause number**, with **no pinpoint and no designation notation, because none was available.** **`RL-2`:** the *Alford* supersession inference is retired. 
-
-**D17 FE-spec repairs**
-
-*(All three carried the falsified `ALTER DEFAULT PRIVILEGES` claim and a stale "probe covers 36 tables", REPAIRED on your in-session authorization; the detail is DISPLACED to batch 88's runner line.)*
-
-**D18 Teams/callRecords detail**
-
-Teams SMS: three licences plus A2P Brand *and* Campaign approval, **1:1, no MMS** (no scene photo, insurance card or bill), **apparently not on Graph** (`COM-LOOK-3`). `callRecords` = who/when/how-long, **no audio/transcript** — no privilege/consent/PHI (log is not archive; only the archive needs content). **Only Microsoft-native path to call content INVERTS ruling 8.3** (`Q-COM-8`). 
-
-**D19 QBO scope/economics**
-
-QBO: **NO READ-ONLY OAUTH SCOPE** — the one accounting scope is full read/write, so "read-only first" is a property of the code, never the grant (`Q-QBO-2`); **economics INVERTED** — Intuit meters data-**OUT**, free tier 500k credits/month, and **BLOCKS rather than bills**; 
-
-**D20 Bexar filing-moment derivation**
-
-**THE FILING MOMENT IS CONTESTED, NOT SETTLED:** TRCP 21(f)(5) and Statewide Criminal E-Filing R. 2.3(a) fix filing at **transmission to the filer's EFSP** (TIER A); a Bexar county-court sentence appears to fix it at **clerk acceptance** (TIER B), and **TRCP 3a(b) bars a local rule inconsistent with a Supreme Court rule** — exposure: transmitted late on a limitations date, accepted two days later (**LR-LOOK-1**). 
-
-**D21 deadline-spec detail**
-
-**AN ELABORATION SPEC EXISTS AND AUTHORIZES NOTHING: `docs/specs/deadline-engine-spec.md` (PROPOSED)** — **NO column, NO table, NO migration** (`FC-8`'s geography limb stays unauthorized), reuses the lien engine's `P1`–`P7` vocabulary, and **leaves the 50-day conflict FLAGGED with the skeleton UNEDITED.** 
-
-**D22 F-1 exposure window**
-
-**F-1 WAS A LIVE EXPOSURE AND IS NOW CLOSED:** no PUBLIC entry survives on `next_file_number()`, which as a `SECURITY DEFINER` counter-writer was `anon`-callable over PostgREST RPC from 2026-07-28 until 2026-08-19 — **and the PG17 default was checked against the documentation rather than assumed.**
-
-**D23 F-3 worked example**
-
- (F-3 — a case opened 2026-12-31 18:05 Central would have been issued a `27-` number)
-
-**D24 COM architectural pricing**
-
-**They resolve differently:** the scope exclusion **costs nothing**; the architectural commitment is **priced for the first time** — a second public HTTPS endpoint, private-key custody, an outside vendor's **discretionary approval** (new gate class `Q-COM-5`), and an **unestablished metering position**, **for a channel the firm does not use.**
-
-**D25 stale ## count — ⚠ BOOKED IN ERROR, NOT DISPLACED: this passage was UPDATED IN PLACE (the numeral 178 → 180) and never removed. Retained here for the record and excluded from the corrected 7,085 B.**
-
-*(The log's 178th `## ` line is the `## ARCHIVED:` pointer heading, not an entry and never a row — a bare `grep -c '^## '` returns 178 and invents a missing row.)*
-
-## 2026-09-08 (#152) — (Typed design session, Cowork, Fable 5.1 per the environment; opened 23:46 CDT on 2026-09-07 on Michael's delegation — *"I need you to run the next chunk of work that you can do. Make it as long and as token rich as you want it to be."* — and run past midnight, so DT-1 stamps it 2026-09-08; DEVICE BRIDGE GRANTED at once on the checkout and `Documents\Knowledge Repo`: THE RENDERED EXAMPLES FOR THE FIRM-OBLIGATIONS RULING SITTING — an interactive mock of the module on a fictional fixture firm with the sheet's eleven decisions as switches, published as a claude.ai artifact and filed as EVIDENCE with its source and a 124-assertion harness; a RULING-class companion mapping every decision to what to look at, with FIFTEEN spec findings PROPOSED for his adopt/reject/edit; the `;AA` normalizer gap `#151` recorded, characterized as two contexts and PROPOSED as a §3 amendment with the measurement; TRANSIT eligibility verified at HEAD for the `#149`/`#150` and `#151` capture pairs; two adversarial audits and a re-sweep, every HIGH real and fixed; NO ruling made, nothing built, no ID minted)
-
-Michael delegated the chunk and was told the choice at 00:12 CDT (he did not redirect): everything on BUILD-STATE's next-acts line needs his hand — the walk, the `H12-v` asks, the ruling sitting, go-live — and the one act that runs alone AND shortens the next act on the firm-obligations track is rendered examples for the eleven decisions, which he has twice asked for before ruling on structure questions (2026-08-31, *"Give me some examples to illustrate"*) and which `CC-1(a)`'s own diagnosis calls for (*he sees the workflow, Claude sees the schema*). **Verified over the bridge before anything was said:** HEAD `8f7467b` = the local `origin/master` = `git ls-remote origin refs/heads/master` (a live remote read), 0 ahead / 0 behind, on `master`, no `.git/index.lock`, `git status` never run; `inbox/` EMPTY — **so batch 92 had run**, `#150` and `#151` were at HEAD, the spec and the sheet at their canonical paths, and this sitting mints `#152` (the live log's top design ordinal is `#151` by a heading-anchored grep). Read whole: batch 92's runner line (its Finding 2 — the DECISION↔`Q-FO` map is the sheet's headings — carried throughout), `BUILD-STATE.md` (99,991 B / 150 raw / 136 non-blank), the spec, the sheet, `CLAUDE.md`, the statute-pass spec §3; the `#149` and `#151` handoffs and the `#151` capture in project knowledge. **NAMED `src/` reads, verification only and nothing edited** (`#149` D1(v) — *"rule under the current tokens"*): `src/index.css` whole (the token set), `src/components/WorklistCard.tsx` whole (the compact-card precedent), `src/App.tsx` L40–82 (the shell), `src/pages/CaseListPage.tsx` L1–60 by grep (the card sits above the page head). Knowledge meter **1,643,637 / 2,000,000 = 82.2%** at open (`Q-CAP-5(a)` did not fire; fifteen project docs). **CC-1 hands-on queue stated at open:** twelve accepted (all gated) + seven proposed + five PROPOSED by `#151` + the post-`CCS-1` walk's agenda — unchanged at close. A running ledger held every HEAD fact and command; it is filed as EVIDENCE.
-
-- **WHAT THE SITTING PRODUCED, ONE — THE MOCK, and it is not the product.** `docs/record/firm-obligations-design-2026-09-07/firm-obligations-mock-2026-09-08.html` (EVIDENCE — a rendered aid he looks at, not text he rules on; the author's classification, stated so it can be overruled; ~148 KB of HTML kept out of the sync), the same file hosted as the claude.ai artifact **"Firm Obligations Mock"** (`https://claude.ai/code/artifact/90fd6290-c9fb-4b2c-9cf5-ed90499ce450`, private until he shares it), and its source beside it (`mock-source-2026-09-08/`: the domain logic, the fixture, the UI, the styles, the build script, the harness and its run record, and the five headless click scripts that checked it). It renders the three surfaces of spec §5 under the nineteen `FOD-` defaults — the `/cases` card beside the legal-watch card, the `/firm/obligations` twelve-month register, an Outlook projection — on a **fictional fixture firm** (every date and every "firm fact" invented, said in a banner on every screen; the templates and their cite-and-status strings copied from spec §7, characterizing nothing new), with the sheet's DECISION 0–10 as switches, the sheet's question text **verbatim by program** (sha256 of the sheet recorded), a Part B worksheet row for row, a fixture clock, the held items shown as marked defaults and never put, and the fifteen findings below with switches where a proposal can be rendered. **The domain logic is the spec's §3–§4 written fresh in plain JavaScript and pinned by a node harness — 124 assertions at the final build** (the one-open invariant, serial and collapse materialization including the pinned defects, `FOD-1`, `FOD-4`, `FOD-7`, `FOD-8`, `FOD-15`–`FOD-18`, the card and register horizons, all five Outlook readings). No product code was used for it; the app's tokens were.
-- **TWO — THE COMPANION, RULING-CLASS, PROPOSED IN EVERY LINE:** `docs/specs/firm-obligations-rendered-examples-2026-09-08.md` — how to use the mock at the sitting (one decision at a time, the sheet governing), the fixture, a decision-by-decision table of what to look at, and **§4: fifteen findings `FOM-1`–`FOM-15`** (packet-local; collision-checked free repo-wide at `8f7467b`), each naming the spec sentence it rests on, what the rendering exposed, and proposed wording — eleven from building the mock, four from the adversarial audit of it. The ones that change behaviour: `FOM-1` (the collapse rule as written re-materializes the September 5 reconciliation on October 5 three days after an October 2 completion, and — done early on September 3 — **September 5 again**; proposed: a cadence completion closes the period it falls in, a dated kind never re-materializes its own date); `FOM-4` (activation cannot know a period missed before activation; proposed: an optional "last period completed" for `serial` kinds); `FOM-6` (`FOD-17`'s "lights on the 1st" overrides a 45-day lead; proposed: the earlier of the two); `FOM-12` (`FOD-1` exempts only the weekend — Monday prints "overdue" for a Saturday date though a roll may make Monday the due day); `FOM-13` (`FOD-14`'s "due within 14 days" against §4.3's "nothing lit → nothing" — the two disagree for a five-day lead; proposed: the conjunctive reading). The rest are stated ambiguities (the twelve-month view's home for a four-year row, where inactive rows live, per-period flags on four rows that should be eight, the pin's order, the register's horizon stated two ways, the owner column at solo stated two ways, `periodLabel` undefined for two kinds, undo's "within the period", a clarification) and one build-time verification (`FOM-8`: whether Graph honours a reminder 30–180 days before an all-day event — not established anywhere on the record). **Each finding attaches to a decision and is put right after it, one at a time; none is applied to the spec by this packet.** The sheet gains ONE pointer line beneath its "Before the first decision" paragraph and nothing else.
-- **THREE — THE `;AA` NORMALIZER AMENDMENT, PROPOSED WITH ITS MEASUREMENT:** `docs/record/normalizer-semicolon-amendment-2026-09-08/` (EVIDENCE — the record, the amended `norm2.py` in §3's own shape, the thirteen changed lines byte-exact). The gap `#151` reported and BUILD-STATE carries as *"a later docs act"* is two contexts, not one: the artifact directly after a **semicolon** (`services;AAand`; twelve sites in `tx.151`/`tx.171`/`tx.31`) and the **five-`A` run** that is the article `A` between two artifact spaces (`SOCIETY.AAAAAcooperative`, one site). The amended normalizer — one pre-pass and one appended pair, in the published block's shape — re-run over the sixteen `#151` chapters **changes exactly the thirteen lines and nothing else, and leaves zero residual glued `AA` in every chapter**; ten of the eleven chapters §3 was written on (the nine it names plus CR.42) re-extracted in the device VM carry **zero** of either shape, so the sample lacked them rather than overlooked them; the whole Tax Code zip (56 chapters) carries **28 semicolon sites in 12 chapters**, corroboration only. No quoted passage on the record contains a site. **Nothing in §3 is edited**: two published normalizers were already wrong, both silently, so the third change is put as its own adopt/reject/edit (`Q-STAT-7`, the register row) and applied only by a later packet citing his ruling.
-- **FOUR — TRANSIT ELIGIBILITY, VERIFIED AT HEAD BY FULL-TEXT READ (execution needs his Chrome, staged not run):** the `#149` pair — with the `#150` addendum's amended condition — is ELIGIBLE (both entries at HEAD; the slice, the kickoff prompt, the rulings record, the six forward-sitting EVIDENCE files, the ccs1 migration-run record, the gates-doc appends, the spec-feedback annotations, `CCS-1`/`HS-2`/`HS-8`/`HS-3`/`HS-5` in the closed register, `HS-4`/`HS-6` open, `H12-v` annotated — every one present); the `#151` pair is ELIGIBLE (the entry, the spec, the sheet, the four EVIDENCE files, the spec-feedback section, the eleven `Q-FO` rows under the `### FIRM OBLIGATIONS` heading). **The `#137` Voice2 pair is NOT eligible and should not leave yet:** `BR-2`, `BR-4` and `DA-2` are defined only in that capture (`grep` over `docs/` finds them only as cross-references), and the sheet cites it as the sitting's prior art — the ruling sitting's packet should carry those definitions into its record so the pair can go. The two email drafts are live working documents and stay. Four files, then, are ready for the three-step act at his next sitting with his browser (`#149`'s method).
-- **PF-1 DID NOT FIRE, AND THE SKIP IS RECORDED:** the packet carries no new legal characterization and no registry entry — every cite string in the mock and the companion is a copy of a spec §7 cell, and the normalizer record states no proposition. **Two adversarial read-only auditors ran anyway** (`RE-SWEEP AFTER FIX`'s family, discretionary), told to refute: one over the companion, the normalizer record, the fixture strings and the regexes against HEAD — **HIGH 1 / MEDIUM 4 / LOW 10**; one over the mock's behaviour against spec §3–§5 and §12 line by line with headless clicking — **HIGH 4 / MEDIUM 9 / LOW 10**. **Every HIGH was real:** undo could leave two open occurrences and could delete the wrong one; retire hid a lit occurrence against `FOD-8`; "overdue" printed on the Sunday `FOD-1` exempts. All fixed or converted into `FOM-12`–`FOM-15`; none declined. **Then `RE-SWEEP AFTER FIX` ran as a third auditor over the changed claims and found the rule's own exhibit twice** — the weekend-exemption fix had dropped the held item off the card and filed it under Later, and the undo fix could be reopened through a Re-activate (**HIGH 2 / MEDIUM 2 / LOW 6**, all fixed). That second fix pass was checked by program, not by a fourth fleet: the harness at 124/124 and a headless script re-driving exactly the re-sweep's scenarios, zero errors. Record: `docs/record/firm-obligations-design-2026-09-07/rendered-examples-audit-2026-09-08.md`, every finding and its disposition.
-- **A BUILD-STATE-VS-ITSELF DEFECT, FOR THE RUNNER'S REFRESH (not a trigger-6 contradiction):** the LAUNCH PATH bullet says *"`GL1-1` RULED 'Adopt as drafted' 2026-08-20 — the append is beneath gate 1 … row CLOSED"* while "YOUR HAND — OPEN ACTS ONLY" item (6) still lists `GL1-1` as *"adopt / reject / edit the drafted, NOT-appended … draft"*. The same class as the next-acts bullet `#149` flagged.
-- **WHAT SHIPPED (this packet, docs-only):** this entry; ONE RULING file — the companion — born in `docs/specs/`; EVIDENCE — the mock and its source directory (fourteen files), the audit record and the running ledger under `docs/record/firm-obligations-design-2026-09-07/`, and the three-file normalizer directory under `docs/record/normalizer-semicolon-amendment-2026-09-08/`; ONE INSERT into the sheet (a pointer line beneath its "Before the first decision" paragraph); TWO ⬜ register rows with their FULL question text (`QR-1`) — `Q-FO-11` after the `Q-FO-10` row, `Q-STAT-7` after the `Q-STAT-6` row — no `FO-`/`BR-`/`DA-` id minted; the reconcile sentence advanced; BUILD-STATE refreshed on the facts in the manifest §4.5. **RR-1 ran:** the companion, the record, the mock's texts and this entry were re-read against every later act of the sitting — the audit's fixes, the re-sweep's, the renumbering — before the zip closed; **RE-SWEEP** ran on the fix pass (above). **`CAP-2`:** every row that places a file carries its class; the edit rows carry `—` on batch 89's reading of the exemption, the FIFTH consecutive batch to do so; the wording question stays on `#150`'s open-items line, bound for the walk.
-- **WHAT DID NOT HAPPEN, each because a rule bars it or because it is his:** no ruling recorded — Michael made none, and every design statement is PROPOSED; nothing built; no `src/` edited (the four named files read for the tokens and the card's structure); no schema act; no ID minted — `FOM-`, `Q-FO-11`, `Q-STAT-7` packet-local and collision-checked (0/0/0 at `8f7467b`); no registry file touched; no fact about the firm asserted (the fixture is fictional in every date and condition); no legal currency verified; no quotation of law; the spec and the sheet not edited beyond the one pointer line; no capture relocated (eligibility verified, the act staged); no web fetch; no live database touched; `git status` not run, no lock stranded. **Bridge scratch left on his machine, named for his hand (device_bash cannot delete):** `Documents\Knowledge Repo\Claude outputs\repo-snapshot-8f7467b_2026-09-08.zip` (4,354,682 B, sha256 `c82c253f…14936`) — this session's read-only working copy; the VM's `/tmp/aa/` extraction scratch is the VM's own; nothing else landed in a connected folder. The `#151` sitting's three zips in that folder are unchanged and still his.
-
-**Next:** the queue runs this packet on `mdb-pllc` (batch 93); Michael clicks Sync; then **THE FIRM-OBLIGATIONS RULING SITTING** on the sheet, with the mock open beside it — eleven decisions one at a time, each finding put right after its decision, dates never asked — after which the slice is drafted and put in its own act; **THE POST-`CCS-1` WALK** stays next on its own track; the two `H12-v` asks by his hand; `Q-STAT-7` (the normalizer amendment) whenever he reads it; **TRANSIT of the `#149`/`#150` and `#151` pairs** at his next sitting with his browser (four files, eligibility verified here; the `#137` pair stays until its `BR-`/`DA-` definitions reach the repo); the `review_log` `'cancelled'` mismatch to a Code session; go-live, his day.
-
-**Staged for Code:** the companion (RULING); the mock, its source, the audit record, the ledger and the normalizer directory (EVIDENCE); the sheet's pointer line; the two register rows and the reconcile sentence; the BUILD-STATE facts in this packet's §4.5.
-
-**Awaiting/Returned from Code, unreviewed:** as BUILD-STATE's own line states at HEAD — recompute it there (`OPEN-5(a)`, start-of-session rule 5). What this sitting can truthfully add: batch 92 was READ design-side (its runner line whole) and its two packets' landing verified by existence at every canonical path; nothing returned from Code is reviewed here. **Still open and still Michael's:** the firm-obligations ruling sitting (the sheet + the mock) · the post-`CCS-1` walk · the two `H12-v` asks and the AWS BAA read · go-live, his day · `Q-FO-9`'s acquisitions · `Q-FO-10` (rows) · `Q-FO-11` (the fifteen findings, one at a time) · `Q-STAT-7` (the normalizer amendment) · the four TRANSIT-ready files · the `review_log` `'cancelled'` mismatch (a Code act) · the four scratch zips in `Claude outputs\` · `Claude outputs\` inside the checkout (eight stale files, per `#150`) · the two untracked 2026-08-24 files (DO NOTHING) · `CAP-OPEN-1`–`4` · `FE-SEED-1` · `TFI-1`–`3` / `CD-14` limb (i) · `RF-2` · `RC-4` · `HD-23` · moving the earlier relocation zips from `Downloads\` to `Session Captures\` (optional).
-
 ---
 
 ## §2 COMPACT INDEX — EVERY ENTRY IN THE LIVE LOG, NEWEST FIRST
@@ -567,6 +1022,9 @@ One row per entry. This section is what tells a session with no bridge that an e
 
 | date | # | kind | heading (first 90 chars) |
 |---|---|---|---|
+| 2026-09-13 | — | runner | QUEUE-RUNNER batch (runner line; NINETY-SEVENTH invocation) — one docs-only packet: the fi |
+| 2026-09-12 | #156 | design | (Typed design session, Cowork, Fable 5.1 per the environment; opened 08:02 CDT on the stan |
+| 2026-09-12 | — | code | CODE SESSION (Opus 5, fresh, fired from `docs/prompts/PROMPT-firm-obligations-slice-build- |
 | 2026-09-11 | — | runner | QUEUE-RUNNER batch (runner line; NINETY-SIXTH invocation) — one docs-only packet: the firm |
 | 2026-09-10 | #155 | design | (Typed design session, Cowork, Fable 5.1 per the environment; opened 21:34 CDT on Michael' |
 | 2026-09-09 | — | runner | QUEUE-RUNNER batch (runner line; NINETY-FIFTH invocation) — one docs-only packet: the API- |
