@@ -9,6 +9,10 @@ import type { AnalysisRun, BillType, FeeSchedule, GeneratedDocument, LegalRule, 
 import { ATTORNEY_USER, DISCLAIMER_TEXT, outstandingAmount, settlementEligibleRuns } from '../domain/billing';
 import type { CaseClient } from '../domain/client';
 import { isResolved, showsClientLayer, sortClients } from '../domain/client';
+import {
+  billProviderOptions,
+  type BillProviderOption, type CaseProvider, type CaseProviderIndividual, type CaseProviderVisit,
+} from '../domain/caseProviders';
 import { computeAnalysis, runScheduleSelection } from '../analysis/benchmark';
 import { runStalenessReasons } from '../analysis/staleness';
 import { db } from '../data';
@@ -31,6 +35,15 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const [runs, setRuns] = useState<AnalysisRun[]>([]);
   const [docs, setDocs] = useState<GeneratedDocument[]>([]);
   const [providers, setProviders] = useState<PartyRecord[]>([]);
+  /** `#156` §2 (B6) — the new-bill form's picker source: this case's
+   *  `case_providers` rows (the Providers section's list), with the three
+   *  sources that section sorts them by and the facility parties' names. The
+   *  linked-`providerBusiness` list above (`providers`) is KEPT for the
+   *  ledger's Provider column, which B6 does not reach. */
+  const [caseProviderRows, setCaseProviderRows] = useState<CaseProvider[]>([]);
+  const [providerIndividuals, setProviderIndividuals] = useState<CaseProviderIndividual[]>([]);
+  const [providerVisits, setProviderVisits] = useState<CaseProviderVisit[]>([]);
+  const [facilityNames, setFacilityNames] = useState<Record<string, string>>({});
   const [schedules, setSchedules] = useState<FeeSchedule[]>([]);
   const [rules, setRules] = useState<LegalRule[]>([]);
   const [adding, setAdding] = useState(false);
@@ -38,7 +51,7 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const [openDoc, setOpenDoc] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    const [bs, rs, ds, links, scheds, lrs, cls] = await Promise.all([
+    const [bs, rs, ds, links, scheds, lrs, cls, cps, inds, vs] = await Promise.all([
       db.listBillsForCase(caseRec.id),
       db.listRunsForCase(caseRec.id),
       db.listDocumentsForCase(caseRec.id),
@@ -46,6 +59,9 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
       db.listFeeSchedules(),
       db.listLegalRules(),
       db.listClientsForCase(caseRec.id),
+      db.listCaseProviders(caseRec.id),
+      db.listProviderIndividuals(caseRec.id),
+      db.listProviderVisits(caseRec.id),
     ]);
     setAllBills(bs);
     setRuns(rs);
@@ -53,12 +69,19 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
     setSchedules(scheds);
     setRules(lrs);
     setClients(sortClients(cls));
+    setCaseProviderRows(cps);
+    setProviderIndividuals(inds);
+    setProviderVisits(vs);
     const parties = await db.getParties([
       ...links.map((l) => l.partyId),
       ...cls.map((c) => c.partyId),
     ]);
     setProviders(parties.filter((p) => p.partyType === 'providerBusiness'));
     setClientParties(Object.fromEntries(parties.map((p) => [p.id, p.displayName])));
+    // A SEPARATE read, so the facility parties never widen `providers` (the
+    // ledger column's linked list) — B6 moves the form's source only.
+    const facilities = await db.getParties([...new Set(cps.map((r) => r.facilityPartyId))]);
+    setFacilityNames(Object.fromEntries(facilities.map((p) => [p.id, p.displayName])));
   }, [caseRec.id]);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -87,6 +110,17 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const providerName = useCallback(
     (id?: string) => providers.find((p) => p.id === id)?.displayName,
     [providers],
+  );
+
+  /** `#156` §2 (B6) — the picker's options: one per facility party on this
+   *  case's `case_providers` rows, in the Providers section's order. */
+  const billProviders = useMemo(
+    () => billProviderOptions(
+      caseProviderRows,
+      { individuals: providerIndividuals, visits: providerVisits, bills: allBills },
+      (id) => facilityNames[id],
+    ),
+    [caseProviderRows, providerIndividuals, providerVisits, allBills, facilityNames],
   );
 
   /** Latest run per bill — provisional or confirmed — for the list badges. */
@@ -213,7 +247,7 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
         {adding && (
           <NewBillForm
             caseId={caseRec.id}
-            providers={providers}
+            providerOptions={billProviders}
             clients={clients}
             clientName={clientName}
             // Single-client case: the one client is implicit, exactly as today.
@@ -334,10 +368,12 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
 }
 
 function NewBillForm({
-  caseId, providers, clients, clientName, defaultClientId, onDone,
+  caseId, providerOptions, clients, clientName, defaultClientId, onDone,
 }: {
   caseId: string;
-  providers: PartyRecord[];
+  /** `#156` §2 (B6) — built from this case's `case_providers` rows by
+   *  `billProviderOptions`; value = facility party id, label = its name. */
+  providerOptions: BillProviderOption[];
   clients: CaseClient[];
   clientName: (c: CaseClient) => string;
   defaultClientId: string | null;
@@ -387,14 +423,18 @@ function NewBillForm({
         {/* `BL-1` / `R7`, RULED 2026-09-05: *"Build it"*. The label DEFAULTS to
             the provider name on creation and is editable to disambiguate. It
             stays DISPLAY-ONLY — the July finding stands, and nothing downstream
-            reads this string as data. */}
+            reads this string as data.
+            `#156` §2 (B6), *"The Providers section's list (case_providers)"*:
+            the options are this case's `case_providers` facilities, no longer
+            the linked `providerBusiness` parties, and R7's pre-fill fills from
+            the PICKED ROW's label. The placeholder is unchanged. */}
         <Combobox
-          options={providers.map((p) => ({ value: p.id, label: p.displayName }))}
+          options={providerOptions}
           value={providerId}
           onChange={(id) => {
             setProviderId(id);
             if (!labelIsPrefilled) return;
-            setLabel(providers.find((p) => p.id === id)?.displayName ?? '');
+            setLabel(providerOptions.find((o) => o.value === id)?.label ?? '');
           }}
           placeholder="— (link provider party later)"
         />

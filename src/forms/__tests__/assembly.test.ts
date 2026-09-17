@@ -96,21 +96,51 @@ describe('invariant 2 — the slot order, and causation LAST', () => {
     expect(outO.fixedSentenceKeys).toEqual([]);
   });
 
-  it('places §9.11 WHOLE for custodian-only, with the clause BETWEEN its sentences', () => {
-    // AS-Q7a. The app owns this one, all four limbs are app-guaranteed, and
-    // nothing is templated inside or beside §9.11's approved sentences.
+  it('#156 §2 (B2) — places §9.11 WHOLE for custodian-only, with NOTHING between its sentences', () => {
+    // AS-Q7a. The app owns this one, all four limbs are app-guaranteed. D-18's
+    // care-episode clause is RETIRED — Michael: "No episode sentence at all" —
+    // so the paragraph is exactly §9.11's two sentences, tokens filled.
+    const row = fixedSentence('custodian-only-whole', 'custodian-only')!.text;
+    // Split the UNFILLED row, where no token value can carry a stray ". ".
+    const boundary = row.indexOf('. The Custodian will testify');
+    expect(boundary).toBeGreaterThan(-1);
+    const values = tokenValues(CTX, []);
+    const first = fillSentence(row.slice(0, boundary + 1), values);
+    const second = fillSentence(row.slice(boundary + 2), values);
+
+    for (const plan of [
+      planFacility(facility('custodian-only'), []).paragraphs[0],     // typed
+      planFacility(facility('emergency-medicine'), []).paragraphs[0], // the fallback
+    ]) {
+      expect(plan.shape).toBe('custodian-only');
+      const out = assembleParagraph(plan, CTX, {});
+      // "Nothing between": sentence 1, ONE space, sentence 2 — and nothing else.
+      expect(out.assembledText).toBe(`${first} ${second}`);
+      expect(out.assembledText).toBe(fillSentence(row, values));
+      expect(out.fixedSentenceKeys).toEqual(['fixed:custodian-only-whole:custodian-only']);
+      expect(out.leadText).toBeUndefined();
+
+      // A stray part handed in anyway is IGNORED for this shape, not placed —
+      // the retired key included.
+      const stray = assembleParagraph(plan, CTX, {
+        care_episode_clause: 'CLAUSE.', opening: 'OPENING.', middle: 'MIDDLE.', body: 'BODY.',
+      });
+      expect(stray.assembledText).toBe(`${first} ${second}`);
+    }
+  });
+
+  it('#156 §2 (B2) — a facility name carrying ". " no longer lets anything into sentence 1', () => {
+    // The retired split cut on the first ". " of the FILLED text, so a name
+    // like "St. Luke's" put the clause inside sentence 1. With nothing placed
+    // between, the filled row is the whole paragraph, byte for byte.
+    const ctx = { ...CTX, facilityName: "St. Luke's Halite Hospital" };
     const plan = planFacility(facility('custodian-only'), []).paragraphs[0];
-    const whole = fillSentence(fixedSentence('custodian-only-whole', 'custodian-only')!.text,
-      tokenValues(CTX, []));
-    const cut = whole.indexOf('. ');
-    const first = whole.slice(0, cut + 1);
-    const second = whole.slice(cut + 2);
-
-    const withClause = assembleParagraph(plan, CTX, { care_episode_clause: 'CLAUSE.' });
-    expect(withClause.assembledText).toBe(`${first} CLAUSE. ${second}`);
-
-    const without = assembleParagraph(plan, CTX, {});
-    expect(without.assembledText).toBe(whole);
+    const whole = fillSentence(
+      fixedSentence('custodian-only-whole', 'custodian-only')!.text, tokenValues(ctx, []),
+    );
+    expect(assembleParagraph(plan, ctx, { care_episode_clause: 'CLAUSE.' }).assembledText)
+      .toBe(whole);
+    expect(whole).not.toContain('CLAUSE');
   });
 });
 
@@ -176,18 +206,52 @@ describe('invariants 9 and 22 — the shapes, and who lands on the block', () =>
     const plan = planFacility(facility('emergency-medicine'), [em, r1, r2, pa, psy]);
     const shapes = plan.paragraphs.map((p) => p.shape);
 
-    expect(shapes).toEqual(['treating-single', 'radiology-split']);
-    // The treating paragraph carries the EM physician ALONE — the radiologists
-    // split out and the mental-health marker is excluded from the paragraph and
-    // its LEAD (AS-Q17's default).
-    expect(plan.paragraphs[0].individuals.map((i) => i.displayName)).toEqual(['Ines Vantwoud']);
+    // `#156` §2 (B3) — AS-Q17 RULED: the marked individual is DESIGNATED in the
+    // treating paragraph. Two different effective markers (emergency medicine
+    // and mental health) make that paragraph MIXED, as a DC and a PT would.
+    expect(shapes).toEqual(['treating-mixed', 'radiology-split']);
+    // The treating paragraph carries the EM physician AND the marked individual
+    // — the radiologists still split out; the held default's exclusion is gone.
+    expect(plan.paragraphs[0].individuals.map((i) => i.displayName))
+      .toEqual(['Ines Vantwoud', 'Neriah Halvorsen']);
+    // The facility's type still supplies the fixed sentences (§17.1a).
+    expect(plan.paragraphs[0].fixedType).toBe('emergency-medicine');
+    expect(plan.handDrafted).toBe(false);
     expect(plan.paragraphs[1].individuals).toHaveLength(2);
     // The rider rides the TREATING paragraph and never the radiology one.
     expect(plan.paragraphs[0].riders.map((i) => i.displayName)).toEqual(['Priya Natarajan']);
     expect(plan.paragraphs[1].riders).toEqual([]);
-    // D-65: everyone designated, PLUS the mental-health individual.
+    // D-65, unchanged: all five on the block.
     expect(plan.blockIndividuals.map((i) => i.displayName)).toContain('Neriah Halvorsen');
     expect(plan.blockIndividuals).toHaveLength(5);
+  });
+
+  it('#156 §2 (B3) — a marked individual is designated like any other, in the LEAD too', () => {
+    const psy = person({ displayName: 'Neriah Halvorsen', credentialSuffix: 'Psy.D.', roleMarker: 'mental-health' });
+
+    // Alone at an EM facility: a treating paragraph naming them — NOT the old
+    // "no generated paragraph, hand-drafted" branch, and NOT custodian-only.
+    const alone = planFacility(facility('emergency-medicine'), [psy]);
+    expect(alone.handDrafted).toBe(false);
+    expect(alone.paragraphs.map((p) => p.shape)).toEqual(['treating-single']);
+    expect(alone.paragraphs[0].individuals.map((i) => i.id)).toEqual([psy.id]);
+    expect(alone.paragraphs[0].gapFlag).toBe(false);
+    const out = assembleParagraph(alone.paragraphs[0], CTX, { opening: 'O.', middle: 'M.' });
+    expect(out.leadText).toBe('Neriah Halvorsen, Psy.D.,');
+    expect(out.individualIds).toEqual([psy.id]);
+
+    // With another individual: in the paragraph and in its LEAD.
+    // Chronology order puts the EM physician first (sortOrder), as on Garcia.
+    const em = person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.', sortOrder: 0 });
+    const mixed = planFacility(facility('emergency-medicine'), [em, psy]);
+    const lead = assembleParagraph(mixed.paragraphs[0], CTX, { opening: 'O.', middle: 'M.' }).leadText;
+    expect(lead).toBe('Ines Vantwoud, M.D. and Neriah Halvorsen, Psy.D.,');
+
+    // At an IMAGING-typed facility the paragraph its facility generates is the
+    // imaging paragraph, and they are in it.
+    const imaging = planFacility(facility('radiologist'), [psy]);
+    expect(imaging.paragraphs.map((p) => p.shape)).toEqual(['imaging-facility']);
+    expect(imaging.paragraphs[0].individuals.map((i) => i.id)).toEqual([psy.id]);
   });
 
   it('an ALL-radiologist facility yields the radiology paragraph ALONE, no rider, PA off the block', () => {

@@ -422,6 +422,10 @@ describe('the bundled skeleton matches the .docx it was generated from', () => {
   });
 
   it('decodes to a package of the expected size', () => {
-    expect(disclosuresSkeletonBytes().length).toBe(16937);
+    // 16,937 bytes as supplied; 16,898 since FOS-2 B5 (Michael, 2026-09-16:
+    // "Tokenize both headings") rewrote the container through `writeZip`. The
+    // decompressed members other than word/document.xml are unchanged —
+    // `masterTitleTokens.test.ts` pins that.
+    expect(disclosuresSkeletonBytes().length).toBe(16898);
   });
 });

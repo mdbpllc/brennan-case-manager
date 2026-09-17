@@ -232,13 +232,17 @@ export interface TypedGateInput {
 }
 
 /**
- * §5.1 — the hard pause, now on the TYPE (AS-Q5) and on the MARKER (AS-Q17's
- * default).
+ * §5.1 — the hard pause, now on the TYPE (AS-Q5) and on the MARKER (AS-Q17,
+ * RULED `#156` §2, B3: *"Pause still fires, then designate"*).
  *
  * A designation of a mental-health treater opens mental-health records and a
- * Rule 204 adverse examination. There is no §9 variant for it BY DESIGN, and
- * the paragraph is drafted by hand — so the pause is not a formality, it is the
- * moment the deliberate gap is honoured.
+ * Rule 204 adverse examination. There is no §9 variant for it BY DESIGN. For a
+ * mental-health FACILITY the paragraph is drafted by hand — so the pause is not
+ * a formality, it is the moment the deliberate gap is honoured. For a MARKED
+ * individual at a facility of another type the pause fires exactly as before,
+ * and once Michael clears it the individual IS designated in the treating
+ * paragraph (`assembly.ts`); the pause decides whether he proceeds, never what
+ * the document says.
  */
 export function typedMentalHealthGates(input: TypedGateInput): GateWarning[] {
   const out: GateWarning[] = [];
@@ -267,11 +271,11 @@ export function typedMentalHealthGates(input: TypedGateInput): GateWarning[] {
         severity: 'hard-pause',
         partyId: p.facilityPartyId,
         title: `${ind.displayName} is marked mental health`,
-        body:
-          `${ind.displayName} is marked as a mental-health provider at ${name}. They stay on the `
-          + 'provider block and are left OUT of the generated paragraph, because designating them '
-          + 'under this facility\u2019s medical-causation sentence would be the assertion this pause '
-          + 'exists to stop. Their paragraph is drafted by hand.',
+        // `#156` §2 (B3) — the body said they were left OUT of the generated
+        // paragraph and hand-drafted, which B3 made false. It now carries
+        // `FXD-5`'s panel-line-11 sentence, the build's reading of where that
+        // wording also belongs, for his eye.
+        body: `${ind.displayName} is marked mental health at ${name} — designated in the treating paragraph once this pause is cleared.`, // PROVISIONAL — FXD-5 (#156 §2, AS-Q17)
         authority: 'In re Richardson Motorsports — registry status UNVERIFIED',
       });
     }

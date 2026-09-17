@@ -17,7 +17,8 @@ import { buildRenderContext } from '../context';
 import { renderInstrument } from '../renderer';
 import { disclosuresSkeletonBytes } from '../skeletons/disclosuresSkeleton';
 import { FIXTURE_BUNDLE, FIXTURE_ANSWERS } from '../fixtures';
-import { evaluateTiers } from '../tiers';
+import { evaluateTiers, panelLines } from '../tiers';
+import { blockingGates, evaluateTypedGates } from '../gates';
 import { WriterCallError, type ParagraphWriter, type WriteInput } from '../writer';
 import type { PartyRecord } from '../../domain/types';
 import type {
@@ -60,7 +61,7 @@ function spyWriter(): ParagraphWriter & { calls: WriteInput[] } {
     async extract() { return { perFacility: [] }; },
     async write(input: WriteInput) {
       calls.push(input);
-      return { opening: 'OPENING.', middle: 'MIDDLE.', body: 'BODY.', care_episode_clause: 'CLAUSE.' };
+      return { opening: 'OPENING.', middle: 'MIDDLE.', body: 'BODY.' };
     },
   };
 }
@@ -136,6 +137,40 @@ describe('D-22 — ONE call per PARAGRAPH', () => {
     expect(out.paragraphs).toHaveLength(0);
     // The BLOCK still renders — AS-Q5's ruled pattern.
     expect(out.blocks[0].individuals).toHaveLength(1);
+  });
+
+  it('#156 §2 (B2) — makes NO call for the custodian-only shape, typed or fallback', async () => {
+    // D-18 is retired ("No episode sentence at all"): the writer has no part
+    // for this shape, so it receives no request for it — a chronology is never
+    // transmitted for a paragraph that is §9.11 placed whole.
+    for (const over of [
+      { selected: [facility('custodian-only')], individuals: [] },
+      { selected: [facility('emergency-medicine')], individuals: [] }, // the fallback
+    ]) {
+      const writer = spyWriter();
+      const out = await buildDesignations(input({ writer, ...over }));
+      expect(writer.calls).toHaveLength(0);
+      expect(writer.calls.some((c) => c.shape === 'custodian-only')).toBe(false);
+      expect(out.paragraphs.map((p) => p.shape)).toEqual(['custodian-only']);
+      expect(out.paragraphs[0].parts).toEqual({});
+      // Exactly §9.11, filled — nothing from the writer between its sentences.
+      expect(out.paragraphs[0].assembledText).toMatch(/^The Custodian of Records for \*\*Halite Regional Hospital\*\*/);
+      expect(out.paragraphs[0].assembledText).toContain('on March 14, 2025. The Custodian will testify that');
+      expect(out.paragraphs[0].assembledText).not.toMatch(/OPENING|MIDDLE|BODY|CLAUSE/);
+    }
+  });
+
+  it('#156 §2 (B2) — still calls for every OTHER paragraph beside a custodian-only one', async () => {
+    const writer = spyWriter();
+    await buildDesignations(input({
+      writer,
+      selected: [
+        facility('emergency-medicine', { id: 'cp1', facilityPartyId: 'f1' }),
+        facility('custodian-only', { id: 'cp2', facilityPartyId: 'f1' }),
+        facility('pharmacy', { id: 'cp3', facilityPartyId: 'f1' }),
+      ],
+    }));
+    expect(writer.calls.map((c) => c.shape)).toEqual(['treating-single', 'pharmacy']);
   });
 });
 
@@ -216,7 +251,7 @@ describe('D-3 — a failed writer call files NOTHING for the whole instrument', 
   });
 });
 
-describe('the block — D-64s line, D-65s membership, D-8s sentence', () => {
+describe('the block — D-64s line, D-65s membership, and NO D-8 sentence', () => {
   it('R11 — the same LITERAL at every count of one or more', async () => {
     // RULED 2026-09-05 (*"B, …"*): the "(s)" is written, not inflected, so one
     // named individual and two produce the SAME line. The count still decides
@@ -248,19 +283,27 @@ describe('the block — D-64s line, D-65s membership, D-8s sentence', () => {
     expect(out.blocks[0].individuals).toEqual([]);
   });
 
-  it('adds D-8s "Currently practicing at" line only when a later edge exists', async () => {
+  it('#156 §2 (B1) — the block NEVER carries "Currently practicing at", in the block or in a render', async () => {
+    // INVERTED. This test used to pin the sentence when a later edge existed.
+    // Michael: "Don't add the sentence". The sentence path is removed — the
+    // block has no field for it and the generate takes no input that could
+    // feed one — and panel line 17 is what flags a disagreeing edge.
     const ind = person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.', partyId: 'p9' });
-    const without = await buildDesignations(input({ individuals: [ind] }));
-    expect(without.blocks[0].currentlyPracticingAt).toBeUndefined();
+    const out = await buildDesignations(input({ individuals: [ind] }));
+    expect(Object.keys(out.blocks[0])).not.toContain('currentlyPracticingAt');
+    expect(JSON.stringify(out)).not.toMatch(/currently practicing/i);
 
-    const withEdge = await buildDesignations(input({
-      individuals: [ind],
-      currentlyPracticing: {
-        [ind.id]: { facility: 'Cobalt Imaging', address: '9 Ash St', phone: '555-0100' },
-      },
-    }));
-    expect(withEdge.blocks[0].currentlyPracticingAt)
-      .toBe('Currently practicing at Cobalt Imaging, 9 Ash St, 555-0100.');
+    const parties = { f1: party };
+    const item = blockItem(out.blocks[0], parties);
+    expect(JSON.stringify(item)).not.toMatch(/currently practicing/i);
+
+    const { context } = buildRenderContext(FIXTURE_BUNDLE, FIXTURE_ANSWERS);
+    context.regions.testifying_expert = [item];
+    context.itemSelects = { ...context.itemSelects, 'testifying_expert:0': 'treating_provider' };
+    context.itemNarratives = out.itemNarratives;
+    const rendered = await renderInstrument(disclosuresSkeletonBytes(), context);
+    expect(rendered.plainText).toContain('HALITE REGIONAL HOSPITAL');
+    expect(rendered.plainText).not.toMatch(/currently practicing/i);
   });
 
   it('blockPreview agrees with what a generate would render', async () => {
@@ -362,6 +405,179 @@ describe('the rider names the paragraph it RIDES, not itself', () => {
     expect(rider.assembledText).toContain('regarding Drs. Vantwoud and Skarsgaard');
   });
 });
+// ------------------------------------------------------- #156 §2 (B3), AS-Q17
+
+describe('#156 §2 (B3) — AS-Q17: the pause still fires, then the individual is designated', () => {
+  // Fix-slice §7 item 11. Michael: "Designate under the treating paragraph",
+  // then "Pause still fires, then designate".
+  const em = () => person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.', pronoun: 'she' });
+  const psy = () => person({
+    displayName: 'Neriah Halvorsen', credentialSuffix: 'Psy.D.', roleMarker: 'mental-health', pronoun: 'she',
+  });
+
+  it('fires the hard pause on the marker at an EM facility; once acknowledged, they are in the LEAD and the designation', async () => {
+    const people = [em(), psy()];
+    const marked = people[1];
+
+    // 1. The pause fires, as built — a hard pause, blocking until confirmed.
+    const gates = evaluateTypedGates({
+      selected: [facility('emergency-medicine')],
+      individuals: people,
+      facilityNames: { f1: 'Halite Regional Hospital' },
+    });
+    expect(gates.map((g) => g.id)).toEqual([`mental-health:${marked.id}`]);
+    expect(gates[0].severity).toBe('hard-pause');
+    const acknowledged: Record<string, boolean> = {};
+    expect(blockingGates(gates).filter((g) => !acknowledged[g.id])).toHaveLength(1);
+
+    // 2. Michael clears it — FormsTab's own `unmetBlocking` expression.
+    acknowledged[gates[0].id] = true;
+    expect(blockingGates(gates).filter((g) => !acknowledged[g.id])).toHaveLength(0);
+
+    // 3. The generate: the marked individual IS designated, and in the LEAD.
+    const writer = spyWriter();
+    const out = await buildDesignations(input({ writer, individuals: people }));
+    const treating = out.paragraphs[0];
+    expect(treating.shape).toBe('treating-mixed');
+    expect(treating.individualIds).toEqual([people[0].id, marked.id]);
+    expect(treating.leadText).toBe('Ines Vantwoud, M.D. and Neriah Halvorsen, Psy.D.,');
+    expect(out.itemNarratives['testifying_expert:0'][0].lead).toContain('Neriah Halvorsen');
+    // Under its medical-causation sentence: the facility's (EM) pair, plural.
+    expect(treating.fixedSentenceKeys).toEqual([
+      'fixed:basis:emergency-medicine', 'fixed:causation:emergency-medicine',
+    ]);
+    // The writer was told about them like anyone else in the paragraph.
+    expect(writer.calls[0].individuals.map((i) => i.displayName))
+      .toEqual(['Ines Vantwoud', 'Neriah Halvorsen']);
+    // D-65, unchanged: both on the block.
+    expect(out.blocks[0].individuals.map((i) => i.id)).toEqual([people[0].id, marked.id]);
+    // The panel's line 11 says exactly that (FXD-5).
+    expect(panelLines({
+      incidentDateIso: '2025-03-14',
+      selected: [facility('emergency-medicine', { lastExtractionVersionId: 'v1' })],
+      individuals: people,
+      facilityNames: { f1: 'Halite Regional Hospital' },
+      facilityAddresses: { f1: { hasAddress: true, hasPhone: true } },
+      chronologyVersions: [version],
+      billedFacilityPartyIds: [],
+    }).filter((f) => f.line === 11).map((f) => f.text)).toEqual([
+      'Neriah Halvorsen is marked mental health at Halite Regional Hospital — designated in the treating paragraph once this pause is cleared.',
+    ]);
+  });
+
+  it('keeps the generated text GATE-INDEPENDENT — acknowledged or not, the same paragraph', async () => {
+    // §8.3: "Generated text is identical regardless of gate state". The input
+    // has no gate field, so the pause cannot move the text — asserted twice.
+    const people = [em(), psy()];
+    const a = await buildDesignations(input({ individuals: people }));
+    const b = await buildDesignations(input({ individuals: people }));
+    expect(b.paragraphs.map((p) => p.assembledText)).toEqual(a.paragraphs.map((p) => p.assembledText));
+    expect(Object.keys(input())).not.toContain('acknowledged');
+  });
+
+  it('a facility TYPED mental health still writes NO generated paragraph (AS-Q5, unchanged)', async () => {
+    const writer = spyWriter();
+    const out = await buildDesignations(input({
+      writer,
+      selected: [facility('mental-health')],
+      individuals: [psy(), person({ displayName: 'Tobias Skarsgaard', credentialSuffix: 'M.D.' })],
+    }));
+    expect(writer.calls).toHaveLength(0);
+    expect(out.paragraphs).toEqual([]);
+    expect(out.itemNarratives['testifying_expert:0']).toEqual([]);
+    expect(out.blocks[0].individuals).toHaveLength(2);
+    // Its own pause still fires on the TYPE.
+    const gates = evaluateTypedGates({
+      selected: [facility('mental-health')], individuals: [], facilityNames: { f1: 'X' },
+    });
+    expect(gates.map((g) => g.severity)).toEqual(['hard-pause']);
+  });
+});
+
+// ------------------------------------------------ #156 §2 (B4), FXD-6
+
+describe('#156 §2 (B4) — the 195.5 block prints its custodian line ONCE', () => {
+  // Michael: "Fix — print it once". FXD-6 (PROVISIONAL): at N = 0, when the top
+  // line IS the custodian line, `custodian_line` is emitted EMPTY and §12.3
+  // drops the emptied paragraph.
+  const WALK = {
+    id: 'f1', displayName: 'Tri-Campus Orthopedic Institute',
+    fields: {
+      locations: [{
+        id: 'l1', label: 'Main', addressLine1: '88 Marlandy Rd',
+        cityStateZip: 'Killeen, TX 76541', phone: '(254) 555-9002', addressSplitBy: 'hand',
+      }],
+    },
+  } as unknown as PartyRecord;
+  const CAPS = 'TRI-CAMPUS ORTHOPEDIC INSTITUTE';
+
+  async function render(over: Partial<GenerateInput>, archetype: string): Promise<string[]> {
+    const parties = { f1: WALK };
+    const out = await buildDesignations(input({ facilityParties: parties, ...over }));
+    const { context } = buildRenderContext(FIXTURE_BUNDLE, FIXTURE_ANSWERS);
+    context.regions.testifying_expert = [blockItem(out.blocks[0], parties)];
+    context.itemSelects = { ...context.itemSelects, 'testifying_expert:0': archetype };
+    const rendered = await renderInstrument(disclosuresSkeletonBytes(), context);
+    return rendered.plainText.split('\n').map((l) => l.trim());
+  }
+
+  it('blockItem emits custodian_line EMPTY exactly when the top line is the custodian line', async () => {
+    const parties = { f1: WALK };
+    const none = await buildDesignations(input({ individuals: [], facilityParties: parties }));
+    const nobody = blockItem(none.blocks[0], parties);
+    expect(nobody.expert_names_block).toBe('Custodian of Records');
+    expect(nobody.custodian_line).toBe('');
+    // The BLOCK record is unchanged — only the emission is suppressed.
+    expect(none.blocks[0].custodianLine).toBe('Custodian of Records');
+
+    const one = await buildDesignations(input({ facilityParties: parties }));
+    const named = blockItem(one.blocks[0], parties);
+    expect(named.expert_names_block).toBe('Ines Vantwoud');
+    expect(named.custodian_line).toBe('And/or Custodian(s) of Records');
+  });
+
+  it('the walk exhibit — a designated facility with NO individuals — renders "Custodian of Records" once', async () => {
+    // spec-feedback THIRD TRANCHE item 8 printed it twice above the name.
+    const lines = await render({ individuals: [] }, 'custodian_of_records');
+    expect(lines.filter((l) => l === 'Custodian of Records')).toHaveLength(1);
+    const i = lines.indexOf(CAPS);
+    expect(i).toBeGreaterThanOrEqual(2);
+    expect(lines.slice(i - 2, i + 4)).toEqual([
+      '', 'Custodian of Records', CAPS, '88 Marlandy Rd', 'Killeen, TX 76541', '(254) 555-9002',
+    ]);
+  });
+
+  it('REACHES A PHARMACY — its §9.10 literal was doubled the same way, and now prints once', async () => {
+    const lit = 'Pharmacist(s) and/or Custodian of Records';
+    const lines = await render({ selected: [facility('pharmacy')], individuals: [] }, 'custodian_of_records');
+    expect(lines.filter((l) => l === lit)).toHaveLength(1);
+    const i = lines.indexOf(CAPS);
+    expect(lines.slice(i - 2, i + 1)).toEqual(['', lit, CAPS]);
+  });
+
+  it('at N >= 1, with no D-8 edge, the block lines are IDENTICAL to before the fix', async () => {
+    // Pinned from a render taken at HEAD f626f4d before any FOS-2 edit.
+    const one = await render({}, 'treating_provider');
+    const i1 = one.indexOf(CAPS);
+    expect(one.slice(i1 - 3, i1 + 5)).toEqual([
+      '', 'Ines Vantwoud', 'And/or Custodian(s) of Records', CAPS,
+      '88 Marlandy Rd', 'Killeen, TX 76541', '(254) 555-9002', '',
+    ]);
+
+    const two = await render({
+      individuals: [
+        person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' }),
+        person({ displayName: 'Tobias Skarsgaard', credentialSuffix: 'D.O.' }),
+      ],
+    }, 'provider_group');
+    const i2 = two.indexOf(CAPS);
+    expect(two.slice(i2 - 3, i2 + 5)).toEqual([
+      '', 'Drs. Vantwoud and Skarsgaard', 'And/or Custodian(s) of Records', CAPS,
+      '88 Marlandy Rd', 'Killeen, TX 76541', '(254) 555-9002', '',
+    ]);
+  });
+});
+
 // ---------------------------------------------------------------- HS-2 / F7
 
 /**

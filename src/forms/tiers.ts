@@ -303,7 +303,9 @@ export function panelLines(input: TierInput): Finding[] {
         text: `${nameOf(p)}: are these names the entity's radiologists, or the referring physicians?` });
     }
 
-    // 11 — AS-Q5, and the marker limb by DEFAULT (AS-Q17).
+    // 11 — AS-Q5, and the marker limb — AS-Q17, RULED `#156` §2 (B3): the pause
+    // still fires, then the individual is designated. The facility limb is
+    // unchanged. The marker limb's wording is `FXD-5`'s string, exactly.
     if (p.providerType === 'mental-health') {
       push({ line: 11, tier: 'panel', caseProviderId: p.id,
         text: `${nameOf(p)} is a mental-health facility — the block renders and the paragraph is drafted by hand in Word.` });
@@ -311,7 +313,7 @@ export function panelLines(input: TierInput): Finding[] {
       for (const ind of people) {
         if (effectiveMarker(ind.roleMarker, p.providerType) === 'mental-health') {
           push({ line: 11, tier: 'panel', caseProviderId: p.id, individualId: ind.id,
-            text: `${ind.displayName} is marked mental health — they stay on the block, are left out of the generated paragraph, and their paragraph is drafted by hand.` });
+            text: `${ind.displayName} is marked mental health at ${nameOf(p)} — designated in the treating paragraph once this pause is cleared.` }); // PROVISIONAL — FXD-5 (#156 §2, AS-Q17)
         }
       }
     }

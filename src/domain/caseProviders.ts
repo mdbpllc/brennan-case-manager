@@ -314,6 +314,68 @@ export function sortProvidersOldestFirst<T>(
   });
 }
 
+/** One option in the new-bill form's provider picker. */
+export interface BillProviderOption {
+  /** The FACILITY PARTY id — bills key on `facilityPartyId`, and so do the
+   *  charges table and the panel's billed-facility checks, so the option can
+   *  never carry a `case_providers` row id. */
+  value: string;
+  /** The facility party's `displayName` — the row has no label column. */
+  label: string;
+}
+
+/**
+ * `#156` §2 (B6), Michael: *"The Providers section's list (case_providers)"* —
+ * the new-bill form's picker reads THIS CASE'S `case_providers` rows, the list
+ * the Medical tab shows above the ledger, not the `providerBusiness` parties
+ * linked to the case (spec-feedback THIRD TRANCHE item 11: on Garcia the two
+ * lists disagreed and the picker offered none of the nine facilities).
+ *
+ * The order is the Providers section's own — §8.4's ONE order, oldest treatment
+ * first, through `providerSortKey` over the same three sources that section
+ * reads (the row's non-removed individuals, their visit dates, and the bills for
+ * that facility) — and then each facility party appears ONCE, at its first
+ * appearance. The de-duplication is the build's reading: a facility treating
+ * two clients on one matter is two rows but one party, and a bill's
+ * `facilityPartyId` cannot tell the two rows apart, so listing it twice would
+ * offer two identical choices. Nothing is scoped by client here; the bill's
+ * client is its own field on the form.
+ *
+ * Pure, so it is testable without a screen (this repo has no jsdom).
+ */
+export function billProviderOptions(
+  rows: CaseProvider[],
+  sources: {
+    individuals: Pick<CaseProviderIndividual, 'caseProviderId' | 'id' | 'treatmentFrom' | 'treatmentTo' | 'removedByHandAt'>[];
+    visits: Pick<CaseProviderVisit, 'individualId' | 'visitDate'>[];
+    bills: { facilityPartyId?: string; serviceStart?: string }[];
+  },
+  nameOf: (facilityPartyId: string) => string | undefined,
+): BillProviderOption[] {
+  // The Providers section's fallback for a facility party that cannot be read,
+  // reused rather than restated so the two lists say the same thing.
+  const labelOf = (id: string) => nameOf(id) ?? '(contact not found)'; // PROVISIONAL — #156 §2 (B6), new on the bill form
+  const keyOf = (row: CaseProvider) => {
+    const mine = sources.individuals.filter((i) => i.caseProviderId === row.id);
+    const ids = new Set(mine.map((i) => i.id));
+    return providerSortKey(row, {
+      individuals: mine,
+      visitDates: sources.visits.filter((v) => ids.has(v.individualId)).map((v) => v.visitDate),
+      billServiceStarts: sources.bills
+        .filter((b) => b.facilityPartyId === row.facilityPartyId)
+        .map((b) => b.serviceStart),
+    });
+  };
+  const seen = new Set<string>();
+  const out: BillProviderOption[] = [];
+  for (const row of sortProvidersOldestFirst(rows, keyOf, (r) => labelOf(r.facilityPartyId))) {
+    if (seen.has(row.facilityPartyId)) continue;
+    seen.add(row.facilityPartyId);
+    out.push({ value: row.facilityPartyId, label: labelOf(row.facilityPartyId) });
+  }
+  return out;
+}
+
 /**
  * Within a facility: individuals in order of first appearance in the chronology,
  * hand-added last (§8.4). `sortOrder` carries the extraction's own sequence;

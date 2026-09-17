@@ -85,6 +85,14 @@ const RETAINED_CHECKLIST = [
   'compensation statement',
 ];
 
+/** FOS-2 B5 — the master's own static heading, exactly as it read in
+ *  `word/document.xml` before Michael's ruling 2026-09-16 (*"Tokenize both
+ *  headings"*) put `{instrument_title}` and `{footer_title}` in its place:
+ *  U+2019, and a bare ampersand because the renderer escapes values itself. A
+ *  ONE-client case resolves both tokens to this, so its instrument renders
+ *  byte-identically to before the tokens (`masterTitleTokens.test.ts`). */
+const MASTER_STATIC_HEADING = 'PLAINTIFF’S 194.2(b) & 195.5 DISCLOSURES';
+
 export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
   const [parties, setParties] = useState<PartyRecord[]>([]);
   const [links, setLinks] = useState<CasePartyLink[]>([]);
@@ -449,16 +457,23 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
         }))
         .filter((r) => r.provider_total_charges !== currency(0));
 
-      // FE-15 / R15 — the certificate of service and the footer FOLLOW the
-      // title. They follow from ONE value here rather than from three places
-      // that can drift. The master skeleton carries neither token today (its
-      // heading and footer are static text), so these resolve nothing yet and
-      // cost nothing; the ruling lands the moment either token exists.
+      // FE-15 / R15 — the served headings FOLLOW the title, from ONE value here
+      // rather than from places that can drift. FOS-2 B5 (Michael, 2026-09-16:
+      // "Tokenize both headings"): the master carries `{instrument_title}` on the
+      // heading under the caption and `{footer_title}` on the heading over the
+      // responses, after the certificate of service. That second one is NOT the
+      // footer — the token keeps its R15 name, and the real footer part
+      // (`word/footer1.xml`) is static text no token reaches. On a ONE-client
+      // case both headings keep the master's static wording, so the instrument
+      // is byte-identical to before the tokens; on a MULTI-client case both
+      // carry the ruled title. The filename, the generated-document record and
+      // the on-screen label read `title` either way.
+      const heading = multiClient ? title : MASTER_STATIC_HEADING;
       context.scalars = {
         ...context.scalars,
-        instrument_title: title,
+        instrument_title: heading,
         instrument_title_caps: title.toUpperCase(),
-        footer_title: title,
+        footer_title: heading,
         footer_title_caps: title.toUpperCase(),
       };
 
@@ -798,8 +813,9 @@ export default function FormsTab({ caseRec }: { caseRec: CaseRecord }) {
       <div className="card">
         <h3>Generate</h3>
         {/* R15 — the ruled title, on screen, so it is readable BEFORE the
-            document exists. The served heading inside the .docx is static text
-            in the master and does not carry this yet (see `instrumentTitle`). */}
+            document exists. The two served headings inside the .docx carry it
+            on a multi-client case only; a one-client case keeps the master's
+            static heading (FOS-2 B5 — see `instrumentTitle`). */}
         <p className="small muted">
           This instrument will be filed as{' '}
           <strong>
@@ -993,18 +1009,21 @@ function field(p: PartyRecord | undefined, key: string): string {
  * The title names the RESPONDING PLAINTIFF **only on a multi-client case** —
  * *"Plaintiff Alba Quartzmoor's TRCP 194.2(b) and 195.5 Disclosures"* — and a
  * one-client case keeps *"Plaintiff's …"* exactly as served today. FE-15 ties
- * the certificate of service and the footer to the title, so they follow from
- * this one value rather than being written twice.
+ * the served headings to the title, so they follow from this one value rather
+ * than being written twice.
  *
- * ⚠ WHAT THIS DOES NOT REACH, and it is worth knowing before reading the
- * output: the SERVED heading is STATIC TEXT in the master skeleton —
- * "PLAINTIFF'S 194.2(b) & 195.5 DISCLOSURES", present twice (title and footer)
- * and carrying no token. This slice may not edit that master. So the ruled
- * title reaches the generated-document RECORD, the download filename, the
- * on-screen label, and `{instrument_title}` / `{footer_title}` the moment the
- * master carries either token — and the heading inside the .docx keeps its
- * static wording until Michael tokenizes it. Reported in
- * `docs/spec-feedback.md` rather than worked around.
+ * WHERE IT REACHES — FOS-2 B5, Michael's ruling 2026-09-16: *"Tokenize both
+ * headings"*. The master's static heading "PLAINTIFF’S 194.2(b) & 195.5
+ * DISCLOSURES" was present twice in `word/document.xml` — under the caption,
+ * and over the responses after the certificate of service. Neither is the
+ * footer (the earlier note here called the second one that; it was wrong). They
+ * are now `{instrument_title}` and `{footer_title}`. On a MULTI-client case both
+ * resolve to this title; on a ONE-client case both resolve to
+ * `MASTER_STATIC_HEADING`, so a one-client instrument serves exactly what it
+ * served before. The download filename, the generated-document RECORD and the
+ * on-screen label carry this title in both cases. The real footer
+ * (`word/footer1.xml`, "PLAINTIFF’S TRCP 194.2(B) AND 195.5 DISCLOSURES") is
+ * static text that no token reaches, and the ruling left it untouched.
  */
 function instrumentTitle(posture: InstrumentPosture, respondingPlaintiff?: string): string {
   const who = (respondingPlaintiff ?? '').trim();

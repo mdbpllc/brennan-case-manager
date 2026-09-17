@@ -174,12 +174,23 @@ describe('§8.2 — the panel, and the lines that are gated so they mean somethi
 
   it('names a mental-health facility AND a mental-health marker (line 11)', () => {
     expect(lines(input({ selected: [facility('mental-health')] }))).toContain(11);
-    expect(lines(input({
+    const marked = panelLines(input({
       individuals: [
         person({ displayName: 'Ines Vantwoud', credentialSuffix: 'M.D.' }),
         person({ displayName: 'Neriah Halvorsen', roleMarker: 'mental-health' }),
       ],
-    }))).toContain(11);
+    })).filter((f) => f.line === 11);
+    expect(marked).toHaveLength(1);
+    // `#156` §2 (B3) — the MARKER limb's wording is FXD-5's string, exactly
+    // (PROVISIONAL, his eye). The old "left out … drafted by hand" is gone.
+    expect(marked[0].text).toBe(
+      'Neriah Halvorsen is marked mental health at Halite Regional Hospital — designated in the treating paragraph once this pause is cleared.',
+    );
+    expect(marked[0].text).not.toMatch(/left out|drafted by hand/i);
+    // The FACILITY limb is unchanged (AS-Q5).
+    expect(panelLines(input({ selected: [facility('mental-health')] }))
+      .find((f) => f.line === 11)!.text)
+      .toBe('Halite Regional Hospital is a mental-health facility — the block renders and the paragraph is drafted by hand in Word.');
   });
 
   it('names the other-non-physician degrade rule (line 12)', () => {
@@ -284,8 +295,8 @@ describe('§8.3 — the §5 gates, re-keyed onto the typed record', () => {
     expect(out[0].authority).toMatch(/UNVERIFIED/);
   });
 
-  it('fires it on a MARKER at a facility of another type (AS-Q17s default)', async () => {
-    const { evaluateTypedGates } = await import('../gates');
+  it('fires it on a MARKER at a facility of another type (AS-Q17, ruled #156 §2 B3)', async () => {
+    const { evaluateTypedGates, blockingGates } = await import('../gates');
     const out = evaluateTypedGates({
       selected: [facility('emergency-medicine')],
       individuals: [
@@ -294,9 +305,17 @@ describe('§8.3 — the §5 gates, re-keyed onto the typed record', () => {
       ],
       facilityNames: { f1: 'Halite Regional Hospital' },
     });
+    // WHEN it fires is unchanged: one hard pause, on the marker.
     expect(out).toHaveLength(1);
+    expect(out[0].severity).toBe('hard-pause');
+    expect(blockingGates(out)).toHaveLength(1);
     expect(out[0].title).toContain('Neriah Halvorsen');
-    expect(out[0].body).toMatch(/left OUT of the generated paragraph/);
+    // The BODY said they were left OUT and hand-drafted, which B3 made false.
+    // It now carries FXD-5's sentence — the build's reading, PROVISIONAL.
+    expect(out[0].body).toBe(
+      'Neriah Halvorsen is marked mental health at Halite Regional Hospital — designated in the treating paragraph once this pause is cleared.',
+    );
+    expect(out[0].body).not.toMatch(/left OUT of the generated paragraph/);
   });
 
   it('ignores a REMOVED individual when deciding whether to pause', async () => {

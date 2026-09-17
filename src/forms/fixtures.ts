@@ -185,5 +185,11 @@ export const FIXTURE_ANSWERS: WizardAnswers = {
     damages_elements_joined:
       'past medical expenses, future medical expenses, physical pain and suffering, '
       + 'physical impairment, and mental anguish',
+    // FOS-2 B5 (Michael, 2026-09-16: "Tokenize both headings") — the master's two
+    // headings are tokens now. This fixture is a ONE-client case, so both carry
+    // the master's own static heading (U+2019), exactly as FormsTab resolves them
+    // on one client; the renderer escapes the ampersand itself.
+    instrument_title: 'PLAINTIFF’S 194.2(b) & 195.5 DISCLOSURES',
+    footer_title: 'PLAINTIFF’S 194.2(b) & 195.5 DISCLOSURES',
   },
 };

@@ -144,13 +144,10 @@ export class FixtureParagraphWriter implements ParagraphWriter {
             + `those acts and events, and they reflect the charges and their reasonableness.`,
         };
 
+      // Custodian-only returns NOTHING — D-18's care-episode clause is retired
+      // (`#156` §2, B2) and the generate never asks for this shape. Like the
+      // retained paragraph, it returns an empty envelope if it somehow is.
       case 'custodian-only':
-        return {
-          care_episode_clause:
-            `The records reflect an episode of care at ${facility} beginning `
-            + `${input.individuals[0]?.treatmentFrom ?? input.incidentDateLong}.`,
-        };
-
       case 'retained':
         return {};
 

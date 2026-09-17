@@ -5,7 +5,9 @@
  *   1. the three must-fix stops are evaluated from a LIVE read;
  *   2. if any holds, **NOTHING IS TRANSMITTED** — not one writer call is made,
  *      not one paragraph is assembled;
- *   3. otherwise ONE writer call PER PARAGRAPH (D-22), sequentially;
+ *   3. otherwise ONE writer call PER PARAGRAPH (D-22), sequentially — except
+ *      the custodian-only shape, whose paragraph is §9.11 whole and asks the
+ *      writer for nothing (`#156` §2, B2);
  *   4. a failed or malformed call is an ERROR for the WHOLE instrument — the
  *      failing facility is named and the generate can be retried. Never
  *      "render what you have": a missing designation is its own exposure.
@@ -42,9 +44,11 @@ export interface DesignationBlock {
   custodianLine: string;
   /** `AS-Q7c`: when nobody is named the TOP line is the custodian line itself. */
   topLine: string;
-  /** D-8 — the "Currently practicing at …" sentence, when a LATER current edge
-   *  exists. A TEXT ACT in a served block, listed for Michael's eye. */
-  currentlyPracticingAt?: string;
+  // D-8's "Currently practicing at …" sentence is GONE, and deliberately has no
+  // field here. `#156` §2 (B1), Michael: *"Don't add the sentence"*. The block
+  // ALWAYS reads the selected facility and adds nothing beneath the phone; a
+  // disagreeing affiliation edge is panel line 17's business (`tiers.ts`), never
+  // the served block's. A test pins the absence in the block and in a render.
   /** `D1` — WHICH of the facility's locations treated this client, carried on
    *  the block so `blockItem` keeps its two-argument shape and the location
    *  cannot be paired with the wrong facility downstream. Copied off the R17
@@ -122,6 +126,17 @@ export function facilityContactLines(
  * facility and carrying another's street and telephone — a served 195.5(a)(1)
  * block directing records requests to the wrong address. Keying off `b` here
  * makes that unrepresentable rather than merely unlikely.
+ *
+ * **THE CUSTODIAN LINE PRINTS ONCE** — `#156` §2 (B4), Michael: *"Fix — print it
+ * once"*: the custodian line is suppressed when the top line already is it. At
+ * N = 0 `AS-Q7c` makes the TOP line the custodian line itself, so emitting both
+ * tokens printed it twice (spec-feedback THIRD TRANCHE item 8). The mechanism is
+ * `FXD-6` (PROVISIONAL, a build default): `custodian_line` is emitted EMPTY, and
+ * the master's `optional` filter plus §12.3's emptied-paragraph drop close the
+ * line up. The master's two token spots are untouched. It reaches EVERY block
+ * whose top line is its custodian line — a pharmacy block too, whose N is always
+ * 0 and whose §9.10 literal printed twice the same way. At N >= 1 nothing
+ * changes: the top line is the names and the custodian line follows it.
  */
 export function blockItem(
   b: DesignationBlock,
@@ -129,7 +144,8 @@ export function blockItem(
 ): RegionItem {
   return {
     expert_names_block: b.topLine,
-    custodian_line: b.custodianLine,
+    // FXD-6 — empty when the top line already IS the custodian line (B4).
+    custodian_line: b.topLine === b.custodianLine ? '' : b.custodianLine,
     facility_name_caps: b.facilityName.toUpperCase(),
     facility_name: b.facilityName,
     ...facilityContactLines(facilityParties[b.facilityPartyId], b.facilityLocationId),
@@ -157,8 +173,8 @@ export interface GenerateInput {
   incidentDateIso?: string;
   caseType?: string;
   writerInstructions: string;
-  /** Set on a promoted individual whose LATER current edge names a facility. */
-  currentlyPracticing?: Record<string, { facility: string; address: string; phone: string }>;
+  // No `currentlyPracticing` input — D-8's sentence path is removed (`#156` §2,
+  // B1). Nothing the block renders reads an affiliation edge.
 }
 
 /** §7.3 — what the writer is GIVEN. Assembled once, here, so the payload's
@@ -221,8 +237,9 @@ function shapeNote(shape: AssembledParagraph['shape']): string | undefined {
       return 'Explain what each one did, then pair them together.';
     case 'midlevel-rider':
       return 'Describe what the physician assistant or nurse practitioner actually did. Two sentences at most.';
-    case 'custodian-only':
-      return 'Return ONE complete sentence naming the care episode and its date, and nothing else.';
+    // No `custodian-only` note: D-18's care-episode clause is RETIRED (`#156`
+    // §2, B2) and the writer is never called for that shape, so there is no
+    // request for a note to ride on.
     default:
       return undefined;
   }
@@ -258,9 +275,6 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
     // D-65 decided membership; D-64 renders the line from the COUNT.
     const n = plan.blockIndividuals.length;
     const line = custodianLine(n, provider.providerType === 'pharmacy');
-    const practising = plan.blockIndividuals
-      .map((i) => input.currentlyPracticing?.[i.id])
-      .find((x) => x != null);
     blocks.push({
       caseProviderId: provider.id,
       facilityPartyId: provider.facilityPartyId,
@@ -269,9 +283,6 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
       individuals: plan.blockIndividuals,
       custodianLine: line,
       topLine: n === 0 ? line : renderNames(plan.blockIndividuals).provider_name,
-      currentlyPracticingAt: practising
-        ? `Currently practicing at ${practising.facility}, ${practising.address}, ${practising.phone}.`
-        : undefined,
     });
 
     const narratives: NarrativeParagraph[] = [];
@@ -280,21 +291,28 @@ export async function buildDesignations(input: GenerateInput): Promise<GenerateR
       let parts: Record<string, string> = {};
       // A mental-health facility never reaches here (planFacility returns no
       // paragraphs for it), so no writer call is made for one.
-      try {
-        parts = await input.writer.write(
-          writerInput(p, input, ctx, provider, chronologyText),
-        ) as Record<string, string>;
-      } catch (e) {
-        throw new WriterCallError(
-          `The writer failed for ${facilityName || 'a facility'}: ${(e as Error).message}`,
-          facilityName,
-        );
-      }
-      if (parts == null || typeof parts !== 'object') {
-        throw new WriterCallError(
-          `The writer returned nothing usable for ${facilityName || 'a facility'}.`,
-          facilityName,
-        );
+      //
+      // Nor is one made for the CUSTODIAN-ONLY shape. `#156` §2 (B2), Michael:
+      // *"No episode sentence at all"* — D-18's care-episode clause is retired,
+      // §9.11 is placed whole by the app, and the writer has NO part for this
+      // shape, so asking it would transmit a chronology for nothing.
+      if (p.shape !== 'custodian-only') {
+        try {
+          parts = await input.writer.write(
+            writerInput(p, input, ctx, provider, chronologyText),
+          ) as Record<string, string>;
+        } catch (e) {
+          throw new WriterCallError(
+            `The writer failed for ${facilityName || 'a facility'}: ${(e as Error).message}`,
+            facilityName,
+          );
+        }
+        if (parts == null || typeof parts !== 'object') {
+          throw new WriterCallError(
+            `The writer returned nothing usable for ${facilityName || 'a facility'}.`,
+            facilityName,
+          );
+        }
       }
 
       const assembled = assembleParagraph(p, ctx, parts);

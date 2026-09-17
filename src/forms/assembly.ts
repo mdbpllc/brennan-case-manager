@@ -187,16 +187,21 @@ export function planFacility(
     };
   }
 
-  // AS-Q17's default: a `mental-health`-MARKED individual at a facility of
-  // another type is EXCLUDED from the generated paragraph and its LEAD, and
-  // stays on the block, hand-drafted — because designating a psychologist under
-  // an EM causation sentence is the served assertion §5.1 exists to pause.
+  // AS-Q17 — RULED `#156` §2 (B3), Michael: *"Designate under the treating
+  // paragraph"*, then *"Pause still fires, then designate"*. A
+  // `mental-health`-MARKED individual at a facility of another type is
+  // designated like any other individual: in the paragraph its facility
+  // generates, and in that paragraph's LEAD. The §5.1 hard pause still fires on
+  // the marker (`gates.ts`, unchanged in when it fires); the pause informs the
+  // drafter and never changes the text (§8.3 — generated text is identical
+  // regardless of gate state). The held default's EXCLUSION is removed here.
+  // A facility TYPED mental health is AS-Q5's ruled pattern, above, unchanged.
   const mentalHealth = people.filter((i) => markerOf(i) === 'mental-health');
   const radiologists = people.filter((i) => markerOf(i) === 'radiologist');
   const midLevels = people.filter((i) => markerOf(i) === 'mid-level');
   const counted = people.filter((i) => {
     const m = markerOf(i);
-    return m !== 'mental-health' && m !== 'mid-level'
+    return m !== 'mid-level'
       && !(m === 'radiologist' && type !== 'radiologist');
   });
 
@@ -264,13 +269,11 @@ export function planFacility(
   if (treating) treating.riders = midLevels;
 
   // ND-4 / D-27: a treating-type or imaging facility with nobody to name goes
-  // out custodian-only under §9.11, with the automatic gap flag. Not when a
-  // mental-health-marked individual is present — AS-Q17's default governs and
-  // there is simply no generated paragraph.
+  // out custodian-only under §9.11, with the automatic gap flag. (The held
+  // AS-Q17 default's "no generated paragraph" branch is gone with its
+  // exclusion: a mental-health-marked individual is now COUNTED, so a facility
+  // carrying one always has a paragraph to designate them in.)
   if (paragraphs.length === 0) {
-    if (mentalHealth.length > 0) {
-      return { provider, paragraphs: [], blockIndividuals: mentalHealth, handDrafted: true };
-    }
     paragraphs.push({
       shape: 'custodian-only',
       caseProviderId: provider.id,
@@ -280,9 +283,11 @@ export function planFacility(
     });
   }
 
-  // D-65 — BLOCK MEMBERSHIP, one rule: everyone some paragraph on this
-  // instrument designates, PLUS every mental-health-typed or -marked
-  // individual, whose paragraph Michael drafts by hand.
+  // D-65 — BLOCK MEMBERSHIP, one rule, UNCHANGED by B3: everyone some paragraph
+  // on this instrument designates, PLUS every mental-health-typed or -marked
+  // individual. Since `#156` §2 (B3) a marked individual here is also in the
+  // paragraph, so limb (b) adds nobody new — it is kept so the rule stays
+  // stated as ruled rather than silently narrowed.
   const designated = new Set<string>();
   for (const p of paragraphs) {
     for (const i of p.individuals) designated.add(i.id);
@@ -559,19 +564,19 @@ export function assembleParagraph(
 
     case 'custodian-only': {
       // AS-Q7a: the APP places §9.11 WHOLE — the one shape whose whole content
-      // is predicate boilerplate, so all four limbs are app-guaranteed. The
-      // writer's optional clause goes BETWEEN its two sentences (D-18) so
-      // §9.11's approved sentences stay byte-intact and nothing is templated
-      // inside or beside them.
+      // is predicate boilerplate, so all four limbs are app-guaranteed.
+      //
+      // D-18 is RETIRED — `#156` §2 (B2), Michael: *"No episode sentence at
+      // all"*. §9.11's two sentences are placed whole, their tokens filled, and
+      // NOTHING between them. No writer part is read for this shape (the
+      // generate does not even ask for one), so a stray part handed in here is
+      // ignored rather than placed. Retiring the clause also retires the old
+      // split on the first ". " of the FILLED text, which put the clause inside
+      // sentence 1 whenever a facility or client name carried ". ".
       const row = fixedSentence('custodian-only-whole', 'custodian-only');
       if (!row) { assembled = ''; leadText = undefined; break; }
       fixedKeys.push(row.key);
-      const whole = fillSentence(row.text, values);
-      const split = whole.indexOf('. ');
-      const clause = clean(parts.care_episode_clause);
-      assembled = split === -1 || !clause
-        ? joinPieces([whole, clause])
-        : joinPieces([whole.slice(0, split + 1), clause, whole.slice(split + 2)]);
+      assembled = fillSentence(row.text, values);
       // §9.11's own bold facility name IS this shape's lead; it is already
       // inside the text the app places whole.
       leadText = undefined;

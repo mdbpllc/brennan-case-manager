@@ -94,12 +94,48 @@ describe('R16 — the no-client flag renders in the TOP flag area', () => {
 describe('R7 — the bill label pre-fills from the provider and stays editable', () => {
   it('picking a provider fills the label, and typing in the label stops it', () => {
     expect(medicalTab).toContain('labelIsPrefilled');
-    expect(medicalTab).toContain("setLabel(providers.find((p) => p.id === id)?.displayName ?? '')");
+    // `#156` §2 (B6) moved the source: the pre-fill now fills from the PICKED
+    // ROW's label (a `case_providers` facility), not a linked party's name.
+    expect(medicalTab).toContain("setLabel(providerOptions.find((o) => o.value === id)?.label ?? '')");
     expect(medicalTab).toContain('setLabelIsPrefilled(false)');
   });
 
   it('the label is still a free-text input — the pre-fill is not a lock', () => {
     expect(medicalTab).toMatch(/value=\{label\}[\s\S]{0,200}onChange=/);
+  });
+});
+
+// ------------------------------------------------------- #156 §2 (B6)
+
+describe('#156 §2 (B6) — the new-bill picker reads this case\'s case_providers rows', () => {
+  // Michael: "The Providers section's list (case_providers)". Asserted over
+  // SOURCE, as R7 is: THIRD TRANCHE item 12 records that the Combobox would not
+  // commit a selection under automation in this form, so a click-through result
+  // is not available and a source-asserted one is said to be so.
+  const form = code(medicalTab.slice(medicalTab.indexOf('function NewBillForm')));
+  const page = code(medicalTab.slice(0, medicalTab.indexOf('function NewBillForm')));
+
+  it('the page reads the case_providers rows and builds the options with the pure helper', () => {
+    expect(page).toContain('db.listCaseProviders(caseRec.id)');
+    expect(page).toContain('db.listProviderIndividuals(caseRec.id)');
+    expect(page).toContain('db.listProviderVisits(caseRec.id)');
+    expect(page).toContain('billProviderOptions(');
+    expect(page).toContain('providerOptions={billProviders}');
+  });
+
+  it('the FORM offers those options, and no longer maps the linked parties', () => {
+    expect(form).toContain('options={providerOptions}');
+    expect(form).not.toContain('providers.map((p) => ({ value: p.id, label: p.displayName }))');
+    expect(form).not.toMatch(/\bproviders\b/);
+    // The bill still keys on the FACILITY PARTY id (the option's value).
+    expect(form).toContain('facilityPartyId: providerId || undefined');
+  });
+
+  it('the linked-parties list is kept for the ledger\'s Provider column only', () => {
+    // B6 moves the FORM's source; the ledger column is another use and stays.
+    expect(page).toContain("setProviders(parties.filter((p) => p.partyType === 'providerBusiness'))");
+    expect(page).toContain('providers.find((p) => p.id === id)?.displayName');
+    expect(page).not.toContain('providers={providers}');
   });
 });
 

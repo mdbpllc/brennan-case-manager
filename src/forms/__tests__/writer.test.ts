@@ -140,8 +140,10 @@ describe('the fixture writer honours the rules a real writer is held to', () => 
     expect(Object.keys(await w2.write(baseWrite({ shape: 'pharmacy' })))).toEqual(['body']);
     expect(Object.keys(await w2.write(baseWrite({ shape: 'other-non-physician' }))))
       .toEqual(['body']);
-    expect(Object.keys(await w2.write(baseWrite({ shape: 'custodian-only' }))))
-      .toEqual(['care_episode_clause']);
+    // `#156` §2 (B2) — D-18's care-episode clause is RETIRED from the part
+    // contract. The generate never asks for this shape, and the fixture returns
+    // NOTHING for it if it somehow is.
+    expect(await w2.write(baseWrite({ shape: 'custodian-only' }))).toEqual({});
     // Retained is hand-typed by Michael — the writer is not called for it at
     // all, and returns nothing if it somehow is.
     expect(await w2.write(baseWrite({ shape: 'retained' }))).toEqual({});

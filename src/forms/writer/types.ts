@@ -108,15 +108,18 @@ export interface WriteInput {
  *
  * Which keys a shape asks for is §6.2's contract: `opening` + `middle` for the
  * treating shapes and the imaging facility; `opening` alone for the rider;
- * `body` for the pharmacy and the other-non-physician shape;
- * `care_episode_clause` (optional) for custodian-only; NONE for mental health
- * and for the retained paragraph, which is hand-typed.
+ * `body` for the pharmacy and the other-non-physician shape; NONE for
+ * custodian-only, for mental health, and for the retained paragraph, which is
+ * hand-typed.
+ *
+ * `care_episode_clause` is RETIRED from this contract — `#156` §2 (B2), Michael:
+ * *"No episode sentence at all"*. The custodian-only shape is §9.11's two
+ * sentences placed whole by the app, and the writer is not called for it.
  */
 export interface WriterParts {
   opening?: string;
   middle?: string;
   body?: string;
-  care_episode_clause?: string;
 }
 
 export interface ParagraphWriter {

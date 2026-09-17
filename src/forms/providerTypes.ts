@@ -117,7 +117,7 @@ export const ROLE_MARKER_KEYS: ProviderTypeKey[] = PROVIDER_TYPE_KEYS.filter(
 export const ENGINE_EFFECT_MARKERS: ProviderTypeKey[] = [
   'radiologist',   // the split — §15.3, "Radiologist is the only split"
   'mid-level',     // the rider — §15.6
-  'mental-health', // §5.1's hard pause, per individual — AS-Q17's default
+  'mental-health', // §5.1's hard pause, per individual — AS-Q17, ruled #156 §2 (B3)
 ];
 
 export function markerIsDisplayOnly(marker: string): boolean {

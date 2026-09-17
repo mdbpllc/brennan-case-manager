@@ -11,8 +11,13 @@
 import { describe, it, expect } from 'vitest';
 import { disclosureFixtures, FIXTURE_FACILITY_NAMES } from '../../data/disclosureFixtures';
 import { planFacility, providerSortKeyFor } from './walkHelpers';
-import { buildDesignations } from '../generate';
+import { buildDesignations, blockItem } from '../generate';
 import { FixtureParagraphWriter } from '../writer';
+import { panelLines } from '../tiers';
+import { buildRenderContext } from '../context';
+import { renderInstrument } from '../renderer';
+import { disclosuresSkeletonBytes } from '../skeletons/disclosuresSkeleton';
+import { FIXTURE_BUNDLE, FIXTURE_ANSWERS } from '../fixtures';
 import { runExtraction } from '../chronology/extraction';
 import { sortProvidersOldestFirst } from '../../domain/caseProviders';
 import type { PartyRecord } from '../../domain/types';
@@ -27,6 +32,12 @@ const garcia = fx.caseProviders.filter((p) => p.caseId === 'c-garcia-mvc');
 const premises = fx.caseProviders.filter((p) => p.caseId === 'c-fx-premises');
 const byFacility = (name: string) =>
   garcia.find((p) => nameOf(p.facilityPartyId) === name)!;
+/** The ER's facility party lives in the MAIN seed, not in this module's party
+ *  list, so a render of the ER block needs it named from the fixture name map. */
+const erParties: Record<string, PartyRecord> = {
+  ...parties,
+  'p-hosp-ctrmc': { id: 'p-hosp-ctrmc', displayName: nameOf('p-hosp-ctrmc') } as PartyRecord,
+};
 
 describe('invariant 9 — the fixtures produce EVERY shape in §6.2', () => {
   const shapesFor = (facilityName: string) =>
@@ -36,18 +47,41 @@ describe('invariant 9 — the fixtures produce EVERY shape in §6.2', () => {
   it('the ER: a treating paragraph, a rider on it, and a radiology split', () => {
     const plan = planFacility(byFacility('Central Texas Regional Medical Center'),
       fx.caseProviderIndividuals);
-    expect(plan.paragraphs.map((p) => p.shape)).toEqual(['treating-single', 'radiology-split']);
-    // The EM physician alone in the treating paragraph — the two radiologists
-    // split out and the psychologist is excluded from it (AS-Q17's default).
-    expect(plan.paragraphs[0].individuals.map((i) => i.displayName)).toEqual(['Ines Vantwoud']);
+    // `#156` §2 (B3) — AS-Q17 RULED: the mental-health-marked psychologist is
+    // DESIGNATED in the treating paragraph, beside the EM physician. Two
+    // different effective markers make it the MIXED shape.
+    expect(plan.paragraphs.map((p) => p.shape)).toEqual(['treating-mixed', 'radiology-split']);
+    // The two radiologists still split out; the psychologist is no longer
+    // excluded (the held default's exclusion is removed).
+    expect(plan.paragraphs[0].individuals.map((i) => i.displayName))
+      .toEqual(['Ines Vantwoud', 'Neriah Halvorsen']);
     expect(plan.paragraphs[0].riders.map((i) => i.displayName)).toEqual(['Priya Natarajan']);
     expect(plan.paragraphs[1].individuals.map((i) => i.displayName))
       .toEqual(['Tobias Skarsgaard', 'Devin Petrossian']);
-    // D-65: everyone designated PLUS the mental-health-marked psychologist.
+    // D-65, unchanged: the same five, in the same order.
     expect(plan.blockIndividuals.map((i) => i.displayName)).toEqual([
       'Ines Vantwoud', 'Tobias Skarsgaard', 'Devin Petrossian', 'Priya Natarajan',
       'Neriah Halvorsen',
     ]);
+  });
+
+  it('#156 §2 (B3) — the ER treating paragraph LEADS with the psychologist too', async () => {
+    const out = await buildDesignations({
+      writer: new FixtureParagraphWriter(),
+      selected: [byFacility('Central Texas Regional Medical Center')],
+      individuals: fx.caseProviderIndividuals,
+      visits: fx.caseProviderVisits,
+      chronologyVersions: fx.caseChronologyVersions.filter((v) => v.id === 'chv-fx-garcia-1'),
+      facilityParties: erParties,
+      clientName: 'Maria Garcia',
+      incidentDateIso: '2026-03-14',
+      caseType: 'Motor vehicle collision',
+      writerInstructions: '',
+    });
+    expect(out.paragraphs.map((p) => p.shape))
+      .toEqual(['treating-mixed', 'midlevel-rider', 'radiology-split']);
+    expect(out.paragraphs[0].leadText).toBe('Ines Vantwoud, M.D. and Neriah Halvorsen, Psy.D.,');
+    expect(out.paragraphs[0].individualIds).toEqual(['i-fx-em', 'i-fx-psy']);
   });
 
   it('the imaging facility: ONE paragraph, no rider, and the PA off the block', () => {
@@ -200,11 +234,75 @@ describe('invariant 17 — a promoted individual with TWO affiliation edges', ()
     expect(covering.effectiveFrom! <= '2026-03-14').toBe(true);
     expect(covering.effectiveTo! >= '2026-03-14').toBe(true);
     expect(covering.toContactId).toBe('p-hosp-ctrmc');
-    // The second is later, open-ended, and at a DIFFERENT facility — which is
-    // what puts D-8's "Currently practicing at …" line under the block.
+    // The second is later, open-ended, and at a DIFFERENT facility. It USED to
+    // put D-8's "Currently practicing at …" sentence under the block; that
+    // sentence path is removed (`#156` §2, B1 — "Don't add the sentence"), and
+    // the next test pins its absence on exactly this fixture.
     expect(current.effectiveFrom! > '2026-03-14').toBe(true);
     expect(current.effectiveTo).toBeUndefined();
     expect(current.toContactId).toBe('p-fx-cobalt');
+  });
+
+  it('#156 §2 (B1) — the two-edge fixture renders NO "Currently practicing at", in the block or the document', async () => {
+    const er = byFacility('Central Texas Regional Medical Center');
+    const out = await buildDesignations({
+      writer: new FixtureParagraphWriter(),
+      selected: [er],
+      individuals: fx.caseProviderIndividuals,
+      visits: fx.caseProviderVisits,
+      chronologyVersions: fx.caseChronologyVersions.filter((v) => v.id === 'chv-fx-garcia-1'),
+      facilityParties: erParties,
+      clientName: 'Maria Garcia',
+      incidentDateIso: '2026-03-14',
+      caseType: 'Motor vehicle collision',
+      writerInstructions: '',
+    });
+    // The promoted individual with the later edge IS on this block.
+    expect(out.blocks[0].individuals.map((i) => i.id)).toContain('i-fx-em');
+    const item = blockItem(out.blocks[0], erParties);
+    expect(JSON.stringify(out.blocks)).not.toMatch(/currently practicing/i);
+    expect(JSON.stringify(item)).not.toMatch(/currently practicing/i);
+
+    const { context } = buildRenderContext(FIXTURE_BUNDLE, FIXTURE_ANSWERS);
+    context.regions.testifying_expert = [item];
+    context.itemSelects = { ...context.itemSelects, 'testifying_expert:0': 'provider_group' };
+    context.itemNarratives = out.itemNarratives;
+    const rendered = await renderInstrument(disclosuresSkeletonBytes(), context);
+    expect(rendered.plainText).toContain('CENTRAL TEXAS REGIONAL MEDICAL CENTER');
+    expect(rendered.plainText).not.toMatch(/currently practicing/i);
+    // Nor does the block name the later facility anywhere.
+    const lines = rendered.plainText.split('\n').map((l) => l.trim());
+    const at = lines.indexOf('CENTRAL TEXAS REGIONAL MEDICAL CENTER');
+    expect(lines.slice(at - 2, at + 5).join('|')).not.toContain('Cobalt Ridge Imaging');
+  });
+
+  it('#156 §2 (B1) — panel line 17 is unchanged: it fires when GIVEN a mismatch, and nothing in the app gives one', () => {
+    // §7 item 9 of the fix slice says line 17 "still fires on the two-edge
+    // fixture". It cannot as written, and this test records why rather than
+    // papering over it: (a) nothing in the app computes `affiliationMismatches`
+    // (FormsTab never supplies it), and (b) the fixture's COVERING edge names the
+    // selected facility, so there is no mismatch to compute. What is pinned is
+    // what holds: the line fires on a supplied mismatch for this fixture's
+    // promoted individual, and is silent without one.
+    const er = byFacility('Central Texas Regional Medical Center');
+    const base = {
+      incidentDateIso: '2026-03-14',
+      selected: [er],
+      individuals: fx.caseProviderIndividuals,
+      facilityNames: { 'p-hosp-ctrmc': 'Central Texas Regional Medical Center' },
+      facilityAddresses: { 'p-hosp-ctrmc': { hasAddress: true, hasPhone: true } },
+      chronologyVersions: fx.caseChronologyVersions,
+      billedFacilityPartyIds: [],
+    };
+    expect(panelLines(base).some((f) => f.line === 17)).toBe(false);
+    const given = panelLines({
+      ...base,
+      affiliationMismatches: [{ individualId: 'i-fx-em', otherFacilityName: 'Cobalt Ridge Imaging' }],
+    }).filter((f) => f.line === 17);
+    expect(given).toHaveLength(1);
+    expect(given[0].text).toBe(
+      'The directory records this affiliation at Cobalt Ridge Imaging for these dates. The block still reads Central Texas Regional Medical Center — check which is right.',
+    );
   });
 
   it('carries a party_id on exactly the promoted individual, and on no other', () => {

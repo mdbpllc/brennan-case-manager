@@ -34,7 +34,7 @@ function fixtureWriter(): ParagraphWriter {
     kind: 'fixture',
     async extract() { return { perFacility: [] }; },
     async write() {
-      return { opening: 'OPENING.', middle: 'MIDDLE.', body: 'BODY.', care_episode_clause: 'CLAUSE.' };
+      return { opening: 'OPENING.', middle: 'MIDDLE.', body: 'BODY.' };
     },
   };
 }
