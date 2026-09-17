@@ -47,7 +47,10 @@ export type Precision = 'day' | 'month';
  *  confirmed by FOS-1. `unknown` is the seed value on EVERY template. */
 export type WeekendRule = 'rolls-forward' | 'no-roll' | 'unknown';
 
-/** DECISION 6: order and emphasis ONLY — weight never changes behaviour. */
+/** DECISION 6: order and emphasis (FOD-11) — weight never changes what lights, or when.
+ *  Since #156 A1 it does decide one behaviour: whether the Outlook reminder rings — a
+ *  hard obligation's event carries one, a routine one's never does (`outlookReminderIsOn`;
+ *  FXD-8). */
 export type Weight = 'hard' | 'routine';
 
 export interface MonthDay { month: number; day: number }
@@ -889,10 +892,12 @@ export interface RegisterView {
   months: RegisterMonth[];
   later: ViewItem[];
   inactive: { obligation: FirmObligation; lastDone: FirmObligationOccurrence | null; open: FirmObligationOccurrence | null }[];
-  /** ACTIVE obligations with no open occurrence. No act in either adapter leaves one —
-   *  each act is one save locally and one Postgres function centrally (#156 A5) — but
-   *  a store written before that could hold one. Listed so it never disappears from
-   *  every surface. */
+  /** ACTIVE obligations with no open occurrence. No single act in either adapter leaves
+   *  one: each is one save locally and one Postgres function centrally (#156 A5), and
+   *  centrally a concurrent close racing an Activate… on the same retired row is now
+   *  refused by the functions (the FOS-2 review's L1-4). What could still leave one is a
+   *  hand edit in the database or a future defect — so the list stays as the guard, and
+   *  such a row never disappears from every surface. */
   stranded: FirmObligation[];
   /** FXD-2: queued Outlook deletes that have failed PENDING_DELETE_ATTENTION_ATTEMPTS
    *  drains or more. They stay queued; this only names them. */
@@ -1304,7 +1309,13 @@ export function nextOf(closedId: string, all: FirmObligationOccurrence[]): FirmO
 /** The close Undo would reverse on this obligation: its most recently created done
  *  occurrence. With one open occurrence at a time (FOD-5), every occurrence after the
  *  first is created only once the one before it has closed, so the latest created done
- *  occurrence is the latest close. */
+ *  occurrence is the latest close.
+ *
+ *  The order is `createdAt`'s, so it is only as good as the clock that stamped it: in
+ *  central mode the database's (the functions stamp created_at on the rows they insert),
+ *  in demo mode the browser's. A clock stepped backwards in demo mode between two acts
+ *  could misorder closes, and this would then name an older close than the latest (the
+ *  FOS-2 review's L4-1). */
 export function latestClosed(all: FirmObligationOccurrence[]): FirmObligationOccurrence | null {
   let best: FirmObligationOccurrence | null = null;
   for (const o of all) {
@@ -1322,6 +1333,12 @@ export function latestClosed(all: FirmObligationOccurrence[]): FirmObligationOcc
  * undoable while nothing has opened since — Michael's ruling at the fix build's stop,
  * 2026-09-16 ("Keep as built; read one flag"). The log is read for one thing only:
  * that the close has a record at all (FXD-7).
+ *
+ * "Nothing has opened since" is decided by `createdAt`, so its order is the same clock's
+ * as `latestClosed`'s: the database's in central mode (the functions stamp created_at),
+ * the browser's in demo mode — where a clock stepped backwards between two acts could
+ * misorder closes, and an older close could then pass this check (the FOS-2 review's
+ * L4-1).
  */
 export function canUndo(
   ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], log: ReviewLogEntry[],

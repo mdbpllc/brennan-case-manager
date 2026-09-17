@@ -38,8 +38,10 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   /** `#156` §2 (B6) — the new-bill form's picker source: this case's
    *  `case_providers` rows (the Providers section's list), with the three
    *  sources that section sorts them by and the facility parties' names. The
-   *  linked-`providerBusiness` list above (`providers`) is KEPT for the
-   *  ledger's Provider column, which B6 does not reach. */
+   *  linked-`providerBusiness` list above (`providers`) is KEPT as the ledger
+   *  Provider column's FIRST source; the column falls back to `facilityNames`
+   *  only for a bill whose facility is not linked, which a bill made from this
+   *  picker can be (see `providerName`). */
   const [caseProviderRows, setCaseProviderRows] = useState<CaseProvider[]>([]);
   const [providerIndividuals, setProviderIndividuals] = useState<CaseProviderIndividual[]>([]);
   const [providerVisits, setProviderVisits] = useState<CaseProviderVisit[]>([]);
@@ -50,8 +52,31 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
   const [busy, setBusy] = useState(false);
   const [openDoc, setOpenDoc] = useState<string | null>(null);
 
+  /** `#156` §2 (B6) — the picker's sources, read ON THEIR OWN so the Providers
+   *  section can hand this to its `onChanged`. Without that, a facility he
+   *  added, retyped or removed in the section right above the ledger did not
+   *  reach "+ New bill" until the tab remounted (found at the FOS-2 fix build's
+   *  review). It reads nothing else, so a change in that section re-reads
+   *  nothing else on the tab. The four are set together, after the names are
+   *  read, so an option never shows without its facility's name. */
+  const refreshProviderSources = useCallback(async () => {
+    const [cps, inds, vs] = await Promise.all([
+      db.listCaseProviders(caseRec.id),
+      db.listProviderIndividuals(caseRec.id),
+      db.listProviderVisits(caseRec.id),
+    ]);
+    // A SEPARATE read, so the facility parties never widen `providers` (the
+    // ledger column's linked list) — B6 moves the form's source; the column
+    // only FALLS BACK to these names.
+    const facilities = await db.getParties([...new Set(cps.map((r) => r.facilityPartyId))]);
+    setCaseProviderRows(cps);
+    setProviderIndividuals(inds);
+    setProviderVisits(vs);
+    setFacilityNames(Object.fromEntries(facilities.map((p) => [p.id, p.displayName])));
+  }, [caseRec.id]);
+
   const refresh = useCallback(async () => {
-    const [bs, rs, ds, links, scheds, lrs, cls, cps, inds, vs] = await Promise.all([
+    const [bs, rs, ds, links, scheds, lrs, cls] = await Promise.all([
       db.listBillsForCase(caseRec.id),
       db.listRunsForCase(caseRec.id),
       db.listDocumentsForCase(caseRec.id),
@@ -59,9 +84,7 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
       db.listFeeSchedules(),
       db.listLegalRules(),
       db.listClientsForCase(caseRec.id),
-      db.listCaseProviders(caseRec.id),
-      db.listProviderIndividuals(caseRec.id),
-      db.listProviderVisits(caseRec.id),
+      refreshProviderSources(),
     ]);
     setAllBills(bs);
     setRuns(rs);
@@ -69,20 +92,13 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
     setSchedules(scheds);
     setRules(lrs);
     setClients(sortClients(cls));
-    setCaseProviderRows(cps);
-    setProviderIndividuals(inds);
-    setProviderVisits(vs);
     const parties = await db.getParties([
       ...links.map((l) => l.partyId),
       ...cls.map((c) => c.partyId),
     ]);
     setProviders(parties.filter((p) => p.partyType === 'providerBusiness'));
     setClientParties(Object.fromEntries(parties.map((p) => [p.id, p.displayName])));
-    // A SEPARATE read, so the facility parties never widen `providers` (the
-    // ledger column's linked list) — B6 moves the form's source only.
-    const facilities = await db.getParties([...new Set(cps.map((r) => r.facilityPartyId))]);
-    setFacilityNames(Object.fromEntries(facilities.map((p) => [p.id, p.displayName])));
-  }, [caseRec.id]);
+  }, [caseRec.id, refreshProviderSources]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
@@ -107,9 +123,16 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
     [allBills, multiClient],
   );
 
+  /** The ledger's Provider column. The LINKED `providerBusiness` party's name
+   *  first (the column's source before B6, kept), then the name of a facility
+   *  on this case's `case_providers` rows, then nothing (the cell's '—'). A
+   *  bill made from B6's picker keys on a `case_providers` facility, which need
+   *  not be linked to the case, and read '—' here without the second source
+   *  (found at the FOS-2 fix build's review). */
   const providerName = useCallback(
-    (id?: string) => providers.find((p) => p.id === id)?.displayName,
-    [providers],
+    (id?: string) => providers.find((p) => p.id === id)?.displayName
+      ?? (id ? facilityNames[id] : undefined),
+    [providers, facilityNames],
   );
 
   /** `#156` §2 (B6) — the picker's options: one per facility party on this
@@ -217,13 +240,16 @@ export default function MedicalTab({ caseRec }: { caseRec: CaseRecord }) {
       {/* R17 (AS-Q3). ABOVE the ledger by DEFAULT (D-29) — §17.1 rules the
           record and the tab's layout is nowhere ruled, so the placement is
           carried to the hands-on sitting rather than settled here. The ledger
-          below is UNCHANGED: no restructuring. */}
+          below is UNCHANGED: no restructuring.
+          `#156` §2 (B6): every change the section makes re-reads the new-bill
+          picker's sources, and only those. */}
       <ProvidersSection
         caseRec={caseRec}
         clients={clients}
         selectedClientId={selectedClientId}
         multiClient={multiClient}
         bills={allBills}
+        onChanged={refreshProviderSources}
       />
 
       <div className="card">

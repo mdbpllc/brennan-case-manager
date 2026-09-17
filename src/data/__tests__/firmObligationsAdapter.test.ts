@@ -13,7 +13,10 @@
 //     the fix build's contract states them — their guards, their statement order, the
 //     one-open partial unique index (firm_obligation_occurrences_one_open_idx), the row
 //     CHECKs, the one review_log row, their returns — each ATOMICALLY: a function that
-//     raises, at any statement, leaves every table as it was.
+//     raises, at any statement, leaves every table as it was. It mirrors what the fix
+//     build's review added to the migration too: the incomplete-request refusal, the
+//     obligation locked first, the three race guards (review L1-4, L6-5), and
+//     created_at / updated_at stamped by the function's own clock (review L4-1).
 //  3. A failing function has ONE message: "<act> was not saved: <its own words>", and
 //     changes nothing. The FOS-1 build's compensation and its three message classes are
 //     retired (fix slice §3 item 6; §7 item 5 replaced their tests with these).
@@ -26,8 +29,9 @@
 // The SQL itself is exercised only by Michael's hand; the fake is a model of the call
 // contract, stated as such, not a database.
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import migrationSql from '../../../db/migrations/2026-09-10-firm-obligations.sql?raw';
 import adapterSource from '../adapter.ts?raw';
 import localSource from '../localAdapter.ts?raw';
 import supabaseSource from '../supabaseAdapter.ts?raw';
@@ -36,7 +40,7 @@ import type { DataAdapter } from '../adapter';
 import type { ReviewLogEntry } from '../../domain/billing';
 import { localISODate } from '../../domain/dates';
 import {
-  addDays, makeDate, registerView,
+  addDays, latestClosed, makeDate, registerView,
   type FirmObligation, type FirmObligationCreate, type FirmObligationPatch,
 } from '../../domain/firmObligations';
 
@@ -389,6 +393,30 @@ const ALREADY_ACTIVE = 'This obligation is already active — reload the registe
 const ALREADY_RETIRED = 'This obligation is already retired — reload the register.';
 const WRONG_OUTCOME = 'This close does not match its function.';
 const CHECK_ERROR = 'new row for relation "firm_obligation_occurrences" violates check constraint';
+// The fix build's review's refusals, in the migration's own words.
+const INCOMPLETE = 'The request was incomplete — reload the register.';
+const REACTIVATED = 'This obligation was re-activated — reload the register.';
+const CLOSED_SINCE = 'Its open occurrence has since closed — reload the register.';
+const OPENED_SINCE = 'Another occurrence has been opened since — reload the register.';
+
+/** The parts of `p` each function cannot go without, and the JSON type each must be —
+ *  the migration's first statement in each function (pinned against it below). */
+const REQUIRED_PARTS: Record<string, [key: string, type: 'object' | 'string'][]> = {
+  firm_activate: [['obligation', 'object'], ['log', 'object']],
+  firm_activate_from_inactive: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_update: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_retire: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_reactivate: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_mark_done: [['occurrence_id', 'string'], ['occurrence_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_mark_not_applicable: [['occurrence_id', 'string'], ['occurrence_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_undo: [['occurrence_id', 'string'], ['reopen_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_set_due_override: [['occurrence_id', 'string'], ['patch', 'object'], ['log', 'object']],
+};
+
+/** jsonb_typeof, for a value parsed from JSON: null for SQL NULL (an absent key or a JSON null). */
+const jsonType = (v: unknown): string | null =>
+  v === undefined || v === null ? null : Array.isArray(v) ? 'array' : typeof v;
+const isObject = (v: unknown) => jsonType(v) === 'object';
 
 /** A statement in a function raised: the transaction is rolled back. */
 class Raise extends Error {}
@@ -404,6 +432,11 @@ class Raise extends Error {}
  * of the tables and commits only if nothing raised, so a function is ATOMIC. One call is
  * recorded per rpc, as op 'rpc' on table = the function's name.
  *
+ * Each call has ONE server time, `now()` — the transaction's — from a clock of the fake's
+ * own that starts in 2020, well behind any browser stamp a plan carries, and moves one
+ * second per call. Every insert takes it for created_at and updated_at (`lastNow()` reads
+ * the latest), as the migration's inserts do.
+ *
  * `failOn(table, op, nth)` makes the nth such call — counted from when it is armed —
  * return an error and change nothing (for an rpc, `table` is the function's name).
  * `landsBefore(table, op, land, nth)` runs `land` just before that nth call: another
@@ -417,6 +450,9 @@ function fakeSupabase() {
   let seq = 0;
   const gen = () => `gen-${++seq}`;
   const logTimestamp = () => new Date(Date.UTC(2026, 0, 1, 0, 0, 0, ++seq)).toISOString();
+  /** The database's clock: one tick per function call; `txNow` is the running call's now(). */
+  let clock = Date.UTC(2020, 0, 1, 0, 0, 0);
+  let txNow = '';
 
   /** Arms arrivals and injectors for one call; true when this call is to fail. */
   const arm = (table: string, op: Op): boolean => {
@@ -506,11 +542,14 @@ function fakeSupabase() {
     const p = (patch ?? {}) as Row;
     for (const c of columns) if (c in p) row[c] = p[c];
   };
-  /** INSERT from jsonb_populate_record(null::table, row), coalescing the defaults. */
+  /** INSERT from jsonb_populate_record(null::table, row), coalescing the defaults — and
+   *  created_at / updated_at = now(), whatever the row carries (review L4-1). */
   const insert = (db: Db, table: string, row: unknown, defaults: Row): Row => {
     const r: Row = { ...(row as Row) };
     for (const [k, v] of Object.entries(defaults)) if (r[k] == null) r[k] = v;
     if (r.id == null) r.id = gen();
+    r.created_at = txNow;
+    r.updated_at = txNow;
     t(db, table).push(r);
     if (table === OCC) guardOccurrences(db);
     return r;
@@ -521,12 +560,15 @@ function fakeSupabase() {
     for (const c of LOG_COLUMNS) r[c] = l[c] ?? null;
     t(db, LOG).push(r);
   };
-  /** select … for update; not found raises. */
+  /** select … for update; not found raises. Every function that takes it takes it FIRST. */
   const lockObligation = (db: Db, id: unknown): Row => {
     const r = t(db, OB).find((x) => x.id === id);
     if (!r) throw new Raise(NOT_FOUND);
     return r;
   };
+  /** not exists (select 1 … where obligation_id = … and state = 'open') — negated. */
+  const hasOpen = (db: Db, obligationId: unknown) =>
+    t(db, OCC).some((x) => x.obligation_id === obligationId && x.state === 'open');
   /** UPDATE … WHERE id = … AND state = <state> RETURNING *; none raises. */
   const updateWhere = (db: Db, id: unknown, state: 'open' | 'done', patch: unknown, missing: string): Row => {
     const r = t(db, OCC).find((x) => x.id === id && x.state === state);
@@ -537,29 +579,35 @@ function fakeSupabase() {
   };
   const close = (outcome: 'completed' | 'not-applicable') => (db: Db, p: Row) => {
     if ((p.occurrence_patch as Row | null)?.outcome !== outcome) throw new Raise(WRONG_OUTCOME);
-    // The closed occurrence FIRST, then the next: the one-open index.
-    const closed = updateWhere(db, p.occurrence_id, 'open', p.occurrence_patch, NOT_OPEN);
-    const next = p.next ? insert(db, OCC, p.next, OCC_DEFAULTS) : null;
+    // The obligation FIRST (every function's lock order), then the occurrence.
     const obligation = lockObligation(db, p.obligation_id);
-    if (p.obligation_patch) applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
+    // No next and no obligation patch: planned on a RETIRED obligation. Refused if it is
+    // active again — a close with no next would leave it active with nothing open.
+    if (!isObject(p.next) && !isObject(p.obligation_patch) && obligation.active === true) throw new Raise(REACTIVATED);
+    // The closed occurrence, then the next: the one-open index.
+    const closed = updateWhere(db, p.occurrence_id, 'open', p.occurrence_patch, NOT_OPEN);
+    const next = isObject(p.next) ? insert(db, OCC, p.next, OCC_DEFAULTS) : null;
+    if (isObject(p.obligation_patch)) applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
     insertLog(db, p.log);
     return { closed, next, obligation };
   };
   const functions: Record<string, (db: Db, p: Row) => Row> = {
     firm_activate: (db, p) => {
       const obligation = insert(db, OB, p.obligation, OB_DEFAULTS);
-      const occurrence = p.occurrence ? insert(db, OCC, p.occurrence, OCC_DEFAULTS) : null;
+      const occurrence = isObject(p.occurrence) ? insert(db, OCC, p.occurrence, OCC_DEFAULTS) : null;
       insertLog(db, p.log);
       return { obligation, occurrence };
     },
     firm_activate_from_inactive: (db, p) => {
       const obligation = lockObligation(db, p.obligation_id);
       if (obligation.active === true) throw new Raise(ALREADY_ACTIVE);
+      // Opening nothing, the plan found an occurrence open: refused if none is open now.
+      if (!isObject(p.occurrence_insert) && !hasOpen(db, p.obligation_id)) throw new Raise(CLOSED_SINCE);
       applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
       let occurrence: Row | null = null;
       const upd = p.occurrence_update as Row | null;
-      if (upd) occurrence = updateWhere(db, upd.id, 'open', upd.patch, NOT_OPEN);
-      if (p.occurrence_insert) occurrence = insert(db, OCC, p.occurrence_insert, OCC_DEFAULTS);
+      if (isObject(upd)) occurrence = updateWhere(db, upd!.id, 'open', upd!.patch, NOT_OPEN);
+      if (isObject(p.occurrence_insert)) occurrence = insert(db, OCC, p.occurrence_insert, OCC_DEFAULTS);
       insertLog(db, p.log);
       return { obligation, occurrence };
     },
@@ -581,16 +629,27 @@ function fakeSupabase() {
     firm_reactivate: (db, p) => {
       const obligation = lockObligation(db, p.obligation_id);
       if (obligation.active === true) throw new Raise(ALREADY_ACTIVE);
+      if (!isObject(p.occurrence) && !hasOpen(db, p.obligation_id)) throw new Raise(CLOSED_SINCE);
       applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
-      const occurrence = p.occurrence ? insert(db, OCC, p.occurrence, OCC_DEFAULTS) : null;
+      const occurrence = isObject(p.occurrence) ? insert(db, OCC, p.occurrence, OCC_DEFAULTS) : null;
       insertLog(db, p.log);
       return { obligation, occurrence };
     },
     firm_mark_done: close('completed'),
     firm_mark_not_applicable: close('not-applicable'),
     firm_undo: (db, p) => {
+      const obligation = lockObligation(db, p.obligation_id);
+      if (p.remove_occurrence_id == null) {
+        // No next to remove: canUndo's rule, re-checked — nothing else open, and nothing
+        // created at or after the close (timestamptz order; the stamps are ISO strings).
+        const closedAt = t(db, OCC).find((x) => x.id === p.occurrence_id)?.created_at;
+        if (t(db, OCC).some((x) => x.obligation_id === p.obligation_id && x.id !== p.occurrence_id
+          && (x.state === 'open' || (closedAt != null && String(x.created_at) >= String(closedAt))))) {
+          throw new Raise(OPENED_SINCE);
+        }
+      }
       let removed: Row | null = null;
-      if (p.remove_occurrence_id) {
+      if (p.remove_occurrence_id != null) {
         // DELETE … WHERE id = remove AND state = 'open' AND touched = false AND
         // materialized_from = occurrence_id RETURNING * — BEFORE the reopen (the index).
         const occs = t(db, OCC);
@@ -602,8 +661,7 @@ function fakeSupabase() {
         for (const x of occs) if (x.materialized_from === removed.id) x.materialized_from = null;
       }
       const reopened = updateWhere(db, p.occurrence_id, 'done', p.reopen_patch, NOT_CLOSED);
-      const obligation = lockObligation(db, p.obligation_id);
-      if (p.obligation_patch) applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
+      if (isObject(p.obligation_patch)) applyPatch(obligation, p.obligation_patch, OB_MUTABLE);
       insertLog(db, p.log);
       return { reopened, removed, obligation };
     },
@@ -625,8 +683,15 @@ function fakeSupabase() {
     const run = functions[fn];
     if (!run) throw new Error(`the fake has no function ${fn}`);
     const draft = JSON.parse(JSON.stringify(tables)) as Db;
+    // This call's now(): one server time for the whole transaction.
+    clock += 1000;
+    txNow = new Date(clock).toISOString();
     try {
-      const data = run(draft, JSON.parse(JSON.stringify(args.p)) as Row);
+      const p = (args.p == null ? {} : JSON.parse(JSON.stringify(args.p))) as Row;
+      // The first statement of every function: a required part missing, or of the wrong
+      // JSON type, is refused before anything else runs.
+      for (const [key, type] of REQUIRED_PARTS[fn]) if (jsonType(p[key]) !== type) throw new Raise(INCOMPLETE);
+      const data = run(draft, p);
       tables = draft;
       return Promise.resolve({ data: JSON.parse(JSON.stringify(data)) as unknown, error: null });
     } catch (e) {
@@ -652,6 +717,8 @@ function fakeSupabase() {
     /** The live tables (a committed function replaces the object, so read through this). */
     table: (name: string): Row[] => tables[name] ?? (tables[name] = []),
     calls, writes, snapshot, failOn, landsBefore,
+    /** The latest function call's now() — what its inserts stamped. */
+    lastNow: () => txNow,
     reset: () => { calls.length = 0; injectors.length = 0; arrivals.length = 0; },
   };
 }
@@ -951,6 +1018,202 @@ describe('SupabaseAdapter — a failing function: ONE message, and nothing chang
     expect(res.error?.message).toBe(INDEX_ERROR);
     expect(dbState(fake)).toEqual(before);
   });
+
+  // ---- the race guards (the fix build's review, L1-4 and L6-5): two acts, each correct
+  // on the rows it read, that together would leave a row active with nothing open, or undo
+  // a close that is no longer the latest. The other writer lands between the adapter's
+  // reads and its call.
+
+  for (const [label, fn, close] of [
+    ['Done', 'firm_mark_done', (db: Sb, id: string) => db.markOccurrenceDone(id, {})],
+    ['Not applicable', 'firm_mark_not_applicable', (db: Sb, id: string) => db.markOccurrenceNotApplicable(id, { reason: 'condition-not-met' })],
+  ] as const) {
+    it(`a race guard inside the function: ${label} on a retired row's open occurrence after another writer re-activated the row — refused, nothing written; reloaded, it closes with its next`, async () => {
+      const { fake, db, obligation, occurrence } = await activated({ conditionalPerPeriod: true });
+      await db.retireFirmObligation(obligation.id);
+      fake.reset();
+      fake.landsBefore(fn, 'rpc', () => {
+        fake.table(OB).find((r) => r.id === obligation.id)!.active = true;
+      });
+      const before = dbState(fake);
+      expect(await messageOf(close(db, occurrence!.id)))
+        .toBe(`${label} for Adapter fixture (${occurrence!.periodLabel}) was not saved: ${REACTIVATED}`);
+      // The plan was built on the retired row: no next, and no obligation patch.
+      expect(fake.calls[0].row).toMatchObject({ next: null, obligation_patch: null });
+      expect(fake.writes()).toEqual([`rpc:${fn} FAILED`]);
+      // Only the other writer's change stands.
+      const after = dbState(fake);
+      expect(after.obligations).toEqual([{ ...before.obligations[0], active: true }]);
+      expect(after.occurrences).toEqual(before.occurrences);
+      expect(after.log).toEqual(before.log);
+      // Reloaded, the same close plans its next: the row is never left active with nothing open.
+      const res = await close(db, occurrence!.id);
+      expect(res.next).toMatchObject({ state: 'open', materializedFrom: occurrence!.id });
+      expect(fake.table(OCC).filter((r) => r.obligation_id === obligation.id && r.state === 'open')).toHaveLength(1);
+    });
+  }
+
+  for (const [label, fn, key, act] of [
+    ['Re-activate', 'firm_reactivate', 'occurrence', (db: Sb, id: string) => db.reactivateFirmObligation(id)],
+    ['Activate… from Inactive', 'firm_activate_from_inactive', 'occurrence_insert', (db: Sb, id: string) => db.activateFromInactive(id, { leadDays: 9 })],
+  ] as const) {
+    it(`a race guard inside the function: ${label} of a retired row after another writer closed its open occurrence — refused, nothing written; reloaded, it opens an occurrence of its own`, async () => {
+      const { fake, db, obligation, occurrence } = await activated();
+      await db.retireFirmObligation(obligation.id);
+      fake.reset();
+      const closedByOther = { state: 'done', done_on: '2026-09-01', outcome: 'completed' };
+      fake.landsBefore(fn, 'rpc', () => {
+        Object.assign(fake.table(OCC).find((r) => r.id === occurrence!.id)!, closedByOther);
+      });
+      const before = dbState(fake);
+      expect(await messageOf(act(db, obligation.id))).toBe(`Activating Adapter fixture was not saved: ${CLOSED_SINCE}`);
+      // The plan found the occurrence open, so it opened none.
+      expect(fake.calls[0].row![key]).toBeNull();
+      expect(fake.writes()).toEqual([`rpc:${fn} FAILED`]);
+      // Only the other writer's close stands: the row is still retired, its patch unapplied.
+      const after = dbState(fake);
+      expect(after.obligations).toEqual(before.obligations);
+      expect(after.obligations[0]).toMatchObject({ active: false, lead_days: 5 });
+      expect(after.occurrences).toEqual(before.occurrences.map((r) => (r.id === occurrence!.id ? { ...r, ...closedByOther } : r)));
+      expect(after.log).toEqual(before.log);
+      // Reloaded, the activation opens an occurrence: active, with exactly one open.
+      const res = await act(db, obligation.id);
+      expect(res.obligation.active).toBe(true);
+      expect(res.occurrence).toMatchObject({ state: 'open' });
+      expect(fake.table(OCC).filter((r) => r.obligation_id === obligation.id && r.state === 'open')).toHaveLength(1);
+    });
+  }
+
+  it("a race guard inside the function: Undo of a close that opened no next, after another writer opened an occurrence — refused (canUndo's rule, re-checked at the database)", async () => {
+    // A one-time Done retires its obligation and materializes no next (FOD-32); it stays
+    // undoable while nothing has opened since (Michael's stop ruling 2, 2026-09-16).
+    const oneTime: Partial<FirmObligationCreate> = { recurrence: { kind: 'one-time', dueOn: '2026-01-02' } };
+    for (const since of ['open', 'done'] as const) {
+      const { fake, db, obligation, occurrence } = await activated(oneTime);
+      await db.markOccurrenceDone(occurrence!.id, {});
+      fake.reset();
+      const closedAt = String(fake.table(OCC).find((r) => r.id === occurrence!.id)!.created_at);
+      fake.landsBefore('firm_undo', 'rpc', () => {
+        // Another writer's re-activation opened a second occurrence — still open, or already
+        // closed in turn (then only its created_at shows it). The OPEN one is stamped BEFORE
+        // the close, so only the guard's open limb can refuse it; the done one after, so only
+        // its created_at limb can (the fix build's re-sweep, F1 verifier).
+        fake.table(OCC).push({
+          id: `opened-since-${since}`, obligation_id: obligation.id, period_label: '2026-03-02', due_on: '2026-03-02',
+          state: since, sync_status: 'pending', touched: since === 'done',
+          ...(since === 'done' ? { done_on: '2026-03-02', outcome: 'completed' } : {}),
+          created_at: new Date(Date.parse(closedAt) + (since === 'open' ? -60_000 : 60_000)).toISOString(),
+        });
+      });
+      const before = dbState(fake);
+      expect(await messageOf(db.undoOccurrence(occurrence!.id)), since)
+        .toBe(`Undo for Adapter fixture (${occurrence!.periodLabel}) was not saved: ${OPENED_SINCE}`);
+      // The plan found nothing opened since: no next to remove, the retirement to put back.
+      expect(fake.calls[0].row, since).toMatchObject({ remove_occurrence_id: null, obligation_patch: { active: true } });
+      const after = dbState(fake);
+      expect(after.obligations, since).toEqual(before.obligations);
+      expect(after.obligations[0], since).toMatchObject({ active: false });
+      expect(after.occurrences.find((r) => r.id === occurrence!.id), since).toMatchObject({ state: 'done' });
+      expect(after.log, since).toEqual(before.log);
+    }
+    // With nothing opened since, the same Undo lands and puts the retirement back.
+    const { db, occurrence } = await activated(oneTime);
+    await db.markOccurrenceDone(occurrence!.id, {});
+    expect(await db.undoOccurrence(occurrence!.id)).toMatchObject({ removed: null, reopened: { state: 'open' }, obligation: { active: true } });
+  });
+});
+
+describe("SupabaseAdapter — the database's clock orders occurrences (the fix build's review, L4-1)", () => {
+  it("a returned row carries the function's now() as created_at and updated_at — not the stamp the plan sent", async () => {
+    const fake = fakeSupabase();
+    const db = new SupabaseAdapter(fake.client);
+    const res = await db.createFirmObligation(monthly());
+    const sent = fake.calls[0].row as { obligation: Row; occurrence: Row };
+    const stamp = fake.lastNow();
+    // The plan still sends the browser's stamp; the function does not keep it.
+    expect(sent.occurrence.created_at).toEqual(expect.any(String));
+    expect(sent.occurrence.created_at).not.toBe(stamp);
+    expect(sent.obligation.created_at).not.toBe(stamp);
+    expect(res.occurrence).toMatchObject({ createdAt: stamp, updatedAt: stamp });
+    expect(res.obligation).toMatchObject({ createdAt: stamp, updatedAt: stamp });
+
+    const done = await db.markOccurrenceDone(res.occurrence!.id, {});
+    const nextSent = (fake.calls[1].row as { next: Row }).next;
+    expect(done.next!.createdAt).toBe(fake.lastNow());
+    expect(done.next!.createdAt).not.toBe(nextSent.created_at);
+    expect(done.next!.createdAt > res.occurrence!.createdAt).toBe(true);
+  });
+
+  it('a browser clock set back cannot reorder closes: latestClosed and canUndo read the order the database stamped', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(new Date('2026-09-16T15:00:00.000Z'));
+      const fake = fakeSupabase();
+      const db = new SupabaseAdapter(fake.client);
+      const { obligation, occurrence: first } = await db.createFirmObligation(monthly());
+      const firstSent = (fake.calls[0].row as { occurrence: Row }).occurrence;
+      await db.retireFirmObligation(obligation.id);
+      await db.markOccurrenceDone(first!.id, {}); // a Done on a retired row: no next
+
+      // The browser's clock steps back five minutes before the row is activated again.
+      vi.setSystemTime(new Date('2026-09-16T14:55:00.000Z'));
+      const { occurrence: second } = await db.activateFromInactive(obligation.id, {});
+      const secondSent = (fake.calls.at(-1)!.row as { occurrence_insert: Row }).occurrence_insert;
+      await db.retireFirmObligation(obligation.id);
+      await db.markOccurrenceDone(second!.id, {});
+
+      // By the plans' own stamps the second came first ...
+      expect(String(secondSent.created_at) < String(firstSent.created_at)).toBe(true);
+      // ... but the database stamped the order the acts happened in,
+      const all = (await db.listFirmObligationOccurrences()).filter((o) => o.obligationId === obligation.id);
+      expect(all.find((o) => o.id === second!.id)!.createdAt > all.find((o) => o.id === first!.id)!.createdAt).toBe(true);
+      // so the latest close is the second, and the first can no longer be undone.
+      expect(latestClosed(all)!.id).toBe(second!.id);
+      await expect(db.undoOccurrence(first!.id)).rejects.toThrow(/A later occurrence has been opened since/);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
+describe('SupabaseAdapter — an incomplete request is refused before anything runs (#156 §1 item 9, A5)', () => {
+  const rpcOf = (fake: Fake) =>
+    (fake.client as unknown as { rpc: (fn: string, a: { p: unknown }) => Promise<{ error: { message: string } | null }> }).rpc;
+
+  it("the fake's required parts, and the refusal words it uses, are the migration's own, function by function", () => {
+    const code = migrationSql.replace(/--[^\n]*/g, '');
+    const firsts = [...code.matchAll(/create or replace function public\.(\w+)\(p jsonb\)[\s\S]*?\bbegin\s+if ([\s\S]*?) then\s+raise exception '([^']*)';/g)];
+    expect(firsts.map((m) => m[1]).sort()).toEqual([...FIRM_FUNCTIONS].sort());
+    for (const [, fn, condition, message] of firsts) {
+      expect(message, fn).toBe(INCOMPLETE);
+      const parts = [...condition.matchAll(/jsonb_typeof\(p->'(\w+)'\) is distinct from '(\w+)'/g)].map((m) => [m[1], m[2]]);
+      expect(parts, fn).toEqual(REQUIRED_PARTS[fn]);
+    }
+    for (const message of [NOT_FOUND, NOT_OPEN, NOT_CLOSED, NOT_UNTOUCHED, ALREADY_ACTIVE, ALREADY_RETIRED, INCOMPLETE, REACTIVATED, CLOSED_SINCE, OPENED_SINCE]) {
+      expect(migrationSql, message).toContain(`raise exception '${message}';`);
+    }
+  });
+
+  for (const [label, scenario] of SCENARIOS) {
+    it(`${label}: each required part absent, null or of the wrong JSON type is refused with the one message, and nothing changes; the whole request lands`, async () => {
+      const s = await scenario('Adapter fixture', 'Adapter fixture');
+      // The request the act sends, captured from a call made to fail — so nothing landed.
+      s.fake.failOn(s.fn, 'rpc');
+      await messageOf(s.run());
+      const p = s.fake.calls[0].row!;
+      const before = dbState(s.fake);
+      const rpc = rpcOf(s.fake);
+      for (const [key, type] of REQUIRED_PARTS[s.fn]) {
+        const absent: Row = { ...p };
+        delete absent[key];
+        for (const bad of [absent, { ...p, [key]: null }, { ...p, [key]: type === 'object' ? 'not an object' : { id: p[key] } }]) {
+          expect((await rpc(s.fn, { p: bad })).error?.message, `${s.fn}: ${key}`).toBe(INCOMPLETE);
+        }
+      }
+      expect(dbState(s.fake)).toEqual(before);
+      expect((await rpc(s.fn, { p })).error).toBeNull();
+    });
+  }
 });
 
 describe("SupabaseAdapter — no failure message carries a name's markup (SUP2-1, over the one message class)", () => {

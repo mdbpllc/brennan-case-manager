@@ -427,8 +427,10 @@ export interface DataAdapter {
   createFirmObligation(
     input: FirmObligationCreate,
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }>;
-  /** Rule, lead, weight, weekendRule, notes, the missed-period override. Re-evaluates
-   *  the open occurrence per FOD-4; `kept` says when an overdue one keeps its date. */
+  /** Rule, lead, weight, weekendRule, notes, the missed-period override, and the Outlook
+   *  reminder days (#156 A1: the days before the target a hard obligation's Outlook
+   *  reminder rings). Re-evaluates the open occurrence per FOD-4; `kept` says when an
+   *  overdue one keeps its date. */
   updateFirmObligation(
     id: string, patch: FirmObligationPatch,
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }>;

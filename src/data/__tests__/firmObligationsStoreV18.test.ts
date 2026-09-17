@@ -15,9 +15,15 @@
 // The v17 store below is built the way a v17 store came to be: FOD-21's fixture at a
 // fixed day with the four new fields STRIPPED, then acts written through the v17 shapes
 // and the close-line JSON the FOS-1 build wrote.
+//
+// §7 item 8's "the v9→v18 chain runs forward" is RUN through load() for every version,
+// not only read off load()'s text (the fix build's review, L3-2): the v9 … v14 stores are
+// built minimally the way each step's own test builds its version (cl2Migration,
+// gate10Pii, formEngineStore, amendmentStore, amendmentStoreV15).
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import localSource from '../localAdapter.ts?raw';
+import { formEngineSeedData } from '../../forms/seed';
 import type { ReviewLogEntry } from '../../domain/billing';
 import {
   canUndo, defaultReminderDays, FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
@@ -200,6 +206,118 @@ function migrated() {
   return { ...built, raw, out };
 }
 
+// ---- the older stores, each minimal and shaped the way its own step's test builds it ----
+
+const T0 = '2026-07-01T00:00:00.000Z';
+
+/** v9 (cl2Migration.test.ts): a case still carrying its own limitations date and the
+ *  Medicare flag in piFlags, a Client-role link, a bill and a confirmed run on it. */
+function v9Store() {
+  return {
+    version: 9,
+    cases: [{
+      id: 'c-pi', fileNumber: '26-0001', practiceArea: 'Personal Injury', caseType: 'Motor vehicle collision',
+      status: 'Treatment in progress', piFlags: ['Medicare/Medicaid beneficiary'], dateOpened: '2026-03-16',
+      statuteOfLimitations: '2028-03-14', createdAt: T0, updatedAt: T0,
+    }],
+    links: [{ id: 'l1', caseId: 'c-pi', partyId: 'p-garcia', role: 'Client', side: 'Ours', createdAt: T0 }],
+    bills: [{ id: 'b1', caseId: 'c-pi', label: 'ProCare', billType: 1, billedAmount: 1000, createdAt: T0, updatedAt: T0 }],
+    runs: [{ id: 'r1', caseId: 'c-pi', billId: 'b1', status: 'confirmed', runDate: T0 }],
+    reviewLog: [],
+    parties: [], resultLines: [], lineItems: [], codeMappings: [], eobs: [],
+  };
+}
+
+/** v10: what the CL-2 step leaves — the limitations date moved off the case, the client
+ *  record and its flags collections present — before CD-1's directory fields. */
+function v10Store() {
+  const { cases, ...rest } = v9Store();
+  return {
+    ...rest,
+    version: 10,
+    cases: cases.map(({ statuteOfLimitations: _sol, ...c }) => ({ ...c, piFlags: [] })),
+    clients: [], clientFlags: [],
+  };
+}
+
+/** v11 (gate10Pii.test.ts): a contact whose PII still sits in the fields blob. */
+function v11Store() {
+  return {
+    version: 11,
+    parties: [{
+      id: 'p1', partyType: 'client', kind: 'individual', displayName: 'Ada Byron',
+      fields: { firstName: 'Ada', dob: '1815-12-10', ssn: '000-00-0000', dlNumber: 'X0000000', dlState: 'TX' },
+      roleTags: ['client'], aliases: [], deceased: false, createdAt: 't', updatedAt: 't',
+    }],
+    reviewLog: [],
+  };
+}
+
+/** v12 (formEngineStore.test.ts): every collection of its day, and no template bank. */
+function v12Store() {
+  return {
+    version: 12,
+    cases: [{ id: 'c1', fileNumber: '26-0001' }],
+    parties: [{ id: 'p1', displayName: 'Someone' }],
+    partyPii: [{ partyId: 'p1', ssn: '000-00-0000' }],
+    reviewLog: [],
+    links: [], clients: [], clientFlags: [], rosterFlags: [], contactEdges: [],
+    fileCounters: {}, bills: [], lineItems: [], codeMappings: [], eobs: [],
+    runs: [], resultLines: [], legalRules: [], feeSchedules: [], feeRates: [],
+    documents: [], facilityProfiles: [], events: [], transcripts: [],
+    transcriptParticipants: [], stagingItems: [], routingDecisions: [],
+    glossaryTerms: [], tagTemplates: [], charges: [], oaaIntakes: [],
+    statuteChapters: [], statuteSections: [], verificationSnapshots: [],
+    watchFlags: [], watchTargets: [], trackedBills: [], billRefs: [],
+  };
+}
+
+/** v13 (amendmentStore.test.ts): the old `providerPartyId` key and collection name, and the
+ *  chiropractor template still on its pre-ruling body. */
+function v13Store() {
+  return {
+    version: 13,
+    cases: [{ id: 'c1', fileNumber: '26-0001' }],
+    parties: [{ id: 'p-fac', displayName: 'Halite Regional Hospital' }],
+    reviewLog: [],
+    bills: [{ id: 'b1', caseId: 'c1', providerPartyId: 'p-fac', label: 'ER', billedAmount: 100 }],
+    codeMappings: [{ id: 'cm1', providerPartyId: 'p-fac', rawDescription: 'CT HEAD', cpt: '70450' }],
+    providerProfiles: [{ id: 'pp1', providerPartyId: 'p-fac', commonFlags: [] }],
+    formTemplates: [{
+      id: 't-chiro', key: 'disclosures-variant-chiropractor', name: 'Chiropractor',
+      family: 'expert-narrative-variant', currentVersionId: 'v-chiro-1',
+    }],
+    formTemplateVersions: [{
+      id: 'v-chiro-1', templateId: 't-chiro', versionNo: 1,
+      body: 'OLD BODY — reasonable degree of chiropractic probability', settings: {}, createdAt: '2026-08-20T00:00:00.000Z',
+    }],
+    links: [], clients: [], clientFlags: [], rosterFlags: [], contactEdges: [],
+    partyPii: [], fileCounters: {}, lineItems: [], eobs: [],
+    runs: [], resultLines: [], legalRules: [], feeSchedules: [], feeRates: [],
+    documents: [], events: [], transcripts: [],
+    transcriptParticipants: [], stagingItems: [], routingDecisions: [],
+    glossaryTerms: [], tagTemplates: [], charges: [], oaaIntakes: [],
+    statuteChapters: [], statuteSections: [], verificationSnapshots: [],
+    watchFlags: [], watchTargets: [], trackedBills: [], billRefs: [],
+    formTokenDefinitions: [], formFormatProfiles: [],
+  };
+}
+
+/** v14 (amendmentStoreV15.test.ts): the FE-D1 bank and none of the amendment's rows. */
+function v14Store() {
+  const seeded = formEngineSeedData();
+  const keep = new Set(['instrument', 'expert-narrative-variant', 'stock-answer']);
+  const formTemplates = seeded.formTemplates.filter((t) => keep.has(t.family));
+  const ids = new Set(formTemplates.map((t) => t.id));
+  return {
+    version: 14,
+    cases: [{ id: 'c1', fileNumber: '26-0001' }],
+    reviewLog: [],
+    formTemplates,
+    formTemplateVersions: seeded.formTemplateVersions.filter((v) => ids.has(v.templateId)),
+  };
+}
+
 const occurrenceIn = (out: V18, id: string) => out.firmObligationOccurrences.find((o) => o.id === id);
 const obligationIn = (out: V18, key: string) => out.firmObligations.find((o) => o.templateKey === key)!;
 const occurrencesOf = (out: V18, key: string) =>
@@ -215,7 +333,7 @@ describe('v17 → v18: the step itself', () => {
     expect(out.version).toBe(18);
     expect(STORE_VERSION).toBe(18);
     const body = localSource.slice(localSource.indexOf('export function migrateV17ToV18('), localSource.indexOf('function load()'));
-    expect(body).toMatch(/\n {4}version: 18,\n/);
+    expect(body).toMatch(/\r?\n {4}version: 18,\r?\n/);
     expect(body).not.toMatch(/version: STORE_VERSION/);
   });
 
@@ -363,6 +481,45 @@ describe('the chain through load()', () => {
     expect(obligations.every((o) => o.outlookReminderDays === defaultReminderDays(o.leadDays))).toBe(true);
     expect(obligations.every((o) => Array.isArray(o.pendingOutlookDeletes))).toBe(true);
   });
+
+  // Review L3-2: the branches for v9 … v14 were pinned only by load()'s text, so a branch
+  // that skipped a step or passed the wrong intermediate would have stayed green. Each
+  // store runs through load() here, and every step must have run, once, in order: its
+  // backup holds its own version, and its `demo_store` line is there.
+  const OLDER_STORES: [version: number, build: () => object][] = [
+    [9, v9Store], [10, v10Store], [11, v11Store], [12, v12Store], [13, v13Store], [14, v14Store],
+  ];
+  for (const [version, build] of OLDER_STORES) {
+    it(`a v${version} store chains forward through every step to v18: the FOD-21 fixture at min(30, lead), every occurrence touched a boolean, each intermediate backup holding its own version`, async () => {
+      mem.set(KEY, JSON.stringify(build()));
+      const obligations = await new LocalAdapter().listFirmObligations();
+      const stored = JSON.parse(mem.get(KEY)!) as {
+        version: number; firmObligationOccurrences: FirmObligationOccurrence[]; reviewLog: ReviewLogEntry[];
+      };
+      expect(stored.version).toBe(18);
+
+      expect(obligations).toHaveLength(13);
+      expect(reminderDaysByKey(obligations)).toEqual(FIXTURE_REMINDER_DAYS);
+      for (const o of obligations) expect(o.outlookReminderDays, o.templateKey).toBe(defaultReminderDays(o.leadDays));
+
+      expect(stored.firmObligationOccurrences).toHaveLength(12);
+      for (const o of stored.firmObligationOccurrences) expect(typeof o.touched, o.id).toBe('boolean');
+
+      const steps = Array.from({ length: 18 - version }, (_, i) => version + i);
+      for (const n of steps) {
+        const backup = mem.get(`${KEY}-backup-v${n}`);
+        expect(backup, `-backup-v${n}`).toBeDefined();
+        expect(JSON.parse(backup!).version, `-backup-v${n}`).toBe(n);
+      }
+      // No other backup: not a reseed's, not a step run twice or out of its place.
+      expect([...mem.keys()].filter((k) => k.startsWith(`${KEY}-backup-`)).sort())
+        .toEqual(steps.map((n) => `${KEY}-backup-v${n}`).sort());
+      expect(stored.reviewLog
+        .filter((l) => l.entityType === 'demo_store')
+        .map((l) => Number(/^Store migrated v(\d+)/.exec(l.reason ?? '')?.[1])))
+        .toEqual(steps);
+    });
+  }
 });
 
 describe('a FRESH store lands in the v18 shape (the v16 lesson)', () => {

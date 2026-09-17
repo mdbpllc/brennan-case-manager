@@ -137,6 +137,46 @@ describe('#156 §2 (B6) — the new-bill picker reads this case\'s case_provider
     expect(page).toContain('providers.find((p) => p.id === id)?.displayName');
     expect(page).not.toContain('providers={providers}');
   });
+
+  it('every change in the Providers section re-reads the picker\'s sources, and only those', () => {
+    // Found at the FOS-2 fix build's review: the section was rendered with no
+    // `onChanged`, so a facility added, retyped or removed there — directly above
+    // the ledger — did not reach "+ New bill" until the tab remounted.
+    const element = page.slice(page.indexOf('<ProvidersSection'));
+    expect(element.slice(0, element.indexOf('/>'))).toMatch(/\bonChanged=\{refreshProviderSources\}/);
+
+    // The re-read is the picker's sources — the three row lists and the facility
+    // names — and nothing else on the tab.
+    const start = page.indexOf('const refreshProviderSources = useCallback(');
+    expect(start).toBeGreaterThan(-1);
+    const reread = page.slice(start, page.indexOf('const refresh = useCallback(', start));
+    for (const call of [
+      'db.listCaseProviders(caseRec.id)', 'db.listProviderIndividuals(caseRec.id)',
+      'db.listProviderVisits(caseRec.id)', 'db.getParties(',
+      'setCaseProviderRows(cps)', 'setProviderIndividuals(inds)', 'setProviderVisits(vs)', 'setFacilityNames(',
+    ]) expect(reread).toContain(call);
+    expect(reread).not.toMatch(
+      /listBillsForCase|listRunsForCase|listDocumentsForCase|listLinksForCase|listClientsForCase|setAllBills|setClients|setProviders\(/,
+    );
+
+    // It is the ONLY writer of those four, and the tab's own refresh (the mount
+    // read) runs it, so there is one way the picker's sources are loaded.
+    for (const setter of ['setCaseProviderRows(', 'setProviderIndividuals(', 'setProviderVisits(', 'setFacilityNames(']) {
+      expect(page.split(setter)).toHaveLength(2);
+    }
+    expect(page.slice(page.indexOf('const refresh = useCallback('))).toContain('refreshProviderSources(),');
+  });
+
+  it('the ledger\'s Provider column falls back to the case_providers facility name', () => {
+    // Found at the FOS-2 fix build's review: a bill made from the picker for a
+    // facility NOT linked to the case read '—'. The order is the linked party's
+    // name (kept), then the facility name, then '—'. The expression is
+    // recomputed from the seed in billProviderPicker.test.ts.
+    expect(page).toMatch(
+      /providers\.find\(\(p\) => p\.id === id\)\?\.displayName\s*\?\?\s*\(id \? facilityNames\[id\] : undefined\),\s*\[providers, facilityNames\],/,
+    );
+    expect(page).toContain("providerName(b.facilityPartyId) ?? '—'");
+  });
 });
 
 // ------------------------------------------------------------- R2 and R8

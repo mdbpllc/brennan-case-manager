@@ -9,11 +9,11 @@
 //
 // The register shows EVERY open occurrence (FOM-14): Overdue pinned at the top, hard
 // first then most overdue (FOM-9); then Needs attention, only when an active
-// obligation has no open occurrence (a store written before the one-act saves could
-// hold one) or a queued Outlook delete has failed three syncs or more (FXD-2); then the
-// twelve months from this one; then Later (FOM-3); then Inactive, collapsed (FOM-5),
-// where a row activated from the catalog shows its catalog text, its note and its
-// source (FOD-33; slice §3 item 3).
+// obligation has no open occurrence (no single act leaves one; a hand edit in the
+// database or a future defect could) or a queued Outlook delete has failed three syncs
+// or more (FXD-2); then the twelve months from this one; then Later (FOM-3); then
+// Inactive, collapsed (FOM-5), where a row activated from the catalog shows its catalog
+// text, its note and its source (FOD-33; slice §3 item 3).
 //
 // THE ONLY THINGS THAT UNLIGHT AN OCCURRENCE ARE Done; Not applicable, only on a row
 // that can lapse for a period and only with a reason (FOD-18); and Undo, only while
@@ -626,11 +626,15 @@ function InactiveRow({ entry, ctx }: {
 
 // ------------------------------------------------------------ Needs attention
 
-/** An ACTIVE obligation with no open occurrence (registerView's `stranded`). No act
- *  leaves one now — each is one Postgres function centrally (#156 A5) — but a save to
- *  the central database that stopped part-way before the functions existed could have.
- *  It is listed so it never falls off every surface, and the way back is the ordinary
- *  one: Retire, then Activate… from Inactive. */
+/** An ACTIVE obligation with no open occurrence (registerView's `stranded`). No single
+ *  act leaves one — each is one save locally and one Postgres function centrally (#156
+ *  A5) — and centrally a concurrent close racing an Activate… on the same retired row is
+ *  now refused by the functions (the FOS-2 review's L1-4). What could still leave one is
+ *  a hand edit in the database or a future defect, so the list stays as the guard: such
+ *  a row never falls off every surface, and the way back is the ordinary one: Retire,
+ *  then Activate… from Inactive. The sentence below still names "a save to the central
+ *  database did not finish" as the cause; it is a PROVISIONAL text act, filed for
+ *  Michael's eye rather than reworded here (L6-5). */
 function StrandedRow({ ob, ctx }: { ob: FirmObligation; ctx: RegisterCtx }) {
   const retire = useAct(ctx);
   const name = plainText(ob.name);

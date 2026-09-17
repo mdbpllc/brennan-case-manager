@@ -234,7 +234,7 @@ describe('FOS-2 B5 — a ONE-client instrument serves exactly what the pre-edit 
     expect(formsTab).toContain('instrument_title: heading,');
     expect(formsTab).toContain('footer_title: heading,');
     // The record, the filename and the on-screen label still read `title`.
-    expect(formsTab).toContain('        title,\n        content: rendered.plainText,');
+    expect(formsTab).toMatch(/ {8}title,\r?\n {8}content: rendered\.plainText,/);
     expect(formsTab).toContain('{instrumentTitle(');
     // The old note that called the second heading "the footer" is corrected.
     expect(formsTab).not.toContain('present twice (title and footer)');

@@ -1594,7 +1594,9 @@ export class SupabaseAdapter implements DataAdapter {
   // ---- the Outlook-delete queue (#156 A6; FXD-2) ----
   // Outlook bookkeeping, like the sync write above — NOT an act: no function, no
   // review_log line. Read the obligation, compute the queue in the domain, write back
-  // ONLY pending_outlook_deletes (the one column the nine functions never write).
+  // ONLY pending_outlook_deletes. No act function UPDATES that column — every patch's
+  // column list leaves it out — but firm_activate's insert writes its initial value (the
+  // plan's empty queue); after that, these two methods are its only writers.
 
   async queueFirmOutlookDelete(
     obligationId: string, entry: { eventId: string; occurrenceId: string },

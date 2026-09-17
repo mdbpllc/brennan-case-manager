@@ -440,8 +440,13 @@ export function disclosureFixtures(yy: string): DisclosureFixtures {
    *
    * The first covers the treatment dates and names the SELECTED facility, so
    * the two agree. The second is LATER and CURRENT (blank `effective_to`) at a
-   * different facility, which is what puts D-8's "Currently practicing at …"
-   * line under the block — a TEXT ACT carried to the hands-on sitting.
+   * different facility. That second edge USED to feed D-8's "Currently
+   * practicing at …" sentence; the sentence path is removed (`#156` §2, B1),
+   * so NOTHING renders under the block from it — the block reads the selected
+   * facility only, and `fixtureWalk.test.ts` pins the absence on exactly this
+   * fixture. The edge is kept for invariant 17's shape. It is not a panel-line
+   * source either: nothing in the app computes an affiliation mismatch from it
+   * (`tiers.ts` only accepts one as an optional input).
    */
   const contactEdges: ContactEdge[] = [
     {

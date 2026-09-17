@@ -7,6 +7,11 @@
 // docs/specs/firm-obligations-fix-slice.md §5 — the four columns, the tightened
 // CHECK, the nine act functions and checks 8–10 — FOS-2 RULED YES by Michael
 // 2026-09-12 ("Yes"); session log #156. The unrun migration is amended in place.
+// The fix build's review then amended it again, still unrun: every function that
+// locks an obligation locks it first; an incomplete request is refused before
+// anything runs; three race guards (review L1-4, L6-5); every insert stamps
+// created_at and updated_at with now() (review L4-1); and the comments on weight,
+// pending_outlook_deletes and materialized_from were corrected (L1-2, L5-1–L5-3).
 //
 // WHAT THIS PROVES, AND WHAT IT CANNOT. It proves the migration NAMES every
 // object §5 requires — each column with its exact type, default and CHECK, each
@@ -91,6 +96,30 @@ function functionsIn(src: string): SqlFunction[] {
 /** The table writes a compacted body makes, in order. */
 const writesIn = (body: string) =>
   [...body.matchAll(/\b(insert into|update|delete from) (\w+)/g)].map((m) => `${m[1]} ${m[2]}`);
+
+/** Where a compacted body's first table write starts; -1 when it makes none. */
+const firstWriteIn = (body: string) => body.search(/\b(insert into|update|delete from) \w+/);
+
+/** A compacted body from its `begin` on — the statements, without the declare section. */
+const statementsOf = (body: string) => body.slice(body.search(/\bbegin\b/));
+
+/** Each `insert into <table> (<columns>) values (<values>)` in a compacted body: its
+ *  column list, its values split at the top level, and where the values close. */
+function insertsIn(body: string, table: string) {
+  return [...body.matchAll(new RegExp(String.raw`insert into ${table}\(([^)]*)\)values\(`, 'g'))].map((m) => {
+    let depth = 1;
+    let i = m.index! + m[0].length;
+    const open = i;
+    for (; i < body.length && depth > 0; i++) {
+      if (body[i] === '(') depth++;
+      else if (body[i] === ')') depth--;
+    }
+    return { at: m.index!, columns: m[1].split(','), values: splitTop(body.slice(open, i - 1)), end: i };
+  });
+}
+
+/** `s` with every regex metacharacter escaped. */
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // ------------------------------------------------------------ what §5 states
 
@@ -188,7 +217,9 @@ const FUNCTIONS = [
 const PREAMBLE = compact('returns jsonb language plpgsql security invoker set search_path = public as');
 
 /** What a PATCH may write back — the call contract's mutable lists, in order.
- *  pending_outlook_deletes is deliberately absent: the drain writes it. */
+ *  pending_outlook_deletes is deliberately absent: no act function UPDATES it (its
+ *  writers are the register's Undo queue write and the sync drain's settle, plain
+ *  updates outside the functions). */
 const OBLIGATION_MUTABLE = [
   'recurrence', 'precision', 'missed_periods', 'weekend_rule', 'lead_days', 'weight', 'notes',
   'outlook_reminder_days', 'last_period_completed', 'active', 'updated_at',
@@ -257,6 +288,42 @@ const REVIEW_LOG_INSERT = compact(
 );
 
 const PROVISIONAL_MARK = '-- PROVISIONAL — #156 §1 item 9 (A5)';
+
+/** The refusals the fix build's review added — each a PROVISIONAL text act. */
+const INCOMPLETE = 'The request was incomplete — reload the register.';
+const REACTIVATED = 'This obligation was re-activated — reload the register.';
+const CLOSED_SINCE = 'Its open occurrence has since closed — reload the register.';
+const OPENED_SINCE = 'Another occurrence has been opened since — reload the register.';
+
+/** The parts of `p` each act cannot go without, and the JSON type each must be: an
+ *  object for a row, a patch or the log line, a string for an id. */
+const REQUIRED: Record<string, [key: string, type: 'object' | 'string'][]> = {
+  firm_activate: [['obligation', 'object'], ['log', 'object']],
+  firm_activate_from_inactive: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_update: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_retire: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_reactivate: [['obligation_id', 'string'], ['obligation_patch', 'object'], ['log', 'object']],
+  firm_mark_done: [['occurrence_id', 'string'], ['occurrence_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_mark_not_applicable: [['occurrence_id', 'string'], ['occurrence_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_undo: [['occurrence_id', 'string'], ['reopen_patch', 'object'], ['obligation_id', 'string'], ['log', 'object']],
+  firm_set_due_override: [['occurrence_id', 'string'], ['patch', 'object'], ['log', 'object']],
+};
+
+/** The rest of each function's keys: the parts its note marks `| null`. */
+const OPTIONAL: Record<string, string[]> = {
+  firm_activate: ['occurrence'],
+  firm_activate_from_inactive: ['occurrence_update', 'occurrence_insert'],
+  firm_update: ['occurrence'],
+  firm_retire: [],
+  firm_reactivate: ['occurrence'],
+  firm_mark_done: ['next', 'obligation_patch'],
+  firm_mark_not_applicable: ['next', 'obligation_patch'],
+  firm_undo: ['remove_occurrence_id', 'obligation_patch'],
+  firm_set_due_override: [],
+};
+
+/** The columns every insert stamps with now(), whatever the row carries (review L4-1). */
+const SERVER_STAMPED = ['created_at', 'updated_at'];
 
 const STEP_0_QUERY = 'select action, count(*) from review_log group by action order by action';
 
@@ -624,7 +691,7 @@ describe('the migration — the nine act functions (fix slice §3 item 6, §5.3;
     }
   });
 
-  it('inserts every ROW under an explicit column list in table order, a default standing in (coalesce) wherever the column has one', () => {
+  it('inserts every ROW under an explicit column list in table order, a default standing in (coalesce) wherever the column has one — the two stamps excepted', () => {
     const colName = (spec: string) => compact(spec).split(' ')[0];
     const colDefault = (spec: string) => / default (.*?)(?: check\(.*)?$/.exec(compact(spec))?.[1] ?? null;
     for (const f of fns) {
@@ -632,29 +699,157 @@ describe('the migration — the nine act functions (fix slice §3 item 6, §5.3;
       for (const [table, columns] of [
         ['firm_obligations', OBLIGATION_COLUMNS], ['firm_obligation_occurrences', OCCURRENCE_COLUMNS],
       ] as const) {
-        const inserts = [...body.matchAll(new RegExp(String.raw`insert into ${table}\(([^)]*)\)values\(`, 'g'))];
+        const inserts = insertsIn(body, table);
         // Every insert the contract names is read here — none slips past unparsed.
         expect(inserts, `${f.name}: ${table} inserts read`).toHaveLength(
           CONTRACT[f.name].writes.filter((w) => w === `insert into ${table}`).length,
         );
-        for (const m of inserts) {
-          expect(m[1].split(','), `${f.name}: ${table} columns`).toEqual(columns.map(colName));
-          let depth = 1;
-          let i = m.index! + m[0].length;
-          const open = i;
-          for (; i < body.length && depth > 0; i++) {
-            if (body[i] === '(') depth++;
-            else if (body[i] === ')') depth--;
-          }
-          const vals = splitTop(body.slice(open, i - 1));
-          const v = /^coalesce\((\w+)\.id,/.exec(vals[0])?.[1];
+        for (const ins of inserts) {
+          expect(ins.columns, `${f.name}: ${table} columns`).toEqual(columns.map(colName));
+          const v = /^coalesce\((\w+)\.id,/.exec(ins.values[0])?.[1];
           expect(v, `${f.name}: ${table} row variable`).toBeTruthy();
-          expect(vals, `${f.name}: ${table} values`).toEqual(columns.map((spec) => {
+          expect(ins.values, `${f.name}: ${table} values`).toEqual(columns.map((spec) => {
+            // The database's clock, never the row's (review L4-1; pinned on its own below).
+            if (SERVER_STAMPED.includes(colName(spec))) return 'now()';
             const d = colDefault(spec);
             return d === null ? `${v}.${colName(spec)}` : `coalesce(${v}.${colName(spec)},${d})`;
           }));
-          expect(body.slice(i), `${f.name}: returning`).toMatch(new RegExp(String.raw`^returning \* into ${v};`));
-          expect(body.slice(0, m.index!), `${f.name}: ${v} read from its row`).toContain(`${v} := jsonb_populate_record(null::${table},p->`);
+          expect(body.slice(ins.end), `${f.name}: returning`).toMatch(new RegExp(String.raw`^returning \* into ${v};`));
+          expect(body.slice(0, ins.at), `${f.name}: ${v} read from its row`).toContain(`${v} := jsonb_populate_record(null::${table},p->`);
+        }
+      }
+    }
+  });
+
+  it("stamps created_at and updated_at with now() on EVERY insert, never the row's own — so occurrences are ordered by the database's clock (review L4-1)", () => {
+    let inserts = 0;
+    for (const f of fns) {
+      const body = compact(f.body);
+      for (const table of TABLES) {
+        for (const ins of insertsIn(body, table)) {
+          inserts++;
+          for (const col of SERVER_STAMPED) {
+            expect(ins.values[ins.columns.indexOf(col)], `${f.name}: ${table}.${col}`).toBe('now()');
+          }
+          // No value of any insert reads a stamp from the row the client sent.
+          expect(ins.values.join(','), `${f.name}: ${table}`).not.toMatch(/\.(created_at|updated_at)\b/);
+        }
+      }
+    }
+    // firm_activate's two, and the one occurrence each of four other acts may open.
+    expect(inserts).toBe(6);
+    // Said so where the call is described.
+    const prose = sqlProse(migrationFnSection);
+    for (const phrase of [
+      'every insert stamps both with now(), whatever the row carries', "DATABASE's clock, not the browser's",
+      'latestClosed', "canUndo's created-at check", 'L4-1',
+    ]) {
+      expect(prose, phrase).toContain(phrase);
+    }
+  });
+
+  it('refuses an incomplete request FIRST: each required part of `p` type-checked before any other statement (#156 §1 item 9, A5)', () => {
+    expect(Object.keys(REQUIRED)).toEqual(FUNCTIONS);
+    for (const f of fns) {
+      // Every key the call reads is either required or one its note marks `| null`.
+      expect([...REQUIRED[f.name].map(([k]) => k), ...OPTIONAL[f.name]].sort(), f.name).toEqual([...CONTRACT[f.name].p].sort());
+      const conditions = REQUIRED[f.name].map(([k, type]) => `jsonb_typeof(p->'${k}') is distinct from '${type}'`);
+      const guard = compact(`begin if ${conditions.join(' or ')} then raise exception '${INCOMPLETE}'; end if;`);
+      const statements = statementsOf(compact(f.body));
+      expect(statements.slice(0, guard.length), f.name).toBe(guard);
+      // Nothing is read from `p` in the declare section: the ids are cast only after
+      // the check, so a missing or mistyped part meets the check and not a cast.
+      const declare = compact(f.body).slice(0, compact(f.body).search(/\bbegin\b/));
+      expect(declare, f.name).not.toContain('p->');
+      for (const m of statements.matchAll(/\bp->>'(\w+_id)'/g)) {
+        expect(m.index!, `${f.name}: ${m[1]} read before the check`).toBeGreaterThan(guard.length);
+      }
+    }
+  });
+
+  it('locks the obligation FIRST — before any occurrence is locked, read or written — and only once, where a function takes it (review L1-4, L6-5)', () => {
+    const locksObligation = FUNCTIONS.filter((fn) => CONTRACT[fn].p.includes('obligation_id'));
+    expect(locksObligation).toEqual([
+      'firm_activate_from_inactive', 'firm_update', 'firm_retire', 'firm_reactivate',
+      'firm_mark_done', 'firm_mark_not_applicable', 'firm_undo',
+    ]);
+    for (const f of fns) {
+      const statements = statementsOf(compact(f.body));
+      const locks = [...statements.matchAll(/select \* into \w+ from firm_obligations where id = \w+ for update;/g)];
+      // Every read of an obligation row is the locked one: no plain select of it survives.
+      expect(statements.match(/\bfrom firm_obligations\b/g)?.length ?? 0, f.name).toBe(locks.length);
+      if (!locksObligation.includes(f.name)) {
+        expect(locks, f.name).toHaveLength(0);
+        continue;
+      }
+      expect(locks, f.name).toHaveLength(1);
+      const lock = locks[0].index!;
+      const occurrence = statements.search(/\bfirm_obligation_occurrences\b/);
+      if (occurrence > -1) expect(lock, `${f.name}: before any occurrence`).toBeLessThan(occurrence);
+      expect(lock, `${f.name}: before any write`).toBeLessThan(firstWriteIn(statements));
+    }
+  });
+
+  it('Done and Not applicable: a call planned on a RETIRED obligation (no next, no obligation patch) is refused once the obligation is active again — under its lock, before the occurrence (review L1-4, L6-5)', () => {
+    for (const name of ['firm_mark_done', 'firm_mark_not_applicable']) {
+      const body = compact(fns.find((f) => f.name === name)!.body);
+      const lock = /select \* into (\w+) from firm_obligations where id = \w+ for update;/.exec(body);
+      expect(lock, name).not.toBeNull();
+      const guard = body.indexOf(compact(
+        `if jsonb_typeof(p->'next') is distinct from 'object' and jsonb_typeof(p->'obligation_patch') is distinct from 'object' and ${lock![1]}.active then raise exception '${REACTIVATED}';`,
+      ));
+      expect(guard, name).toBeGreaterThan(lock!.index);
+      expect(guard, `${name}: before the occurrence is locked`).toBeLessThan(body.indexOf('from firm_obligation_occurrences where id ='));
+      expect(guard, `${name}: before any write`).toBeLessThan(firstWriteIn(body));
+    }
+  });
+
+  it('Re-activate and Activate… from Inactive: when the call opens no occurrence, it is refused unless one is still open — under the lock, before any write (review L1-4)', () => {
+    for (const [name, key] of [['firm_reactivate', 'occurrence'], ['firm_activate_from_inactive', 'occurrence_insert']]) {
+      const body = compact(fns.find((f) => f.name === name)!.body);
+      const lock = /select \* into (\w+) from firm_obligations where id = (\w+) for update;/.exec(body);
+      expect(lock, name).not.toBeNull();
+      const active = body.search(new RegExp(String.raw`if ${lock![1]}\.active then raise exception '`));
+      const guard = body.indexOf(compact(
+        `if jsonb_typeof(p->'${key}') is distinct from 'object' and not exists (select 1 from firm_obligation_occurrences where obligation_id = ${lock![2]} and state = 'open') then raise exception '${CLOSED_SINCE}';`,
+      ));
+      expect(active, name).toBeGreaterThan(lock!.index);
+      expect(guard, `${name}: after the already-active refusal`).toBeGreaterThan(active);
+      expect(guard, `${name}: before any write`).toBeLessThan(firstWriteIn(body));
+    }
+  });
+
+  it("Undo with no next to remove: refused when another occurrence is open, or was created at or after the close — canUndo's rule, under the lock, before the delete or the reopen (review L1-4)", () => {
+    const body = compact(fns.find((f) => f.name === 'firm_undo')!.body);
+    const lock = /select \* into \w+ from firm_obligations where id = (\w+) for update;/.exec(body);
+    const removeVar = /(\w+) :=\(p->>'remove_occurrence_id'\)::uuid;/.exec(body)?.[1];
+    const closedVar = /(\w+) :=\(p->>'occurrence_id'\)::uuid;/.exec(body)?.[1];
+    expect(lock).not.toBeNull();
+    expect(removeVar).toBeTruthy();
+    expect(closedVar).toBeTruthy();
+    const guard = body.indexOf(compact(
+      `if ${removeVar} is null and exists (select 1 from firm_obligation_occurrences o where o.obligation_id = ${lock![1]} and o.id <> ${closedVar} and (o.state = 'open' or o.created_at >= (select c.created_at from firm_obligation_occurrences c where c.id = ${closedVar}))) then raise exception '${OPENED_SINCE}';`,
+    ));
+    expect(guard).toBeGreaterThan(lock!.index);
+    expect(guard, 'before the delete of the next').toBeLessThan(body.indexOf('delete from firm_obligation_occurrences'));
+    expect(guard, 'before any write').toBeLessThan(firstWriteIn(body));
+  });
+
+  it('raises each of the four new refusals in exactly the functions that need it, each PROVISIONAL on its own line', () => {
+    const raisedIn = (message: string) => rawFns.filter((f) => f.body.includes(`'${message}'`)).map((f) => f.name);
+    expect(raisedIn(INCOMPLETE)).toEqual(FUNCTIONS);
+    expect(raisedIn(REACTIVATED)).toEqual(['firm_mark_done', 'firm_mark_not_applicable']);
+    expect(raisedIn(CLOSED_SINCE)).toEqual(['firm_activate_from_inactive', 'firm_reactivate']);
+    expect(raisedIn(OPENED_SINCE)).toEqual(['firm_undo']);
+    // Both copies — the migration and db/schema.sql's function section — carry each marker
+    // on the raise's own line (the fix build's re-sweep, F1 verifier: the identity test
+    // compares code with comments stripped, so the schema copy's markers need their own pin).
+    for (const [label, src] of [['the migration', migrationSql], ['db/schema.sql', schemaFnSection]] as const) {
+      for (const message of [INCOMPLETE, REACTIVATED, CLOSED_SINCE, OPENED_SINCE]) {
+        const lines = src.split(/\r?\n/).filter((l) => l.includes(`'${message}'`));
+        expect(lines.length, `${label}: ${message}`).toBeGreaterThan(0);
+        for (const line of lines) {
+          expect(line, label).toMatch(new RegExp(String.raw`^\s*raise exception '${escapeRe(message)}'; ${escapeRe(PROVISIONAL_MARK)}$`));
         }
       }
     }
@@ -682,8 +877,8 @@ describe('the migration — the nine act functions (fix slice §3 item 6, §5.3;
     }
     // Undo removes the next only while it is open, untouched, and this close's own.
     const undo = compact(byName.firm_undo.body);
-    const removeVar = /(\w+) uuid :=\(p->>'remove_occurrence_id'\)::uuid;/.exec(undo)?.[1];
-    const closedVar = /(\w+) uuid :=\(p->>'occurrence_id'\)::uuid;/.exec(undo)?.[1];
+    const removeVar = /(\w+) :=\(p->>'remove_occurrence_id'\)::uuid;/.exec(undo)?.[1];
+    const closedVar = /(\w+) :=\(p->>'occurrence_id'\)::uuid;/.exec(undo)?.[1];
     expect(removeVar).toBeTruthy();
     expect(closedVar).toBeTruthy();
     expect(undo).toMatch(new RegExp(
@@ -792,5 +987,58 @@ describe('db/schema.sql — the same commit (slice §5.3, §3 item 2; fix slice 
         .replace(`grant execute on function public.${fn}(jsonb) to authenticated;`, '');
     }
     expect(rest.trim()).toBe('');
+  });
+});
+
+// ------------------------------------------------------ the comments tell the truth
+
+/** The `--` comment lines directly above the first line matching `column`, as prose. */
+function commentAbove(src: string, column: RegExp): string {
+  const lines = src.split('\n').map((l) => l.replace(/\r$/, ''));
+  const at = lines.findIndex((l) => column.test(l));
+  if (at < 0) return '';
+  let from = at;
+  while (from > 0 && /^\s*--/.test(lines[from - 1])) from--;
+  return sqlProse(lines.slice(from, at).join('\n'));
+}
+
+describe("the comments say what the code does (the fix build's review L1-2, L5-1, L5-2, L5-3)", () => {
+  const files = [
+    { label: 'the migration', src: migrationSql, fnSection: migrationFnSection },
+    { label: 'db/schema.sql', src: schemaSql, fnSection: schemaFnSection },
+  ];
+
+  it.each(files)("$label: pending_outlook_deletes names BOTH writers, outside the act functions, and firm_activate's insert", ({ src, fnSection }) => {
+    const column = commentAbove(src, /^\s*pending_outlook_deletes jsonb /);
+    const section = sqlProse(fnSection);
+    for (const text of [column, section]) {
+      for (const phrase of [
+        "the register's Undo queue write (queueFirmOutlookDelete)", "the sync drain's settle",
+        'plain updates outside the act functions', 'firm_activate inserts its initial value', 'no act function UPDATES it',
+      ]) {
+        expect(text, phrase).toContain(phrase);
+      }
+    }
+    const prose = sqlProse(src);
+    for (const gone of ['Written by the drain', "the drain's own update", 'no act function below writes it', 'no act function writes it']) {
+      expect(prose, gone).not.toContain(gone);
+    }
+  });
+
+  it.each(files)('$label: weight — since #156 A1 it also decides whether the Outlook reminder rings', ({ src }) => {
+    const column = commentAbove(src, /^\s*weight text not null /);
+    expect(column).toContain('Since #156 A1 weight also decides whether the Outlook reminder rings (hard only)');
+    expect(column).toContain('the register and card states are unchanged');
+    const prose = sqlProse(src);
+    expect(prose).not.toContain('weight never changes behaviour');
+    expect(prose).not.toContain('never behaviour');
+  });
+
+  it("the migration: materialized_from — Undo finds the next by it, and still reads the close record's existence and its retiredObligation flag (ruling 2)", () => {
+    const column = commentAbove(migrationSql, /^\s*materialized_from uuid /);
+    for (const phrase of ['Undo finds the next by this column', 'the record exists (FXD-7)', 'retiredObligation', '2026-09-16']) {
+      expect(column, phrase).toContain(phrase);
+    }
+    expect(sqlProse(migrationSql)).not.toContain("not the close line's record");
   });
 });

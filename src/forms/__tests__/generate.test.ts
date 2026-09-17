@@ -25,6 +25,8 @@ import type {
   CaseChronologyVersion, CaseProvider, CaseProviderIndividual,
 } from '../../domain/caseProviders';
 import type { ProviderTypeKey } from '../providerTypes';
+// `?raw`: the source, for the §8.3 structural pin (no `node:fs`, by convention).
+import generateSource from '../generate.ts?raw';
 
 const T = '2026-09-03T00:00:00.000Z';
 
@@ -465,14 +467,59 @@ describe('#156 §2 (B3) — AS-Q17: the pause still fires, then the individual i
     ]);
   });
 
-  it('keeps the generated text GATE-INDEPENDENT — acknowledged or not, the same paragraph', async () => {
-    // §8.3: "Generated text is identical regardless of gate state". The input
-    // has no gate field, so the pause cannot move the text — asserted twice.
+  // §8.3: "Generated text is identical regardless of gate state". The test that
+  // stood here ran the same input twice with no gate state varied, so it proved
+  // determinism and could not fail on a gate dependency (found at the FOS-2 fix
+  // build's review). The two below can: one generates while the pause is
+  // present and UNMET, the other pins that the generate has no way to be told.
+
+  it('keeps the generated text GATE-INDEPENDENT — with the pause present and NOT acknowledged, the marked individual is still designated, in the LEAD', async () => {
     const people = [em(), psy()];
-    const a = await buildDesignations(input({ individuals: people }));
-    const b = await buildDesignations(input({ individuals: people }));
-    expect(b.paragraphs.map((p) => p.assembledText)).toEqual(a.paragraphs.map((p) => p.assembledText));
-    expect(Object.keys(input())).not.toContain('acknowledged');
+    const marked = people[1];
+
+    // The REAL gate function on the same facility and people the generate gets:
+    // the hard pause is there, and nothing has cleared it.
+    const gates = evaluateTypedGates({
+      selected: [facility('emergency-medicine')],
+      individuals: people,
+      facilityNames: { f1: 'Halite Regional Hospital' },
+    });
+    const acknowledged: Record<string, boolean> = {};
+    expect(blockingGates(gates).filter((g) => !acknowledged[g.id]).map((g) => [g.id, g.severity]))
+      .toEqual([[`mental-health:${marked.id}`, 'hard-pause']]);
+
+    const writer = spyWriter();
+    const out = await buildDesignations(input({ writer, individuals: people }));
+    const treating = out.paragraphs[0];
+    expect(treating.individualIds).toEqual([people[0].id, marked.id]);
+    expect(treating.leadText).toBe('Ines Vantwoud, M.D. and Neriah Halvorsen, Psy.D.,');
+    expect(treating.assembledText).toContain('Neriah Halvorsen');
+    expect(out.itemNarratives['testifying_expert:0'][0].lead).toContain('Neriah Halvorsen');
+    expect(writer.calls[0].individuals.map((i) => i.displayName)).toEqual(['Ines Vantwoud', 'Neriah Halvorsen']);
+    expect(out.blocks[0].individuals.map((i) => i.id)).toEqual([people[0].id, marked.id]);
+  });
+
+  it('GenerateInput carries no gate or acknowledgement field, and the generate reads no gate module', () => {
+    // Structure, read from the source (the house's `?raw` convention): a gate
+    // field under ANY name would change the exact field list, so the list is
+    // pinned whole — a new input must answer §8.3 before this list grows.
+    const m = /export interface GenerateInput \{([\s\S]*?)\r?\n\}/.exec(generateSource);
+    expect(m).not.toBeNull();
+    const body = m![1].replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/[^\n]*/g, '');
+    // Fail CLOSED: every member line must be a plain property (optionally readonly, the key
+    // optionally quoted); a method or index signature, or any other shape, fails here rather
+    // than slipping past the name list (the fix build's re-sweep, F3 verifier).
+    const memberRe = /^\s*(?:readonly\s+)?(['"]?)(\w+)\1\??\s*:/;
+    const members = body.split(/\r?\n/).filter((l) => l.trim() !== '' && /^\s*(?:readonly\s+)?['"]?\w+['"]?\??\s*[:(]|^\s*\[/.test(l));
+    expect(members.filter((l) => !memberRe.test(l))).toEqual([]);
+    const fields = members.map((l) => memberRe.exec(l)![2]);
+    expect(fields).toEqual([
+      'writer', 'selected', 'individuals', 'visits', 'chronologyVersions', 'facilityParties',
+      'clientName', 'clientPronoun', 'incidentDateIso', 'caseType', 'writerInstructions',
+    ]);
+    expect(fields.filter((f) => /gate|acknowledg|pause|unmet|cleared|confirm/i.test(f))).toEqual([]);
+    // And nothing in generate.ts can evaluate a gate or a tier for itself.
+    expect(generateSource).not.toMatch(/from\s+['"]\.\/(gates|tiers)(\.ts)?['"]/);
   });
 
   it('a facility TYPED mental health still writes NO generated paragraph (AS-Q5, unchanged)', async () => {

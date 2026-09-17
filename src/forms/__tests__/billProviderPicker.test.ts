@@ -95,6 +95,59 @@ describe('B6 — the two-client PREMISES matter', () => {
   });
 });
 
+describe('B6 — the ledger\'s Provider column names a bill made from the picker', () => {
+  // Found at the FOS-2 fix build's review: the column resolved names from the
+  // LINKED providerBusiness parties only, so a bill made from this picker for an
+  // unlinked facility read '—'. The page's own expression (pinned over source in
+  // cc1Surfaces.test.ts), recomputed from the seed the way the page loads it:
+  //   providers.find((p) => p.id === id)?.displayName ?? (id ? facilityNames[id] : undefined)
+  // and the cell renders `?? '—'`.
+  const ledgerFor = (caseId: string) => {
+    const linkedIds = new Set([
+      ...seed.links.filter((l) => l.caseId === caseId).map((l) => l.partyId),
+      ...seed.clients.filter((c) => c.caseId === caseId).map((c) => c.partyId),
+    ]);
+    const providers = seed.parties.filter((p) => linkedIds.has(p.id) && p.partyType === 'providerBusiness');
+    const facilityIds = new Set(rowsFor(caseId).map((r) => r.facilityPartyId));
+    const facilityNames: Record<string, string> = Object.fromEntries(
+      seed.parties.filter((p) => facilityIds.has(p.id)).map((p) => [p.id, p.displayName]),
+    );
+    const providerName = (id?: string) => providers.find((p) => p.id === id)?.displayName
+      ?? (id ? facilityNames[id] : undefined);
+    return { providers, cell: (id?: string) => providerName(id) ?? '—' };
+  };
+
+  it('on Garcia, every picker option names itself in the column — including the unlinked ones', () => {
+    const { providers, cell } = ledgerFor('c-garcia-mvc');
+    const options = billProviderOptions(rowsFor('c-garcia-mvc'), sources, nameOf);
+    const unlinked = options.filter((o) => !providers.some((p) => p.id === o.value));
+    // The review's case: eight of the nine are not linked (only the ER is), so
+    // the linked source alone left eight bills' Provider cells '—'.
+    expect(unlinked.map((o) => o.value)).toContain('p-fx-cobalt');
+    expect(unlinked).toHaveLength(8);
+    for (const o of options) expect(cell(o.value)).toBe(o.label);
+  });
+
+  it('keeps the LINKED source first: a linked facility with no case_providers row still names itself', () => {
+    const { cell } = ledgerFor('c-garcia-mvc');
+    expect(rowsFor('c-garcia-mvc').some((r) => r.facilityPartyId === 'p-prov-procare')).toBe(false);
+    expect(cell('p-prov-procare')).toBe('ProCare Injury Specialists');
+  });
+
+  it('the premises matter links no provider party, and a bill made from its one option names the clinic', () => {
+    const { providers, cell } = ledgerFor('c-fx-premises');
+    expect(providers).toEqual([]);
+    const [only] = billProviderOptions(rowsFor('c-fx-premises'), sources, nameOf);
+    expect(cell(only.value)).toBe('Ironbark Occupational Clinic');
+  });
+
+  it('a bill with no provider, or one on neither list, still reads —', () => {
+    const { cell } = ledgerFor('c-garcia-mvc');
+    expect(cell(undefined)).toBe('—');
+    expect(cell('p-not-on-this-case')).toBe('—');
+  });
+});
+
 describe('B6 — edge cases', () => {
   const T = '2026-09-16T00:00:00.000Z';
   const row = (id: string, facilityPartyId: string, over: Partial<CaseProvider> = {}): CaseProvider => ({

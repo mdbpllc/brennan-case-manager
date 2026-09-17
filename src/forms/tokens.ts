@@ -12,10 +12,14 @@
  *  FC-3  Bracket handling on import is an ALLOWLIST, never a pattern match.
  *  FC-4  The `[s]` plural marker converts to a grammar flex point.
  *
- * Michael's master skeleton (supplied 2026-08-20) is written entirely in the
+ * Michael's master skeleton (supplied 2026-08-20) was written entirely in the
  * legacy double-brace convention — 92 distinct tokens, 155 occurrences, zero
- * single-brace. It is left exactly as delivered: it is the geometry authority
- * and byte-preservation is the whole point of the engine. FC-1's "accept both,
+ * single-brace. It is left as delivered but for ONE authorized edit: the FOS-2
+ * fix build (#156 §2, B5; his ruling "Tokenize both headings", 2026-09-16)
+ * replaced its two static headings with the canonical single-brace
+ * `{instrument_title}` and `{footer_title}` and changed nothing else
+ * (docs/record/firm-obligations-fix-build-2026-09-16/). It is the geometry
+ * authority and byte-preservation is the whole point of the engine. FC-1's "accept both,
  * emit one" is honoured at the boundary instead — this parser reads both, and
  * everything the system STORES or DISPLAYS is canonical.
  */

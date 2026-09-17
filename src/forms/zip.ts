@@ -10,7 +10,9 @@
  * with `deflate-raw`, which is what a ZIP stores. That works identically in the
  * browser, in Node (18+), and under vitest, so the engine needs no bundler
  * config and no new package. Measured on Michael's master 2026-08-20: 26
- * members, 25 of them method 8 (deflate), no data descriptors.
+ * members, no data descriptors. (Re-measured 2026-09-16 at the FOS-2 build: 22
+ * are method 8, deflate, and 4 are stored, empty directory entries — the
+ * original "25 of them method 8" was a miscount.)
  *
  * What this deliberately does NOT support: encryption, ZIP64, data descriptors
  * (bit 3), and multi-disk archives. A .docx written by Word or by python-docx
