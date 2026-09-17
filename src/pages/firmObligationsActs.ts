@@ -1,11 +1,13 @@
 // The firm-obligations register's act plumbing: where a landed act's words go, the
-// Outlook half that runs after it lands, and where a failed act's error goes. Kept out
-// of FirmObligationsPage.tsx so its behaviour is tested without a DOM
+// Outlook half that runs after it lands, and where a failed act's error goes — and the
+// reading of the forms' "Outlook reminder (days)" field (#156 A1). Kept out of
+// FirmObligationsPage.tsx so its behaviour is tested without a DOM
 // (src/components/__tests__/firmObligationsSurfaces.test.ts).
 //
 // Authority: docs/specs/firm-obligations-build-slice.md §3 items 5, 7 and 10; DECISION 7
-// (the Outlook push). Every sentence here is a PROVISIONAL TEXT ACT, marked on its own
-// line with its cite; Michael rules the wording at THE FIRM-OBLIGATIONS HANDS-ON SITTING.
+// (the Outlook push); docs/specs/firm-obligations-fix-slice.md §3 item 1 and FXD-9.
+// Every sentence here is a PROVISIONAL TEXT ACT, marked on its own line with its cite;
+// Michael rules the wording at THE FIRM-OBLIGATIONS HANDS-ON SITTING.
 
 import type { FirmObligation, FirmObligationOccurrence } from '../domain/firmObligations';
 
@@ -15,6 +17,26 @@ export interface Notice { tone: 'ok' | 'warn' | 'bad'; text: string }
 
 export function msg(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
+}
+
+// ------------------------------------------------------------ the Outlook reminder field (#156 A1)
+
+/** The "Outlook reminder (days)" field's value as a whole number of days ≥ 0, or null
+ *  when it is anything else. A CLEARED field is null — refused by the form, never saved
+ *  as 0 — because `Number('')` is 0, the hole the Lead field's own check has. */
+export function reminderDaysFrom(field: string): number | null {
+  if (field.trim() === '') return null;
+  const n = Number(field);
+  return Number.isInteger(n) && n >= 0 ? n : null;
+}
+
+/** FXD-9's hint condition: both fields hold whole numbers ≥ 0 and the reminder is set
+ *  further ahead than the lead, so it rings before the row lights on the register. A
+ *  value above the lead is ALLOWED; this only says so. */
+export function reminderExceedsLead(reminderField: string, leadField: string): boolean {
+  const days = reminderDaysFrom(reminderField);
+  const lead = reminderDaysFrom(leadField);
+  return days !== null && lead !== null && days > lead;
 }
 
 // ------------------------------------------------------------ the Outlook half of an act
@@ -40,7 +62,9 @@ export interface OutlookPushes {
   sync(occ: FirmObligationOccurrence, ob: FirmObligation): Promise<void>;
   /** Delete the Outlook event of an occurrence Undo removed. A throw comes back 'failed'. */
   remove(outlookEventId: string): Promise<RemoveResult>;
-  /** A landed act's warning that is not a failed push: the event Undo could not delete. */
+  /** A landed act's warning that is not a failed push: the event Undo could not delete —
+   *  queued to delete on the next sync (#156 A6), or, when that queue write failed, his to
+   *  delete in Outlook. */
   warn(text: string): void;
 }
 

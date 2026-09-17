@@ -368,6 +368,18 @@ describe('nothing the slice bars', () => {
       }
     }
   });
+
+  // FXD-1 (docs/specs/firm-obligations-fix-slice.md §6; FOS-2 RULED YES 2026-09-12, #156):
+  // every catalog template pre-fills the Outlook reminder days from the ruled default,
+  // min(30, lead) — no template carries a value of its own. A per-template value is
+  // DECISION 8's Opus act, not this build's (fix slice §4).
+  it('FXD-1: no template carries an Outlook reminder value of its own', () => {
+    for (const t of FIRM_OBLIGATION_TEMPLATES) {
+      expect(t, t.key).not.toHaveProperty('outlookReminderDays');
+      expect(Object.keys(t).filter((k) => /remind/i.test(k)), t.key).toEqual([]);
+      expect(Object.keys(t.templateRule).filter((k) => /remind/i.test(k)), t.key).toEqual([]);
+    }
+  });
 });
 
 // ------------------------------------------------------------- the generator

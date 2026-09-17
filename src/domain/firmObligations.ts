@@ -72,6 +72,17 @@ export interface RecurrenceRule {
   dueOn?: string;
 }
 
+/** An Outlook event Undo removed and could not delete (#156 A6; FXD-2): kept on the
+ *  obligation and retried by the sync drain until Outlook answers 2xx or 404. */
+export interface PendingOutlookDelete {
+  eventId: string;
+  /** The removed next occurrence the event belonged to. Its row is gone. */
+  occurrenceId: string;
+  recordedAt: string;
+  /** Failed drain attempts so far; retrying never stops (FXD-2). */
+  attempts: number;
+}
+
 export interface FirmObligation {
   id: string;
   name: string;
@@ -89,6 +100,12 @@ export interface FirmObligation {
   weekendRule: WeekendRule;
   leadDays: number;
   weight: Weight;
+  /** #156 (A1): the Outlook reminder fires this many days before the TARGET, on a HARD
+   *  obligation only; the value stored is the value that fires (FXD-9). The lead stays
+   *  the register/card window. */
+  outlookReminderDays: number;
+  /** #156 (A6), FXD-2: Outlook events Undo could not delete, queued for the next sync. */
+  pendingOutlookDeletes: PendingOutlookDelete[];
   /** FOM-4's optional activation input on a serial row, kept for the record. */
   lastPeriodCompleted?: string;
   /** The SPEC §7 cite-and-status string, copied — never reworded. */
@@ -130,24 +147,36 @@ export interface FirmObligationOccurrence {
   syncStatus: OutlookSyncStatus;
   syncError?: string;
   lastSyncAt?: string;
+  /** #156 (A3): the occurrence whose close materialized THIS one (the "next"). Absent
+   *  on an occurrence an activation or a re-activation opened. */
+  materializedFrom?: string;
+  /** #156 (A3), as Michael ruled at the fix build's stop 2026-09-16 ("Same as today"):
+   *  true once a re-dating rule or precision edit, a due-date override, or a close has
+   *  reached this occurrence. Undo of the close that materialized it is refused from
+   *  then on (FOD-7, FOM-11). A re-push alone never sets it. */
+  touched: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 /** An activation — from a template or blank. `lastDone` is FOD-16's optional
- *  input on an interval row and is recorded in the activation's log line only. */
+ *  input on an interval row and is recorded in the activation's log line only.
+ *  `outlookReminderDays` is optional here: left out, it takes the ruled default
+ *  (`defaultReminderDays`); the queue of Outlook deletes always starts empty. */
 export type FirmObligationCreate =
-  Omit<FirmObligation, 'id' | 'createdAt' | 'updatedAt' | 'createdBy'> & { lastDone?: string };
+  Omit<FirmObligation, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'outlookReminderDays' | 'pendingOutlookDeletes'>
+  & { lastDone?: string; outlookReminderDays?: number };
 
 /** What Edit… may change (slice §3 item 4: rule, lead, weight, weekendRule,
- *  notes — plus DECISION 2's per-obligation missed-period override). Name,
- *  category, owner scope, template, source and the lapse flag are fixed at
- *  activation; `active` moves only through Retire / Re-activate. */
+ *  notes — plus DECISION 2's per-obligation missed-period override — and, #156 A1,
+ *  the Outlook reminder days). Name, category, owner scope, template, source and the
+ *  lapse flag are fixed at activation; `active` moves only through Retire /
+ *  Re-activate. */
 export type FirmObligationPatch = Partial<Pick<FirmObligation,
-  'recurrence' | 'precision' | 'missedPeriods' | 'leadDays' | 'weight' | 'weekendRule' | 'notes'>>;
+  'recurrence' | 'precision' | 'missedPeriods' | 'leadDays' | 'weight' | 'weekendRule' | 'notes' | 'outlookReminderDays'>>;
 
 const MUTABLE_OBLIGATION_KEYS = new Set<string>([
-  'recurrence', 'precision', 'missedPeriods', 'leadDays', 'weight', 'weekendRule', 'notes',
+  'recurrence', 'precision', 'missedPeriods', 'leadDays', 'weight', 'weekendRule', 'notes', 'outlookReminderDays',
 ]);
 
 /** Both adapters refuse a patch key outside the mutable set, identically. */
@@ -168,6 +197,7 @@ export const FIELD_LABEL: Record<keyof FirmObligationPatch, string> = {
   weight: 'weight', // PROVISIONAL — slice §3 item 10 (DECISION 6)
   weekendRule: 'weekend rule', // PROVISIONAL — slice §3 item 10 (§2.3)
   notes: 'notes', // PROVISIONAL — slice §3 item 10
+  outlookReminderDays: 'Outlook reminder', // PROVISIONAL — #156 §1 item 6(b) (A1; FXD-9)
 };
 
 /** A rule in one canonical shape: only the fields its kind reads, in a fixed order,
@@ -213,6 +243,19 @@ export const FIRM_OCCURRENCE_ENTITY = 'firm_obligation_occurrence';
 export const CARD_HORIZON_DAYS = 14;
 /** FOD-2. */
 export const DEFAULT_LEAD_DAYS = 30;
+/** #156 (A1): "30 days before target by default". */
+export const DEFAULT_OUTLOOK_REMINDER_DAYS = 30;
+/** FXD-2: a queued Outlook delete that has failed this many drains is also named under
+ *  "Needs attention"; it stays queued. */
+export const PENDING_DELETE_ATTENTION_ATTEMPTS = 3;
+
+/** The Outlook reminder days a row takes when nobody typed one — FXD-9's pre-fill, and,
+ *  as Michael ruled at the fix build's stop 2026-09-16 ("min(30, lead) everywhere"), the
+ *  value the demo fixture, the store-v18 upgrade and Add-as-inactive take too: 30 days,
+ *  or the lead where the lead is shorter (#156 A1, the composite's limb 3). */
+export function defaultReminderDays(leadDays: number): number {
+  return Math.min(DEFAULT_OUTLOOK_REMINDER_DAYS, leadDays);
+}
 
 export const WEEKEND_RULES: WeekendRule[] = ['rolls-forward', 'no-roll', 'unknown'];
 export const RULE_KINDS: RuleKind[] = [
@@ -603,6 +646,25 @@ export function lightsOn(
   return byLead;
 }
 
+/** #156 (A1): the Outlook reminder rings on a HARD obligation only; a routine one's event
+ *  carries no reminder (FXD-8), and a closed occurrence's reminder is off (A2, FXD-10). */
+export function outlookReminderIsOn(
+  ob: Pick<FirmObligation, 'weight'>, occ: Pick<FirmObligationOccurrence, 'state'>,
+): boolean {
+  return ob.weight === 'hard' && occ.state !== 'done';
+}
+
+/** #156 (A1): the reminder day — T − the obligation's stored `outlookReminderDays`,
+ *  exactly: a value raised by hand past the lead takes effect (FXD-9), and a
+ *  month-precision row keys off its T like any other (FXD-11; FOM-6's earlier-of rule
+ *  stays with `lightsOn`). The lit moment and every register/card state are untouched. */
+export function reminderOn(
+  ob: Pick<FirmObligation, 'outlookReminderDays'>,
+  occ: Pick<FirmObligationOccurrence, 'dueOn' | 'dueOnOverride'>,
+): string {
+  return addDays(targetDate(occ), -ob.outlookReminderDays);
+}
+
 export type DisplayState = 'pending' | 'lit' | 'target-passed' | 'overdue' | 'past-date-unknown' | 'done';
 
 /**
@@ -827,10 +889,14 @@ export interface RegisterView {
   months: RegisterMonth[];
   later: ViewItem[];
   inactive: { obligation: FirmObligation; lastDone: FirmObligationOccurrence | null; open: FirmObligationOccurrence | null }[];
-  /** ACTIVE obligations with no open occurrence. No act in either adapter leaves one;
-   *  only a central-database act that failed part-way (PostgREST gives no
-   *  transaction) can. Listed so it never disappears from every surface. */
+  /** ACTIVE obligations with no open occurrence. No act in either adapter leaves one —
+   *  each act is one save locally and one Postgres function centrally (#156 A5) — but
+   *  a store written before that could hold one. Listed so it never disappears from
+   *  every surface. */
   stranded: FirmObligation[];
+  /** FXD-2: queued Outlook deletes that have failed PENDING_DELETE_ATTENTION_ATTEMPTS
+   *  drains or more. They stay queued; this only names them. */
+  stuckDeletes: { obligation: FirmObligation; entry: PendingOutlookDelete }[];
 }
 
 /**
@@ -884,12 +950,20 @@ export function registerView(
     .filter((o) => o.active && !openIds.has(o.id))
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const stuckDeletes = obligations
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .flatMap((o) => (o.pendingOutlookDeletes ?? [])
+      .filter((e) => e.attempts >= PENDING_DELETE_ATTENTION_ATTEMPTS)
+      .map((entry) => ({ obligation: o, entry })));
+
   return {
     overdue,
     months: keys.map((k) => ({ key: k, label: formatMonth(k), items: months.get(k)!.sort(byTarget) })),
     later: later.sort(byTarget),
     inactive,
     stranded,
+    stuckDeletes,
   };
 }
 
@@ -947,6 +1021,7 @@ export function validateObligation(ob: Omit<FirmObligation, 'id' | 'createdAt' |
   if (ob.missedPeriods !== 'serial' && ob.missedPeriods !== 'collapse') errs.push('missed periods must be serial or collapse');
   if (!WEEKEND_RULES.includes(ob.weekendRule)) errs.push('weekend rule must be rolls-forward, no-roll or unknown');
   if (!Number.isInteger(ob.leadDays) || ob.leadDays < 0) errs.push('lead days must be a whole number ≥ 0');
+  if (!Number.isInteger(ob.outlookReminderDays) || ob.outlookReminderDays < 0) errs.push('Outlook reminder days must be a whole number ≥ 0'); // PROVISIONAL — #156 §1 item 6(b) (A1)
   if (ob.weight !== 'hard' && ob.weight !== 'routine') errs.push('weight must be hard or routine');
   if (ob.lastPeriodCompleted !== undefined && !isIsoDate(ob.lastPeriodCompleted)) errs.push('last period completed must be a date');
   errs.push(...validateRule(ob.recurrence, { allowUndated: !ob.active }));
@@ -959,13 +1034,17 @@ export function validateObligation(ob: Omit<FirmObligation, 'id' | 'createdAt' |
 // line it writes (FOD-6) — and APPLIED by each adapter. That is how the localStorage
 // and Supabase modes cannot diverge: neither adapter decides anything.
 //
-// THE CLOSE TRAIL. Undo's only test (FOD-7, FOM-11) needs to know which occurrence a
-// close materialized, and whether a later act touched it. §5.2's columns carry no
-// such link, so the close line itself carries it: the `done` / `not-applicable`
-// line's newValue is a small JSON record naming the next occurrence's id. Every act
-// that could touch that occurrence writes its own line (FOD-6), so the log is the
-// complete, ordered record of what happened after the close — by construction, in
-// both modes.
+// THE CLOSE TRAIL, AND THE TWO COLUMNS THAT REPLACED IT FOR UNDO (#156 A3). Undo's
+// only test (FOD-7, FOM-11) needs to know which occurrence a close materialized, and
+// whether a later act touched it. The FOS-1 build carried both in the close line's
+// JSON record and read the ordered log. The fix slice made them columns:
+// `materializedFrom` on the next, set by the close, and `touched`, set by the acts
+// that end Undo (a re-dating edit, an override, a close — Michael's ruling at the fix
+// build's stop, 2026-09-16, "Same as today"). The close line's JSON record is KEPT:
+// the interval basis still reads it (`intervalBasis`), and Undo reads ONE fact from
+// it — whether the close retired a one-time obligation (FOD-32) — and its existence
+// (FXD-7: a close with no record is not undone), by Michael's ruling at the same
+// stop ("Keep as built; read one flag"). Everything else Undo decides from columns.
 
 export type LogDraft = Omit<ReviewLogEntry, 'id' | 'timestamp'>;
 
@@ -984,7 +1063,9 @@ interface CloseTrail {
 }
 interface ObligationTrail {
   kind: 'obligation';
-  act: 'activated' | 'edited' | 'retired' | 're-activated';
+  /** 'activated-from-inactive' is #156 A7's one act: an edit and a re-activation,
+   *  one line. */
+  act: 'activated' | 'edited' | 'retired' | 're-activated' | 'activated-from-inactive';
   fields?: string[];
   openedOccurrenceId?: string | null;
   reevaluatedOccurrenceId?: string | null;
@@ -1031,7 +1112,9 @@ function assertOneOpen(occs: FirmObligationOccurrence[]): void {
   }
 }
 
-function newOccurrence(ob: Pick<FirmObligation, 'id'>, draft: OccurrenceDraft, ctx: ActContext): FirmObligationOccurrence {
+function newOccurrence(
+  ob: Pick<FirmObligation, 'id'>, draft: OccurrenceDraft, ctx: ActContext, materializedFrom?: string,
+): FirmObligationOccurrence {
   return {
     id: ctx.newId(),
     obligationId: ob.id,
@@ -1039,6 +1122,8 @@ function newOccurrence(ob: Pick<FirmObligation, 'id'>, draft: OccurrenceDraft, c
     dueOn: draft.dueOn,
     state: 'open',
     syncStatus: 'pending',
+    ...(materializedFrom !== undefined ? { materializedFrom } : {}),
+    touched: false,
     createdAt: ctx.nowIso,
     updatedAt: ctx.nowIso,
   };
@@ -1054,10 +1139,14 @@ export interface ActivationPlan {
 
 // PROVISIONAL — FOM-4, FOD-9, FOD-16; slice §3 item 10: every refusal and log-reason sentence in planActivation is a text act.
 export function planActivation(input: FirmObligationCreate, ctx: ActContext): ActivationPlan {
-  const { lastDone, ...rest } = input;
+  const { lastDone, outlookReminderDays, ...rest } = input;
   const serial = effectiveMissedPeriods(rest) === 'serial';
   const obligation: FirmObligation = {
     ...rest,
+    // #156 A1: his value where he typed one; otherwise the ruled default (FXD-9; the
+    // fix build's stop 2026-09-16 — the fixture and Add-as-inactive take it too).
+    outlookReminderDays: outlookReminderDays ?? defaultReminderDays(rest.leadDays),
+    pendingOutlookDeletes: [],
     missedPeriods: effectiveMissedPeriods(rest),
     // FOM-4's input exists only on a serial row.
     lastPeriodCompleted: serial ? rest.lastPeriodCompleted : undefined,
@@ -1123,7 +1212,8 @@ function planClose(
   if (doneOn > ctx.today) throw new Error('The done date cannot be in the future.');
 
   const draft = materializeNext(ob, occ, doneOn);
-  const next = draft ? newOccurrence(ob, draft, ctx) : null;
+  // #156 A3: the next names the close that materialized it.
+  const next = draft ? newOccurrence(ob, draft, ctx, occ.id) : null;
   const retires = ob.recurrence.kind === 'one-time' && ob.active; // FOD-32
   const trail: CloseTrail = { kind: 'close', doneOn, nextOccurrenceId: next?.id ?? null, retiredObligation: retires };
   const note = input.doneNote?.trim() || undefined;
@@ -1136,8 +1226,11 @@ function planClose(
       outcomeReason: outcome === 'not-applicable' ? input.reason : undefined,
       doneNote: note,
       filedAt: outcome === 'completed' ? input.filedAt?.trim() || undefined : undefined,
-      // The Done PATCH to Outlook (FOD-22) is pending until pushed.
+      // The Done PATCH to Outlook (FOD-22 as amended by #156 A2) is pending until pushed.
       syncStatus: 'pending',
+      // A close reaches this occurrence: if a close materialized it, that close's Undo
+      // is over (FOD-7; #156 A3).
+      touched: true,
       updatedAt: ctx.nowIso,
     },
     next,
@@ -1189,48 +1282,73 @@ export function planNotApplicable(
 // PROVISIONAL — FOD-7; slice §3 item 10: every "why" sentence canUndo returns reaches the screen and is a text act, as is planUndo's log reason.
 export type UndoCheck = { ok: true } | { ok: false; why: string };
 
+/** The record of this occurrence's latest close — the `done` / `not-applicable` line's
+ *  JSON — or null when there is none (FXD-7: such a close is never undone). `log` holds
+ *  the obligation's lines in the order written. */
+function closeRecordOf(occurrenceId: string, log: Pick<ReviewLogEntry, 'entityId' | 'action' | 'newValue'>[]): CloseTrail | null {
+  for (let i = log.length - 1; i >= 0; i--) {
+    const l = log[i];
+    if (l.entityId === occurrenceId && (l.action === 'done' || l.action === 'not-applicable')) {
+      const t = readTrail(l);
+      return t && t.kind === 'close' ? t : null;
+    }
+  }
+  return null;
+}
+
+/** The occurrence a close of `closedId` materialized (#156 A3), read from the column. */
+export function nextOf(closedId: string, all: FirmObligationOccurrence[]): FirmObligationOccurrence | null {
+  return all.find((o) => o.materializedFrom === closedId) ?? null;
+}
+
+/** The close Undo would reverse on this obligation: its most recently created done
+ *  occurrence. With one open occurrence at a time (FOD-5), every occurrence after the
+ *  first is created only once the one before it has closed, so the latest created done
+ *  occurrence is the latest close. */
+export function latestClosed(all: FirmObligationOccurrence[]): FirmObligationOccurrence | null {
+  let best: FirmObligationOccurrence | null = null;
+  for (const o of all) {
+    if (o.state === 'done' && (!best || o.createdAt >= best.createdAt)) best = o;
+  }
+  return best;
+}
+
 /**
- * Undo's ONLY test (FOM-11): allowed while the occurrence this close materialized
- * is untouched — refused once it has been edited, done, or a re-activation opened
- * another. `log` holds every line on the obligation and its occurrences in the
- * order they were written.
+ * Undo's ONLY test (FOM-11), decided from the columns (#156 A3): allowed while the
+ * occurrence this close materialized — `materializedFrom` names it — is open and
+ * untouched; refused once it has been re-dated, overridden or closed (`touched`), or a
+ * re-activation opened another. A close that materialized NO next (a one-time Done
+ * that retired its obligation, FOD-32, or a Done on a retired obligation) stays
+ * undoable while nothing has opened since — Michael's ruling at the fix build's stop,
+ * 2026-09-16 ("Keep as built; read one flag"). The log is read for one thing only:
+ * that the close has a record at all (FXD-7).
  */
 export function canUndo(
   ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], log: ReviewLogEntry[],
 ): UndoCheck {
   if (occ.obligationId !== ob.id) return { ok: false, why: 'This occurrence does not belong to that obligation.' };
   if (occ.state !== 'done') return { ok: false, why: 'Only a closed occurrence can be undone.' };
-  let closeIdx = -1;
-  for (let i = log.length - 1; i >= 0; i--) {
-    const l = log[i];
-    if (l.entityId === occ.id && (l.action === 'done' || l.action === 'not-applicable')) { closeIdx = i; break; }
-  }
-  const trail = closeIdx >= 0 ? readTrail(log[closeIdx]) : null;
-  if (!trail || trail.kind !== 'close') {
+  if (!closeRecordOf(occ.id, log)) {
     return { ok: false, why: 'No close record for this occurrence — it cannot be undone.' };
   }
-  for (const later of log.slice(closeIdx + 1)) {
-    if (later.entityType === FIRM_OCCURRENCE_ENTITY && later.entityId !== occ.id) {
-      return { ok: false, why: 'A later act has touched the next occurrence — undo is no longer available (FOD-7).' };
-    }
-    if (later.entityType === FIRM_OBLIGATION_ENTITY) {
-      const t = readTrail(later);
-      if (t?.kind === 'obligation' && (t.openedOccurrenceId || t.reevaluatedOccurrenceId)) {
-        return { ok: false, why: 'A later edit or re-activation changed the open occurrence — undo is no longer available (FOD-7).' };
-      }
-    }
-  }
   const open = all.filter((o) => o.state === 'open');
-  if (trail.nextOccurrenceId) {
-    const next = all.find((o) => o.id === trail.nextOccurrenceId);
-    if (!next || next.state !== 'open' || next.dueOnOverride) {
+  const next = nextOf(occ.id, all);
+  if (next) {
+    if (next.state !== 'open' || next.touched || next.dueOnOverride) {
       return { ok: false, why: 'The next occurrence is no longer untouched — undo is no longer available (FOD-7).' };
     }
     if (open.length !== 1 || open[0].id !== next.id) {
       return { ok: false, why: 'Another occurrence is open — undo would leave two open (FOD-5).' };
     }
-  } else if (open.length > 0) {
+    return { ok: true };
+  }
+  if (open.length > 0) {
     return { ok: false, why: 'Another occurrence has been opened since — undo would leave two open (FOD-5).' };
+  }
+  // Nothing is open, but an occurrence created at or after this one was opened since
+  // (a re-activation) and has closed in turn: this close is no longer the latest.
+  if (all.some((o) => o.id !== occ.id && o.createdAt >= occ.createdAt)) {
+    return { ok: false, why: 'A later occurrence has been opened since — undo is no longer available (FOD-7).' }; // PROVISIONAL — #156 §1 item 9 (A3); FOD-7
   }
   return { ok: true };
 }
@@ -1249,12 +1367,10 @@ export function planUndo(
 ): UndoPlan {
   const check = canUndo(ob, occ, all, log);
   if (!check.ok) throw new Error(check.why);
-  let closeLine: ReviewLogEntry | undefined;
-  for (let i = log.length - 1; i >= 0; i--) {
-    if (log[i].entityId === occ.id && (log[i].action === 'done' || log[i].action === 'not-applicable')) { closeLine = log[i]; break; }
-  }
-  const trail = readTrail(closeLine!) as CloseTrail;
-  const removeOccurrence = trail.nextOccurrenceId ? all.find((o) => o.id === trail.nextOccurrenceId) ?? null : null;
+  // The one fact Undo reads from the close record: whether that close retired a
+  // one-time obligation (FOD-32), so Undo puts the retirement back.
+  const trail = closeRecordOf(occ.id, log)!;
+  const removeOccurrence = nextOf(occ.id, all);
   const undoTrail: UndoTrail = {
     kind: 'undo',
     removedNextOccurrenceId: removeOccurrence?.id ?? null,
@@ -1316,7 +1432,8 @@ export function planOverride(
   }
   return {
     occurrenceId: occ.id,
-    patch: { dueOnOverride: date, syncStatus: 'pending', updatedAt: ctx.nowIso },
+    // An override reaches this occurrence: a close's Undo over it is over (FOD-7; #156 A3).
+    patch: { dueOnOverride: date, syncStatus: 'pending', touched: true, updatedAt: ctx.nowIso },
     log: {
       entityType: FIRM_OCCURRENCE_ENTITY,
       entityId: occ.id,
@@ -1385,13 +1502,19 @@ export function planEdit(
         } else {
           occurrence = {
             id: open.id,
-            patch: { dueOn: draft.dueOn, periodLabel: draft.periodLabel, syncStatus: 'pending', updatedAt: ctx.nowIso },
+            // A re-dating edit reaches the occurrence: Undo over it is over (FOD-7; #156 A3).
+            patch: { dueOn: draft.dueOn, periodLabel: draft.periodLabel, syncStatus: 'pending', touched: true, updatedAt: ctx.nowIso },
           };
         }
       }
     }
-    if (!occurrence && (changed.includes('leadDays') || changed.includes('weekendRule'))) {
-      // The reminder minutes and the body's due date change: re-push, stored dates untouched.
+    // What the Outlook event carries changes without a re-date: the body's due date (the
+    // weekend rule), whether a reminder rings (the weight — #156 A1) and when (the
+    // reminder days). Re-push, stored dates untouched, and `touched` left as it is — a
+    // re-push alone never ends Undo (Michael's ruling at the fix build's stop,
+    // 2026-09-16, "Same as today"). The lead no longer moves the event: it is the
+    // register's window only.
+    if (!occurrence && (changed.includes('weekendRule') || changed.includes('weight') || changed.includes('outlookReminderDays'))) {
       occurrence = { id: open.id, patch: { syncStatus: 'pending', updatedAt: ctx.nowIso } };
     }
   }
@@ -1501,13 +1624,77 @@ export function planReactivate(
   };
 }
 
+// ---- Activate… from Inactive (#156 A7: "One act, one line") ----
+
+export interface ActivateFromInactivePlan {
+  obligationPatch: Partial<FirmObligation>;
+  /** The occurrence already open (a retired row's), when the edit re-dated or re-queued it. */
+  updateOccurrence: { id: string; patch: Partial<FirmObligationOccurrence> } | null;
+  /** The occurrence the re-activation opened, when none was open. */
+  openOccurrence: FirmObligationOccurrence | null;
+  kept: string | null;
+  log: LogDraft;
+}
+
 /**
- * Would re-activating this obligation, with this edit applied first, be refused? The
- * Inactive row's "Activate…" is an edit followed by a re-activation: two acts, each
- * with its own log line. Asking this BEFORE the edit is written means a refused
- * re-activation (a "last period completed" that names no period, a one-time already
- * done, an undated row) leaves no half-finished edit behind. It runs the very plans
- * the two acts run, writes nothing, and returns the refusal sentence or null.
+ * The Inactive row's "Activate…": its edit and its re-activation planned as ONE act
+ * that writes ONE review_log line (`edited` on the obligation), whose record carries
+ * both the patch and the re-activation (#156 A7; slice §3 item 7). It is exactly the
+ * two plans it replaces, run in order — the edit (only when something changed, so an
+ * unchanged form writes no "nothing changed" patch) and then the re-activation of the
+ * edited obligation — so it refuses exactly what they refuse, before anything is
+ * written. At most one occurrence moves: an edit re-dates an occurrence only when one is
+ * open, and a re-activation opens one only when none is.
+ */
+export function planActivateFromInactive(
+  ob: FirmObligation, patch: FirmObligationPatch, all: FirmObligationOccurrence[], ctx: ActContext,
+  log: Pick<ReviewLogEntry, 'newValue'>[] = [], inputs: { lastPeriodCompleted?: string } = {},
+): ActivateFromInactivePlan {
+  assertObligationPatchKeys(patch);
+  const changed = changedFields(ob, patch);
+  const edit = changed.length > 0 ? planEdit(ob, patch, all, ctx, log) : null;
+  const edited: FirmObligation = edit ? { ...ob, ...edit.obligationPatch } : ob;
+  const re = planReactivate(edited, all, ctx, inputs);
+  const trail: ObligationTrail = {
+    kind: 'obligation',
+    act: 'activated-from-inactive',
+    fields: changed,
+    reevaluatedOccurrenceId: edit?.occurrence && edit.occurrence.patch.dueOn !== undefined ? edit.occurrence.id : null,
+    openedOccurrenceId: re.occurrence?.id ?? null,
+  };
+  const oldValues: Record<string, unknown> = { active: false };
+  const newValues: Record<string, unknown> = { active: true };
+  for (const k of changed) { oldValues[k] = ob[k]; newValues[k] = patch[k]; }
+  if (re.obligationPatch.lastPeriodCompleted !== undefined) newValues.lastPeriodCompleted = re.obligationPatch.lastPeriodCompleted;
+  const kept = edit?.kept ?? null;
+  return {
+    obligationPatch: { ...(edit?.obligationPatch ?? {}), ...re.obligationPatch },
+    updateOccurrence: edit?.occurrence ?? null,
+    openOccurrence: re.occurrence,
+    kept,
+    log: {
+      entityType: FIRM_OBLIGATION_ENTITY,
+      entityId: ob.id,
+      action: 'edited',
+      user: ctx.user,
+      oldValue: JSON.stringify(oldValues),
+      newValue: JSON.stringify({ ...trail, values: newValues }),
+      reason: [
+        'Activated from Inactive', // PROVISIONAL — #156 §1 item 9 (A7)
+        changed.length ? `· edited: ${changed.map((k) => FIELD_LABEL[k]).join(', ')}` : '', // PROVISIONAL — #156 §1 item 9 (A7)
+        re.occurrence ? `· occurrence ${re.occurrence.periodLabel} opened, rule date ${formatDate(re.occurrence.dueOn)}` : '', // PROVISIONAL — #156 §1 item 9 (A7)
+        kept ? `— ${kept}` : '',
+      ].filter(Boolean).join(' '),
+    },
+  };
+}
+
+/**
+ * Would the Inactive row's "Activate…", with this edit, be refused? The page asks this
+ * BEFORE it writes, so a refusal (a "last period completed" that names no period, a
+ * one-time already done, an undated row) says why in the form. It runs the very plan the
+ * act runs (`planActivateFromInactive`), writes nothing, and returns the refusal sentence
+ * or null.
  */
 export function reactivationProblem(
   ob: FirmObligation, patch: FirmObligationPatch, all: FirmObligationOccurrence[], today: string,
@@ -1515,12 +1702,33 @@ export function reactivationProblem(
 ): string | null {
   const ctx: ActContext = { today, nowIso: `${today}T12:00:00.000Z`, newId: () => 'dry-run', user: 'dry-run' };
   try {
-    const edited: FirmObligation = changedFields(ob, patch).length > 0
-      ? { ...ob, ...planEdit(ob, patch, all, ctx).obligationPatch }
-      : ob;
-    planReactivate(edited, all, ctx, inputs);
+    planActivateFromInactive(ob, patch, all, ctx, [], inputs);
     return null;
   } catch (e) {
     return e instanceof Error ? e.message : String(e);
   }
+}
+
+// ---- the Outlook-delete queue (#156 A6; FXD-2) ----
+
+/** Undo's Graph delete failed, or Outlook was not connected: the event joins the
+ *  obligation's queue. An event already queued is not queued twice. */
+export function queuedDeletes(
+  ob: Pick<FirmObligation, 'pendingOutlookDeletes'>, entry: { eventId: string; occurrenceId: string }, nowIso: string,
+): PendingOutlookDelete[] {
+  const queue = ob.pendingOutlookDeletes ?? [];
+  if (queue.some((e) => e.eventId === entry.eventId)) return queue;
+  return [...queue, { eventId: entry.eventId, occurrenceId: entry.occurrenceId, recordedAt: nowIso, attempts: 0 }];
+}
+
+/** One drain attempt's result on the queue (FXD-2): 'deleted' (Graph answered 2xx or
+ *  404) removes the entry; 'failed' counts the attempt and keeps it — retrying never
+ *  stops. */
+export function settledDeletes(
+  ob: Pick<FirmObligation, 'pendingOutlookDeletes'>, eventId: string, outcome: 'deleted' | 'failed',
+): PendingOutlookDelete[] {
+  const queue = ob.pendingOutlookDeletes ?? [];
+  return outcome === 'deleted'
+    ? queue.filter((e) => e.eventId !== eventId)
+    : queue.map((e) => (e.eventId === eventId ? { ...e, attempts: e.attempts + 1 } : e));
 }

@@ -1670,6 +1670,10 @@ create policy "authenticated full access generated_document_paragraphs" on gener
 -- Migration: db/migrations/2026-09-10-firm-obligations.sql — WRITTEN AND NOT
 -- RUN; Michael's hand runs it. Authorized by Michael 2026-09-10 ("Yes", FOD-20
 -- IN), session log #155; slice docs/specs/firm-obligations-build-slice.md §5.
+-- AMENDED IN PLACE, still unrun, under FOS-2 (Michael "Yes" 2026-09-12, session
+-- log #156; docs/specs/firm-obligations-fix-slice.md §5): four columns, the
+-- third occurrence CHECK tightened, and nine act functions. The functions sit in
+-- their own section at the END of this file, not in this block.
 --
 -- These two sit HERE — after the FE-D1 amendment block, before the privileges
 -- block — so they are the LAST two create-table statements in the file: the
@@ -1707,6 +1711,12 @@ create table if not exists firm_obligations (
   lead_days integer not null default 30 check (lead_days >= 0),
   -- DECISION 6: order and emphasis only — never behaviour.
   weight text not null default 'routine' check (weight in ('hard','routine')),
+  -- FOS-2, #156 A1: the days before the TARGET the Outlook reminder fires, hard
+  -- rows only (FXD-9). The app writes min(30, lead) where no one typed a value.
+  outlook_reminder_days integer not null default 30 check (outlook_reminder_days >= 0),
+  -- FOS-2, #156 A6 (FXD-2): Outlook events Undo could not delete, retried by the
+  -- sync drain; no act function writes it.
+  pending_outlook_deletes jsonb not null default '[]'::jsonb,
   -- FOM-4's optional activation input on a serial obligation.
   last_period_completed date,
   -- The SPEC §7 cite-and-status string, copied and never reworded.
@@ -1742,13 +1752,19 @@ create table if not exists firm_obligation_occurrences (
   sync_status text not null default 'pending' check (sync_status in ('pending','synced','error')),
   sync_error text,
   last_sync_at timestamptz,
+  -- FOS-2, #156 A3: the occurrence whose close materialized this one; NULL on
+  -- one an activation or a re-activation opened. Undo reads it.
+  materialized_from uuid references firm_obligation_occurrences (id) on delete set null,
+  -- FOS-2, #156 A3 ("Same as today", 2026-09-16): true once a re-dating edit, a
+  -- due-date override or a close has reached this occurrence; never a re-push.
+  touched boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  -- The migration records why the third is weaker than it reads: on a NULL
-  -- outcome it evaluates NULL, and a CHECK passes on NULL.
+  -- The third is written `is not distinct from` (FOS-2, #156 A4): an OPEN row,
+  -- whose outcome is NULL, is refused a reason.
   check ((state = 'done') = (done_on is not null)),
   check ((state = 'done') = (outcome is not null)),
-  check ((outcome = 'not-applicable') = (outcome_reason is not null))
+  check ((outcome is not distinct from 'not-applicable') = (outcome_reason is not null))
 );
 
 -- FOD-5 at the database: one OPEN occurrence per obligation. Partial, so the
@@ -1840,3 +1856,887 @@ revoke all on file_counters from authenticated;
 -- RPC, burning file numbers without inserting a case. REVOKE runs BEFORE the grant.
 revoke execute on function next_file_number() from public;
 grant execute on function next_file_number() to authenticated;
+
+-- ============ FIRM OBLIGATIONS — THE NINE ACT FUNCTIONS (FOS-2) ============
+-- Migration: db/migrations/2026-09-10-firm-obligations.sql, amended in place
+-- while unrun under FOS-2 (Michael "Yes" 2026-09-12, session log #156;
+-- docs/specs/firm-obligations-fix-slice.md §5.3). Everything below is that
+-- file's function section, the same text.
+--
+-- They sit HERE, after the F-1 lines, and not in the FIRM OBLIGATIONS block
+-- above: each function's EXECUTE is revoked and granted beside it, and that
+-- block carries no grant of its own (its table grants ride the all-tables
+-- statement).
+--
+-- #156 §1 item 9, A5 ("Build the RPC functions now"); FXD-4. ONE FUNCTION PER
+-- ACT. The domain module stays the decider: the Supabase adapter reads the rows
+-- a plan needs, runs the domain's plan, and makes ONE rpc() call. The function
+-- APPLIES that plan — its rows and its ONE review_log line (FOD-6) — inside the
+-- call's own transaction, so an act lands whole or not at all. That is what
+-- retires the adapter's compensation code: a failed act is "not saved", with
+-- the function's message, and nothing else.
+--
+-- THE CALL. `p` is one jsonb object, keyed as each function's note says.
+--   * A ROW is the adapter's insert mapping (snake_case, an absent field left
+--     out). It is read through jsonb_populate_record(null::<table>, row) and
+--     inserted under an EXPLICIT column list; a not-null column with a default
+--     takes that default (coalesce) where the row carries no value.
+--   * A PATCH is the adapter's update mapping (an absent field untouched, a
+--     cleared field null). The row is locked and read (`for update`), the patch
+--     is laid over it with jsonb_populate_record, and only the columns the
+--     update names are written back — the table's mutable columns.
+--     pending_outlook_deletes is never among them: the sync drain's own update
+--     writes that queue, outside these acts.
+--   * The review_log line takes its id and timestamp defaults.
+--   * Each returns a jsonb object of to_jsonb(row) values — null where the act
+--     wrote no such row.
+--
+-- THE REFUSALS. Each guard below is a state the plan was built on that the
+-- database no longer holds (a second tab, a stale register). It raises, and
+-- nothing the act wrote stands. The one-open index and the CHECKs refuse in
+-- Postgres's own words. Every message is a PROVISIONAL text act: it reaches the
+-- screen as "<act> was not saved: <message>".
+--
+-- `security invoker`: each runs as its caller, so RLS and the table grants
+-- apply inside it exactly as they apply to a PostgREST write.
+-- `set search_path = public` fixes what every unqualified name resolves to.
+--
+-- EXECUTE follows the F-1 precedent (db/schema.sql, next_file_number()):
+-- Postgres grants EXECUTE on a new function to PUBLIC and CREATE OR REPLACE
+-- keeps that ACL, so each function's EXECUTE is revoked FIRST — from public,
+-- and from anon by name, because no function ACL on the live project has been
+-- read and a default privilege could grant anon directly — and only then
+-- granted to authenticated.
+
+-- firm_activate — Activate… from the catalog or as a custom row, and Add as
+-- inactive.
+--   p: { obligation: row, occurrence: row | null, log }
+--   The obligation inserted; its first occurrence inserted when there is one;
+--   the line. Returns { obligation, occurrence }.
+create or replace function public.firm_activate(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  r_ob  firm_obligations%rowtype;
+  r_occ firm_obligation_occurrences%rowtype;
+  j_occ jsonb := null;
+begin
+  r_ob := jsonb_populate_record(null::firm_obligations, p->'obligation');
+  insert into firm_obligations (
+    id, name, category, owner_scope, owner_user_id, template_key, recurrence,
+    precision, missed_periods, conditional_per_period, weekend_rule, lead_days,
+    weight, outlook_reminder_days, pending_outlook_deletes, last_period_completed,
+    source_note, applies_if, notes, active, created_by, created_at, updated_at
+  ) values (
+    coalesce(r_ob.id, gen_random_uuid()),
+    r_ob.name,
+    r_ob.category,
+    coalesce(r_ob.owner_scope, 'firm'),
+    r_ob.owner_user_id,
+    r_ob.template_key,
+    r_ob.recurrence,
+    coalesce(r_ob.precision, 'day'),
+    r_ob.missed_periods,
+    coalesce(r_ob.conditional_per_period, false),
+    coalesce(r_ob.weekend_rule, 'unknown'),
+    coalesce(r_ob.lead_days, 30),
+    coalesce(r_ob.weight, 'routine'),
+    coalesce(r_ob.outlook_reminder_days, 30),
+    coalesce(r_ob.pending_outlook_deletes, '[]'::jsonb),
+    r_ob.last_period_completed,
+    r_ob.source_note,
+    r_ob.applies_if,
+    r_ob.notes,
+    coalesce(r_ob.active, true),
+    r_ob.created_by,
+    coalesce(r_ob.created_at, now()),
+    coalesce(r_ob.updated_at, now())
+  )
+  returning * into r_ob;
+
+  if jsonb_typeof(p->'occurrence') = 'object' then
+    r_occ := jsonb_populate_record(null::firm_obligation_occurrences, p->'occurrence');
+    insert into firm_obligation_occurrences (
+      id, obligation_id, period_label, due_on, due_on_override, state, done_on,
+      done_by, outcome, outcome_reason, done_note, filed_at, outlook_event_id,
+      sync_status, sync_error, last_sync_at, materialized_from, touched,
+      created_at, updated_at
+    ) values (
+      coalesce(r_occ.id, gen_random_uuid()),
+      r_occ.obligation_id,
+      r_occ.period_label,
+      r_occ.due_on,
+      r_occ.due_on_override,
+      coalesce(r_occ.state, 'open'),
+      r_occ.done_on,
+      r_occ.done_by,
+      r_occ.outcome,
+      r_occ.outcome_reason,
+      r_occ.done_note,
+      r_occ.filed_at,
+      r_occ.outlook_event_id,
+      coalesce(r_occ.sync_status, 'pending'),
+      r_occ.sync_error,
+      r_occ.last_sync_at,
+      r_occ.materialized_from,
+      coalesce(r_occ.touched, false),
+      coalesce(r_occ.created_at, now()),
+      coalesce(r_occ.updated_at, now())
+    )
+    returning * into r_occ;
+    j_occ := to_jsonb(r_occ);
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('obligation', to_jsonb(r_ob), 'occurrence', j_occ);
+end;
+$$;
+
+revoke execute on function public.firm_activate(jsonb) from public, anon;
+grant execute on function public.firm_activate(jsonb) to authenticated;
+
+-- firm_activate_from_inactive — the Inactive row's Activate…: its edit and its
+-- re-activation as ONE act and ONE line (#156 A7).
+--   p: { obligation_id, obligation_patch, occurrence_update: { id, patch } | null,
+--        occurrence_insert: row | null, log }
+--   Refused when the obligation is already active. The patch; the open
+--   occurrence the edit re-dated or re-queued, updated only while it is still
+--   open; the occurrence the re-activation opened, inserted; the line.
+--   Returns { obligation, occurrence } — the updated or inserted occurrence, or
+--   null.
+create or replace function public.firm_activate_from_inactive(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_ob_id  uuid := (p->>'obligation_id')::uuid;
+  v_occ_id uuid;
+  r_ob     firm_obligations%rowtype;
+  r_occ    firm_obligation_occurrences%rowtype;
+  j_occ    jsonb := null;
+begin
+  select * into r_ob from firm_obligations where id = v_ob_id for update;
+  if not found then
+    raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  if r_ob.active then
+    raise exception 'This obligation is already active — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+  update firm_obligations
+     set recurrence            = r_ob.recurrence,
+         precision             = r_ob.precision,
+         missed_periods        = r_ob.missed_periods,
+         weekend_rule          = r_ob.weekend_rule,
+         lead_days             = r_ob.lead_days,
+         weight                = r_ob.weight,
+         notes                 = r_ob.notes,
+         outlook_reminder_days = r_ob.outlook_reminder_days,
+         last_period_completed = r_ob.last_period_completed,
+         active                = r_ob.active,
+         updated_at            = r_ob.updated_at
+   where id = v_ob_id
+  returning * into r_ob;
+
+  if jsonb_typeof(p->'occurrence_update') = 'object' then
+    v_occ_id := (p->'occurrence_update'->>'id')::uuid;
+    select * into r_occ from firm_obligation_occurrences where id = v_occ_id for update;
+    if not found then
+      raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    r_occ := jsonb_populate_record(r_occ, p->'occurrence_update'->'patch');
+    update firm_obligation_occurrences
+       set period_label    = r_occ.period_label,
+           due_on          = r_occ.due_on,
+           due_on_override = r_occ.due_on_override,
+           state           = r_occ.state,
+           done_on         = r_occ.done_on,
+           done_by         = r_occ.done_by,
+           outcome         = r_occ.outcome,
+           outcome_reason  = r_occ.outcome_reason,
+           done_note       = r_occ.done_note,
+           filed_at        = r_occ.filed_at,
+           sync_status     = r_occ.sync_status,
+           touched         = r_occ.touched,
+           updated_at      = r_occ.updated_at
+     where id = v_occ_id
+       and state = 'open'
+    returning * into r_occ;
+    if not found then
+      raise exception 'This occurrence is no longer open — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    j_occ := to_jsonb(r_occ);
+  end if;
+
+  if jsonb_typeof(p->'occurrence_insert') = 'object' then
+    r_occ := jsonb_populate_record(null::firm_obligation_occurrences, p->'occurrence_insert');
+    insert into firm_obligation_occurrences (
+      id, obligation_id, period_label, due_on, due_on_override, state, done_on,
+      done_by, outcome, outcome_reason, done_note, filed_at, outlook_event_id,
+      sync_status, sync_error, last_sync_at, materialized_from, touched,
+      created_at, updated_at
+    ) values (
+      coalesce(r_occ.id, gen_random_uuid()),
+      r_occ.obligation_id,
+      r_occ.period_label,
+      r_occ.due_on,
+      r_occ.due_on_override,
+      coalesce(r_occ.state, 'open'),
+      r_occ.done_on,
+      r_occ.done_by,
+      r_occ.outcome,
+      r_occ.outcome_reason,
+      r_occ.done_note,
+      r_occ.filed_at,
+      r_occ.outlook_event_id,
+      coalesce(r_occ.sync_status, 'pending'),
+      r_occ.sync_error,
+      r_occ.last_sync_at,
+      r_occ.materialized_from,
+      coalesce(r_occ.touched, false),
+      coalesce(r_occ.created_at, now()),
+      coalesce(r_occ.updated_at, now())
+    )
+    returning * into r_occ;
+    j_occ := to_jsonb(r_occ);
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('obligation', to_jsonb(r_ob), 'occurrence', j_occ);
+end;
+$$;
+
+revoke execute on function public.firm_activate_from_inactive(jsonb) from public, anon;
+grant execute on function public.firm_activate_from_inactive(jsonb) to authenticated;
+
+-- firm_update — Edit… on an obligation (FOD-4).
+--   p: { obligation_id, obligation_patch, occurrence: { id, patch } | null, log }
+--   The patch; the open occurrence the edit re-dated or re-queued, updated only
+--   while it is still open; the line. Returns { obligation, occurrence }.
+create or replace function public.firm_update(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_ob_id  uuid := (p->>'obligation_id')::uuid;
+  v_occ_id uuid;
+  r_ob     firm_obligations%rowtype;
+  r_occ    firm_obligation_occurrences%rowtype;
+  j_occ    jsonb := null;
+begin
+  select * into r_ob from firm_obligations where id = v_ob_id for update;
+  if not found then
+    raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+  update firm_obligations
+     set recurrence            = r_ob.recurrence,
+         precision             = r_ob.precision,
+         missed_periods        = r_ob.missed_periods,
+         weekend_rule          = r_ob.weekend_rule,
+         lead_days             = r_ob.lead_days,
+         weight                = r_ob.weight,
+         notes                 = r_ob.notes,
+         outlook_reminder_days = r_ob.outlook_reminder_days,
+         last_period_completed = r_ob.last_period_completed,
+         active                = r_ob.active,
+         updated_at            = r_ob.updated_at
+   where id = v_ob_id
+  returning * into r_ob;
+
+  if jsonb_typeof(p->'occurrence') = 'object' then
+    v_occ_id := (p->'occurrence'->>'id')::uuid;
+    select * into r_occ from firm_obligation_occurrences where id = v_occ_id for update;
+    if not found then
+      raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    r_occ := jsonb_populate_record(r_occ, p->'occurrence'->'patch');
+    update firm_obligation_occurrences
+       set period_label    = r_occ.period_label,
+           due_on          = r_occ.due_on,
+           due_on_override = r_occ.due_on_override,
+           state           = r_occ.state,
+           done_on         = r_occ.done_on,
+           done_by         = r_occ.done_by,
+           outcome         = r_occ.outcome,
+           outcome_reason  = r_occ.outcome_reason,
+           done_note       = r_occ.done_note,
+           filed_at        = r_occ.filed_at,
+           sync_status     = r_occ.sync_status,
+           touched         = r_occ.touched,
+           updated_at      = r_occ.updated_at
+     where id = v_occ_id
+       and state = 'open'
+    returning * into r_occ;
+    if not found then
+      raise exception 'This occurrence is no longer open — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    j_occ := to_jsonb(r_occ);
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('obligation', to_jsonb(r_ob), 'occurrence', j_occ);
+end;
+$$;
+
+revoke execute on function public.firm_update(jsonb) from public, anon;
+grant execute on function public.firm_update(jsonb) to authenticated;
+
+-- firm_retire — Retire (FOD-8). It touches no occurrence.
+--   p: { obligation_id, obligation_patch, log }
+--   Refused when the obligation is already retired. The patch; the line.
+--   Returns { obligation }.
+create or replace function public.firm_retire(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_ob_id uuid := (p->>'obligation_id')::uuid;
+  r_ob    firm_obligations%rowtype;
+begin
+  select * into r_ob from firm_obligations where id = v_ob_id for update;
+  if not found then
+    raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  if not r_ob.active then
+    raise exception 'This obligation is already retired — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+  update firm_obligations
+     set recurrence            = r_ob.recurrence,
+         precision             = r_ob.precision,
+         missed_periods        = r_ob.missed_periods,
+         weekend_rule          = r_ob.weekend_rule,
+         lead_days             = r_ob.lead_days,
+         weight                = r_ob.weight,
+         notes                 = r_ob.notes,
+         outlook_reminder_days = r_ob.outlook_reminder_days,
+         last_period_completed = r_ob.last_period_completed,
+         active                = r_ob.active,
+         updated_at            = r_ob.updated_at
+   where id = v_ob_id
+  returning * into r_ob;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('obligation', to_jsonb(r_ob));
+end;
+$$;
+
+revoke execute on function public.firm_retire(jsonb) from public, anon;
+grant execute on function public.firm_retire(jsonb) to authenticated;
+
+-- firm_reactivate — Re-activate on a retired row (FOD-8, FOM-4). Not the
+-- Inactive row's Activate…, which is firm_activate_from_inactive.
+--   p: { obligation_id, obligation_patch, occurrence: row | null, log }
+--   Refused when the obligation is already active. The patch; the occurrence
+--   it opened, inserted when there is one; the line.
+--   Returns { obligation, occurrence }.
+create or replace function public.firm_reactivate(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_ob_id uuid := (p->>'obligation_id')::uuid;
+  r_ob    firm_obligations%rowtype;
+  r_occ   firm_obligation_occurrences%rowtype;
+  j_occ   jsonb := null;
+begin
+  select * into r_ob from firm_obligations where id = v_ob_id for update;
+  if not found then
+    raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  if r_ob.active then
+    raise exception 'This obligation is already active — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+  update firm_obligations
+     set recurrence            = r_ob.recurrence,
+         precision             = r_ob.precision,
+         missed_periods        = r_ob.missed_periods,
+         weekend_rule          = r_ob.weekend_rule,
+         lead_days             = r_ob.lead_days,
+         weight                = r_ob.weight,
+         notes                 = r_ob.notes,
+         outlook_reminder_days = r_ob.outlook_reminder_days,
+         last_period_completed = r_ob.last_period_completed,
+         active                = r_ob.active,
+         updated_at            = r_ob.updated_at
+   where id = v_ob_id
+  returning * into r_ob;
+
+  if jsonb_typeof(p->'occurrence') = 'object' then
+    r_occ := jsonb_populate_record(null::firm_obligation_occurrences, p->'occurrence');
+    insert into firm_obligation_occurrences (
+      id, obligation_id, period_label, due_on, due_on_override, state, done_on,
+      done_by, outcome, outcome_reason, done_note, filed_at, outlook_event_id,
+      sync_status, sync_error, last_sync_at, materialized_from, touched,
+      created_at, updated_at
+    ) values (
+      coalesce(r_occ.id, gen_random_uuid()),
+      r_occ.obligation_id,
+      r_occ.period_label,
+      r_occ.due_on,
+      r_occ.due_on_override,
+      coalesce(r_occ.state, 'open'),
+      r_occ.done_on,
+      r_occ.done_by,
+      r_occ.outcome,
+      r_occ.outcome_reason,
+      r_occ.done_note,
+      r_occ.filed_at,
+      r_occ.outlook_event_id,
+      coalesce(r_occ.sync_status, 'pending'),
+      r_occ.sync_error,
+      r_occ.last_sync_at,
+      r_occ.materialized_from,
+      coalesce(r_occ.touched, false),
+      coalesce(r_occ.created_at, now()),
+      coalesce(r_occ.updated_at, now())
+    )
+    returning * into r_occ;
+    j_occ := to_jsonb(r_occ);
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('obligation', to_jsonb(r_ob), 'occurrence', j_occ);
+end;
+$$;
+
+revoke execute on function public.firm_reactivate(jsonb) from public, anon;
+grant execute on function public.firm_reactivate(jsonb) to authenticated;
+
+-- firm_mark_done — Done on an open occurrence.
+--   p: { occurrence_id, occurrence_patch, next: row | null, obligation_id,
+--        obligation_patch: patch | null, log }
+--   Refused unless the patch's outcome is 'completed'. The close, applied only
+--   while the occurrence is still open, and BEFORE the next is inserted — the
+--   one-open index would refuse the next beside it (FOD-5); the next; the
+--   obligation patch when there is one (a one-time close retires it, FOD-32);
+--   the line. Returns { closed, next, obligation } — the obligation as
+--   patched, or as read.
+create or replace function public.firm_mark_done(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_occ_id uuid := (p->>'occurrence_id')::uuid;
+  v_ob_id  uuid := (p->>'obligation_id')::uuid;
+  r_closed firm_obligation_occurrences%rowtype;
+  r_next   firm_obligation_occurrences%rowtype;
+  r_ob     firm_obligations%rowtype;
+  j_next   jsonb := null;
+begin
+  if (p->'occurrence_patch'->>'outcome') is distinct from 'completed' then
+    raise exception 'A Done must carry the outcome completed.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  select * into r_closed from firm_obligation_occurrences where id = v_occ_id for update;
+  if not found then
+    raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_closed := jsonb_populate_record(r_closed, p->'occurrence_patch');
+  update firm_obligation_occurrences
+     set period_label    = r_closed.period_label,
+         due_on          = r_closed.due_on,
+         due_on_override = r_closed.due_on_override,
+         state           = r_closed.state,
+         done_on         = r_closed.done_on,
+         done_by         = r_closed.done_by,
+         outcome         = r_closed.outcome,
+         outcome_reason  = r_closed.outcome_reason,
+         done_note       = r_closed.done_note,
+         filed_at        = r_closed.filed_at,
+         sync_status     = r_closed.sync_status,
+         touched         = r_closed.touched,
+         updated_at      = r_closed.updated_at
+   where id = v_occ_id
+     and state = 'open'
+  returning * into r_closed;
+  if not found then
+    raise exception 'This occurrence is no longer open — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  if jsonb_typeof(p->'next') = 'object' then
+    r_next := jsonb_populate_record(null::firm_obligation_occurrences, p->'next');
+    insert into firm_obligation_occurrences (
+      id, obligation_id, period_label, due_on, due_on_override, state, done_on,
+      done_by, outcome, outcome_reason, done_note, filed_at, outlook_event_id,
+      sync_status, sync_error, last_sync_at, materialized_from, touched,
+      created_at, updated_at
+    ) values (
+      coalesce(r_next.id, gen_random_uuid()),
+      r_next.obligation_id,
+      r_next.period_label,
+      r_next.due_on,
+      r_next.due_on_override,
+      coalesce(r_next.state, 'open'),
+      r_next.done_on,
+      r_next.done_by,
+      r_next.outcome,
+      r_next.outcome_reason,
+      r_next.done_note,
+      r_next.filed_at,
+      r_next.outlook_event_id,
+      coalesce(r_next.sync_status, 'pending'),
+      r_next.sync_error,
+      r_next.last_sync_at,
+      r_next.materialized_from,
+      coalesce(r_next.touched, false),
+      coalesce(r_next.created_at, now()),
+      coalesce(r_next.updated_at, now())
+    )
+    returning * into r_next;
+    j_next := to_jsonb(r_next);
+  end if;
+
+  if jsonb_typeof(p->'obligation_patch') = 'object' then
+    select * into r_ob from firm_obligations where id = v_ob_id for update;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+    update firm_obligations
+       set recurrence            = r_ob.recurrence,
+           precision             = r_ob.precision,
+           missed_periods        = r_ob.missed_periods,
+           weekend_rule          = r_ob.weekend_rule,
+           lead_days             = r_ob.lead_days,
+           weight                = r_ob.weight,
+           notes                 = r_ob.notes,
+           outlook_reminder_days = r_ob.outlook_reminder_days,
+           last_period_completed = r_ob.last_period_completed,
+           active                = r_ob.active,
+           updated_at            = r_ob.updated_at
+     where id = v_ob_id
+    returning * into r_ob;
+  else
+    select * into r_ob from firm_obligations where id = v_ob_id;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('closed', to_jsonb(r_closed), 'next', j_next, 'obligation', to_jsonb(r_ob));
+end;
+$$;
+
+revoke execute on function public.firm_mark_done(jsonb) from public, anon;
+grant execute on function public.firm_mark_done(jsonb) to authenticated;
+
+-- firm_mark_not_applicable — Not applicable on an open occurrence of a row that
+-- can lapse for a period (FOD-18). Shaped exactly as firm_mark_done.
+--   p: { occurrence_id, occurrence_patch, next: row | null, obligation_id,
+--        obligation_patch: patch | null, log }
+--   Refused unless the patch's outcome is 'not-applicable'. The close, applied
+--   only while the occurrence is still open, and BEFORE the next is inserted
+--   (FOD-5); the next; the obligation patch when there is one; the line.
+--   Returns { closed, next, obligation } — the obligation as patched, or as
+--   read.
+create or replace function public.firm_mark_not_applicable(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_occ_id uuid := (p->>'occurrence_id')::uuid;
+  v_ob_id  uuid := (p->>'obligation_id')::uuid;
+  r_closed firm_obligation_occurrences%rowtype;
+  r_next   firm_obligation_occurrences%rowtype;
+  r_ob     firm_obligations%rowtype;
+  j_next   jsonb := null;
+begin
+  if (p->'occurrence_patch'->>'outcome') is distinct from 'not-applicable' then
+    raise exception 'A Not applicable must carry the outcome not-applicable.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  select * into r_closed from firm_obligation_occurrences where id = v_occ_id for update;
+  if not found then
+    raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_closed := jsonb_populate_record(r_closed, p->'occurrence_patch');
+  update firm_obligation_occurrences
+     set period_label    = r_closed.period_label,
+         due_on          = r_closed.due_on,
+         due_on_override = r_closed.due_on_override,
+         state           = r_closed.state,
+         done_on         = r_closed.done_on,
+         done_by         = r_closed.done_by,
+         outcome         = r_closed.outcome,
+         outcome_reason  = r_closed.outcome_reason,
+         done_note       = r_closed.done_note,
+         filed_at        = r_closed.filed_at,
+         sync_status     = r_closed.sync_status,
+         touched         = r_closed.touched,
+         updated_at      = r_closed.updated_at
+   where id = v_occ_id
+     and state = 'open'
+  returning * into r_closed;
+  if not found then
+    raise exception 'This occurrence is no longer open — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  if jsonb_typeof(p->'next') = 'object' then
+    r_next := jsonb_populate_record(null::firm_obligation_occurrences, p->'next');
+    insert into firm_obligation_occurrences (
+      id, obligation_id, period_label, due_on, due_on_override, state, done_on,
+      done_by, outcome, outcome_reason, done_note, filed_at, outlook_event_id,
+      sync_status, sync_error, last_sync_at, materialized_from, touched,
+      created_at, updated_at
+    ) values (
+      coalesce(r_next.id, gen_random_uuid()),
+      r_next.obligation_id,
+      r_next.period_label,
+      r_next.due_on,
+      r_next.due_on_override,
+      coalesce(r_next.state, 'open'),
+      r_next.done_on,
+      r_next.done_by,
+      r_next.outcome,
+      r_next.outcome_reason,
+      r_next.done_note,
+      r_next.filed_at,
+      r_next.outlook_event_id,
+      coalesce(r_next.sync_status, 'pending'),
+      r_next.sync_error,
+      r_next.last_sync_at,
+      r_next.materialized_from,
+      coalesce(r_next.touched, false),
+      coalesce(r_next.created_at, now()),
+      coalesce(r_next.updated_at, now())
+    )
+    returning * into r_next;
+    j_next := to_jsonb(r_next);
+  end if;
+
+  if jsonb_typeof(p->'obligation_patch') = 'object' then
+    select * into r_ob from firm_obligations where id = v_ob_id for update;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+    update firm_obligations
+       set recurrence            = r_ob.recurrence,
+           precision             = r_ob.precision,
+           missed_periods        = r_ob.missed_periods,
+           weekend_rule          = r_ob.weekend_rule,
+           lead_days             = r_ob.lead_days,
+           weight                = r_ob.weight,
+           notes                 = r_ob.notes,
+           outlook_reminder_days = r_ob.outlook_reminder_days,
+           last_period_completed = r_ob.last_period_completed,
+           active                = r_ob.active,
+           updated_at            = r_ob.updated_at
+     where id = v_ob_id
+    returning * into r_ob;
+  else
+    select * into r_ob from firm_obligations where id = v_ob_id;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('closed', to_jsonb(r_closed), 'next', j_next, 'obligation', to_jsonb(r_ob));
+end;
+$$;
+
+revoke execute on function public.firm_mark_not_applicable(jsonb) from public, anon;
+grant execute on function public.firm_mark_not_applicable(jsonb) to authenticated;
+
+-- firm_undo — Undo a close (FOD-7, FOM-11), decided from the columns (#156 A3).
+--   p: { occurrence_id, reopen_patch, remove_occurrence_id: uuid | null,
+--        obligation_id, obligation_patch: patch | null, log }
+--   The untouched next removed FIRST — only while it is still open, untouched,
+--   and materialized by this very close — because the one-open index would
+--   refuse the reopen beside it (FOD-5); the reopen, applied only while the
+--   occurrence is still done; the obligation patch when there is one (a
+--   one-time close's retirement put back); the line.
+--   Returns { reopened, removed, obligation } — removed is the deleted row, or
+--   null; the obligation as patched, or as read.
+create or replace function public.firm_undo(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_occ_id    uuid := (p->>'occurrence_id')::uuid;
+  v_remove_id uuid := (p->>'remove_occurrence_id')::uuid;
+  v_ob_id     uuid := (p->>'obligation_id')::uuid;
+  r_reopened  firm_obligation_occurrences%rowtype;
+  r_removed   firm_obligation_occurrences%rowtype;
+  r_ob        firm_obligations%rowtype;
+  j_removed   jsonb := null;
+begin
+  if v_remove_id is not null then
+    delete from firm_obligation_occurrences
+     where id = v_remove_id
+       and state = 'open'
+       and touched = false
+       and materialized_from = v_occ_id
+    returning * into r_removed;
+    if not found then
+      raise exception 'The next occurrence is no longer untouched — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    j_removed := to_jsonb(r_removed);
+  end if;
+
+  select * into r_reopened from firm_obligation_occurrences where id = v_occ_id for update;
+  if not found then
+    raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_reopened := jsonb_populate_record(r_reopened, p->'reopen_patch');
+  update firm_obligation_occurrences
+     set period_label    = r_reopened.period_label,
+         due_on          = r_reopened.due_on,
+         due_on_override = r_reopened.due_on_override,
+         state           = r_reopened.state,
+         done_on         = r_reopened.done_on,
+         done_by         = r_reopened.done_by,
+         outcome         = r_reopened.outcome,
+         outcome_reason  = r_reopened.outcome_reason,
+         done_note       = r_reopened.done_note,
+         filed_at        = r_reopened.filed_at,
+         sync_status     = r_reopened.sync_status,
+         touched         = r_reopened.touched,
+         updated_at      = r_reopened.updated_at
+   where id = v_occ_id
+     and state = 'done'
+  returning * into r_reopened;
+  if not found then
+    raise exception 'This occurrence is no longer closed — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  if jsonb_typeof(p->'obligation_patch') = 'object' then
+    select * into r_ob from firm_obligations where id = v_ob_id for update;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+    r_ob := jsonb_populate_record(r_ob, p->'obligation_patch');
+    update firm_obligations
+       set recurrence            = r_ob.recurrence,
+           precision             = r_ob.precision,
+           missed_periods        = r_ob.missed_periods,
+           weekend_rule          = r_ob.weekend_rule,
+           lead_days             = r_ob.lead_days,
+           weight                = r_ob.weight,
+           notes                 = r_ob.notes,
+           outlook_reminder_days = r_ob.outlook_reminder_days,
+           last_period_completed = r_ob.last_period_completed,
+           active                = r_ob.active,
+           updated_at            = r_ob.updated_at
+     where id = v_ob_id
+    returning * into r_ob;
+  else
+    select * into r_ob from firm_obligations where id = v_ob_id;
+    if not found then
+      raise exception 'Firm obligation not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+    end if;
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('reopened', to_jsonb(r_reopened), 'removed', j_removed, 'obligation', to_jsonb(r_ob));
+end;
+$$;
+
+revoke execute on function public.firm_undo(jsonb) from public, anon;
+grant execute on function public.firm_undo(jsonb) to authenticated;
+
+-- firm_set_due_override — the due-date override on an open occurrence (FOD-4).
+--   p: { occurrence_id, patch, log }
+--   The patch, applied only while the occurrence is still open; the line.
+--   Returns { occurrence }.
+create or replace function public.firm_set_due_override(p jsonb)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = public
+as $$
+declare
+  v_occ_id uuid := (p->>'occurrence_id')::uuid;
+  r_occ    firm_obligation_occurrences%rowtype;
+begin
+  select * into r_occ from firm_obligation_occurrences where id = v_occ_id for update;
+  if not found then
+    raise exception 'Occurrence not found.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+  r_occ := jsonb_populate_record(r_occ, p->'patch');
+  update firm_obligation_occurrences
+     set period_label    = r_occ.period_label,
+         due_on          = r_occ.due_on,
+         due_on_override = r_occ.due_on_override,
+         state           = r_occ.state,
+         done_on         = r_occ.done_on,
+         done_by         = r_occ.done_by,
+         outcome         = r_occ.outcome,
+         outcome_reason  = r_occ.outcome_reason,
+         done_note       = r_occ.done_note,
+         filed_at        = r_occ.filed_at,
+         sync_status     = r_occ.sync_status,
+         touched         = r_occ.touched,
+         updated_at      = r_occ.updated_at
+   where id = v_occ_id
+     and state = 'open'
+  returning * into r_occ;
+  if not found then
+    raise exception 'This occurrence is no longer open — reload the register.'; -- PROVISIONAL — #156 §1 item 9 (A5)
+  end if;
+
+  insert into review_log (entity_type, entity_id, action, "user", old_value, new_value, reason)
+  values (p->'log'->>'entity_type', p->'log'->>'entity_id', p->'log'->>'action',
+          p->'log'->>'user', p->'log'->>'old_value', p->'log'->>'new_value',
+          p->'log'->>'reason');
+
+  return jsonb_build_object('occurrence', to_jsonb(r_occ));
+end;
+$$;
+
+revoke execute on function public.firm_set_due_override(jsonb) from public, anon;
+grant execute on function public.firm_set_due_override(jsonb) to authenticated;

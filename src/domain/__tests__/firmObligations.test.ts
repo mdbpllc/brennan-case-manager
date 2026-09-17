@@ -5,6 +5,13 @@
 // Overdue pin, Later and Inactive), whose surfaces are tested again where they
 // render. FOS-1 RULED YES 2026-09-10.
 //
+// And docs/specs/firm-obligations-fix-slice.md §7 — items 1–3, 6 and the domain half of
+// item 7 — with the three of Michael's rulings at the fix build's stops, 2026-09-16,
+// that reach the domain: the reminder default ("min(30, lead) everywhere"), Undo with
+// no next ("Keep as built; read one flag") and `touched` ("Same as today"). FOS-2
+// RULED YES 2026-09-12 (#156). §7 item 1's lighting snapshot is its own file
+// (firmObligationsLighting.test.ts).
+//
 // Every date is a fixture. The weekday facts the weekend rule turns on are ASSERTED
 // before anything leans on them (the first describe), so a wrong premise fails
 // loudly instead of letting the rule tests prove nothing.
@@ -17,8 +24,11 @@ import {
   targetDate, dueDate, lightsOn, stateOf, daysOverdue, strongLine,
   cardItems, cardCounts, registerView,
   planActivation, planDone, planNotApplicable, planUndo, canUndo, planOverride, planEdit, planRetire, planReactivate,
+  defaultReminderDays, reminderOn, outlookReminderIsOn, nextOf, latestClosed, planActivateFromInactive,
+  reactivationProblem, queuedDeletes, settledDeletes, DEFAULT_OUTLOOK_REMINDER_DAYS, PENDING_DELETE_ATTENTION_ATTEMPTS,
+  WEEKEND_RULES,
   type ActContext, type FirmObligation, type FirmObligationCreate, type FirmObligationOccurrence,
-  type FirmObligationPatch, type LogDraft, type RecurrenceRule, type WeekendRule,
+  type FirmObligationPatch, type LogDraft, type PendingOutlookDelete, type RecurrenceRule, type WeekendRule,
 } from '../firmObligations';
 import type { ReviewLogEntry } from '../billing';
 import { activationFromTemplate } from '../firmObligationActivation';
@@ -32,7 +42,8 @@ function obWith(over: Partial<FirmObligation> = {}): FirmObligation {
   return {
     id: 'ob', name: 'Fixture obligation', category: 'custom', ownerScope: 'firm',
     recurrence: { kind: 'fixed-annual', month: 1, day: 30 }, precision: 'day', missedPeriods: 'serial',
-    conditionalPerPeriod: false, weekendRule: 'unknown', leadDays: 30, weight: 'hard', active: true,
+    conditionalPerPeriod: false, weekendRule: 'unknown', leadDays: 30, weight: 'hard',
+    outlookReminderDays: 30, pendingOutlookDeletes: [], active: true,
     createdAt: STAMP, updatedAt: STAMP, ...over,
   };
 }
@@ -40,7 +51,7 @@ function obWith(over: Partial<FirmObligation> = {}): FirmObligation {
 function occAt(dueOn: string, over: Partial<FirmObligationOccurrence> = {}): FirmObligationOccurrence {
   return {
     id: `o-${dueOn}`, obligationId: 'ob', periodLabel: 'fixture', dueOn, state: 'open', syncStatus: 'pending',
-    createdAt: STAMP, updatedAt: STAMP, ...over,
+    touched: false, createdAt: STAMP, updatedAt: STAMP, ...over,
   };
 }
 
@@ -57,11 +68,18 @@ function activation(rule: RecurrenceRule, over: Partial<FirmObligationCreate> = 
  *  adapters apply, not through a re-implementation. */
 function world(start: string) {
   let seq = 0;
+  let clock = 0;
   let today = start;
   const obligations: FirmObligation[] = [];
   const occurrences: FirmObligationOccurrence[] = [];
   const log: ReviewLogEntry[] = [];
-  const ctx = (): ActContext => ({ today, nowIso: `${today}T12:00:00.000Z`, newId: () => `id-${++seq}`, user: 'test' });
+  // Each act reads the clock once, and the clock advances one millisecond per act, so
+  // created-at order is real: canUndo's created-at check and latestClosed read it
+  // (#156 A3). Every sequence here moves `today` forward only, so the order holds
+  // across setToday too.
+  const ctx = (): ActContext => ({
+    today, nowIso: new Date(Date.parse(`${today}T12:00:00.000Z`) + ++clock).toISOString(), newId: () => `id-${++seq}`, user: 'test',
+  });
   const write = (d: LogDraft, c: ActContext) => { log.push({ ...d, id: `log-${log.length + 1}`, timestamp: c.nowIso }); };
   const ob = (id: string) => obligations.find((o) => o.id === id)!;
   const occ = (id: string) => occurrences.find((o) => o.id === id)!;
@@ -79,7 +97,8 @@ function world(start: string) {
   };
   return {
     setToday: (t: string) => { today = t; },
-    obligations, occurrences, log, ob, occ, occsOf,
+    getToday: () => today,
+    obligations, occurrences, log, ob, occ, occsOf, logFor,
     openOf: (obId: string) => occsOf(obId).filter((o) => o.state === 'open'),
     activate(input: FirmObligationCreate) {
       const c = ctx();
@@ -145,6 +164,16 @@ function world(start: string) {
       const p = planReactivate(ob(obId), occsOf(obId), c, inputs);
       Object.assign(ob(obId), p.obligationPatch);
       if (p.occurrence) occurrences.push(p.occurrence);
+      write(p.log, c);
+      return p;
+    },
+    /** #156 A7: the Inactive row's "Activate…", one act, applied as an adapter does. */
+    activateFromInactive(obId: string, patch: FirmObligationPatch, inputs: { lastPeriodCompleted?: string } = {}) {
+      const c = ctx();
+      const p = planActivateFromInactive(ob(obId), patch, occsOf(obId), c, logFor(obId), inputs);
+      Object.assign(ob(obId), p.obligationPatch);
+      if (p.updateOccurrence) Object.assign(occ(p.updateOccurrence.id), p.updateOccurrence.patch);
+      if (p.openOccurrence) occurrences.push(p.openOccurrence);
       write(p.log, c);
       return p;
     },
@@ -496,12 +525,16 @@ describe('§7 item 7 — FOD-4: edits re-evaluate the open occurrence, never a d
     expect(w.ob(a.obligation.id).recurrence).toEqual({ kind: 'fixed-annual', month: 11, day: 16 });
   });
 
-  it('a lead edit moves no stored date but queues the Outlook re-push', () => {
+  // REPLACED by the fix slice: under #156 A1 the Outlook reminder keys off its own
+  // days, not the lead, so a lead edit no longer changes anything the event carries.
+  it('a lead edit moves no stored date and queues no Outlook re-push — the lead is the register\'s window only (#156 A1)', () => {
     const w = world('2026-09-10');
     const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
     w.occ(a.occurrence!.id).syncStatus = 'synced';
-    w.edit(a.obligation.id, { leadDays: 45 });
-    expect(w.occ(a.occurrence!.id)).toMatchObject({ dueOn: '2026-12-01', syncStatus: 'pending' });
+    const p = w.edit(a.obligation.id, { leadDays: 45 });
+    expect(p.occurrence).toBeNull();
+    expect(w.occ(a.occurrence!.id)).toMatchObject({ dueOn: '2026-12-01', syncStatus: 'synced', touched: false });
+    expect(w.ob(a.obligation.id).leadDays).toBe(45);
   });
 
   it('a weekend-rule edit on an overdue occurrence is refused when it would un-overdue it', () => {
@@ -783,7 +816,11 @@ describe('§7 item 13 — twelve months, Later and Inactive', () => {
 
 describe('§7 item 21 — nothing snoozes', () => {
   it('exports no snooze, dismiss, later, remind-me or bulk function', () => {
-    expect(Object.keys(FO).filter((k) => /snooze|dismiss|later|remind|bulk/i.test(k))).toEqual([]);
+    // The only names the pattern reaches are #156 A1's OUTLOOK reminder — the event's
+    // own reminder limb, which unlights nothing — pinned by name so any other export
+    // it reaches still fails here.
+    expect(Object.keys(FO).filter((k) => /snooze|dismiss|later|remind|bulk/i.test(k)).sort())
+      .toEqual(['DEFAULT_OUTLOOK_REMINDER_DAYS', 'defaultReminderDays', 'outlookReminderIsOn', 'reminderOn']);
   });
 
   it('the only close actions a plan can write are done and not-applicable; the only reversal is undone', () => {
@@ -1046,7 +1083,7 @@ describe('review — the card line, the card summary, the stranded list, plain t
     expect(FO.cardSummary(cardItems(obs.slice(0, 2), occs.slice(0, 2), today), today).more).toBe(0);
   });
 
-  it('the register lists an active obligation with no open occurrence as stranded — only a half-finished central write makes one', () => {
+  it('the register lists an active obligation with no open occurrence as stranded — no act leaves one since #156 A5, but a store written before could hold one', () => {
     const view = registerView(
       [obWith({ id: 'stranded' }), obWith({ id: 'retired', active: false }), obWith({ id: 'fine' })],
       [occAt('2026-12-01', { id: 'of', obligationId: 'fine' })],
@@ -1109,5 +1146,675 @@ describe('review — the Inactive "Activate…" asks before it edits (reactivati
     const ob = w.ob(a.obligation.id);
     expect(FO.reactivationProblem(ob, {}, w.occsOf(ob.id), '2026-10-05')).toMatch(/already done/);
     expect(FO.reactivationProblem(ob, { recurrence: { kind: 'one-time', dueOn: '2027-10-01' } }, w.occsOf(ob.id), '2026-10-05')).toBeNull();
+  });
+});
+
+// ================================================================ the fix slice (FOS-2)
+// docs/specs/firm-obligations-fix-slice.md §7, domain halves. Each describe names the
+// §7 item it pins and the ruling it builds, so a regression fails here by name.
+
+const FIX_CTX: ActContext = { today: '2026-09-10', nowIso: STAMP, newId: () => 'x', user: 't' };
+
+/** A close line as planClose writes it: the `done` line whose JSON is the close record. */
+function closeLine(
+  occurrenceId: string, record: { nextOccurrenceId?: string | null; retiredObligation?: boolean } = {},
+): ReviewLogEntry {
+  return {
+    id: `close-${occurrenceId}`, entityType: FO.FIRM_OCCURRENCE_ENTITY, entityId: occurrenceId, action: 'done',
+    user: 't', timestamp: STAMP,
+    newValue: JSON.stringify({
+      kind: 'close', doneOn: '2026-09-10',
+      nextOccurrenceId: record.nextOccurrenceId ?? null, retiredObligation: record.retiredObligation ?? false,
+    }),
+  };
+}
+
+// ------------------------------------------ §7 item 1 — the Outlook reminder days (A1)
+
+describe('fix slice §7 item 1 — the Outlook reminder days (#156 A1; FXD-1, FXD-9; "min(30, lead) everywhere", the fix build\'s stop 2026-09-16)', () => {
+  const annual = (over: Partial<FirmObligationCreate> = {}) => activation({ kind: 'fixed-annual', month: 12, day: 1 }, over);
+
+  it('defaultReminderDays is min(30, lead): thirty days, or the lead where the lead is shorter', () => {
+    expect(DEFAULT_OUTLOOK_REMINDER_DAYS).toBe(30);
+    expect([180, 45, 31, 30, 29, 14, 5, 3, 1, 0].map(defaultReminderDays)).toEqual([30, 30, 30, 30, 29, 14, 5, 3, 1, 0]);
+  });
+
+  it('planActivation takes that default where nobody typed a value — an activation, and Add as inactive', () => {
+    expect(planActivation(annual({ leadDays: 180 }), FIX_CTX).obligation.outlookReminderDays).toBe(30);
+    expect(planActivation(annual({ leadDays: 30 }), FIX_CTX).obligation.outlookReminderDays).toBe(30);
+    expect(planActivation(annual({ leadDays: 5 }), FIX_CTX).obligation.outlookReminderDays).toBe(5);
+    expect(planActivation(activation({ kind: 'one-time' }, { active: false, leadDays: 14 }), FIX_CTX).obligation.outlookReminderDays).toBe(14);
+  });
+
+  it('…and honours his typed value exactly: above the lead (FXD-9), below it, and zero', () => {
+    expect(planActivation(annual({ leadDays: 30, outlookReminderDays: 60 }), FIX_CTX).obligation.outlookReminderDays).toBe(60);
+    expect(planActivation(annual({ leadDays: 180, outlookReminderDays: 7 }), FIX_CTX).obligation.outlookReminderDays).toBe(7);
+    expect(planActivation(annual({ leadDays: 5, outlookReminderDays: 0 }), FIX_CTX).obligation.outlookReminderDays).toBe(0);
+  });
+
+  it('activationFromTemplate passes his typed value through and supplies none of its own (FXD-1)', () => {
+    const t = FIRM_OBLIGATION_TEMPLATES.find((x) => x.key === 'FOT-4')!;
+    const inputs = { recurrence: { kind: 'fixed-annual', month: 12, day: 1 } as RecurrenceRule, weekendRule: 'unknown' as WeekendRule };
+    expect(activationFromTemplate(t, inputs).outlookReminderDays).toBeUndefined();
+    expect(activationFromTemplate(t, { ...inputs, outlookReminderDays: 45 }).outlookReminderDays).toBe(45);
+    expect(planActivation(activationFromTemplate(t, { ...inputs, leadDays: 10 }), FIX_CTX).obligation.outlookReminderDays).toBe(10);
+    expect(planActivation(activationFromTemplate(t, { ...inputs, leadDays: 10, outlookReminderDays: 45 }), FIX_CTX).obligation.outlookReminderDays).toBe(45);
+  });
+
+  it('the queue of Outlook deletes always starts empty, whatever the input carries', () => {
+    const smuggled = { ...annual(), pendingOutlookDeletes: [{ eventId: 'e', occurrenceId: 'o', recordedAt: STAMP, attempts: 9 }] } as FirmObligationCreate;
+    expect(planActivation(smuggled, FIX_CTX).obligation.pendingOutlookDeletes).toEqual([]);
+    expect(planActivation(annual(), FIX_CTX).obligation.pendingOutlookDeletes).toEqual([]);
+  });
+
+  it('validation: a whole number ≥ 0 — a negative, a fraction, NaN or a missing value is refused, on activation and on an edit', () => {
+    for (const bad of [-1, 1.5, Number.NaN]) {
+      expect(() => planActivation(annual({ outlookReminderDays: bad }), FIX_CTX), String(bad)).toThrow(/Outlook reminder days must be a whole number ≥ 0/);
+    }
+    const missing: Partial<FirmObligation> = obWith();
+    delete missing.outlookReminderDays;
+    expect(() => FO.validateObligation(missing as FirmObligation)).toThrow(/Outlook reminder days must be a whole number ≥ 0/);
+    const w = world('2026-09-10');
+    const a = w.activate(annual());
+    expect(() => w.edit(a.obligation.id, { outlookReminderDays: -5 })).toThrow(/Outlook reminder days must be a whole number ≥ 0/);
+    expect(() => w.edit(a.obligation.id, { outlookReminderDays: 2.5 })).toThrow(/Outlook reminder days must be a whole number ≥ 0/);
+    expect(w.ob(a.obligation.id).outlookReminderDays).toBe(30);
+    expect(w.log).toHaveLength(1);
+  });
+
+  it('is an editable field, logged in words', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(annual());
+    w.edit(a.obligation.id, { outlookReminderDays: 90 });
+    expect(w.ob(a.obligation.id).outlookReminderDays).toBe(90);
+    expect(w.log.at(-1)!.reason).toBe('Edited: Outlook reminder');
+  });
+});
+
+// --------------------------- §7 items 1 and 2 — the reminder day, and whether it rings
+
+describe('fix slice §7 items 1 and 2 — the reminder day and whether it rings (#156 A1, A2; FXD-8, FXD-10, FXD-11)', () => {
+  const R = '2027-03-15'; // a Monday, so T = R
+
+  it('reminderOn is T − the stored days, exactly: lead 180 with 30 days rings at T − 30 while the lead still lights at T − 180', () => {
+    expect(dayOfWeek(R)).toBe(1);
+    const ob = obWith({ leadDays: 180, outlookReminderDays: 30 });
+    expect(reminderOn(ob, occAt(R))).toBe('2027-02-13');
+    expect(FO.daysBetween('2027-02-13', R)).toBe(30);
+    expect(lightsOn(ob, occAt(R))).toBe('2026-09-16');
+  });
+
+  it('a lead of 5 pre-fills 5 and rings at T − 5', () => {
+    const ob = obWith({ leadDays: 5, outlookReminderDays: defaultReminderDays(5) });
+    expect(reminderOn(ob, occAt(R))).toBe('2027-03-10');
+  });
+
+  it('raised by hand to 60 over a lead of 30: rings at T − 60, before the row lights (FXD-9)', () => {
+    const ob = obWith({ leadDays: 30, outlookReminderDays: 60 });
+    expect(reminderOn(ob, occAt(R))).toBe('2027-01-14');
+    expect(FO.daysBetween('2027-01-14', R)).toBe(60);
+    expect(lightsOn(ob, occAt(R))).toBe('2027-02-13');
+    expect(stateOf(ob, occAt(R), '2027-01-14')).toBe('pending');
+  });
+
+  it('keys off the TARGET: a Saturday rule date rings back from its Friday under every weekend rule; an override moves it with T', () => {
+    expect(dayOfWeek('2027-01-30')).toBe(6);
+    for (const weekendRule of WEEKEND_RULES) {
+      expect(reminderOn(obWith({ weekendRule, outlookReminderDays: 30 }), occAt('2027-01-30')), weekendRule).toBe('2026-12-30');
+    }
+    expect(dayOfWeek('2027-02-10')).toBe(3);
+    expect(reminderOn(obWith({ outlookReminderDays: 5 }), occAt('2027-01-30', { dueOnOverride: '2027-02-10' }))).toBe('2027-02-05');
+  });
+
+  it('FXD-11: a month-precision row keys its reminder off T as a day row does — FOM-6\'s earlier-of stays with the lit moment', () => {
+    const monthRow = (leadDays: number, outlookReminderDays: number) => obWith({
+      recurrence: { kind: 'anniversary', anchorDate: '2026-06-10' }, precision: 'month', leadDays, outlookReminderDays,
+    });
+    const o = occAt('2026-06-30'); // a Tuesday, so T = R
+    expect(dayOfWeek('2026-06-30')).toBe(2);
+    expect(lightsOn(monthRow(5, 5), o)).toBe('2026-06-01');
+    expect(reminderOn(monthRow(5, 5), o)).toBe('2026-06-25');
+    expect(lightsOn(monthRow(45, 30), o)).toBe('2026-05-16');
+    expect(reminderOn(monthRow(45, 30), o)).toBe('2026-05-31');
+  });
+
+  it('rings on a hard open occurrence only — never on a routine one (FXD-8), never on a closed one (A2, FXD-10)', () => {
+    const done = { state: 'done' as const, doneOn: '2027-03-01', outcome: 'completed' as const };
+    expect(outlookReminderIsOn(obWith({ weight: 'hard' }), occAt(R))).toBe(true);
+    expect(outlookReminderIsOn(obWith({ weight: 'routine' }), occAt(R))).toBe(false);
+    expect(outlookReminderIsOn(obWith({ weight: 'hard' }), occAt(R, done))).toBe(false);
+    expect(outlookReminderIsOn(obWith({ weight: 'routine' }), occAt(R, done))).toBe(false);
+  });
+
+  it('Done and Not applicable turn it off; Undo turns it back on for a hard row, and a routine row stays off throughout', () => {
+    const w = world('2026-09-10');
+    const hard = w.activate(activation({ kind: 'fixed-monthly', day: 20 }, { conditionalPerPeriod: true }));
+    const hardOb = () => w.ob(hard.obligation.id);
+    const first = hard.occurrence!.id;
+    expect(outlookReminderIsOn(hardOb(), w.occ(first))).toBe(true);
+    const d = w.done(first);
+    expect(outlookReminderIsOn(hardOb(), w.occ(first))).toBe(false);
+    expect(outlookReminderIsOn(hardOb(), w.occ(d.next!.id))).toBe(true);
+    w.na(d.next!.id, { reason: 'condition-not-met' });
+    expect(outlookReminderIsOn(hardOb(), w.occ(d.next!.id))).toBe(false);
+    w.undo(d.next!.id);
+    expect(outlookReminderIsOn(hardOb(), w.occ(d.next!.id))).toBe(true);
+
+    const routine = w.activate(activation({ kind: 'fixed-monthly', day: 20 }, { weight: 'routine' }));
+    const rid = routine.occurrence!.id;
+    expect(outlookReminderIsOn(w.ob(routine.obligation.id), w.occ(rid))).toBe(false);
+    w.done(rid);
+    expect(outlookReminderIsOn(w.ob(routine.obligation.id), w.occ(rid))).toBe(false);
+    w.undo(rid);
+    expect(w.occ(rid).state).toBe('open');
+    expect(outlookReminderIsOn(w.ob(routine.obligation.id), w.occ(rid))).toBe(false);
+  });
+});
+
+// ----------------------------------- §7 item 3 — the two columns (A3; touched "Same as today")
+
+describe('fix slice §7 item 3 — materializedFrom on the next, touched by the acts that end Undo (#156 A3; "Same as today", the fix build\'s stop 2026-09-16)', () => {
+  const monthly = () => activation({ kind: 'fixed-monthly', day: 20 }, { conditionalPerPeriod: true });
+
+  it('a close names itself on the next it materializes; an activation\'s and a re-activation\'s occurrences name nothing; every new occurrence starts untouched', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(monthly());
+    const obId = a.obligation.id;
+    expect(a.occurrence).not.toHaveProperty('materializedFrom');
+    expect(a.occurrence!.touched).toBe(false);
+    const d = w.done(a.occurrence!.id);
+    expect(d.next).toMatchObject({ materializedFrom: a.occurrence!.id, touched: false });
+    const n = w.na(d.next!.id, { reason: 'performed-elsewhere' });
+    expect(n.next).toMatchObject({ materializedFrom: d.next!.id, touched: false });
+    expect(nextOf(a.occurrence!.id, w.occsOf(obId))!.id).toBe(d.next!.id);
+    expect(nextOf(d.next!.id, w.occsOf(obId))!.id).toBe(n.next!.id);
+    expect(nextOf(n.next!.id, w.occsOf(obId))).toBeNull();
+    w.retire(obId);
+    expect(w.done(n.next!.id).next).toBeNull();
+    const r = w.reactivate(obId);
+    expect(r.occurrence).not.toHaveProperty('materializedFrom');
+    expect(r.occurrence!.touched).toBe(false);
+  });
+
+  it('touched flips on a close — Done and Not applicable', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(monthly());
+    const d = w.done(a.occurrence!.id);
+    expect(d.occurrencePatch.touched).toBe(true);
+    expect(w.occ(a.occurrence!.id).touched).toBe(true);
+    const n = w.na(d.next!.id, { reason: 'condition-not-met' });
+    expect(n.occurrencePatch.touched).toBe(true);
+    expect(w.occ(d.next!.id).touched).toBe(true);
+  });
+
+  it('touched flips on a due-date override', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+    expect(w.override(a.occurrence!.id, '2026-12-15').patch.touched).toBe(true);
+    expect(w.occ(a.occurrence!.id).touched).toBe(true);
+  });
+
+  it('touched flips on a re-dating rule edit and on a re-dating precision edit', () => {
+    const w = world('2026-09-10');
+    const rule = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+    const pr = w.edit(rule.obligation.id, { recurrence: { kind: 'fixed-annual', month: 12, day: 10 } });
+    expect(pr.occurrence!.patch).toMatchObject({ dueOn: '2026-12-10', touched: true });
+    expect(w.occ(rule.occurrence!.id).touched).toBe(true);
+    const prec = w.activate(activation({ kind: 'anniversary', anchorDate: '2020-12-10' }));
+    expect(prec.occurrence!.dueOn).toBe('2026-12-10');
+    const pp = w.edit(prec.obligation.id, { precision: 'month' });
+    expect(pp.occurrence!.patch).toMatchObject({ dueOn: '2026-12-31', touched: true });
+    expect(w.occ(prec.occurrence!.id).touched).toBe(true);
+  });
+
+  it('a rule edit KEPT on a past-due occurrence re-dates nothing and so touches nothing', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }, { lastPeriodCompleted: '2024-10-15' }));
+    const p = w.edit(a.obligation.id, { recurrence: { kind: 'fixed-annual', month: 11, day: 16 } });
+    expect(p.kept).toMatch(/keeps its date/);
+    expect(p.occurrence).toBeNull();
+    expect(w.occ(a.occurrence!.id).touched).toBe(false);
+  });
+
+  it('a re-push-only edit (weekend rule, weight, Outlook reminder days) re-queues the push and touches nothing; a lead or notes edit does neither', () => {
+    const cases: [string, FirmObligationPatch, boolean][] = [
+      ['weekend rule', { weekendRule: 'rolls-forward' }, true],
+      ['weight', { weight: 'routine' }, true],
+      ['Outlook reminder days', { outlookReminderDays: 45 }, true],
+      ['lead', { leadDays: 60 }, false],
+      ['notes', { notes: 'portal login in the vault' }, false],
+    ];
+    for (const [label, patch, repush] of cases) {
+      const w = world('2026-09-10');
+      const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+      const id = a.occurrence!.id;
+      w.occ(id).syncStatus = 'synced';
+      const p = w.edit(a.obligation.id, patch);
+      if (repush) {
+        expect(p.occurrence, label).toMatchObject({ id, patch: { syncStatus: 'pending' } });
+        expect(p.occurrence!.patch, label).not.toHaveProperty('touched');
+        expect(p.occurrence!.patch, label).not.toHaveProperty('dueOn');
+      } else {
+        expect(p.occurrence, label).toBeNull();
+      }
+      expect(w.occ(id), label).toMatchObject({ dueOn: '2026-12-01', syncStatus: repush ? 'pending' : 'synced', touched: false });
+      expect(JSON.parse(w.log.at(-1)!.newValue!).reevaluatedOccurrenceId, label).toBeNull();
+    }
+  });
+
+  it('…so Undo survives a weekend-rule, weight, Outlook-reminder, lead or notes edit made after the close', () => {
+    const patches: FirmObligationPatch[] = [
+      { weekendRule: 'no-roll' }, { weight: 'routine' }, { outlookReminderDays: 3 }, { leadDays: 9 }, { notes: 'x' },
+    ];
+    for (const patch of patches) {
+      const w = world('2026-09-10');
+      const a = w.activate(monthly());
+      w.done(a.occurrence!.id);
+      w.edit(a.obligation.id, patch);
+      expect(w.canUndo(a.occurrence!.id), JSON.stringify(patch)).toEqual({ ok: true });
+    }
+  });
+});
+
+// ------------------------------------------ §7 item 3 — Undo decided from the columns
+
+describe('fix slice §7 item 3 — canUndo decided from the columns (#156 A3; "Keep as built; read one flag", the fix build\'s stop 2026-09-16)', () => {
+  const monthly = () => activation({ kind: 'fixed-monthly', day: 20 });
+  const UNTOUCHED = 'The next occurrence is no longer untouched — undo is no longer available (FOD-7).';
+  const LATER = 'A later occurrence has been opened since — undo is no longer available (FOD-7).';
+
+  it('allowed iff the next exists, is untouched and is the only open occurrence — the columns decide, not the log', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(monthly());
+    const A = a.occurrence!.id;
+    const B = w.done(A).next!.id;
+    expect(w.canUndo(A)).toEqual({ ok: true });
+    // The column alone ends it: no log line says anything happened.
+    w.occ(B).touched = true;
+    expect(w.canUndo(A)).toEqual({ ok: false, why: UNTOUCHED });
+    w.occ(B).touched = false;
+    expect(w.canUndo(A)).toEqual({ ok: true });
+    // A log line alone does not: the columns still say untouched.
+    w.log.push({ id: 'stray', entityType: FO.FIRM_OCCURRENCE_ENTITY, entityId: B, action: 'edited', user: 'test', timestamp: STAMP });
+    expect(w.canUndo(A)).toEqual({ ok: true });
+    // A second open occurrence (a broken store): refused rather than leave two open.
+    w.occurrences.push(occAt('2027-01-29', { id: 'stray-open', obligationId: a.obligation.id }));
+    expect(w.canUndo(A)).toEqual({ ok: false, why: 'Another occurrence is open — undo would leave two open (FOD-5).' });
+  });
+
+  it('refused once the next is re-dated, overridden or closed, each by its own act — and on a next carrying an override with no touched mark', () => {
+    const acts: [string, (w: ReturnType<typeof world>, obId: string, next: string) => void][] = [
+      ['re-dated by a rule edit', (w, obId) => { w.edit(obId, { recurrence: { kind: 'fixed-monthly', day: 25 } }); }],
+      ['re-dated by a precision edit', (w, obId) => { w.edit(obId, { precision: 'month' }); }],
+      ['overridden', (w, _obId, next) => { w.override(next, '2026-10-19'); }],
+      ['done', (w, _obId, next) => { w.done(next); }],
+      ['an override written with no touched mark', (w, _obId, next) => { w.occ(next).dueOnOverride = '2026-10-19'; }],
+    ];
+    for (const [label, act] of acts) {
+      const w = world('2026-09-10');
+      const a = w.activate(monthly());
+      const next = w.done(a.occurrence!.id).next!.id;
+      act(w, a.obligation.id, next);
+      expect(w.canUndo(a.occurrence!.id), label).toEqual({ ok: false, why: UNTOUCHED });
+    }
+  });
+
+  it('a close that materialized no next stays undoable while nothing has opened since — a one-time Done that retired its obligation, and a Done on a retired obligation with earlier history', () => {
+    const w = world('2026-09-10');
+    const one = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+    expect(w.done(one.occurrence!.id).next).toBeNull();
+    expect(w.ob(one.obligation.id).active).toBe(false);
+    expect(w.canUndo(one.occurrence!.id)).toEqual({ ok: true });
+
+    // Its earlier occurrence was created before it, so only an occurrence created AFTER
+    // it ends Undo — created-at order is real here because the world's clock advances.
+    const m = w.activate(monthly());
+    const B = w.done(m.occurrence!.id).next!;
+    w.retire(m.obligation.id);
+    expect(w.done(B.id).next).toBeNull();
+    expect(w.openOf(m.obligation.id)).toHaveLength(0);
+    expect(w.canUndo(B.id)).toEqual({ ok: true });
+    expect(latestClosed(w.occsOf(m.obligation.id))!.id).toBe(B.id);
+    expect(w.canUndo(m.occurrence!.id)).toEqual({ ok: false, why: UNTOUCHED });
+  });
+
+  it('refused once a re-activation has opened another — while it is open, and EVEN after it has closed in turn (the created-at check)', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(monthly());
+    const obId = a.obligation.id;
+    const A = a.occurrence!.id;
+    w.retire(obId);
+    expect(w.done(A).next).toBeNull();
+    expect(w.canUndo(A)).toEqual({ ok: true });
+    const R = w.reactivate(obId).occurrence!;
+    expect(w.canUndo(A)).toEqual({ ok: false, why: 'Another occurrence has been opened since — undo would leave two open (FOD-5).' });
+    w.retire(obId);
+    expect(w.done(R.id).next).toBeNull();
+    expect(w.openOf(obId)).toHaveLength(0);
+    expect(R.materializedFrom).toBeUndefined();
+    expect(w.canUndo(A)).toEqual({ ok: false, why: LATER });
+    expect(w.canUndo(R.id)).toEqual({ ok: true });
+    expect(latestClosed(w.occsOf(obId))!.id).toBe(R.id);
+  });
+
+  it('the same on a one-time row re-dated and activated from Inactive, then done again: only the later close can be undone', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+    const obId = a.obligation.id;
+    w.done(a.occurrence!.id);
+    const B = w.activateFromInactive(obId, { recurrence: { kind: 'one-time', dueOn: '2027-10-01' } }).openOccurrence!.id;
+    expect(w.canUndo(a.occurrence!.id).ok).toBe(false);
+    w.done(B);
+    expect(w.ob(obId).active).toBe(false);
+    expect(w.openOf(obId)).toHaveLength(0);
+    expect(w.canUndo(a.occurrence!.id)).toEqual({ ok: false, why: LATER });
+    expect(w.canUndo(B)).toEqual({ ok: true });
+  });
+
+  it('refused with no close record (FXD-7) — no line at all, or a close line whose value is no close record — even over an untouched next', () => {
+    const ob = obWith({ recurrence: { kind: 'fixed-monthly', day: 20 }, missedPeriods: 'collapse' });
+    const closed = occAt('2026-09-20', { id: 'c', state: 'done', doneOn: '2026-09-10', outcome: 'completed', touched: true });
+    const next = occAt('2026-10-20', { id: 'n', materializedFrom: 'c' });
+    const why = 'No close record for this occurrence — it cannot be undone.';
+    expect(canUndo(ob, closed, [closed, next], [])).toEqual({ ok: false, why });
+    const plain: ReviewLogEntry = {
+      id: 'l', entityType: FO.FIRM_OCCURRENCE_ENTITY, entityId: 'c', action: 'done', user: 't', timestamp: STAMP, newValue: 'completed',
+    };
+    expect(canUndo(ob, closed, [closed, next], [plain])).toEqual({ ok: false, why });
+    expect(() => planUndo(ob, closed, [closed, next], [plain], FIX_CTX)).toThrow(why);
+    // With its record, the same shape is undoable.
+    expect(canUndo(ob, closed, [closed, next], [closeLine('c', { nextOccurrenceId: 'n' })])).toEqual({ ok: true });
+  });
+});
+
+describe('fix slice §7 item 3 — planUndo removes the column\'s next and re-activates on the record\'s flag alone', () => {
+  it('removes the occurrence materializedFrom names — not whatever id the close record carries', () => {
+    const ob = obWith({ recurrence: { kind: 'fixed-monthly', day: 20 }, missedPeriods: 'collapse' });
+    const closed = occAt('2026-09-20', { id: 'c', state: 'done', doneOn: '2026-09-10', outcome: 'completed', touched: true });
+    const next = occAt('2026-10-20', { id: 'n', materializedFrom: 'c', outlookEventId: 'ev-n' });
+    const p = planUndo(ob, closed, [closed, next], [closeLine('c', { nextOccurrenceId: 'some-other-id' })], FIX_CTX);
+    expect(p.removeOccurrence!.id).toBe('n');
+    expect(JSON.parse(p.log.newValue!)).toEqual({
+      kind: 'undo', removedNextOccurrenceId: 'n', removedNextOutlookEventId: 'ev-n', reactivatedObligation: false,
+    });
+    expect(p.reopenPatch).toMatchObject({ state: 'open', syncStatus: 'pending' });
+    // Undo reverses the close; it does not un-touch the reopened occurrence (touched
+    // flips only on the three acts — "Same as today").
+    expect(p.reopenPatch).not.toHaveProperty('touched');
+    expect(p.obligationPatch).toBeNull();
+  });
+
+  it('re-activates only when the close record says that close retired the obligation', () => {
+    const w = world('2026-09-10');
+    // A one-time Done retired it: Undo re-activates.
+    const one = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+    w.done(one.occurrence!.id);
+    expect(w.undo(one.occurrence!.id).obligationPatch).toMatchObject({ active: true });
+    expect(w.ob(one.obligation.id).active).toBe(true);
+    // A Done on an obligation already retired: Undo reopens it and leaves it retired.
+    const m = w.activate(activation({ kind: 'fixed-monthly', day: 20 }));
+    w.retire(m.obligation.id);
+    w.done(m.occurrence!.id);
+    expect(w.undo(m.occurrence!.id).obligationPatch).toBeNull();
+    expect(w.ob(m.obligation.id).active).toBe(false);
+    expect(w.occ(m.occurrence!.id).state).toBe('open');
+    // The flag decides, not the kind.
+    const closed = occAt('2026-10-01', { id: 'c', state: 'done', doneOn: '2026-09-10', outcome: 'completed', touched: true });
+    const oneTime = obWith({ recurrence: { kind: 'one-time', dueOn: '2026-10-01' }, active: false });
+    const monthlyRetired = obWith({ recurrence: { kind: 'fixed-monthly', day: 20 }, missedPeriods: 'collapse', active: false });
+    expect(planUndo(oneTime, closed, [closed], [closeLine('c', { retiredObligation: false })], FIX_CTX).obligationPatch).toBeNull();
+    expect(planUndo(monthlyRetired, closed, [closed], [closeLine('c', { retiredObligation: true })], FIX_CTX).obligationPatch)
+      .toMatchObject({ active: true });
+  });
+});
+
+describe('fix slice §7 item 3 — latestClosed, the close the register offers Undo on', () => {
+  it('is the most recently created done occurrence, null while nothing is closed, and steps back when an Undo reopens', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-monthly', day: 20 }));
+    const obId = a.obligation.id;
+    expect(latestClosed(w.occsOf(obId))).toBeNull();
+    const d1 = w.done(a.occurrence!.id);
+    expect(latestClosed(w.occsOf(obId))!.id).toBe(a.occurrence!.id);
+    w.done(d1.next!.id);
+    expect(latestClosed(w.occsOf(obId))!.id).toBe(d1.next!.id);
+    w.undo(d1.next!.id);
+    expect(latestClosed(w.occsOf(obId))!.id).toBe(a.occurrence!.id);
+    expect(latestClosed([occAt('2026-12-01')])).toBeNull();
+  });
+});
+
+// ------------------------------- §7 item 6 — Activate… from Inactive, one act (A7)
+
+describe('fix slice §7 item 6 — Activate… from Inactive is one act and one line (#156 A7)', () => {
+  it('an undated inactive row, dated and activated: ONE edited line on the obligation, carrying the fields, the values and the occurrence it opened', () => {
+    const w = world('2026-09-11');
+    const a = w.activate(activation({ kind: 'anniversary' }, { active: false }));
+    const obId = a.obligation.id;
+    const before = w.log.length;
+    const p = w.activateFromInactive(
+      obId, { recurrence: { kind: 'anniversary', anchorDate: '2020-03-02' }, outlookReminderDays: 10 }, { lastPeriodCompleted: '2024-03-02' },
+    );
+    expect(w.log.length).toBe(before + 1);
+    const line = w.log.at(-1)!;
+    expect(line).toMatchObject({ entityType: 'firm_obligation', entityId: obId, action: 'edited' });
+    expect(JSON.parse(line.newValue!)).toEqual({
+      kind: 'obligation', act: 'activated-from-inactive', fields: ['recurrence', 'outlookReminderDays'],
+      reevaluatedOccurrenceId: null, openedOccurrenceId: p.openOccurrence!.id,
+      values: {
+        active: true, recurrence: { kind: 'anniversary', anchorDate: '2020-03-02' }, outlookReminderDays: 10, lastPeriodCompleted: '2024-03-02',
+      },
+    });
+    expect(JSON.parse(line.oldValue!)).toEqual({ active: false, recurrence: { kind: 'anniversary' }, outlookReminderDays: 30 });
+    expect(line.reason).toMatch(/^Activated from Inactive · edited: rule, Outlook reminder · occurrence 2025–26 opened, rule date /);
+    expect(p.openOccurrence).toMatchObject({ dueOn: '2025-03-02', periodLabel: '2025–26', touched: false });
+    expect(p.openOccurrence).not.toHaveProperty('materializedFrom');
+    expect(p.updateOccurrence).toBeNull();
+    expect(w.ob(obId)).toMatchObject({ active: true, outlookReminderDays: 10, lastPeriodCompleted: '2024-03-02' });
+    expect(w.openOf(obId)).toHaveLength(1);
+  });
+
+  it('a retired row whose occurrence is still open: a re-dating edit re-dates it (touched) and names it; nothing new opens', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+    const obId = a.obligation.id;
+    const id = a.occurrence!.id;
+    w.retire(obId);
+    const before = w.log.length;
+    const p = w.activateFromInactive(obId, { recurrence: { kind: 'fixed-annual', month: 12, day: 10 }, notes: 'renewal portal' });
+    expect(w.log.length).toBe(before + 1);
+    expect(p.openOccurrence).toBeNull();
+    expect(p.updateOccurrence).toMatchObject({ id, patch: { dueOn: '2026-12-10', touched: true } });
+    expect(w.occ(id)).toMatchObject({ state: 'open', dueOn: '2026-12-10', touched: true });
+    expect(w.openOf(obId)).toHaveLength(1);
+    expect(w.ob(obId)).toMatchObject({ active: true, notes: 'renewal portal' });
+    expect(JSON.parse(w.log.at(-1)!.newValue!)).toMatchObject({
+      act: 'activated-from-inactive', fields: ['recurrence', 'notes'], reevaluatedOccurrenceId: id, openedOccurrenceId: null,
+    });
+    expect(w.log.at(-1)!.reason).toBe('Activated from Inactive · edited: rule, notes');
+  });
+
+  it('a retired row with an untouched next still open: a re-push-only edit re-queues it and touches nothing — re-activation never sets touched, and Undo survives', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-monthly', day: 20 }));
+    const obId = a.obligation.id;
+    const B = w.done(a.occurrence!.id).next!.id;
+    w.retire(obId);
+    const p = w.activateFromInactive(obId, { weight: 'routine', outlookReminderDays: 10 });
+    expect(p.openOccurrence).toBeNull();
+    expect(p.updateOccurrence).toMatchObject({ id: B, patch: { syncStatus: 'pending' } });
+    expect(p.updateOccurrence!.patch).not.toHaveProperty('touched');
+    expect(w.occ(B).touched).toBe(false);
+    expect(JSON.parse(w.log.at(-1)!.newValue!)).toMatchObject({ reevaluatedOccurrenceId: null, openedOccurrenceId: null });
+    expect(w.canUndo(a.occurrence!.id)).toEqual({ ok: true });
+  });
+
+  it('an unchanged form writes no field patch — only the re-activation, with no fields named', () => {
+    const w = world('2026-09-01');
+    const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }));
+    const obId = a.obligation.id;
+    w.retire(obId);
+    w.done(a.occurrence!.id);
+    w.setToday('2026-09-20');
+    const p = w.activateFromInactive(obId, { recurrence: { kind: 'fixed-annual', month: 10, day: 15 }, leadDays: 30, weight: 'hard', notes: '' });
+    expect(p.obligationPatch).toEqual({ active: true, updatedAt: expect.any(String) });
+    expect(p.openOccurrence).toMatchObject({ dueOn: '2027-10-15', periodLabel: '2027' });
+    const line = w.log.at(-1)!;
+    expect(JSON.parse(line.newValue!)).toMatchObject({ fields: [], values: { active: true }, openedOccurrenceId: p.openOccurrence!.id });
+    expect(JSON.parse(line.oldValue!)).toEqual({ active: false });
+    expect(line.reason).toMatch(/^Activated from Inactive · occurrence 2027 opened, rule date /);
+  });
+
+  it('refuses exactly what the two plans it replaced refused, with the same sentence, and plans the same writes where they allowed — reactivationProblem returns the same refusal', () => {
+    type Built = { w: ReturnType<typeof world>; obId: string };
+    const inactiveAnnual = (): Built => {
+      const w = world('2026-09-11');
+      return { w, obId: w.activate(activation({ kind: 'fixed-annual' }, { active: false })).obligation.id };
+    };
+    const retiredOpenAnnual = (): Built => {
+      const w = world('2026-09-10');
+      const a = w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 }));
+      w.retire(a.obligation.id);
+      return { w, obId: a.obligation.id };
+    };
+    const doneOneTime = (): Built => {
+      const w = world('2026-09-11');
+      const a = w.activate(activation({ kind: 'one-time', dueOn: '2026-10-01' }));
+      w.done(a.occurrence!.id);
+      w.setToday('2026-10-05');
+      return { w, obId: a.obligation.id };
+    };
+    const MARCH_15: FirmObligationPatch = { recurrence: { kind: 'fixed-annual', month: 3, day: 15 } };
+    const cases: { label: string; build: () => Built; patch: FirmObligationPatch; inputs?: { lastPeriodCompleted?: string }; refused: boolean }[] = [
+      { label: 'already active', build: () => {
+        const w = world('2026-09-11');
+        return { w, obId: w.activate(activation({ kind: 'fixed-annual', month: 12, day: 1 })).obligation.id };
+      }, patch: {}, refused: true },
+      { label: 'still undated', build: inactiveAnnual, patch: {}, refused: true },
+      { label: '"last period completed" names no period', build: inactiveAnnual, patch: MARCH_15, inputs: { lastPeriodCompleted: '2026-03-10' }, refused: true },
+      { label: '"last period completed" in the future', build: inactiveAnnual, patch: MARCH_15, inputs: { lastPeriodCompleted: '2027-03-15' }, refused: true },
+      { label: 'an Outlook reminder below zero', build: inactiveAnnual, patch: { ...MARCH_15, outlookReminderDays: -1 }, refused: true },
+      { label: 'a key outside the editable set', build: inactiveAnnual, patch: { active: true } as unknown as FirmObligationPatch, refused: true },
+      { label: '"last period completed" on a row with history', build: () => {
+        const w = world('2026-09-01');
+        const a = w.activate(activation({ kind: 'fixed-annual', month: 10, day: 15 }));
+        w.retire(a.obligation.id);
+        w.done(a.occurrence!.id);
+        return { w, obId: a.obligation.id };
+      }, patch: {}, inputs: { lastPeriodCompleted: '2025-10-15' }, refused: true },
+      { label: 'a one-time row already done on its date', build: doneOneTime, patch: {}, refused: true },
+      { label: 'a weekend-rule change that would un-overdue a retired row\'s open occurrence (FOD-4)', build: () => {
+        const w = world('2026-12-01');
+        const a = w.activate(activation({ kind: 'fixed-annual', month: 1, day: 30 }, { weekendRule: 'no-roll' }));
+        w.retire(a.obligation.id);
+        w.setToday('2027-01-31');
+        return { w, obId: a.obligation.id };
+      }, patch: { weekendRule: 'rolls-forward' }, refused: true },
+      { label: 'dated, with a "last period completed" that names a period', build: inactiveAnnual, patch: MARCH_15, inputs: { lastPeriodCompleted: '2026-03-15' }, refused: false },
+      { label: 'a one-time row given a new date', build: doneOneTime, patch: { recurrence: { kind: 'one-time', dueOn: '2027-10-01' } }, refused: false },
+      { label: 'a retired row with its occurrence open, re-dated', build: retiredOpenAnnual, patch: { recurrence: { kind: 'fixed-annual', month: 12, day: 10 } }, refused: false },
+      { label: 'a retired row with its occurrence open, unchanged', build: retiredOpenAnnual, patch: {}, refused: false },
+    ];
+    const refusal = (f: () => unknown): string | null => {
+      try { f(); return null; } catch (e) { return e instanceof Error ? e.message : String(e); }
+    };
+    for (const c of cases) {
+      const { w, obId } = c.build();
+      const ob = w.ob(obId);
+      const all = w.occsOf(obId);
+      const log = w.logFor(obId);
+      const today = w.getToday();
+      const ctxFor = (): ActContext => {
+        let n = 0;
+        return { today, nowIso: `${today}T12:00:00.000Z`, newId: () => `n-${++n}`, user: 't' };
+      };
+      // The path the Inactive form took before #156 A7: the edit (only when something
+      // changed), then the re-activation of the edited obligation — two plans, two lines.
+      const twoPlans = (ctx: ActContext) => {
+        const edit = FO.changedFields(ob, c.patch).length > 0 ? planEdit(ob, c.patch, all, ctx, log) : null;
+        const re = planReactivate(edit ? { ...ob, ...edit.obligationPatch } : ob, all, ctx, c.inputs);
+        return { edit, re };
+      };
+      const before = refusal(() => twoPlans(ctxFor()));
+      const after = refusal(() => planActivateFromInactive(ob, c.patch, all, ctxFor(), log, c.inputs));
+      expect(after, c.label).toBe(before);
+      expect(after === null, `${c.label} — ${after}`).toBe(!c.refused);
+      expect(reactivationProblem(ob, c.patch, all, today, c.inputs), c.label).toBe(after);
+      if (!c.refused) {
+        const old = twoPlans(ctxFor());
+        const one = planActivateFromInactive(ob, c.patch, all, ctxFor(), log, c.inputs);
+        expect(one.obligationPatch, c.label).toEqual({ ...(old.edit?.obligationPatch ?? {}), ...old.re.obligationPatch });
+        expect(one.updateOccurrence, c.label).toEqual(old.edit?.occurrence ?? null);
+        expect(one.openOccurrence, c.label).toEqual(old.re.occurrence);
+        expect(one.kept, c.label).toBe(old.edit?.kept ?? null);
+      }
+    }
+  });
+});
+
+// ------------------------- §7 item 7, domain half — the Outlook-delete queue (A6; FXD-2)
+
+describe('fix slice §7 item 7 (domain half) — Undo\'s Outlook delete, queued and retried (#156 A6; FXD-2)', () => {
+  const at = (n: number) => `2026-09-1${n}T12:00:00.000Z`;
+  const entry = (eventId: string, attempts: number): PendingOutlookDelete => ({ eventId, occurrenceId: `occ-${eventId}`, recordedAt: at(0), attempts });
+
+  it('queuedDeletes appends the event at zero attempts, writes nothing in place, and queues one event once however often asked', () => {
+    const ob = obWith();
+    const one = queuedDeletes(ob, { eventId: 'ev-1', occurrenceId: 'occ-1' }, at(0));
+    expect(one).toEqual([{ eventId: 'ev-1', occurrenceId: 'occ-1', recordedAt: at(0), attempts: 0 }]);
+    expect(ob.pendingOutlookDeletes).toEqual([]);
+    expect(queuedDeletes({ pendingOutlookDeletes: one }, { eventId: 'ev-1', occurrenceId: 'occ-1' }, at(5))).toEqual(one);
+    const two = queuedDeletes({ pendingOutlookDeletes: one }, { eventId: 'ev-2', occurrenceId: 'occ-2' }, at(1));
+    expect(two.map((e) => e.eventId)).toEqual(['ev-1', 'ev-2']);
+    expect(queuedDeletes({ pendingOutlookDeletes: two }, { eventId: 'ev-2', occurrenceId: 'occ-2' }, at(2))).toEqual(two);
+    // A row read before the v18 step carries no queue: it queues from empty.
+    expect(queuedDeletes({} as Pick<FirmObligation, 'pendingOutlookDeletes'>, { eventId: 'ev-3', occurrenceId: 'occ-3' }, at(3))).toHaveLength(1);
+  });
+
+  it('settledDeletes: "deleted" (2xx or 404) removes the entry; "failed" counts the attempt and keeps it; other entries are untouched', () => {
+    const queue = [entry('ev-1', 0), entry('ev-2', 4)];
+    expect(settledDeletes({ pendingOutlookDeletes: queue }, 'ev-1', 'deleted')).toEqual([queue[1]]);
+    expect(settledDeletes({ pendingOutlookDeletes: queue }, 'ev-2', 'failed')).toEqual([queue[0], { ...queue[1], attempts: 5 }]);
+    expect(settledDeletes({ pendingOutlookDeletes: queue }, 'ev-unknown', 'failed')).toEqual(queue);
+    expect(settledDeletes({ pendingOutlookDeletes: queue }, 'ev-unknown', 'deleted')).toEqual(queue);
+    expect(queue[1].attempts).toBe(4);
+  });
+
+  it('Undo → queued → failed drains → named under Needs attention at the third, never before → a later success removes it', () => {
+    const w = world('2026-09-10');
+    const a = w.activate(activation({ kind: 'fixed-monthly', day: 20 }));
+    const next = w.done(a.occurrence!.id).next!;
+    w.occ(next.id).outlookEventId = 'ev-next';
+    const u = w.undo(a.occurrence!.id);
+    expect(JSON.parse(u.log.newValue!).removedNextOutlookEventId).toBe('ev-next');
+    const ob = w.ob(a.obligation.id);
+    ob.pendingOutlookDeletes = queuedDeletes(ob, { eventId: u.removeOccurrence!.outlookEventId!, occurrenceId: u.removeOccurrence!.id }, at(0));
+    const stuck = () => registerView(w.obligations, w.occurrences, '2026-09-10').stuckDeletes;
+    expect(PENDING_DELETE_ATTENTION_ATTEMPTS).toBe(3);
+    expect(stuck()).toEqual([]);
+    for (const attempt of [1, 2]) {
+      ob.pendingOutlookDeletes = settledDeletes(ob, 'ev-next', 'failed');
+      expect(stuck(), `after failed attempt ${attempt}`).toEqual([]);
+    }
+    ob.pendingOutlookDeletes = settledDeletes(ob, 'ev-next', 'failed');
+    expect(stuck()).toEqual([{ obligation: ob, entry: { eventId: 'ev-next', occurrenceId: next.id, recordedAt: at(0), attempts: 3 } }]);
+    ob.pendingOutlookDeletes = settledDeletes(ob, 'ev-next', 'failed');
+    expect(stuck().map((s) => s.entry.attempts)).toEqual([4]);
+    ob.pendingOutlookDeletes = settledDeletes(ob, 'ev-next', 'deleted');
+    expect(ob.pendingOutlookDeletes).toEqual([]);
+    expect(stuck()).toEqual([]);
+  });
+
+  it('registerView.stuckDeletes names every entry at three attempts or more with its obligation, by obligation name — retired rows too — and nothing below', () => {
+    const obs = [
+      obWith({ id: 'b', name: 'Beta', pendingOutlookDeletes: [entry('b3', 3), entry('b2', 2)] }),
+      obWith({ id: 'a', name: 'Alpha', active: false, pendingOutlookDeletes: [entry('a7', 7)] }),
+      obWith({ id: 'c', name: 'Gamma', pendingOutlookDeletes: undefined as unknown as PendingOutlookDelete[] }),
+      obWith({ id: 'd', name: 'Delta', pendingOutlookDeletes: [entry('d0', 0)] }),
+    ];
+    const view = registerView(obs, [], '2026-09-10');
+    expect(view.stuckDeletes.map((s) => [s.obligation.id, s.entry.eventId, s.entry.attempts])).toEqual([['a', 'a7', 7], ['b', 'b3', 3]]);
+    expect(obs.map((o) => o.id)).toEqual(['b', 'a', 'c', 'd']);
+    expect(registerView([obWith()], [], '2026-09-10').stuckDeletes).toEqual([]);
   });
 });

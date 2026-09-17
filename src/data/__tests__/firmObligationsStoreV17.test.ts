@@ -66,10 +66,10 @@ function namedMix(today: string): Record<string, DisplayState> {
 beforeEach(() => mem.clear());
 
 describe('v16 → v17: the step itself', () => {
-  it('lands on v17 — the version this step actually produces — and STORE_VERSION is 17', () => {
+  it('lands on v17 — the version this step actually produces — while STORE_VERSION has moved on to 18 (FOS-2)', () => {
     const old = v16Store();
     expect(migrateV16ToV17(old, JSON.stringify(old), { today: '2026-09-13' }).version).toBe(17);
-    expect(STORE_VERSION).toBe(17);
+    expect(STORE_VERSION).toBe(18);
   });
 
   it('writes a full pre-migration backup before changing anything', () => {
@@ -100,13 +100,14 @@ describe('v16 → v17: the step itself', () => {
     expect(out.reviewLog.slice(0, prior.length)).toEqual(prior);
   });
 
-  it('chains a v15 store through v16 to v17, each backup holding its own version\'s text', async () => {
+  it('chains a v15 store through v16 and v17 to v18 (FOS-2), each backup holding its own version\'s text', async () => {
     const v15 = { ...seedData(), version: 15 };
     mem.set(KEY, JSON.stringify(v15));
     await new LocalAdapter().listFirmObligations();
-    expect(JSON.parse(mem.get(KEY)!).version).toBe(17);
+    expect(JSON.parse(mem.get(KEY)!).version).toBe(18);
     expect(JSON.parse(mem.get(`${KEY}-backup-v15`)!).version).toBe(15);
     expect(JSON.parse(mem.get(`${KEY}-backup-v16`)!).version).toBe(16);
+    expect(JSON.parse(mem.get(`${KEY}-backup-v17`)!).version).toBe(17);
   });
 
   it('the v15 → v16 step is untouched by this one', () => {

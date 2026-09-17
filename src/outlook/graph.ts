@@ -9,7 +9,8 @@ import type { CalendarEvent } from '../domain/calendar';
 import type { FirmObligation, FirmObligationOccurrence } from '../domain/firmObligations';
 import type { CaseRecord } from '../domain/types';
 import {
-  daysBetween, dueDate, FOD1_NOTE, formatDate, isUnknownWeekend, lightsOn, plainText, ruleDate, targetDate,
+  daysBetween, dueDate, FOD1_NOTE, formatDate, isUnknownWeekend, outlookReminderIsOn, plainText, reminderOn, ruleDate,
+  targetDate,
 } from '../domain/firmObligations';
 import { OUTLOOK_CALENDAR_NAME } from './config';
 import { OUTLOOK_FIRM_CALENDAR_NAME } from './config';
@@ -149,7 +150,10 @@ export async function pushToOutlook(
 //
 // Authority: docs/specs/firm-obligations-build-slice.md §3 item 7 and §7 item 15
 // (FOD-10 as amended by DECISION 7; FOD-22, FOD-28, FOD-29), §2.3 items 2–5 for the
-// dates; FOS-1 RULED YES by Michael 2026-09-10, session log #155.
+// dates; FOS-1 RULED YES by Michael 2026-09-10, session log #155. The reminder limb as
+// amended, and the delete Undo could not make: docs/specs/firm-obligations-fix-slice.md
+// §3 items 2, 3 and 8 (#156 §1 items 6(a), 6(b) and 9 — A1, A2, A6); FOS-2 RULED YES by
+// Michael 2026-09-12, session log #156.
 //
 // A SIBLING, never a branch: toGraphEvent's case path above is untouched (slice §8),
 // so nothing a firm row does can change what a matter event pushes — and nothing
@@ -201,7 +205,8 @@ export function forgetFirmCalendar(): void {
  *  own time zone — the zone the payload's start and end already name. It is
  *  days × 1440 plus the change in UTC offset between the two midnights, so across a
  *  daylight-saving change it is 60 minutes more or less than days × 1440 — which is
- *  the point: the reminder still rings at midnight on the lit day (FOD-29 as ruled). */
+ *  the point: the reminder still rings at midnight on its day (FOD-29's rule as ruled
+ *  2026-09-11, re-based from the lit day to the reminder day by #156 A1). */
 export function minutesBetweenLocalMidnights(from: string, to: string): number {
   const offset = (d: string) => {
     const [y, m, day] = d.split('-').map(Number);
@@ -219,23 +224,35 @@ export function minutesBetweenLocalMidnights(from: string, to: string): number {
  *  - The body carries D; and, where R and D differ (which only the obligation's own
  *    `rolls-forward` can make happen), the roll; under `unknown` on a weekend R, the
  *    FOD-1 note in the roll line's place. No roll is ever inferred (slice §0, rule 1).
- *  - The reminder fires AT THE LIT MOMENT — FOD-29 as Michael ruled it at the build
- *    session's stop on its two conflicting phrasings, 2026-09-11 (his pick: "Fire at
- *    the lit moment"): the real minutes from 00:00 local on the lit day to 00:00 local
- *    on T. That is lead × 1440 at day precision except across a daylight-saving
- *    change, and FOM-6's earlier-of value at month precision; capped at nothing.
- *    Whether Graph honours a reminder that long on an all-day event is FOM-8's live
- *    check; nothing here can know it.
- *  - A done occurrence keeps its event under a "Done — " subject (FOD-22), and
- *    `isReminderOn` stays TRUE, as slice §3 item 7 names it — so an occurrence done
- *    EARLY (FOD-15) still rings at its lit moment. That is recorded for the hands-on
- *    sitting's keep-vs-delete item, not decided here.
+ *  - The reminder fires ON THE REMINDER DAY — #156 §1 item 6(b) (A1), Michael's "That
+ *    looks correct." on the reminder composite, 2026-09-12: `reminderOn` = T − the
+ *    obligation's stored `outlookReminderDays`, and the minutes are the real minutes from
+ *    00:00 local on that day to 00:00 local on T. That is FOD-29's rule as he ruled it at
+ *    the FOS-1 build's stop, 2026-09-11 (his pick then: "Fire at the lit moment"),
+ *    RE-BASED from the lit day to the reminder day: days × 1440 except across a
+ *    daylight-saving change. The stored value is the value that fires, so a value raised
+ *    past the lead rings before the row lights (FXD-9); a month-precision row keys off its
+ *    T like a day-precision one (FXD-11) — FOM-6's earlier-of rule stays with the lit
+ *    moment, which the register and the card still use; a reminder day already past at
+ *    push time is sent as computed (FXD-3). Capped at nothing: whether Graph honours a
+ *    reminder that long on an all-day event is FOM-8's live check; nothing here can
+ *    know it.
+ *  - HARD rows only (A1: "I do not want all of the events to carry a reminder."): a
+ *    routine obligation's event carries `isReminderOn: false` and 0 minutes — Graph's
+ *    default reminder is not relied on (FXD-8).
+ *  - A closed occurrence keeps its event under a "Done — " subject (FOD-22) with its
+ *    reminder OFF and 0 minutes — #156 §1 item 6(a) (A2), "Keep it, retitled, but kill
+ *    the reminder" — and Not applicable closes it exactly as Done does (FXD-10). The
+ *    FOS-1 build's `isReminderOn: true` on a done occurrence (slice §3 item 7 as then
+ *    named) is superseded by that ruling. Undo reopens the row, and its ordinary re-push
+ *    restores both: the original subject, and the reminder per weight.
  *  - The subject shows the name through plainText: SPEC §7's names are stored with
  *    their markdown (FOT-27's backticks), and Outlook shows the words (review L5-08).
  *    The body names no obligation, so the subject is the only place the name appears.
  *
- * T, D and the lit day come from the domain module's one derivation; only the end
- * date's "+1 day" uses this file's own local addDays, which agrees for naive dates.
+ * T, D, the reminder day and whether the reminder is on come from the domain module's one
+ * derivation; only the end date's "+1 day" uses this file's own local addDays, which
+ * agrees for naive dates.
  */
 export function toGraphFirmEvent(
   occ: FirmObligationOccurrence, obligation: FirmObligation,
@@ -244,6 +261,7 @@ export function toGraphFirmEvent(
   const R = ruleDate(occ);
   const T = targetDate(occ);
   const D = dueDate(obligation, occ);
+  const reminder = outlookReminderIsOn(obligation, occ); // hard AND not closed — #156 A1, A2
   const subject = `Firm obligation: ${plainText(obligation.name)} (${occ.periodLabel})`; // PROVISIONAL — DECISION 7
   const lines = [
     'Firm obligation — no matter', // PROVISIONAL — FOD-10 as amended by DECISION 7
@@ -267,14 +285,16 @@ export function toGraphFirmEvent(
       // how the Phase 2 matching hook tells the two kinds apart.
       { id: MATTER_PROP_ID, value: `FIRM|${obligation.id}|${occ.id}` },
     ],
-    isReminderOn: true, // slice §3 item 7, as named — see the doc comment on a done occurrence
-    reminderMinutesBeforeStart: minutesBetweenLocalMidnights(lightsOn(obligation, occ), T), // FOD-29 as ruled 2026-09-11
+    isReminderOn: reminder, // #156 A1 (hard only; FXD-8) and A2 (off once closed; FXD-10)
+    // The reminder day's midnight to T's (#156 A1; FOD-29's rule re-based; FXD-9, FXD-11); 0 when off (FXD-8).
+    reminderMinutesBeforeStart: reminder ? minutesBetweenLocalMidnights(reminderOn(obligation, occ), T) : 0,
   };
 }
 
 /** Push one firm occurrence's current state; returns the Outlook event id. There is
- *  no delete branch: Done PATCHes the kept event (FOD-22), so every state is a create
- *  or a patch. An event deleted directly in Outlook is recreated (software is the
+ *  no delete branch: Done and Not applicable PATCH the kept event (FOD-22; its subject
+ *  and its reminder, #156 A2), and Undo's re-push PATCHes it back, so every state is a
+ *  create or a patch. An event deleted directly in Outlook is recreated (software is the
  *  authority). A 404 on the POST itself — the cached calendar deleted in Outlook —
  *  propagates as GraphNotFoundError, so the caller can forgetFirmCalendar() and
  *  retry once, exactly as syncEvent does for a case. */
@@ -298,8 +318,10 @@ export async function pushFirmOccurrenceToOutlook(
 }
 
 /** Delete one firm event. It exists for Undo, which removes the untouched next
- *  occurrence (FOD-7) and so that occurrence's event; Done never deletes (FOD-22).
- *  A 404 means the event is already gone in Outlook — the state asked for. */
+ *  occurrence (FOD-7) and so that occurrence's event — at once, or, when that could not
+ *  be done, from the obligation's queue by syncAllPending's drain (#156 A6; FXD-2).
+ *  Done never deletes (FOD-22). A 404 means the event is already gone in Outlook — the
+ *  state asked for, so the drain settles it as deleted. */
 export async function deleteFirmOutlookEvent(token: string, eventId: string): Promise<void> {
   try {
     await graphFetch(token, `/me/events/${eventId}`, { method: 'DELETE' });

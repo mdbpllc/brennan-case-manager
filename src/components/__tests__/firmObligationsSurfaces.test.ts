@@ -3,6 +3,9 @@
 // Authority: docs/specs/firm-obligations-build-slice.md §3 items 5, 6 and 10, §7 items
 // 9, 11, 12, 13 and 21, and §8. FOS-1 RULED YES 2026-09-10. Where a test pins a
 // finding of the adversarial whole-build review, its L-number is named beside it.
+// The fix slice, docs/specs/firm-obligations-fix-slice.md (FOS-2 RULED YES 2026-09-12,
+// #156): §3 items 1, 7, 8 and 10 on screen, §7 items 6 and 17 — pinned in the block
+// "the fix slice on the register" at the foot, and where an older pin changed with it.
 //
 // The domain rules behind these surfaces are pinned in
 // src/domain/__tests__/firmObligations.test.ts; this suite pins what the SCREENS may
@@ -24,7 +27,9 @@ import type { FirmObligation, FirmObligationOccurrence, ViewItem } from '../../d
 import {
   CARD_LINES, cardLine, cardSummary, daysOverdue, dueDate, stateOf, targetDate,
 } from '../../domain/firmObligations';
-import { errorRoute, landedNotice, outlookPushes, type RemoveResult } from '../../pages/firmObligationsActs';
+import {
+  errorRoute, landedNotice, outlookPushes, reminderDaysFrom, reminderExceedsLead, type RemoveResult,
+} from '../../pages/firmObligationsActs';
 
 const flat = (s: string) => s.replace(/\s+/g, ' ');
 
@@ -170,9 +175,12 @@ describe('the register offers no back door out of FO-2 (§7 item 21; slice §8)'
 
   it('calls only the ruled acts on the adapter — Done and Not applicable close, Undo reopens, nothing else unlights (FOD-18, FOD-7)', () => {
     const called = (src: string) => [...new Set([...code(src).matchAll(/\bdb\.(\w+)\(/g)].map((m) => m[1]))].sort();
+    // The fix slice adds two, neither of which unlights anything: activateFromInactive (#156 A7,
+    // Activate… from Inactive as one act) and queueFirmOutlookDelete (#156 A6, Outlook bookkeeping).
     expect(called(pageSource)).toEqual([
+      'activateFromInactive',
       'createFirmObligation', 'listFirmObligationOccurrences', 'listFirmObligationReviewLog', 'listFirmObligations',
-      'markOccurrenceDone', 'markOccurrenceNotApplicable', 'reactivateFirmObligation', 'retireFirmObligation',
+      'markOccurrenceDone', 'markOccurrenceNotApplicable', 'queueFirmOutlookDelete', 'reactivateFirmObligation', 'retireFirmObligation',
       'setOccurrenceDueOverride', 'undoOccurrence', 'updateFirmObligation',
     ]);
     expect(called(cardSource)).toEqual(['listFirmObligationOccurrences', 'listFirmObligations']);
@@ -187,9 +195,13 @@ describe('the register offers no back door out of FO-2 (§7 item 21; slice §8)'
     expect(src.split('Not applicable…</button>').length - 1).toBe(1);
   });
 
-  it('offers Undo only where FOD-7\'s test holds', () => {
+  it('offers Undo only where FOD-7\'s test holds — on the latest closed occurrence, decided from the columns (#156 A3)', () => {
     const src = flat(pageSource);
-    expect(src).toContain('canUndo(ob, occ, mine, lines).ok');
+    const target = code(fnRaw(pageSource, 'undoableClose'));
+    expect(target).toContain('const it = latestClosed(mine);');
+    expect(target).toContain('return it && canUndo(ob, it, mine, lines).ok ? it : null;');
+    // The FOS-1 walk back through the close lines is gone.
+    expect(target).not.toMatch(/l\.action|for \(let i = lines\.length/);
     expect(src).toMatch(/\{undoTarget && \( <button/);
   });
 
@@ -229,10 +241,11 @@ describe('the text acts — every one marked, every marker cited (slice §3 item
       expect(unmarked).toEqual([]);
     });
 
-    it(`${label}: every PROVISIONAL marker names its cite — a FOD-, FOM-, DECISION or slice section, never a field name`, () => {
+    it(`${label}: every PROVISIONAL marker names its cite — a FOD-, FOM-, DECISION, slice section, #156 ruling or FXD- default, never a field name`, () => {
       const rests = [...src.matchAll(/(?:\/\/|\/\*)\s*PROVISIONAL\b([^\n]*)/g)].map((m) => m[1]);
       expect(rests.length).toBeGreaterThan(0);
-      expect(rests.filter((r) => !/^ — (FOD-\d+|FOM-\d+|DECISION \d+|slice §\d|§\d)/.test(r))).toEqual([]);
+      // Since the fix slice a cite may also lead with a session-log ruling (#156 …) or a fix-slice default (FXD-n).
+      expect(rests.filter((r) => !/^ — (FOD-\d+|FOM-\d+|DECISION \d+|slice §\d|§\d|#\d+|FXD-\d+)/.test(r))).toEqual([]);
     });
   }
 });
@@ -257,7 +270,8 @@ describe('the register\'s groups (§7 items 12 and 13)', () => {
 describe('Needs attention — an active obligation with no open occurrence (review L1-F4)', () => {
   it('renders view.stranded when there is any: each obligation\'s name, the sentence, and a Retire', () => {
     const page = flat(pageSource);
-    expect(page).toContain('{view.stranded.length > 0 && (');
+    // The card shows when an obligation is stranded OR a queued Outlook delete is stuck (FXD-2).
+    expect(page).toContain('{(view.stranded.length > 0 || view.stuckDeletes.length > 0) && (');
     expect(page).toContain('{view.stranded.map((ob) => <StrandedRow key={ob.id} ob={ob} ctx={ctx} />)}');
     const row = flat(fnRaw(pageSource, 'StrandedRow'));
     expect(row).toContain('const name = plainText(ob.name);');
@@ -346,27 +360,29 @@ describe('what a row shows (review L5-03, L5-06, L5-08, L5-09, L2-F4)', () => {
     expect(flat(fnRaw(pageSource, 'Details'))).toContain('{!omitSource && ob.sourceNote &&');
   });
 
-  it('Activate… from Inactive asks first, edits only what changed, pushes the edited open occurrence, and passes FOM-4\'s input (PAGE-2, L5-09, L2-F4)', () => {
+  it('Activate… from Inactive asks first, then makes ONE act of the edit and the re-activation, pushes what it returns, and passes FOM-4\'s input (PAGE-2, L2-F4; #156 A7, fix slice §7 item 6)', () => {
     const row = code(fnRaw(pageSource, 'InactiveRow'));
     const ask = row.indexOf('const problem = reactivationProblem(ob, patch, mine, ctx.today, { lastPeriodCompleted: input.lastPeriodCompleted });');
     const stop = row.indexOf('if (problem) throw new Error(problem);');
-    const guard = row.indexOf('if (changedFields(ob, patch).length > 0) {');
-    const update = row.indexOf('const res = await db.updateFirmObligation(ob.id, patch);');
-    const push = row.indexOf('if (res.occurrence) await outlook.sync(res.occurrence, res.obligation);');
-    const reactivate = row.indexOf('await db.reactivateFirmObligation(ob.id, { lastPeriodCompleted: input.lastPeriodCompleted });');
+    const write = 'const { obligation, occurrence } = await db.activateFromInactive(ob.id, patch, { lastPeriodCompleted: input.lastPeriodCompleted });';
+    const act = row.indexOf(write);
+    const close = row.indexOf('setActivating(false);', act);
+    const push = row.indexOf('if (occurrence) await outlook.sync(occurrence, obligation);', act);
     // PAGE-2: the dry run comes BEFORE any write, over this obligation's own occurrences, and a refusal stops the act there.
     expect(row).toContain('const mine = ctx.occurrences.filter((o) => o.obligationId === ob.id);');
     expect(ask).toBeGreaterThan(row.indexOf('const mine = ctx.occurrences.filter('));
     expect(stop).toBeGreaterThan(ask);
-    expect(guard).toBeGreaterThan(stop);
     expect(row.slice(0, ask)).not.toMatch(/\bdb\.\w+\(|outlook\.sync\(/);
     expect(row.split('reactivationProblem(').length - 1).toBe(1);
-    expect(update).toBeGreaterThan(guard);
-    expect(push).toBeGreaterThan(update);
-    expect(reactivate).toBeGreaterThan(push);
-    expect(row.split('db.updateFirmObligation(').length - 1).toBe(1);
-    // The guard's block closes before the re-activation, which runs either way.
-    expect(row.slice(push, reactivate)).toMatch(/^[^{]*\}/);
+    // #156 A7, "One act, one line": exactly one adapter act after the pre-check, then the form closes, then the push.
+    expect(act).toBeGreaterThan(stop);
+    expect(close).toBeGreaterThan(act);
+    expect(push).toBeGreaterThan(close);
+    expect(row.slice(act + write.length, close)).not.toContain('await');
+    expect(row.split('db.activateFromInactive(').length - 1).toBe(1);
+    expect(row.match(/\bdb\.\w+\(/g)).toEqual(['db.activateFromInactive(']);
+    // The patch carries the reminder the form read (#156 A1).
+    expect(row).toContain('outlookReminderDays: input.outlookReminderDays,');
     // FOM-4's field: a FIRST activation only, on a serial kind that is neither one-time nor an interval.
     expect(row).toContain('const firstActivation = !ctx.occurrences.some((o) => o.obligationId === ob.id);');
     expect(row).toContain('firstActivation={firstActivation}');
@@ -412,11 +428,12 @@ describe('the /cases card (§7 item 11; FOD-26, FOD-27)', () => {
   const ob = (over: Partial<FirmObligation> = {}): FirmObligation => ({
     id: 'ob', name: 'State Bar membership fee', category: 'licensing', ownerScope: 'attorney',
     recurrence: { kind: 'fixed-annual', month: 1, day: 30 }, precision: 'day', missedPeriods: 'serial',
-    conditionalPerPeriod: false, weekendRule: 'unknown', leadDays: 30, weight: 'hard', active: true,
+    conditionalPerPeriod: false, weekendRule: 'unknown', leadDays: 30, weight: 'hard',
+    outlookReminderDays: 30, pendingOutlookDeletes: [], active: true,
     createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z', ...over,
   });
   const occ = (dueOn: string, over: Partial<FirmObligationOccurrence> = {}): FirmObligationOccurrence => ({
-    id: 'o', obligationId: 'ob', periodLabel: '2027', dueOn, state: 'open', syncStatus: 'pending',
+    id: 'o', obligationId: 'ob', periodLabel: '2027', dueOn, state: 'open', syncStatus: 'pending', touched: false,
     createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z', ...over,
   });
   const item = (o: FirmObligation, x: FirmObligationOccurrence, today: string): ViewItem => ({
@@ -615,7 +632,7 @@ describe('the act plumbing: a landed act is not a failed one, and no error is lo
     }
     const rests = [...actsSource.matchAll(/(?:\/\/|\/\*)\s*PROVISIONAL\b([^\n]*)/g)].map((m) => m[1]);
     expect(rests.length).toBeGreaterThan(1);
-    expect(rests.filter((r) => !/^ — (FOD-\d+|FOM-\d+|DECISION \d+|slice §\d|§\d)/.test(r))).toEqual([]);
+    expect(rests.filter((r) => !/^ — (FOD-\d+|FOM-\d+|DECISION \d+|slice §\d|§\d|#\d+|FXD-\d+)/.test(r))).toEqual([]);
     expect(code(actsSource)).not.toMatch(/snooze|dismiss|bulk|select ?all|remind ?me/i);
     expect(code(actsSource)).not.toMatch(/\bdb\.|\bdelete\w*(Obligation|Occurrence)\w*\s*\(/i);
   });
@@ -755,7 +772,8 @@ describe('the register page after its verifier round (PAGE-1 to PAGE-7)', () => 
     expect(page.slice(create + write.length, close)).not.toContain('await');
     for (const [fn, landed, closes] of [
       ['RegisterRow', 'await db.markOccurrenceNotApplicable(', 'setForm(null);'],
-      ['InactiveRow', 'await db.reactivateFirmObligation(ob.id, {', 'setActivating(false);'],
+      // #156 A7: the one act, activateFromInactive, replaced the re-activation as the Inactive form's landing.
+      ['InactiveRow', 'await db.activateFromInactive(ob.id, patch, {', 'setActivating(false);'],
       ['EditForm', 'await db.updateFirmObligation(ob.id, patch);', 'onClose();'],
       ['EditForm', 'await db.setOccurrenceDueOverride(occ.id, override);', 'onClose();'],
     ] as const) {
@@ -780,11 +798,162 @@ describe('the register page after its verifier round (PAGE-1 to PAGE-7)', () => 
     expect(edit.split('db.updateFirmObligation(').length - 1).toBe(1);
   });
 
-  it('PAGE-7: Undo\'s "Outlook event was NOT deleted" is a warning through the act\'s Outlook half, never part of its success message', () => {
+  it('PAGE-7: an Outlook event Undo could not delete is QUEUED for the next sync and said as a warning through the act\'s Outlook half, never part of its success message (#156 A6)', () => {
     const undo = code(fnRaw(pageSource, 'undo'));
-    expect(undo).toContain('const result = await outlook.remove(res.removed.outlookEventId);');
-    expect(undo).toMatch(/if \(result !== 'deleted'\) \{ outlook\.warn\(`Its removed next occurrence's Outlook event \(.*\) was NOT deleted — /);
+    const remove = undo.indexOf('const result = await outlook.remove(eventId);');
+    const notDeleted = undo.indexOf("if (result !== 'deleted') {");
+    const queue = undo.indexOf('await db.queueFirmOutlookDelete(ob.id, { eventId, occurrenceId: removed.id });');
+    expect(undo).toContain('const removed = res.removed;');
+    expect(undo).toContain('if (removed?.outlookEventId) { const eventId = removed.outlookEventId;');
+    expect(remove).toBeGreaterThan(-1);
+    expect(notDeleted).toBeGreaterThan(remove);
+    expect(queue).toBeGreaterThan(notDeleted);
+    expect(undo.split('db.queueFirmOutlookDelete(').length - 1).toBe(1);
+    // The queue write is the ONLY thing its try guards; a throw there becomes queueError, and the Undo still lands.
+    expect(undo).toMatch(/try \{ await db\.queueFirmOutlookDelete\([^)]*\); \} catch \(e\) \{ queueError = msg\(e\); \}/);
+    const [queued, failed] = undo.slice(queue).split('} else {');
+    // After a delete that did not go through, and a queue write that did: "queued to delete on next sync", never "NOT deleted".
+    expect(queued).toMatch(/if \(queueError === null\) \{ outlook\.warn\(`Its removed next occurrence's Outlook event \(.*\) could not be deleted now — .*; it is queued to delete on next sync\.`\);/);
+    expect(queued).not.toContain('NOT deleted');
+    // Only when the queue write itself failed: today's "was NOT deleted — …; delete it in Outlook." sentence, with its cause.
+    expect(failed).toMatch(/^ outlook\.warn\(`Its removed next occurrence's Outlook event \(.*\) was NOT deleted — .*\(\$\{queueError\}\); delete it in Outlook\.`\);/);
+    expect(undo.split('NOT deleted').length - 1).toBe(1);
     expect(undo).toContain('return `Reopened: ${name} (${res.reopened.periodLabel}).`;');
-    expect(undo).not.toMatch(/outlookNote|return `[^`]*NOT deleted/);
+    expect(undo).not.toMatch(/outlookNote|return `[^`]*(NOT deleted|queued)/);
+  });
+});
+
+describe('the fix slice on the register (#156; fix slice §3 items 1, 7, 8 and 10, §7 items 6 and 17)', () => {
+  it('§7 item 6: the retired two-call path is gone — nothing in InactiveRow names updateFirmObligation, reactivateFirmObligation or the changedFields guard, and no function on the page calls both (#156 A7)', () => {
+    // Grep-shaped, over the raw source comments included: the old sequence cannot survive even as a stale call.
+    const raw = fnRaw(pageSource, 'InactiveRow');
+    expect(raw).not.toMatch(/\bupdateFirmObligation\b|\breactivateFirmObligation\b|\bchangedFields\b/);
+    expect(raw.split('db.activateFromInactive(').length - 1).toBe(1);
+    // RegisterRow's Re-activate and EditForm's Save each still call one of the two; no function on the page calls both.
+    const sf = parse(pageSource);
+    const both: string[] = [];
+    let functions = 0;
+    const visit = (node: ts.Node): void => {
+      if (ts.isFunctionDeclaration(node) || ts.isArrowFunction(node) || ts.isFunctionExpression(node)) {
+        functions += 1;
+        const body = code(node.getText(sf));
+        if (body.includes('db.updateFirmObligation(') && body.includes('db.reactivateFirmObligation(')) both.push(node.getText(sf).slice(0, 60));
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(sf);
+    expect(functions).toBeGreaterThan(20);
+    expect(both).toEqual([]);
+    expect(code(fnRaw(pageSource, 'RegisterRow'))).toContain('await db.reactivateFirmObligation(ob.id);');
+    expect(code(fnRaw(pageSource, 'EditForm'))).toContain('await db.updateFirmObligation(ob.id, patch);');
+  });
+
+  it('A1: Activate… (catalog, custom, and from Inactive) carries an "Outlook reminder (days)" field — pre-filled min(30, lead) or the stored value; on a NEW activation it follows the lead until he types in it, and a row from Inactive keeps its stored value', () => {
+    const form = code(fnRaw(pageSource, 'ActivationForm'));
+    expect(form).toContain('const leadPrefill = existing?.leadDays ?? template?.leadDays ?? DEFAULT_LEAD_DAYS;');
+    expect(form).toContain('const [lead, setLead] = useState(String(leadPrefill));');
+    expect(form).toContain('const [reminder, setReminder] = useState(String(existing?.outlookReminderDays ?? defaultReminderDays(leadPrefill)));');
+    // The lead input moves the reminder with it only on a new activation, only while the reminder is untyped, and only to a whole-number lead.
+    expect(form).toContain('onChange={(e) => changeLead(e.target.value)}');
+    expect(form).toContain('if (!existing && !reminderTyped && leadDays !== null) setReminder(String(defaultReminderDays(leadDays)));');
+    expect(form).toMatch(/const changeReminder = \(v: string\) => \{ setReminderTyped\(true\); setReminder\(v\); \};/);
+    expect(jsxElements(fnRaw(pageSource, 'ActivationForm'), 'ReminderInput').map((e) => e.attrs))
+      .toEqual([{ value: '{reminder}', lead: '{lead}', onChange: '{changeReminder}' }]);
+    // The field: a number input with min 0, its PROVISIONAL label, and FXD-9's hint above the lead.
+    const input = flat(fnRaw(pageSource, 'ReminderInput'));
+    expect(input).toContain('<span className="lab">Outlook reminder (days)</span>');
+    expect(input).toContain('<input type="number" min={0} value={value} onChange={(e) => onChange(e.target.value)}');
+    expect(input).toMatch(/\{reminderExceedsLead\(value, lead\) && \( <span className="small muted">rings before this row lights on the register<\/span>/);
+  });
+
+  it('A1: Activate… refuses a reminder that is not a whole number ≥ 0 BEFORE the act, and the value flows into the catalog activation, the custom one and the submit', () => {
+    const form = code(fnRaw(pageSource, 'ActivationForm'));
+    const read = form.indexOf('const outlookReminderDays = reminderDaysFrom(reminder);');
+    const refuse = form.indexOf("if (outlookReminderDays === null) { setError('The Outlook reminder must be a whole number of days, 0 or more.'); return; }");
+    expect(read).toBeGreaterThan(form.indexOf('const leadDays = Number(lead);'));
+    expect(refuse).toBeGreaterThan(read);
+    expect(form.indexOf('void act(')).toBeGreaterThan(refuse);
+    expect(form).toContain('activationFromTemplate(template, { recurrence: built.rule, weekendRule, leadDays, weight, outlookReminderDays,');
+    expect(form).toContain('conditionalPerPeriod: conditional, weekendRule, leadDays, weight, outlookReminderDays,');
+    expect(form).toContain('onSubmit({ ...base, recurrence: built.rule, weekendRule, leadDays, weight, outlookReminderDays }, outlook)');
+    // Never the Lead field's Number('') — a cleared reminder field is never 0.
+    expect(code(pageSource)).not.toMatch(/Number\(reminder\)|Number\(value\)/);
+  });
+
+  it('A1: Edit… carries the same field, pre-filled from the obligation and NOT following the lead, validated before the no-change guard, and written in its patch', () => {
+    const edit = code(fnRaw(pageSource, 'EditForm'));
+    expect(edit).toContain('const [reminder, setReminder] = useState(String(ob.outlookReminderDays ?? defaultReminderDays(ob.leadDays)));');
+    expect(jsxElements(fnRaw(pageSource, 'EditForm'), 'ReminderInput').map((e) => e.attrs))
+      .toEqual([{ value: '{reminder}', lead: '{lead}', onChange: '{setReminder}' }]);
+    expect(edit).toContain('onChange={(e) => setLead(e.target.value)}');
+    expect(edit).not.toMatch(/reminderTyped|changeLead/);
+    const read = edit.indexOf('const outlookReminderDays = reminderDaysFrom(reminder);');
+    const refuse = edit.indexOf("if (outlookReminderDays === null) { saveAct.setError('The Outlook reminder must be a whole number of days, 0 or more.'); return; }");
+    const patch = edit.indexOf('const patch: FirmObligationPatch = { recurrence: built.rule, leadDays, weight, weekendRule, outlookReminderDays,');
+    const guard = edit.indexOf('if (changedFields(ob, patch).length === 0) {');
+    expect(read).toBeGreaterThan(-1);
+    expect(refuse).toBeGreaterThan(read);
+    expect(patch).toBeGreaterThan(refuse);
+    expect(guard).toBeGreaterThan(patch);
+  });
+
+  it('A1: the field\'s reading refuses a cleared, fractional or negative value — no silent 0 — and the hint shows only above the lead (FXD-9)', () => {
+    for (const bad of ['', '   ', '-1', '2.5', 'abc']) expect(reminderDaysFrom(bad), JSON.stringify(bad)).toBeNull();
+    expect(reminderDaysFrom('0')).toBe(0);
+    expect(reminderDaysFrom('30')).toBe(30);
+    expect(reminderDaysFrom('180')).toBe(180);
+    expect(reminderExceedsLead('60', '30')).toBe(true);
+    expect(reminderExceedsLead('30', '30')).toBe(false);
+    expect(reminderExceedsLead('5', '30')).toBe(false);
+    // A field that is not a whole number ≥ 0 hints nothing.
+    expect(reminderExceedsLead('', '30')).toBe(false);
+    expect(reminderExceedsLead('60', '')).toBe(false);
+  });
+
+  it('A1: Details says, after the lead, "no Outlook reminder (routine)" on a routine row and "Outlook reminder N days before the target" on a hard row', () => {
+    const d = code(fnRaw(pageSource, 'Details'));
+    const lead = d.indexOf('lead {ob.leadDays} days');
+    const line = d.indexOf("{ob.weight === 'routine' ? ' · no Outlook reminder (routine)' : ` · Outlook reminder ${ob.outlookReminderDays} days before the target`}");
+    expect(lead).toBeGreaterThan(-1);
+    expect(line).toBeGreaterThan(lead);
+    expect(d.indexOf('{WEIGHT_GLYPH[ob.weight].title.toLowerCase()}')).toBeGreaterThan(line);
+  });
+
+  it('A6, FXD-2: Needs attention also names every stuck queued delete — the obligation and its failed syncs, that it stays queued, and that he may delete it in Outlook — with no control on it', () => {
+    const page = code(fnRaw(pageSource, 'FirmObligationsPage'));
+    const card = page.indexOf('(view.stranded.length > 0 || view.stuckDeletes.length > 0) && (');
+    const heading = page.indexOf('>Needs attention</h3>');
+    const stranded = page.indexOf('view.stranded.map(');
+    const stuck = page.indexOf('view.stuckDeletes.map(({ obligation, entry }) => (<StuckDeleteRow key={`${obligation.id}:${entry.eventId}`} ob={obligation} entry={entry}/>))');
+    expect(card).toBeGreaterThan(-1);
+    expect(heading).toBeGreaterThan(card);
+    expect(stranded).toBeGreaterThan(heading);
+    expect(stuck).toBeGreaterThan(stranded);
+    expect(page.indexOf('view.months.map')).toBeGreaterThan(stuck);
+    const row = flat(fnRaw(pageSource, 'StuckDeleteRow'));
+    expect(row).toContain('<strong>{plainText(ob.name)}</strong>');
+    expect(row).toContain('An Outlook event Undo removed is still queued to delete — ${entry.attempts} syncs have failed to delete it. It stays queued and every sync tries again; you may also delete it in Outlook by hand.');
+    // Named only: no button, no act, nothing that unlights or removes (FO-2; fix slice §8).
+    expect(code(fnRaw(pageSource, 'StuckDeleteRow'))).not.toMatch(/<button|\bdb\.|useAct\(|onClick/);
+  });
+
+  it('§7 item 17: every string the fix slice adds to the register is found on screen by the walker and marked PROVISIONAL with its cite on its own line', () => {
+    const lines = pageSource.split(/\r?\n/);
+    const found = visibleLiterals(pageSource);
+    const added: [phrase: string, cite: string, times: number][] = [
+      ['Outlook reminder (days)', '#156 §1 item 6(b) (A1)', 1],
+      ['rings before this row lights on the register', 'FXD-9', 1],
+      ['The Outlook reminder must be a whole number of days, 0 or more.', '#156 §1 item 6(b) (A1); FXD-9', 2],
+      [' · no Outlook reminder (routine)', '#156 §1 item 6(b) (A1)', 1],
+      [' · Outlook reminder … days before the target', 'FXD-9', 1],
+      ['could not be deleted now — …; it is queued to delete on next sync.', '#156 §1 item 9 (A6)', 1],
+      [', and it could not be queued for the next sync (…); delete it in Outlook.', 'FOD-7 with DECISION 7; #156 §1 item 9 (A6)', 1],
+      ['An Outlook event Undo removed is still queued to delete — … syncs have failed to delete it.', 'FXD-2', 1],
+    ];
+    for (const [phrase, cite, times] of added) {
+      const hits = found.filter((l) => l.text.includes(phrase));
+      expect(hits, phrase).toHaveLength(times);
+      for (const h of hits) expect(lines[h.line - 1], phrase).toContain(`PROVISIONAL — ${cite}`);
+    }
   });
 });

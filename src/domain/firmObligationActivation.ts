@@ -24,6 +24,11 @@ export interface ActivationInputs {
   leadDays?: number;
   /** Pre-filled from the template (FOD-30); his to change. */
   weight?: Weight;
+  /** #156 A1: the Outlook reminder days. The form pre-fills min(30, lead) (FXD-9); left
+   *  out — the demo fixture, Add-as-inactive — planActivation takes that same default
+   *  (Michael's ruling at the fix build's stop, 2026-09-16). No template carries its own
+   *  value (FXD-1). */
+  outlookReminderDays?: number;
   /** FOM-4 — serial kinds only, optional. */
   lastPeriodCompleted?: string;
   /** FOD-16 — interval kinds only, optional. */
@@ -52,6 +57,7 @@ export function activationFromTemplate(t: FirmObligationTemplate, inputs: Activa
     weekendRule: inputs.weekendRule,
     leadDays: inputs.leadDays ?? t.leadDays ?? DEFAULT_LEAD_DAYS,
     weight: inputs.weight ?? t.weight ?? WEIGHT_WHEN_TEMPLATE_NAMES_NONE,
+    outlookReminderDays: inputs.outlookReminderDays,
     lastPeriodCompleted: inputs.lastPeriodCompleted,
     lastDone: inputs.lastDone,
     sourceNote: t.sourceNote,

@@ -45,6 +45,7 @@ import { ATTORNEY_USER } from '../domain/billing';
 import { localISODate } from '../domain/dates';
 import {
   planActivation, planDone, planNotApplicable, planUndo, planOverride, planEdit, planRetire, planReactivate,
+  planActivateFromInactive, queuedDeletes, settledDeletes, defaultReminderDays, readTrail,
   FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
   type ActContext, type FirmObligation, type FirmObligationCreate, type FirmObligationOccurrence,
   type FirmObligationPatch, type OutcomeReason,
@@ -56,7 +57,10 @@ const KEY = 'brennan-case-manager-v1';
 
 /** Bump when a record shape changes incompatibly — stale demo stores reseed
  *  instead of rendering oddly. Demo data only, so a wipe is acceptable. */
-export const STORE_VERSION = 17; // v17: firm obligations (FOS-1, 2026-09-11) - the two
+export const STORE_VERSION = 18; // v18: the firm-obligations fix slice (FOS-2, #156) - the
+// Outlook reminder days and the Outlook-delete queue on each obligation, the
+// materializedFrom link and the touched flag on each occurrence.
+// v17: firm obligations (FOS-1, 2026-09-11) - the two
 // collections, and FOD-21's demo fixture firm, every date invented, demo mode only.
 // v16: the CC-1 address model - every party's
 // one-line address split ONCE into addressLine1 + cityStateZip by the D1(iii)
@@ -813,6 +817,116 @@ export function migrateV16ToV17(
   return migrated;
 }
 
+/**
+ * v17 → v18: THE FIRM-OBLIGATIONS FIX SLICE (FOS-2, ruled "Yes" 2026-09-12, #156;
+ * docs/specs/firm-obligations-fix-slice.md §3 item 9). Forward in place; nothing is
+ * dropped, nothing existing is reshaped.
+ *
+ *  - Every obligation gains `outlookReminderDays` — min(30, its lead), the value a row
+ *    takes when nobody typed one (Michael's ruling at the fix build's stop, 2026-09-16,
+ *    "min(30, lead) everywhere", which supersedes §3 item 9's "30") — and an EMPTY
+ *    `pendingOutlookDeletes` (#156 A6, FXD-2).
+ *  - Every occurrence gains `materializedFrom`, back-filled from the close record: a
+ *    CLOSED occurrence's latest close line names its next in its JSON, and where that next
+ *    still exists it is linked (#156 A3). A close line with no JSON links nothing, so Undo
+ *    is refused on that close (FXD-7).
+ *  - And `touched`, set FROM THE LOG by the rule the acts now follow (the same stop, "Same
+ *    as today"): true when the occurrence is closed, carries a due-date override, has an
+ *    `edited`, `done` or `not-applicable` line of its own, or is the occurrence an
+ *    obligation line's record says a rule edit re-dated. A re-push-only edit re-dated
+ *    nothing and names no occurrence, so it sets nothing.
+ *
+ * A value already present is kept, so the step run on its own output changes nothing.
+ * The SEED PATH needs no call to it: FOD-21's fixture is built through planActivation,
+ * which emits all four fields (the v16 lesson: a fresh store runs no migration).
+ */
+export function migrateV17ToV18(old: Partial<Store>, raw: string): Store {
+  const stamp = now();
+  localStorage.setItem(`${KEY}-backup-v17`, raw);
+
+  const log = old.reviewLog ?? [];
+  const firmLines = log.filter((l) => l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY);
+  const before = old.firmObligationOccurrences ?? [];
+  const exists = new Set(before.map((o) => o.id));
+
+  // Each occurrence's latest close line, in the order written (insertion order).
+  const latestClose = new Map<string, ReviewLogEntry>();
+  for (const l of firmLines) {
+    if (l.entityType === FIRM_OCCURRENCE_ENTITY && (l.action === 'done' || l.action === 'not-applicable')) {
+      latestClose.set(l.entityId, l);
+    }
+  }
+  // next id → the closed occurrence whose close materialized it.
+  const linkedFrom = new Map<string, string>();
+  for (const occ of before) {
+    if (occ.state !== 'done') continue;
+    const line = latestClose.get(occ.id);
+    const trail = line ? readTrail(line) : null;
+    if (trail?.kind === 'close' && trail.nextOccurrenceId && exists.has(trail.nextOccurrenceId)) {
+      linkedFrom.set(trail.nextOccurrenceId, occ.id);
+    }
+  }
+  // Occurrences an act that ends Undo has reached: their own lines, and the occurrence an
+  // obligation line's record names as re-dated.
+  const reached = new Set<string>();
+  for (const l of firmLines) {
+    if (l.entityType === FIRM_OCCURRENCE_ENTITY && (l.action === 'edited' || l.action === 'done' || l.action === 'not-applicable')) {
+      reached.add(l.entityId);
+    }
+    if (l.entityType === FIRM_OBLIGATION_ENTITY) {
+      const t = readTrail(l);
+      if (t?.kind === 'obligation' && t.reevaluatedOccurrenceId) reached.add(t.reevaluatedOccurrenceId);
+    }
+  }
+
+  let reminders = 0;
+  const firmObligations = (old.firmObligations ?? []).map((o) => {
+    if (o.outlookReminderDays === undefined) reminders += 1;
+    return {
+      ...o,
+      outlookReminderDays: o.outlookReminderDays ?? defaultReminderDays(o.leadDays),
+      pendingOutlookDeletes: o.pendingOutlookDeletes ?? [],
+    };
+  });
+  let linked = 0;
+  const firmObligationOccurrences = before.map((o) => {
+    const from = o.materializedFrom ?? linkedFrom.get(o.id);
+    if (o.materializedFrom === undefined && from !== undefined) linked += 1;
+    return {
+      ...o,
+      ...(from !== undefined ? { materializedFrom: from } : {}),
+      touched: typeof o.touched === 'boolean'
+        ? o.touched
+        : o.state === 'done' || !!o.dueOnOverride || reached.has(o.id),
+    };
+  });
+  const touched = firmObligationOccurrences.filter((o) => o.touched).length;
+
+  const migrated: Store = {
+    ...(old as Store),
+    // Literal 18, NOT STORE_VERSION — the `migrateV10ToV11` lesson, warned about at every
+    // step since. This function produces a v18 store and nothing more.
+    version: 18,
+    firmObligations,
+    firmObligationOccurrences,
+  };
+
+  const summary =
+    `Store migrated v17→18 (the firm-obligations fix slice). Gave ${reminders} obligation(s) an `
+    + `Outlook reminder of 30 days, or the lead where the lead is shorter, and every obligation an `
+    + `empty Outlook-delete queue. Linked ${linked} next occurrence(s) to the close that opened `
+    + `them, from the close record; ${touched} occurrence(s) are marked as reached by an edit, an `
+    + `override or a close, from the log. Nothing existing was removed. Full pre-migration backup `
+    + `at localStorage key "${KEY}-backup-v17".`;
+  migrated.reviewLog = [...log, {
+    id: uid(), entityType: 'demo_store', entityId: KEY, action: 'edited',
+    user: 'system (firm-obligations fix migration, v18)', timestamp: stamp, reason: summary,
+  }];
+  console.warn(summary);
+  localStorage.setItem(KEY, JSON.stringify(migrated));
+  return migrated;
+}
+
 function load(): Store {
   const raw = localStorage.getItem(KEY);
   let old: Partial<Store> | null = null;
@@ -829,28 +943,36 @@ function load(): Store {
       // oldest store's contents — the bug this comment exists to prevent, and
       // the reason the v9 path already re-serialized before gate 10 added a
       // third step.
-      if (parsed.version === 16) return migrateV16ToV17(parsed, raw);
+      if (parsed.version === 17) return migrateV17ToV18(parsed, raw);
+      if (parsed.version === 16) {
+        const v17 = migrateV16ToV17(parsed, raw);
+        return migrateV17ToV18(v17, JSON.stringify(v17));
+      }
       if (parsed.version === 15) {
         const v16 = migrateV15ToV16(parsed, raw);
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       if (parsed.version === 14) {
         const v15 = migrateV14ToV15(parsed, raw);
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       if (parsed.version === 13) {
         const v14 = migrateV13ToV14(parsed, raw);
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       if (parsed.version === 12) {
         const v13 = migrateV12ToV13(parsed, raw);
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       if (parsed.version === 11) {
         const v12 = migrateV11ToV12(parsed, raw);
@@ -858,7 +980,8 @@ function load(): Store {
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       if (parsed.version === 10) {
         const v11 = migrateV10ToV11(parsed, raw);
@@ -867,7 +990,8 @@ function load(): Store {
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       // v9 chains forward through v10 rather than reseeding — a v9 store that
       // reached CL-2's migration must not lose it to CD-1's bump.
@@ -879,7 +1003,8 @@ function load(): Store {
         const v14 = migrateV13ToV14(v13, JSON.stringify(v13));
         const v15 = migrateV14ToV15(v14, JSON.stringify(v14));
         const v16 = migrateV15ToV16(v15, JSON.stringify(v15));
-        return migrateV16ToV17(v16, JSON.stringify(v16));
+        const v17 = migrateV16ToV17(v16, JSON.stringify(v16));
+        return migrateV17ToV18(v17, JSON.stringify(v17));
       }
       // version mismatch (or pre-versioning store) — reseed, but never
       // silently: back up the whole old store and carry attorney work forward.
@@ -917,7 +1042,9 @@ function load(): Store {
   );
   // FOD-21 — the same rule for the firm-obligation fixture: a fresh store carries
   // exactly what the v16 → v17 step gives a migrated one, every date invented and
-  // computed from today.
+  // computed from today — and already in the v18 shape, because planActivation emits
+  // the fix slice's four fields (Outlook reminder days at min(30, lead), an empty
+  // Outlook-delete queue, touched false, no materializedFrom on a first occurrence).
   const firmFixture = firmObligationsDemoSeed(localISODate(), now(), uid);
   seeded.firmObligations = firmFixture.obligations;
   seeded.firmObligationOccurrences = firmFixture.occurrences;
@@ -2097,10 +2224,25 @@ export class LocalAdapter implements DataAdapter {
   // ---- Firm obligations (docs/specs/firm-obligations-build-slice.md §3 item 4) ----
   // Every act is PLANNED by src/domain/firmObligations.ts and applied here in ONE
   // save, so the store never holds half an act. The Supabase adapter applies the
-  // same plans; neither decides anything.
+  // same plans through one Postgres function per act (#156 A5); neither decides
+  // anything.
 
   private firmCtx(): ActContext {
     return { today: localISODate(), nowIso: now(), newId: uid, user: ATTORNEY_USER };
+  }
+
+  /** The obligation's own lines and its occurrences' lines. Insertion order IS the order
+   *  written — the order the plans read (an interval's basis; Undo's close record). */
+  private firmLog(store: Store, obligationId: string, all: FirmObligationOccurrence[]): ReviewLogEntry[] {
+    const ids = new Set([obligationId, ...all.map((o) => o.id)]);
+    return store.reviewLog.filter((l) =>
+      (l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY) && ids.has(l.entityId));
+  }
+
+  private firmObligationIn(store: Store, id: string): FirmObligation {
+    const ob = store.firmObligations.find((o) => o.id === id);
+    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    return ob;
   }
 
   private firmParts(store: Store, occurrenceId: string) {
@@ -2166,14 +2308,10 @@ export class LocalAdapter implements DataAdapter {
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }> {
     const store = load();
     const ctx = this.firmCtx();
-    const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    const ob = this.firmObligationIn(store, id);
     const all = store.firmObligationOccurrences.filter((o) => o.obligationId === id);
-    const ids = new Set([id, ...all.map((o) => o.id)]);
     // The ordered log tells an interval row which completion its open occurrence was measured from.
-    const log = store.reviewLog.filter((l) =>
-      (l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY) && ids.has(l.entityId));
-    const plan = planEdit(ob, patch, all, ctx, log);
+    const plan = planEdit(ob, patch, all, ctx, this.firmLog(store, id, all));
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     const occurrence = plan.occurrence ? this.replaceFirmOccurrence(store, plan.occurrence.id, plan.occurrence.patch) : null;
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
@@ -2184,8 +2322,7 @@ export class LocalAdapter implements DataAdapter {
   async retireFirmObligation(id: string): Promise<FirmObligation> {
     const store = load();
     const ctx = this.firmCtx();
-    const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    const ob = this.firmObligationIn(store, id);
     const plan = planRetire(ob, ctx);
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
@@ -2198,14 +2335,37 @@ export class LocalAdapter implements DataAdapter {
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
     const store = load();
     const ctx = this.firmCtx();
-    const ob = store.firmObligations.find((o) => o.id === id);
-    if (!ob) throw new Error('Firm obligation not found'); // PROVISIONAL — slice §3 item 10
+    const ob = this.firmObligationIn(store, id);
     const plan = planReactivate(ob, store.firmObligationOccurrences.filter((o) => o.obligationId === id), ctx, inputs);
     const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
     if (plan.occurrence) store.firmObligationOccurrences.push(plan.occurrence);
     store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
     save(store);
     return { obligation, occurrence: plan.occurrence };
+  }
+
+  async activateFromInactive(
+    id: string, patch: FirmObligationPatch, inputs: { lastPeriodCompleted?: string } = {},
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }> {
+    // #156 A7, "One act, one line": the edit and the re-activation, planned together and
+    // applied in ONE save with ONE review_log line.
+    const store = load();
+    const ctx = this.firmCtx();
+    const ob = this.firmObligationIn(store, id);
+    const all = store.firmObligationOccurrences.filter((o) => o.obligationId === id);
+    const plan = planActivateFromInactive(ob, patch, all, ctx, this.firmLog(store, id, all), inputs);
+    const obligation = this.replaceFirmObligation(store, id, plan.obligationPatch);
+    let occurrence: FirmObligationOccurrence | null = null;
+    if (plan.updateOccurrence) {
+      occurrence = this.replaceFirmOccurrence(store, plan.updateOccurrence.id, plan.updateOccurrence.patch);
+    }
+    if (plan.openOccurrence) {
+      store.firmObligationOccurrences.push(plan.openOccurrence);
+      occurrence = plan.openOccurrence;
+    }
+    store.reviewLog.push({ ...plan.log, id: uid(), timestamp: ctx.nowIso });
+    save(store);
+    return { obligation, occurrence, kept: plan.kept };
   }
 
   async listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]> {
@@ -2230,11 +2390,7 @@ export class LocalAdapter implements DataAdapter {
     const store = load();
     const ctx = this.firmCtx();
     const { occ, ob, all } = this.firmParts(store, id);
-    const ids = new Set([ob.id, ...all.map((o) => o.id)]);
-    // Insertion order IS the order written — the order Undo's test reads.
-    const log = store.reviewLog.filter((l) =>
-      (l.entityType === FIRM_OBLIGATION_ENTITY || l.entityType === FIRM_OCCURRENCE_ENTITY) && ids.has(l.entityId));
-    const plan = planUndo(ob, occ, all, log, ctx);
+    const plan = planUndo(ob, occ, all, this.firmLog(store, ob.id, all), ctx);
     if (plan.removeOccurrence) {
       store.firmObligationOccurrences = store.firmObligationOccurrences.filter((o) => o.id !== plan.removeOccurrence!.id);
     }
@@ -2276,6 +2432,30 @@ export class LocalAdapter implements DataAdapter {
       if (k in patch) (only as Record<string, unknown>)[k] = patch[k];
     }
     const updated = this.replaceFirmOccurrence(store, id, { ...only, updatedAt: now() });
+    save(store);
+    return updated;
+  }
+
+  // ---- the Outlook-delete queue (#156 A6; FXD-2) ----
+  // Outlook bookkeeping, like the sync write above — NOT an act, so no review_log line.
+  // The domain computes the queue; each write changes ONLY pendingOutlookDeletes.
+
+  async queueFirmOutlookDelete(
+    obligationId: string, entry: { eventId: string; occurrenceId: string },
+  ): Promise<FirmObligation> {
+    const store = load();
+    const ob = this.firmObligationIn(store, obligationId);
+    const updated = this.replaceFirmObligation(store, obligationId, { pendingOutlookDeletes: queuedDeletes(ob, entry, now()) });
+    save(store);
+    return updated;
+  }
+
+  async settleFirmOutlookDelete(
+    obligationId: string, eventId: string, outcome: 'deleted' | 'failed',
+  ): Promise<FirmObligation> {
+    const store = load();
+    const ob = this.firmObligationIn(store, obligationId);
+    const updated = this.replaceFirmObligation(store, obligationId, { pendingOutlookDeletes: settledDeletes(ob, eventId, outcome) });
     save(store);
     return updated;
   }

@@ -38,9 +38,10 @@ import { ATTORNEY_USER } from '../domain/billing';
 import { localISODate } from '../domain/dates';
 import {
   planActivation, planDone, planNotApplicable, planUndo, planOverride, planEdit, planRetire, planReactivate,
-  plainText, formatDate, FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
+  planActivateFromInactive, queuedDeletes, settledDeletes,
+  plainText, FIRM_OBLIGATION_ENTITY, FIRM_OCCURRENCE_ENTITY,
   type ActContext, type FirmObligation, type FirmObligationCreate, type FirmObligationOccurrence,
-  type FirmObligationPatch, type LogDraft, type OutcomeReason,
+  type FirmObligationPatch, type OutcomeReason,
 } from '../domain/firmObligations';
 import type { FirmCloseResult } from './adapter';
 
@@ -286,6 +287,22 @@ function fromRow<T>(row: Record<string, unknown>): T {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) out[camelKey(k)] = v === null ? undefined : v;
   return out as T;
+}
+
+/** The nine firm-obligation functions (#156 A5; slice §5.3) — one per act, and the only
+ *  way a firm act reaches the database. */
+type FirmFunction =
+  | 'firm_activate' | 'firm_activate_from_inactive' | 'firm_update' | 'firm_retire' | 'firm_reactivate'
+  | 'firm_mark_done' | 'firm_mark_not_applicable' | 'firm_undo' | 'firm_set_due_override';
+
+/** A row a firm function returned (to_jsonb(row), snake_case). */
+function firmRow<T>(v: unknown): T {
+  return fromRow<T>(v as Record<string, unknown>);
+}
+
+/** The same, where the function returns NULL for "no such row" (no next, nothing removed). */
+function firmRowOrNull<T>(v: unknown): T | null {
+  return v ? fromRow<T>(v as Record<string, unknown>) : null;
 }
 
 export class SupabaseAdapter implements DataAdapter {
@@ -1311,26 +1328,24 @@ export class SupabaseAdapter implements DataAdapter {
 
   // ---- Firm obligations (docs/specs/firm-obligations-build-slice.md §3 item 4) ----
   // The SAME plans the local adapter applies (src/domain/firmObligations.ts): this
-  // adapter reads the rows a plan needs and writes what the plan returns, deciding
-  // nothing. PostgREST gives no multi-statement transaction here, so every act
-  // writes in the order that keeps the database's own guards satisfied — above all
-  // the one-open partial unique index (firm_obligation_occurrences_one_open_idx):
-  // a close marks the current occurrence done BEFORE the next is inserted, and an
-  // undo removes the untouched next BEFORE the closed one is reopened. The review
-  // log line is written LAST, so a failed write never leaves a line claiming an act
-  // that did not land. None of these tables exists until Michael runs
-  // db/migrations/2026-09-10-firm-obligations.sql by hand.
+  // adapter reads the rows a plan needs, runs the plan, and hands what the plan returns
+  // to ONE Postgres function per act, deciding nothing (#156 A5, "Build the RPC functions
+  // now"; docs/specs/firm-obligations-fix-slice.md §3 item 6 and §5.3; FXD-4). The
+  // function applies the plan inside its own transaction, in the order the database's own
+  // guards demand — above all the one-open partial unique index
+  // (firm_obligation_occurrences_one_open_idx): a close marks the current occurrence done
+  // BEFORE the next is inserted, and an undo removes the untouched next BEFORE the closed
+  // one is reopened — and writes the act's ONE review_log line (FOD-6). So an act lands
+  // whole or not at all, and a failure has ONE message: "<act> was not saved: <the
+  // function's own words>". The FOS-1 build's compensation for a write that stopped
+  // part-way (the restoring UPDATEs, "could not be restored", "saved without its
+  // review-log line") is RETIRED with it; spec-feedback part C item 15 closes by
+  // consequence.
   //
-  // With no transaction, a failure BETWEEN two writes could strand an obligation
-  // (review L1-F4: Done closes the occurrence, the next insert fails, and nothing is
-  // left open). So each act compensates, best effort, and only in two ways: an UPDATE
-  // that puts back the prior values of exactly the fields the act changed, or
-  // re-inserting a row this same act deleted. NEVER a delete — the slice bars a
-  // delete on any obligation or occurrence — so where taking an act back would need
-  // one (a failure after an insert), the state is left as it is and the message says
-  // so. Every write failure ends in one of three messages: not saved, saved without
-  // its review-log line, or the earlier state could not be restored — and that last
-  // one says where the register shows what was left.
+  // Rows cross the call in this file's existing mapping — an insert through toRow, a
+  // patch through toUpdateRow — and come back as to_jsonb(row), mapped by fromRow. None of
+  // these tables or functions exists until Michael runs
+  // db/migrations/2026-09-10-firm-obligations.sql by hand.
 
   private firmCtx(): ActContext {
     return { today: localISODate(), nowIso: new Date().toISOString(), newId: () => crypto.randomUUID(), user: ATTORNEY_USER };
@@ -1365,167 +1380,13 @@ export class SupabaseAdapter implements DataAdapter {
         .order('timestamp', { ascending: true }));
   }
 
-  private async writeFirmLog(line: LogDraft): Promise<void> {
-    await this.insertRow<ReviewLogEntry>('review_log', line);
-  }
-
-  /** The prior values of exactly the fields a write changed, read from the row as it
-   *  was before the act. A field that was empty comes back undefined, and toUpdateRow
-   *  writes undefined as NULL — so a field the act filled is cleared again.
-   *
-   *  One exception: where the act queued a push (syncStatus 'pending'), the restore
-   *  leaves it queued rather than putting back a prior 'synced'. A push can land between
-   *  the act's write and its restore, and would then leave Outlook on the date the
-   *  restore took away, with the row never pushed again. A needless re-push only PATCHes
-   *  the existing event with the right data. */
-  private firmPrior<T extends object>(prior: T, patch: object): Partial<T> {
-    const out: Record<string, unknown> = {};
-    for (const k of Object.keys(patch)) out[k] = (prior as Record<string, unknown>)[k];
-    if ((patch as { syncStatus?: unknown }).syncStatus === 'pending') out.syncStatus = 'pending';
-    return out as Partial<T>;
-  }
-
-  private firmCause(e: unknown): string {
-    return e instanceof Error ? e.message : String(e);
-  }
-
-  /** Nothing the act wrote still stands. */
-  private firmNotSaved(act: string, cause: unknown): Error {
-    return new Error(`${act} was not saved: ${this.firmCause(cause)}`); // PROVISIONAL — slice §3 item 10
-  }
-
-  /** Every write landed except the review-log line: the rows are whole, the record is not. */
-  private firmSavedWithoutLog(act: string, cause: unknown, consequence = ''): Error {
-    return new Error(`${act} was saved, but its review-log line did not write (${this.firmCause(cause)})${consequence}`); // PROVISIONAL — slice §3 item 10
-  }
-
-  /** The act stopped part-way and what it wrote could not all be put back. `after` is
-   *  the sentences that follow: anything left for him to do, then where to look. */
-  private firmNotRestored(act: string, cause: unknown, restoreCause: unknown, after: string[]): Error {
-    return new Error([
-      `${act} stopped part-way (${this.firmCause(cause)}), and the earlier state could not be restored (${this.firmCause(restoreCause)}).`, // PROVISIONAL — slice §3 item 10
-      ...after,
-    ].filter(Boolean).join(' '));
-  }
-
-  /** Where the register shows what a could-not-restore left. "Needs attention" lists only
-   *  an ACTIVE obligation with nothing open (registerView's `stranded`); every other state
-   *  is on the obligation's own row, with the act's record under its Details. Each caller
-   *  says which state it leaves. `name` is already plain text. */
-  private firmWhereToLook(name: string, leftStranded: boolean): string {
-    return leftStranded
-      ? 'Check "Needs attention" on the register.' // PROVISIONAL — slice §3 item 10
-      : `Check the ${name} row and its Details › Review log on the register.`; // PROVISIONAL — slice §3 item 10
-  }
-
-  /** Undo removed the untouched next occurrence and it is not back. The caller never sees
-   *  `removed`, so its Outlook event, if it was pushed, is left behind for him to delete.
-   *  Empty when there is no event to name. */
-  private firmOrphanedEvent(removed: FirmObligationOccurrence | null): string {
-    return removed?.outlookEventId
-      ? `The removed next occurrence (${removed.periodLabel}) still has its Outlook event; delete it in Outlook.` // PROVISIONAL — slice §3 item 10
-      : '';
-  }
-
-  /** An activation's own date that Activate… from Inactive will not carry, once the first
-   *  occurrence did not save: re-activation opens the first rule date on or after today,
-   *  or "due now". FOM-4's "last period completed" is asked again there (a first
-   *  activation), so the message gives him the date to re-enter. FOD-16's last-done date
-   *  has no field there (planReactivate takes none), so the message names it and says the
-   *  occurrence will open due now. Empty when neither was given, or the rule never reads it. */
-  private firmNotCarried(input: FirmObligationCreate, ob: FirmObligation): string {
-    // planActivation keeps "last period completed" only on a serial row; a one-time rule never reads it.
-    if (ob.lastPeriodCompleted && ob.recurrence.kind !== 'one-time') {
-      return `When you activate it again, re-enter the last period completed (${formatDate(ob.lastPeriodCompleted)}).`; // PROVISIONAL — slice §3 item 10
-    }
-    if (input.lastDone && ob.recurrence.kind === 'interval-from-completion') {
-      return `Activate… from Inactive takes no last-done date, so it will open due now, not measured from the last-done date you entered (${formatDate(input.lastDone)}).`; // PROVISIONAL — slice §3 item 10
-    }
-    return '';
-  }
-
-  /** An act's first write. If it fails nothing has changed, so there is nothing to put back. */
-  private async firmFirstWrite<T>(act: string, write: () => Promise<T>): Promise<T> {
-    try {
-      return await write();
-    } catch (e) {
-      throw this.firmNotSaved(act, e);
-    }
-  }
-
-  /** Runs the compensating writes in the order given — the caller lists them newest
-   *  first — then reports the act as not saved. If a compensating write fails too,
-   *  it stops there and says the earlier state could not be restored, then `after`. */
-  private async firmRestore(
-    act: string, cause: unknown, restores: (() => Promise<unknown>)[], after: string[],
-  ): Promise<never> {
-    for (const restore of restores) {
-      try {
-        await restore();
-      } catch (restoreErr) {
-        throw this.firmNotRestored(act, cause, restoreErr, after);
-      }
-    }
-    throw this.firmNotSaved(act, cause);
-  }
-
-  private async firmClose(
-    id: string,
-    plan: (ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], ctx: ActContext) => ReturnType<typeof planDone>,
-  ): Promise<FirmCloseResult> {
-    const occ = await this.firmOccurrenceRow(id);
-    const ob = await this.firmObligationRow(occ.obligationId);
-    const all = await this.firmOccurrencesOf(ob.id);
-    const p = plan(ob, occ, all, this.firmCtx());
-    const name = plainText(ob.name);
-    const act = `${p.occurrencePatch.outcome === 'not-applicable' ? 'Not applicable' : 'Done'} for ${name} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
-    // done_by is provenance, like created_by: the signed-in caller, or NULL (F-25's honesty).
-    const { data } = await this.sb.auth.getSession();
-    const closePatch: Partial<FirmObligationOccurrence> = { ...p.occurrencePatch, doneBy: data.session?.user.id };
-    // Puts the closed occurrence back to open, exactly as it was read, its push still queued.
-    const reopen = () => this.updateRow<FirmObligationOccurrence>(
-      'firm_obligation_occurrences', p.occurrenceId, this.firmPrior(occ, closePatch),
-    );
-    // If reopening fails too, the occurrence stays closed with nothing open after it —
-    // stranded while the obligation is active.
-    const leftClosed = [this.firmWhereToLook(name, ob.active)];
-    const closed = await this.firmFirstWrite(act, () => this.updateRow<FirmObligationOccurrence>(
-      'firm_obligation_occurrences', p.occurrenceId, closePatch,
-    ));
-    let next: FirmObligationOccurrence | null = null;
-    if (p.next) {
-      const draft = p.next;
-      try {
-        next = await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', draft);
-      } catch (e) {
-        // The close would stand with nothing open after it: reopen it.
-        return this.firmRestore(act, e, [reopen], leftClosed);
-      }
-    }
-    let obligation = ob;
-    if (p.obligationPatch) {
-      const patch = p.obligationPatch;
-      try {
-        obligation = await this.updateRow<FirmObligation>('firm_obligations', ob.id, patch);
-      } catch (e) {
-        // Reopening after a next occurrence was inserted would first need that next
-        // deleted (the one-open index), and nothing here deletes one. The plans never
-        // pair a next with an obligation change (only a one-time close retires, and it
-        // has no next), so this is a guard, not a path.
-        if (next) {
-          // The next is open, so the obligation is on its own row, not under "Needs attention".
-          throw this.firmNotRestored(act, e, 'reopening it would first need its next occurrence deleted, and this app never deletes one', [this.firmWhereToLook(name, false)]); // PROVISIONAL — slice §3 item 10
-        }
-        return this.firmRestore(act, e, [reopen], leftClosed);
-      }
-    }
-    try {
-      await this.writeFirmLog(p.log);
-    } catch (e) {
-      // The rows are consistent — closed, and the next open — so nothing is taken back.
-      throw this.firmSavedWithoutLog(act, e, ', so Undo will not be offered for it.'); // PROVISIONAL — slice §3 item 10
-    }
-    return { closed, next, obligation };
+  /** One act, one call (#156 A5). `act` names the act — its name already plain text — in
+   *  the one message a failure has; the function's own words follow it. The result's row
+   *  values are still snake_case. */
+  private async firmRpc(act: string, fn: FirmFunction, p: Record<string, unknown>): Promise<Record<string, unknown>> {
+    const res = await this.sb.rpc(fn, { p });
+    if (res.error) throw new Error(`${act} was not saved: ${res.error.message}`); // PROVISIONAL — #156 §1 item 9 (A5)
+    return (res.data ?? {}) as Record<string, unknown>;
   }
 
   async listFirmObligations(): Promise<FirmObligation[]> {
@@ -1542,33 +1403,14 @@ export class SupabaseAdapter implements DataAdapter {
     input: FirmObligationCreate,
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
     const plan = planActivation(input, this.firmCtx());
-    const name = plainText(plan.obligation.name);
-    const act = `Activating ${name}`; // PROVISIONAL — slice §3 item 10
+    const act = `Activating ${plainText(plan.obligation.name)}`; // PROVISIONAL — slice §3 item 10
     // created_by is left to the set_created_by trigger (F-25).
-    const obligation = await this.firmFirstWrite(act, () =>
-      this.insertRow<FirmObligation>('firm_obligations', plan.obligation));
-    let occurrence: FirmObligationOccurrence | null = null;
-    if (plan.occurrence) {
-      const draft = plan.occurrence;
-      try {
-        occurrence = await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', draft);
-      } catch (e) {
-        // Taking the obligation back would be a DELETE, which the slice bars. It stands
-        // active with nothing open — exactly what the register's "Needs attention" list
-        // shows — and its activation line is NOT written: that line names a first
-        // occurrence that does not exist.
-        // A date the activation carried is not carried by that re-activation: name it.
-        const notCarried = this.firmNotCarried(input, plan.obligation);
-        throw new Error(`${name} was saved without its first occurrence (${this.firmCause(e)}). It is listed under "Needs attention" on the register: Retire it, then Activate… it from Inactive.${notCarried ? ` ${notCarried}` : ''}`); // PROVISIONAL — slice §3 item 10
-      }
-    }
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      // Both inserts stand; taking either back would be a delete.
-      throw this.firmSavedWithoutLog(act, e);
-    }
-    return { obligation, occurrence };
+    const r = await this.firmRpc(act, 'firm_activate', {
+      obligation: toRow(plan.obligation),
+      occurrence: plan.occurrence ? toRow(plan.occurrence) : null,
+      log: toRow(plan.log),
+    });
+    return { obligation: firmRow<FirmObligation>(r.obligation), occurrence: firmRowOrNull<FirmObligationOccurrence>(r.occurrence) };
   }
 
   async updateFirmObligation(
@@ -1577,60 +1419,30 @@ export class SupabaseAdapter implements DataAdapter {
     const ob = await this.firmObligationRow(id);
     const all = await this.firmOccurrencesOf(id);
     const plan = planEdit(ob, patch, all, this.firmCtx(), await this.firmLogFor(id, all));
-    const name = plainText(ob.name);
-    const act = `The edit to ${name}`; // PROVISIONAL — slice §3 item 10
-    // An edit changes neither `active` nor what is open, so a could-not-restore leaves the
-    // obligation wherever the register already showed it.
-    const where = [this.firmWhereToLook(name, ob.active && !all.some((o) => o.state === 'open'))];
-    const restoreObligation = () =>
-      this.updateRow<FirmObligation>('firm_obligations', id, this.firmPrior(ob, plan.obligationPatch));
-    const obligation = await this.firmFirstWrite(act, () =>
-      this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch));
-    // The open occurrence as it was read — the edit re-dates it or re-queues its push.
-    const target = plan.occurrence;
-    const priorOcc = target ? all.find((o) => o.id === target.id) : undefined;
-    let occurrence: FirmObligationOccurrence | null = null;
-    if (target) {
-      try {
-        occurrence = await this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', target.id, target.patch);
-      } catch (e) {
-        return this.firmRestore(act, e, [restoreObligation], where);
-      }
-    }
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      // Both writes were updates, so both go back — the occurrence first, then the obligation.
-      const restores: (() => Promise<unknown>)[] = [];
-      if (target && priorOcc) {
-        restores.push(() => this.updateRow<FirmObligationOccurrence>(
-          'firm_obligation_occurrences', target.id, this.firmPrior(priorOcc, target.patch),
-        ));
-      }
-      restores.push(restoreObligation);
-      return this.firmRestore(act, e, restores, where);
-    }
-    return { obligation, occurrence, kept: plan.kept };
+    const act = `The edit to ${plainText(ob.name)}`; // PROVISIONAL — slice §3 item 10
+    const r = await this.firmRpc(act, 'firm_update', {
+      obligation_id: id,
+      obligation_patch: toUpdateRow(plan.obligationPatch),
+      occurrence: plan.occurrence ? { id: plan.occurrence.id, patch: toUpdateRow(plan.occurrence.patch) } : null,
+      log: toRow(plan.log),
+    });
+    return {
+      obligation: firmRow<FirmObligation>(r.obligation),
+      occurrence: firmRowOrNull<FirmObligationOccurrence>(r.occurrence),
+      kept: plan.kept,
+    };
   }
 
   async retireFirmObligation(id: string): Promise<FirmObligation> {
     const ob = await this.firmObligationRow(id);
     const plan = planRetire(ob, this.firmCtx());
-    const name = plainText(ob.name);
-    const act = `Retiring ${name}`; // PROVISIONAL — slice §3 item 10
-    const obligation = await this.firmFirstWrite(act, () =>
-      this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch));
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      return this.firmRestore(act, e, [
-        () => this.updateRow<FirmObligation>('firm_obligations', id, this.firmPrior(ob, plan.obligationPatch)),
-      ], [
-        // Left retired, and "Needs attention" lists only active obligations.
-        this.firmWhereToLook(name, false),
-      ]);
-    }
-    return obligation;
+    const act = `Retiring ${plainText(ob.name)}`; // PROVISIONAL — slice §3 item 10
+    const r = await this.firmRpc(act, 'firm_retire', {
+      obligation_id: id,
+      obligation_patch: toUpdateRow(plan.obligationPatch),
+      log: toRow(plan.log),
+    });
+    return firmRow<FirmObligation>(r.obligation);
   }
 
   async reactivateFirmObligation(
@@ -1638,37 +1450,69 @@ export class SupabaseAdapter implements DataAdapter {
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }> {
     const ob = await this.firmObligationRow(id);
     const plan = planReactivate(ob, await this.firmOccurrencesOf(id), this.firmCtx(), inputs);
-    const name = plainText(ob.name);
-    const act = `Activating ${name}`; // PROVISIONAL — slice §3 item 10
-    // Puts back active = false, and "last period completed" when the act set it.
-    const restoreObligation = () =>
-      this.updateRow<FirmObligation>('firm_obligations', id, this.firmPrior(ob, plan.obligationPatch));
-    const obligation = await this.firmFirstWrite(act, () =>
-      this.updateRow<FirmObligation>('firm_obligations', id, plan.obligationPatch));
-    let occurrence: FirmObligationOccurrence | null = null;
-    if (plan.occurrence) {
-      const draft = plan.occurrence;
-      try {
-        occurrence = await this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', draft);
-      } catch (e) {
-        // If putting `active` back fails too, it is left active with nothing open: stranded.
-        return this.firmRestore(act, e, [restoreObligation], [this.firmWhereToLook(name, true)]);
-      }
-    }
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      // An inserted occurrence could be taken back only by a delete: leave it standing.
-      if (occurrence) throw this.firmSavedWithoutLog(act, e);
-      // Nothing was inserted (an occurrence was already open): the one update goes back.
-      // If it cannot, the obligation is active with that occurrence open: on its own row.
-      return this.firmRestore(act, e, [restoreObligation], [this.firmWhereToLook(name, false)]);
-    }
-    return { obligation, occurrence };
+    const act = `Activating ${plainText(ob.name)}`; // PROVISIONAL — slice §3 item 10
+    const r = await this.firmRpc(act, 'firm_reactivate', {
+      obligation_id: id,
+      obligation_patch: toUpdateRow(plan.obligationPatch),
+      occurrence: plan.occurrence ? toRow(plan.occurrence) : null,
+      log: toRow(plan.log),
+    });
+    return { obligation: firmRow<FirmObligation>(r.obligation), occurrence: firmRowOrNull<FirmObligationOccurrence>(r.occurrence) };
+  }
+
+  async activateFromInactive(
+    id: string, patch: FirmObligationPatch, inputs: { lastPeriodCompleted?: string } = {},
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }> {
+    const ob = await this.firmObligationRow(id);
+    const all = await this.firmOccurrencesOf(id);
+    const plan = planActivateFromInactive(ob, patch, all, this.firmCtx(), await this.firmLogFor(id, all), inputs);
+    const act = `Activating ${plainText(ob.name)}`; // PROVISIONAL — #156 §1 item 9 (A7)
+    const r = await this.firmRpc(act, 'firm_activate_from_inactive', {
+      obligation_id: id,
+      obligation_patch: toUpdateRow(plan.obligationPatch),
+      occurrence_update: plan.updateOccurrence
+        ? { id: plan.updateOccurrence.id, patch: toUpdateRow(plan.updateOccurrence.patch) }
+        : null,
+      occurrence_insert: plan.openOccurrence ? toRow(plan.openOccurrence) : null,
+      log: toRow(plan.log),
+    });
+    return {
+      obligation: firmRow<FirmObligation>(r.obligation),
+      occurrence: firmRowOrNull<FirmObligationOccurrence>(r.occurrence),
+      kept: plan.kept,
+    };
   }
 
   async listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]> {
     return this.rows<FirmObligationOccurrence>('firm_obligation_occurrences', (q) => q.select('*').order('due_on'));
+  }
+
+  private async firmClose(
+    id: string,
+    plan: (ob: FirmObligation, occ: FirmObligationOccurrence, all: FirmObligationOccurrence[], ctx: ActContext) => ReturnType<typeof planDone>,
+  ): Promise<FirmCloseResult> {
+    const occ = await this.firmOccurrenceRow(id);
+    const ob = await this.firmObligationRow(occ.obligationId);
+    const all = await this.firmOccurrencesOf(ob.id);
+    const p = plan(ob, occ, all, this.firmCtx());
+    const notApplicable = p.occurrencePatch.outcome === 'not-applicable';
+    const act = `${notApplicable ? 'Not applicable' : 'Done'} for ${plainText(ob.name)} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
+    // done_by is provenance, like created_by: the signed-in caller, or NULL (F-25's honesty).
+    const { data } = await this.sb.auth.getSession();
+    const closePatch: Partial<FirmObligationOccurrence> = { ...p.occurrencePatch, doneBy: data.session?.user.id };
+    const r = await this.firmRpc(act, notApplicable ? 'firm_mark_not_applicable' : 'firm_mark_done', {
+      occurrence_id: p.occurrenceId,
+      occurrence_patch: toUpdateRow(closePatch),
+      next: p.next ? toRow(p.next) : null,
+      obligation_id: ob.id,
+      obligation_patch: p.obligationPatch ? toUpdateRow(p.obligationPatch) : null,
+      log: toRow(p.log),
+    });
+    return {
+      closed: firmRow<FirmObligationOccurrence>(r.closed),
+      next: firmRowOrNull<FirmObligationOccurrence>(r.next),
+      obligation: firmRow<FirmObligation>(r.obligation),
+    };
   }
 
   async markOccurrenceDone(
@@ -1690,76 +1534,37 @@ export class SupabaseAdapter implements DataAdapter {
     const ob = await this.firmObligationRow(occ.obligationId);
     const all = await this.firmOccurrencesOf(ob.id);
     const plan = planUndo(ob, occ, all, await this.firmLogFor(ob.id, all), this.firmCtx());
-    const name = plainText(ob.name);
-    const act = `Undo for ${name} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
-    const removed = plan.removeOccurrence;
-    // The removed next goes back exactly as it was read: its id, its dates, its Outlook link.
-    const putBackNext = (row: FirmObligationOccurrence) => () =>
-      this.insertRow<FirmObligationOccurrence>('firm_obligation_occurrences', row);
-    // Closes the reopened occurrence again, with the close's own values as they were read.
-    const reclose = () => this.updateRow<FirmObligationOccurrence>(
-      'firm_obligation_occurrences', plan.occurrenceId, this.firmPrior(occ, plan.reopenPatch),
-    );
-    if (removed) {
-      await this.firmFirstWrite(act, () => this.deleteRows('firm_obligation_occurrences', 'id', removed.id));
-    }
-    let reopened: FirmObligationOccurrence;
-    try {
-      reopened = await this.updateRow<FirmObligationOccurrence>(
-        'firm_obligation_occurrences', plan.occurrenceId, plan.reopenPatch,
-      );
-    } catch (e) {
-      if (!removed) throw this.firmNotSaved(act, e);
-      // If the next will not go back, the occurrence stays closed with nothing open —
-      // stranded while the obligation is active (Retire touches no occurrence, so Undo is
-      // still offered on a retired one) — and the next's Outlook event is left behind.
-      return this.firmRestore(act, e, [putBackNext(removed)], [
-        this.firmOrphanedEvent(removed), this.firmWhereToLook(name, ob.active),
-      ]);
-    }
-    let obligation = ob;
-    if (plan.obligationPatch) {
-      const patch = plan.obligationPatch;
-      try {
-        obligation = await this.updateRow<FirmObligation>('firm_obligations', ob.id, patch);
-      } catch (e) {
-        // Close it again FIRST: the one-open index refuses the next back while this one is open.
-        // The obligation update failed, so it is still retired: never under "Needs attention".
-        return this.firmRestore(act, e, removed ? [reclose, putBackNext(removed)] : [reclose], [
-          this.firmOrphanedEvent(removed), this.firmWhereToLook(name, false),
-        ]);
-      }
-    }
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      // The rows are consistent — reopened, the next gone — so nothing is taken back. The
-      // caller never sees `removed`, so it cannot delete that occurrence's Outlook event.
-      const orphaned = this.firmOrphanedEvent(removed);
-      throw this.firmSavedWithoutLog(act, e, orphaned ? `. ${orphaned}` : '');
-    }
-    return { reopened, removed, obligation };
+    const act = `Undo for ${plainText(ob.name)} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
+    // The function removes the next only while it is still open, untouched and this
+    // close's own (#156 A3) — the column test, re-checked under the transaction.
+    const r = await this.firmRpc(act, 'firm_undo', {
+      occurrence_id: plan.occurrenceId,
+      reopen_patch: toUpdateRow(plan.reopenPatch),
+      remove_occurrence_id: plan.removeOccurrence?.id ?? null,
+      obligation_id: ob.id,
+      obligation_patch: plan.obligationPatch ? toUpdateRow(plan.obligationPatch) : null,
+      log: toRow(plan.log),
+    });
+    // `removed` carries the removed next's Outlook event id, so the caller can delete it
+    // (or queue it — #156 A6).
+    return {
+      reopened: firmRow<FirmObligationOccurrence>(r.reopened),
+      removed: firmRowOrNull<FirmObligationOccurrence>(r.removed),
+      obligation: firmRow<FirmObligation>(r.obligation),
+    };
   }
 
   async setOccurrenceDueOverride(id: string, date: string): Promise<FirmObligationOccurrence> {
     const occ = await this.firmOccurrenceRow(id);
     const ob = await this.firmObligationRow(occ.obligationId);
     const plan = planOverride(ob, occ, date, this.firmCtx());
-    const name = plainText(ob.name);
-    const act = `The due-date change for ${name} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
-    const updated = await this.firmFirstWrite(act, () =>
-      this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', id, plan.patch));
-    try {
-      await this.writeFirmLog(plan.log);
-    } catch (e) {
-      return this.firmRestore(act, e, [
-        () => this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', id, this.firmPrior(occ, plan.patch)),
-      ], [
-        // Its occurrence is open either way: on its own row.
-        this.firmWhereToLook(name, false),
-      ]);
-    }
-    return updated;
+    const act = `The due-date change for ${plainText(ob.name)} (${occ.periodLabel})`; // PROVISIONAL — slice §3 item 10
+    const r = await this.firmRpc(act, 'firm_set_due_override', {
+      occurrence_id: id,
+      patch: toUpdateRow(plan.patch),
+      log: toRow(plan.log),
+    });
+    return firmRow<FirmObligationOccurrence>(r.occurrence);
   }
 
   async listFirmObligationReviewLog(): Promise<ReviewLogEntry[]> {
@@ -1784,5 +1589,28 @@ export class SupabaseAdapter implements DataAdapter {
       if (k in patch) only[k] = patch[k];
     }
     return this.updateRow<FirmObligationOccurrence>('firm_obligation_occurrences', id, only);
+  }
+
+  // ---- the Outlook-delete queue (#156 A6; FXD-2) ----
+  // Outlook bookkeeping, like the sync write above — NOT an act: no function, no
+  // review_log line. Read the obligation, compute the queue in the domain, write back
+  // ONLY pending_outlook_deletes (the one column the nine functions never write).
+
+  async queueFirmOutlookDelete(
+    obligationId: string, entry: { eventId: string; occurrenceId: string },
+  ): Promise<FirmObligation> {
+    const ob = await this.firmObligationRow(obligationId);
+    return this.updateRow<FirmObligation>('firm_obligations', obligationId, {
+      pendingOutlookDeletes: queuedDeletes(ob, entry, new Date().toISOString()),
+    });
+  }
+
+  async settleFirmOutlookDelete(
+    obligationId: string, eventId: string, outcome: 'deleted' | 'failed',
+  ): Promise<FirmObligation> {
+    const ob = await this.firmObligationRow(obligationId);
+    return this.updateRow<FirmObligation>('firm_obligations', obligationId, {
+      pendingOutlookDeletes: settledDeletes(ob, eventId, outcome),
+    });
   }
 }

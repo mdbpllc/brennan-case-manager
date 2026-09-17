@@ -414,6 +414,10 @@ export interface DataAdapter {
   // diverge. Every act writes exactly one review_log line (FOD-6). There is no
   // delete of an obligation (retire, never delete — FOD-8, FOD-23), and no snooze,
   // "later", dismiss or bulk method anywhere (FO-2; slice §8).
+  //
+  // FOS-2 RULED YES 2026-09-12 (#156; docs/specs/firm-obligations-fix-slice.md): each
+  // act is ATOMIC in both modes — one save locally, one Postgres function per act
+  // centrally (A5) — so an act either lands whole or is not saved at all.
 
   /** Every obligation, active and retired — the register and the card read them all. */
   listFirmObligations(): Promise<FirmObligation[]>;
@@ -437,6 +441,12 @@ export interface DataAdapter {
   reactivateFirmObligation(
     id: string, inputs?: { lastPeriodCompleted?: string },
   ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null }>;
+  /** The Inactive row's "Activate…" (#156 A7): the edit and the re-activation as ONE
+   *  act writing ONE review_log line. `occurrence` is the one it opened, or the open one
+   *  the edit re-dated or re-queued; `kept` as updateFirmObligation's. */
+  activateFromInactive(
+    id: string, patch: FirmObligationPatch, inputs?: { lastPeriodCompleted?: string },
+  ): Promise<{ obligation: FirmObligation; occurrence: FirmObligationOccurrence | null; kept: string | null }>;
   listFirmObligationOccurrences(): Promise<FirmObligationOccurrence[]>;
   /** Done — materializes the next occurrence (serial or collapsed, DECISION 2). */
   markOccurrenceDone(
@@ -463,4 +473,16 @@ export interface DataAdapter {
     id: string,
     patch: Partial<Pick<FirmObligationOccurrence, 'outlookEventId' | 'syncStatus' | 'syncError' | 'lastSyncAt'>>,
   ): Promise<FirmObligationOccurrence>;
+  /** #156 A6 (FXD-2): Undo's Graph delete failed or Outlook was not connected — queue
+   *  the removed next occurrence's Outlook event on its obligation for the sync drain.
+   *  Outlook bookkeeping like updateFirmOccurrenceSync: it writes ONLY
+   *  `pendingOutlookDeletes`, and no review_log line. */
+  queueFirmOutlookDelete(
+    obligationId: string, entry: { eventId: string; occurrenceId: string },
+  ): Promise<FirmObligation>;
+  /** One drain attempt on a queued delete: 'deleted' (2xx or 404) removes it; 'failed'
+   *  counts the attempt and keeps it (FXD-2). Writes ONLY `pendingOutlookDeletes`. */
+  settleFirmOutlookDelete(
+    obligationId: string, eventId: string, outcome: 'deleted' | 'failed',
+  ): Promise<FirmObligation>;
 }

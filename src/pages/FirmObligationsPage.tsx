@@ -2,14 +2,18 @@
 //
 // Authority: docs/specs/firm-obligations-build-slice.md §3 item 5 (FOS-1 RULED YES
 // 2026-09-10); the rulings record docs/specs/firm-obligations-rulings-2026-09-10.md.
+// The fix slice docs/specs/firm-obligations-fix-slice.md §3 items 1, 7, 8 and 10
+// (FOS-2 RULED YES 2026-09-12, #156): the Outlook reminder field (A1), Activate… from
+// Inactive as one act (A7), Undo's Outlook delete queued for the next sync (A6).
 // DECISION 0: "firm obligation" is the word; the nav label is "Obligations".
 //
 // The register shows EVERY open occurrence (FOM-14): Overdue pinned at the top, hard
 // first then most overdue (FOM-9); then Needs attention, only when an active
-// obligation has no open occurrence (only a save to the central database that stopped
-// part-way leaves one); then the twelve months from this one; then Later (FOM-3); then
-// Inactive, collapsed (FOM-5), where a row activated from the catalog shows its
-// catalog text, its note and its source (FOD-33; slice §3 item 3).
+// obligation has no open occurrence (a store written before the one-act saves could
+// hold one) or a queued Outlook delete has failed three syncs or more (FXD-2); then the
+// twelve months from this one; then Later (FOM-3); then Inactive, collapsed (FOM-5),
+// where a row activated from the catalog shows its catalog text, its note and its
+// source (FOD-33; slice §3 item 3).
 //
 // THE ONLY THINGS THAT UNLIGHT AN OCCURRENCE ARE Done; Not applicable, only on a row
 // that can lapse for a period and only with a reason (FOD-18); and Undo, only while
@@ -28,9 +32,10 @@
 //
 // The top of the page says what has no row or form to say it in: a landed act's
 // success message; a landed act's warning — saved but not pushed to Outlook, or an
-// Outlook event Undo could not delete; the note that a Save changed nothing; a failed
-// load, or a failed reload after a landed act; and the error of an act whose row or
-// form was gone by the time the error could show.
+// Outlook event Undo could not delete (queued to delete on the next sync, #156 A6; or,
+// when even that queue write failed, left for him to delete in Outlook); the note that
+// a Save changed nothing; a failed load, or a failed reload after a landed act; and the
+// error of an act whose row or form was gone by the time the error could show.
 //
 // SPEC §7's cells — names, source notes, "Applies if", the catalog text — are stored
 // byte for byte, markdown included. This page shows them through plainText() and never
@@ -48,11 +53,12 @@ import { localISODate } from '../domain/dates';
 import type { ReviewLogEntry } from '../domain/billing';
 import {
   DEFAULT_LEAD_DAYS, FOD1_NOTE, HOLIDAY_LINE, RULE_KINDS, WEEKEND_RULES,
-  canUndo, changedFields, defaultMissedPeriods, dueDate, effectiveMissedPeriods, formatDate, isUnknownWeekend,
-  lightsOn, plainText, reactivationProblem, registerView, ruleDate, strongLine, targetDate, validateRule,
+  canUndo, changedFields, defaultMissedPeriods, defaultReminderDays, dueDate, effectiveMissedPeriods, formatDate,
+  isUnknownWeekend, latestClosed, lightsOn, plainText, reactivationProblem, registerView, ruleDate, strongLine,
+  targetDate, validateRule,
   type DisplayState, type FirmObligation, type FirmObligationCategory, type FirmObligationOccurrence,
-  type FirmObligationPatch, type MissedPeriods, type OutcomeReason, type RecurrenceRule, type RuleKind,
-  type ViewItem, type Weight, type WeekendRule,
+  type FirmObligationPatch, type MissedPeriods, type OutcomeReason, type PendingOutlookDelete, type RecurrenceRule,
+  type RuleKind, type ViewItem, type Weight, type WeekendRule,
 } from '../domain/firmObligations';
 import { FIRM_OBLIGATION_TEMPLATES, type FirmObligationTemplate } from '../domain/firmObligationTemplates';
 import { activationFromTemplate, WEIGHT_WHEN_TEMPLATE_NAMES_NONE } from '../domain/firmObligationActivation';
@@ -60,7 +66,7 @@ import { outlookConfigured, OUTLOOK_FIRM_CALENDAR_NAME } from '../outlook/config
 import { getSignedInAccount, signIn } from '../outlook/auth';
 import { removeFirmOccurrenceFromOutlook, syncAllPending, syncFirmOccurrence } from '../outlook/sync';
 import {
-  errorRoute, msg, outlookPushes, type Notice, type OutlookDeps, type OutlookPushes,
+  errorRoute, msg, outlookPushes, reminderDaysFrom, reminderExceedsLead, type Notice, type OutlookDeps, type OutlookPushes,
 } from './firmObligationsActs';
 
 // ------------------------------------------------------------ provisional labels
@@ -369,10 +375,13 @@ export default function FirmObligationsPage() {
             </div>
           )}
 
-          {view.stranded.length > 0 && (
+          {(view.stranded.length > 0 || view.stuckDeletes.length > 0) && (
             <div className="card" style={{ borderColor: 'var(--warn)' }}>
               <h3 style={{ color: 'var(--warn)' }}>Needs attention</h3>{/* PROVISIONAL — slice §3 item 10 */}
               {view.stranded.map((ob) => <StrandedRow key={ob.id} ob={ob} ctx={ctx} />)}
+              {view.stuckDeletes.map(({ obligation, entry }) => (
+                <StuckDeleteRow key={`${obligation.id}:${entry.eventId}`} ob={obligation} entry={entry} />
+              ))}
             </div>
           )}
 
@@ -412,20 +421,16 @@ export default function FirmObligationsPage() {
 
 // ------------------------------------------------------------ one register row
 
-/** The close Undo would reverse for this obligation — the most recent close line
- *  whose occurrence is still closed — and whether FOD-7's test allows it. */
+/** The close Undo would reverse for this obligation — its latest closed occurrence
+ *  (latestClosed) — and whether FOD-7's test allows it. The test reads the columns
+ *  (#156 A3); the log lines are passed for the one thing it still reads there, that
+ *  the close has a record at all (FXD-7). */
 function undoableClose(ob: FirmObligation, ctx: RegisterCtx): FirmObligationOccurrence | null {
   const mine = ctx.occurrences.filter((o) => o.obligationId === ob.id);
   const ids = new Set([ob.id, ...mine.map((o) => o.id)]);
   const lines = ctx.log.filter((l) => ids.has(l.entityId));
-  for (let i = lines.length - 1; i >= 0; i--) {
-    const l = lines[i];
-    if (l.action !== 'done' && l.action !== 'not-applicable') continue;
-    const occ = mine.find((o) => o.id === l.entityId && o.state === 'done');
-    if (!occ) return null;
-    return canUndo(ob, occ, mine, lines).ok ? occ : null;
-  }
-  return null;
+  const it = latestClosed(mine);
+  return it && canUndo(ob, it, mine, lines).ok ? it : null;
 }
 
 function RegisterRow({ item, ctx, withYear }: { item: ViewItem; ctx: RegisterCtx; withYear?: boolean }) {
@@ -501,15 +506,29 @@ function RegisterRow({ item, ctx, withYear }: { item: ViewItem; ctx: RegisterCtx
 
 /** Undo's work: reopen, remove the untouched next occurrence's Outlook event, re-push
  *  the reopened one (FOD-7). Run through the row's own act, so an error stays on the row.
- *  An event it could not delete is said as a WARNING at the top, never inside the
- *  success message (PAGE-7). */
+ *  An event it could not delete is QUEUED on its obligation for the next sync's drain
+ *  (#156 A6; FXD-2), and said as a WARNING at the top, never inside the success message
+ *  (PAGE-7). Only when that queue write itself fails is he told to delete the event in
+ *  Outlook. Either way the Undo has LANDED. */
 async function undo(ob: FirmObligation, target: FirmObligationOccurrence, outlook: OutlookPushes): Promise<string> {
   const name = plainText(ob.name);
   const res = await db.undoOccurrence(target.id);
-  if (res.removed?.outlookEventId) {
-    const result = await outlook.remove(res.removed.outlookEventId);
+  const removed = res.removed;
+  if (removed?.outlookEventId) {
+    const eventId = removed.outlookEventId;
+    const result = await outlook.remove(eventId);
     if (result !== 'deleted') {
-      outlook.warn(`Its removed next occurrence's Outlook event ("Firm obligation: ${name} (${res.removed.periodLabel})") was NOT deleted — ${result === 'not-connected' ? 'Outlook is not connected here' : 'the delete failed'}; delete it in Outlook.`); // PROVISIONAL — FOD-7 with DECISION 7
+      let queueError: string | null = null;
+      try {
+        await db.queueFirmOutlookDelete(ob.id, { eventId, occurrenceId: removed.id });
+      } catch (e) {
+        queueError = msg(e);
+      }
+      if (queueError === null) {
+        outlook.warn(`Its removed next occurrence's Outlook event ("Firm obligation: ${name} (${removed.periodLabel})") could not be deleted now — ${result === 'not-connected' ? 'Outlook is not connected here' : 'the delete failed'}; it is queued to delete on next sync.`); // PROVISIONAL — #156 §1 item 9 (A6)
+      } else {
+        outlook.warn(`Its removed next occurrence's Outlook event ("Firm obligation: ${name} (${removed.periodLabel})") was NOT deleted — ${result === 'not-connected' ? 'Outlook is not connected here' : 'the delete failed'}, and it could not be queued for the next sync (${queueError}); delete it in Outlook.`); // PROVISIONAL — FOD-7 with DECISION 7; #156 §1 item 9 (A6)
+      }
     }
   }
   await outlook.sync(res.reopened, res.obligation);
@@ -576,21 +595,20 @@ function InactiveRow({ entry, ctx }: {
             onSubmit={async (input, outlook) => {
               const patch: FirmObligationPatch = {
                 recurrence: input.recurrence, weekendRule: input.weekendRule, leadDays: input.leadDays, weight: input.weight,
+                outlookReminderDays: input.outlookReminderDays,
               };
               // Asked BEFORE anything is written (PAGE-2): a re-activation the domain would
               // refuse — a "last period completed" that names no period, a one-time already
-              // done, an undated row — says why in this form and writes nothing, so no edit
-              // and no "Edited" line is left behind on a row that stays inactive.
+              // done, an undated row — says why in this form and writes nothing. The dry run
+              // is the very plan the act runs (planActivateFromInactive).
               const mine = ctx.occurrences.filter((o) => o.obligationId === ob.id);
               const problem = reactivationProblem(ob, patch, mine, ctx.today, { lastPeriodCompleted: input.lastPeriodCompleted });
               if (problem) throw new Error(problem);
-              // One on-screen act that changes nothing writes no "nothing changed" edit line (review L5-09).
-              if (changedFields(ob, patch).length > 0) {
-                const res = await db.updateFirmObligation(ob.id, patch);
-                // The edit may have re-evaluated a retired row's open occurrence: push it.
-                if (res.occurrence) await outlook.sync(res.occurrence, res.obligation);
-              }
-              const { obligation, occurrence } = await db.reactivateFirmObligation(ob.id, { lastPeriodCompleted: input.lastPeriodCompleted });
+              // #156 A7, "One act, one line": the edit and the re-activation are ONE adapter
+              // act writing ONE review_log line. An unchanged form carries no edit into it
+              // (review L5-09). `occurrence` is the one it opened, or a retired row's open
+              // occurrence the edit re-dated or re-queued: either way it is pushed.
+              const { obligation, occurrence } = await db.activateFromInactive(ob.id, patch, { lastPeriodCompleted: input.lastPeriodCompleted });
               // Landed: the form closes now.
               setActivating(false);
               if (occurrence) await outlook.sync(occurrence, obligation);
@@ -599,8 +617,8 @@ function InactiveRow({ entry, ctx }: {
           />
         </div>
       )}
-      {/* Every Inactive row carries its Details, done or never done, so the review log a
-          could-not-restore message sends him to is always there. */}
+      {/* Every Inactive row carries its Details, done or never done, so its review log is
+          always there to read. */}
       {!activating && <Details ob={ob} occ={null} ctx={ctx} omitSource={!!ob.templateKey} />}
     </div>
   );
@@ -609,9 +627,10 @@ function InactiveRow({ entry, ctx }: {
 // ------------------------------------------------------------ Needs attention
 
 /** An ACTIVE obligation with no open occurrence (registerView's `stranded`). No act
- *  leaves one; only a save to the central database that stopped part-way can, because
- *  PostgREST gives no transaction. It is listed so it never falls off every surface,
- *  and the way back is the ordinary one: Retire, then Activate… from Inactive. */
+ *  leaves one now — each is one Postgres function centrally (#156 A5) — but a save to
+ *  the central database that stopped part-way before the functions existed could have.
+ *  It is listed so it never falls off every surface, and the way back is the ordinary
+ *  one: Retire, then Activate… from Inactive. */
 function StrandedRow({ ob, ctx }: { ob: FirmObligation; ctx: RegisterCtx }) {
   const retire = useAct(ctx);
   const name = plainText(ob.name);
@@ -628,6 +647,22 @@ function StrandedRow({ ob, ctx }: { ob: FirmObligation; ctx: RegisterCtx }) {
         })}>Retire</button>{/* PROVISIONAL — FOD-8 */}
       </div>
       <ActError text={retire.error} />
+    </div>
+  );
+}
+
+/** A queued Outlook delete that has failed PENDING_DELETE_ATTENTION_ATTEMPTS syncs or
+ *  more (registerView's `stuckDeletes`; FXD-2). It is only NAMED here: it stays queued
+ *  and every sync still retries it (retrying never stops), and there is no control on
+ *  it — he may delete the event in Outlook by hand if he prefers. */
+function StuckDeleteRow({ ob, entry }: { ob: FirmObligation; entry: PendingOutlookDelete }) {
+  return (
+    <div style={{ padding: '8px 0', borderTop: '1px solid var(--line)' }}>
+      <strong>{plainText(ob.name)}</strong>
+      <div className="small" style={{ marginTop: 2 }}>
+        {/* Named only at three failed syncs or more, so the count is always plural. */}
+        {`An Outlook event Undo removed is still queued to delete — ${entry.attempts} syncs have failed to delete it. It stays queued and every sync tries again; you may also delete it in Outlook by hand.`}{/* PROVISIONAL — FXD-2 */}
+      </div>
     </div>
   );
 }
@@ -823,6 +858,22 @@ interface ActivationSubmit {
   weekendRule: WeekendRule;
   leadDays: number;
   weight: Weight;
+  /** #156 A1: the value he left or typed in the form — always a whole number ≥ 0 here. */
+  outlookReminderDays: number;
+}
+
+/** The "Outlook reminder (days)" field of Activate… and Edit… (#156 A1), with FXD-9's
+ *  hint when the value is set further ahead than the lead. The forms read the value
+ *  through reminderDaysFrom, which refuses a cleared field rather than reading it as 0. */
+function ReminderInput({ value, lead, onChange }: { value: string; lead: string; onChange: (v: string) => void }) {
+  return (
+    <label className="fld"><span className="lab">Outlook reminder (days)</span>{/* PROVISIONAL — #156 §1 item 6(b) (A1) */}
+      <input type="number" min={0} value={value} onChange={(e) => onChange(e.target.value)} style={{ width: 80 }} />
+      {reminderExceedsLead(value, lead) && (
+        <span className="small muted">rings before this row lights on the register</span> /* PROVISIONAL — FXD-9 */
+      )}
+    </label>
+  );
 }
 
 function ActivationForm({ template, existing, firstActivation, today, acts, onBusy, onSubmit, onCancel }: {
@@ -845,7 +896,26 @@ function ActivationForm({ template, existing, firstActivation, today, acts, onBu
       : draftFromRule({ everyYears: template?.templateRule.everyYears, days: template?.templateRule.days }, startKind, year),
   );
   const [weekendRule, setWeekendRule] = useState<WeekendRule>(existing?.weekendRule ?? 'unknown');
-  const [lead, setLead] = useState(String(existing?.leadDays ?? template?.leadDays ?? DEFAULT_LEAD_DAYS));
+  const leadPrefill = existing?.leadDays ?? template?.leadDays ?? DEFAULT_LEAD_DAYS;
+  const [lead, setLead] = useState(String(leadPrefill));
+  // #156 A1, FXD-9: the Outlook reminder pre-fills min(30, lead); no template carries its
+  // own value (FXD-1). A row from Inactive pre-fills what it stores.
+  const [reminder, setReminder] = useState(String(existing?.outlookReminderDays ?? defaultReminderDays(leadPrefill)));
+  // On a NEW activation, until he types in the reminder field, it follows the lead as he
+  // edits it — still min(30, lead) — so the pre-fill never goes stale under a changed lead.
+  // A row from Inactive already stores its value, which a lead edit never replaces: a
+  // value raised by hand must take effect exactly (FXD-9). A lead that is not a whole
+  // number ≥ 0 moves nothing.
+  const [reminderTyped, setReminderTyped] = useState(false);
+  const changeLead = (v: string) => {
+    setLead(v);
+    const leadDays = reminderDaysFrom(v);
+    if (!existing && !reminderTyped && leadDays !== null) setReminder(String(defaultReminderDays(leadDays)));
+  };
+  const changeReminder = (v: string) => {
+    setReminderTyped(true);
+    setReminder(v);
+  };
   const [weight, setWeight] = useState<Weight>(existing?.weight ?? template?.weight ?? WEIGHT_WHEN_TEMPLATE_NAMES_NONE);
   const [lastPeriodCompleted, setLastPeriodCompleted] = useState('');
   const [lastDone, setLastDone] = useState('');
@@ -868,9 +938,11 @@ function ActivationForm({ template, existing, firstActivation, today, acts, onBu
     if ('error' in built) { setError(built.error); return; }
     const leadDays = Number(lead);
     if (!Number.isInteger(leadDays) || leadDays < 0) { setError('The lead must be a whole number of days.'); return; } // PROVISIONAL — FOD-2
+    const outlookReminderDays = reminderDaysFrom(reminder);
+    if (outlookReminderDays === null) { setError('The Outlook reminder must be a whole number of days, 0 or more.'); return; } // PROVISIONAL — #156 §1 item 6(b) (A1); FXD-9
     const base = template
       ? activationFromTemplate(template, {
-        recurrence: built.rule, weekendRule, leadDays, weight,
+        recurrence: built.rule, weekendRule, leadDays, weight, outlookReminderDays,
         lastPeriodCompleted: serial && lastPeriodCompleted ? lastPeriodCompleted : undefined,
         lastDone: !existing && draft.kind === 'interval-from-completion' && lastDone ? lastDone : undefined,
         notes: notes.trim() || undefined,
@@ -878,13 +950,13 @@ function ActivationForm({ template, existing, firstActivation, today, acts, onBu
       : {
         name: existing?.name ?? name.trim(), category: 'custom' as const, ownerScope: 'firm' as const,
         recurrence: built.rule, precision: 'day' as const, missedPeriods: defaultMissedPeriods(draft.kind),
-        conditionalPerPeriod: conditional, weekendRule, leadDays, weight,
+        conditionalPerPeriod: conditional, weekendRule, leadDays, weight, outlookReminderDays,
         lastPeriodCompleted: serial && lastPeriodCompleted ? lastPeriodCompleted : undefined,
         lastDone: !existing && draft.kind === 'interval-from-completion' && lastDone ? lastDone : undefined,
         notes: notes.trim() || undefined, active: true,
       };
     if (!template && !existing && !name.trim()) { setError('A name is required.'); return; } // PROVISIONAL — slice §3 item 10
-    void act((outlook) => onSubmit({ ...base, recurrence: built.rule, weekendRule, leadDays, weight }, outlook));
+    void act((outlook) => onSubmit({ ...base, recurrence: built.rule, weekendRule, leadDays, weight, outlookReminderDays }, outlook));
   };
 
   return (
@@ -922,8 +994,9 @@ function ActivationForm({ template, existing, firstActivation, today, acts, onBu
           </label>
         )}
         <label className="fld"><span className="lab">Lead (days)</span>{/* PROVISIONAL — FOD-2 */}
-          <input type="number" min={0} value={lead} onChange={(e) => setLead(e.target.value)} style={{ width: 80 }} />
+          <input type="number" min={0} value={lead} onChange={(e) => changeLead(e.target.value)} style={{ width: 80 }} />
         </label>
+        <ReminderInput value={reminder} lead={lead} onChange={changeReminder} />
         <label className="fld"><span className="lab">Weight</span>{/* PROVISIONAL — DECISION 6 */}
           <select value={weight} onChange={(e) => setWeight(e.target.value as Weight)}>
             <option value="hard">Hard</option>{/* PROVISIONAL — DECISION 6 */}
@@ -961,6 +1034,9 @@ function EditForm({ ob, occ, ctx, onBusy, onClose }: {
   const year = Number(ctx.today.slice(0, 4));
   const [draft, setDraft] = useState<RuleDraft>(draftFromRule(ob.recurrence, ob.recurrence.kind, year));
   const [lead, setLead] = useState(String(ob.leadDays));
+  // #156 A1: what the obligation stores. On Edit… it does not follow the lead — the
+  // stored value may be one he raised by hand, and it fires exactly (FXD-9).
+  const [reminder, setReminder] = useState(String(ob.outlookReminderDays ?? defaultReminderDays(ob.leadDays)));
   const [weight, setWeight] = useState<Weight>(ob.weight);
   const [weekendRule, setWeekendRule] = useState<WeekendRule>(ob.weekendRule);
   const [missed, setMissed] = useState<MissedPeriods>(ob.missedPeriods);
@@ -977,8 +1053,10 @@ function EditForm({ ob, occ, ctx, onBusy, onClose }: {
     if ('error' in built) { saveAct.setError(built.error); return; }
     const leadDays = Number(lead);
     if (!Number.isInteger(leadDays) || leadDays < 0) { saveAct.setError('The lead must be a whole number of days.'); return; } // PROVISIONAL — FOD-2
+    const outlookReminderDays = reminderDaysFrom(reminder);
+    if (outlookReminderDays === null) { saveAct.setError('The Outlook reminder must be a whole number of days, 0 or more.'); return; } // PROVISIONAL — #156 §1 item 6(b) (A1); FXD-9
     const patch: FirmObligationPatch = {
-      recurrence: built.rule, leadDays, weight, weekendRule,
+      recurrence: built.rule, leadDays, weight, weekendRule, outlookReminderDays,
       ...(ob.recurrence.kind !== 'interval-from-completion' ? { missedPeriods: missed } : {}),
       notes: notes.trim() || undefined,
     };
@@ -1024,6 +1102,7 @@ function EditForm({ ob, occ, ctx, onBusy, onClose }: {
         <label className="fld"><span className="lab">Lead (days)</span>{/* PROVISIONAL — FOD-2 */}
           <input type="number" min={0} value={lead} onChange={(e) => setLead(e.target.value)} style={{ width: 80 }} />
         </label>
+        <ReminderInput value={reminder} lead={lead} onChange={setReminder} />
         <label className="fld"><span className="lab">Weight</span>{/* PROVISIONAL — DECISION 6 */}
           <select value={weight} onChange={(e) => setWeight(e.target.value as Weight)}>
             <option value="hard">Hard</option>{/* PROVISIONAL — DECISION 6 */}
@@ -1084,7 +1163,12 @@ function Details({ ob, occ, ctx, omitSource }: {
           </div>
         ))}
       <div>
-        Weekend: {WEEKEND_RULE_LABEL[ob.weekendRule]} · lead {ob.leadDays} days · {WEIGHT_GLYPH[ob.weight].title.toLowerCase()}{/* PROVISIONAL — slice §3 item 10 */}
+        Weekend: {WEEKEND_RULE_LABEL[ob.weekendRule]} · lead {ob.leadDays} days{/* PROVISIONAL — slice §3 item 10 */}
+        {/* #156 A1: the Outlook reminder rings on a hard row only (FXD-8), at its stored days (FXD-9). */}
+        {ob.weight === 'routine'
+          ? ' · no Outlook reminder (routine)' /* PROVISIONAL — #156 §1 item 6(b) (A1) */
+          : ` · Outlook reminder ${ob.outlookReminderDays} days before the target`}{/* PROVISIONAL — FXD-9 */}
+        {' · '}{WEIGHT_GLYPH[ob.weight].title.toLowerCase()}
       </div>
       {!omitSource && ob.sourceNote && <div><span className="muted">Source:</span> {plainText(ob.sourceNote)}</div>}{/* PROVISIONAL — slice §3 item 5 (the expander's source); slice §3 item 10 */}
       {ob.appliesIf && <div><span className="muted">Applies if:</span> {plainText(ob.appliesIf)}</div>}{/* PROVISIONAL — FOM-2 */}

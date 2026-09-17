@@ -80,8 +80,10 @@ export async function syncFirmOccurrence(
 }
 
 /** Undo removes an untouched next occurrence (FOD-7); this deletes its Outlook
- *  event. The row is already gone, so there is nothing to queue — the outcome is
- *  returned for the register to say plainly. */
+ *  event. The outcome is returned for the register to act on: the row is already gone,
+ *  so on anything but 'deleted' the register queues the event on its OBLIGATION
+ *  (queueFirmOutlookDelete) and syncAllPending's drain retries it (#156 §1 item 9, A6;
+ *  FXD-2). */
 export async function removeFirmOccurrenceFromOutlook(
   outlookEventId: string,
 ): Promise<'deleted' | 'not-connected' | 'failed'> {
@@ -95,8 +97,10 @@ export async function removeFirmOccurrenceFromOutlook(
 }
 
 /** Drain the retry queue — the case events across all cases, then the firm-obligation
- *  occurrences ("the existing push queue drains both kinds", slice §3 item 7).
- *  Returns counts for the UI. */
+ *  occurrences ("the existing push queue drains both kinds", slice §3 item 7), then the
+ *  Outlook events Undo could not delete, queued on their obligations (#156 §1 item 9,
+ *  A6; firm-obligations-fix-slice.md §3 item 8; FXD-2). Returns counts for the UI: a
+ *  queued delete that went through counts as synced, one that did not as failed. */
 export async function syncAllPending(db: DataAdapter): Promise<{ synced: number; failed: number }> {
   if (!outlookConfigured || !(await getSignedInAccount())) return { synced: 0, failed: 0 };
   let synced = 0;
@@ -123,26 +127,59 @@ export async function syncAllPending(db: DataAdapter): Promise<{ synced: number;
   } catch {
     return { synced, failed };
   }
-  if (firmQueue.length > 0) {
-    let obligations: FirmObligation[];
+  // The obligations are read ONCE, for both firm passes: the pushes need each row's
+  // obligation, and the delete drain reads the queue each obligation carries — so they
+  // are read even when no occurrence is pending (#156 A6).
+  let obligations: FirmObligation[];
+  try {
+    obligations = await db.listFirmObligations();
+  } catch {
+    // The queue read but its obligations did not: no row can be pushed without its
+    // obligation, so each counts as failed, and the case half's counts still come back.
+    // No queued delete can be read either, so none is tried: each stays queued for the
+    // next sync.
+    return { synced, failed: failed + firmQueue.length };
+  }
+  const obligationById = new Map(obligations.map((o) => [o.id, o]));
+  for (const occ of firmQueue) {
+    const ob = obligationById.get(occ.obligationId);
+    if (!ob) { failed += 1; continue; }
     try {
-      obligations = await db.listFirmObligations();
+      const result = await syncFirmOccurrence(db, occ, ob);
+      if (result.syncStatus === 'synced') synced += 1;
+      else failed += 1;
     } catch {
-      // The queue read but its obligations did not: no row can be pushed without its
-      // obligation, so each counts as failed, and the case half's counts still come back.
-      return { synced, failed: failed + firmQueue.length };
+      // The push failed AND writing its error back failed too (review C4-8). Count the
+      // row as failed and go on: one bad row never stops the rest of the queue.
+      failed += 1;
     }
-    const obligationById = new Map(obligations.map((o) => [o.id, o]));
-    for (const occ of firmQueue) {
-      const ob = obligationById.get(occ.obligationId);
-      if (!ob) { failed += 1; continue; }
+  }
+
+  // The delete drain (#156 §1 item 9, A6: "Retry on next sync"; FXD-2). Each event Undo
+  // could not delete is tried again here, on every obligation, retired ones included. A
+  // 2xx or a 404 settles it 'deleted' (deleteFirmOutlookEvent treats a 404 as the event
+  // already gone) and the entry leaves the queue; anything else settles it 'failed',
+  // which counts the attempt and KEEPS it — retrying never stops. Each settle is the
+  // adapter's own read-compute-write on the obligation (settledDeletes), never a write
+  // of the list read above, so two entries settled in turn on one row do not overwrite
+  // each other.
+  for (const ob of obligations) {
+    for (const entry of ob.pendingOutlookDeletes ?? []) {
+      let outcome: 'deleted' | 'failed';
       try {
-        const result = await syncFirmOccurrence(db, occ, ob);
-        if (result.syncStatus === 'synced') synced += 1;
+        await deleteFirmOutlookEvent(await getToken(), entry.eventId);
+        outcome = 'deleted';
+      } catch {
+        outcome = 'failed';
+      }
+      try {
+        await db.settleFirmOutlookDelete(ob.id, entry.eventId, outcome);
+        if (outcome === 'deleted') synced += 1;
         else failed += 1;
       } catch {
-        // The push failed AND writing its error back failed too (review C4-8). Count the
-        // row as failed and go on: one bad row never stops the rest of the queue.
+        // The settle write itself failed: the entry stays as it was, so the next sync tries
+        // it again (an event already deleted then answers 404 and settles). Count it as
+        // failed and go on: one bad entry never stops the rest.
         failed += 1;
       }
     }
